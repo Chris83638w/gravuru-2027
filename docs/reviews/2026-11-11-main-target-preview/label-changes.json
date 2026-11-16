@@ -1,0 +1,1281 @@
+{
+  "schema": "gravuru-main-target-label-preview/v1",
+  "changes": [
+    {
+      "path": [
+        "config",
+        "familyFormats",
+        "formats",
+        0,
+        "label"
+      ],
+      "before": "7 × 2 cm",
+      "after": "7 × 2,33 cm"
+    },
+    {
+      "path": [
+        "config",
+        "profile",
+        "optionGroups",
+        0,
+        "values",
+        0,
+        "label"
+      ],
+      "before": "Rechteck · 7 × 2 cm",
+      "after": "Rechteck · 7 × 2,33 cm"
+    },
+    {
+      "path": [
+        "config",
+        "familyFormats",
+        "formats",
+        24,
+        "label"
+      ],
+      "before": "8 × 5 cm",
+      "after": "8 × 5,33 cm"
+    },
+    {
+      "path": [
+        "config",
+        "profile",
+        "optionGroups",
+        0,
+        "values",
+        24,
+        "label"
+      ],
+      "before": "Rechteck · 8 × 5 cm",
+      "after": "Rechteck · 8 × 5,33 cm"
+    },
+    {
+      "path": [
+        "config",
+        "familyFormats",
+        "formats",
+        25,
+        "label"
+      ],
+      "before": "8 × 5 cm",
+      "after": "8 × 5,33 cm"
+    },
+    {
+      "path": [
+        "config",
+        "profile",
+        "optionGroups",
+        0,
+        "values",
+        25,
+        "label"
+      ],
+      "before": "Rechteck abgerundet · 8 × 5 cm",
+      "after": "Rechteck abgerundet · 8 × 5,33 cm"
+    }
+  ],
+  "formats": [
+    {
+      "key": "TS-Acryl-RE-70X23P3-T30-SW",
+      "before": "7 × 2 cm",
+      "after": "7 × 2,33 cm",
+      "widthMm": 70,
+      "heightMm": 23.3
+    },
+    {
+      "key": "TS-Acryl-RE-80X53P3-T30-SW",
+      "before": "8 × 5 cm",
+      "after": "8 × 5,33 cm",
+      "widthMm": 80,
+      "heightMm": 53.3
+    },
+    {
+      "key": "TS-Acryl-AB-80X53P3-T30-SW",
+      "before": "8 × 5 cm",
+      "after": "8 × 5,33 cm",
+      "widthMm": 80,
+      "heightMm": 53.3
+    }
+  ],
+  "affectedVariants": [
+    {
+      "shopifyVariantId": "gid://shopify/ProductVariant/58104615993724",
+      "sku": "156-TS-Acryl-RE-70X23P3-T30-SW-K00",
+      "nativeOptions": {
+        "size": "TS-Acryl-RE-70X23P3-T30-SW",
+        "color": "schwarz",
+        "mounting": "K00"
+      },
+      "currentShopSelectedOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 7 × 2 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Schwarz"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Ohne Bohrung"
+        }
+      ],
+      "proposedSelectedOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 7 × 2,33 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Schwarz"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Ohne Bohrung"
+        }
+      ],
+      "currentShopUnitCents": 799,
+      "targetUnitCents": 799
+    },
+    {
+      "shopifyVariantId": "gid://shopify/ProductVariant/58104616026492",
+      "sku": "156-TS-Acryl-RE-70X23P3-T30-SW-KGL",
+      "nativeOptions": {
+        "size": "TS-Acryl-RE-70X23P3-T30-SW",
+        "color": "schwarz",
+        "mounting": "KGL"
+      },
+      "currentShopSelectedOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 7 × 2 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Schwarz"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Selbstklebend – glatte Flächen"
+        }
+      ],
+      "proposedSelectedOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 7 × 2,33 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Schwarz"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Selbstklebend – glatte Flächen"
+        }
+      ],
+      "currentShopUnitCents": 1098,
+      "targetUnitCents": 1098
+    },
+    {
+      "shopifyVariantId": "gid://shopify/ProductVariant/58104616059260",
+      "sku": "156-TS-Acryl-RE-70X23P3-T30-SW-KRA",
+      "nativeOptions": {
+        "size": "TS-Acryl-RE-70X23P3-T30-SW",
+        "color": "schwarz",
+        "mounting": "KRA"
+      },
+      "currentShopSelectedOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 7 × 2 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Schwarz"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Selbstklebend – raue Flächen"
+        }
+      ],
+      "proposedSelectedOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 7 × 2,33 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Schwarz"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Selbstklebend – raue Flächen"
+        }
+      ],
+      "currentShopUnitCents": 1198,
+      "targetUnitCents": 1198
+    },
+    {
+      "shopifyVariantId": "gid://shopify/ProductVariant/58104616092028",
+      "sku": "156-TS-Acryl-RE-70X23P3-T30-SW-B02",
+      "nativeOptions": {
+        "size": "TS-Acryl-RE-70X23P3-T30-SW",
+        "color": "schwarz",
+        "mounting": "B02"
+      },
+      "currentShopSelectedOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 7 × 2 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Schwarz"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Mit 2 Bohrlöchern"
+        }
+      ],
+      "proposedSelectedOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 7 × 2,33 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Schwarz"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Mit 2 Bohrlöchern"
+        }
+      ],
+      "currentShopUnitCents": 1048,
+      "targetUnitCents": 1048
+    },
+    {
+      "shopifyVariantId": "gid://shopify/ProductVariant/58104616124796",
+      "sku": "156-TS-Acryl-RE-70X23P3-T30-SW-B02S",
+      "nativeOptions": {
+        "size": "TS-Acryl-RE-70X23P3-T30-SW",
+        "color": "schwarz",
+        "mounting": "B02S"
+      },
+      "currentShopSelectedOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 7 × 2 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Schwarz"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Mit 2 Schrauben"
+        }
+      ],
+      "proposedSelectedOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 7 × 2,33 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Schwarz"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Mit 2 Schrauben"
+        }
+      ],
+      "currentShopUnitCents": 1098,
+      "targetUnitCents": 1068
+    },
+    {
+      "shopifyVariantId": "gid://shopify/ProductVariant/58104616157564",
+      "sku": "156-TS-Acryl-RE-70X23P3-T30-AN-K00",
+      "nativeOptions": {
+        "size": "TS-Acryl-RE-70X23P3-T30-SW",
+        "color": "anthrazit",
+        "mounting": "K00"
+      },
+      "currentShopSelectedOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 7 × 2 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Anthrazit"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Ohne Bohrung"
+        }
+      ],
+      "proposedSelectedOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 7 × 2,33 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Anthrazit"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Ohne Bohrung"
+        }
+      ],
+      "currentShopUnitCents": 799,
+      "targetUnitCents": 799
+    },
+    {
+      "shopifyVariantId": "gid://shopify/ProductVariant/58104616190332",
+      "sku": "156-TS-Acryl-RE-70X23P3-T30-AN-KGL",
+      "nativeOptions": {
+        "size": "TS-Acryl-RE-70X23P3-T30-SW",
+        "color": "anthrazit",
+        "mounting": "KGL"
+      },
+      "currentShopSelectedOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 7 × 2 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Anthrazit"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Selbstklebend – glatte Flächen"
+        }
+      ],
+      "proposedSelectedOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 7 × 2,33 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Anthrazit"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Selbstklebend – glatte Flächen"
+        }
+      ],
+      "currentShopUnitCents": 1098,
+      "targetUnitCents": 1098
+    },
+    {
+      "shopifyVariantId": "gid://shopify/ProductVariant/58104616223100",
+      "sku": "156-TS-Acryl-RE-70X23P3-T30-AN-KRA",
+      "nativeOptions": {
+        "size": "TS-Acryl-RE-70X23P3-T30-SW",
+        "color": "anthrazit",
+        "mounting": "KRA"
+      },
+      "currentShopSelectedOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 7 × 2 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Anthrazit"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Selbstklebend – raue Flächen"
+        }
+      ],
+      "proposedSelectedOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 7 × 2,33 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Anthrazit"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Selbstklebend – raue Flächen"
+        }
+      ],
+      "currentShopUnitCents": 1198,
+      "targetUnitCents": 1198
+    },
+    {
+      "shopifyVariantId": "gid://shopify/ProductVariant/58104616255868",
+      "sku": "156-TS-Acryl-RE-70X23P3-T30-AN-B02",
+      "nativeOptions": {
+        "size": "TS-Acryl-RE-70X23P3-T30-SW",
+        "color": "anthrazit",
+        "mounting": "B02"
+      },
+      "currentShopSelectedOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 7 × 2 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Anthrazit"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Mit 2 Bohrlöchern"
+        }
+      ],
+      "proposedSelectedOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 7 × 2,33 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Anthrazit"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Mit 2 Bohrlöchern"
+        }
+      ],
+      "currentShopUnitCents": 1048,
+      "targetUnitCents": 1048
+    },
+    {
+      "shopifyVariantId": "gid://shopify/ProductVariant/58104616288636",
+      "sku": "156-TS-Acryl-RE-70X23P3-T30-AN-B02S",
+      "nativeOptions": {
+        "size": "TS-Acryl-RE-70X23P3-T30-SW",
+        "color": "anthrazit",
+        "mounting": "B02S"
+      },
+      "currentShopSelectedOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 7 × 2 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Anthrazit"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Mit 2 Schrauben"
+        }
+      ],
+      "proposedSelectedOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 7 × 2,33 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Anthrazit"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Mit 2 Schrauben"
+        }
+      ],
+      "currentShopUnitCents": 1098,
+      "targetUnitCents": 1068
+    },
+    {
+      "shopifyVariantId": "gid://shopify/ProductVariant/58104624513404",
+      "sku": "156-TS-Acryl-RE-80X53P3-T30-SW-K00",
+      "nativeOptions": {
+        "size": "TS-Acryl-RE-80X53P3-T30-SW",
+        "color": "schwarz",
+        "mounting": "K00"
+      },
+      "currentShopSelectedOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 8 × 5 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Schwarz"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Ohne Bohrung"
+        }
+      ],
+      "proposedSelectedOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 8 × 5,33 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Schwarz"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Ohne Bohrung"
+        }
+      ],
+      "currentShopUnitCents": 999,
+      "targetUnitCents": 999
+    },
+    {
+      "shopifyVariantId": "gid://shopify/ProductVariant/58104624546172",
+      "sku": "156-TS-Acryl-RE-80X53P3-T30-SW-KGL",
+      "nativeOptions": {
+        "size": "TS-Acryl-RE-80X53P3-T30-SW",
+        "color": "schwarz",
+        "mounting": "KGL"
+      },
+      "currentShopSelectedOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 8 × 5 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Schwarz"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Selbstklebend – glatte Flächen"
+        }
+      ],
+      "proposedSelectedOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 8 × 5,33 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Schwarz"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Selbstklebend – glatte Flächen"
+        }
+      ],
+      "currentShopUnitCents": 1298,
+      "targetUnitCents": 1298
+    },
+    {
+      "shopifyVariantId": "gid://shopify/ProductVariant/58104624578940",
+      "sku": "156-TS-Acryl-RE-80X53P3-T30-SW-KRA",
+      "nativeOptions": {
+        "size": "TS-Acryl-RE-80X53P3-T30-SW",
+        "color": "schwarz",
+        "mounting": "KRA"
+      },
+      "currentShopSelectedOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 8 × 5 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Schwarz"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Selbstklebend – raue Flächen"
+        }
+      ],
+      "proposedSelectedOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 8 × 5,33 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Schwarz"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Selbstklebend – raue Flächen"
+        }
+      ],
+      "currentShopUnitCents": 1398,
+      "targetUnitCents": 1398
+    },
+    {
+      "shopifyVariantId": "gid://shopify/ProductVariant/58104624611708",
+      "sku": "156-TS-Acryl-RE-80X53P3-T30-SW-B02",
+      "nativeOptions": {
+        "size": "TS-Acryl-RE-80X53P3-T30-SW",
+        "color": "schwarz",
+        "mounting": "B02"
+      },
+      "currentShopSelectedOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 8 × 5 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Schwarz"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Mit 2 Bohrlöchern"
+        }
+      ],
+      "proposedSelectedOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 8 × 5,33 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Schwarz"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Mit 2 Bohrlöchern"
+        }
+      ],
+      "currentShopUnitCents": 1248,
+      "targetUnitCents": 1248
+    },
+    {
+      "shopifyVariantId": "gid://shopify/ProductVariant/58104624644476",
+      "sku": "156-TS-Acryl-RE-80X53P3-T30-SW-B02S",
+      "nativeOptions": {
+        "size": "TS-Acryl-RE-80X53P3-T30-SW",
+        "color": "schwarz",
+        "mounting": "B02S"
+      },
+      "currentShopSelectedOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 8 × 5 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Schwarz"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Mit 2 Schrauben"
+        }
+      ],
+      "proposedSelectedOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 8 × 5,33 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Schwarz"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Mit 2 Schrauben"
+        }
+      ],
+      "currentShopUnitCents": 1298,
+      "targetUnitCents": 1268
+    },
+    {
+      "shopifyVariantId": "gid://shopify/ProductVariant/58104624677244",
+      "sku": "156-TS-Acryl-RE-80X53P3-T30-AN-K00",
+      "nativeOptions": {
+        "size": "TS-Acryl-RE-80X53P3-T30-SW",
+        "color": "anthrazit",
+        "mounting": "K00"
+      },
+      "currentShopSelectedOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 8 × 5 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Anthrazit"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Ohne Bohrung"
+        }
+      ],
+      "proposedSelectedOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 8 × 5,33 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Anthrazit"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Ohne Bohrung"
+        }
+      ],
+      "currentShopUnitCents": 999,
+      "targetUnitCents": 999
+    },
+    {
+      "shopifyVariantId": "gid://shopify/ProductVariant/58104624710012",
+      "sku": "156-TS-Acryl-RE-80X53P3-T30-AN-KGL",
+      "nativeOptions": {
+        "size": "TS-Acryl-RE-80X53P3-T30-SW",
+        "color": "anthrazit",
+        "mounting": "KGL"
+      },
+      "currentShopSelectedOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 8 × 5 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Anthrazit"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Selbstklebend – glatte Flächen"
+        }
+      ],
+      "proposedSelectedOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 8 × 5,33 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Anthrazit"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Selbstklebend – glatte Flächen"
+        }
+      ],
+      "currentShopUnitCents": 1298,
+      "targetUnitCents": 1298
+    },
+    {
+      "shopifyVariantId": "gid://shopify/ProductVariant/58104624742780",
+      "sku": "156-TS-Acryl-RE-80X53P3-T30-AN-KRA",
+      "nativeOptions": {
+        "size": "TS-Acryl-RE-80X53P3-T30-SW",
+        "color": "anthrazit",
+        "mounting": "KRA"
+      },
+      "currentShopSelectedOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 8 × 5 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Anthrazit"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Selbstklebend – raue Flächen"
+        }
+      ],
+      "proposedSelectedOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 8 × 5,33 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Anthrazit"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Selbstklebend – raue Flächen"
+        }
+      ],
+      "currentShopUnitCents": 1398,
+      "targetUnitCents": 1398
+    },
+    {
+      "shopifyVariantId": "gid://shopify/ProductVariant/58104624775548",
+      "sku": "156-TS-Acryl-RE-80X53P3-T30-AN-B02",
+      "nativeOptions": {
+        "size": "TS-Acryl-RE-80X53P3-T30-SW",
+        "color": "anthrazit",
+        "mounting": "B02"
+      },
+      "currentShopSelectedOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 8 × 5 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Anthrazit"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Mit 2 Bohrlöchern"
+        }
+      ],
+      "proposedSelectedOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 8 × 5,33 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Anthrazit"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Mit 2 Bohrlöchern"
+        }
+      ],
+      "currentShopUnitCents": 1248,
+      "targetUnitCents": 1248
+    },
+    {
+      "shopifyVariantId": "gid://shopify/ProductVariant/58104624808316",
+      "sku": "156-TS-Acryl-RE-80X53P3-T30-AN-B02S",
+      "nativeOptions": {
+        "size": "TS-Acryl-RE-80X53P3-T30-SW",
+        "color": "anthrazit",
+        "mounting": "B02S"
+      },
+      "currentShopSelectedOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 8 × 5 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Anthrazit"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Mit 2 Schrauben"
+        }
+      ],
+      "proposedSelectedOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 8 × 5,33 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Anthrazit"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Mit 2 Schrauben"
+        }
+      ],
+      "currentShopUnitCents": 1298,
+      "targetUnitCents": 1268
+    },
+    {
+      "shopifyVariantId": "gid://shopify/ProductVariant/58104624841084",
+      "sku": "156-TS-Acryl-AB-80X53P3-T30-SW-K00",
+      "nativeOptions": {
+        "size": "TS-Acryl-AB-80X53P3-T30-SW",
+        "color": "schwarz",
+        "mounting": "K00"
+      },
+      "currentShopSelectedOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck abgerundet · 8 × 5 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Schwarz"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Ohne Bohrung"
+        }
+      ],
+      "proposedSelectedOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck abgerundet · 8 × 5,33 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Schwarz"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Ohne Bohrung"
+        }
+      ],
+      "currentShopUnitCents": 999,
+      "targetUnitCents": 999
+    },
+    {
+      "shopifyVariantId": "gid://shopify/ProductVariant/58104624873852",
+      "sku": "156-TS-Acryl-AB-80X53P3-T30-SW-KGL",
+      "nativeOptions": {
+        "size": "TS-Acryl-AB-80X53P3-T30-SW",
+        "color": "schwarz",
+        "mounting": "KGL"
+      },
+      "currentShopSelectedOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck abgerundet · 8 × 5 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Schwarz"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Selbstklebend – glatte Flächen"
+        }
+      ],
+      "proposedSelectedOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck abgerundet · 8 × 5,33 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Schwarz"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Selbstklebend – glatte Flächen"
+        }
+      ],
+      "currentShopUnitCents": 1298,
+      "targetUnitCents": 1298
+    },
+    {
+      "shopifyVariantId": "gid://shopify/ProductVariant/58104624906620",
+      "sku": "156-TS-Acryl-AB-80X53P3-T30-SW-KRA",
+      "nativeOptions": {
+        "size": "TS-Acryl-AB-80X53P3-T30-SW",
+        "color": "schwarz",
+        "mounting": "KRA"
+      },
+      "currentShopSelectedOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck abgerundet · 8 × 5 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Schwarz"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Selbstklebend – raue Flächen"
+        }
+      ],
+      "proposedSelectedOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck abgerundet · 8 × 5,33 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Schwarz"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Selbstklebend – raue Flächen"
+        }
+      ],
+      "currentShopUnitCents": 1398,
+      "targetUnitCents": 1398
+    },
+    {
+      "shopifyVariantId": "gid://shopify/ProductVariant/58104624939388",
+      "sku": "156-TS-Acryl-AB-80X53P3-T30-SW-B02",
+      "nativeOptions": {
+        "size": "TS-Acryl-AB-80X53P3-T30-SW",
+        "color": "schwarz",
+        "mounting": "B02"
+      },
+      "currentShopSelectedOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck abgerundet · 8 × 5 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Schwarz"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Mit 2 Bohrlöchern"
+        }
+      ],
+      "proposedSelectedOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck abgerundet · 8 × 5,33 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Schwarz"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Mit 2 Bohrlöchern"
+        }
+      ],
+      "currentShopUnitCents": 1248,
+      "targetUnitCents": 1248
+    },
+    {
+      "shopifyVariantId": "gid://shopify/ProductVariant/58104624972156",
+      "sku": "156-TS-Acryl-AB-80X53P3-T30-SW-B02S",
+      "nativeOptions": {
+        "size": "TS-Acryl-AB-80X53P3-T30-SW",
+        "color": "schwarz",
+        "mounting": "B02S"
+      },
+      "currentShopSelectedOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck abgerundet · 8 × 5 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Schwarz"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Mit 2 Schrauben"
+        }
+      ],
+      "proposedSelectedOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck abgerundet · 8 × 5,33 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Schwarz"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Mit 2 Schrauben"
+        }
+      ],
+      "currentShopUnitCents": 1298,
+      "targetUnitCents": 1268
+    },
+    {
+      "shopifyVariantId": "gid://shopify/ProductVariant/58104625004924",
+      "sku": "156-TS-Acryl-AB-80X53P3-T30-AN-K00",
+      "nativeOptions": {
+        "size": "TS-Acryl-AB-80X53P3-T30-SW",
+        "color": "anthrazit",
+        "mounting": "K00"
+      },
+      "currentShopSelectedOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck abgerundet · 8 × 5 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Anthrazit"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Ohne Bohrung"
+        }
+      ],
+      "proposedSelectedOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck abgerundet · 8 × 5,33 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Anthrazit"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Ohne Bohrung"
+        }
+      ],
+      "currentShopUnitCents": 999,
+      "targetUnitCents": 999
+    },
+    {
+      "shopifyVariantId": "gid://shopify/ProductVariant/58104625037692",
+      "sku": "156-TS-Acryl-AB-80X53P3-T30-AN-KGL",
+      "nativeOptions": {
+        "size": "TS-Acryl-AB-80X53P3-T30-SW",
+        "color": "anthrazit",
+        "mounting": "KGL"
+      },
+      "currentShopSelectedOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck abgerundet · 8 × 5 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Anthrazit"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Selbstklebend – glatte Flächen"
+        }
+      ],
+      "proposedSelectedOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck abgerundet · 8 × 5,33 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Anthrazit"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Selbstklebend – glatte Flächen"
+        }
+      ],
+      "currentShopUnitCents": 1298,
+      "targetUnitCents": 1298
+    },
+    {
+      "shopifyVariantId": "gid://shopify/ProductVariant/58104625070460",
+      "sku": "156-TS-Acryl-AB-80X53P3-T30-AN-KRA",
+      "nativeOptions": {
+        "size": "TS-Acryl-AB-80X53P3-T30-SW",
+        "color": "anthrazit",
+        "mounting": "KRA"
+      },
+      "currentShopSelectedOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck abgerundet · 8 × 5 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Anthrazit"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Selbstklebend – raue Flächen"
+        }
+      ],
+      "proposedSelectedOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck abgerundet · 8 × 5,33 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Anthrazit"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Selbstklebend – raue Flächen"
+        }
+      ],
+      "currentShopUnitCents": 1398,
+      "targetUnitCents": 1398
+    },
+    {
+      "shopifyVariantId": "gid://shopify/ProductVariant/58104625103228",
+      "sku": "156-TS-Acryl-AB-80X53P3-T30-AN-B02",
+      "nativeOptions": {
+        "size": "TS-Acryl-AB-80X53P3-T30-SW",
+        "color": "anthrazit",
+        "mounting": "B02"
+      },
+      "currentShopSelectedOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck abgerundet · 8 × 5 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Anthrazit"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Mit 2 Bohrlöchern"
+        }
+      ],
+      "proposedSelectedOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck abgerundet · 8 × 5,33 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Anthrazit"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Mit 2 Bohrlöchern"
+        }
+      ],
+      "currentShopUnitCents": 1248,
+      "targetUnitCents": 1248
+    },
+    {
+      "shopifyVariantId": "gid://shopify/ProductVariant/58104625135996",
+      "sku": "156-TS-Acryl-AB-80X53P3-T30-AN-B02S",
+      "nativeOptions": {
+        "size": "TS-Acryl-AB-80X53P3-T30-SW",
+        "color": "anthrazit",
+        "mounting": "B02S"
+      },
+      "currentShopSelectedOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck abgerundet · 8 × 5 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Anthrazit"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Mit 2 Schrauben"
+        }
+      ],
+      "proposedSelectedOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck abgerundet · 8 × 5,33 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Anthrazit"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Mit 2 Schrauben"
+        }
+      ],
+      "currentShopUnitCents": 1298,
+      "targetUnitCents": 1268
+    }
+  ],
+  "sourceProductGroupDocumentSha256": "746f682929262b9a127a8d0613155dfba790ca57c524d027aa99797c5b40e3f8",
+  "targetProductGroupDocumentSha256": "2da2130230341917f7a99d2a12889c1e2f10e408f64d3532e9c5ea6bae65713c",
+  "sourceIdBindingDocumentSha256": "d75c917483a5ddedd380ac48c02c4ec3aea36b46f688557b8b9769fc5536eda2",
+  "targetIdBindingDocumentSha256": "deb2ce71bf57d5ff85e5f186378d94f58edeecc1ce4d7c4151bebf6e8072886f",
+  "hashMethods": {
+    "productGroup": "Recursively sorted object construction followed by JSON.stringify; integer-like keys use JavaScript enumeration order.",
+    "idBinding": "Recursively concatenated JSON strings with lexical object-key order, including integer-like keys.",
+    "transport": "SHA256 of exact transported JSON bytes; not the later stored SQL JSON bytes."
+  }
+}

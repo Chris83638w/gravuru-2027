@@ -42,7 +42,7 @@ test('a new design or size cannot use a previous restoration cache',()=>{
 test('hidden, fixed whole-artwork, empty text and photo objects are untouched',()=>{
  const objects=[motif({uxHidden:true}),motif({id:'fixed',customerEditable:false}),{...motif({id:'text'}),type:'text',text:''},{...motif({id:'photo'}),type:'photoSlot'}];assert.deepEqual(avoidMounting(objects,p).objects,objects);
 });
-test('scope is the three catalog sign families, not memorials or doorbells',()=>{
+test('unregistered memorials and doorbells stay outside the existing sign-family scope',()=>{
  assert(signPlacementEnabled({},p));assert(signPlacementEnabled({familyAcrylic:{familyId:'acryl-3mm-tuerschilder-anthrazit'}},{id:'copied'}));assert(signPlacementEnabled({}, {...p,familySelection:{familyId:'acryl-3mm-tuerschilder-schwarz'}}));
  const other={...p,id:'memorial'};assert(!signPlacementEnabled({},other));const s=state([motif()]);assert.equal(mountingPlacementState({},s,none,other),s);
  assert(signPlacementEnabled({}, {id:'katalog-tuerschilder-familie-120x80',revision:'family-steel-door-signs-r3'}));
@@ -88,4 +88,14 @@ test('Chris 03.11.2026: the whole design shrinks and insets as one block, centre
 });
 test('a design that does not touch any hole stays unchanged even with screws chosen',()=>{
  const objects=[{id:'t',type:'motif',motif:'word',x:50,y:20,w:40,h:8,rotation:0}];assert.deepEqual(avoidMounting(objects,p).objects,objects);
+});
+
+test('natural slate memorials opt in by registered source and reserve the actual spacer face',()=>{
+ const config={productExecution:{schema:'gravuru-product-execution/v1',kind:'memorial',sourceFamilyId:'schiefer-tafeln-natur',enabled:true}};
+ const plate={...p,id:'cfg_slate',material:{kind:'slate'},mountingPreview:{spacers:true,diameter:12,keepoutMm:0}};
+ assert(signPlacementEnabled(config,plate));assert(!signPlacementEnabled({...config,productExecution:{...config.productExecution,enabled:false}},plate));
+ assert(!signPlacementEnabled({...config,productExecution:{...config.productExecution,sourceFamilyId:'unregistered'}},plate));
+ const objects=[motif({x:13,w:4,h:4})];assert(touchesMounting(objects[0],plate));assert(!touchesMounting(objects[0],{...plate,mountingPreview:{spacers:false,screws:false,keepoutMm:0}}));
+ const without={...plate,geometry:{...plate.geometry,holes:[]}},s=state(objects),on=mountingPlacementState(config,s,without,plate);
+ assert(!touchesMounting(on.objects[0],plate));assert.deepEqual(mountingPlacementState(config,on,plate,without).objects,objects);assert.deepEqual(plate.geometry,p.geometry);
 });

@@ -1,0 +1,74 @@
+{
+  "records": [
+    {
+      "file": "Tuerschild-Acrylglas-3mm_v5.xlsx",
+      "artifactReimport": true,
+      "firstSheet": "BestätigteUploads",
+      "exactReferences": true,
+      "uploadValues": true,
+      "openDecisions": true,
+      "appendixErrorCells": 0,
+      "rendered": true
+    },
+    {
+      "file": "Tuerschild-Acrylglas-3mm-5x2_v3.xlsx",
+      "artifactReimport": true,
+      "firstSheet": "BestätigteUploads",
+      "exactReferences": true,
+      "uploadValues": true,
+      "openDecisions": true,
+      "appendixErrorCells": 0,
+      "rendered": true
+    },
+    {
+      "file": "Tuerschild-Acrylglas-3mm-6x2_v3.xlsx",
+      "artifactReimport": true,
+      "firstSheet": "BestätigteUploads",
+      "exactReferences": true,
+      "uploadValues": true,
+      "openDecisions": true,
+      "appendixErrorCells": 0,
+      "rendered": true
+    },
+    {
+      "file": "Tuerschild-Acrylglas-3mm-8x2_v3.xlsx",
+      "artifactReimport": true,
+      "firstSheet": "BestätigteUploads",
+      "exactReferences": true,
+      "uploadValues": true,
+      "openDecisions": true,
+      "appendixErrorCells": 0,
+      "rendered": true
+    },
+    {
+      "file": "Tuerschild-Edelstahl-5x2_v2.xlsx",
+      "artifactReimport": true,
+      "firstSheet": "BestätigteUploads",
+      "exactReferences": true,
+      "uploadValues": true,
+      "openDecisions": true,
+      "appendixErrorCells": 0,
+      "rendered": true
+    },
+    {
+      "file": "Tuerschild-Edelstahl-6x2_v2.xlsx",
+      "artifactReimport": true,
+      "firstSheet": "BestätigteUploads",
+      "exactReferences": true,
+      "uploadValues": true,
+      "openDecisions": true,
+      "appendixErrorCells": 0,
+      "rendered": true
+    },
+    {
+      "file": "Tuerschild-Edelstahl-8x2_v2.xlsx",
+      "artifactReimport": true,
+      "firstSheet": "BestätigteUploads",
+      "exactReferences": true,
+      "uploadValues": true,
+      "openDecisions": true,
+      "appendixErrorCells": 0,
+      "rendered": true
+    }
+  ]
+}

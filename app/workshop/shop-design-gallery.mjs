@@ -6,9 +6,12 @@ import {productPreview} from './product-preview.mjs';
 import {gallerySnapshotCodec} from './shop-gallery-snapshot.mjs';
 import {isAllSizesFamily,familyFormatOptions} from '../configurator/variant-m/family-formats.mjs';
 import {performance} from 'node:perf_hooks';
+import {moduleEnabled} from '../configurator/variant-m/module-profile.mjs';
+import {designSearchQuery,designSearchMetadata,matchesDesignSearch} from '../configurator/variant-m/design-search.mjs';
 
 const fail=(status,code,message)=>{throw Object.assign(Error(message),{status,code});};
 const unavailable=()=>fail(409,'shop_gallery_changed','Dieses Design ist nicht mehr verfügbar. Bitte die Designauswahl neu öffnen.');
+const requireDesignChoice=config=>{if(!moduleEnabled(config,'designs'))fail(403,'shop_gallery_disabled','Die Designauswahl ist bei diesem Produkt ausgeschaltet.');};
 const sameBinding=(a,b)=>['storeId','tenantId','shopDomain','shopifyProductId','shopifyVariantId','productId','productRevision','bindingId','assignmentRevision'].every(k=>a[k]===b[k]);
 const optionKey=o=>JSON.stringify(Object.entries(o||{}).sort());
 const identity=b=>({shopifyProductId:b.shopifyProductId,shopifyVariantId:b.shopifyVariantId});
@@ -19,6 +22,8 @@ const fields=['sid','storeId','productId','productRevision','bindingId','assignm
 // approval remains the importer's responsibility, just as for normal entry.
 export function createShopDesignGallery({secret,resolve,modelFor,cardFor=modelFor,allowedAssets,checkBinding=()=>{},checkBindings,waitMs=4000,onMeasure=()=>{},previewUrl=null}){
  const cache=new Map();
+ const searchIndexes=new WeakMap();
+ const searchMetadata=(design,config)=>{let index=searchIndexes.get(config);if(!index){index=new Map();searchIndexes.set(config,index);}if(!index.has(design.id))index.set(design.id,designSearchMetadata(design,config));return index.get(design.id);};
  const previews=new Map(),previewFiles=new Map();let previewBytes=0;
  const previewKey=(b,id)=>JSON.stringify([b.storeId,b.tenantId,b.productId,b.productRevision,b.options,id]);
  const cachedPreview=(b,id)=>previews.get(previewKey(b,id));
@@ -52,6 +57,7 @@ export function createShopDesignGallery({secret,resolve,modelFor,cardFor=modelFo
   const current=resolve(identity(input));checkScope(context,current.binding);
   if(current.store!==context.store||!fields.filter(k=>!['sid','designId','scope','sourceProductId','sourceProductRevision'].includes(k)).every(k=>current.binding[k]===input[k]))unavailable();
   const sourceModel=cardFor(context.store,context.binding),targetModel=cardFor(current.store,current.binding);
+  requireDesignChoice(sourceModel.universal);
   const source={scope:galleryScope(sourceModel,context.binding),process:galleryProcess(selectedProfile(sourceModel.universal,context.binding.options))};
   const destination={scope:galleryScope(targetModel,current.binding),process:galleryProcess(selectedProfile(targetModel.universal,current.binding.options))};
   if(input.scope!==source.scope.key||input.sourceProductId!==context.binding.productId||input.sourceProductRevision!==context.binding.productRevision)unavailable();
@@ -80,6 +86,9 @@ export function createShopDesignGallery({secret,resolve,modelFor,cardFor=modelFo
     if(current.store!==context.store||!sameBinding(candidate,current.binding))continue;
     const binding=current.binding,key=binding.productId+':'+binding.productRevision;
     if(key!==lastKey){const at=performance.now();model=cardFor(current.store,binding);lastKey=key;timings.modelMs+=performance.now()-at;timings.models++;}
+    // These product/revision-isolated galleries use the selected binding below.
+    // Warming every variant/design combination creates unreachable global cards.
+    if(model.universal.familyFormats?.fixedSize||isAllSizesFamily(model.universal))continue;
     // Availability is checked on every response, including cache hits.
     // A pause/resume or doorbell approval is not a product revision.
     const profileAt=performance.now(),profile=selectedProfile(model.universal,binding.options),scope=galleryScope(model,binding),process=galleryProcess(profile);timings.profileMs+=performance.now()-profileAt;
@@ -94,7 +103,7 @@ export function createShopDesignGallery({secret,resolve,modelFor,cardFor=modelFo
      const design=profile.designs[designIndex];
      let selected;const at=performance.now();try{selected=selection(binding,model,design.id,prepared);}catch{continue;}finally{timings.selectionMs+=performance.now()-at;}
      const {geometry,price}=selected,dedupe=JSON.stringify([binding.productId,design.id,geometry.width,geometry.height,geometry.shape]);
-     cards.push({binding,scope,process,design:{katalog:{target:design.katalog?.target}},availability:{universal:{doorbell:{schema:model.universal.doorbell?.schema}}},designId:design.id,dedupe,card:{productId:binding.productId,productRevision:binding.productRevision,designId:design.id,productName:model.name,designName:design.name||model.name,themes:design.themes||[],widthMm:geometry.width,heightMm:geometry.height,shape:geometry.shape,unitCents:price.unitCents,currency:price.currency,shopifyProductId:binding.shopifyProductId,shopifyVariantId:binding.shopifyVariantId}});
+     cards.push({binding,scope,process,search:searchMetadata(design,model.universal),design:{katalog:{target:design.katalog?.target}},availability:{universal:{doorbell:{schema:model.universal.doorbell?.schema}}},designId:design.id,dedupe,card:{productId:binding.productId,productRevision:binding.productRevision,designId:design.id,productName:model.name,designName:design.name||model.name,themes:design.themes||[],widthMm:geometry.width,heightMm:geometry.height,shape:geometry.shape,unitCents:price.unitCents,currency:price.currency,shopifyProductId:binding.shopifyProductId,shopifyVariantId:binding.shopifyVariantId}});
      timings.cards++;
     }
    }catch(error){if([404,409,422,423].includes(error.status))continue;throw error;}
@@ -150,7 +159,24 @@ export function createShopDesignGallery({secret,resolve,modelFor,cardFor=modelFo
   // Wie der Konfi selbst normalisieren (Standardfarbe/-befestigung, keine fremden Schlüssel), dann exakt vergleichen.
   let wanted;try{wanted=familyFormatOptions(own.universal,options);}catch{fail(409,'shop_gallery_variant','Diese Ausführung ist im Shop nicht verfügbar. Bitte eine andere Größe oder Befestigung wählen.');}
   if(optionKey(wanted)===optionKey(b.options))return b;
-  const found=context.store.registry.listActive().filter(x=>x.storeId===b.storeId&&x.tenantId===b.tenantId&&x.shopDomain===b.shopDomain&&x.shopifyProductId===b.shopifyProductId&&x.productId===b.productId&&x.productRevision===b.productRevision&&optionKey(x.options)===optionKey(wanted));
+  const {registry,workshop}=context.store,intake=workshop.orderIntake;let found;
+  if(typeof intake?.bindings==='function'&&typeof registry.resolve==='function'){
+   // Like the cart path: inexpensive saved selections identify candidate IDs;
+   // only the exact active head supplies authority. Do not validate every
+   // unrelated product document in the store when one size/mounting changes.
+   if(intake.tenantId!==b.tenantId)unavailable();
+   const candidates=intake.bindings().filter(x=>x.shopDomain===b.shopDomain&&x.productId===b.productId&&x.productRevision===b.productRevision&&optionKey(x.options)===optionKey(wanted));
+   found=[];
+   for(const variantId of new Set(candidates.map(x=>x.variantId))){
+    if(typeof variantId!=='string'||!/^[1-9][0-9]{0,19}$/.test(variantId))unavailable();
+    let active;try{active=registry.resolve({shopifyProductId:b.shopifyProductId,shopifyVariantId:'gid://shopify/ProductVariant/'+variantId});}catch(error){if(error.status===404&&error.code==='shop_binding_active_not_found')continue;throw error;}
+    if(!active||active.storeId!==b.storeId||active.tenantId!==b.tenantId||active.shopDomain!==b.shopDomain||active.shopifyProductId!==b.shopifyProductId||active.shopifyVariantId!=='gid://shopify/ProductVariant/'+variantId||active.productId!==b.productId||active.productRevision!==b.productRevision||optionKey(active.options)!==optionKey(wanted))unavailable();
+    found.push(active);
+   }
+  }else{
+   // Legacy adapters without the native saved-selection API keep their checks.
+   found=registry.listActive().filter(x=>x.storeId===b.storeId&&x.tenantId===b.tenantId&&x.shopDomain===b.shopDomain&&x.shopifyProductId===b.shopifyProductId&&x.productId===b.productId&&x.productRevision===b.productRevision&&optionKey(x.options)===optionKey(wanted));
+  }
   if(found.length!==1)fail(409,'shop_gallery_variant','Diese Ausführung ist im Shop nicht verfügbar. Bitte eine andere Größe oder Befestigung wählen.');
   return found[0];
  }
@@ -164,12 +190,23 @@ export function createShopDesignGallery({secret,resolve,modelFor,cardFor=modelFo
    const source={scope,process,theme:profile.themeId||null},cards=[];
    for(const design of profile.designs){
     let selected;try{selected=selection(binding,own,design.id,{profile,geometry});}catch{continue;}
-    cards.push({binding,scope,process,design,designId:design.id,dedupe:design.id,card:{productId:binding.productId,productRevision:binding.productRevision,designId:design.id,productName:own.name,designName:design.name||own.name,themes:design.themes||[],widthMm:geometry.width,heightMm:geometry.height,shape:geometry.shape,unitCents:selected.price.unitCents,currency:selected.price.currency,shopifyProductId:binding.shopifyProductId,shopifyVariantId:binding.shopifyVariantId}});
+    cards.push({binding,scope,process,search:searchMetadata(design,own.universal),design,designId:design.id,dedupe:design.id,card:{productId:binding.productId,productRevision:binding.productRevision,designId:design.id,productName:own.name,designName:design.name||own.name,themes:design.themes||[],widthMm:geometry.width,heightMm:geometry.height,shape:geometry.shape,unitCents:selected.price.unitCents,currency:selected.price.currency,shopifyProductId:binding.shopifyProductId,shopifyVariantId:binding.shopifyVariantId}});
    }
    return {cards,source};
   }
   const snapshot=await cachedCards(context),source=snapshot.sources.get(context.binding.bindingId);
-  if(!source)return {cards:[],source:null};
+  if(!source){
+   // Legacy/internal callers may omit the public route's pinned source model.
+   // Only a missing source needs this lookup; ordinary cache hits stay model-free.
+   const own=cardFor(context.store,context.binding);
+   if(own.universal.familyFormats?.fixedSize||isAllSizesFamily(own.universal)){
+    const current=resolve(identity(context.binding));checkScope(context,current.binding);
+    if(current.store!==context.store||!sameBinding(context.binding,current.binding))unavailable();
+    requireDesignChoice(own.universal);
+    return availableCards(context,own,options);
+   }
+   return {cards:[],source:null};
+  }
   const cards=(snapshot.scopes.get(source.scope.key)||[]).filter(row=>galleryTargetAllowed(source,row,row.design)),unique=[...new Map(cards.map(row=>[row.binding.bindingId,row])).values()];
   if(checkBindings){const allowed=await checkBindings(context.store,unique);return {cards:cards.filter(row=>allowed.has(row.binding.bindingId)),source};}
   const allowed=new Set();
@@ -185,9 +222,13 @@ export function createShopDesignGallery({secret,resolve,modelFor,cardFor=modelFo
   try{return await Promise.race([availableCards(context,sourceModel,options),new Promise(resolve=>{timer=setTimeout(()=>resolve(preparing),waitMs);})]);}
   finally{clearTimeout(timer);}
  }
- async function list(context,{page=0,theme='preferred',sourceModel=null,options=null}={}){
+ async function list(context,{page=0,theme='preferred',sourceModel=null,options=null,q=''}={}){
+  const query=designSearchQuery(q);
   if(!['preferred','all'].includes(theme))fail(422,'shop_gallery_theme','Dieses Thema gibt es nicht.');
   if(!Number.isSafeInteger(page)||page<0||page>10000)fail(422,'shop_gallery_page','Diese Seite der Designauswahl gibt es nicht.');
+  // Public entry supplies its revision-pinned source. Do not defeat the legacy
+  // lightweight gallery cache by rebuilding a model for every warm page.
+  if(sourceModel)requireDesignChoice(sourceModel.universal);
   if(typeof context.store.registry.listActive!=='function')return {items:[],nextPage:null,total:0};
   const result=await boundedCards(context,sourceModel,options);
   if(result===preparing)return {status:'preparing',message:'Designs werden vorbereitet – bitte gleich noch einmal versuchen.',items:[],nextPage:page,total:null};
@@ -198,8 +239,8 @@ export function createShopDesignGallery({secret,resolve,modelFor,cardFor=modelFo
    if(previous&&row.binding.shopifyVariantId!==context.binding.shopifyVariantId&&(previous.binding.shopifyVariantId===context.binding.shopifyVariantId||previous.card.unitCents<=row.card.unitCents))continue;
    choices.set(row.dedupe,row);
   }
-  const rows=[...choices.values()],start=page*40;
-  if(theme==='preferred'&&source?.theme)rows.sort((a,b)=>Number(b.card.themes.includes(source.theme))-Number(a.card.themes.includes(source.theme)));
+  const rows=[...choices.values()].filter(row=>matchesDesignSearch(row.search,query)),start=page*40;
+  rows.sort((a,b)=>a.search.rank-b.search.rank||(!query&&theme==='preferred'&&source?.theme?Number(b.card.themes.includes(source.theme))-Number(a.card.themes.includes(source.theme)):0));
   const items=rows.slice(start,start+40).map(({binding,designId,card})=>({...card,...(previewUrl&&cachedPreview(binding,designId)?{previewUrl:previewUrl(cachedPreview(binding,designId).hash)}:{}),target:issue(context,binding,designId,source.scope.key),current:binding.productId===context.binding.productId&&(binding.shopifyVariantId===context.binding.shopifyVariantId||options!==null&&binding.productRevision===context.binding.productRevision)}));
   return {items,nextPage:start+40<rows.length?page+1:null,total:rows.length,...(source?.theme?{hasTheme:true}:{})};
  }
@@ -217,8 +258,9 @@ export function createShopDesignGallery({secret,resolve,modelFor,cardFor=modelFo
   while(previews.size>1&&(previews.size>256||previewBytes>32*1024*1024)){const [key,old]=previews.entries().next().value;previews.delete(key);previewBytes-=old.body.length;if(![...previews.values()].some(p=>p.hash===old.hash))previewFiles.delete(old.hash);}
   return result;
  }
- function start(context,model,designId){
-  const scope=galleryScope(cardFor(context.store,context.binding),context.binding);
+ function start(context,model,designId,{cardModel=null}={}){
+  if(!moduleEnabled(model.universal,'designs'))return null;
+  const scope=galleryScope(cardModel||cardFor(context.store,context.binding),context.binding);
   if(!scope)return null;
   const selected=selection(context.binding,model,designId);
   const hit=cachedPreview(context.binding,selected.design.id);

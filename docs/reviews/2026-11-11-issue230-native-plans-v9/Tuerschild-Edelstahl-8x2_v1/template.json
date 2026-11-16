@@ -1,0 +1,77 @@
+{
+  "id": "pgt_abb30c39-1c05-4b4a-a666-812591d03a25",
+  "revision": 2,
+  "document": {
+    "name": "Tuerschild-Edelstahl-8x2_v1",
+    "openQuestions": [],
+    "schema": "gravuru-product-group-template/v1",
+    "scope": {
+      "lineId": "native-products",
+      "subcategoryId": "cfg_c2dc9d76-a1f5-4f89-8b1c-89fd0f94555f"
+    },
+    "targets": [
+      {
+        "familyId": "cfg_c2dc9d76-a1f5-4f89-8b1c-89fd0f94555f",
+        "key": "cfg_c2dc9d76-a1f5-4f89-8b1c-89fd0f94555f",
+        "material": {
+          "color": "#bac2c4",
+          "kind": "steel",
+          "thicknessMm": 1.5
+        },
+        "moduleProfile": {
+          "id": "cmp_049bdd37-97bd-456e-8237-9856a00809da",
+          "revision": 1
+        },
+        "optionFields": [],
+        "optionGroups": [
+          {
+            "defaultValueId": "K00",
+            "id": "mounting",
+            "name": "Befestigung",
+            "required": true,
+            "values": [
+              {
+                "currency": "EUR",
+                "id": "K00",
+                "label": "Ohne Bohrung",
+                "priceCents": 0
+              },
+              {
+                "currency": "EUR",
+                "id": "KGL",
+                "label": "Selbstklebend – glatte Flächen",
+                "priceCents": 0
+              },
+              {
+                "currency": "EUR",
+                "id": "KRA",
+                "label": "Selbstklebend – raue Flächen",
+                "priceCents": 0
+              },
+              {
+                "currency": "EUR",
+                "id": "B02",
+                "label": "Mit 2 Bohrlöchern",
+                "priceCents": 0
+              },
+              {
+                "currency": "EUR",
+                "id": "B02S",
+                "label": "Mit 2 Schrauben",
+                "priceCents": 0
+              }
+            ]
+          }
+        ],
+        "sizeKey": "cfg_c2dc9d76-a1f5-4f89-8b1c-89fd0f94555f",
+        "source": {
+          "productId": "cfg_c2dc9d76-a1f5-4f89-8b1c-89fd0f94555f",
+          "revision": 2
+        }
+      }
+    ]
+  },
+  "sha256": "bb1c8ed8834ba9b2975989515ae51dad725bb5e61d22577286db029459fb6476",
+  "actor": "Astra v9: confirmed DE gross 19%; existing designs/tier/uploads retained",
+  "createdAt": "2026-11-11T18:50:30.441Z"
+}

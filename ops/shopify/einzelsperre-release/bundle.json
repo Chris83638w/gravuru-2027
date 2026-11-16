@@ -1,0 +1,24 @@
+{
+ "preis": {
+  "handle": "gravuru-personalization-price",
+  "wasmSha256": "8b33937d43aba7c8e86b1c4c3341e3e9224f1ab43d043608f7cbdee4d8f8bf4e",
+  "wasmBytes": 22036
+ },
+ "pruefung": {
+  "handle": "gravuru-checkout-guard",
+  "wasmSha256": "93b5f15cee38d7f87a5d50dacc7b7324a302d754fbece1fb81e820f22f563a6a",
+  "wasmBytes": 23127
+ },
+ "quelle": {
+  "branch": "dev/claude-preisfunktion-einzelsperre-20261115",
+  "aktiveBasis": "1c3c61f + 4 Textersetzungen wie 08.11 + pricing-history 2abfd92",
+  "cli": "4.9.0",
+  "shopify_function": "2.0.1"
+ },
+ "aktiv": {
+  "handle": "gravuru-personalization-price",
+  "wasmSha256": "3c82b825873c7d8f2b31b82d49fafc9b85ff670744c0d00011f141d792eb1cd6",
+  "wasmBytes": 20945,
+  "hinweis": "Nachbau der aktiven Quelle (1c3c61f+Patches, pricing-history 2abfd92) mit CLI 4.9.0; logisch identisch, nicht bytegleich zur aktiven a5c59354"
+ }
+}

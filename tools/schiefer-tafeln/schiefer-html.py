@@ -1,0 +1,202 @@
+import html,re
+import os
+S=os.environ.get('SCHIEFER_WORK',os.path.abspath('schiefer-arbeit'))
+SRC=os.environ.get('SCHIEFER_SRC',os.path.join(os.path.dirname(__file__),'../../docs/handoffs/design-start-mika/schiefer'))
+KM=os.environ.get('GRAVURU_KATALOG',os.path.abspath('../gravuru-katalog'))
+src=open(os.path.join(os.path.dirname(os.path.abspath(__file__)),'schiefer-haar.py')).read();exec(src[:src.index('# Zeichnung in mm')])
+NS='vector-effect="non-scaling-stroke"'
+def body(r):
+  w,h=float(r[4]),float(r[5]);g=geo.get((r[0][:12],r[1],r[3].replace(' ','')));it=match(r);st=f'stroke="var(--cut)" stroke-width="1.2" fill="none" {NS}'
+  if g and g.get('outlinePath') and r[1] in('Herz','Herz schief'):
+    b=f'<path d="{g["outlinePath"]}" {st}/>'+''.join(f'<circle cx="{hl["x"]}" cy="{hl["y"]}" r="{hl.get("diameterMm",5)/2}" {st}/>' for v in g['variants'] for hl in v['holes'])
+  elif it:
+    b=f'<g transform="scale({1/U}) translate({-it["x"]},{-it["y"]})">'+''.join(f'<path d="{d}" {st}/>' for d in it['paths'])+'</g>'
+    if not it['holes'] and (r[12] or '').startswith('Kordel'):
+      dm=float(re.search(r'Ø([\d.]+)',r[12]).group(1));b+=''.join(f'<circle cx="{x}" cy="{y}" r="{dm/2}" {st}/>' for x,y in holes(r[12]))
+  else: b=f'<rect width="{w}" height="{h}" {st}/>'
+  return w,h,b
+MAXW=600
+import os,json as JJ
+BD=S+'/art/boegen'
+SETS={'herz-geschnitten-24x19':['geschnittene-herz-24-x-19'],'herz-kordel-225x267':['kordelschilder-herz-22-5-x-26-7'],'herz-mit-foto':['naturschiefer-herz-10-x-10','naturschiefer-herz-20-x-20','naturschiefer-herz-25-x-25'],'herz-schief-mit-foto':['geschnittene-herz-schief-18-x-13','geschnittene-herz-schief-26-x-19']}
+BOEGEN={}
+for d in sorted(os.listdir(BD)):
+  base=next(k for k in SETS if d.startswith(k));files=sorted('boegen/'+d+'/'+f for f in os.listdir(BD+'/'+d))
+  NAMES={'herz-geschnitten-24x19':'Herz geschnitten 24×19','herz-kordel-225x267':'Kordelherz 22,5×26,7','herz-mit-foto':'Herz 10×10 / 20×20 / 25×25','herz-schief-mit-foto':'Herz schief 18×13 / 26×19'}
+  label='Menschen · '+NAMES[base]+' · Teil '+d[-1]
+  _x=('Menschen · '+d.replace('-mit-foto','').replace('-0',' · Teil ').replace('herz-','Herz ').replace('geschnitten-','geschnitten ').replace('kordel-','Kordel ').replace('schief','schief'))
+  for k in SETS[base]: BOEGEN.setdefault(k,[]).append({'label':label,'files':files})
+cards=[];n=0;SEED={}
+ALLSETS=[]
+[ALLSETS.append(x) for v in BOEGEN.values() for x in v if x not in ALLSETS]
+secs=''
+for cat in ORDER:
+  v=groups[cat];secs+=f'<section><h2>{html.escape(cat)} <span>{len(v)} Tafeln</span></h2>'
+  for f in FORM:
+    vv=[r for r in v if r[1]==f]
+    if not vv: continue
+    secs+=f'<h3>{f}</h3><div class="grid">'
+    for r in vv:
+      n+=1;w,h,b=body(r);pad=6
+      p=prices.get((r[0][:12],r[1],r[3].replace(' ','')))
+      price=(f"{p['preis']/100:.2f} €".replace('.',',') if p and p['preis'] else '–')+(f" · mit Foto {p['preisMitFoto']/100:.2f} €".replace('.',',') if p and p.get('preisMitFoto') else '')
+      tid=f"tafel-{n}";key=re.sub(r'[^a-z0-9]+','-',(cat.split(' ')[0]+'-'+r[1]+'-'+r[3]).lower().replace('ä','ae').replace('ö','oe').replace('ü','ue').replace('ß','ss').replace('×','x')).strip('-')
+      if r[0].startswith('Naturschiefer – Türschild klein'): key=key.replace('geschnittene-','naturschiefer-')  # Schlüssel stabil (DB), Chris 03.11.: als geschnitten geführt
+      avail={'b2':r[7]=='ja','b2s':r[7]=='ja','b4':r[8]=='ja','b4s':r[8]=='ja','ah2':r[9]=='ja','ah4':r[10]=='ja','kordel':r[11]=='ja'}
+      SEED[key]={'name':r[1]+' '+r[3]+' cm','kategorie':cat,'preisCents':(p or {}).get('preis'),'preisMitFotoCents':(p or {}).get('preisMitFoto'),'optionen':avail,'aufpreise':{},'notiz':''}
+      wpx=w/MAXW*100
+      secs+=(f'<figure class="card" id="{tid}" data-comment-target="Schiefer {html.escape(r[1])} {html.escape(r[3])} cm ({html.escape(cat.split(" (")[0])})">'
+        f'<div class="plate"><svg viewBox="{-pad} {-pad} {w+2*pad} {h+2*pad}" style="width:{max(wpx,6):.1f}%" role="img" aria-label="{html.escape(r[1])} {html.escape(r[3])} cm">{b}</svg></div>'
+        f'<figcaption><b>{html.escape(r[1])} {html.escape(r[3])} cm</b><span class="mm">{fmt(w)} × {fmt(h)} mm</span><span class="price">{price}</span>'
+        +''.join(f'<span class="note">{html.escape(l)}</span>' for l in notes(r))+
+        f'<span class="ol"></span>'+(f'<button type="button" class="bg" data-boegen="{key}">Kontaktbögen ({sum(len(x["files"]) for x in BOEGEN.get(key,[]))})</button>' if key in BOEGEN else '')+f'<details class="ed" open data-key="{key}"><summary>Preis dieser Tafel</summary><div class="edb" data-pending>Wird geladen …</div></details>'
+        f'<button type="button" class="c" data-target="{tid}">Kommentar</button></figcaption></figure>')
+    secs+='</div>'
+  secs+='</section>'
+BLIST=''.join(f'<button type="button" data-set="{i}"><img src="{v["files"][0]}" alt="" loading="lazy"><span>{html.escape(v["label"])} · {len(v["files"])} Bögen</span></button>' for i,v in enumerate(ALLSETS))
+page=f'''<title>Schiefer-Tafeln</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Layout: Kategorien als Abschnitte, darin je Form ein Raster; jede Tafel maßstabsgleich zur größten Breite (600 mm), blaue Haarlinie wie in Corel. */
+:root{{--bg:#f6f7f9;--card:#ffffff;--fg:#1c2430;--muted:#5d6876;--line:#d9dee5;--cut:#0000ff;--accent:#1f4fd1;
+ --display:"Archivo",Arial,sans-serif;--body:"IBM Plex Sans",Arial,sans-serif}}
+@media (prefers-color-scheme: dark){{:root:not([data-theme="light"]){{--bg:#12161c;--card:#1a2029;--fg:#e8ecf1;--muted:#9aa5b3;--line:#2c3541;--cut:#6f8bff;--accent:#8fa8ff;color-scheme:dark}}}}
+:root[data-theme="dark"]{{--bg:#12161c;--card:#1a2029;--fg:#e8ecf1;--muted:#9aa5b3;--line:#2c3541;--cut:#6f8bff;--accent:#8fa8ff;color-scheme:dark}}
+body{{background:var(--bg);color:var(--fg);font:14px/1.45 var(--body);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 48px}}
+header{{max-width:1400px;margin:0 auto 8px}}h1{{font:700 26px/1.2 var(--display);margin:0 0 6px;text-wrap:balance}}
+header p{{margin:0;color:var(--muted);max-width:75ch}}
+section{{max-width:1400px;margin:28px auto 0}}h2{{font:700 19px/1.25 var(--display);margin:0 0 4px;padding-bottom:6px;border-bottom:2px solid var(--fg)}}h2 span{{font:400 13px var(--body);color:var(--muted);margin-left:8px}}
+h3{{font:600 12px var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:16px 0 8px}}
+.grid{{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,calc(230px * var(--z,1))),1fr));gap:12px}}
+.bar{{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;max-width:1400px;margin:10px auto 0;display:flex;flex-wrap:wrap;align-items:center;gap:8px;background:var(--bg);padding-block:8px;border-bottom:1px solid var(--line)}}
+.bar button{{font:600 13px var(--body);min-width:36px;padding:5px 10px;border:1px solid var(--line);border-radius:4px;background:var(--card);color:var(--fg);cursor:pointer}}
+.bar input{{width:min(240px,40vw)}}.bar output{{font-variant-numeric:tabular-nums;min-width:4ch}}
+.plate{{cursor:zoom-in}}
+dialog{{width:min(96vw,1400px);height:min(92vh,1000px);border:1px solid var(--line);border-radius:8px;padding:0;background:var(--card);color:var(--fg)}}dialog::backdrop{{background:rgba(0,0,0,.45)}}
+.dz{{display:flex;flex-direction:column;height:100%}}.dz .bar{{position:static;margin:0;padding:8px 12px;max-width:none}}.view{{flex:1;overflow:auto;padding:16px}}.view svg{{display:block;margin:auto}}
+@media (prefers-reduced-motion:no-preference){{.grid{{transition:none}}}}
+.card{{margin:0;background:var(--card);border:1px solid var(--line);border-radius:6px;padding:10px;display:flex;flex-direction:column;gap:8px;min-width:0}}
+.plate{{min-height:120px;display:flex;align-items:flex-end;justify-content:center;border-bottom:1px dashed var(--line);padding-bottom:6px}}
+.plate svg{{height:auto;max-width:100%;overflow:visible}}
+figcaption{{display:flex;flex-direction:column;gap:2px;font-variant-numeric:tabular-nums}}
+figcaption b{{font-size:14px}}.mm,.price{{color:var(--muted);font-size:12.5px}}.note{{font-size:12.5px}}.pics{{display:flex;flex-wrap:wrap;gap:4px}}.pics img{{width:56px;height:56px;object-fit:cover;border:1px solid var(--line);border-radius:3px;cursor:zoom-in;background:var(--bg)}}.bg{{align-self:flex-start;font:600 12px var(--body);color:var(--accent);background:none;border:1px solid var(--line);border-radius:4px;padding:4px 10px;cursor:pointer}}.up{{font-size:12px}}.boegen-list{{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,200px),1fr));gap:10px}}.boegen-list button{{display:flex;flex-direction:column;gap:4px;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:6px;padding:6px;cursor:pointer;color:var(--fg);font:13px var(--body)}}.boegen-list img{{width:100%;aspect-ratio:1;object-fit:cover;border-radius:4px}}.gal img{{display:block;max-width:none;margin:0 auto 12px}}.ol{{font-size:12px;color:var(--muted);margin-top:4px}}
+.c{{align-self:flex-start;margin-top:6px;font:600 12px var(--body);color:var(--accent);background:none;border:1px solid var(--line);border-radius:4px;padding:4px 10px;cursor:pointer}}
+.hint{{color:var(--muted);margin:6px 0 10px;max-width:80ch}}
+.opts{{display:grid;gap:22px}}
+.og h3{{display:flex;align-items:baseline;gap:8px;margin:0 0 6px}}.og h3 small{{font:400 12px var(--body);letter-spacing:0;text-transform:none;color:var(--muted)}}
+.otab{{background:var(--card);border:1px solid var(--line);border-radius:8px;overflow:hidden}}
+.ohead,.orow{{display:grid;grid-template-columns:minmax(0,320px) minmax(0,1fr) 110px 170px;gap:14px;align-items:center;padding:10px 14px}}
+.ohead{{font:600 11px var(--body);letter-spacing:.07em;text-transform:uppercase;color:var(--muted);background:var(--bg);border-bottom:1px solid var(--line);padding-block:7px}}.ohead .r{{text-align:right}}
+.orow+.orow{{border-top:1px solid var(--line)}}.orow:hover{{background:color-mix(in srgb,var(--accent) 4%,var(--card))}}
+.oimg{{display:flex;flex-wrap:wrap;gap:6px;align-items:center;min-width:0}}
+.oimg .ti{{position:relative}}.oimg img{{width:52px;height:52px;object-fit:contain;border:1px solid var(--line);border-radius:6px;cursor:zoom-in;background:#eceef1;display:block}}
+.oimg .ti:only-child img,.oimg .ti:first-child:nth-last-child(2) img{{width:68px;height:68px}}
+.oimg .ti button{{position:absolute;top:-6px;right:-6px;z-index:1;width:18px;height:18px;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--muted);font:600 10px/1 var(--body);cursor:pointer;opacity:0;padding:0}}
+.oimg .ti:hover button,.oimg .ti button:focus-visible{{opacity:1}}
+.oimg .ti{{display:flex;flex-direction:column;align-items:center;gap:2px}}.oimg figcaption{{font-size:10.5px;color:var(--muted);line-height:1.1;max-width:68px;text-align:center}}.oimg .none{{font-size:12px;color:var(--muted);font-style:italic}}
+.otxt{{display:grid;gap:2px;min-width:0}}
+.otxt input{{font:600 14.5px var(--body);color:var(--fg);border:1px solid transparent;border-radius:4px;background:none;padding:3px 6px;margin-left:-6px;min-width:0;width:100%}}
+.otxt textarea.hin{{font:400 12.5px/1.4 var(--body);color:var(--muted);border:1px solid transparent;border-radius:4px;background:none;padding:3px 6px;margin-left:-6px;resize:none;field-sizing:content;min-height:1.6em;width:100%}}.otxt textarea:hover{{border-color:var(--line)}}.otxt textarea:focus{{border-color:var(--accent);background:var(--bg);outline:none;color:var(--fg)}}
+.otxt input:hover,.opr input:hover{{border-color:var(--line)}}.otxt input:focus,.opr input:focus{{border-color:var(--accent);background:var(--bg);outline:none}}
+.opr{{display:flex;align-items:center;justify-content:flex-end;gap:4px;font:600 16px var(--display);font-variant-numeric:tabular-nums}}
+.opr input{{font:inherit;width:78px;text-align:right;border:1px solid transparent;border-radius:4px;background:none;color:var(--fg);padding:3px 6px}}
+.oact{{display:flex;flex-wrap:wrap;gap:6px;justify-content:flex-end;align-items:center}}
+.oact select,.oact .up,.oact button{{font:600 12px var(--body);border:1px solid var(--line);border-radius:4px;background:var(--card);color:var(--fg);padding:4px 8px;cursor:pointer}}
+.oact .up input{{position:absolute;width:1px;height:1px;opacity:0}}.oact .up{{position:relative}}.oact .up:focus-within{{outline:2px solid var(--accent)}}
+.oact button.del{{color:var(--muted)}}
+.addf input,.addf select{{font:13px var(--body);padding:6px 8px;border:1px solid var(--line);border-radius:4px;background:var(--card);color:var(--fg);min-width:0}}
+.addf button{{font:600 13px var(--body);border:1px solid var(--accent);border-radius:4px;background:var(--accent);color:#fff;padding:6px 12px;cursor:pointer}}
+.addf{{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;align-items:center}}.addf b{{font:600 13px var(--body);margin-right:4px}}.st{{color:var(--muted);font-size:12.5px;min-height:1.4em}}
+.ed summary{{cursor:pointer;font:600 12.5px var(--body);color:var(--accent)}}.edb{{display:grid;gap:5px;margin-top:6px;font-size:12.5px}}.edb label{{display:flex;align-items:center;gap:6px}}.edb .pr{{display:grid;grid-template-columns:1fr 90px;gap:6px;align-items:center}}.edb input{{font:13px var(--body);padding:5px 7px;border:1px solid var(--line);border-radius:4px;background:var(--bg);color:var(--fg);min-width:0}}
+@media (max-width:760px){{.ohead{{display:none}}.orow{{grid-template-columns:minmax(0,1fr) 110px;grid-template-areas:"i i" "t p" "a a"}}.orow .oimg{{grid-area:i}}.orow .otxt{{grid-area:t}}.orow .opr{{grid-area:p}}.orow .oact{{grid-area:a;justify-content:flex-start}}}}
+.c:focus-visible{{outline:2px solid var(--accent);outline-offset:2px}}.c[hidden]{{display:none}}
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700&family=IBM+Plex+Sans:wght@400;600&display=swap">
+<header><h1>Schiefer-Tafeln</h1><p>Alle {n} Tafeln aus der finalen Zeichnung „Gedenktafeln_Schiefer.cdr“ (29.10.) und der Excel (Lochbilder Spalte M, Preise 02.11.). Konturen und Löcher als blaue Haarlinie, alle Tafeln im selben Maßstab. Lochabstand = Mitte zu Mitte. Zum Kommentieren „Kommentar“ an der Tafel drücken oder im Kommentarmodus auf die Tafel klicken.</p></header>
+<div class="bar" role="toolbar" aria-label="Zoom"><span>Zoom</span><button type="button" id="zm" aria-label="kleiner">−</button><input id="zr" type="range" min="0.5" max="4" step="0.25" value="1" aria-label="Zoom"><button type="button" id="zp" aria-label="größer">+</button><output id="zo">100 %</output><button type="button" id="z1">100 %</button><span style="color:var(--muted)">Tafel anklicken = Großansicht mit eigenem Zoom</span></div>
+<section id="glob"><h2>Aufpreise, Befestigung &amp; Zubehör <span>gelten für alle Schiefer-Tafeln · mit Bildern</span></h2><p class="hint">Preise und Bilder gelten für alle Tafeln. Name, Hinweis und Preis direkt anklicken und ändern – wird automatisch gespeichert. Bild anklicken = groß ansehen. Welche Befestigung eine Tafel hat, kommt aus der Zeichnung (Lochbild).</p><div id="opts" class="opts">Wird geladen …</div><form id="addf" class="addf"><b>Neu:</b><input id="an" placeholder="Neues Zubehör, z. B. Geschenkverpackung" aria-label="Name"><input id="ap" inputmode="decimal" placeholder="Preis €" aria-label="Preis"><select id="aa" aria-label="Art"><option value="zubehoer">Zubehör</option><option value="befestigung">Befestigung</option><option value="aufpreis">Aufpreis</option></select><button>Hinzufügen</button></form><p id="st" class="st" role="status"></p></section>
+<section id="boegen"><h2>Kontaktbögen <span>Designs je Tafel zum Prüfen</span></h2><p class="hint">Vorhandene Bögen aus dem Katalog (Menschen, Schiefer mit Foto). Weitere Bögen kannst du an jeder Tafel unter „Preis dieser Tafel“ hochladen.</p><div class="boegen-list">{BLIST}</div></section>
+{secs}
+<dialog id="dlg"><div class="dz"><div class="bar"><b id="dt"></b><button type="button" id="dm" aria-label="kleiner">−</button><output id="do">100 %</output><button type="button" id="dp" aria-label="größer">+</button><button type="button" id="df">Einpassen</button><button type="button" id="dc">Schließen</button></div><div class="view" id="dv"></div></div></dialog>
+<script>
+(()=>{{const r=document.documentElement,zr=document.getElementById('zr'),zo=document.getElementById('zo');
+ const set=v=>{{v=Math.min(4,Math.max(.5,v));zr.value=v;r.style.setProperty('--z',v);zo.textContent=Math.round(v*100)+' %';try{{localStorage.setItem('zoom',v)}}catch(e){{}}}};
+ try{{const v=parseFloat(localStorage.getItem('zoom'));if(v)set(v)}}catch(e){{}}
+ zr.oninput=()=>set(+zr.value);document.getElementById('zm').onclick=()=>set(+zr.value-.25);document.getElementById('zp').onclick=()=>set(+zr.value+.25);document.getElementById('z1').onclick=()=>set(1);
+ const dlg=document.getElementById('dlg'),dv=document.getElementById('dv'),dout=document.getElementById('do');let svg,base=1,k=1;
+ let mode='svg';
+ const applyImg=()=>{{dv.querySelectorAll('img').forEach(i=>i.style.width=Math.max(80,(dv.clientWidth-40)*k)+'px');dout.textContent=Math.round(k*100)+' %';}};
+ window.openGal=(title,urls)=>{{mode='img';dv.classList.add('gal');dv.replaceChildren(...urls.map(u=>{{const i=new Image();i.src=u;i.alt=title;i.loading='lazy';return i;}}));document.getElementById('dt').textContent=title;dlg.showModal();k=1;applyImg();}};
+ const apply=()=>{{if(mode==='img')return applyImg();if(!svg)return;const vb=svg.viewBox.baseVal;svg.style.width=(vb.width*base*k)+'px';svg.style.height=(vb.height*base*k)+'px';dout.textContent=Math.round(k*100)+' %';}};
+ const fit=()=>{{if(mode==='img'){{k=1;return applyImg();}}const vb=svg.viewBox.baseVal;base=Math.min((dv.clientWidth-32)/vb.width,(dv.clientHeight-32)/vb.height);k=1;apply();}};
+ document.querySelectorAll('.plate').forEach(pl=>pl.addEventListener('click',()=>{{mode='svg';dv.classList.remove('gal');svg=pl.querySelector('svg').cloneNode(true);svg.removeAttribute('style');svg.style.maxWidth='none';dv.replaceChildren(svg);document.getElementById('dt').textContent=pl.parentElement.querySelector('b').textContent;dlg.showModal();fit();}}));
+ document.getElementById('dp').onclick=()=>{{k=Math.min(k*1.5,20);apply()}};document.getElementById('dm').onclick=()=>{{k=Math.max(k/1.5,.25);apply()}};document.getElementById('df').onclick=fit;document.getElementById('dc').onclick=()=>dlg.close();
+ document.querySelectorAll('[data-set]').forEach(b=>b.onclick=()=>{{const v=ALLSETS[+b.dataset.set];window.openGal(v.label,v.files);}});
+ dv.addEventListener('wheel',e=>{{if(!e.ctrlKey&&!e.metaKey)return;e.preventDefault();k=Math.min(20,Math.max(.25,k*(e.deltaY<0?1.15:1/1.15)));apply();}},{{passive:false}});
+}})();
+</script>
+<script>const BOEGEN={JJ.dumps(BOEGEN,ensure_ascii=False)},ALLSETS={JJ.dumps(ALLSETS,ensure_ascii=False)};</script>
+<script>
+(async()=>{{
+ const eur=c=>c==null?'':(c/100).toFixed(2).replace('.',',');const cents=v=>{{v=String(v).trim().replace(/\s|€/g,'').replace(',','.');if(v==='')return null;const n=Math.round(parseFloat(v)*100);return Number.isFinite(n)&&n>=0?n:undefined}};
+ const st=document.getElementById('st');const say=t=>{{st.textContent=t}};
+ const db=await window.claude?.use?.('db').catch(()=>null);
+ if(!db){{document.getElementById('opts').textContent='Bearbeiten ist in dieser Ansicht nicht verfügbar (nur angemeldet in claude.ai).';document.querySelectorAll('.edb').forEach(e=>e.textContent='Nur angemeldet bearbeitbar.');return;}}
+ let OPTS=[],TAF={{}};const queue=new Map();
+ const assets=await window.claude.use('assets').catch(()=>null);const blob=id=>'/_blob/'+id;
+ const thumbs=(ids,title,onRemove,names)=>{{const w=document.createElement('div');w.className='oimg';if(!(ids||[]).length){{const n=document.createElement('span');n.className='none';n.textContent='noch kein Bild';w.append(n);}}(ids||[]).forEach((id,ix)=>{{const t=document.createElement('span');t.className='ti';const im=new Image();im.src=blob(id);im.alt=title;im.loading='lazy';im.onerror=()=>{{im.alt='Bild fehlt';}};im.onclick=()=>window.openGal(title,(ids||[]).map(blob));t.append(im);if(names&&names[ix]){{const fc=document.createElement('figcaption');fc.textContent=names[ix];t.append(fc);im.alt=title+' – '+names[ix];}}
+   if(onRemove){{const x=document.createElement('button');x.type='button';x.textContent='✕';x.title='Bild entfernen';x.setAttribute('aria-label','Bild entfernen');let armed=false;x.onclick=()=>{{if(!armed){{armed=true;x.textContent='?';x.style.opacity=1;say('Zum Entfernen des Bildes noch einmal drücken.');setTimeout(()=>{{armed=false;x.textContent='✕';x.style.opacity=''}},4000);return;}}onRemove(ix);}};t.append(x);}}w.append(t);}});return w;}};
+ const uploader=(label,onIds)=>{{const l=document.createElement('label');l.className='up';if(!assets){{l.textContent='Bilder hochladen nur für Bearbeiter.';return l;}}l.innerHTML='<span>'+label+'</span> ';const f=document.createElement('input');f.type='file';f.accept='image/*,application/pdf';f.multiple=true;l.append(f);
+   f.onchange=async()=>{{const ids=[];for(const file of f.files){{try{{say('Lade „'+file.name+'“ hoch …');const r=await assets.upload(file);ids.push(r.id);}}catch(e){{say('Nicht hochgeladen: '+(e.code||'Fehler')+(e.code==='too_large'?' (max. 20 MB)':''));}}}}f.value='';if(ids.length)onIds(ids);}};return l;}};
+ const save=(path,data)=>{{const prev=queue.get(path)||Promise.resolve();const next=prev.then(()=>db.doc(path).set(data)).then(()=>say('Gespeichert.')).catch(e=>say('Nicht gespeichert: '+(e.code||'Fehler')+'. Bitte erneut ändern.'));queue.set(path,next);return next;}};
+ const timers={{}};const later=(path,fn)=>{{clearTimeout(timers[path]);timers[path]=setTimeout(()=>save(path,fn()),500)}};
+ const GRP=[['befestigung','Befestigung','am Schiefer montiert'],['zubehoer','Zubehör','liegt bei bzw. extra'],['aufpreis','Aufpreise','Gestaltung']];
+ const renderOpts=()=>{{const box=document.getElementById('opts');if(!OPTS.length){{box.textContent='Noch keine Optionen hinterlegt.';return;}}if(box.contains(document.activeElement)&&/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName))return;
+  const row=o=>{{const r=document.createElement('div');r.className='orow';
+   const im=thumbs(o.bilder,o.name||'Option',ix=>{{const b2=[...(o.bilder||[])];b2.splice(ix,1);const n2=[...(o.bildTexte||[])];n2.splice(ix,1);save('optionen/'+o.id,{{...o,bilder:b2,bildTexte:n2}});}},o.bildTexte);
+   const tx=document.createElement('div');tx.className='otxt';tx.innerHTML='<input class="n" aria-label="Name"><textarea class="hin" rows="1" placeholder="Hinweis hinzufügen" aria-label="Hinweis"></textarea>';
+   const pr=document.createElement('div');pr.className='opr';pr.innerHTML='<input class="p" inputmode="decimal" aria-label="Preis in Euro"><span>€</span>';
+   const ac=document.createElement('div');ac.className='oact';ac.innerHTML='<select class="art" aria-label="Bereich"><option value="befestigung">Befestigung</option><option value="zubehoer">Zubehör</option><option value="aufpreis">Aufpreis</option></select>';
+   ac.append(uploader('+ Bild',ids=>save('optionen/'+o.id,{{...o,bilder:[...(o.bilder||[]),...ids]}})));
+   const b=document.createElement('button');b.type='button';b.className='del';b.textContent='Entfernen';ac.append(b);
+   r.append(im,tx,pr,ac);
+   const n=tx.querySelector('.n'),h=tx.querySelector('.hin'),p=pr.querySelector('.p'),a=ac.querySelector('.art');n.value=o.name||'';h.value=o.hinweis||'';p.value=eur(o.preisCents);a.value=o.art||'zubehoer';
+   const up=()=>{{const c=cents(p.value);if(c===undefined){{say('Preis bitte als Zahl, z. B. 2,99');return;}}later('optionen/'+o.id,()=>({{...o,name:n.value.trim(),preisCents:c,art:a.value,hinweis:h.value.trim()}}))}};
+   n.oninput=up;p.oninput=up;h.oninput=up;a.onchange=up;
+   let armed=false;b.onclick=()=>{{if(!armed){{armed=true;b.textContent='Wirklich?';say('Zum Entfernen von „'+(o.name||'')+'“ noch einmal drücken.');setTimeout(()=>{{armed=false;b.textContent='Entfernen'}},4000);return;}}db.doc('optionen/'+o.id).delete().then(()=>say('Entfernt.')).catch(e=>say('Nicht entfernt: '+(e.code||'Fehler')))}};
+   return r;}};
+  const known=GRP.map(g=>g[0]);
+  const groups=GRP.map(([k,t,sub])=>[t,sub,OPTS.filter(o=>(o.art||'zubehoer')===k)]).concat([['Sonstiges','',OPTS.filter(o=>!known.includes(o.art||'zubehoer'))]]).filter(g=>g[2].length);
+  box.replaceChildren(...groups.map(([t,sub,list])=>{{const g=document.createElement('div');g.className='og';
+   g.innerHTML='<h3>'+t+' <small>'+list.length+(list.length===1?' Eintrag':' Einträge')+(sub?' · '+sub:'')+'</small></h3>';
+   const tab=document.createElement('div');tab.className='otab';tab.innerHTML='<div class="ohead"><span>Bilder</span><span>Bezeichnung · Hinweis</span><span class="r">Preis</span><span class="r">Bearbeiten</span></div>';
+   list.forEach(o=>tab.append(row(o)));g.append(tab);return g;}}));renderTaf();}};
+ const renderTaf=()=>{{document.querySelectorAll('.ed').forEach(d=>{{const key=d.dataset.key,t=TAF[key],box=d.querySelector('.edb');
+  let bb=d.parentElement.querySelector('.bg');const upB=(t&&t.boegen)||[];const stat=(BOEGEN[key]||[]).flatMap(x=>x.files);
+  if((stat.length||upB.length)&&!bb){{bb=document.createElement('button');bb.type='button';bb.className='bg';d.before(bb);}}
+  if(bb){{bb.textContent='Kontaktbögen ('+(stat.length+upB.length)+')';bb.onclick=()=>window.openGal((t&&t.name)||'Kontaktbögen',[...stat,...upB.map(blob)]);}}
+  const ol=d.parentElement.querySelector('.ol');if(ol)ol.textContent=t?OPTS.filter(o=>(t.optionen||{{}})[o.id]).map(o=>o.name+' '+eur(o.preisCents)+' €').join(' · '):'';if(!t){{box.textContent='Für diese Tafel ist noch nichts hinterlegt.';return;}}
+  if(box.contains(document.activeElement))return;
+  box.removeAttribute('data-pending');box.innerHTML='<div class="pr"><span>Grundpreis €</span><input class="g" inputmode="decimal" aria-label="Grundpreis"></div><div class="pr"><span>mit Foto €</span><input class="f" inputmode="decimal" aria-label="Preis mit Foto" placeholder="kein Foto"></div>'+
+
+   '<div class="pr"><span>Notiz</span><input class="nz" aria-label="Notiz"></div>';
+  const g=box.querySelector('.g'),f=box.querySelector('.f'),nz=box.querySelector('.nz');g.value=eur(t.preisCents);f.value=eur(t.preisMitFotoCents);nz.value=t.notiz||'';
+  
+  const up=()=>{{const gc=cents(g.value),fc=cents(f.value);if(gc===undefined||fc===undefined){{say('Preis bitte als Zahl, z. B. 24,99');return;}}
+   const nt={{...t,preisCents:gc,preisMitFotoCents:fc,notiz:nz.value.trim()}};TAF[key]=nt;later('tafeln/'+key,()=>nt);}};
+  box.querySelectorAll('input').forEach(i=>{{i.oninput=up;i.onchange=up;}});
+  box.append(uploader('Kontaktbogen hochladen',ids=>{{const nt={{...TAF[key],boegen:[...(TAF[key].boegen||[]),...ids]}};TAF[key]=nt;save('tafeln/'+key,nt).then(renderTaf);}}));
+  }});}};
+ let gotO=false,gotT=false;const tm=setTimeout(()=>{{if(!gotO||!gotT)say('Die Daten laden gerade nicht. Seite später neu öffnen.')}},10000);
+ db.collection('optionen').onSnapshot(sn=>{{gotO=true;OPTS=sn.docs.map(d=>({{id:d.id,...d.data()}})).sort((a,b)=>(a.reihenfolge??99)-(b.reihenfolge??99));renderOpts();if(gotT)clearTimeout(tm)}},e=>say('Optionen nicht ladbar: '+(e.code||'Fehler')));
+ db.collection('tafeln').onSnapshot(sn=>{{gotT=true;TAF={{}};sn.docs.forEach(d=>TAF[d.id]=d.data());renderTaf();if(gotO)clearTimeout(tm)}},e=>say('Tafeln nicht ladbar: '+(e.code||'Fehler')));
+ document.getElementById('addf').addEventListener('submit',ev=>{{ev.preventDefault();const n=document.getElementById('an').value.trim(),c=cents(document.getElementById('ap').value);if(!n||c==null||c===undefined){{say('Bitte Name und Preis eingeben.');return;}}
+  const id=n.toLowerCase().replace(/ä/g,'ae').replace(/ö/g,'oe').replace(/ü/g,'ue').replace(/ß/g,'ss').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,60)||('o'+Date.now());
+  save('optionen/'+id,{{name:n,preisCents:c,art:document.getElementById('aa').value,hinweis:'',reihenfolge:50+OPTS.length}}).then(()=>{{document.getElementById('an').value='';document.getElementById('ap').value='';}});}});
+}})();
+</script>
+<script>
+(async()=>{{const btns=[...document.querySelectorAll('.c')];btns.forEach(b=>b.hidden=true);
+ const c=await window.claude?.use?.('comments').catch(()=>null);if(!c)return;btns.forEach(b=>{{b.hidden=false;b.onclick=()=>{{try{{c.openComposer({{element:document.getElementById(b.dataset.target)}});}}catch(e){{}}}};}});}})();
+</script>'''
+open(S+'/art/schiefer-tafeln.html','w').write(page);import json as J;J.dump(SEED,open(S+'/art/seed-tafeln.json','w'),ensure_ascii=False);print(n,len(page)//1024,'KB',len(SEED))

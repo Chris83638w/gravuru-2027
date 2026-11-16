@@ -1,0 +1,59 @@
+{
+  "schema": "gravuru-main-target-category-compare-package/v1",
+  "readOnly": true,
+  "applicationRuntimeChanged": false,
+  "baseCommit": "630adcc0ee6dcdbb04e4345452d07604b83f59cb",
+  "destination": "ops/issue230-main-target-compare-20261111",
+  "actualDatabaseOpened": false,
+  "tests": {
+    "passed": 14,
+    "failed": 0,
+    "skipped": 0,
+    "environment": "Windows Node24, synthetic copies and actual native resolver oracle only"
+  },
+  "targetProductGroupSha256": "ae09cbf6b58719b61729c7fab7a5685b464aae1e8d08691a706111e97b58e407",
+  "targetIdBindingSha256": "f0bb7d95e89e3aae66ab04454d6476132fe197aaae7c1da48ce8209ced62d285",
+  "intentSerializedSha256": "fcfddddeae4a188ef980a67912e247d85bb42b46c1d4836de669207b01b2282b",
+  "files": [
+    {
+      "name": "compare-main-target-copy.mjs",
+      "bytes": 26088,
+      "sha256": "5c4394a4ad258dc30eca249fde5a3cc9d60e2755d8d00b62d76b61be29580394"
+    },
+    {
+      "name": "resolve-main-category-profiles-readonly.mjs",
+      "bytes": 8062,
+      "sha256": "e86c1ddf42fe957f2e60c9e7e769937e3c0f07571980cf382413b6db9cd48476"
+    },
+    {
+      "name": "copy-guard.mjs",
+      "bytes": 1518,
+      "sha256": "466ffb3e96fa8bcc2b569a3069abe7ea4ca00a856fae9a8cc65ac186b39a1671"
+    },
+    {
+      "name": "compare-main-target-copy.test.mjs",
+      "bytes": 16357,
+      "sha256": "3990ffc931047800f909491e636dab702de902ebe7a25d290f8f7b19980f43ad"
+    },
+    {
+      "name": "resolve-main-category-profiles-readonly.test.mjs",
+      "bytes": 6504,
+      "sha256": "4fdf0e5b31ab2f8c487de52e91b3c1b97f92dcb85edb54373fd445e932072517"
+    },
+    {
+      "name": "README.md",
+      "bytes": 6707,
+      "sha256": "02fb22fadd44acc8db54fdf54451f3842fe1436f31e12b12ed1e5b6f4269cc85"
+    },
+    {
+      "name": "tests.txt",
+      "bytes": 1751,
+      "sha256": "57801a9109777210f774c4ab7385021de965473aad2379ac5ec6ed48d25a2d8f"
+    },
+    {
+      "name": "artifact-pin-check.json",
+      "bytes": 596,
+      "sha256": "7d9b1c4c2e67a637139d270cafb7937ef0e54b6bbf9fd51403ede14d96977e76"
+    }
+  ]
+}

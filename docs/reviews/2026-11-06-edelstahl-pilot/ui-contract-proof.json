@@ -1,0 +1,160 @@
+{
+  "schema": "gravuru-steel-pilot-ui-contract-proof/v1",
+  "recordedAt": "2026-11-06T11:31:04.328Z",
+  "scope": "Local read-only package and HTML assertions; no browser, host or database mutation",
+  "source": {
+    "package": "steel-review-pilot-package-v1",
+    "manifestSha256": "007cbd54a8f6ab842d055130b00cc41ceeea27049904c8e9ea65c16b0b2946e4",
+    "repositoryHead": "b7e6d6fc9f2b6517b2c41c997d112cdb5895c79a",
+    "workingTreeImplementation": true,
+    "files": [
+      {
+        "file": "scripts/lib/slate-review-gallery-page.mjs",
+        "sha256": "2ed13848cacf341814b42d649f83ea5881407b99bab9973f1d2c423181f1e6bb"
+      },
+      {
+        "file": "scripts/lib/slate-review-gallery-ui.js",
+        "sha256": "6a2fde482ad88890846fe9bb126e88d451a60933050881c153c16a877c82ac79"
+      },
+      {
+        "file": "scripts/lib/slate-review-gallery.css",
+        "sha256": "c9a5f6db3d78a93cc68eb26170d0a30acf1727b9aeab70b28a0cd7e63f195b71"
+      },
+      {
+        "file": "scripts/lib/review-material-overview.mjs",
+        "sha256": "a7db177fd8a370489acc8408c7224f81260afa8496de4471edac0b60eaf6c0fa"
+      },
+      {
+        "file": "scripts/lib/design-review-targets.mjs",
+        "sha256": "11221b2822e8d99718b224d55b3f965ce18c6f5a8fb2e592f07fb4fb9d935131"
+      },
+      {
+        "file": "scripts/review-material-gallery.test.mjs",
+        "sha256": "7bff7a3563faaf3382c0d564da7a7a5b39dd47693c5f0ac9f590032ca49b904c"
+      },
+      {
+        "file": "scripts/slate-review-gallery-navigation.test.mjs",
+        "sha256": "fe8cc50a6d46c1812a129f6577c67cc66424c90d7255e7b3bc4916604075dbdb"
+      }
+    ]
+  },
+  "pilot": {
+    "passed": true,
+    "listedFileHashesVerified": 213,
+    "originalCards": 28,
+    "blankCards": 73,
+    "nativeFormats": 146,
+    "nativeProductDocumentsVerified": 73,
+    "themeFiltersVerified": 6,
+    "multipleThemeOriginals": 28,
+    "duplicateOriginalCards": 0,
+    "commaOriginalIdsPreserved": 2,
+    "nativeSlugsVerified": true,
+    "smallestPhysicalAreaDefaultsVerified": 28,
+    "smallestOvalExamples": [
+      {
+        "originalId": "TO-V2A-15x8-D3",
+        "mm": [
+          150,
+          80
+        ],
+        "sizeKey": "GR-ES-OV-150X80-T15"
+      },
+      {
+        "originalId": "TO-V2A-15x8-D1",
+        "mm": [
+          150,
+          80
+        ],
+        "sizeKey": "GR-ES-OV-150X80-T15"
+      }
+    ],
+    "visualReviewWarningCards": 2,
+    "desktopGridColumnsDeclared": 3,
+    "allNewApprovalStates": "unreviewed",
+    "htmlSha256": "bb9c98eac430309200b3e9002bb920744b81027d010a59eb47956145c0011aaf"
+  },
+  "mixed": {
+    "passed": true,
+    "existingSlateCardsByteIdentical": 325,
+    "originalCards": 353,
+    "editableOriginals": 261,
+    "blankCards": 73,
+    "nativeTargets": 523,
+    "htmlSha256": "bdd93c79213a38cf8768a6e9036f4cadc5990e8d68efcd5a876c13f4e976d369",
+    "commentAndApprovalCheck": "Supplied synthetic comment revision and approval state rendered identically. No current user database opened."
+  },
+  "tests": {
+    "command": "node --test scripts/slate-review-gallery-navigation.test.mjs scripts/review-material-gallery.test.mjs scripts/slate-review-gallery.test.mjs scripts/review-material-overview.test.mjs scripts/slate-review-inline-ui.test.mjs",
+    "passed": 22,
+    "failed": 0,
+    "skipped": 0,
+    "diffCheckPassed": true
+  },
+  "limits": {
+    "mapping": "Pilot used immutable package placeholder product IDs; mixed check read only existing local mapping JSON",
+    "browserRenderingVerified": false,
+    "currentUserDatabaseVerified": false,
+    "productionReady": false,
+    "visualApprovalGranted": false,
+    "hostActions": 0,
+    "databaseWrites": 0,
+    "shopifyWrites": 0,
+    "automaticApprovalWrites": 0,
+    "knownCommaReturnNavigationIssue": "Already handed to Mika; intentionally unchanged outside this gallery UI scope"
+  },
+  "privateContentsIncluded": false,
+  "combinedImportedMapping": {
+    "passed": true,
+    "checkedAt": "2026-11-06T11:35:11.942Z",
+    "manifestSha256": "dec4c9916d58eadec68cdf30bceb364ba216355e14b1b602b5e581d8754d69ad",
+    "mappingSha256": "3a1b7005dc9c1f6f7a07c1eaacd29ab5e83b054308d1a2eecbf816e66a73b0ac",
+    "mappedProductGroups": 108,
+    "existingSlateProductIdsPreserved": 35,
+    "originalCards": 353,
+    "blankCards": 73,
+    "resolvedNativeFormats": 523,
+    "steelUsesActualImportedProductIds": true,
+    "htmlSha256": "e50aa057a7a1d2d33d130b72b5f8eded81efb315a1a8939e84311f725a5b7cae",
+    "sqliteOpened": false,
+    "databaseWrites": 0,
+    "actualCommentsOrApprovalsRead": false
+  },
+  "independentUiReview": {
+    "mode": "Read-only source review plus isolated VM DOM model, no browser",
+    "passedCases": [
+      "Material AND theme selection keeps one card per original",
+      "Dirty or busy inline edit remains visible through material and blank-view filters",
+      "A nonmatching clean card hides normally",
+      "A valid hash target hidden by filters is revealed and scrolled into view",
+      "Existing comment fields retain their DOM contents while filtering; beforeunload protection remains separate"
+    ],
+    "findings": [
+      {
+        "priority": 2,
+        "file": "scripts/lib/slate-review-gallery-ui.js",
+        "line": 120,
+        "summary": "A valid visible return target loses to the old saved scroll position",
+        "trigger": "Select another design in the workshop, return using its valid gallery hash while both designs match existing filters and an older scroll position is stored",
+        "observed": "window.scrollTo uses saved.scroll because revealReturnCard is false; the addressed card is not deliberately scrolled into view",
+        "proof": "The isolated VM DOM model reproduced old-scroll for a visible target and target-scroll only for a filtered-out target",
+        "independentOfKnownCommaReturnIssue": true,
+        "fixed": true,
+        "resolution": {
+          "scope": "Gallery navigation only; no editor changes",
+          "behavior": "Any existing design-card hash target has priority over saved scroll. Filter-hidden targets are revealed first. Missing, malformed or non-card targets retain stored scrolling.",
+          "regressionTest": "scripts/slate-review-gallery-navigation.test.mjs",
+          "regressionCasesPassed": 4,
+          "knownCommaReturnIssueTouched": false
+        }
+      }
+    ],
+    "knownCommaReturnIssueTouched": false,
+    "sourceFilesChangedDuringReadOnlyReview": false,
+    "authorizedFollowupFixFiles": [
+      "scripts/lib/slate-review-gallery-ui.js",
+      "scripts/slate-review-gallery-navigation.test.mjs"
+    ]
+  },
+  "updatedAt": "2026-11-06T11:37:24.760Z"
+}

@@ -7,6 +7,7 @@ import {homedir} from 'node:os';
 import {fileURLToPath} from 'node:url';
 import {artworkFragment,isArtworkResource} from '../configurator/variant-m/artwork-resource.mjs';
 import {tenantOption,ensureTenantColumns,tenantKey,TENANT_COLUMN} from './tenant.mjs';
+import {createGalleryPhotoMedia} from './gallery-photo-media.mjs';
 
 export const MAX_DESIGN_BYTES=15*1024*1024;
 const MAX_OUTPUT=30*1024*1024;
@@ -60,7 +61,7 @@ export function createDesignAssetStore({filename,converter=convertDesign,tenantI
   function row(id){if(!/^[a-f0-9]{64}$/.test(id||''))fail(404,'asset_missing','Designressource nicht gefunden.');const r=db.prepare('SELECT * FROM design_assets WHERE id=? AND tenant_id=?').get(id,tenant);if(!r)fail(404,'asset_missing','Designressource nicht gefunden.');return r;}
   function get(id){return JSON.parse(row(id).metadata);}
   function resource(id){const a=get(id);return {key:'artwork-'+id,name:'Importiertes Design',category:'Vorlagen',bounds:[0,0,a.widthMm,a.heightMm],embeddedOnly:true,vectorOnly:!/<(?:[\w-]+:)?image\b/i.test(Buffer.from(row(id).preview).toString('utf8')),svgFragment:artworkFragment(id,a.widthMm,a.heightMm),artwork:a};}
-  return {
+  const assets={
     async importPhotoExample({bytes,widthMm,heightMm,monochrome=false}){
       if(![widthMm,heightMm].every(n=>Number.isFinite(n)&&n>0&&n<=2000))fail(422,'photo_size','Ungültige Fotofeldmaße.');
       const {prepareCustomerPhoto}=await import('./customer-photo.mjs');
@@ -135,4 +136,6 @@ export function createDesignAssetStore({filename,converter=convertDesign,tenantI
       return document;
     },close:()=>db.close()
   };
+  assets.galleryPhotos=createGalleryPhotoMedia({db,tenant,assets});
+  return assets;
 }

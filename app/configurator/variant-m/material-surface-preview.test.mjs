@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {previewSurfaceUrl, surfacePreview, validSurface,plateDepthPreview} from './material-surface.mjs';
+import {acrylicPlatePreview} from '../../platform/sources/app/shared/models/acrylic-plate-preview.mjs';
 
 // Leistung mobil (20.10.2026): data:-Texturen werden für die Bildschirmvorschau einmal zur blob:-Adresse.
 const png='data:image/png;base64,'+Buffer.from('\x89PNG\r\n\x1a\nTEST','binary').toString('base64');
@@ -37,4 +38,14 @@ test('depth follows ellipse or exact contour, without drill holes in the shadow 
  const g={width:90,height:60,shape:'contour',outlinePath:'M0 5L5 0H85L90 5V55L85 60H5L0 55Z',holes:[{x:8,y:30,diameter:4}]};
  const contour=plateDepthPreview(svg,g),noHoles=plateDepthPreview(svg,{...g,holes:[]});
  assert.equal(contour,noHoles);assert(contour.includes(g.outlinePath));assert.match(contour,/fill-rule="evenodd"/);
+});
+
+test('front-on acrylic has one face and original rim, with no displaced opaque second plate',()=>{
+ const profile={material:{kind:'acrylic',thicknessMm:3,engravingSide:'back',variant:'schwarz'},geometry:{width:50,height:20,shape:'rect'}},saved=structuredClone(profile),plate='<rect width="50" height="20" rx="0"';
+ const glass=acrylicPlatePreview(profile,plate,'single');
+ assert.equal((glass.back.match(/<rect/g)||[]).length,1);
+ assert.doesNotMatch(glass.back,/<use|transform="translate/);
+ assert.match(glass.back,/stroke-width=".12"/);assert.match(glass.front,/stroke-width=".22"/);
+ assert.match(glass.artwork('<path d="M1 1L2 2"/>'),/rear-frost/);
+ assert.deepEqual(profile,saved);
 });

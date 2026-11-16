@@ -13,8 +13,11 @@ import {createCartHandoffJournal,createPersistentCartHandoff} from './cart-hando
 import {commercePrice} from '../configurator/variant-m/commerce-model.mjs';
 import {personalizationForSnapshot} from './cart-personalization.mjs';
 import {applyQuantityTier} from '../configurator/variant-m/contract.mjs';
+import {MODULE_PROFILE_SCHEMA} from '../configurator/variant-m/module-profile.mjs';
+import {prepareShopProduct} from './shop-preparation.mjs';
 
 const shop='gravuru-synthetic.myshopify.com';
+const modules=overrides=>({schema:MODULE_PROFILE_SCHEMA,id:'checked-module-policy',revision:1,modules:{options:true,designs:true,text:true,motifs:true,photo:true,logo:true,colors:false,...overrides}});
 function fixture(t) {
   const resources=JSON.parse(fs.readFileSync(new URL('../designs/acrylic-unser-anfang/resources.json',import.meta.url)));
   const config=makeAcrylicConfig({profile:{kind:'universal-product',schemaVersion:2}},resources,'a'.repeat(64));
@@ -51,6 +54,80 @@ function response(offer) {
 }
 function offer(f) {const binding=f.intake.bind(f.args);return f.intake.offer({bindingId:binding.id,snapshotId:f.m.id,quantity:2});}
 
+test('V3 pricing without its exact option-price contract is rejected',t=>{
+ const f=fixture(t);
+ assert.throws(()=>capturePersonalization({...f.pricing,schema:'gravuru-personalization-pricing/v3'},
+  {variantId:'301',baseCents:2299,document:f.record.document}),{code:'cart_personalization'});
+});
+
+test('disabled motif choice retains all-motif source charges in native quote, cart and shop preparation',t=>{
+ const f=fixture(t),config=f.record.document.config;
+ config.moduleProfile=modules({motifs:false,photo:false,logo:false});config.motifCharge='all';
+ const motif={id:'original-motif',type:'motif',motif:config.localResources.motifs.find(m=>!m.embeddedOnly).key,x:170,y:100,w:20,h:20,rotation:0,color:'#e8e9e4',customerEditable:true};
+ config.profile.designs[0].objects.push(motif);
+ f.record.document.elementRights.test[motif.id]={content:false,color:false,replace:true,move:true,scale:true,delete:true};
+ const captured=capturePersonalization(f.pricing,{variantId:'301',baseCents:2299,document:f.record.document});
+ const state={designId:'test',objects:structuredClone(config.profile.designs[0].objects),mOptions:{mounting:'none'}};
+ const price=commercePrice(config,state);assert.equal(price.additionalMotifs,0);assert.equal(price.chargedMotifs,1);assert.equal(price.unitCents,2468);
+ const manifest={...f.m,product:{...f.m.product,basePriceCents:price.unitCents},selection:{price}};
+ assert.equal(personalizationForSnapshot(captured,manifest).unitCents,2468);
+ const preview=prepareShopProduct(f.record);assert.equal(preview.extras.motifCents,169);assert.match(preview.checks.find(c=>c.id==='pricingConnection').message,/Aufpreisbindung/);
+ assert.throws(()=>personalizationForSnapshot(captured,{...manifest,selection:{price:{...price,additionalMotifs:1}}}),{code:'cart_personalization'});
+ state.objects.pop();const removed=commercePrice(config,state);assert.equal(removed.chargedMotifs,0);assert.equal(removed.unitCents,2299);
+});
+
+test('legacy raster-logo charges remain orderable with photos off; disabling both uploads still rejects them',t=>{
+ const f=fixture(t),config=f.record.document.config;
+ config.photo.enabled=false;config.logo={enabled:true};config.moduleProfile=modules({photo:false});
+ const state={designId:'test',objects:[...structuredClone(config.profile.designs[0].objects),{id:'local-logo',type:'image',x:170,y:100,w:20,h:20,rotation:0,uxUploadKind:'logo',uxUploadId:'logo-file'}],mOptions:{mounting:'none'}};
+ const price=commercePrice(config,state);assert.equal(price.chargedUploads,1);assert.equal(price.chargedLogos,undefined);assert.equal(price.unitCents,3298);
+ const manifest={...f.m,product:{...f.m.product,basePriceCents:price.unitCents},selection:{price}};
+ const captured=capturePersonalization(f.pricing,{variantId:'301',baseCents:2299,document:f.record.document});
+ assert.equal(personalizationForSnapshot(captured,manifest).unitCents,3298);
+ assert.equal(prepareShopProduct(f.record).extras.photoCents,999,'legacy combined-upload price remains visible for the connector');
+ const off=structuredClone(captured);off.moduleProfile.modules.logo=false;assert.throws(()=>personalizationForSnapshot(off,manifest),{code:'cart_personalization'});
+ config.moduleProfile.modules.logo=false;assert.equal(prepareShopProduct(f.record).extras.photoCents,0);
+});
+
+test('explicit logo-off module retains V2 revision and tariff while native zero-logo checkout survives binding/reopen',t=>{
+ const f=fixture(t),c=f.record.document.config;
+ c.profile.material.kind='steel';c.profile.material.thicknessMm=1.5;c.profile.processing.profileId='steel-engraving';c.photo.enabled=false;c.logo={enabled:false,vectorUpload:false,extraPriceCents:1299};c.moduleProfile=modules({photo:false,logo:false});
+ Object.assign(f.pricing,{schema:'gravuru-personalization-pricing/v2',extraLogoCents:1299});
+ const immutablePricing=structuredClone(f.pricing),price=commercePrice(c,{designId:'test',objects:structuredClone(c.profile.designs[0].objects),mOptions:{mounting:'none'}},2);
+ assert.equal(price.chargedLogos,undefined);assert.equal(price.unitCents,2299);f.m.product.basePriceCents=price.unitCents;f.m.selection.price=price;
+ const binding=f.intake.bind(f.args),order=f.intake.offer({bindingId:binding.id,snapshotId:f.m.id,quantity:2});
+ assert.equal(order.unitCents,2299);assert.equal(order.personalization.logos,0);assert.equal(order.personalization.revision,'30');verifyCartResponse(response(order),order,shop);
+ assert.equal(f.reopen().offer({bindingId:binding.id,snapshotId:f.m.id,quantity:2}).personalization.logos,0);assert.deepEqual(f.pricing,immutablePricing);
+ const captured=capturePersonalization(f.pricing,{variantId:'301',baseCents:2299,document:f.record.document});
+ for(const chargedLogos of [1,2,-1,'0',null])assert.throws(()=>personalizationForSnapshot(captured,{...f.m,selection:{price:{...price,chargedLogos}}}),{code:'cart_personalization'});
+});
+
+test('retained V2 is limited to explicit valid logo-off profiles; legacy and historical logo pricing stay strict',t=>{
+ const f=fixture(t),c=f.record.document.config;c.profile.material.kind='steel';c.profile.processing.profileId='steel-engraving';c.photo.enabled=false;c.logo={enabled:true,vectorUpload:true,extraPriceCents:1299};
+ Object.assign(f.pricing,{schema:'gravuru-personalization-pricing/v2',extraLogoCents:1299});
+ const historical=capturePersonalization(f.pricing,{variantId:'301',baseCents:2299,document:f.record.document});
+ const manifest={...f.m,product:{...f.m.product,basePriceCents:3598},selection:{price:{additionalMotifs:0,chargedUploads:0,chargedLogos:1,unitCents:3598,quantity:1,totalCents:3598}}};
+ assert.equal(personalizationForSnapshot(historical,manifest).unitCents,3598);
+ c.logo.enabled=false;c.logo.vectorUpload=false;assert.throws(()=>capturePersonalization(f.pricing,{variantId:'301',baseCents:2299,document:f.record.document}),{code:'cart_personalization'});
+ c.moduleProfile=modules({photo:false,logo:false});const disabled=capturePersonalization(f.pricing,{variantId:'301',baseCents:2299,document:f.record.document});assert.equal(disabled.extraLogoCents,1299);assert.throws(()=>personalizationForSnapshot(disabled,manifest),{code:'cart_personalization'});
+ assert.equal(personalizationForSnapshot(historical,manifest).unitCents,3598,'old snapshot remains independently orderable');
+ for(const mutate of [p=>p.modules.logo='false',p=>delete p.modules.logo,p=>p.revision=0]){const bad=structuredClone(f.record.document);mutate(bad.config.moduleProfile);assert.throws(()=>capturePersonalization(f.pricing,{variantId:'301',baseCents:2299,document:bad}));}
+ for(const value of [0,1298,1300])assert.throws(()=>capturePersonalization({...f.pricing,extraLogoCents:value},{variantId:'301',baseCents:2299,document:f.record.document}),{code:'cart_personalization'});
+});
+
+test('enabled photos retain included-slot credit and charge only additional photos under a module profile',t=>{
+ const f=fixture(t),config=f.record.document.config;config.moduleProfile=modules({logo:false});config.photo.includedCount=1;
+ const original={id:'photo-slot',type:'photoSlot',fieldKey:'photo-original',x:170,y:100,w:20,h:20,rotation:0,photoShape:'rect',required:false};config.profile.designs[0].objects.push(original);
+ const state={designId:'test',objects:[...structuredClone(config.profile.designs[0].objects.slice(0,-1)),{...original,uxUploadKind:'photo',uxUploadId:'included-photo'}],mOptions:{mounting:'none'}};
+ const captured=capturePersonalization(f.pricing,{variantId:'301',baseCents:2299,document:f.record.document});
+ for(const expected of [0,1]){
+  if(expected)state.objects.push({...original,id:'extra-photo',fieldKey:'photo-extra',uxUploadKind:'photo',uxUploadId:'extra-file'});
+  const price=commercePrice(config,state);assert.equal(price.chargedUploads,expected);
+  const manifest={...f.m,product:{...f.m.product,basePriceCents:price.unitCents},selection:{price}};
+  assert.equal(personalizationForSnapshot(captured,manifest).unitCents,2299+expected*999);
+ }
+});
+
 test('native shop path keeps an included design orderable and explains unbound extras without weakening binding checks',t=>{
  const f=fixture(t),binding=f.intake.bind({...f.args,snapshotId:undefined,personalizationPricing:undefined,options:{mounting:'none'}});
  assert.throws(()=>f.intake.offer({bindingId:binding.id,snapshotId:f.m.id,quantity:2}),error=>error.status===422&&error.code==='order_intake'&&/kostenpflichtige Änderung.*derzeit noch nicht bestellbar.*Gestaltung bleibt erhalten/.test(error.message));
@@ -61,7 +138,6 @@ test('native shop path keeps an included design orderable and explains unbound e
  const o=f.intake.offer({bindingId:binding.id,snapshotId:f.m.id,quantity:2});assert.equal(o.unitCents,2299);assert.equal(o.personalization,undefined);
  assert.equal(f.db.prepare('SELECT count(*) AS n FROM form_order_offers').get().n,1);
 });
-
 test('complete-unit tiers use actual catalog prices, include photo, motif and mounting once, and round half a cent upwards',t=>{
  const f=fixture(t),config=f.record.document.config,tiers=[{minQuantity:2,percentOff:6},{minQuantity:3,percentOff:10}];
  config.quantityTiers=tiers;config.quantityTierScope='complete-unit';f.pricing.quantityTiers=structuredClone(tiers);f.pricing.quantityTierScope='complete-unit';

@@ -1,0 +1,66 @@
+- paragraph: Lokale v8-Prüfung · ausschließlich lokale Testdaten · keine Shopdaten
+- banner:
+  - link "gravuru werkstatt":
+    - /url: /werkstatt/
+  - navigation "Hauptnavigation":
+    - link "Katalog":
+      - /url: /werkstatt/katalog/
+    - link "Designs":
+      - /url: /werkstatt/designs/
+    - link "Suchauswertung":
+      - /url: /werkstatt/motivsuche/
+- main:
+  - heading "Was suchen deine Kunden?" [level=1]
+  - paragraph: Suchbegriffe für Designs und Motive im Konfigurator. Häufige Wünsche und Suchen ohne Treffer auf einen Blick.
+  - text: Suchart
+  - combobox "Suchart":
+    - option "Motive"
+    - option "Designs" [selected]
+  - text: Zeitraum
+  - combobox "Zeitraum":
+    - option "Letzte 7 Tage"
+    - option "Letzte 30 Tage" [selected]
+    - option "Letzte 90 Tage"
+    - option "Letzte 365 Tage"
+  - text: Produktgruppe
+  - combobox "Produktgruppe":
+    - option "Alle Produktgruppen" [selected]
+    - option "Lokale v8-Prüfung"
+  - text: Herkunft
+  - combobox "Herkunft":
+    - option "Shop"
+    - option "Vorschau / Prüfung" [selected]
+    - option "Alle"
+  - button "Aktualisieren"
+  - status: 2026-10-13 bis 2026-11-11
+  - text: Suchanfragen
+  - strong: "4"
+  - text: Ohne Treffer
+  - strong: "1"
+  - heading "Am häufigsten gesucht" [level=2]
+  - table:
+    - rowgroup:
+      - row "Suchbegriff Anzahl":
+        - columnheader "Suchbegriff"
+        - columnheader "Anzahl"
+    - rowgroup:
+      - row "d23 2":
+        - cell "d23"
+        - cell "2"
+      - row "haus 1":
+        - cell "haus"
+        - cell "1"
+      - row "zzzzkeintreffer 1":
+        - cell "zzzzkeintreffer"
+        - cell "1"
+  - heading "Gesucht, aber nicht gefunden" [level=2]
+  - table:
+    - rowgroup:
+      - row "Suchbegriff Ohne Treffer":
+        - columnheader "Suchbegriff"
+        - columnheader "Ohne Treffer"
+    - rowgroup:
+      - row "zzzzkeintreffer 1":
+        - cell "zzzzkeintreffer"
+        - cell "1"
+  - paragraph: Gezählt wird ein fertiger Suchbegriff einmal je Suchart und geöffnetem Konfigurator. Neue Eingaben ersetzen unvollständige Eingaben. Nachgeladene Seiten zählen nicht erneut. Die Auswertung enthält keine Kundenkennungen. Bisherige Suchanfragen gehören zur Motivsuche; Designs werden ab Aktivierung erfasst. Vorschau-Suchen werden getrennt angezeigt.

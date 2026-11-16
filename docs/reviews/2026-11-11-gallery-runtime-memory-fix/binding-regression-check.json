@@ -1,0 +1,12 @@
+{
+  "runtimeBase": "a038e1ae7e3de3954ea204f6925c60c7b4213d4f",
+  "file": "app/workshop/shop-product-binding-store.mjs",
+  "localSourceSha256": "424dc43e4eed2f864cf7d78fd043827760d8c78ef731b5186b8de8fec2a30032",
+  "command": "node --test app/workshop/shop-product-binding-store.test.mjs app/workshop/shop-product-binding-batch.test.mjs app/workshop/shop-product-binding-read-snapshot.test.mjs",
+  "environment": "Windows Node24; TEMP/TMP in workspace",
+  "tests": 41,
+  "passed": 41,
+  "failed": 0,
+  "skipped": 0,
+  "actualServerRun": false
+}

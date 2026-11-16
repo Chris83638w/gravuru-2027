@@ -1,0 +1,41 @@
+{
+  "schema": "gravuru-pilot-review-files/v1",
+  "readOnlyEvidence": true,
+  "files": [
+    {
+      "file": "baseline-konfis-triage.md",
+      "bytes": 3092,
+      "sha256": "6ee2a73bfcdaa4ac1e8173232d07e836c729900a72bf900029904527dceb7806"
+    },
+    {
+      "file": "baseline-konfis-triage.log",
+      "bytes": 2652,
+      "sha256": "42ac1380e456a5860eccfd3b43c1230c7d988d3691894258fde06d4e8a93c3a8"
+    },
+    {
+      "file": "baseline-photo-triage.md",
+      "bytes": 3695,
+      "sha256": "12ed5dbf2aa912234a92caecc326074d83f2e2138fe2fa083e57d21293658c4a"
+    },
+    {
+      "file": "baseline-photo-triage.json",
+      "bytes": 7672,
+      "sha256": "99224476b3d14cdc3f0a04dbe39597b81943392cd116ea69c4a29fac92c837c3"
+    },
+    {
+      "file": "baseline-photo-triage.mjs",
+      "bytes": 3396,
+      "sha256": "8733eada250d85839419f029236490baff0eb2dc4d2431e86411a13bf2996900"
+    },
+    {
+      "file": "baseline-photo-triage-tests.txt",
+      "bytes": 3635,
+      "sha256": "551189b931a36b99104f9bd653234dbfba362215fc41565681663781791d45d7"
+    },
+    {
+      "file": "baseline-photo-placement-tests.txt",
+      "bytes": 529,
+      "sha256": "c47f5edc05e70f3d35f5e17dfb12844c26de2c3fedae93a693d89e8c05d54d90"
+    }
+  ]
+}

@@ -1,0 +1,1590 @@
+{
+  "catalogPin": "8236b8bfab7322447ec46661c116fa526331af3d",
+  "codeHead": "64e026e8fd15b129a16cc97189b28506aa9e8ac2",
+  "sourceFontSha256": "da201775e84f2a12d64457d0f0439c4683c33d9d0eed62fc4602c791821fae88",
+  "method": "Native conversion repeated from git-show pinned originals; same glyph outlines and rendering transforms; path flattening 0.00005 mm, sampled connecting segments at <=0.02 mm; contour reference flattening 0.002 mm. Signed clearance negative means sampled actual painted path outside. Values within +/-0.0021 mm are inconclusive. Strokes/opacity/relative subpaths fail closed. No source or object changed.",
+  "results": [
+    {
+      "id": "TO-V2A-12x4-D5",
+      "jsonPath": "designs/edelstahl-gravur-oval-120x40/TO-V2A-12x4-D5/design.json",
+      "jsonSha256": "cbd3eebd90bb3c7ed87ee8ab7e31ae6061d3d8670ba9d3211580238a102f361b",
+      "svgPath": "designs/edelstahl-gravur-oval-120x40/TO-V2A-12x4-D5/design.svg",
+      "svgSha256": "f4d1152f3063c0d282594bc3f41cb4db8922fa514dec1996783134d14b9a42d3",
+      "sourceMm": [
+        120,
+        40
+      ],
+      "allReportedOccurrences": [
+        {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "sizeKey": "TS-Acryl-EL-120X40-T30-SW",
+          "designId": "TO-V2A-12x4-D5",
+          "issues": [
+            "motiv-2: Element ragt über die ovale Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "sizeKey": "TS-Acryl-EL-150X50-T30-SW",
+          "designId": "TO-V2A-12x4-D5",
+          "issues": [
+            "motiv-2: Element ragt über die ovale Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "sizeKey": "TS-Acryl-EL-180X60-T30-SW",
+          "designId": "TO-V2A-12x4-D5",
+          "issues": [
+            "motiv-2: Element ragt über die ovale Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "sizeKey": "TS-Acryl-EL-210X70-T30-SW",
+          "designId": "TO-V2A-12x4-D5",
+          "issues": [
+            "motiv-2: Element ragt über die ovale Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "sizeKey": "TS-Acryl-EL-240X80-T30-SW",
+          "designId": "TO-V2A-12x4-D5",
+          "issues": [
+            "motiv-2: Element ragt über die ovale Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "sizeKey": "TS-Acryl-EL-270X90-T30-SW",
+          "designId": "TO-V2A-12x4-D5",
+          "issues": [
+            "motiv-2: Element ragt über die ovale Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "sizeKey": "TS-Acryl-OV-300X100-T30-SW",
+          "designId": "TO-V2A-12x4-D5",
+          "issues": [
+            "motiv-2: Element ragt über die ovale Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-anthrazit",
+          "sizeKey": "TS-Acryl-EL-120X40-T30-AN",
+          "designId": "TO-V2A-12x4-D5",
+          "issues": [
+            "motiv-2: Element ragt über die ovale Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-anthrazit",
+          "sizeKey": "TS-Acryl-EL-150X50-T30-AN",
+          "designId": "TO-V2A-12x4-D5",
+          "issues": [
+            "motiv-2: Element ragt über die ovale Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-anthrazit",
+          "sizeKey": "TS-Acryl-EL-180X60-T30-AN",
+          "designId": "TO-V2A-12x4-D5",
+          "issues": [
+            "motiv-2: Element ragt über die ovale Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-anthrazit",
+          "sizeKey": "TS-Acryl-EL-210X70-T30-AN",
+          "designId": "TO-V2A-12x4-D5",
+          "issues": [
+            "motiv-2: Element ragt über die ovale Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-anthrazit",
+          "sizeKey": "TS-Acryl-EL-240X80-T30-AN",
+          "designId": "TO-V2A-12x4-D5",
+          "issues": [
+            "motiv-2: Element ragt über die ovale Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-anthrazit",
+          "sizeKey": "TS-Acryl-EL-270X90-T30-AN",
+          "designId": "TO-V2A-12x4-D5",
+          "issues": [
+            "motiv-2: Element ragt über die ovale Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-anthrazit",
+          "sizeKey": "TS-Acryl-OV-300X100-T30-AN",
+          "designId": "TO-V2A-12x4-D5",
+          "issues": [
+            "motiv-2: Element ragt über die ovale Gestaltungsfläche hinaus."
+          ]
+        }
+      ],
+      "occurrences": [
+        {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "sizeKey": "TS-Acryl-EL-120X40-T30-SW",
+          "targetMm": [
+            120,
+            40
+          ],
+          "geometry": {
+            "width": 120,
+            "height": 40,
+            "shape": "ellipse",
+            "cornerRadiusMm": 0,
+            "safeMarginMm": 0,
+            "holes": []
+          },
+          "objects": [
+            {
+              "objectId": "motiv-2",
+              "type": "motif",
+              "issue": "Element ragt über die ovale Gestaltungsfläche hinaus.",
+              "boxIssue": "Element ragt über die ovale Gestaltungsfläche hinaus.",
+              "nativeActual": false,
+              "object": {
+                "id": "motiv-2",
+                "type": "motif",
+                "motif": "katalog-TO-V2A-12x4-D5-motiv-2",
+                "x": 60,
+                "y": 34.647,
+                "w": 83.109,
+                "h": 0.44,
+                "rotation": 0,
+                "color": "#e1e4e5",
+                "templateOrigin": true,
+                "customerEditable": true
+              },
+              "resourceBounds": [
+                18.445,
+                34.427,
+                83.109,
+                0.44
+              ],
+              "minimumClearanceMm": -0.00007860058795305087,
+              "worstPointMm": [
+                101.55450000000002,
+                34.427
+              ],
+              "points": 8356,
+              "ringCount": 1,
+              "classification": "submillimetre_boundary_uncertainty",
+              "sourceOriginal": {
+                "minimumClearanceMm": -0.00023100630839097174,
+                "worstPointMm": [
+                  18.445,
+                  34.427
+                ],
+                "flatteningToleranceMm": 0.00001,
+                "transform": "Original SVG coordinates plus original layer translation, then exact proportional contain; no converter center/size rounding"
+              }
+            }
+          ]
+        }
+      ],
+      "minimumClearanceMm": -0.00007860058795305087
+    },
+    {
+      "id": "TO-V2A-15x8-D5",
+      "jsonPath": "designs/edelstahl-gravur-oval-150x80/TO-V2A-15x8-D5/design.json",
+      "jsonSha256": "e87ee5f28f09644e9eae10474ced62b1ae48b3d58e104e3da6e0005f1e88cac2",
+      "svgPath": "designs/edelstahl-gravur-oval-150x80/TO-V2A-15x8-D5/design.svg",
+      "svgSha256": "9bc013565883e9e24a959124668fe9c4c1344e6bdf9325e39dd5d1da04af60ea",
+      "sourceMm": [
+        150,
+        80
+      ],
+      "allReportedOccurrences": [
+        {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "sizeKey": "TS-Acryl-OV-300X160-T30-SW",
+          "designId": "TO-V2A-15x8-D5",
+          "issues": [
+            "motiv-2: Element ragt über die ovale Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "sizeKey": "TS-Acryl-OV-150X80-T30-SW",
+          "designId": "TO-V2A-15x8-D5",
+          "issues": [
+            "motiv-2: Element ragt über die ovale Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "sizeKey": "TS-Acryl-OV-225X120-T30-SW",
+          "designId": "TO-V2A-15x8-D5",
+          "issues": [
+            "motiv-2: Element ragt über die ovale Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-anthrazit",
+          "sizeKey": "TS-Acryl-OV-300X160-T30-AN",
+          "designId": "TO-V2A-15x8-D5",
+          "issues": [
+            "motiv-2: Element ragt über die ovale Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-anthrazit",
+          "sizeKey": "TS-Acryl-OV-150X80-T30-AN",
+          "designId": "TO-V2A-15x8-D5",
+          "issues": [
+            "motiv-2: Element ragt über die ovale Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-anthrazit",
+          "sizeKey": "TS-Acryl-OV-225X120-T30-AN",
+          "designId": "TO-V2A-15x8-D5",
+          "issues": [
+            "motiv-2: Element ragt über die ovale Gestaltungsfläche hinaus."
+          ]
+        }
+      ],
+      "occurrences": [
+        {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "sizeKey": "TS-Acryl-OV-300X160-T30-SW",
+          "targetMm": [
+            300,
+            160
+          ],
+          "geometry": {
+            "width": 300,
+            "height": 160,
+            "shape": "ellipse",
+            "cornerRadiusMm": 0,
+            "safeMarginMm": 0,
+            "holes": []
+          },
+          "objects": [
+            {
+              "objectId": "motiv-2",
+              "type": "motif",
+              "issue": "Element ragt über die ovale Gestaltungsfläche hinaus.",
+              "boxIssue": "Element ragt über die ovale Gestaltungsfläche hinaus.",
+              "nativeActual": false,
+              "object": {
+                "id": "motiv-2",
+                "type": "motif",
+                "motif": "katalog-TO-V2A-15x8-D5-motiv-2",
+                "x": 150,
+                "y": 137.226,
+                "w": 211.872,
+                "h": 1.18,
+                "rotation": 0,
+                "color": "#e1e4e5",
+                "templateOrigin": true,
+                "customerEditable": true
+              },
+              "resourceBounds": [
+                22.032,
+                68.318,
+                105.936,
+                0.59
+              ],
+              "minimumClearanceMm": -0.0007823060917824963,
+              "worstPointMm": [
+                46.323999999999984,
+                137.816
+              ],
+              "points": 21259,
+              "ringCount": 1,
+              "classification": "submillimetre_boundary_uncertainty",
+              "sourceOriginal": {
+                "minimumClearanceMm": -0.0007823060917824963,
+                "worstPointMm": [
+                  46.324,
+                  137.816
+                ],
+                "flatteningToleranceMm": 0.00001,
+                "transform": "Original SVG coordinates plus original layer translation, then exact proportional contain; no converter center/size rounding"
+              }
+            }
+          ]
+        }
+      ],
+      "minimumClearanceMm": -0.0007823060917824963
+    },
+    {
+      "id": "TO-V2A-15x8-D9",
+      "jsonPath": "designs/edelstahl-gravur-oval-150x80/TO-V2A-15x8-D9/design.json",
+      "jsonSha256": "ca00abefad4536daf5dd8154daf361f093e4539c00db88b2e383f118dfaebc2b",
+      "svgPath": "designs/edelstahl-gravur-oval-150x80/TO-V2A-15x8-D9/design.svg",
+      "svgSha256": "2fdc36a195b0c078e9d78b18e1ddbff403415b9029332435c41beb7069ebb1f4",
+      "sourceMm": [
+        150,
+        80
+      ],
+      "allReportedOccurrences": [
+        {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "sizeKey": "TS-Acryl-OV-300X160-T30-SW",
+          "designId": "TO-V2A-15x8-D9",
+          "issues": [
+            "motiv-1: Element ragt über die ovale Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "sizeKey": "TS-Acryl-OV-150X80-T30-SW",
+          "designId": "TO-V2A-15x8-D9",
+          "issues": [
+            "motiv-1: Element ragt über die ovale Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "sizeKey": "TS-Acryl-OV-225X120-T30-SW",
+          "designId": "TO-V2A-15x8-D9",
+          "issues": [
+            "motiv-1: Element ragt über die ovale Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-anthrazit",
+          "sizeKey": "TS-Acryl-OV-300X160-T30-AN",
+          "designId": "TO-V2A-15x8-D9",
+          "issues": [
+            "motiv-1: Element ragt über die ovale Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-anthrazit",
+          "sizeKey": "TS-Acryl-OV-150X80-T30-AN",
+          "designId": "TO-V2A-15x8-D9",
+          "issues": [
+            "motiv-1: Element ragt über die ovale Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-anthrazit",
+          "sizeKey": "TS-Acryl-OV-225X120-T30-AN",
+          "designId": "TO-V2A-15x8-D9",
+          "issues": [
+            "motiv-1: Element ragt über die ovale Gestaltungsfläche hinaus."
+          ]
+        }
+      ],
+      "occurrences": [
+        {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "sizeKey": "TS-Acryl-OV-300X160-T30-SW",
+          "targetMm": [
+            300,
+            160
+          ],
+          "geometry": {
+            "width": 300,
+            "height": 160,
+            "shape": "ellipse",
+            "cornerRadiusMm": 0,
+            "safeMarginMm": 0,
+            "holes": []
+          },
+          "objects": [
+            {
+              "objectId": "motiv-1",
+              "type": "motif",
+              "issue": "Element ragt über die ovale Gestaltungsfläche hinaus.",
+              "boxIssue": "Element ragt über die ovale Gestaltungsfläche hinaus.",
+              "nativeActual": false,
+              "object": {
+                "id": "motiv-1",
+                "type": "motif",
+                "motif": "katalog-TO-V2A-15x8-D9-motiv-1",
+                "x": 55.59,
+                "y": 89.894,
+                "w": 55.372,
+                "h": 92.186,
+                "rotation": 0,
+                "color": "#e1e4e5",
+                "templateOrigin": true,
+                "customerEditable": true
+              },
+              "resourceBounds": [
+                13.952,
+                21.9,
+                27.686,
+                46.093
+              ],
+              "minimumClearanceMm": -0.005021248987342382,
+              "worstPointMm": [
+                29.688200195312504,
+                127.78364820098878
+              ],
+              "points": 84085,
+              "ringCount": 40,
+              "classification": "actual_path_outside",
+              "sourceOriginal": {
+                "minimumClearanceMm": -0.004208265590853071,
+                "worstPointMm": [
+                  29.688200195312504,
+                  127.78264820098877
+                ],
+                "flatteningToleranceMm": 0.00001,
+                "transform": "Original SVG coordinates plus original layer translation, then exact proportional contain; no converter center/size rounding"
+              }
+            }
+          ]
+        }
+      ],
+      "minimumClearanceMm": -0.005021248987342382
+    },
+    {
+      "id": "TO-V2A-9x6-D46",
+      "jsonPath": "designs/edelstahl-gravur-oval-90x60/TO-V2A-9x6-D46/design.json",
+      "jsonSha256": "ca6f985f7e49815a42c98255d4e5afa2daf18b652b508a21feff8ecad3ad40eb",
+      "svgPath": "designs/edelstahl-gravur-oval-90x60/TO-V2A-9x6-D46/design.svg",
+      "svgSha256": "4704e146621a4a33c33e23d0d087a161d208e6b271157deb537fb1b8d62d3b47",
+      "sourceMm": [
+        90,
+        60
+      ],
+      "allReportedOccurrences": [
+        {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "sizeKey": "TS-Acryl-OV-90X60-T30-SW",
+          "designId": "TO-V2A-9x6-D46",
+          "issues": [
+            "motiv-1: Element ragt über die ovale Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "sizeKey": "TS-Acryl-OV-120X80-T30-SW",
+          "designId": "TO-V2A-9x6-D46",
+          "issues": [
+            "motiv-1: Element ragt über die ovale Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "sizeKey": "TS-Acryl-OV-150X100-T30-SW",
+          "designId": "TO-V2A-9x6-D46",
+          "issues": [
+            "motiv-1: Element ragt über die ovale Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "sizeKey": "TS-Acryl-OV-180X120-T30-SW",
+          "designId": "TO-V2A-9x6-D46",
+          "issues": [
+            "motiv-1: Element ragt über die ovale Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "sizeKey": "TS-Acryl-OV-210X140-T30-SW",
+          "designId": "TO-V2A-9x6-D46",
+          "issues": [
+            "motiv-1: Element ragt über die ovale Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "sizeKey": "TS-Acryl-OV-240X160-T30-SW",
+          "designId": "TO-V2A-9x6-D46",
+          "issues": [
+            "motiv-1: Element ragt über die ovale Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "sizeKey": "TS-Acryl-OV-300X200-T30-SW",
+          "designId": "TO-V2A-9x6-D46",
+          "issues": [
+            "motiv-1: Element ragt über die ovale Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-anthrazit",
+          "sizeKey": "TS-Acryl-OV-90X60-T30-AN",
+          "designId": "TO-V2A-9x6-D46",
+          "issues": [
+            "motiv-1: Element ragt über die ovale Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-anthrazit",
+          "sizeKey": "TS-Acryl-OV-120X80-T30-AN",
+          "designId": "TO-V2A-9x6-D46",
+          "issues": [
+            "motiv-1: Element ragt über die ovale Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-anthrazit",
+          "sizeKey": "TS-Acryl-OV-150X100-T30-AN",
+          "designId": "TO-V2A-9x6-D46",
+          "issues": [
+            "motiv-1: Element ragt über die ovale Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-anthrazit",
+          "sizeKey": "TS-Acryl-OV-180X120-T30-AN",
+          "designId": "TO-V2A-9x6-D46",
+          "issues": [
+            "motiv-1: Element ragt über die ovale Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-anthrazit",
+          "sizeKey": "TS-Acryl-OV-210X140-T30-AN",
+          "designId": "TO-V2A-9x6-D46",
+          "issues": [
+            "motiv-1: Element ragt über die ovale Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-anthrazit",
+          "sizeKey": "TS-Acryl-OV-240X160-T30-AN",
+          "designId": "TO-V2A-9x6-D46",
+          "issues": [
+            "motiv-1: Element ragt über die ovale Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-anthrazit",
+          "sizeKey": "TS-Acryl-OV-300X200-T30-AN",
+          "designId": "TO-V2A-9x6-D46",
+          "issues": [
+            "motiv-1: Element ragt über die ovale Gestaltungsfläche hinaus."
+          ]
+        }
+      ],
+      "occurrences": [
+        {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "sizeKey": "TS-Acryl-OV-90X60-T30-SW",
+          "targetMm": [
+            90,
+            60
+          ],
+          "geometry": {
+            "width": 90,
+            "height": 60,
+            "shape": "ellipse",
+            "cornerRadiusMm": 0,
+            "safeMarginMm": 0,
+            "holes": []
+          },
+          "objects": [
+            {
+              "objectId": "motiv-1",
+              "type": "motif",
+              "issue": "Element ragt über die ovale Gestaltungsfläche hinaus.",
+              "boxIssue": "Element ragt über die ovale Gestaltungsfläche hinaus.",
+              "nativeActual": false,
+              "object": {
+                "id": "motiv-1",
+                "type": "motif",
+                "motif": "katalog-TO-V2A-9x6-D46-motiv-1",
+                "x": 23.03,
+                "y": 40.223,
+                "w": 30.018,
+                "h": 20.399,
+                "rotation": 0,
+                "color": "#e1e4e5",
+                "templateOrigin": true,
+                "customerEditable": true
+              },
+              "resourceBounds": [
+                8.021,
+                30.023,
+                30.018,
+                20.399
+              ],
+              "minimumClearanceMm": -0.0030965086894860433,
+              "worstPointMm": [
+                8.021,
+                47.0995
+              ],
+              "points": 56611,
+              "ringCount": 72,
+              "classification": "actual_path_outside",
+              "sourceOriginal": {
+                "minimumClearanceMm": -0.002736035784721232,
+                "worstPointMm": [
+                  8.021,
+                  47.099
+                ],
+                "flatteningToleranceMm": 0.00005,
+                "transform": "Original SVG coordinates plus original layer translation, then exact proportional contain; no converter center/size rounding"
+              }
+            }
+          ]
+        }
+      ],
+      "minimumClearanceMm": -0.0030965086894860433
+    },
+    {
+      "id": "TR1-V2A-9x6-D19",
+      "jsonPath": "designs/edelstahl-gravur-retro1-90x60/TR1-V2A-9x6-D19/design.json",
+      "jsonSha256": "3b421a4a16678b2b271b2a52e26b571b7305673a51a62ef25da125572b96d5f9",
+      "svgPath": "designs/edelstahl-gravur-retro1-90x60/TR1-V2A-9x6-D19/design.svg",
+      "svgSha256": "6c82967a59283ba0ff9f1eb6482acb1d9bb66fa1d00c33c18309f4a0d6223fa4",
+      "sourceMm": [
+        90,
+        60
+      ],
+      "allReportedOccurrences": [
+        {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "sizeKey": "TS-Acryl-RT1-90X60-T30-SW",
+          "designId": "TR1-V2A-9x6-D19",
+          "issues": [
+            "motiv-1: Element ragt über die Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "sizeKey": "TS-Acryl-RT1-120X80-T30-SW",
+          "designId": "TR1-V2A-9x6-D19",
+          "issues": [
+            "motiv-1: Element ragt über die Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "sizeKey": "TS-Acryl-RT1-150X100-T30-SW",
+          "designId": "TR1-V2A-9x6-D19",
+          "issues": [
+            "motiv-1: Element ragt über die Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "sizeKey": "TS-Acryl-RT1-180X120-T30-SW",
+          "designId": "TR1-V2A-9x6-D19",
+          "issues": [
+            "motiv-1: Element ragt über die Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "sizeKey": "TS-Acryl-RT1-210X140-T30-SW",
+          "designId": "TR1-V2A-9x6-D19",
+          "issues": [
+            "motiv-1: Element ragt über die Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "sizeKey": "TS-Acryl-RT1-240X160-T30-SW",
+          "designId": "TR1-V2A-9x6-D19",
+          "issues": [
+            "motiv-1: Element ragt über die Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "sizeKey": "TS-Acryl-RT1-300X200-T30-SW",
+          "designId": "TR1-V2A-9x6-D19",
+          "issues": [
+            "motiv-1: Element ragt über die Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-anthrazit",
+          "sizeKey": "TS-Acryl-RT1-90X60-T30-AN",
+          "designId": "TR1-V2A-9x6-D19",
+          "issues": [
+            "motiv-1: Element ragt über die Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-anthrazit",
+          "sizeKey": "TS-Acryl-RT1-120X80-T30-AN",
+          "designId": "TR1-V2A-9x6-D19",
+          "issues": [
+            "motiv-1: Element ragt über die Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-anthrazit",
+          "sizeKey": "TS-Acryl-RT1-150X100-T30-AN",
+          "designId": "TR1-V2A-9x6-D19",
+          "issues": [
+            "motiv-1: Element ragt über die Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-anthrazit",
+          "sizeKey": "TS-Acryl-RT1-180X120-T30-AN",
+          "designId": "TR1-V2A-9x6-D19",
+          "issues": [
+            "motiv-1: Element ragt über die Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-anthrazit",
+          "sizeKey": "TS-Acryl-RT1-210X140-T30-AN",
+          "designId": "TR1-V2A-9x6-D19",
+          "issues": [
+            "motiv-1: Element ragt über die Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-anthrazit",
+          "sizeKey": "TS-Acryl-RT1-240X160-T30-AN",
+          "designId": "TR1-V2A-9x6-D19",
+          "issues": [
+            "motiv-1: Element ragt über die Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-anthrazit",
+          "sizeKey": "TS-Acryl-RT1-300X200-T30-AN",
+          "designId": "TR1-V2A-9x6-D19",
+          "issues": [
+            "motiv-1: Element ragt über die Gestaltungsfläche hinaus."
+          ]
+        }
+      ],
+      "occurrences": [
+        {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "sizeKey": "TS-Acryl-RT1-90X60-T30-SW",
+          "targetMm": [
+            90,
+            60
+          ],
+          "geometry": {
+            "width": 90,
+            "height": 60,
+            "shape": "contour",
+            "cornerRadiusMm": 0,
+            "outlinePath": "M0.0 6.173428920342275V53.826571079657725C3.270639468795707 54.11627191850371 5.80016306179823 56.34392038048222 5.80016306179823 60.0H84.19987221599331C84.19987221599331 56.28761710006356 86.7525027634274 54.114119976081696 90.0 53.826571079657725V6.173428920342275C86.72939580899765 5.883728081496315 84.19987221599331 3.65611489726237 84.19987221599331 0.0H5.80016306179823C5.80016306179823 3.712382899936472 3.247497236572599 5.885880023918304 0.0 6.173428920342275Z",
+            "holesMm": [
+              {
+                "x": 6,
+                "y": 30,
+                "diameterMm": 4
+              },
+              {
+                "x": 84,
+                "y": 30,
+                "diameterMm": 4
+              }
+            ],
+            "safeMarginMm": 0,
+            "holes": []
+          },
+          "objects": [
+            {
+              "objectId": "motiv-1",
+              "type": "motif",
+              "issue": "Element ragt über die Gestaltungsfläche hinaus.",
+              "boxIssue": "Element ragt über die Gestaltungsfläche hinaus.",
+              "nativeActual": false,
+              "object": {
+                "id": "motiv-1",
+                "type": "motif",
+                "motif": "katalog-TR1-V2A-9x6-D19-motiv-1",
+                "x": 74.582,
+                "y": 42.79,
+                "w": 15.3,
+                "h": 34.43,
+                "rotation": 0,
+                "color": "#e1e4e5",
+                "templateOrigin": true,
+                "customerEditable": true
+              },
+              "resourceBounds": [
+                66.932,
+                25.575,
+                15.3,
+                34.43
+              ],
+              "minimumClearanceMm": -0.005000000000002558,
+              "worstPointMm": [
+                74.07399999999998,
+                60.005
+              ],
+              "points": 54452,
+              "ringCount": 38,
+              "classification": "actual_path_outside"
+            }
+          ]
+        }
+      ],
+      "minimumClearanceMm": -0.005000000000002558
+    },
+    {
+      "id": "TR1-V2A-9x6-D5",
+      "jsonPath": "designs/edelstahl-gravur-retro1-90x60/TR1-V2A-9x6-D5/design.json",
+      "jsonSha256": "fbd49efcc44f640c05e5b8b59829bb85440bc85267b456655aa76aa09726301a",
+      "svgPath": "designs/edelstahl-gravur-retro1-90x60/TR1-V2A-9x6-D5/design.svg",
+      "svgSha256": "0c5f4affca83143009f46666238f000504179c153437ab6f834e3a6be5172410",
+      "sourceMm": [
+        90,
+        60
+      ],
+      "allReportedOccurrences": [
+        {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "sizeKey": "TS-Acryl-RT1-90X60-T30-SW",
+          "designId": "TR1-V2A-9x6-D5",
+          "issues": [
+            "motiv-1: Element ragt über die Gestaltungsfläche hinaus.",
+            "motiv-2: Element ragt über die Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "sizeKey": "TS-Acryl-RT1-120X80-T30-SW",
+          "designId": "TR1-V2A-9x6-D5",
+          "issues": [
+            "motiv-1: Element ragt über die Gestaltungsfläche hinaus.",
+            "motiv-2: Element ragt über die Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "sizeKey": "TS-Acryl-RT1-150X100-T30-SW",
+          "designId": "TR1-V2A-9x6-D5",
+          "issues": [
+            "motiv-1: Element ragt über die Gestaltungsfläche hinaus.",
+            "motiv-2: Element ragt über die Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "sizeKey": "TS-Acryl-RT1-180X120-T30-SW",
+          "designId": "TR1-V2A-9x6-D5",
+          "issues": [
+            "motiv-1: Element ragt über die Gestaltungsfläche hinaus.",
+            "motiv-2: Element ragt über die Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "sizeKey": "TS-Acryl-RT1-210X140-T30-SW",
+          "designId": "TR1-V2A-9x6-D5",
+          "issues": [
+            "motiv-1: Element ragt über die Gestaltungsfläche hinaus.",
+            "motiv-2: Element ragt über die Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "sizeKey": "TS-Acryl-RT1-240X160-T30-SW",
+          "designId": "TR1-V2A-9x6-D5",
+          "issues": [
+            "motiv-1: Element ragt über die Gestaltungsfläche hinaus.",
+            "motiv-2: Element ragt über die Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "sizeKey": "TS-Acryl-RT1-300X200-T30-SW",
+          "designId": "TR1-V2A-9x6-D5",
+          "issues": [
+            "motiv-1: Element ragt über die Gestaltungsfläche hinaus.",
+            "motiv-2: Element ragt über die Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-anthrazit",
+          "sizeKey": "TS-Acryl-RT1-90X60-T30-AN",
+          "designId": "TR1-V2A-9x6-D5",
+          "issues": [
+            "motiv-1: Element ragt über die Gestaltungsfläche hinaus.",
+            "motiv-2: Element ragt über die Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-anthrazit",
+          "sizeKey": "TS-Acryl-RT1-120X80-T30-AN",
+          "designId": "TR1-V2A-9x6-D5",
+          "issues": [
+            "motiv-1: Element ragt über die Gestaltungsfläche hinaus.",
+            "motiv-2: Element ragt über die Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-anthrazit",
+          "sizeKey": "TS-Acryl-RT1-150X100-T30-AN",
+          "designId": "TR1-V2A-9x6-D5",
+          "issues": [
+            "motiv-1: Element ragt über die Gestaltungsfläche hinaus.",
+            "motiv-2: Element ragt über die Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-anthrazit",
+          "sizeKey": "TS-Acryl-RT1-180X120-T30-AN",
+          "designId": "TR1-V2A-9x6-D5",
+          "issues": [
+            "motiv-1: Element ragt über die Gestaltungsfläche hinaus.",
+            "motiv-2: Element ragt über die Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-anthrazit",
+          "sizeKey": "TS-Acryl-RT1-210X140-T30-AN",
+          "designId": "TR1-V2A-9x6-D5",
+          "issues": [
+            "motiv-1: Element ragt über die Gestaltungsfläche hinaus.",
+            "motiv-2: Element ragt über die Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-anthrazit",
+          "sizeKey": "TS-Acryl-RT1-240X160-T30-AN",
+          "designId": "TR1-V2A-9x6-D5",
+          "issues": [
+            "motiv-1: Element ragt über die Gestaltungsfläche hinaus.",
+            "motiv-2: Element ragt über die Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-anthrazit",
+          "sizeKey": "TS-Acryl-RT1-300X200-T30-AN",
+          "designId": "TR1-V2A-9x6-D5",
+          "issues": [
+            "motiv-1: Element ragt über die Gestaltungsfläche hinaus.",
+            "motiv-2: Element ragt über die Gestaltungsfläche hinaus."
+          ]
+        }
+      ],
+      "occurrences": [
+        {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "sizeKey": "TS-Acryl-RT1-90X60-T30-SW",
+          "targetMm": [
+            90,
+            60
+          ],
+          "geometry": {
+            "width": 90,
+            "height": 60,
+            "shape": "contour",
+            "cornerRadiusMm": 0,
+            "outlinePath": "M0.0 6.173428920342275V53.826571079657725C3.270639468795707 54.11627191850371 5.80016306179823 56.34392038048222 5.80016306179823 60.0H84.19987221599331C84.19987221599331 56.28761710006356 86.7525027634274 54.114119976081696 90.0 53.826571079657725V6.173428920342275C86.72939580899765 5.883728081496315 84.19987221599331 3.65611489726237 84.19987221599331 0.0H5.80016306179823C5.80016306179823 3.712382899936472 3.247497236572599 5.885880023918304 0.0 6.173428920342275Z",
+            "holesMm": [
+              {
+                "x": 6,
+                "y": 30,
+                "diameterMm": 4
+              },
+              {
+                "x": 84,
+                "y": 30,
+                "diameterMm": 4
+              }
+            ],
+            "safeMarginMm": 0,
+            "holes": []
+          },
+          "objects": [
+            {
+              "objectId": "motiv-1",
+              "type": "motif",
+              "issue": "Element ragt über die Gestaltungsfläche hinaus.",
+              "boxIssue": "Element ragt über die Gestaltungsfläche hinaus.",
+              "nativeActual": false,
+              "object": {
+                "id": "motiv-1",
+                "type": "motif",
+                "motif": "katalog-TR1-V2A-9x6-D5-motiv-1",
+                "x": 44.903,
+                "y": 8.72,
+                "w": 90,
+                "h": 0.442,
+                "rotation": 0,
+                "color": "#e1e4e5",
+                "templateOrigin": true,
+                "customerEditable": true
+              },
+              "resourceBounds": [
+                -0.097,
+                8.499,
+                90,
+                0.442
+              ],
+              "minimumClearanceMm": -0.09700000000000131,
+              "worstPointMm": [
+                -0.09700000000000131,
+                8.941
+              ],
+              "points": 9052,
+              "ringCount": 1,
+              "classification": "actual_path_outside"
+            },
+            {
+              "objectId": "motiv-2",
+              "type": "motif",
+              "issue": "Element ragt über die Gestaltungsfläche hinaus.",
+              "boxIssue": "Element ragt über die Gestaltungsfläche hinaus.",
+              "nativeActual": false,
+              "object": {
+                "id": "motiv-2",
+                "type": "motif",
+                "motif": "katalog-TR1-V2A-9x6-D5-motiv-2",
+                "x": 44.903,
+                "y": 51.646,
+                "w": 90,
+                "h": 0.442,
+                "rotation": 0,
+                "color": "#e1e4e5",
+                "templateOrigin": true,
+                "customerEditable": true
+              },
+              "resourceBounds": [
+                -0.097,
+                51.425,
+                90,
+                0.442
+              ],
+              "minimumClearanceMm": -0.09700000000000131,
+              "worstPointMm": [
+                -0.09700000000000131,
+                51.867000000000004
+              ],
+              "points": 9052,
+              "ringCount": 1,
+              "classification": "actual_path_outside"
+            }
+          ]
+        }
+      ],
+      "minimumClearanceMm": -0.09700000000000131
+    },
+    {
+      "id": "TR1-V2A-9x6-D9",
+      "jsonPath": "designs/edelstahl-gravur-retro1-90x60/TR1-V2A-9x6-D9/design.json",
+      "jsonSha256": "4ecae67b31c50c371ea1dd575c50f260bf4863780cfb80c6a8b277ba2de6d9ed",
+      "svgPath": "designs/edelstahl-gravur-retro1-90x60/TR1-V2A-9x6-D9/design.svg",
+      "svgSha256": "1a5925b12a6462a9d673d492567fc11067fd1e59ca1f9576db95fcccdd017004",
+      "sourceMm": [
+        90,
+        60
+      ],
+      "allReportedOccurrences": [
+        {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "sizeKey": "TS-Acryl-RT1-90X60-T30-SW",
+          "designId": "TR1-V2A-9x6-D9",
+          "issues": [
+            "motiv-1: Element ragt über die Kontur-Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "sizeKey": "TS-Acryl-RT1-120X80-T30-SW",
+          "designId": "TR1-V2A-9x6-D9",
+          "issues": [
+            "motiv-1: Element ragt über die Kontur-Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "sizeKey": "TS-Acryl-RT1-150X100-T30-SW",
+          "designId": "TR1-V2A-9x6-D9",
+          "issues": [
+            "motiv-1: Element ragt über die Kontur-Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "sizeKey": "TS-Acryl-RT1-180X120-T30-SW",
+          "designId": "TR1-V2A-9x6-D9",
+          "issues": [
+            "motiv-1: Element ragt über die Kontur-Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "sizeKey": "TS-Acryl-RT1-210X140-T30-SW",
+          "designId": "TR1-V2A-9x6-D9",
+          "issues": [
+            "motiv-1: Element ragt über die Kontur-Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "sizeKey": "TS-Acryl-RT1-240X160-T30-SW",
+          "designId": "TR1-V2A-9x6-D9",
+          "issues": [
+            "motiv-1: Element ragt über die Kontur-Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "sizeKey": "TS-Acryl-RT1-300X200-T30-SW",
+          "designId": "TR1-V2A-9x6-D9",
+          "issues": [
+            "motiv-1: Element ragt über die Kontur-Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-anthrazit",
+          "sizeKey": "TS-Acryl-RT1-90X60-T30-AN",
+          "designId": "TR1-V2A-9x6-D9",
+          "issues": [
+            "motiv-1: Element ragt über die Kontur-Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-anthrazit",
+          "sizeKey": "TS-Acryl-RT1-120X80-T30-AN",
+          "designId": "TR1-V2A-9x6-D9",
+          "issues": [
+            "motiv-1: Element ragt über die Kontur-Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-anthrazit",
+          "sizeKey": "TS-Acryl-RT1-150X100-T30-AN",
+          "designId": "TR1-V2A-9x6-D9",
+          "issues": [
+            "motiv-1: Element ragt über die Kontur-Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-anthrazit",
+          "sizeKey": "TS-Acryl-RT1-180X120-T30-AN",
+          "designId": "TR1-V2A-9x6-D9",
+          "issues": [
+            "motiv-1: Element ragt über die Kontur-Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-anthrazit",
+          "sizeKey": "TS-Acryl-RT1-210X140-T30-AN",
+          "designId": "TR1-V2A-9x6-D9",
+          "issues": [
+            "motiv-1: Element ragt über die Kontur-Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-anthrazit",
+          "sizeKey": "TS-Acryl-RT1-240X160-T30-AN",
+          "designId": "TR1-V2A-9x6-D9",
+          "issues": [
+            "motiv-1: Element ragt über die Kontur-Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-anthrazit",
+          "sizeKey": "TS-Acryl-RT1-300X200-T30-AN",
+          "designId": "TR1-V2A-9x6-D9",
+          "issues": [
+            "motiv-1: Element ragt über die Kontur-Gestaltungsfläche hinaus."
+          ]
+        }
+      ],
+      "occurrences": [
+        {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "sizeKey": "TS-Acryl-RT1-90X60-T30-SW",
+          "targetMm": [
+            90,
+            60
+          ],
+          "geometry": {
+            "width": 90,
+            "height": 60,
+            "shape": "contour",
+            "cornerRadiusMm": 0,
+            "outlinePath": "M0.0 6.173428920342275V53.826571079657725C3.270639468795707 54.11627191850371 5.80016306179823 56.34392038048222 5.80016306179823 60.0H84.19987221599331C84.19987221599331 56.28761710006356 86.7525027634274 54.114119976081696 90.0 53.826571079657725V6.173428920342275C86.72939580899765 5.883728081496315 84.19987221599331 3.65611489726237 84.19987221599331 0.0H5.80016306179823C5.80016306179823 3.712382899936472 3.247497236572599 5.885880023918304 0.0 6.173428920342275Z",
+            "holesMm": [
+              {
+                "x": 6,
+                "y": 30,
+                "diameterMm": 4
+              },
+              {
+                "x": 84,
+                "y": 30,
+                "diameterMm": 4
+              }
+            ],
+            "safeMarginMm": 0,
+            "holes": []
+          },
+          "objects": [
+            {
+              "objectId": "motiv-1",
+              "type": "motif",
+              "issue": "Element ragt über die Kontur-Gestaltungsfläche hinaus.",
+              "boxIssue": "Element ragt über die Kontur-Gestaltungsfläche hinaus.",
+              "nativeActual": false,
+              "object": {
+                "id": "motiv-1",
+                "type": "motif",
+                "motif": "katalog-TR1-V2A-9x6-D9-motiv-1",
+                "x": 14.856,
+                "y": 39.323,
+                "w": 23.599,
+                "h": 35.948,
+                "rotation": 0,
+                "color": "#e1e4e5",
+                "templateOrigin": true,
+                "customerEditable": true
+              },
+              "resourceBounds": [
+                3.056,
+                21.349,
+                23.599,
+                35.948
+              ],
+              "minimumClearanceMm": -0.12190272229615881,
+              "worstPointMm": [
+                4.643500000000001,
+                56.462
+              ],
+              "points": 43337,
+              "ringCount": 41,
+              "classification": "actual_path_outside"
+            }
+          ]
+        }
+      ],
+      "minimumClearanceMm": -0.12190272229615881
+    },
+    {
+      "id": "TR2-V2A-9x6-D15",
+      "jsonPath": "designs/edelstahl-gravur-retro2-91x61/TR2-V2A-9x6-D15/design.json",
+      "jsonSha256": "7e78c57680533c3ec7557575755cd2dad519cc8ea16942e76d8ae7e7187e0893",
+      "svgPath": "designs/edelstahl-gravur-retro2-91x61/TR2-V2A-9x6-D15/design.svg",
+      "svgSha256": "633ba61116cc01759c3c24dae711fdbc676d190a222a97ccdeb597cef59c67e9",
+      "sourceMm": [
+        90.6,
+        61.3
+      ],
+      "allReportedOccurrences": [
+        {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "sizeKey": "TS-Acryl-RT2-90X60-T30-SW",
+          "designId": "TR2-V2A-9x6-D15",
+          "issues": [
+            "motiv-2: Element ragt über die Kontur-Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "sizeKey": "TS-Acryl-RT2-120X80-T30-SW",
+          "designId": "TR2-V2A-9x6-D15",
+          "issues": [
+            "motiv-2: Element ragt über die Kontur-Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "sizeKey": "TS-Acryl-RT2-150X100-T30-SW",
+          "designId": "TR2-V2A-9x6-D15",
+          "issues": [
+            "motiv-2: Element ragt über die Kontur-Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "sizeKey": "TS-Acryl-RT2-180X120-T30-SW",
+          "designId": "TR2-V2A-9x6-D15",
+          "issues": [
+            "motiv-2: Element ragt über die Kontur-Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "sizeKey": "TS-Acryl-RT2-210X140-T30-SW",
+          "designId": "TR2-V2A-9x6-D15",
+          "issues": [
+            "motiv-2: Element ragt über die Kontur-Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "sizeKey": "TS-Acryl-RT2-240X160-T30-SW",
+          "designId": "TR2-V2A-9x6-D15",
+          "issues": [
+            "motiv-2: Element ragt über die Kontur-Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "sizeKey": "TS-Acryl-RT2-300X200-T30-SW",
+          "designId": "TR2-V2A-9x6-D15",
+          "issues": [
+            "motiv-2: Element ragt über die Kontur-Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-anthrazit",
+          "sizeKey": "TS-Acryl-RT2-90X60-T30-AN",
+          "designId": "TR2-V2A-9x6-D15",
+          "issues": [
+            "motiv-2: Element ragt über die Kontur-Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-anthrazit",
+          "sizeKey": "TS-Acryl-RT2-120X80-T30-AN",
+          "designId": "TR2-V2A-9x6-D15",
+          "issues": [
+            "motiv-2: Element ragt über die Kontur-Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-anthrazit",
+          "sizeKey": "TS-Acryl-RT2-150X100-T30-AN",
+          "designId": "TR2-V2A-9x6-D15",
+          "issues": [
+            "motiv-2: Element ragt über die Kontur-Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-anthrazit",
+          "sizeKey": "TS-Acryl-RT2-180X120-T30-AN",
+          "designId": "TR2-V2A-9x6-D15",
+          "issues": [
+            "motiv-2: Element ragt über die Kontur-Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-anthrazit",
+          "sizeKey": "TS-Acryl-RT2-210X140-T30-AN",
+          "designId": "TR2-V2A-9x6-D15",
+          "issues": [
+            "motiv-2: Element ragt über die Kontur-Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-anthrazit",
+          "sizeKey": "TS-Acryl-RT2-240X160-T30-AN",
+          "designId": "TR2-V2A-9x6-D15",
+          "issues": [
+            "motiv-2: Element ragt über die Kontur-Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-anthrazit",
+          "sizeKey": "TS-Acryl-RT2-300X200-T30-AN",
+          "designId": "TR2-V2A-9x6-D15",
+          "issues": [
+            "motiv-2: Element ragt über die Kontur-Gestaltungsfläche hinaus."
+          ]
+        }
+      ],
+      "occurrences": [
+        {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "sizeKey": "TS-Acryl-RT2-90X60-T30-SW",
+          "targetMm": [
+            90,
+            60
+          ],
+          "geometry": {
+            "width": 90,
+            "height": 60,
+            "shape": "contour",
+            "cornerRadiusMm": 0,
+            "outlinePath": "M0.9891851507436513 29.99999272136384C1.3485246404525242 30.410273790176404 2.8632820534767234 32.2084196507478 2.8632820534767234 32.69987498777513C2.0820202884005994 34.65239659702442 1.33187352724417 36.46433608596263 0.6791992783655587 38.45199440583417C-0.2458547270452982 41.26921070791795 -0.3006764006186131 44.9098113733796 0.9812476497445459 47.64715868665931C1.4215496496508422 48.587171529271444 1.2200076798199007 48.02381999119169 0.651541497103608 50.00410524628407C-0.17163027325113944 52.872439112315334 0.33545256840079674 55.75551910790492 2.4851042280643014 57.914133752752065C5.211477071483387 60.651163565634505 10.20342436694591 60.101993711962535 13.149577793607023 58.087771192192776C13.360962264678165 57.943237955827755 13.531565619499816 57.80075083313355 13.745066757503082 57.65886343341177C14.20565348218588 57.78099525286396 15.993037596219438 58.81953905207055 17.25785192220428 59.27240045192846C19.240533838614283 59.98215495093447 21.51274051371547 60.09793676244291 23.71608495791952 59.93488266957516C27.342429303591416 59.66631261137482 31.521505941107534 58.06434671844457 34.83602996972331 56.871321337094315C37.25079416278277 56.00207580523349 40.79222488664709 54.854770481078475 43.31726742692808 56.209050786379095C43.713789699097106 56.42167021903023 44.62561453617491 57.03758571175584 45.00001763889122 57.83888615861812C45.37438546382509 57.03758571175584 46.286210300902894 56.42167021903023 46.68276785085436 56.209050786379095C49.207810391135354 54.854770481078475 52.749241115001496 56.00207580523349 55.16397003027669 56.871321337094315C58.47852933667491 58.06434671844457 62.657570696408584 59.66631261137482 66.28391504208048 59.93488266957516C68.48725948628635 60.09793676244291 70.75946616138572 59.98215495093447 72.74214807779572 59.27240045192846C74.00696240378056 58.81953905207055 75.79434651781412 57.78099525286396 76.25493324249692 57.65886343341177C76.46843438050018 57.80075083313355 76.6390730131061 57.943237955827755 76.85045748417724 58.087771192192776C79.79657563305409 60.101993711962535 84.78852292851661 60.651163565634505 87.51489577193752 57.914133752752065C89.66454743160102 55.75551910790492 90.17163027325296 52.872439112315334 89.34845850289639 50.00410524628407C88.78002759796254 48.02381999119169 88.57845035034916 48.587171529271444 89.01875235025545 47.64715868665931C90.30067640061861 44.9098113733796 90.2458547270453 41.26921070791795 89.32080072163444 38.45199440583417C88.66812647275583 36.46433608596263 87.91801498938185 34.65239659702442 87.13671794652328 32.69987498777513C87.13671794652328 32.2084196507478 88.65151063732992 30.410273790176404 89.01081484925635 29.99999272136384C88.65151063732992 29.589711652551273 87.13671794652328 27.791565791979878 87.13671794652328 27.300110454952545C87.91801498938185 25.347588845703257 88.66812647275583 23.53564935676505 89.32080072163444 21.547991036893478C90.2458547270453 18.730774734809728 90.30067640061861 15.090174069348052 89.01875235025545 12.352826756068396C88.57845035034916 11.412813913456205 88.78002759796254 11.97616545153599 89.34845850289639 9.99588019644358C90.17163027325296 7.127546330412343 89.66454743160102 4.244466334822732 87.51489577193752 2.085886967797535C84.78852292851661 -0.6511781229068561 79.79657563305409 -0.10200826923485806 76.85045748417724 1.9122142505349018C76.6390730131061 2.0567474868998943 76.46843438050018 2.1992346095941286 76.25493324249692 2.34112200931591C75.79434651781412 2.2189901898637174 74.00696240378056 1.180446390657096 72.74214807779572 0.7275849907991869C70.75946616138572 0.01783049179317686 68.48725948628635 -0.09795131971523574 66.28391504208048 0.0651380509744115C62.657570696408584 0.33367283135285675 58.47852933667491 1.9356387242830806 55.16397003027669 3.1286641056333337C52.749241115001496 3.997909637494189 49.207810391135354 5.145214961649174 46.68276785085436 3.7909346563485826C46.286210300902894 3.578315223697416 45.37438546382509 2.9623997309718106 45.00001763889122 2.1610992841094685C44.62561453617491 2.9623997309718106 43.713789699097106 3.578315223697416 43.31726742692808 3.7909346563485826C40.79222488664709 5.145214961649174 37.25079416278277 3.997909637494189 34.83602996972331 3.1286641056333337C31.521505941107534 1.9356387242830806 27.342429303591416 0.33367283135285675 23.71608495791952 0.0651380509744115C21.51274051371547 -0.09795131971523574 19.240533838614283 0.01783049179317686 17.25785192220428 0.7275849907991869C15.993037596219438 1.180446390657096 14.20565348218588 2.2189901898637174 13.745066757503082 2.34112200931591C13.531565619499816 2.1992346095941286 13.360962264678165 2.0567474868998943 13.149577793607023 1.9122142505349018C10.20342436694591 -0.10200826923485806 5.211477071483387 -0.6511781229068561 2.4851042280643014 2.085886967797535C0.33545256840079674 4.244466334822732 -0.17163027325113944 7.127546330412343 0.651541497103608 9.99588019644358C1.2200076798199007 11.97616545153599 1.4215496496508422 11.412813913456205 0.9812476497445459 12.352826756068396C-0.3006764006186131 15.090174069348052 -0.2458547270452982 18.730774734809728 0.6791992783655587 21.547991036893478C1.33187352724417 23.53564935676505 2.0820202884005994 25.347588845703257 2.8632820534767234 27.300110454952545C2.8632820534767234 27.791565791979878 1.3485246404525242 29.589711652551273 0.9891851507436513 29.99999272136384Z",
+            "holesMm": [
+              {
+                "x": 7.994999999999997,
+                "y": 30,
+                "diameterMm": 4
+              },
+              {
+                "x": 82.005,
+                "y": 30,
+                "diameterMm": 4
+              }
+            ],
+            "safeMarginMm": 0,
+            "holes": []
+          },
+          "objects": [
+            {
+              "objectId": "motiv-2",
+              "type": "motif",
+              "issue": "Element ragt über die Kontur-Gestaltungsfläche hinaus.",
+              "boxIssue": "Element ragt über die Kontur-Gestaltungsfläche hinaus.",
+              "nativeActual": false,
+              "object": {
+                "id": "motiv-2",
+                "type": "motif",
+                "motif": "katalog-TR2-V2A-9x6-D15-motiv-2",
+                "x": 67.633,
+                "y": 48.488,
+                "w": 40.619,
+                "h": 21.747,
+                "rotation": 0,
+                "color": "#e1e4e5",
+                "templateOrigin": true,
+                "customerEditable": true
+              },
+              "resourceBounds": [
+                47.673,
+                38.43,
+                41.499,
+                22.218
+              ],
+              "minimumClearanceMm": -0.20077544596961014,
+              "worstPointMm": [
+                76.38685012891877,
+                57.99894780597123
+              ],
+              "points": 257774,
+              "ringCount": 200,
+              "classification": "actual_path_outside"
+            }
+          ]
+        }
+      ],
+      "minimumClearanceMm": -0.20077544596961014
+    },
+    {
+      "id": "TR-V2A-6.5x6.5-D803",
+      "jsonPath": "designs/edelstahl-gravur-65x65-rund/TR-V2A-6.5x6.5-D803/design.json",
+      "jsonSha256": "5a3b91c7518ed2508570e4a1ec711f6a223a8e56a1553e1eef3450a1b5244e22",
+      "svgPath": "designs/edelstahl-gravur-65x65-rund/TR-V2A-6.5x6.5-D803/design.svg",
+      "svgSha256": "b172c54b4daaca23d85d155355dd0d77dca6bb8ab5a46e6b2b05e221594d43ef",
+      "sourceMm": [
+        65,
+        65
+      ],
+      "allReportedOccurrences": [
+        {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "sizeKey": "TS-Acryl-R-85X85-T30-SW",
+          "designId": "TR-V2A-6.5x6.5-D803",
+          "issues": [
+            "name: Element ragt über die ovale Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "sizeKey": "TS-Acryl-R-120X120-T30-SW",
+          "designId": "TR-V2A-6.5x6.5-D803",
+          "issues": [
+            "name: Element ragt über die ovale Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "sizeKey": "TS-Acryl-R-160X160-T30-SW",
+          "designId": "TR-V2A-6.5x6.5-D803",
+          "issues": [
+            "name: Element ragt über die ovale Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "sizeKey": "TS-Acryl-R-200X200-T30-SW",
+          "designId": "TR-V2A-6.5x6.5-D803",
+          "issues": [
+            "name: Element ragt über die ovale Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-anthrazit",
+          "sizeKey": "TS-Acryl-R-85X85-T30-AN",
+          "designId": "TR-V2A-6.5x6.5-D803",
+          "issues": [
+            "name: Element ragt über die ovale Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-anthrazit",
+          "sizeKey": "TS-Acryl-R-120X120-T30-AN",
+          "designId": "TR-V2A-6.5x6.5-D803",
+          "issues": [
+            "name: Element ragt über die ovale Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-anthrazit",
+          "sizeKey": "TS-Acryl-R-160X160-T30-AN",
+          "designId": "TR-V2A-6.5x6.5-D803",
+          "issues": [
+            "name: Element ragt über die ovale Gestaltungsfläche hinaus."
+          ]
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-anthrazit",
+          "sizeKey": "TS-Acryl-R-200X200-T30-AN",
+          "designId": "TR-V2A-6.5x6.5-D803",
+          "issues": [
+            "name: Element ragt über die ovale Gestaltungsfläche hinaus."
+          ]
+        }
+      ],
+      "occurrences": [
+        {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "sizeKey": "TS-Acryl-R-85X85-T30-SW",
+          "targetMm": [
+            85,
+            85
+          ],
+          "geometry": {
+            "width": 85,
+            "height": 85,
+            "shape": "ellipse",
+            "cornerRadiusMm": 0,
+            "safeMarginMm": 0,
+            "holes": []
+          },
+          "objects": [
+            {
+              "objectId": "text-1",
+              "type": "text",
+              "issue": "Element ragt über die ovale Gestaltungsfläche hinaus.",
+              "boxIssue": "Element ragt über die ovale Gestaltungsfläche hinaus.",
+              "nativeActual": false,
+              "object": {
+                "id": "text-1",
+                "type": "text",
+                "text": "HARTMANN",
+                "font": "Bebas Neue",
+                "size": 15.588,
+                "textAnchor": "middle",
+                "letterSpacing": 0,
+                "lineHeight": 18.70523076923077,
+                "x": 14.901,
+                "y": 46.326,
+                "w": 52.703027999999996,
+                "h": 18.705599999999997,
+                "rotation": -90,
+                "color": "#e1e4e5",
+                "bold": false,
+                "templateOrigin": true,
+                "customerEditable": true,
+                "fieldKey": "name",
+                "required": true
+              },
+              "minimumClearanceMm": -1.8298683966108222,
+              "worstPointMm": [
+                9.445199999999996,
+                72.038406
+              ],
+              "points": 22985,
+              "ringCount": 11,
+              "classification": "actual_path_outside"
+            }
+          ]
+        }
+      ],
+      "minimumClearanceMm": -1.8298683966108222
+    }
+  ]
+}

@@ -1,4 +1,6 @@
 import {shopGalleryModel} from './shop-gallery-model.mjs';
+import {createConfiguratorModuleManagement} from './configurator-module-http.mjs';
+import {customerReadMemo} from './customer-read-scope.mjs';
 import {SIGN_PLACEMENT_FAMILIES} from '../configurator/variant-m/mounting-dimensions.mjs';
 import {createAcrylShopService} from './acryl-shop-service.mjs';
 import {createDesignCorrections} from './design-corrections.mjs';
@@ -54,6 +56,8 @@ import {initialFormCustomerState,resolveFormCustomer,customerPhotoMarkup} from '
 import {prepareCustomerPhoto,MAX_CUSTOMER_PHOTO} from './customer-photo.mjs';
 import {photoResolutionNote,resolutionTargetDpi} from './acrylic-photo-resolution.mjs';
 import {clientOutputSettings,productionMirror} from './output-orientation.mjs';
+import {createMotifSearchStats} from './motif-search-stats.mjs';
+import {motifSearchPreviewGroup} from './motif-search-preview-products.mjs';
 import {photoPlacement} from '../configurator/variant-m/photo-position-model.mjs';
 import {prepareFormReview} from './form-review-snapshot.mjs';
 import {createFormPrintProof,formPrintSettings,formPrintKey,FORM_PRINT_RECIPE} from './form-print-proof.mjs';
@@ -80,6 +84,7 @@ import {createCatalogStructure} from './catalog-structure.mjs';
 import {designDashboardWithFit,designFile,forgetKatalog} from './design-dashboard.mjs';
 import {targetDesignPreview,patchDesignWithTargetReview} from './design-target-preview.mjs';
 import {designPreviewGlyphs,previewWarningHeader,PREVIEW_WARNING_HEADER} from './design-preview-glyphs.mjs';
+import {createKatalogWorker,writeJsonResult} from './katalog-worker-client.mjs';
 import {createDesignEditor} from './design-editor.mjs';
 import {createDesignVariants} from './design-variants.mjs';
 import {katalogPath} from './katalog-source.mjs';
@@ -150,12 +155,42 @@ function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConvert
   const verifyForm=document=>{const d=verifyFormDesignSources(verifyFormSource(document,contours),assets,formFonts);productionProfiles.resolve(d);return d;};
   const repository=createProductRepository({filename,tenantId,catalogOverview:d=>isFormProduct(d)?formOverview(d):productOverview(d),validateDocument:value=>{const document=validateProductDocument(value);if(isFormProduct(document)){if(document.profileAssignments)profiles.resolve(document);return verifyForm(document);}profiles.resolve(document);assets.validateDocument(document);productionProfiles.resolve(document);return document;},snapshotMetadata:document=>isFormProduct(document)?{...(document.profileAssignments?{profiles:profiles.resolve(document)}:{}),form:{contourId:document.form.contourId,geometrySha256:document.form.geometrySha256},readiness:formReadiness(document),productionProfile:productionProfiles.resolve(document)}:({profiles:profiles.resolve(document),productionProfile:productionProfiles.resolve(document)})});
   if(ownsBundled&&!repository.firstId())repository.create(seed);
+  // Paket 1c: Designliste/Zielvorschau/Designdateien in einem Arbeiter-Thread (nur mit GRAVURU_KATALOG_WORKER=enabled; :memory: hat keine gemeinsame Datei).
+  const katalogWorker=ownsBundled&&process.env.GRAVURU_KATALOG_WORKER==='enabled'&&filename!==':memory:'?createKatalogWorker({dbFile:filename,tenantId,available:formFonts,cacheFile:path.join(path.dirname(filename),'katalog-worker-cache.json.gz'),maxRssMb:Number(process.env.GRAVURU_KATALOG_WORKER_MAX_RSS_MB)||2200,logger:entry=>console.warn(JSON.stringify(entry))}):null;
+  if(katalogWorker)console.warn(JSON.stringify({event:'katalog_worker_ready',pid:process.pid,warm:process.env.GRAVURU_KATALOG_WORKER_WARM==='enabled'}));
+  // Paket 1c-2: kurz nach dem Start alle Linien im Arbeiter vorrechnen – nur mit GRAVURU_KATALOG_WORKER_WARM=enabled
+  // (bewusst getrennt einschaltbar, bis der Speicherbedarf auf dem Server gemessen ist).
+  const katalogWarmTimer=katalogWorker&&process.env.GRAVURU_KATALOG_WORKER_WARM==='enabled'?setTimeout(()=>{
+    let root;try{root=katalogRoot();}catch{return;}
+    katalogWorker.call('designs.warm',root,{}).then(result=>{let lines=null;try{lines=JSON.parse(result.bytes).lines;}catch{}console.warn(JSON.stringify({event:'katalog_worker_warm',lines}));},()=>{});
+  },Number(process.env.GRAVURU_KATALOG_WORKER_WARM_DELAY_MS||20000)):null;
+  katalogWarmTimer?.unref();
   const families=createProductFamilies({filename,repository,tenantId});
+  let moduleManagement=null,moduleSourceRegistry=null,moduleManagementFilename=filename;
+  const configuredModules=()=>moduleManagement??=createConfiguratorModuleManagement({filename:moduleManagementFilename,repository,tenantId});
+  // The private gallery installs its dynamic registry before serving requests.
+  // Both merchant surfaces share one service, not merely rows whose source and
+  // scope identifiers could otherwise refer to different catalogues.
+  function configureModuleManagement({filename:requestedFilename=filename,sourceRegistry}={}){
+    // Private host configuration only: a separate module database avoids adding
+    // unknown files to the existing gallery data directory. No HTTP request can
+    // choose this path, and its first registration is fixed for this workshop.
+    if(!(requestedFilename===filename||typeof requestedFilename==='string'&&path.isAbsolute(requestedFilename)&&path.resolve(requestedFilename)===requestedFilename)||!sourceRegistry||['targets','offeringFor','scopes'].some(key=>typeof sourceRegistry[key]!=='function'))fail(422,'module_management_registry','Die Modulverwaltung benötigt eine feste private Ablage und die vorhandene Galeriezuordnung.');
+    if(moduleManagement){
+      if(moduleSourceRegistry===sourceRegistry&&moduleManagementFilename===requestedFilename)return moduleManagement;
+      fail(409,'module_management_initialized','Die Modulverwaltung wurde bereits mit einer anderen Quelle geöffnet. Den Galerieanschluss vor den ersten Anfragen konfigurieren.');
+    }
+    moduleManagement=createConfiguratorModuleManagement({filename:requestedFilename,repository,tenantId,sourceRegistry});
+    moduleManagementFilename=requestedFilename;
+    moduleSourceRegistry=sourceRegistry;
+    return moduleManagement;
+  }
   // Katalogseite liest Linien/Hauptprodukte aus dem Katalog-Repo, sobald eines verbunden ist (sonst eingebauter Stand).
   const catalogStructure=createCatalogStructure({filename,tenantId,katalogDir:()=>{if(!ownsBundled)return null;const root=katalogDir===undefined?katalogPath():katalogDir;return root||null;}});
   // B1: Klarnamen für Kategorie-Kennungen (nur Anzeige) und Kundenstatus je Konfi.
   const labelCategories=ids=>categoryLabels(ids,families.labelSources());
   const konfis=createKonfiStatus({filename,tenantId});
+  const motifSearchStats=createMotifSearchStats({filename,tenantId});
   const assertKonfiAvailable=id=>{if(konfis.paused(id))fail(423,'konfi_paused',PAUSED_MESSAGE);};
   const aiJobs=createAiDesignJobs({filename,repository,config:aiDesign?.config,provider:aiDesign?.provider,imageProvider:aiDesign?.imageProvider,assets,tenantId});
   const aiBatches=createAiBatchJobs({filename,repository,aiJobs,tenantId});
@@ -214,10 +249,33 @@ function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConvert
   // Ein fest angefragter Produktstand (id + Revision) ist unveränderlich: Dokument, gespeicherte Profilauswahl
   // (metadata.profiles), Materialbild und Motivquellen hängen nur daran. Der Shop-Einstieg baut das Modell sonst
   // bei jeder Anfrage neu (Modell, jede Designgrafik, Sichern) – live ~11 MB je Aufbau. Aufrufer erhalten eine Kopie.
-  const modelCache=new Map(),MODEL_CACHE_SIZE=8;
+  const modelCache=new Map(),MODEL_CACHE_SIZE=8,publicPreviewModels=new WeakMap();
+  // Only the public original-image reader needs a fingerprint, never a mutable
+  // 12 MB copy. The existing bounded native cache owns these JSON values.
+  function publicPreviewModel(id,version){
+    if(!Number.isSafeInteger(version)||version<1)fail(422,'public_preview_revision','Eine feste Produktrevision ist erforderlich.');
+    assertKonfiAvailable(id);
+    const record=repository.get(id,{revision:version}),key=record.id+':'+record.revision;
+    if(isFormProduct(record.document))fail(422,'public_preview_model','Dieses Modell verwendet den privaten Vorschauweg.');
+    if(!modelCache.has(key)){
+      const built=model(id,version);
+      // The synchronous model memo can outlive eviction from the bounded LRU.
+      if(!modelCache.has(key)){modelCache.set(key,structuredClone(built));while(modelCache.size>MODEL_CACHE_SIZE)modelCache.delete(modelCache.keys().next().value);}
+    }
+    let cached=modelCache.get(key);
+    if(cached.configuration.publishedRevision!==record.publishedRevision){cached={...cached,configuration:{id:record.id,revision:record.revision,publishedRevision:record.publishedRevision}};modelCache.set(key,cached);}
+    let proof=publicPreviewModels.get(cached);
+    if(!proof){
+      const seen=new WeakSet(),freeze=value=>{if(value&&typeof value==='object'&&!seen.has(value)){seen.add(value);for(const child of Object.values(value))freeze(child);Object.freeze(value);}return value;};
+      freeze(cached);proof=Object.freeze({model:cached,digest:createHash('sha256').update(JSON.stringify(cached)).digest('hex')});publicPreviewModels.set(cached,proof);
+    }
+    return proof;
+  }
   function model(id,version){
     const pinned=version!==null&&version!==undefined;
     const record=repository.get(id,{revision:revision(version)});
+    // Unpinned editor models also use mutable profile-library selections.
+    return customerReadMemo(pinned?record:null,'customer-model',()=>{
     const key=pinned&&!isFormProduct(record.document)?record.id+':'+record.revision:null;
     if(key&&modelCache.has(key)){
       const hit=modelCache.get(key);modelCache.delete(key);modelCache.set(key,hit);
@@ -226,6 +284,7 @@ function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConvert
     const built=buildModel(record,version);
     if(key){modelCache.set(key,structuredClone(built));while(modelCache.size>MODEL_CACHE_SIZE)modelCache.delete(modelCache.keys().next().value);}
     return built;
+    });
   }
   function buildModel(record,version){
     if(isFormProduct(record.document)){
@@ -257,8 +316,9 @@ function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConvert
     // Existing immutable products predate the explicit execution tag. Their
     // stored catalogue category is provenance; runtime IDs/titles are not.
     if(!universal.productExecution){const choices=record.document.categoryIds.filter(id=>id.startsWith('familie-')).map(id=>familyExecution(id.slice(8))).filter(Boolean);if(choices.length===1)universal.productExecution=choices[0];}
-    // Chris/Claude #139, 03.11.: deploy stakes now; memorial UI awaits the price round.
-    if(universal.productExecution?.kind==='memorial')universal.productExecution={...universal.productExecution,enabled:false};
+    // #85, 04.11.: the four source-bound slate families now have confirmed prices.
+    // Historical memorials retain the prior presentation until their migration.
+    if(universal.productExecution?.kind==='memorial')universal.productExecution={...universal.productExecution,enabled:universal.photoDesignPricing===true&&universal.productExecution.sourceFamilyId.startsWith('schiefer-tafeln-')};
     universal.profile.id=record.id;
     universal.profile.binding={kind:'local-review',productId:record.id};
     universal.profile.revision=`${record.id}:${record.revision}`;
@@ -355,6 +415,7 @@ function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConvert
   async function handle(req,res,url){
     try{
       const pathname=url.pathname,method=req.method;
+      if(katalogWorker&&method!=='GET'&&(pathname.startsWith('/api/workshop/designs')||pathname==='/api/workshop/catalog-structure')){katalogWorker.invalidate();const again=()=>katalogWorker.invalidate();res.once('finish',again);res.once('close',again);}
       const accountDraft=pathname.match(/^\/api\/workshop\/account-drafts(?:\/(cdraft_[a-f0-9-]{36})(?:\/(preview\.png)|\/photos\/([A-Za-z0-9_-]{1,64}))?)?$/);
       if(accountDraft)return await accountDraftRoute(req,res,url,accountDraft);
       if(!['GET','POST','PATCH'].includes(method)&&!(method==='PUT'&&pathname==='/api/workshop/designs/editor'))fail(405,'method_not_allowed','Diese Aktion wird nicht unterstützt.');
@@ -381,8 +442,35 @@ function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConvert
         const file=customerDrafts.customerDownloads.download(customerFile[1],principal);
         return res.writeHead(200,{'Content-Type':file.mime,'Content-Length':file.bytes.length,'Content-Disposition':'attachment; filename="'+customerFile[1]+(file.mime==='application/zip'?'.zip':'.pdf')+'"','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'}).end(file.bytes);
       }
+      if(pathname==='/api/workshop/motif-search-events'){
+        if(method!=='POST')fail(405,'method_not_allowed','Suchereignisse benötigen POST.');
+        const input=await body(req,1024);
+        if(Object.keys(input).some(k=>!['productId','query','resultCount','searchKind'].includes(k))||(input.searchKind!==undefined&&!['motif','design'].includes(input.searchKind)))fail(422,'motif_search_invalid','Ungültige Suchanfrage.');
+        let product;try{product=repository.get(input.productId);}catch(error){
+          const group=error.code==='not_found'?motifSearchPreviewGroup(filename,tenantId,input.productId):null;
+          if(!group)throw error;
+          return json(res,200,{accepted:motifSearchStats.record({query:input.query,resultCount:input.resultCount,searchKind:input.searchKind,group,source:'preview'})});
+        }
+        if(product.status==='archived'||product.document.kind!=='product')fail(404,'product_missing','Produkt nicht verfügbar.');
+        assertKonfiAvailable(product.id);
+        const categories=product.document.categoryIds||[],family=categories.find(id=>id.startsWith('familie-'));
+        const group=(family?labelCategories([family])[family]?.label:null)||product.document.name.replace(/\s*[·–-]\s*\d+\s*[×x]\s*\d+\s*cm.*$/u,'');
+        const source=konfis.get(product.id).status==='released'?'shop':'preview';
+        return json(res,200,{accepted:motifSearchStats.record({query:input.query,resultCount:input.resultCount,searchKind:input.searchKind,group,source})});
+      }
       const merchantSession=verifySession?verifySession(req.headers.authorization,'merchant'):null;
       if(method!=='GET'&&!sameToken(req.headers['x-gravuru-csrf'],csrfToken))fail(403,'invalid_session','Bitte die Werkstatt neu laden.');
+      if(pathname==='/api/workshop/configurator-modules/sources'){
+        if(method!=='GET'||[...url.searchParams.keys()].some(key=>key!=='key'))fail(422,'module_query','Bitte konkrete Produktquellen auswählen.');
+        return json(res,200,{sources:configuredModules().groups.sources({sourceKeys:url.searchParams.getAll('key')})});
+      }
+      if(pathname==='/api/workshop/configurator-modules'){
+        if(url.search)fail(422,'module_query','Diese Verwaltung benötigt keine URL-Parameter.');
+        if(method==='GET')return json(res,200,configuredModules().overview());
+        if(method!=='POST')fail(405,'method_not_allowed','Bitte die angezeigte Verwaltungsaktion verwenden.');
+        return json(res,200,configuredModules().dispatch(await body(req),{actor:merchantSession?.subject||localActor}));
+      }
+      if(pathname==='/api/workshop/motif-search-stats'){if(method!=='GET')fail(405,'method_not_allowed','Auswertungen werden nur gelesen.');return json(res,200,motifSearchStats.report(Object.fromEntries(url.searchParams)));}
       if(pathname==='/api/workshop/customer-vector-logo/preview'){
         if(method!=='POST'||url.search)fail(405,'method_not_allowed','Die Logo-Vorschau benötigt POST.');
         const input=await body(req,VECTOR_LOGO_REQUEST_BYTES);
@@ -424,6 +512,7 @@ function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConvert
       if(pathname==='/api/workshop/designs/target-preview'){
    if(!ownsBundled)fail(503,'katalog_missing','Katalog nicht verfügbar.');
    if(req.method!=='GET')fail(405,'method','GET verwenden.');
+   if(katalogWorker){const root=katalogRoot();return writeJsonResult(res,200,await katalogWorker.call('designs.targetPreview',root,Object.fromEntries(url.searchParams)));}
    return json(res,200,await targetDesignPreview(katalogRoot(),Object.fromEntries(url.searchParams),{available:formFonts}));
   }
   if(pathname==='/api/workshop/designs'||pathname==='/api/workshop/designs/svg'){
@@ -431,14 +520,17 @@ function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConvert
         const root=katalogRoot(),q=url.searchParams;
         if(pathname==='/api/workshop/designs/svg'){
           if(method!=='GET')fail(405,'method_not_allowed','Designdateien nur lesen.');
-          const {file,type}=designFile(root,{reihe:q.get('reihe'),bestand:q.get('bestand'),id:q.get('id')||'',file:q.get('file')||'design.svg'});
-          const preview=type.startsWith('image/svg+xml')?await designPreviewGlyphs({file,root,available:formFonts}):{bytes:fs.readFileSync(file),warnings:[]};
+          const request={reihe:q.get('reihe'),bestand:q.get('bestand'),id:q.get('id')||'',file:q.get('file')||'design.svg'};
+          let type,preview;
+          if(katalogWorker){const result=await katalogWorker.call('designs.svg',root,request);type=result.type;preview=result;}
+          else{const {file,type:fileType}=designFile(root,request);type=fileType;preview=type.startsWith('image/svg+xml')?await designPreviewGlyphs({file,root,available:formFonts}):{bytes:fs.readFileSync(file),warnings:[]};}
           const bytes=preview.bytes,warning=previewWarningHeader(preview.warnings);
           return res.writeHead(200,{'Content-Type':type,'Content-Length':bytes.length,'Cache-Control':'no-store','X-Content-Type-Options':'nosniff','Content-Disposition':'inline','Content-Security-Policy':"default-src 'none'; style-src 'unsafe-inline'; img-src data:",...(warning?{[PREVIEW_WARNING_HEADER]:warning}:{})}).end(bytes);
         }
         if(method==='GET'){
           const startDesigns=q.get('startDesigns');
           if(startDesigns!==null&&!['true','false'].includes(startDesigns))fail(422,'designs_query','startDesigns ist true oder false.');
+          if(katalogWorker)return writeJsonResult(res,200,await katalogWorker.call('designs.list',root,{linie:q.get('linie'),reihe:q.get('reihe'),material:q.get('material'),status:q.get('status'),freigabe:q.get('freigabe'),bestand:q.get('bestand'),startDesigns:startDesigns==='true'},{acceptGzip:/\bgzip\b/.test(String(req.headers['accept-encoding']||''))}));
           return jsonMaybeGzip(req,res,200,await designDashboardWithFit(root,{linie:q.get('linie'),reihe:q.get('reihe'),material:q.get('material'),status:q.get('status'),freigabe:q.get('freigabe'),bestand:q.get('bestand'),startDesigns:startDesigns==='true',repository,available:formFonts}));
         }
         if(method==='PATCH')return json(res,200,await patchDesignWithTargetReview(root,await body(req,16384),{actor:merchantSession?.subject||localActor,available:formFonts}));
@@ -1108,7 +1200,7 @@ function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConvert
       if(!res.headersSent)json(res,status,{error:{code:error.code||'invalid_product',message:status===500?'Speichern ist momentan nicht möglich.':error.message,actualRevision:error.actualRevision}});
     }
   }
-  return {tenantId,catalogStructure,acrylShop,corrections,families,sessionContext:shopifySessions?Object.freeze({mode:shopifySessions.mode,shopDomain:shopifySessions.shopDomain,clientId:shopifySessions.clientId}):null,repository,aiJobs,aiBatches,variants,batchJobs,variantBatchJobs,profiles,productionProfiles,assets,fonts,contours,customerDrafts,exportJobs,exportWorker,orderIntake,handle,model:customerModelFor,galleryModel:(id,version)=>shopGalleryModel(repository.get(id,{revision:revision(version)})),internalModel:model,pausedPage,labelCategories,konfis,defaultId,close:()=>{catalogStructure.close();acrylShop.close();corrections.close();konfis.close();families.close();aiBatches.close();aiJobs.close();variantBatchJobs.close();batchJobs.close();exportWorker.close();exportJobs.close();variants.close();repository.close();profiles.close();productionProfiles.close();assets.close();fonts.close();contours.close();customerDrafts.close();}};
+  return {tenantId,katalogWorker,configureModuleManagement,catalogStructure,acrylShop,corrections,families,sessionContext:shopifySessions?Object.freeze({mode:shopifySessions.mode,shopDomain:shopifySessions.shopDomain,clientId:shopifySessions.clientId}):null,repository,aiJobs,aiBatches,variants,batchJobs,variantBatchJobs,profiles,productionProfiles,assets,fonts,contours,customerDrafts,exportJobs,exportWorker,orderIntake,handle,model:customerModelFor,publicPreviewModel,galleryModel:(id,version)=>shopGalleryModel(repository.get(id,{revision:revision(version)})),internalModel:model,editorPreview,pausedPage,labelCategories,konfis,defaultId,close:()=>{if(katalogWarmTimer)clearTimeout(katalogWarmTimer);katalogWorker?.close();moduleManagement?.close();motifSearchStats.close();catalogStructure.close();acrylShop.close();corrections.close();konfis.close();families.close();aiBatches.close();aiJobs.close();variantBatchJobs.close();batchJobs.close();exportWorker.close();exportJobs.close();variants.close();repository.close();profiles.close();productionProfiles.close();assets.close();fonts.close();contours.close();customerDrafts.close();}};
 }
 
 /** Loopback preview; optional test session gate is not a public deployment.

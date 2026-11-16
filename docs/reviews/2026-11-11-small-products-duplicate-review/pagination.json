@@ -1,0 +1,1629 @@
+{
+  "inventory": [
+    {
+      "readAt": "2026-11-11T20:13:47.993Z",
+      "after": null,
+      "count": 50,
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "eyJsYXN0X2lkIjoxNjAxNTU4OTQ3NDY4NCwibGFzdF92YWx1ZSI6IjE2MDE1NTg5NDc0Njg0In0="
+      },
+      "allCount": {
+        "count": 1519,
+        "precision": "EXACT"
+      }
+    },
+    {
+      "readAt": "2026-11-11T20:13:57.963Z",
+      "after": "eyJsYXN0X2lkIjoxNjAxNTU4OTQ3NDY4NCwibGFzdF92YWx1ZSI6IjE2MDE1NTg5NDc0Njg0In0=",
+      "count": 50,
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "eyJsYXN0X2lkIjoxNjA3Nzc5OTgxNzU5NiwibGFzdF92YWx1ZSI6IjE2MDc3Nzk5ODE3NTk2In0="
+      },
+      "allCount": {
+        "count": 1519,
+        "precision": "EXACT"
+      }
+    },
+    {
+      "readAt": "2026-11-11T20:13:59.787Z",
+      "after": "eyJsYXN0X2lkIjoxNjA3Nzc5OTgxNzU5NiwibGFzdF92YWx1ZSI6IjE2MDc3Nzk5ODE3NTk2In0=",
+      "count": 50,
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "eyJsYXN0X2lkIjoxNjA3ODI4OTEwOTM3MiwibGFzdF92YWx1ZSI6IjE2MDc4Mjg5MTA5MzcyIn0="
+      },
+      "allCount": {
+        "count": 1519,
+        "precision": "EXACT"
+      }
+    },
+    {
+      "readAt": "2026-11-11T20:14:03.450Z",
+      "after": "eyJsYXN0X2lkIjoxNjA3ODI4OTEwOTM3MiwibGFzdF92YWx1ZSI6IjE2MDc4Mjg5MTA5MzcyIn0=",
+      "count": 50,
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "eyJsYXN0X2lkIjoxNjA3ODI5Mjg3NzY5MiwibGFzdF92YWx1ZSI6IjE2MDc4MjkyODc3NjkyIn0="
+      },
+      "allCount": {
+        "count": 1519,
+        "precision": "EXACT"
+      }
+    },
+    {
+      "readAt": "2026-11-11T20:14:05.780Z",
+      "after": "eyJsYXN0X2lkIjoxNjA3ODI5Mjg3NzY5MiwibGFzdF92YWx1ZSI6IjE2MDc4MjkyODc3NjkyIn0=",
+      "count": 50,
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "eyJsYXN0X2lkIjoxNjA3ODcyNDQzMjI1MiwibGFzdF92YWx1ZSI6IjE2MDc4NzI0NDMyMjUyIn0="
+      },
+      "allCount": {
+        "count": 1519,
+        "precision": "EXACT"
+      }
+    },
+    {
+      "readAt": "2026-11-11T20:14:07.312Z",
+      "after": "eyJsYXN0X2lkIjoxNjA3ODcyNDQzMjI1MiwibGFzdF92YWx1ZSI6IjE2MDc4NzI0NDMyMjUyIn0=",
+      "count": 50,
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "eyJsYXN0X2lkIjoxNjA4MTMxMjg3NDg3NiwibGFzdF92YWx1ZSI6IjE2MDgxMzEyODc0ODc2In0="
+      },
+      "allCount": {
+        "count": 1519,
+        "precision": "EXACT"
+      }
+    },
+    {
+      "readAt": "2026-11-11T20:14:09.018Z",
+      "after": "eyJsYXN0X2lkIjoxNjA4MTMxMjg3NDg3NiwibGFzdF92YWx1ZSI6IjE2MDgxMzEyODc0ODc2In0=",
+      "count": 50,
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "eyJsYXN0X2lkIjoxNjA4MTMzOTMxODY1MiwibGFzdF92YWx1ZSI6IjE2MDgxMzM5MzE4NjUyIn0="
+      },
+      "allCount": {
+        "count": 1519,
+        "precision": "EXACT"
+      }
+    },
+    {
+      "readAt": "2026-11-11T20:14:10.930Z",
+      "after": "eyJsYXN0X2lkIjoxNjA4MTMzOTMxODY1MiwibGFzdF92YWx1ZSI6IjE2MDgxMzM5MzE4NjUyIn0=",
+      "count": 50,
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "eyJsYXN0X2lkIjoxNjA4MzczNjMzMDYyMCwibGFzdF92YWx1ZSI6IjE2MDgzNzM2MzMwNjIwIn0="
+      },
+      "allCount": {
+        "count": 1519,
+        "precision": "EXACT"
+      }
+    },
+    {
+      "readAt": "2026-11-11T20:14:12.730Z",
+      "after": "eyJsYXN0X2lkIjoxNjA4MzczNjMzMDYyMCwibGFzdF92YWx1ZSI6IjE2MDgzNzM2MzMwNjIwIn0=",
+      "count": 50,
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "eyJsYXN0X2lkIjoxNjA4NjMzMTg4MzkwMCwibGFzdF92YWx1ZSI6IjE2MDg2MzMxODgzOTAwIn0="
+      },
+      "allCount": {
+        "count": 1519,
+        "precision": "EXACT"
+      }
+    },
+    {
+      "readAt": "2026-11-11T20:14:14.726Z",
+      "after": "eyJsYXN0X2lkIjoxNjA4NjMzMTg4MzkwMCwibGFzdF92YWx1ZSI6IjE2MDg2MzMxODgzOTAwIn0=",
+      "count": 50,
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "eyJsYXN0X2lkIjoxNjA4NjMzOTU1MTYxMiwibGFzdF92YWx1ZSI6IjE2MDg2MzM5NTUxNjEyIn0="
+      },
+      "allCount": {
+        "count": 1519,
+        "precision": "EXACT"
+      }
+    },
+    {
+      "readAt": "2026-11-11T20:14:16.423Z",
+      "after": "eyJsYXN0X2lkIjoxNjA4NjMzOTU1MTYxMiwibGFzdF92YWx1ZSI6IjE2MDg2MzM5NTUxNjEyIn0=",
+      "count": 50,
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "eyJsYXN0X2lkIjoxNjA4NjQ3NTU3MTU4MCwibGFzdF92YWx1ZSI6IjE2MDg2NDc1NTcxNTgwIn0="
+      },
+      "allCount": {
+        "count": 1519,
+        "precision": "EXACT"
+      }
+    },
+    {
+      "readAt": "2026-11-11T20:14:31.543Z",
+      "after": "eyJsYXN0X2lkIjoxNjA4NjQ3NTU3MTU4MCwibGFzdF92YWx1ZSI6IjE2MDg2NDc1NTcxNTgwIn0=",
+      "count": 50,
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "eyJsYXN0X2lkIjoxNjA5MzA5Njg3MDI2OCwibGFzdF92YWx1ZSI6IjE2MDkzMDk2ODcwMjY4In0="
+      },
+      "allCount": {
+        "count": 1519,
+        "precision": "EXACT"
+      }
+    },
+    {
+      "readAt": "2026-11-11T20:14:32.886Z",
+      "after": "eyJsYXN0X2lkIjoxNjA5MzA5Njg3MDI2OCwibGFzdF92YWx1ZSI6IjE2MDkzMDk2ODcwMjY4In0=",
+      "count": 50,
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "eyJsYXN0X2lkIjoxNjA5MzExNDUzMjIyMCwibGFzdF92YWx1ZSI6IjE2MDkzMTE0NTMyMjIwIn0="
+      },
+      "allCount": {
+        "count": 1519,
+        "precision": "EXACT"
+      }
+    },
+    {
+      "readAt": "2026-11-11T20:14:34.844Z",
+      "after": "eyJsYXN0X2lkIjoxNjA5MzExNDUzMjIyMCwibGFzdF92YWx1ZSI6IjE2MDkzMTE0NTMyMjIwIn0=",
+      "count": 50,
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "eyJsYXN0X2lkIjoxNjA5MzEzMjAzMDMzMiwibGFzdF92YWx1ZSI6IjE2MDkzMTMyMDMwMzMyIn0="
+      },
+      "allCount": {
+        "count": 1519,
+        "precision": "EXACT"
+      }
+    },
+    {
+      "readAt": "2026-11-11T20:14:36.579Z",
+      "after": "eyJsYXN0X2lkIjoxNjA5MzEzMjAzMDMzMiwibGFzdF92YWx1ZSI6IjE2MDkzMTMyMDMwMzMyIn0=",
+      "count": 50,
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "eyJsYXN0X2lkIjoxNjExMzA0NDQ1NTgwNCwibGFzdF92YWx1ZSI6IjE2MTEzMDQ0NDU1ODA0In0="
+      },
+      "allCount": {
+        "count": 1519,
+        "precision": "EXACT"
+      }
+    },
+    {
+      "readAt": "2026-11-11T20:14:38.052Z",
+      "after": "eyJsYXN0X2lkIjoxNjExMzA0NDQ1NTgwNCwibGFzdF92YWx1ZSI6IjE2MTEzMDQ0NDU1ODA0In0=",
+      "count": 50,
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "eyJsYXN0X2lkIjoxNjExMzA0ODc4MTE4MCwibGFzdF92YWx1ZSI6IjE2MTEzMDQ4NzgxMTgwIn0="
+      },
+      "allCount": {
+        "count": 1519,
+        "precision": "EXACT"
+      }
+    },
+    {
+      "readAt": "2026-11-11T20:14:39.833Z",
+      "after": "eyJsYXN0X2lkIjoxNjExMzA0ODc4MTE4MCwibGFzdF92YWx1ZSI6IjE2MTEzMDQ4NzgxMTgwIn0=",
+      "count": 50,
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "eyJsYXN0X2lkIjoxNjExMzA1NDU0ODM0OCwibGFzdF92YWx1ZSI6IjE2MTEzMDU0NTQ4MzQ4In0="
+      },
+      "allCount": {
+        "count": 1519,
+        "precision": "EXACT"
+      }
+    },
+    {
+      "readAt": "2026-11-11T20:14:41.527Z",
+      "after": "eyJsYXN0X2lkIjoxNjExMzA1NDU0ODM0OCwibGFzdF92YWx1ZSI6IjE2MTEzMDU0NTQ4MzQ4In0=",
+      "count": 50,
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "eyJsYXN0X2lkIjoxNjExMzA1OTMzMjQ3NiwibGFzdF92YWx1ZSI6IjE2MTEzMDU5MzMyNDc2In0="
+      },
+      "allCount": {
+        "count": 1519,
+        "precision": "EXACT"
+      }
+    },
+    {
+      "readAt": "2026-11-11T20:14:43.294Z",
+      "after": "eyJsYXN0X2lkIjoxNjExMzA1OTMzMjQ3NiwibGFzdF92YWx1ZSI6IjE2MTEzMDU5MzMyNDc2In0=",
+      "count": 50,
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "eyJsYXN0X2lkIjoxNjEyMDgxNzE4OTI0NCwibGFzdF92YWx1ZSI6IjE2MTIwODE3MTg5MjQ0In0="
+      },
+      "allCount": {
+        "count": 1519,
+        "precision": "EXACT"
+      }
+    },
+    {
+      "readAt": "2026-11-11T20:14:45.860Z",
+      "after": "eyJsYXN0X2lkIjoxNjEyMDgxNzE4OTI0NCwibGFzdF92YWx1ZSI6IjE2MTIwODE3MTg5MjQ0In0=",
+      "count": 50,
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "eyJsYXN0X2lkIjoxNjEyMDg0MDkxMzI3NiwibGFzdF92YWx1ZSI6IjE2MTIwODQwOTEzMjc2In0="
+      },
+      "allCount": {
+        "count": 1519,
+        "precision": "EXACT"
+      }
+    },
+    {
+      "readAt": "2026-11-11T20:14:47.943Z",
+      "after": "eyJsYXN0X2lkIjoxNjEyMDg0MDkxMzI3NiwibGFzdF92YWx1ZSI6IjE2MTIwODQwOTEzMjc2In0=",
+      "count": 50,
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "eyJsYXN0X2lkIjoxNjEyMDg0NjQ4MzgzNiwibGFzdF92YWx1ZSI6IjE2MTIwODQ2NDgzODM2In0="
+      },
+      "allCount": {
+        "count": 1519,
+        "precision": "EXACT"
+      }
+    },
+    {
+      "readAt": "2026-11-11T20:15:02.825Z",
+      "after": "eyJsYXN0X2lkIjoxNjEyMDg0NjQ4MzgzNiwibGFzdF92YWx1ZSI6IjE2MTIwODQ2NDgzODM2In0=",
+      "count": 50,
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "eyJsYXN0X2lkIjoxNjEyNjM4MDg2Nzk2NCwibGFzdF92YWx1ZSI6IjE2MTI2MzgwODY3OTY0In0="
+      },
+      "allCount": {
+        "count": 1519,
+        "precision": "EXACT"
+      }
+    },
+    {
+      "readAt": "2026-11-11T20:15:05.459Z",
+      "after": "eyJsYXN0X2lkIjoxNjEyNjM4MDg2Nzk2NCwibGFzdF92YWx1ZSI6IjE2MTI2MzgwODY3OTY0In0=",
+      "count": 50,
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "eyJsYXN0X2lkIjoxNjEyNzI2MDAzMzQwNCwibGFzdF92YWx1ZSI6IjE2MTI3MjYwMDMzNDA0In0="
+      },
+      "allCount": {
+        "count": 1519,
+        "precision": "EXACT"
+      }
+    },
+    {
+      "readAt": "2026-11-11T20:15:07.764Z",
+      "after": "eyJsYXN0X2lkIjoxNjEyNzI2MDAzMzQwNCwibGFzdF92YWx1ZSI6IjE2MTI3MjYwMDMzNDA0In0=",
+      "count": 50,
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "eyJsYXN0X2lkIjoxNjEzODcyNjE0NjQyOCwibGFzdF92YWx1ZSI6IjE2MTM4NzI2MTQ2NDI4In0="
+      },
+      "allCount": {
+        "count": 1519,
+        "precision": "EXACT"
+      }
+    },
+    {
+      "readAt": "2026-11-11T20:15:09.737Z",
+      "after": "eyJsYXN0X2lkIjoxNjEzODcyNjE0NjQyOCwibGFzdF92YWx1ZSI6IjE2MTM4NzI2MTQ2NDI4In0=",
+      "count": 50,
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "eyJsYXN0X2lkIjoxNjE4Mjg2NjkzNjE4OCwibGFzdF92YWx1ZSI6IjE2MTgyODY2OTM2MTg4In0="
+      },
+      "allCount": {
+        "count": 1519,
+        "precision": "EXACT"
+      }
+    },
+    {
+      "readAt": "2026-11-11T20:15:12.372Z",
+      "after": "eyJsYXN0X2lkIjoxNjE4Mjg2NjkzNjE4OCwibGFzdF92YWx1ZSI6IjE2MTgyODY2OTM2MTg4In0=",
+      "count": 50,
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "eyJsYXN0X2lkIjoxNjE4Mjg3MjY3MDU4OCwibGFzdF92YWx1ZSI6IjE2MTgyODcyNjcwNTg4In0="
+      },
+      "allCount": {
+        "count": 1519,
+        "precision": "EXACT"
+      }
+    },
+    {
+      "readAt": "2026-11-11T20:15:14.612Z",
+      "after": "eyJsYXN0X2lkIjoxNjE4Mjg3MjY3MDU4OCwibGFzdF92YWx1ZSI6IjE2MTgyODcyNjcwNTg4In0=",
+      "count": 50,
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "eyJsYXN0X2lkIjoxNjE5MDU1MTk4MjQ2MCwibGFzdF92YWx1ZSI6IjE2MTkwNTUxOTgyNDYwIn0="
+      },
+      "allCount": {
+        "count": 1519,
+        "precision": "EXACT"
+      }
+    },
+    {
+      "readAt": "2026-11-11T20:15:16.262Z",
+      "after": "eyJsYXN0X2lkIjoxNjE5MDU1MTk4MjQ2MCwibGFzdF92YWx1ZSI6IjE2MTkwNTUxOTgyNDYwIn0=",
+      "count": 50,
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "eyJsYXN0X2lkIjoxNjE5MDU1NDAxNDA3NiwibGFzdF92YWx1ZSI6IjE2MTkwNTU0MDE0MDc2In0="
+      },
+      "allCount": {
+        "count": 1519,
+        "precision": "EXACT"
+      }
+    },
+    {
+      "readAt": "2026-11-11T20:15:18.193Z",
+      "after": "eyJsYXN0X2lkIjoxNjE5MDU1NDAxNDA3NiwibGFzdF92YWx1ZSI6IjE2MTkwNTU0MDE0MDc2In0=",
+      "count": 50,
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "eyJsYXN0X2lkIjoxNjE5MTQ2OTI1NzA4NCwibGFzdF92YWx1ZSI6IjE2MTkxNDY5MjU3MDg0In0="
+      },
+      "allCount": {
+        "count": 1519,
+        "precision": "EXACT"
+      }
+    },
+    {
+      "readAt": "2026-11-11T20:15:20.018Z",
+      "after": "eyJsYXN0X2lkIjoxNjE5MTQ2OTI1NzA4NCwibGFzdF92YWx1ZSI6IjE2MTkxNDY5MjU3MDg0In0=",
+      "count": 50,
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "eyJsYXN0X2lkIjoxNjE5OTkzMTk1MzUzMiwibGFzdF92YWx1ZSI6IjE2MTk5OTMxOTUzNTMyIn0="
+      },
+      "allCount": {
+        "count": 1519,
+        "precision": "EXACT"
+      }
+    },
+    {
+      "readAt": "2026-11-11T20:15:21.459Z",
+      "after": "eyJsYXN0X2lkIjoxNjE5OTkzMTk1MzUzMiwibGFzdF92YWx1ZSI6IjE2MTk5OTMxOTUzNTMyIn0=",
+      "count": 19,
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjoxNjE5OTkzNDM0NTU5NiwibGFzdF92YWx1ZSI6IjE2MTk5OTM0MzQ1NTk2In0="
+      },
+      "allCount": {
+        "count": 1519,
+        "precision": "EXACT"
+      }
+    }
+  ],
+  "candidateVariants": [
+    {
+      "id": "gid://shopify/Product/16077792936316",
+      "after": null,
+      "readAt": "2026-11-11T20:16:25.766Z",
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo1NzI2NTg2NzM5MTM1NiwibGFzdF92YWx1ZSI6IjEifQ=="
+      },
+      "metafieldPageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjoxOTY3MTY2OTY2MDA5NTYsImxhc3RfdmFsdWUiOiIxOTY3MTY2OTY2MDA5NTYifQ=="
+      },
+      "variantCount": 1
+    },
+    {
+      "id": "gid://shopify/Product/16077793329532",
+      "after": null,
+      "readAt": "2026-11-11T20:16:25.844Z",
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo1NzI2NTg3MDI3NDk0MCwibGFzdF92YWx1ZSI6IjEifQ=="
+      },
+      "metafieldPageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjoxOTY3MTY3MDA3OTUyNjAsImxhc3RfdmFsdWUiOiIxOTY3MTY3MDA3OTUyNjAifQ=="
+      },
+      "variantCount": 1
+    },
+    {
+      "id": "gid://shopify/Product/16077793263996",
+      "after": null,
+      "readAt": "2026-11-11T20:16:25.921Z",
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo1NzI2NTg3MDIwOTQwNCwibGFzdF92YWx1ZSI6IjEifQ=="
+      },
+      "metafieldPageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjoxOTY3MTY2OTkxNTY4NjAsImxhc3RfdmFsdWUiOiIxOTY3MTY2OTkxNTY4NjAifQ=="
+      },
+      "variantCount": 1
+    },
+    {
+      "id": "gid://shopify/Product/16067894018428",
+      "after": null,
+      "readAt": "2026-11-11T20:16:25.955Z",
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo1NzIyOTg5OTg1ODMwMCwibGFzdF92YWx1ZSI6IjEifQ=="
+      },
+      "metafieldPageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjoxOTYyNTUzOTg4MjIyNjgsImxhc3RfdmFsdWUiOiIxOTYyNTUzOTg4MjIyNjgifQ=="
+      },
+      "variantCount": 1
+    },
+    {
+      "id": "gid://shopify/Product/16077793132924",
+      "after": null,
+      "readAt": "2026-11-11T20:16:26.074Z",
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo1NzI2NTg2ODg2NTkxNiwibGFzdF92YWx1ZSI6IjEifQ=="
+      },
+      "metafieldPageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjoxOTY3MTY2OTcxOTA3ODAsImxhc3RfdmFsdWUiOiIxOTY3MTY2OTcxOTA3ODAifQ=="
+      },
+      "variantCount": 1
+    },
+    {
+      "id": "gid://shopify/Product/16077793755516",
+      "after": null,
+      "readAt": "2026-11-11T20:16:27.341Z",
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo1NzI2NTg3MjA0NDQxMiwibGFzdF92YWx1ZSI6IjEifQ=="
+      },
+      "metafieldPageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjoxOTY3MTY3MDMzMTgzOTYsImxhc3RfdmFsdWUiOiIxOTY3MTY3MDMzMTgzOTYifQ=="
+      },
+      "variantCount": 1
+    },
+    {
+      "id": "gid://shopify/Product/16077794476412",
+      "after": null,
+      "readAt": "2026-11-11T20:16:27.374Z",
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo1NzI2NTg3NzYxNDk3MiwibGFzdF92YWx1ZSI6IjEifQ=="
+      },
+      "metafieldPageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjoxOTY3MTY3MDU0ODEwODQsImxhc3RfdmFsdWUiOiIxOTY3MTY3MDU0ODEwODQifQ=="
+      },
+      "variantCount": 1
+    },
+    {
+      "id": "gid://shopify/Product/16077794312572",
+      "after": null,
+      "readAt": "2026-11-11T20:16:27.453Z",
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo1NzI2NTg3Njk1OTYxMiwibGFzdF92YWx1ZSI6IjEifQ=="
+      },
+      "metafieldPageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjoxOTY3MTY3MDUyMTg5NDAsImxhc3RfdmFsdWUiOiIxOTY3MTY3MDUyMTg5NDAifQ=="
+      },
+      "variantCount": 1
+    },
+    {
+      "id": "gid://shopify/Product/16077794247036",
+      "after": null,
+      "readAt": "2026-11-11T20:16:27.590Z",
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo1NzI2NTg3NTU4MzM1NiwibGFzdF92YWx1ZSI6IjEifQ=="
+      },
+      "metafieldPageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjoxOTY3MTY3MDQ5NTY3OTYsImxhc3RfdmFsdWUiOiIxOTY3MTY3MDQ5NTY3OTYifQ=="
+      },
+      "variantCount": 1
+    },
+    {
+      "id": "gid://shopify/Product/16077793624444",
+      "after": null,
+      "readAt": "2026-11-11T20:16:27.760Z",
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo1NzI2NTg3MTA2MTM3MiwibGFzdF92YWx1ZSI6IjEifQ=="
+      },
+      "metafieldPageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjoxOTY3MTY3MDI1NjQ3MzIsImxhc3RfdmFsdWUiOiIxOTY3MTY3MDI1NjQ3MzIifQ=="
+      },
+      "variantCount": 1
+    },
+    {
+      "id": "gid://shopify/Product/16078713127292",
+      "after": null,
+      "readAt": "2026-11-11T20:16:29.008Z",
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo1NzI2OTQwMzMyMDcwMCwibGFzdF92YWx1ZSI6IjEifQ=="
+      },
+      "metafieldPageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjoxOTY3NTk0Mjc0MTY0NDQsImxhc3RfdmFsdWUiOiIxOTY3NTk0Mjc0MTY0NDQifQ=="
+      },
+      "variantCount": 1
+    },
+    {
+      "id": "gid://shopify/Product/16078712996220",
+      "after": null,
+      "readAt": "2026-11-11T20:16:29.048Z",
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo1NzI2OTQwMzE1Njg2MCwibGFzdF92YWx1ZSI6IjEifQ=="
+      },
+      "metafieldPageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjoxOTY3NTk0MDE1Mjk3MjQsImxhc3RfdmFsdWUiOiIxOTY3NTk0MDE1Mjk3MjQifQ=="
+      },
+      "variantCount": 1
+    },
+    {
+      "id": "gid://shopify/Product/16078713880956",
+      "after": null,
+      "readAt": "2026-11-11T20:16:29.092Z",
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo1NzI2OTQwNDg5MzU2NCwibGFzdF92YWx1ZSI6IjEifQ=="
+      },
+      "metafieldPageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjoxOTY3NTk0NzQ4OTcyNzYsImxhc3RfdmFsdWUiOiIxOTY3NTk0NzQ4OTcyNzYifQ=="
+      },
+      "variantCount": 1
+    },
+    {
+      "id": "gid://shopify/Product/16078712930684",
+      "after": null,
+      "readAt": "2026-11-11T20:16:29.164Z",
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo1NzI2OTQwMjg2MTk0OCwibGFzdF92YWx1ZSI6IjEifQ=="
+      },
+      "metafieldPageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjoxOTY3NTkzODgzNTY5ODgsImxhc3RfdmFsdWUiOiIxOTY3NTkzODgzNTY5ODgifQ=="
+      },
+      "variantCount": 1
+    },
+    {
+      "id": "gid://shopify/Product/16078713028988",
+      "after": null,
+      "readAt": "2026-11-11T20:16:29.188Z",
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo1NzI2OTQwMzE4OTYyOCwibGFzdF92YWx1ZSI6IjEifQ=="
+      },
+      "metafieldPageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjoxOTY3NTk0MDY1NDMyMjgsImxhc3RfdmFsdWUiOiIxOTY3NTk0MDY1NDMyMjgifQ=="
+      },
+      "variantCount": 1
+    },
+    {
+      "id": "gid://shopify/Product/16121424773500",
+      "after": null,
+      "readAt": "2026-11-11T20:16:30.520Z",
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "eyJsYXN0X2lkIjo1NzQ1MTc2Nzk4ODYwNCwibGFzdF92YWx1ZSI6IjUwIn0="
+      },
+      "metafieldPageInfo": {
+        "hasNextPage": false,
+        "endCursor": null
+      },
+      "variantCount": 50
+    },
+    {
+      "id": "gid://shopify/Product/16190784438652",
+      "after": null,
+      "readAt": "2026-11-11T20:16:30.568Z",
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "eyJsYXN0X2lkIjo1ODEwNDYwMjcyMjY4NCwibGFzdF92YWx1ZSI6IjUwIn0="
+      },
+      "metafieldPageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjoyMDA3MTY2NDIxNTY5MjQsImxhc3RfdmFsdWUiOiIyMDA3MTY2NDIxNTY5MjQifQ=="
+      },
+      "variantCount": 50
+    },
+    {
+      "id": "gid://shopify/Product/16175627665788",
+      "after": null,
+      "readAt": "2026-11-11T20:16:30.662Z",
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "eyJsYXN0X2lkIjo1Nzc3ODA2NjMyNTg4NCwibGFzdF92YWx1ZSI6IjUwIn0="
+      },
+      "metafieldPageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjoyMDAxMTExNjE0NzU0NTIsImxhc3RfdmFsdWUiOiIyMDAxMTExNjE0NzU0NTIifQ=="
+      },
+      "variantCount": 50
+    },
+    {
+      "id": "gid://shopify/Product/16078714405244",
+      "after": null,
+      "readAt": "2026-11-11T20:16:30.771Z",
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo1NzI2OTQwNTc3ODMwMCwibGFzdF92YWx1ZSI6IjEifQ=="
+      },
+      "metafieldPageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjoxOTY3NTk0ODAzMDM5OTYsImxhc3RfdmFsdWUiOiIxOTY3NTk0ODAzMDM5OTYifQ=="
+      },
+      "variantCount": 1
+    },
+    {
+      "id": "gid://shopify/Product/16120816861564",
+      "after": null,
+      "readAt": "2026-11-11T20:16:31.064Z",
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "eyJsYXN0X2lkIjo1NzQ0NzM4NTk4OTUwMCwibGFzdF92YWx1ZSI6IjUwIn0="
+      },
+      "metafieldPageInfo": {
+        "hasNextPage": false,
+        "endCursor": null
+      },
+      "variantCount": 50
+    },
+    {
+      "id": "gid://shopify/Product/16196606001532",
+      "after": null,
+      "readAt": "2026-11-11T20:16:32.411Z",
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo1ODE2MjczOTU3NzIxMiwibGFzdF92YWx1ZSI6IjUifQ=="
+      },
+      "metafieldPageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjoyMDA5NDc1MTYwODA1MDgsImxhc3RfdmFsdWUiOiIyMDA5NDc1MTYwODA1MDgifQ=="
+      },
+      "variantCount": 5
+    },
+    {
+      "id": "gid://shopify/Product/16190784602492",
+      "after": null,
+      "readAt": "2026-11-11T20:16:32.573Z",
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "eyJsYXN0X2lkIjo1ODEwNDYxNzI3MTY3NiwibGFzdF92YWx1ZSI6IjUwIn0="
+      },
+      "metafieldPageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjoyMDA3MTY2OTkyMzg3ODAsImxhc3RfdmFsdWUiOiIyMDA3MTY2OTkyMzg3ODAifQ=="
+      },
+      "variantCount": 50
+    },
+    {
+      "id": "gid://shopify/Product/16121424773500",
+      "after": "eyJsYXN0X2lkIjo1NzQ1MTc2Nzk4ODYwNCwibGFzdF92YWx1ZSI6IjUwIn0=",
+      "readAt": "2026-11-11T20:16:44.152Z",
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "eyJsYXN0X2lkIjo1NzQ1MTc2OTYyNzAwNCwibGFzdF92YWx1ZSI6IjEwMCJ9"
+      },
+      "metafieldPageInfo": {
+        "hasNextPage": false,
+        "endCursor": null
+      },
+      "variantCount": 50
+    },
+    {
+      "id": "gid://shopify/Product/16175627665788",
+      "after": "eyJsYXN0X2lkIjo1Nzc3ODA2NjMyNTg4NCwibGFzdF92YWx1ZSI6IjUwIn0=",
+      "readAt": "2026-11-11T20:16:44.266Z",
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "eyJsYXN0X2lkIjo1Nzc3ODA2Nzk2NDI4NCwibGFzdF92YWx1ZSI6IjEwMCJ9"
+      },
+      "metafieldPageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjoyMDAxMTExNjE0NzU0NTIsImxhc3RfdmFsdWUiOiIyMDAxMTExNjE0NzU0NTIifQ=="
+      },
+      "variantCount": 50
+    },
+    {
+      "id": "gid://shopify/Product/16190784602492",
+      "after": "eyJsYXN0X2lkIjo1ODEwNDYxNzI3MTY3NiwibGFzdF92YWx1ZSI6IjUwIn0=",
+      "readAt": "2026-11-11T20:16:44.337Z",
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "eyJsYXN0X2lkIjo1ODEwNDYxODkxMDA3NiwibGFzdF92YWx1ZSI6IjEwMCJ9"
+      },
+      "metafieldPageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjoyMDA3MTY2OTkyMzg3ODAsImxhc3RfdmFsdWUiOiIyMDA3MTY2OTkyMzg3ODAifQ=="
+      },
+      "variantCount": 50
+    },
+    {
+      "id": "gid://shopify/Product/16120816861564",
+      "after": "eyJsYXN0X2lkIjo1NzQ0NzM4NTk4OTUwMCwibGFzdF92YWx1ZSI6IjUwIn0=",
+      "readAt": "2026-11-11T20:16:44.370Z",
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "eyJsYXN0X2lkIjo1NzQ0NzM4NzYyNzkwMCwibGFzdF92YWx1ZSI6IjEwMCJ9"
+      },
+      "metafieldPageInfo": {
+        "hasNextPage": false,
+        "endCursor": null
+      },
+      "variantCount": 50
+    },
+    {
+      "id": "gid://shopify/Product/16190784438652",
+      "after": "eyJsYXN0X2lkIjo1ODEwNDYwMjcyMjY4NCwibGFzdF92YWx1ZSI6IjUwIn0=",
+      "readAt": "2026-11-11T20:16:44.391Z",
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "eyJsYXN0X2lkIjo1ODEwNDYwNDM2MTA4NCwibGFzdF92YWx1ZSI6IjEwMCJ9"
+      },
+      "metafieldPageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjoyMDA3MTY2NDIxNTY5MjQsImxhc3RfdmFsdWUiOiIyMDA3MTY2NDIxNTY5MjQifQ=="
+      },
+      "variantCount": 50
+    },
+    {
+      "id": "gid://shopify/Product/16190784438652",
+      "after": "eyJsYXN0X2lkIjo1ODEwNDYwNDM2MTA4NCwibGFzdF92YWx1ZSI6IjEwMCJ9",
+      "readAt": "2026-11-11T20:16:45.716Z",
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "eyJsYXN0X2lkIjo1ODEwNDYwNTk5OTQ4NCwibGFzdF92YWx1ZSI6IjE1MCJ9"
+      },
+      "metafieldPageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjoyMDA3MTY2NDIxNTY5MjQsImxhc3RfdmFsdWUiOiIyMDA3MTY2NDIxNTY5MjQifQ=="
+      },
+      "variantCount": 50
+    },
+    {
+      "id": "gid://shopify/Product/16121424773500",
+      "after": "eyJsYXN0X2lkIjo1NzQ1MTc2OTYyNzAwNCwibGFzdF92YWx1ZSI6IjEwMCJ9",
+      "readAt": "2026-11-11T20:16:45.718Z",
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "eyJsYXN0X2lkIjo1NzQ1MTc3MTI2NTQwNCwibGFzdF92YWx1ZSI6IjE1MCJ9"
+      },
+      "metafieldPageInfo": {
+        "hasNextPage": false,
+        "endCursor": null
+      },
+      "variantCount": 50
+    },
+    {
+      "id": "gid://shopify/Product/16175627665788",
+      "after": "eyJsYXN0X2lkIjo1Nzc3ODA2Nzk2NDI4NCwibGFzdF92YWx1ZSI6IjEwMCJ9",
+      "readAt": "2026-11-11T20:16:46.056Z",
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "eyJsYXN0X2lkIjo1Nzc3ODA2OTYwMjY4NCwibGFzdF92YWx1ZSI6IjE1MCJ9"
+      },
+      "metafieldPageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjoyMDAxMTExNjE0NzU0NTIsImxhc3RfdmFsdWUiOiIyMDAxMTExNjE0NzU0NTIifQ=="
+      },
+      "variantCount": 50
+    },
+    {
+      "id": "gid://shopify/Product/16190784602492",
+      "after": "eyJsYXN0X2lkIjo1ODEwNDYxODkxMDA3NiwibGFzdF92YWx1ZSI6IjEwMCJ9",
+      "readAt": "2026-11-11T20:16:46.057Z",
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "eyJsYXN0X2lkIjo1ODEwNDYyMDU0ODQ3NiwibGFzdF92YWx1ZSI6IjE1MCJ9"
+      },
+      "metafieldPageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjoyMDA3MTY2OTkyMzg3ODAsImxhc3RfdmFsdWUiOiIyMDA3MTY2OTkyMzg3ODAifQ=="
+      },
+      "variantCount": 50
+    },
+    {
+      "id": "gid://shopify/Product/16120816861564",
+      "after": "eyJsYXN0X2lkIjo1NzQ0NzM4NzYyNzkwMCwibGFzdF92YWx1ZSI6IjEwMCJ9",
+      "readAt": "2026-11-11T20:16:46.184Z",
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo1NzQ0NzM4ODg0MDMxNiwibGFzdF92YWx1ZSI6IjEzNyJ9"
+      },
+      "metafieldPageInfo": {
+        "hasNextPage": false,
+        "endCursor": null
+      },
+      "variantCount": 37
+    },
+    {
+      "id": "gid://shopify/Product/16190784602492",
+      "after": "eyJsYXN0X2lkIjo1ODEwNDYyMDU0ODQ3NiwibGFzdF92YWx1ZSI6IjE1MCJ9",
+      "readAt": "2026-11-11T20:16:47.482Z",
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "eyJsYXN0X2lkIjo1ODEwNDYyMjE4Njg3NiwibGFzdF92YWx1ZSI6IjIwMCJ9"
+      },
+      "metafieldPageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjoyMDA3MTY2OTkyMzg3ODAsImxhc3RfdmFsdWUiOiIyMDA3MTY2OTkyMzg3ODAifQ=="
+      },
+      "variantCount": 50
+    },
+    {
+      "id": "gid://shopify/Product/16175627665788",
+      "after": "eyJsYXN0X2lkIjo1Nzc3ODA2OTYwMjY4NCwibGFzdF92YWx1ZSI6IjE1MCJ9",
+      "readAt": "2026-11-11T20:16:47.530Z",
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "eyJsYXN0X2lkIjo1Nzc3ODA3MTI0MTA4NCwibGFzdF92YWx1ZSI6IjIwMCJ9"
+      },
+      "metafieldPageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjoyMDAxMTExNjE0NzU0NTIsImxhc3RfdmFsdWUiOiIyMDAxMTExNjE0NzU0NTIifQ=="
+      },
+      "variantCount": 50
+    },
+    {
+      "id": "gid://shopify/Product/16121424773500",
+      "after": "eyJsYXN0X2lkIjo1NzQ1MTc3MTI2NTQwNCwibGFzdF92YWx1ZSI6IjE1MCJ9",
+      "readAt": "2026-11-11T20:16:47.601Z",
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "eyJsYXN0X2lkIjo1NzQ1MTc3MjkwMzgwNCwibGFzdF92YWx1ZSI6IjIwMCJ9"
+      },
+      "metafieldPageInfo": {
+        "hasNextPage": false,
+        "endCursor": null
+      },
+      "variantCount": 50
+    },
+    {
+      "id": "gid://shopify/Product/16190784438652",
+      "after": "eyJsYXN0X2lkIjo1ODEwNDYwNTk5OTQ4NCwibGFzdF92YWx1ZSI6IjE1MCJ9",
+      "readAt": "2026-11-11T20:16:47.756Z",
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "eyJsYXN0X2lkIjo1ODEwNDYwNzY3MDY1MiwibGFzdF92YWx1ZSI6IjIwMCJ9"
+      },
+      "metafieldPageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjoyMDA3MTY2NDIxNTY5MjQsImxhc3RfdmFsdWUiOiIyMDA3MTY2NDIxNTY5MjQifQ=="
+      },
+      "variantCount": 50
+    },
+    {
+      "id": "gid://shopify/Product/16121424773500",
+      "after": "eyJsYXN0X2lkIjo1NzQ1MTc3MjkwMzgwNCwibGFzdF92YWx1ZSI6IjIwMCJ9",
+      "readAt": "2026-11-11T20:16:49.052Z",
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "eyJsYXN0X2lkIjo1NzQ1MTc3NDU0MjIwNCwibGFzdF92YWx1ZSI6IjI1MCJ9"
+      },
+      "metafieldPageInfo": {
+        "hasNextPage": false,
+        "endCursor": null
+      },
+      "variantCount": 50
+    },
+    {
+      "id": "gid://shopify/Product/16190784438652",
+      "after": "eyJsYXN0X2lkIjo1ODEwNDYwNzY3MDY1MiwibGFzdF92YWx1ZSI6IjIwMCJ9",
+      "readAt": "2026-11-11T20:16:49.224Z",
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "eyJsYXN0X2lkIjo1ODEwNDYwOTMwOTA1MiwibGFzdF92YWx1ZSI6IjI1MCJ9"
+      },
+      "metafieldPageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjoyMDA3MTY2NDIxNTY5MjQsImxhc3RfdmFsdWUiOiIyMDA3MTY2NDIxNTY5MjQifQ=="
+      },
+      "variantCount": 50
+    },
+    {
+      "id": "gid://shopify/Product/16175627665788",
+      "after": "eyJsYXN0X2lkIjo1Nzc3ODA3MTI0MTA4NCwibGFzdF92YWx1ZSI6IjIwMCJ9",
+      "readAt": "2026-11-11T20:16:49.362Z",
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "eyJsYXN0X2lkIjo1Nzc3ODA3Mjg3OTQ4NCwibGFzdF92YWx1ZSI6IjI1MCJ9"
+      },
+      "metafieldPageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjoyMDAxMTExNjE0NzU0NTIsImxhc3RfdmFsdWUiOiIyMDAxMTExNjE0NzU0NTIifQ=="
+      },
+      "variantCount": 50
+    },
+    {
+      "id": "gid://shopify/Product/16190784602492",
+      "after": "eyJsYXN0X2lkIjo1ODEwNDYyMjE4Njg3NiwibGFzdF92YWx1ZSI6IjIwMCJ9",
+      "readAt": "2026-11-11T20:16:49.437Z",
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "eyJsYXN0X2lkIjo1ODEwNDYyMzgyNTI3NiwibGFzdF92YWx1ZSI6IjI1MCJ9"
+      },
+      "metafieldPageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjoyMDA3MTY2OTkyMzg3ODAsImxhc3RfdmFsdWUiOiIyMDA3MTY2OTkyMzg3ODAifQ=="
+      },
+      "variantCount": 50
+    },
+    {
+      "id": "gid://shopify/Product/16190784438652",
+      "after": "eyJsYXN0X2lkIjo1ODEwNDYwOTMwOTA1MiwibGFzdF92YWx1ZSI6IjI1MCJ9",
+      "readAt": "2026-11-11T20:16:50.753Z",
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "eyJsYXN0X2lkIjo1ODEwNDYxMDk0NzQ1MiwibGFzdF92YWx1ZSI6IjMwMCJ9"
+      },
+      "metafieldPageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjoyMDA3MTY2NDIxNTY5MjQsImxhc3RfdmFsdWUiOiIyMDA3MTY2NDIxNTY5MjQifQ=="
+      },
+      "variantCount": 50
+    },
+    {
+      "id": "gid://shopify/Product/16175627665788",
+      "after": "eyJsYXN0X2lkIjo1Nzc3ODA3Mjg3OTQ4NCwibGFzdF92YWx1ZSI6IjI1MCJ9",
+      "readAt": "2026-11-11T20:16:50.798Z",
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "eyJsYXN0X2lkIjo1Nzc3ODA3NDUxNzg4NCwibGFzdF92YWx1ZSI6IjMwMCJ9"
+      },
+      "metafieldPageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjoyMDAxMTExNjE0NzU0NTIsImxhc3RfdmFsdWUiOiIyMDAxMTExNjE0NzU0NTIifQ=="
+      },
+      "variantCount": 50
+    },
+    {
+      "id": "gid://shopify/Product/16121424773500",
+      "after": "eyJsYXN0X2lkIjo1NzQ1MTc3NDU0MjIwNCwibGFzdF92YWx1ZSI6IjI1MCJ9",
+      "readAt": "2026-11-11T20:16:50.941Z",
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "eyJsYXN0X2lkIjo1NzQ1MTc3NjE4MDYwNCwibGFzdF92YWx1ZSI6IjMwMCJ9"
+      },
+      "metafieldPageInfo": {
+        "hasNextPage": false,
+        "endCursor": null
+      },
+      "variantCount": 50
+    },
+    {
+      "id": "gid://shopify/Product/16190784602492",
+      "after": "eyJsYXN0X2lkIjo1ODEwNDYyMzgyNTI3NiwibGFzdF92YWx1ZSI6IjI1MCJ9",
+      "readAt": "2026-11-11T20:16:51.437Z",
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "eyJsYXN0X2lkIjo1ODEwNDYyNTQ2MzY3NiwibGFzdF92YWx1ZSI6IjMwMCJ9"
+      },
+      "metafieldPageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjoyMDA3MTY2OTkyMzg3ODAsImxhc3RfdmFsdWUiOiIyMDA3MTY2OTkyMzg3ODAifQ=="
+      },
+      "variantCount": 50
+    },
+    {
+      "id": "gid://shopify/Product/16190784602492",
+      "after": "eyJsYXN0X2lkIjo1ODEwNDYyNTQ2MzY3NiwibGFzdF92YWx1ZSI6IjMwMCJ9",
+      "readAt": "2026-11-11T20:16:52.749Z",
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "eyJsYXN0X2lkIjo1ODEwNDYyNzEwMjA3NiwibGFzdF92YWx1ZSI6IjM1MCJ9"
+      },
+      "metafieldPageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjoyMDA3MTY2OTkyMzg3ODAsImxhc3RfdmFsdWUiOiIyMDA3MTY2OTkyMzg3ODAifQ=="
+      },
+      "variantCount": 50
+    },
+    {
+      "id": "gid://shopify/Product/16190784438652",
+      "after": "eyJsYXN0X2lkIjo1ODEwNDYxMDk0NzQ1MiwibGFzdF92YWx1ZSI6IjMwMCJ9",
+      "readAt": "2026-11-11T20:16:52.805Z",
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "eyJsYXN0X2lkIjo1ODEwNDYxMjU4NTg1MiwibGFzdF92YWx1ZSI6IjM1MCJ9"
+      },
+      "metafieldPageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjoyMDA3MTY2NDIxNTY5MjQsImxhc3RfdmFsdWUiOiIyMDA3MTY2NDIxNTY5MjQifQ=="
+      },
+      "variantCount": 50
+    },
+    {
+      "id": "gid://shopify/Product/16175627665788",
+      "after": "eyJsYXN0X2lkIjo1Nzc3ODA3NDUxNzg4NCwibGFzdF92YWx1ZSI6IjMwMCJ9",
+      "readAt": "2026-11-11T20:16:52.878Z",
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "eyJsYXN0X2lkIjo1Nzc3ODA3NjE1NjI4NCwibGFzdF92YWx1ZSI6IjM1MCJ9"
+      },
+      "metafieldPageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjoyMDAxMTExNjE0NzU0NTIsImxhc3RfdmFsdWUiOiIyMDAxMTExNjE0NzU0NTIifQ=="
+      },
+      "variantCount": 50
+    },
+    {
+      "id": "gid://shopify/Product/16121424773500",
+      "after": "eyJsYXN0X2lkIjo1NzQ1MTc3NjE4MDYwNCwibGFzdF92YWx1ZSI6IjMwMCJ9",
+      "readAt": "2026-11-11T20:16:53.055Z",
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo1NzQ1MTc3NjQ3NTUxNiwibGFzdF92YWx1ZSI6IjMwOSJ9"
+      },
+      "metafieldPageInfo": {
+        "hasNextPage": false,
+        "endCursor": null
+      },
+      "variantCount": 9
+    },
+    {
+      "id": "gid://shopify/Product/16175627665788",
+      "after": "eyJsYXN0X2lkIjo1Nzc3ODA3NjE1NjI4NCwibGFzdF92YWx1ZSI6IjM1MCJ9",
+      "readAt": "2026-11-11T20:16:54.364Z",
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "eyJsYXN0X2lkIjo1Nzc3ODA3Nzc5NDY4NCwibGFzdF92YWx1ZSI6IjQwMCJ9"
+      },
+      "metafieldPageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjoyMDAxMTExNjE0NzU0NTIsImxhc3RfdmFsdWUiOiIyMDAxMTExNjE0NzU0NTIifQ=="
+      },
+      "variantCount": 50
+    },
+    {
+      "id": "gid://shopify/Product/16190784602492",
+      "after": "eyJsYXN0X2lkIjo1ODEwNDYyNzEwMjA3NiwibGFzdF92YWx1ZSI6IjM1MCJ9",
+      "readAt": "2026-11-11T20:16:54.472Z",
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "eyJsYXN0X2lkIjo1ODEwNDYyODc0MDQ3NiwibGFzdF92YWx1ZSI6IjQwMCJ9"
+      },
+      "metafieldPageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjoyMDA3MTY2OTkyMzg3ODAsImxhc3RfdmFsdWUiOiIyMDA3MTY2OTkyMzg3ODAifQ=="
+      },
+      "variantCount": 50
+    },
+    {
+      "id": "gid://shopify/Product/16190784438652",
+      "after": "eyJsYXN0X2lkIjo1ODEwNDYxMjU4NTg1MiwibGFzdF92YWx1ZSI6IjM1MCJ9",
+      "readAt": "2026-11-11T20:16:54.587Z",
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "eyJsYXN0X2lkIjo1ODEwNDYxNDIyNDI1MiwibGFzdF92YWx1ZSI6IjQwMCJ9"
+      },
+      "metafieldPageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjoyMDA3MTY2NDIxNTY5MjQsImxhc3RfdmFsdWUiOiIyMDA3MTY2NDIxNTY5MjQifQ=="
+      },
+      "variantCount": 50
+    },
+    {
+      "id": "gid://shopify/Product/16190784438652",
+      "after": "eyJsYXN0X2lkIjo1ODEwNDYxNDIyNDI1MiwibGFzdF92YWx1ZSI6IjQwMCJ9",
+      "readAt": "2026-11-11T20:16:55.854Z",
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo1ODEwNDYxNDM1NTMyNCwibGFzdF92YWx1ZSI6IjQwNCJ9"
+      },
+      "metafieldPageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjoyMDA3MTY2NDIxNTY5MjQsImxhc3RfdmFsdWUiOiIyMDA3MTY2NDIxNTY5MjQifQ=="
+      },
+      "variantCount": 4
+    },
+    {
+      "id": "gid://shopify/Product/16175627665788",
+      "after": "eyJsYXN0X2lkIjo1Nzc3ODA3Nzc5NDY4NCwibGFzdF92YWx1ZSI6IjQwMCJ9",
+      "readAt": "2026-11-11T20:16:56.000Z",
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "eyJsYXN0X2lkIjo1Nzc3ODA3OTQzMzA4NCwibGFzdF92YWx1ZSI6IjQ1MCJ9"
+      },
+      "metafieldPageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjoyMDAxMTExNjE0NzU0NTIsImxhc3RfdmFsdWUiOiIyMDAxMTExNjE0NzU0NTIifQ=="
+      },
+      "variantCount": 50
+    },
+    {
+      "id": "gid://shopify/Product/16190784602492",
+      "after": "eyJsYXN0X2lkIjo1ODEwNDYyODc0MDQ3NiwibGFzdF92YWx1ZSI6IjQwMCJ9",
+      "readAt": "2026-11-11T20:16:56.315Z",
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "eyJsYXN0X2lkIjo1ODEwNDYzMDM3ODg3NiwibGFzdF92YWx1ZSI6IjQ1MCJ9"
+      },
+      "metafieldPageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjoyMDA3MTY2OTkyMzg3ODAsImxhc3RfdmFsdWUiOiIyMDA3MTY2OTkyMzg3ODAifQ=="
+      },
+      "variantCount": 50
+    },
+    {
+      "id": "gid://shopify/Product/16190784602492",
+      "after": "eyJsYXN0X2lkIjo1ODEwNDYzMDM3ODg3NiwibGFzdF92YWx1ZSI6IjQ1MCJ9",
+      "readAt": "2026-11-11T20:17:12.566Z",
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "eyJsYXN0X2lkIjo1ODEwNDYzMjAxNzI3NiwibGFzdF92YWx1ZSI6IjUwMCJ9"
+      },
+      "metafieldPageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjoyMDA3MTY2OTkyMzg3ODAsImxhc3RfdmFsdWUiOiIyMDA3MTY2OTkyMzg3ODAifQ=="
+      },
+      "variantCount": 50
+    },
+    {
+      "id": "gid://shopify/Product/16175627665788",
+      "after": "eyJsYXN0X2lkIjo1Nzc3ODA3OTQzMzA4NCwibGFzdF92YWx1ZSI6IjQ1MCJ9",
+      "readAt": "2026-11-11T20:17:13.003Z",
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "eyJsYXN0X2lkIjo1Nzc3ODA4MTA3MTQ4NCwibGFzdF92YWx1ZSI6IjUwMCJ9"
+      },
+      "metafieldPageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjoyMDAxMTExNjE0NzU0NTIsImxhc3RfdmFsdWUiOiIyMDAxMTExNjE0NzU0NTIifQ=="
+      },
+      "variantCount": 50
+    },
+    {
+      "id": "gid://shopify/Product/16190784602492",
+      "after": "eyJsYXN0X2lkIjo1ODEwNDYzMjAxNzI3NiwibGFzdF92YWx1ZSI6IjUwMCJ9",
+      "readAt": "2026-11-11T20:17:14.563Z",
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "eyJsYXN0X2lkIjo1ODEwNDYzMzY1NTY3NiwibGFzdF92YWx1ZSI6IjU1MCJ9"
+      },
+      "metafieldPageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjoyMDA3MTY2OTkyMzg3ODAsImxhc3RfdmFsdWUiOiIyMDA3MTY2OTkyMzg3ODAifQ=="
+      },
+      "variantCount": 50
+    },
+    {
+      "id": "gid://shopify/Product/16175627665788",
+      "after": "eyJsYXN0X2lkIjo1Nzc3ODA4MTA3MTQ4NCwibGFzdF92YWx1ZSI6IjUwMCJ9",
+      "readAt": "2026-11-11T20:17:14.599Z",
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "eyJsYXN0X2lkIjo1Nzc3ODA4MjcwOTg4NCwibGFzdF92YWx1ZSI6IjU1MCJ9"
+      },
+      "metafieldPageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjoyMDAxMTExNjE0NzU0NTIsImxhc3RfdmFsdWUiOiIyMDAxMTExNjE0NzU0NTIifQ=="
+      },
+      "variantCount": 50
+    },
+    {
+      "id": "gid://shopify/Product/16175627665788",
+      "after": "eyJsYXN0X2lkIjo1Nzc3ODA4MjcwOTg4NCwibGFzdF92YWx1ZSI6IjU1MCJ9",
+      "readAt": "2026-11-11T20:17:16.249Z",
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "eyJsYXN0X2lkIjo1Nzc3ODA4NDM0ODI4NCwibGFzdF92YWx1ZSI6IjYwMCJ9"
+      },
+      "metafieldPageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjoyMDAxMTExNjE0NzU0NTIsImxhc3RfdmFsdWUiOiIyMDAxMTExNjE0NzU0NTIifQ=="
+      },
+      "variantCount": 50
+    },
+    {
+      "id": "gid://shopify/Product/16190784602492",
+      "after": "eyJsYXN0X2lkIjo1ODEwNDYzMzY1NTY3NiwibGFzdF92YWx1ZSI6IjU1MCJ9",
+      "readAt": "2026-11-11T20:17:16.374Z",
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "eyJsYXN0X2lkIjo1ODEwNDYzNTI5NDA3NiwibGFzdF92YWx1ZSI6IjYwMCJ9"
+      },
+      "metafieldPageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjoyMDA3MTY2OTkyMzg3ODAsImxhc3RfdmFsdWUiOiIyMDA3MTY2OTkyMzg3ODAifQ=="
+      },
+      "variantCount": 50
+    },
+    {
+      "id": "gid://shopify/Product/16190784602492",
+      "after": "eyJsYXN0X2lkIjo1ODEwNDYzNTI5NDA3NiwibGFzdF92YWx1ZSI6IjYwMCJ9",
+      "readAt": "2026-11-11T20:17:17.930Z",
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "eyJsYXN0X2lkIjo1ODEwNDYzNjkzMjQ3NiwibGFzdF92YWx1ZSI6IjY1MCJ9"
+      },
+      "metafieldPageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjoyMDA3MTY2OTkyMzg3ODAsImxhc3RfdmFsdWUiOiIyMDA3MTY2OTkyMzg3ODAifQ=="
+      },
+      "variantCount": 50
+    },
+    {
+      "id": "gid://shopify/Product/16175627665788",
+      "after": "eyJsYXN0X2lkIjo1Nzc3ODA4NDM0ODI4NCwibGFzdF92YWx1ZSI6IjYwMCJ9",
+      "readAt": "2026-11-11T20:17:17.960Z",
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "eyJsYXN0X2lkIjo1Nzc3ODA4NTk4NjY4NCwibGFzdF92YWx1ZSI6IjY1MCJ9"
+      },
+      "metafieldPageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjoyMDAxMTExNjE0NzU0NTIsImxhc3RfdmFsdWUiOiIyMDAxMTExNjE0NzU0NTIifQ=="
+      },
+      "variantCount": 50
+    },
+    {
+      "id": "gid://shopify/Product/16175627665788",
+      "after": "eyJsYXN0X2lkIjo1Nzc3ODA4NTk4NjY4NCwibGFzdF92YWx1ZSI6IjY1MCJ9",
+      "readAt": "2026-11-11T20:17:19.385Z",
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "eyJsYXN0X2lkIjo1Nzc3ODA4NzYyNTA4NCwibGFzdF92YWx1ZSI6IjcwMCJ9"
+      },
+      "metafieldPageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjoyMDAxMTExNjE0NzU0NTIsImxhc3RfdmFsdWUiOiIyMDAxMTExNjE0NzU0NTIifQ=="
+      },
+      "variantCount": 50
+    },
+    {
+      "id": "gid://shopify/Product/16190784602492",
+      "after": "eyJsYXN0X2lkIjo1ODEwNDYzNjkzMjQ3NiwibGFzdF92YWx1ZSI6IjY1MCJ9",
+      "readAt": "2026-11-11T20:17:19.790Z",
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "eyJsYXN0X2lkIjo1ODEwNDYzODU3MDg3NiwibGFzdF92YWx1ZSI6IjcwMCJ9"
+      },
+      "metafieldPageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjoyMDA3MTY2OTkyMzg3ODAsImxhc3RfdmFsdWUiOiIyMDA3MTY2OTkyMzg3ODAifQ=="
+      },
+      "variantCount": 50
+    },
+    {
+      "id": "gid://shopify/Product/16190784602492",
+      "after": "eyJsYXN0X2lkIjo1ODEwNDYzODU3MDg3NiwibGFzdF92YWx1ZSI6IjcwMCJ9",
+      "readAt": "2026-11-11T20:17:21.340Z",
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "eyJsYXN0X2lkIjo1ODEwNDY0MDIwOTI3NiwibGFzdF92YWx1ZSI6Ijc1MCJ9"
+      },
+      "metafieldPageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjoyMDA3MTY2OTkyMzg3ODAsImxhc3RfdmFsdWUiOiIyMDA3MTY2OTkyMzg3ODAifQ=="
+      },
+      "variantCount": 50
+    },
+    {
+      "id": "gid://shopify/Product/16175627665788",
+      "after": "eyJsYXN0X2lkIjo1Nzc3ODA4NzYyNTA4NCwibGFzdF92YWx1ZSI6IjcwMCJ9",
+      "readAt": "2026-11-11T20:17:21.382Z",
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "eyJsYXN0X2lkIjo1Nzc3ODA4OTI2MzQ4NCwibGFzdF92YWx1ZSI6Ijc1MCJ9"
+      },
+      "metafieldPageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjoyMDAxMTExNjE0NzU0NTIsImxhc3RfdmFsdWUiOiIyMDAxMTExNjE0NzU0NTIifQ=="
+      },
+      "variantCount": 50
+    },
+    {
+      "id": "gid://shopify/Product/16175627665788",
+      "after": "eyJsYXN0X2lkIjo1Nzc3ODA4OTI2MzQ4NCwibGFzdF92YWx1ZSI6Ijc1MCJ9",
+      "readAt": "2026-11-11T20:17:22.753Z",
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo1Nzc3ODA5MDgzNjM0OCwibGFzdF92YWx1ZSI6Ijc5OCJ9"
+      },
+      "metafieldPageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjoyMDAxMTExNjE0NzU0NTIsImxhc3RfdmFsdWUiOiIyMDAxMTExNjE0NzU0NTIifQ=="
+      },
+      "variantCount": 48
+    },
+    {
+      "id": "gid://shopify/Product/16190784602492",
+      "after": "eyJsYXN0X2lkIjo1ODEwNDY0MDIwOTI3NiwibGFzdF92YWx1ZSI6Ijc1MCJ9",
+      "readAt": "2026-11-11T20:17:23.076Z",
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "eyJsYXN0X2lkIjo1ODEwNDY0MTg0NzY3NiwibGFzdF92YWx1ZSI6IjgwMCJ9"
+      },
+      "metafieldPageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjoyMDA3MTY2OTkyMzg3ODAsImxhc3RfdmFsdWUiOiIyMDA3MTY2OTkyMzg3ODAifQ=="
+      },
+      "variantCount": 50
+    },
+    {
+      "id": "gid://shopify/Product/16190784602492",
+      "after": "eyJsYXN0X2lkIjo1ODEwNDY0MTg0NzY3NiwibGFzdF92YWx1ZSI6IjgwMCJ9",
+      "readAt": "2026-11-11T20:17:24.369Z",
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo1ODEwNDY0MjEwOTgyMCwibGFzdF92YWx1ZSI6IjgwOCJ9"
+      },
+      "metafieldPageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjoyMDA3MTY2OTkyMzg3ODAsImxhc3RfdmFsdWUiOiIyMDA3MTY2OTkyMzg3ODAifQ=="
+      },
+      "variantCount": 8
+    }
+  ],
+  "global": [
+    {
+      "query": "(sku:TRE-A-5x2* OR sku:TRE-V2A-5x2* OR sku:TS-Acryl-RE-50X20* OR sku:156-TS-Acryl-RE-50X20* OR sku:GR-ES-RE-50X20* OR sku:156-GR-ES-RE-50X20* OR sku:TEST-GR-ES-RE-50X20* OR sku:GR-C-RE-50X20* OR title:'5 × 2 cm' OR title:'5x2')",
+      "key": "5x2",
+      "after": null,
+      "readAt": "2026-11-11T20:17:39.469Z",
+      "count": 40,
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo1ODEwNDYyMTUzMTUxNiwibGFzdF92YWx1ZSI6NTgxMDQ2MjE1MzE1MTZ9"
+      }
+    },
+    {
+      "query": "(sku:TRE-A-6x2* OR sku:TRE-V2A-6x2* OR sku:TS-Acryl-RE-60X20* OR sku:156-TS-Acryl-RE-60X20* OR sku:GR-ES-RE-60X20* OR sku:156-GR-ES-RE-60X20* OR sku:TEST-GR-ES-RE-60X20* OR sku:GR-C-RE-60X20* OR title:'6 × 2 cm' OR title:'6x2')",
+      "key": "6x2",
+      "after": null,
+      "readAt": "2026-11-11T20:17:39.469Z",
+      "count": 40,
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo1ODEwNDYxNjYxNjMxNiwibGFzdF92YWx1ZSI6NTgxMDQ2MTY2MTYzMTZ9"
+      }
+    },
+    {
+      "query": "(sku:TRE-A-8x2* OR sku:TRE-V2A-8x2* OR sku:TS-Acryl-RE-80X20* OR sku:156-TS-Acryl-RE-80X20* OR sku:GR-ES-RE-80X20* OR sku:156-GR-ES-RE-80X20* OR sku:TEST-GR-ES-RE-80X20* OR sku:GR-C-RE-80X20* OR title:'8 × 2 cm' OR title:'8x2')",
+      "key": "8x2",
+      "after": null,
+      "readAt": "2026-11-11T20:17:39.692Z",
+      "count": 40,
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo1ODEwNDYxNTk2MDk1NiwibGFzdF92YWx1ZSI6NTgxMDQ2MTU5NjA5NTZ9"
+      }
+    }
+  ],
+  "variantMetafields": [
+    {
+      "readAt": "2026-11-11T20:18:27.431Z",
+      "ids": [
+        "gid://shopify/ProductVariant/57451772182908",
+        "gid://shopify/ProductVariant/57451772215676",
+        "gid://shopify/ProductVariant/57451772248444",
+        "gid://shopify/ProductVariant/57451772281212",
+        "gid://shopify/ProductVariant/57451772313980",
+        "gid://shopify/ProductVariant/57451772346748",
+        "gid://shopify/ProductVariant/57451772379516",
+        "gid://shopify/ProductVariant/57451772412284",
+        "gid://shopify/ProductVariant/57451772445052",
+        "gid://shopify/ProductVariant/57451772477820"
+      ],
+      "returned": 10,
+      "hasNextPages": 0
+    },
+    {
+      "readAt": "2026-11-11T20:18:27.516Z",
+      "ids": [
+        "gid://shopify/ProductVariant/57269403320700",
+        "gid://shopify/ProductVariant/57269403156860",
+        "gid://shopify/ProductVariant/57269404893564",
+        "gid://shopify/ProductVariant/57269402861948",
+        "gid://shopify/ProductVariant/57269403189628",
+        "gid://shopify/ProductVariant/57451772019068",
+        "gid://shopify/ProductVariant/57451772051836",
+        "gid://shopify/ProductVariant/57451772084604",
+        "gid://shopify/ProductVariant/57451772117372",
+        "gid://shopify/ProductVariant/57451772150140"
+      ],
+      "returned": 10,
+      "hasNextPages": 0
+    },
+    {
+      "readAt": "2026-11-11T20:18:27.570Z",
+      "ids": [
+        "gid://shopify/ProductVariant/57265867391356",
+        "gid://shopify/ProductVariant/57265870274940",
+        "gid://shopify/ProductVariant/57265870209404",
+        "gid://shopify/ProductVariant/57229899858300",
+        "gid://shopify/ProductVariant/57265868865916",
+        "gid://shopify/ProductVariant/57265872044412",
+        "gid://shopify/ProductVariant/57265877614972",
+        "gid://shopify/ProductVariant/57265876959612",
+        "gid://shopify/ProductVariant/57265875583356",
+        "gid://shopify/ProductVariant/57265871061372"
+      ],
+      "returned": 10,
+      "hasNextPages": 0
+    },
+    {
+      "readAt": "2026-11-11T20:18:28.845Z",
+      "ids": [
+        "gid://shopify/ProductVariant/58104603935100",
+        "gid://shopify/ProductVariant/58104603967868",
+        "gid://shopify/ProductVariant/58104604000636",
+        "gid://shopify/ProductVariant/58104604033404",
+        "gid://shopify/ProductVariant/58104604066172",
+        "gid://shopify/ProductVariant/57778064720252",
+        "gid://shopify/ProductVariant/57778064753020",
+        "gid://shopify/ProductVariant/57778064785788",
+        "gid://shopify/ProductVariant/57778064818556",
+        "gid://shopify/ProductVariant/57778064851324"
+      ],
+      "returned": 10,
+      "hasNextPages": 0
+    },
+    {
+      "readAt": "2026-11-11T20:18:28.869Z",
+      "ids": [
+        "gid://shopify/ProductVariant/58104601149820",
+        "gid://shopify/ProductVariant/58104601182588",
+        "gid://shopify/ProductVariant/58104601215356",
+        "gid://shopify/ProductVariant/58104601248124",
+        "gid://shopify/ProductVariant/58104601280892",
+        "gid://shopify/ProductVariant/58104601477500",
+        "gid://shopify/ProductVariant/58104601510268",
+        "gid://shopify/ProductVariant/58104601543036",
+        "gid://shopify/ProductVariant/58104601575804",
+        "gid://shopify/ProductVariant/58104601608572"
+      ],
+      "returned": 10,
+      "hasNextPages": 0
+    },
+    {
+      "readAt": "2026-11-11T20:18:28.916Z",
+      "ids": [
+        "gid://shopify/ProductVariant/57778064884092",
+        "gid://shopify/ProductVariant/57778064916860",
+        "gid://shopify/ProductVariant/57778064949628",
+        "gid://shopify/ProductVariant/57778064982396",
+        "gid://shopify/ProductVariant/57778065015164",
+        "gid://shopify/ProductVariant/57778065047932",
+        "gid://shopify/ProductVariant/57778065080700",
+        "gid://shopify/ProductVariant/57778065113468",
+        "gid://shopify/ProductVariant/57778065146236",
+        "gid://shopify/ProductVariant/57778065179004"
+      ],
+      "returned": 10,
+      "hasNextPages": 0
+    },
+    {
+      "readAt": "2026-11-11T20:18:30.155Z",
+      "ids": [
+        "gid://shopify/ProductVariant/57447384514940",
+        "gid://shopify/ProductVariant/57447384547708",
+        "gid://shopify/ProductVariant/57447384580476",
+        "gid://shopify/ProductVariant/57447384613244",
+        "gid://shopify/ProductVariant/57447384646012",
+        "gid://shopify/ProductVariant/57447384678780",
+        "gid://shopify/ProductVariant/57447384711548",
+        "gid://shopify/ProductVariant/57447384744316",
+        "gid://shopify/ProductVariant/57447384777084",
+        "gid://shopify/ProductVariant/57447384809852"
+      ],
+      "returned": 10,
+      "hasNextPages": 0
+    },
+    {
+      "readAt": "2026-11-11T20:18:30.155Z",
+      "ids": [
+        "gid://shopify/ProductVariant/57778065211772",
+        "gid://shopify/ProductVariant/57778065244540",
+        "gid://shopify/ProductVariant/57778065277308",
+        "gid://shopify/ProductVariant/57778065310076",
+        "gid://shopify/ProductVariant/57778065342844",
+        "gid://shopify/ProductVariant/57778065375612",
+        "gid://shopify/ProductVariant/57778065408380",
+        "gid://shopify/ProductVariant/57778065441148",
+        "gid://shopify/ProductVariant/57778065473916",
+        "gid://shopify/ProductVariant/57778065506684"
+      ],
+      "returned": 10,
+      "hasNextPages": 0
+    },
+    {
+      "readAt": "2026-11-11T20:18:30.262Z",
+      "ids": [
+        "gid://shopify/ProductVariant/57778065539452",
+        "gid://shopify/ProductVariant/57778065572220",
+        "gid://shopify/ProductVariant/57778065604988",
+        "gid://shopify/ProductVariant/57778065637756",
+        "gid://shopify/ProductVariant/57778065670524",
+        "gid://shopify/ProductVariant/57269405778300",
+        "gid://shopify/ProductVariant/57447384383868",
+        "gid://shopify/ProductVariant/57447384416636",
+        "gid://shopify/ProductVariant/57447384449404",
+        "gid://shopify/ProductVariant/57447384482172"
+      ],
+      "returned": 10,
+      "hasNextPages": 0
+    },
+    {
+      "readAt": "2026-11-11T20:18:31.448Z",
+      "ids": [
+        "gid://shopify/ProductVariant/58104615797116",
+        "gid://shopify/ProductVariant/58104615829884",
+        "gid://shopify/ProductVariant/58104615862652",
+        "gid://shopify/ProductVariant/58104615895420",
+        "gid://shopify/ProductVariant/58104615928188",
+        "gid://shopify/ProductVariant/58104615960956",
+        "gid://shopify/ProductVariant/58104616321404",
+        "gid://shopify/ProductVariant/58104616354172",
+        "gid://shopify/ProductVariant/58104616386940",
+        "gid://shopify/ProductVariant/58104616419708"
+      ],
+      "returned": 10,
+      "hasNextPages": 0
+    },
+    {
+      "readAt": "2026-11-11T20:18:31.591Z",
+      "ids": [
+        "gid://shopify/ProductVariant/57447384842620",
+        "gid://shopify/ProductVariant/58162739446140",
+        "gid://shopify/ProductVariant/58162739478908",
+        "gid://shopify/ProductVariant/58162739511676",
+        "gid://shopify/ProductVariant/58162739544444",
+        "gid://shopify/ProductVariant/58162739577212",
+        "gid://shopify/ProductVariant/58104615666044",
+        "gid://shopify/ProductVariant/58104615698812",
+        "gid://shopify/ProductVariant/58104615731580",
+        "gid://shopify/ProductVariant/58104615764348"
+      ],
+      "returned": 10,
+      "hasNextPages": 0
+    },
+    {
+      "readAt": "2026-11-11T20:18:31.619Z",
+      "ids": [
+        "gid://shopify/ProductVariant/58104616452476",
+        "gid://shopify/ProductVariant/58104616485244",
+        "gid://shopify/ProductVariant/58104616518012",
+        "gid://shopify/ProductVariant/58104616550780",
+        "gid://shopify/ProductVariant/58104616583548",
+        "gid://shopify/ProductVariant/58104616616316",
+        "gid://shopify/ProductVariant/58104621236604",
+        "gid://shopify/ProductVariant/58104621269372",
+        "gid://shopify/ProductVariant/58104621302140",
+        "gid://shopify/ProductVariant/58104621334908"
+      ],
+      "returned": 10,
+      "hasNextPages": 0
+    },
+    {
+      "readAt": "2026-11-11T20:18:33.129Z",
+      "ids": [
+        "gid://shopify/ProductVariant/58104621367676",
+        "gid://shopify/ProductVariant/58104621400444",
+        "gid://shopify/ProductVariant/58104621433212",
+        "gid://shopify/ProductVariant/58104621465980",
+        "gid://shopify/ProductVariant/58104621498748",
+        "gid://shopify/ProductVariant/58104621531516"
+      ],
+      "returned": 6,
+      "hasNextPages": 0
+    }
+  ]
+}

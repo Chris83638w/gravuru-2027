@@ -1,0 +1,12 @@
+{
+  "scope": "local native Monogramm fixture; not Shopify end-to-end",
+  "quantity": 1,
+  "baseCents": 2199,
+  "addedMotifs": [
+    {"name": "Haus", "totalCents": 2368, "layers": 3},
+    {"name": "Baum 1", "totalCents": 2537, "layers": 4}
+  ],
+  "removedMotif": {"name": "Baum 1", "totalCents": 2368, "layers": 3},
+  "extraMotifCents": 169,
+  "passed": true
+}

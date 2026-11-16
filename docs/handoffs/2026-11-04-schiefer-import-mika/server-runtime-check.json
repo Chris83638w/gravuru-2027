@@ -1,0 +1,22 @@
+{
+  "schema": "gravuru-slate-runtime-check/v1",
+  "runtime": "/var/www/vhosts/gravuru-designwerkstatt.de/private/issue139-doors-156-20261103",
+  "hashes": {
+    "app/workshop/product-model.mjs": "b59e1091e6886a61b9f8d93d15fdbc6526bf4aeb2e789eb93e4b551073c95854",
+    "app/workshop/shop-preparation.mjs": "84c7b062bcf8f3d6fc1d1357ee163ca317bb9d955b08a026aa38e35b54a953db",
+    "app/configurator/variant-m/contract.mjs": "7ffe119f0f9fed4ea9c1f635cb3403c77572fea3ebfa21fc653ab838392cab7f"
+  },
+  "compatible": false,
+  "products": [
+    {
+      "sourceDesignId": "GT-S-22x14-D220",
+      "compatible": false,
+      "reason": "Schiefer benötigt eine eindeutige Befestigungsauswahl mit ausdrücklichen Bohrbildern."
+    },
+    {
+      "sourceDesignId": "MG-S-22x14-D1",
+      "compatible": false,
+      "reason": "Schiefer benötigt eine eindeutige Befestigungsauswahl mit ausdrücklichen Bohrbildern."
+    }
+  ]
+}

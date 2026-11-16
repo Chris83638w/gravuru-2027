@@ -1,0 +1,693 @@
+{
+  "scope": "private-bulkapproval-release-get-only",
+  "origin": "https://test-2027.gravuru-designwerkstatt.de",
+  "checkedAt": "2026-11-07T09:11:02.115246+00:00",
+  "passed": true,
+  "checks": [
+    {
+      "name": "anonymous_denied_1",
+      "ok": true,
+      "status": 401,
+      "bodyBytes": 0
+    },
+    {
+      "name": "anonymous_denied_2",
+      "ok": true,
+      "status": 401,
+      "bodyBytes": 0
+    },
+    {
+      "name": "anonymous_denied_3",
+      "ok": true,
+      "status": 401,
+      "bodyBytes": 0
+    },
+    {
+      "name": "anonymous_denied_4",
+      "ok": true,
+      "status": 401,
+      "bodyBytes": 0
+    },
+    {
+      "name": "health",
+      "ok": true,
+      "status": 200,
+      "bodyBytes": 71
+    },
+    {
+      "name": "gallery",
+      "ok": true,
+      "status": 200,
+      "bodyBytes": 7068889
+    },
+    {
+      "name": "gallery_private_cache",
+      "ok": true
+    },
+    {
+      "name": "gallery_counts",
+      "ok": true,
+      "originals": 462,
+      "editableOriginals": 370,
+      "checkboxes": 462,
+      "overviewPresent": true
+    },
+    {
+      "name": "asset_http_1",
+      "ok": true,
+      "status": 200,
+      "bodyBytes": 14134
+    },
+    {
+      "name": "asset_release_hash_1",
+      "ok": true,
+      "sha256": "858aef1acd929f25cd68f5ec0ba3c25e03ac5c134a8971a13ddb3a0cc4af49c3"
+    },
+    {
+      "name": "asset_http_2",
+      "ok": true,
+      "status": 200,
+      "bodyBytes": 14955
+    },
+    {
+      "name": "asset_release_hash_2",
+      "ok": true,
+      "sha256": "3b2c124af696fa2d7bb30abd1e20c4968de53099064a157c295e443e2b12050b"
+    },
+    {
+      "name": "asset_http_3",
+      "ok": true,
+      "status": 200,
+      "bodyBytes": 19498
+    },
+    {
+      "name": "asset_release_hash_3",
+      "ok": true,
+      "sha256": "ef8b11b8480c1a6c1fbb8a64786a8d9d230e1770bec1794daad83a10cc7df4c1"
+    },
+    {
+      "name": "asset_http_4",
+      "ok": true,
+      "status": 200,
+      "bodyBytes": 14602
+    },
+    {
+      "name": "asset_release_hash_4",
+      "ok": true,
+      "sha256": "9d06b3e9a7802b04196c8e2b60082fb729f8424999cb69af879e492534386a74"
+    },
+    {
+      "name": "approvals_get",
+      "ok": true,
+      "status": 200,
+      "bodyBytes": 2957858
+    },
+    {
+      "name": "approval_counts",
+      "ok": true,
+      "targets": 2550,
+      "approved": 0,
+      "unreviewed": 2445,
+      "changed": 4,
+      "unavailable": 101
+    },
+    {
+      "name": "overview_contract",
+      "ok": true
+    },
+    {
+      "name": "comments_get",
+      "ok": true,
+      "status": 200,
+      "bodyBytes": 27795
+    },
+    {
+      "name": "native_links_1",
+      "ok": true
+    },
+    {
+      "name": "native_preview_1",
+      "ok": true,
+      "status": 200,
+      "bodyBytes": 346127
+    },
+    {
+      "name": "native_svg_1",
+      "ok": true,
+      "sha256": "0337751c8e8fc71c3ffd36a4753496c96fd0690a1821369e7e98987b7579e897"
+    },
+    {
+      "name": "editor_1",
+      "ok": true,
+      "status": 200,
+      "bodyBytes": 978
+    },
+    {
+      "name": "inline_get_1",
+      "ok": true,
+      "status": 200,
+      "bodyBytes": 349461
+    },
+    {
+      "name": "inline_contract_1",
+      "ok": true
+    },
+    {
+      "name": "native_links_2",
+      "ok": true
+    },
+    {
+      "name": "native_preview_2",
+      "ok": true,
+      "status": 200,
+      "bodyBytes": 1942429
+    },
+    {
+      "name": "native_svg_2",
+      "ok": true,
+      "sha256": "cebd9e1dc751b8012be53fbf17a6b156984e858f3f067fa90473ae38de4662b9"
+    },
+    {
+      "name": "editor_2",
+      "ok": true,
+      "status": 200,
+      "bodyBytes": 978
+    },
+    {
+      "name": "inline_get_2",
+      "ok": true,
+      "status": 200,
+      "bodyBytes": 1943550
+    },
+    {
+      "name": "inline_contract_2",
+      "ok": true
+    },
+    {
+      "name": "native_links_3",
+      "ok": true
+    },
+    {
+      "name": "native_preview_3",
+      "ok": true,
+      "status": 200,
+      "bodyBytes": 1942447
+    },
+    {
+      "name": "native_svg_3",
+      "ok": true,
+      "sha256": "0d6b04626b2057b1a39df62d3461582ef99239c1e5b840ef3b4b58d4ba00e255"
+    },
+    {
+      "name": "editor_3",
+      "ok": true,
+      "status": 200,
+      "bodyBytes": 978
+    },
+    {
+      "name": "inline_get_3",
+      "ok": true,
+      "status": 200,
+      "bodyBytes": 1943560
+    },
+    {
+      "name": "inline_contract_3",
+      "ok": true
+    },
+    {
+      "name": "foreign_origin_denied",
+      "ok": true,
+      "status": 403,
+      "bodyBytes": 0
+    },
+    {
+      "name": "private_path_denied_1",
+      "ok": true,
+      "status": 404,
+      "bodyBytes": 0
+    },
+    {
+      "name": "private_path_denied_2",
+      "ok": true,
+      "status": 404,
+      "bodyBytes": 0
+    },
+    {
+      "name": "private_path_denied_3",
+      "ok": true,
+      "status": 404,
+      "bodyBytes": 0
+    },
+    {
+      "name": "private_path_denied_4",
+      "ok": true,
+      "status": 404,
+      "bodyBytes": 0
+    },
+    {
+      "name": "private_path_denied_5",
+      "ok": true,
+      "status": 404,
+      "bodyBytes": 0
+    },
+    {
+      "name": "private_path_denied_6",
+      "ok": true,
+      "status": 404,
+      "bodyBytes": 0
+    },
+    {
+      "name": "private_path_denied_7",
+      "ok": true,
+      "status": 404,
+      "bodyBytes": 0
+    },
+    {
+      "name": "private_path_denied_8",
+      "ok": true,
+      "status": 404,
+      "bodyBytes": 0
+    },
+    {
+      "name": "private_path_denied_9",
+      "ok": true,
+      "status": 404,
+      "bodyBytes": 0
+    },
+    {
+      "name": "private_path_denied_10",
+      "ok": true,
+      "status": 404,
+      "bodyBytes": 0
+    },
+    {
+      "name": "approvals_reread",
+      "ok": true,
+      "status": 200,
+      "bodyBytes": 2957858
+    },
+    {
+      "name": "comments_reread",
+      "ok": true,
+      "status": 200,
+      "bodyBytes": 27795
+    },
+    {
+      "name": "approval_read_window_monotonic_same_targets",
+      "ok": true,
+      "valid": true,
+      "targetsWithNewRevisions": 0,
+      "beforeSha256": "7a34f3102411d7f6090e612e8c659c5c31c76985e4f715fb294cb952157b1275",
+      "afterSha256": "7a34f3102411d7f6090e612e8c659c5c31c76985e4f715fb294cb952157b1275",
+      "fullEventHistoryCheckedSeparately": true,
+      "identitiesAndContentsOmitted": true
+    },
+    {
+      "name": "comment_read_window_unchanged",
+      "ok": true,
+      "beforeSha256": "3543d639f84aec97419b1554b8cb380b4922999f22cf093d9977da972e24ddf2",
+      "afterSha256": "3543d639f84aec97419b1554b8cb380b4922999f22cf093d9977da972e24ddf2"
+    },
+    {
+      "name": "active_navigation_release",
+      "ok": true
+    },
+    {
+      "name": "runtime_overlay_preserved",
+      "ok": true
+    },
+    {
+      "name": "all_release_sources_1",
+      "ok": true
+    },
+    {
+      "name": "all_release_sources_2",
+      "ok": true
+    },
+    {
+      "name": "all_release_sources_3",
+      "ok": true
+    },
+    {
+      "name": "navigation_gallery_get",
+      "ok": true,
+      "status": 200,
+      "bodyBytes": 7068889
+    },
+    {
+      "name": "quick_start_per_native_card",
+      "ok": true
+    },
+    {
+      "name": "four_nudges_per_native_card",
+      "ok": true
+    },
+    {
+      "name": "gallery_navigation_controls",
+      "ok": true
+    },
+    {
+      "name": "navigation_source_get_1",
+      "ok": true,
+      "status": 200,
+      "bodyBytes": 6979
+    },
+    {
+      "name": "navigation_source_hash_1",
+      "ok": true
+    },
+    {
+      "name": "navigation_source_get_2",
+      "ok": true,
+      "status": 200,
+      "bodyBytes": 2057
+    },
+    {
+      "name": "navigation_source_hash_2",
+      "ok": true
+    },
+    {
+      "name": "navigation_source_get_3",
+      "ok": true,
+      "status": 200,
+      "bodyBytes": 978
+    },
+    {
+      "name": "navigation_source_hash_3",
+      "ok": true
+    },
+    {
+      "name": "editor_back_button",
+      "ok": true
+    },
+    {
+      "name": "navigation_source_get_4",
+      "ok": true,
+      "status": 200,
+      "bodyBytes": 7385
+    },
+    {
+      "name": "navigation_source_hash_4",
+      "ok": true
+    },
+    {
+      "name": "built_editor_get",
+      "ok": true,
+      "status": 200,
+      "bodyBytes": 373501
+    },
+    {
+      "name": "built_editor_exact_hash",
+      "ok": true,
+      "sha256": "fba445ad4e933567f060e8d0196c8ae6914b55b9ac84d8a601aff2f6b2775fa6",
+      "bodyBytes": 373501
+    },
+    {
+      "name": "editor_material_choices",
+      "ok": true,
+      "materials": 3
+    },
+    {
+      "name": "editor_context_get_1",
+      "ok": true,
+      "status": 200,
+      "bodyBytes": 6945792
+    },
+    {
+      "name": "editor_context_matches_fresh_backup_1",
+      "ok": true,
+      "revision": 1
+    },
+    {
+      "name": "editor_context_get_2",
+      "ok": true,
+      "status": 200,
+      "bodyBytes": 5024788
+    },
+    {
+      "name": "editor_context_matches_fresh_backup_2",
+      "ok": true,
+      "revision": 1
+    },
+    {
+      "name": "editor_context_get_3",
+      "ok": true,
+      "status": 200,
+      "bodyBytes": 5025256
+    },
+    {
+      "name": "editor_context_matches_fresh_backup_3",
+      "ok": true,
+      "revision": 4
+    },
+    {
+      "name": "usability_gallery_get",
+      "ok": true,
+      "status": 200,
+      "bodyBytes": 7068889
+    },
+    {
+      "name": "bulk_approval_controls_delivered",
+      "ok": true,
+      "singleInitiallyDisabledButton": true,
+      "singleAccessibleStatus": true,
+      "singleInitiallyHiddenAccessiblePanel": true,
+      "singleSummaryInsidePanel": true,
+      "singleInitiallyDisabledConfirmInsidePanel": true,
+      "singleEnabledCancelInsidePanel": true,
+      "loadedSavedFilterExplanation": true
+    },
+    {
+      "name": "resize_smaller_per_native_card",
+      "ok": true
+    },
+    {
+      "name": "resize_larger_per_native_card",
+      "ok": true
+    },
+    {
+      "name": "resize_percent_input_per_native_card",
+      "ok": true
+    },
+    {
+      "name": "resize_dimensions_per_native_card",
+      "ok": true
+    },
+    {
+      "name": "unknown_species_notice_visible",
+      "ok": true,
+      "count": 70
+    },
+    {
+      "name": "known_subject_photo_groups_visible",
+      "ok": true
+    },
+    {
+      "name": "usability_source_get_1",
+      "ok": true,
+      "status": 200,
+      "bodyBytes": 41056
+    },
+    {
+      "name": "usability_source_hash_1",
+      "ok": true
+    },
+    {
+      "name": "usability_source_get_2",
+      "ok": true,
+      "status": 200,
+      "bodyBytes": 78788
+    },
+    {
+      "name": "usability_source_hash_2",
+      "ok": true
+    },
+    {
+      "name": "usability_source_get_3",
+      "ok": true,
+      "status": 200,
+      "bodyBytes": 15721
+    },
+    {
+      "name": "usability_source_hash_3",
+      "ok": true
+    },
+    {
+      "name": "photo_sample_available_1",
+      "ok": true
+    },
+    {
+      "name": "photo_preview_get_1",
+      "ok": true,
+      "status": 200,
+      "bodyBytes": 346127
+    },
+    {
+      "name": "photo_preview_original_pixels_path_1",
+      "ok": true,
+      "authoredPhotoGroups": 1,
+      "forcedGrayscaleOrLightenAbsent": true
+    },
+    {
+      "name": "resize_contract_get_1",
+      "ok": true,
+      "status": 200,
+      "bodyBytes": 349461
+    },
+    {
+      "name": "resize_contract_booleans_1",
+      "ok": true
+    },
+    {
+      "name": "photo_slot_resize_available_1",
+      "ok": true
+    },
+    {
+      "name": "photo_inline_original_pixels_path_1",
+      "ok": true,
+      "authoredPhotoGroups": 1,
+      "forcedGrayscaleOrLightenAbsent": true
+    },
+    {
+      "name": "photo_sample_available_2",
+      "ok": true
+    },
+    {
+      "name": "photo_preview_get_2",
+      "ok": true,
+      "status": 200,
+      "bodyBytes": 2023688
+    },
+    {
+      "name": "photo_preview_original_pixels_path_2",
+      "ok": true,
+      "authoredPhotoGroups": 1,
+      "forcedGrayscaleOrLightenAbsent": true
+    },
+    {
+      "name": "resize_contract_get_2",
+      "ok": true,
+      "status": 200,
+      "bodyBytes": 2025555
+    },
+    {
+      "name": "resize_contract_booleans_2",
+      "ok": true
+    },
+    {
+      "name": "photo_slot_resize_available_2",
+      "ok": true
+    },
+    {
+      "name": "photo_inline_original_pixels_path_2",
+      "ok": true,
+      "authoredPhotoGroups": 1,
+      "forcedGrayscaleOrLightenAbsent": true
+    },
+    {
+      "name": "fresh_backup_all_database_rows_1",
+      "ok": true,
+      "database": "design-assets.sqlite",
+      "tables": 7,
+      "rowsCompared": 240,
+      "allRowsUnchanged": true
+    },
+    {
+      "name": "fresh_backup_all_database_rows_2",
+      "ok": true,
+      "database": "profiles.sqlite",
+      "tables": 6,
+      "rowsCompared": 2,
+      "allRowsUnchanged": true
+    },
+    {
+      "name": "fresh_backup_all_database_rows_3",
+      "ok": true,
+      "database": "workshop.sqlite",
+      "tables": 61,
+      "rowsCompared": 1403,
+      "allRowsUnchanged": true
+    },
+    {
+      "name": "fresh_backup_all_database_rows_4",
+      "ok": true,
+      "database": "review-comments.sqlite",
+      "tables": 1,
+      "rowsCompared": 4,
+      "allRowsUnchanged": true
+    },
+    {
+      "name": "approval_old_events_preserved_and_new_events_append_only",
+      "ok": true,
+      "oldEventsPreserved": true,
+      "deletedOldEvents": 0,
+      "modifiedOldEvents": 0,
+      "appendedEvents": 0
+    },
+    {
+      "name": "approval_current_status_get",
+      "ok": true,
+      "status": 200,
+      "bodyBytes": 2957858
+    },
+    {
+      "name": "fresh_backup_all_metadata_unchanged",
+      "ok": true,
+      "files": 5
+    }
+  ],
+  "mutationRequests": 0,
+  "redirectsFollowed": 0,
+  "casVerified": false,
+  "csrfWriteVerified": false,
+  "browserVerified": false,
+  "stateComparisonNote": "A concurrent user edit can change a read-window hash; this probe submits GET requests only.",
+  "sourceCommit": "3db1ef5d537b495d2bfbaefae9152401293f75cc",
+  "readOnlyDatabaseComparison": true,
+  "approvalChanges": {
+    "schema": "gravuru-readonly-approval-event-comparison/v1",
+    "before": {
+      "events": 4,
+      "targetsWithEvents": 4,
+      "storedLatestApproved": 4,
+      "storedLatestUnapproved": 0,
+      "maximumEventRevision": 1,
+      "eventsSha256": "85bb05c97b10c869aabb68f6b10794257ec3061d15fc857864bb6d889b6f181b"
+    },
+    "after": {
+      "events": 4,
+      "targetsWithEvents": 4,
+      "storedLatestApproved": 4,
+      "storedLatestUnapproved": 0,
+      "maximumEventRevision": 1,
+      "eventsSha256": "85bb05c97b10c869aabb68f6b10794257ec3061d15fc857864bb6d889b6f181b"
+    },
+    "oldEventsPreserved": true,
+    "deletedOldEvents": 0,
+    "modifiedOldEvents": 0,
+    "appendedEvents": 0,
+    "appendedApprovedEvents": 0,
+    "appendedUnapprovedEvents": 0,
+    "appendedRevisionsConsecutive": true,
+    "additiveChangesOnly": true,
+    "changedTargets": [],
+    "identitiesAndContentsOmitted": true,
+    "mutationRequests": 0,
+    "attribution": "Append-only events observed; user activity is reported by the operator, not inferred from raw actor identities.",
+    "statusNote": "Stored approved flags are historical decisions; current effective approved/changed status also depends on the current renderer fingerprint.",
+    "schemaUnchanged": true,
+    "currentEffectiveStatusCounts": {
+      "approved": 0,
+      "unreviewed": 2445,
+      "changed": 4,
+      "unavailable": 101
+    },
+    "readOnlyConsistencyNote": "The DB snapshot and HTTP status read are sequential; concurrent user approvals can occur between them."
+  },
+  "bulkApprovalInteractionVerified": false,
+  "pixelRasterVerified": false,
+  "photoPreservationCheck": "SVG authored-photo ancestors contain no forced grayscale/lighten; not a browser pixel comparison.",
+  "probeSha256": "eaad56c2c9da72ca5bea0b1e1e6bbe355b81125ee2265a0184df0c605d4cfedb",
+  "planSha256": "51bd22d40300fcb1d4ac9cace0c4e3a88c8573ef81c34a59fa2722c752e67f3b",
+  "attempt": 2
+}

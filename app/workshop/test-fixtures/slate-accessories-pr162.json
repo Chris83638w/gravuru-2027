@@ -1,0 +1,273 @@
+{
+ "schema": "gravuru-zubehoer/v1",
+ "material": "schiefer",
+ "stand": "2026-11-03",
+ "quelle": "Chris 03.11.2026 (Schiefer-Tafeln-Seite: Aufpreise, Befestigung & Zubehör); Bilder aus Chris' Ordner „Produktbilder Zubehör“ und Shopify-Dateien; Preise laut Preisliste Chris 02.11.2026",
+ "regeln": [
+  "Abstandshalter sind 12 mm breit (Chris 03.11.2026: „die abstandshalter sind und bleiben 12mm breit“).",
+  "Im Konfi zeigt jede Abstandshalter-Farbe nur die Draufsicht (Chris 03.11.2026: „nur von oben für den konfi“).",
+  "Schwarz matt: kein Foto von oben vorhanden – aus dem Weiß-Foto abgedunkelt („schwarz matt wie weiss“); echtes Foto ersetzt es, sobald vorhanden.",
+  "Foto-Aufpreis: zwei Vorlagen, Mensch und Hund (Chris 03.11.2026: „Für Foto musst du 2 Vorlagen machen. Einmal ein Mensch und einmal ein Hund“) – Fotogravur auf echtem Schieferfoto, Beispielfotos aus den Katalogdesigns MEM-068 und D1203.",
+  "Abstandshalter farbig +1 € (2er) / +2 € (4er) (Chris 30.10.); Grundpreis-Abgleich 5,90/9,90 vs. 5,99/8,99 offen.",
+  "Bohrlöcher mit Schrauben: im Bild sitzt der Edelstahl-Schraubenkopf (5 mm, Chris 03.11.: „der Kopf ist 5mm groß“) in jedem Loch (Chris 03.11.2026: „in den bohrlöchern den Schraubenkopf reinsetzen“)."
+ ],
+ "optionen": [
+  {
+   "id": "b2",
+   "art": "befestigung",
+   "name": "2 Bohrlöcher Ø 4 mm",
+   "preisCents": 299,
+   "hinweis": null,
+   "konfiBilder": [
+    {
+     "datei": "bilder/schiefer-bohrloecher-2er-quadrat.jpg",
+     "name": "Quadrat"
+    },
+    {
+     "datei": "bilder/schiefer-bohrloecher-2er-rechteck.jpg",
+     "name": "Rechteck"
+    }
+   ]
+  },
+  {
+   "id": "b2s",
+   "art": "befestigung",
+   "name": "2 Bohrlöcher mit Schrauben",
+   "preisCents": 329,
+   "hinweis": null,
+   "konfiBilder": [
+    {
+     "datei": "bilder/schiefer-2er-schrauben-quadrat.jpg",
+     "name": "Quadrat"
+    },
+    {
+     "datei": "bilder/schiefer-2er-schrauben-rechteck.jpg",
+     "name": "Rechteck"
+    }
+   ],
+   "weitereBilder": [
+    "bilder/schraube-duebel.jpg"
+   ]
+  },
+  {
+   "id": "b4",
+   "art": "befestigung",
+   "name": "4 Bohrlöcher Ø 4 mm",
+   "preisCents": 399,
+   "hinweis": "nicht bei Rund",
+   "konfiBilder": [
+    {
+     "datei": "bilder/schiefer-bohrloecher-4er-quadrat.jpg",
+     "name": "Quadrat"
+    },
+    {
+     "datei": "bilder/schiefer-bohrloecher-4er-rechteck.jpg",
+     "name": "Rechteck"
+    }
+   ]
+  },
+  {
+   "id": "b4s",
+   "art": "befestigung",
+   "name": "4 Bohrlöcher mit Schrauben",
+   "preisCents": 449,
+   "hinweis": "nicht bei Rund",
+   "konfiBilder": [
+    {
+     "datei": "bilder/schiefer-4er-schrauben-quadrat.jpg",
+     "name": "Quadrat"
+    },
+    {
+     "datei": "bilder/schiefer-4er-schrauben-rechteck.jpg",
+     "name": "Rechteck"
+    }
+   ],
+   "weitereBilder": [
+    "bilder/schraube-duebel.jpg"
+   ]
+  },
+  {
+   "id": "ah2",
+   "art": "befestigung",
+   "name": "2 Abstandshalter (12 mm breit)",
+   "preisCents": 599,
+   "hinweis": "Farben: Edelstahl, Schwarz matt (Bild nachgebaut), Bronze, Gold, Weiß · Preis offen – Excel 29.10.: 5,90 €",
+   "konfiBilder": [
+    {
+     "datei": "bilder/abstandshalter-oben-edelstahl.png",
+     "name": "Edelstahl"
+    },
+    {
+     "datei": "bilder/abstandshalter-oben-schwarz-matt-simuliert.png",
+     "name": "Schwarz matt"
+    },
+    {
+     "datei": "bilder/abstandshalter-oben-bronze.png",
+     "name": "Bronze"
+    },
+    {
+     "datei": "bilder/abstandshalter-oben-gold.png",
+     "name": "Gold"
+    },
+    {
+     "datei": "bilder/abstandshalter-oben-weiss.png",
+     "name": "Weiß"
+    }
+   ],
+   "weitereBilder": [
+    "bilder/abstandshalter-gruppe-2-edelstahl.jpg",
+    "bilder/abstandshalter-seite-edelstahl.png",
+    "bilder/abstandshalter-seite-bronze.png",
+    "bilder/abstandshalter-seite-gold.png",
+    "bilder/abstandshalter-seite-weiss.png",
+    "bilder/abstandshalter-gruppe-4-schwarz.jpg"
+   ],
+   "breiteMm": 12,
+   "farben": [
+    "Edelstahl",
+    "Schwarz matt",
+    "Bronze",
+    "Gold",
+    "Weiß"
+   ],
+   "preisJeFarbe": {
+    "Edelstahl": 0,
+    "farbig": 100,
+    "quelle": "Chris 30.10.2026: „farbig 2er Set 1 Euro mehr und 4er Set 2 Euro mehr“"
+   },
+   "farbenQuelle": "Chris 03.11.2026: Bronze und Gold bei Schiefer „ja“"
+  },
+  {
+   "id": "ah4",
+   "art": "befestigung",
+   "name": "4 Abstandshalter (12 mm breit)",
+   "preisCents": 899,
+   "hinweis": "Farben: Edelstahl, Schwarz matt (Bild nachgebaut), Bronze, Gold, Weiß · nicht bei Rund · Preis offen – Excel 29.10.: 9,90 €",
+   "konfiBilder": [
+    {
+     "datei": "bilder/abstandshalter-oben-edelstahl.png",
+     "name": "Edelstahl"
+    },
+    {
+     "datei": "bilder/abstandshalter-oben-schwarz-matt-simuliert.png",
+     "name": "Schwarz matt"
+    },
+    {
+     "datei": "bilder/abstandshalter-oben-bronze.png",
+     "name": "Bronze"
+    },
+    {
+     "datei": "bilder/abstandshalter-oben-gold.png",
+     "name": "Gold"
+    },
+    {
+     "datei": "bilder/abstandshalter-oben-weiss.png",
+     "name": "Weiß"
+    }
+   ],
+   "weitereBilder": [
+    "bilder/abstandshalter-gruppe-4-edelstahl.jpg",
+    "bilder/abstandshalter-gruppe-4-schwarz.jpg"
+   ],
+   "breiteMm": 12,
+   "farben": [
+    "Edelstahl",
+    "Schwarz matt",
+    "Bronze",
+    "Gold",
+    "Weiß"
+   ],
+   "preisJeFarbe": {
+    "Edelstahl": 0,
+    "farbig": 200,
+    "quelle": "Chris 30.10.2026: „farbig 2er Set 1 Euro mehr und 4er Set 2 Euro mehr“"
+   },
+   "farbenQuelle": "Chris 03.11.2026: Bronze und Gold bei Schiefer „ja“"
+  },
+  {
+   "id": "kordel",
+   "art": "befestigung",
+   "name": "Kordel",
+   "preisCents": 100,
+   "hinweis": "nur Kordelschilder",
+   "konfiBilder": [
+    {
+     "datei": "bilder/kordel-schiefer.jpg",
+     "name": "Kordel"
+    },
+    {
+     "datei": "bilder/kordel-farbe-schwarz.jpg",
+     "name": "Schwarz"
+    },
+    {
+     "datei": "bilder/kordel-farbe-beige.jpg",
+     "name": "Beige"
+    },
+    {
+     "datei": "bilder/kordel-farbe-blau.jpg",
+     "name": "Blau"
+    },
+    {
+     "datei": "bilder/kordel-farbe-rosa.jpg",
+     "name": "Rosa"
+    }
+   ]
+  },
+  {
+   "id": "foto",
+   "art": "aufpreis",
+   "name": "jedes weitere Foto",
+   "preisCents": 999,
+   "hinweis": null,
+   "konfiBilder": [
+    {
+     "datei": "bilder/vorlage-foto-mensch.jpg",
+     "name": "Mensch"
+    },
+    {
+     "datei": "bilder/vorlage-foto-hund.jpg",
+     "name": "Hund"
+    }
+   ]
+  },
+  {
+   "id": "silikon",
+   "art": "zubehoer",
+   "name": "Silikon",
+   "preisCents": 699,
+   "hinweis": null,
+   "konfiBilder": [
+    {
+     "datei": "bilder/silikon.png",
+     "name": "Silikon"
+    }
+   ]
+  },
+  {
+   "id": "staender-klar",
+   "art": "zubehoer",
+   "name": "Acrylständer klar",
+   "preisCents": 1399,
+   "hinweis": null,
+   "konfiBilder": [
+    {
+     "datei": "bilder/acrylstaender-klar.jpg",
+     "name": "klar"
+    }
+   ]
+  },
+  {
+   "id": "staender-schwarz",
+   "art": "zubehoer",
+   "name": "Acrylständer schwarz",
+   "preisCents": 1599,
+   "hinweis": null,
+   "konfiBilder": [
+    {
+     "datei": "bilder/acrylstaender-schwarz.jpg",
+     "name": "schwarz"
+    }
+   ]
+  }
+ ]
+}

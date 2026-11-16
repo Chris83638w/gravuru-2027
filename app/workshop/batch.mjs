@@ -3,6 +3,8 @@ import {isFormProduct} from './form-product.mjs';
 import {prepareFormBatch} from './form-batch.mjs';
 import {createHash} from 'node:crypto';
 import {validateProductDocument} from './product-model.mjs';
+import {prepareShopProduct} from './shop-preparation.mjs';
+import {isScalableSizes} from '../configurator/variant-m/scalable-sizes.mjs';
 import {replaceDesignArtwork} from './design-import.mjs';
 import {isDesignSourcePath,designSourceName,designSourceSettings,resolveDesignSourcePath} from './design-source-path.mjs';
 
@@ -75,7 +77,10 @@ export function planBatch(repository,{rows,masterId,masterRevision,designFiles=[
         master=repository.get(id,{revision:Number(version)});current=repository.get(id);
         if(master.document.kind!=='master'||current.status==='archived'||current.document.kind!=='master')fail('Die Vorlage muss ein aktiver Master sein.');
       }
-      const form=isFormProduct(master.document),slate=master.document.config?.profile?.material?.kind==='slate';if(!form&&!slate&&text(row.price_eur))fail('price_eur gilt für freie Formprodukte und Schiefer. Für die Acrylvorlage price_small_eur / price_large_eur verwenden.');
+      const form=isFormProduct(master.document),slate=master.document.config?.profile?.material?.kind==='slate';
+      const scalableAcrylic=isScalableSizes(master.document.config)&&master.document.config.profile.material.kind==='acrylic';
+      if(scalableAcrylic&&['price_eur','price_small_eur','price_large_eur'].some(k=>text(row[k])))fail('Skalierbare Acrylgrößen übernehmen die Preise aus der gespeicherten Größenquelle. Diese Preisänderung zuerst dort prüfen und einen neuen Masterstand verwenden.');
+      if(!form&&!slate&&text(row.price_eur))fail('price_eur gilt für freie Formprodukte und Schiefer. Für die Acrylvorlage price_small_eur / price_large_eur verwenden.');
       if(slate&&['price_small_eur','price_large_eur'].some(k=>text(row[k])))fail('Schiefer verwendet price_eur; Acryl-Größenpreise sind hier nicht zulässig.');
       let document=structuredClone(master.document),artwork=null,artworks=[],designAssignments=[];
       const children=designGroups.get(key)||[];
@@ -148,8 +153,13 @@ export function planBatch(repository,{rows,masterId,masterRevision,designFiles=[
       const unchanged=updating&&!existing&&JSON.stringify(validated)===JSON.stringify(master.document)&&JSON.stringify(profileBinding)===JSON.stringify(priorBinding);
       if(unchanged&&!form)fail('Die Zeile enthält keine Änderung.');
       const update=updating?{action,productId:id,expectedRevision:Number(version)}:{};
+      // The saved size adapter owns every valid selection and price. Report its
+      // native variants rather than projecting them onto the old two-size pilot.
+      const prices=form?{base:validated.basePriceCents}:slate?{base:validated.config.basePriceCents}:scalableAcrylic?{variants:prepareShopProduct({...master,document:validated}).variants}:validated.config.acrylic.pricing.sizes;
+      const review={row:index+1,key,name:validated.name,...profileBinding,status:existing?'existing':unchanged?'unchanged':'ready',id:existing?.id,...(updating?{...update,changes:[...Object.keys(row).filter(k=>!['action','product_id','expected_revision','import_key','master_id','master_revision'].includes(k)&&text(row[k])),...(children.length?['Designs']:[])],previousName:master.document.name}:{masterId:id,masterRevision:Number(version)}),prices,...(form?{formProduct:true,geometry:{widthMm:validated.form.geometry.widthMm,heightMm:validated.form.geometry.heightMm,holeCount:validated.form.geometry.holeCount},material:validated.material.id,method:validated.processingMethod}:{}),...(designAssignments.length?{designAssignments,defaultDesignId:validated.defaultDesignId}:{}),...(artwork?{artwork}:{}),...(artworks.length?{artworks,designCount:validated.designs.length,defaultDesignId:validated.defaultDesignId,defaultDesignName:validated.designs.find(d=>d.id===validated.defaultDesignId)?.name}:{})};
+      // A row enters the executable batch only after its complete review succeeds.
+      report.push(review);
       if(!unchanged)entries.push({key,fingerprint,profileBinding,document:validated,...update});
-      report.push({row:index+1,key,name:validated.name,...profileBinding,status:existing?'existing':unchanged?'unchanged':'ready',id:existing?.id,...(updating?{...update,changes:[...Object.keys(row).filter(k=>!['action','product_id','expected_revision','import_key','master_id','master_revision'].includes(k)&&text(row[k])),...(children.length?['Designs']:[])],previousName:master.document.name}:{masterId:id,masterRevision:Number(version)}),...(form?{formProduct:true,geometry:{widthMm:validated.form.geometry.widthMm,heightMm:validated.form.geometry.heightMm,holeCount:validated.form.geometry.holeCount},material:validated.material.id,method:validated.processingMethod,prices:{base:validated.basePriceCents}}:{prices:slate?{base:validated.config.basePriceCents}:validated.config.acrylic.pricing.sizes}),...(designAssignments.length?{designAssignments,defaultDesignId:validated.defaultDesignId}:{}),...(artwork?{artwork}:{}),...(artworks.length?{artworks,designCount:validated.designs.length,defaultDesignId:validated.defaultDesignId,defaultDesignName:validated.designs.find(d=>d.id===validated.defaultDesignId)?.name}:{})});
     }catch(error){report.push({row:index+1,key,name:text(row?.name),status:'error',message:error.message});}
   }
   const valid=report.every(row=>row.status!=='error');

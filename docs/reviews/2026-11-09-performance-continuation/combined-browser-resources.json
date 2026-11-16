@@ -1,0 +1,92 @@
+[
+  {
+    "path": "/_bundle/editor-257c5700803ea894.mjs",
+    "ms": 17,
+    "bytes": 1449854,
+    "transfer": 483931
+  },
+  {
+    "path": "/_bundle/editor-bf7d088b9bdf015e.mjs",
+    "ms": 11,
+    "bytes": 134324,
+    "transfer": 38438
+  },
+  {
+    "path": "/_bundle/editor-c419119a6ef437c6.mjs",
+    "ms": 3,
+    "bytes": 7915,
+    "transfer": 0
+  },
+  {
+    "path": "/_runtime/lazy/katalog-kern.json",
+    "ms": 14,
+    "bytes": 166290,
+    "transfer": 45841
+  },
+  {
+    "path": "/configurator/mobile-demo/demo.css",
+    "ms": 6,
+    "bytes": 55005,
+    "transfer": 9360
+  },
+  {
+    "path": "/configurator/mobile-demo/shopping-cart.svg",
+    "ms": 5,
+    "bytes": 530,
+    "transfer": 830
+  },
+  {
+    "path": "/assistant.js",
+    "ms": 7,
+    "bytes": 49938,
+    "transfer": 16811
+  },
+  {
+    "path": "/api/guides",
+    "ms": 7,
+    "bytes": 2917,
+    "transfer": 1676
+  },
+  {
+    "path": "/_runtime/lazy/motive/import-b56d5711a75f34c1fa8d9c30.json",
+    "ms": 5,
+    "bytes": 966,
+    "transfer": 1266
+  },
+  {
+    "path": "/_runtime/lazy/motive/import-8adc51cf09cbad881db95ef6.json",
+    "ms": 7,
+    "bytes": 6449,
+    "transfer": 3354
+  },
+  {
+    "path": "/_runtime/lazy/motive/import-4609f5a437c8a0a9d6c8dca3.json",
+    "ms": 6,
+    "bytes": 1242,
+    "transfer": 1047
+  },
+  {
+    "path": "/_runtime/lazy/motive/import-7435d6dce5e1fa3c4c4fc1b5.json",
+    "ms": 5,
+    "bytes": 7309,
+    "transfer": 3412
+  },
+  {
+    "path": "/_runtime/lazy/motive/import-178f0cc0a5c7c40768ed14cf.json",
+    "ms": 8,
+    "bytes": 32540,
+    "transfer": 11706
+  },
+  {
+    "path": "/_runtime/lazy/motive/import-f46b8d0fcc6e60810ece9d9d.json",
+    "ms": 8,
+    "bytes": 17633,
+    "transfer": 7265
+  },
+  {
+    "path": "/_runtime/lazy/schriften/nunito.json",
+    "ms": 15,
+    "bytes": 471283,
+    "transfer": 137062
+  }
+]

@@ -193,11 +193,12 @@ export function createShopEntryClient({token,fetchImpl=globalThis.fetch}={}){
     if(result.mode!=='theme'||result.paymentConfirmed!==false||!Number.isSafeInteger(result.totalCents)||typeof result.handoffUrl!=='string')fail('Die Warenkorbübergabe wurde nicht vorbereitet.');
     return result;
   }
-  async function loadDesignGallery(page=0,theme='preferred',options=null){
+  async function loadDesignGallery(page=0,theme='preferred',options=null,q=''){
+    if(typeof q!=='string'||q.length>80||/[\u0000-\u001f\u007f]/.test(q))fail('Bitte einen Suchbegriff mit höchstens 80 Zeichen eingeben.');
     if(!['preferred','all'].includes(theme))fail('Dieses Thema gibt es nicht.');
     // Türschild-Konfi: Vorlagen der gerade gewählten Ausführung (Form & Größe, Farbe, Befestigung).
     const chosen=options&&typeof options==='object'?['size','color','mounting'].filter(k=>typeof options[k]==='string'&&/^[A-Za-z0-9][A-Za-z0-9._-]{0,99}$/.test(options[k])):[];
-    const extra=chosen.map(k=>'&'+k+'='+encodeURIComponent(options[k])).join('');
+    const extra=chosen.map(k=>'&'+k+'='+encodeURIComponent(options[k])).join('')+(q.trim()?'&q='+encodeURIComponent(q.trim()):'');
     if(!Number.isSafeInteger(page)||page<0||page>10000)fail('Diese Seite der Designauswahl gibt es nicht.');
     const controller=new AbortController();let timer;
     const retry='Die Designauswahl ist gerade nicht erreichbar. Deine Gestaltung bleibt erhalten. Bitte erneut versuchen.';
@@ -215,15 +216,17 @@ export function createShopEntryClient({token,fetchImpl=globalThis.fetch}={}){
     }catch(error){if(error instanceof TypeError||controller.signal.aborted)throw Error(retry);throw error;}
     finally{clearTimeout(timer);}
   }
-  async function designRequest(action,target){
+  async function designRequest(action,target,signal){
     if(typeof target!=='string'||target.length>4096)fail('Bitte ein Design aus der Auswahl wählen.');
-    return fetchImpl(API+action,{method:'POST',credentials:'omit',cache:'no-store',headers:headers({'Content-Type':'application/json'}),body:JSON.stringify({target})});
+    signal?.throwIfAborted();
+    return fetchImpl(API+action,{method:'POST',credentials:'omit',cache:'no-store',headers:headers({'Content-Type':'application/json'}),body:JSON.stringify({target}),...(signal?{signal}:{})});
   }
-  async function loadDesignPreview(target,previewUrl){
+  async function loadDesignPreview(target,previewUrl,signal){
+    signal?.throwIfAborted();
     if(typeof previewUrl==='string'&&/^\/[A-Za-z0-9_-]+(?:\/[A-Za-z0-9_-]+)*\/vorschauen\/[a-f0-9]{64}\.svg$/.test(previewUrl)){
-      const cached=await fetchImpl(previewUrl,{credentials:'omit',cache:'force-cache'});if(cached.ok)return cached.blob();
+      const cached=await fetchImpl(previewUrl,{credentials:'omit',cache:'force-cache',...(signal?{signal}:{})});if(cached.ok)return cached.blob();
     }
-    const response=await designRequest('design-gallery-preview',target);if(!response.ok)await json(response);return response.blob();
+    const response=await designRequest('design-gallery-preview',target,signal);if(!response.ok)await json(response);return response.blob();
   }
   async function switchDesign(target){return json(await designRequest('design-switch',target));}
   return Object.freeze({request,loadModel,loadInitialModel,loadResources,submitCart,submitThemeCart,loadDesignGallery,loadDesignPreview,switchDesign});

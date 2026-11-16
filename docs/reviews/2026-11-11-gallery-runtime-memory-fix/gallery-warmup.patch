@@ -1,0 +1,114 @@
+diff --git a/app/workshop/shop-design-gallery-alle.test.mjs b/app/workshop/shop-design-gallery-alle.test.mjs
+index cfcddf1..eb02a3c 100644
+--- a/app/workshop/shop-design-gallery-alle.test.mjs
++++ b/app/workshop/shop-design-gallery-alle.test.mjs
+@@ -74,3 +74,24 @@ test('a variant of another Shopify product bound to the same product revision is
+  other.shopifyProductId='gid://shopify/Product/2';
+  await assert.rejects(gallery.list(context,{sourceModel:model,options:{size:other.options.size,mounting:'K00'}}),{code:'shop_gallery_variant'});
+ });
++
++test('all-sizes warmup stores no global cards and still lists exact current or changed size with real geometry and prices',async()=>{
++ const {model,bindings,context}=setup(['schwarz','anthrazit']),store=context.store;let saved,reads=0;const measures=[];
++ store.registry.galleryRevision=()=> 'all-sizes-r1';store.registry.listActiveForGallery=async()=>store.registry.listActive();
++ store.registry.galleryCache={read:()=>saved,write:(_r,value)=>{saved=value;}};
++ const options={secret:'all-sizes-warm-test',resolve:ids=>{const binding=bindings.get(ids.shopifyVariantId);if(!binding)throw Object.assign(Error('Inactive'),{status:404});return {store,binding:structuredClone(binding)};},modelFor:()=>model,cardFor:()=>{reads++;return model;},allowedAssets:()=>new Set(),onMeasure:m=>measures.push(m)};
++ const gallery=createShopDesignGallery(options);await gallery.warm(context);
++ assert.equal(reads,1);assert.equal(measures.find(m=>m.event==='shop_gallery_build_measure').cards,0);
++ assert.deepEqual(JSON.parse(saved.payload).scopes,[]);
++ const other=[...bindings.values()].find(b=>b.options.size!==context.binding.options.size&&b.options.color==='anthrazit');
++ for(const selected of [context.binding,other]){
++  const result=await gallery.list(context,{sourceModel:model,options:selected.options,q:'D2'});
++  assert.equal(result.total,1);const card=result.items[0],format=model.universal.familyFormats.formats.find(f=>f.key===selected.options.size);
++  assert.equal(card.shopifyVariantId,selected.shopifyVariantId);assert.equal(card.unitCents,selected.unitCents);assert.equal(card.widthMm,format.geometry.width);assert.equal(card.heightMm,format.geometry.height);
++  assert.deepEqual(gallery.target(context,card.target).binding,selected);
++ }
++ const restarted=createShopDesignGallery(options),fallback=await restarted.list(context,{options:other.options,q:'D2'});
++ assert.equal(fallback.total,1);assert.equal(fallback.items[0].shopifyVariantId,other.shopifyVariantId);
++ assert.equal(measures.filter(m=>m.event==='shop_gallery_cache_hit').length,1);
++ other.unitCents++;assert.equal((await restarted.list(context,{sourceModel:model,options:other.options})).total,0);
++});
+diff --git a/app/workshop/shop-design-gallery.mjs b/app/workshop/shop-design-gallery.mjs
+index c698547..46c0137 100644
+--- a/app/workshop/shop-design-gallery.mjs
++++ b/app/workshop/shop-design-gallery.mjs
+@@ -86,6 +86,9 @@ export function createShopDesignGallery({secret,resolve,modelFor,cardFor=modelFo
+     if(current.store!==context.store||!sameBinding(candidate,current.binding))continue;
+     const binding=current.binding,key=binding.productId+':'+binding.productRevision;
+     if(key!==lastKey){const at=performance.now();model=cardFor(current.store,binding);lastKey=key;timings.modelMs+=performance.now()-at;timings.models++;}
++    // These product/revision-isolated galleries use the selected binding below.
++    // Warming every variant/design combination creates unreachable global cards.
++    if(model.universal.familyFormats?.fixedSize||isAllSizesFamily(model.universal))continue;
+     // Availability is checked on every response, including cache hits.
+     // A pause/resume or doorbell approval is not a product revision.
+     const profileAt=performance.now(),profile=selectedProfile(model.universal,binding.options),scope=galleryScope(model,binding),process=galleryProcess(profile);timings.profileMs+=performance.now()-profileAt;
+@@ -192,7 +195,18 @@ export function createShopDesignGallery({secret,resolve,modelFor,cardFor=modelFo
+    return {cards,source};
+   }
+   const snapshot=await cachedCards(context),source=snapshot.sources.get(context.binding.bindingId);
+-  if(!source)return {cards:[],source:null};
++  if(!source){
++   // Legacy/internal callers may omit the public route's pinned source model.
++   // Only a missing source needs this lookup; ordinary cache hits stay model-free.
++   const own=cardFor(context.store,context.binding);
++   if(own.universal.familyFormats?.fixedSize||isAllSizesFamily(own.universal)){
++    const current=resolve(identity(context.binding));checkScope(context,current.binding);
++    if(current.store!==context.store||!sameBinding(context.binding,current.binding))unavailable();
++    requireDesignChoice(own.universal);
++    return availableCards(context,own,options);
++   }
++   return {cards:[],source:null};
++  }
+   const cards=(snapshot.scopes.get(source.scope.key)||[]).filter(row=>galleryTargetAllowed(source,row,row.design)),unique=[...new Map(cards.map(row=>[row.binding.bindingId,row])).values()];
+   if(checkBindings){const allowed=await checkBindings(context.store,unique);return {cards:cards.filter(row=>allowed.has(row.binding.bindingId)),source};}
+   const allowed=new Set();
+diff --git a/app/workshop/shop-design-gallery.test.mjs b/app/workshop/shop-design-gallery.test.mjs
+index 21f693f..8dad823 100644
+--- a/app/workshop/shop-design-gallery.test.mjs
++++ b/app/workshop/shop-design-gallery.test.mjs
+@@ -364,3 +364,31 @@ test('search metadata follows the revision cache and survives signed snapshot re
+  f.models.get('cfg_1').universal.profile.designs[0].name='Haus';revision='r2';assert.equal((await f.gallery.list(f.context,{q:'Anker'})).total,0);assert.equal((await f.gallery.list(f.context,{q:'Haus'})).total,1);
+  const restored=createShopDesignGallery({secret:'synthetic-only-gallery-secret',resolve:()=>{throw Error('unexpected resolution');},modelFor:()=>{throw Error('snapshot should restore without rebuilding');},allowedAssets:()=>new Set()});assert.equal((await restored.list(f.context,{q:'Haus'})).total,1);assert.equal((await restored.list(f.context,{q:'Anker'})).total,0);
+ });
++
++test('fixed products warm no global cards; selected designs retain paging, search, price and permission checks',async()=>{
++ const f=fixture(),own=f.models.get('cfg_1');own.universal.familyFormats={fixedSize:'120x80'};
++ own.universal.profile.designs=Array.from({length:85},(_,i)=>({id:'d'+i,name:'Haus '+i,objects:[]}));
++ own.universal.profile.designs.push({id:'hidden',name:'Haus hidden',hidden:true,objects:[]},{id:'revoked',name:'Haus revoked',released:false,objects:[]},{id:'misfit',name:'Haus misfit',katalog:{fit:'passt nicht'},objects:[]});
++ f.add(2);f.models.get('cfg_2').universal.familyFormats={fixedSize:'120x80'};
++ const b=f.bindings.get(f.context.binding.shopifyVariantId);
++ f.bindings.set('gid://shopify/ProductVariant/999',{...b,shopifyVariantId:'gid://shopify/ProductVariant/999',bindingId:'other-mounting'});
++ let modelReads=0,saved,allowed=true;const measures=[];
++ f.store.registry.galleryRevision=()=> 'fixed-r1';f.store.registry.listActiveForGallery=async()=>f.store.registry.listActive();
++ f.store.registry.galleryCache={read:()=>saved,write:(_r,value)=>{saved=value;}};
++ const options={secret:'fixed-warm-test',resolve:ids=>({store:f.store,binding:structuredClone(f.bindings.get(ids.shopifyVariantId))}),modelFor:(_s,b)=>f.models.get(b.productId),cardFor:(_s,b)=>{modelReads++;return f.models.get(b.productId);},allowedAssets:()=>new Set(),onMeasure:m=>measures.push(m),checkBinding:()=>{if(!allowed)throw Object.assign(Error('paused'),{status:423});}};
++ const gallery=createShopDesignGallery(options);await gallery.warm(f.context);
++ assert.equal(modelReads,2,'one lightweight model per product/revision despite extra bindings');
++ assert.equal(measures.find(m=>m.event==='shop_gallery_build_measure').cards,0);
++ assert.deepEqual(JSON.parse(saved.payload).scopes,[]);assert.deepEqual(JSON.parse(saved.payload).sources,[]);
++ const pages=await Promise.all([0,1,2].map(page=>gallery.list(f.context,{sourceModel:own,page,q:'Haus'})));
++ assert.deepEqual(pages.map(p=>[p.items.length,p.nextPage,p.total]),[[40,1,85],[40,2,85],[5,null,85]]);
++ assert.ok(pages.flatMap(p=>p.items).every(c=>c.productId==='cfg_1'&&c.shopifyVariantId===b.shopifyVariantId&&c.unitCents===1999&&c.widthMm===120&&c.heightMm===80));
++ assert.equal(modelReads,2,'the public own-model path does not need the global cache');
++ const restarted=createShopDesignGallery(options),fallback=await restarted.list(f.context,{q:'D23'});
++ assert.deepEqual(fallback.items.map(c=>c.designId),['d23']);assert.equal(restarted.target(f.context,fallback.items[0].target).price.unitCents,1999);
++ assert.equal(measures.filter(m=>m.event==='shop_gallery_cache_hit').length,1);
++ allowed=false;await assert.rejects(restarted.list(f.context),{status:423});allowed=true;
++ b.assignmentRevision++;await assert.rejects(restarted.list(f.context),{code:'shop_gallery_changed'});b.assignmentRevision--;
++ own.universal.moduleProfile={schema:MODULE_PROFILE_SCHEMA,id:'disabled',revision:1,modules:{options:true,designs:false,text:true,motifs:true,photo:false,logo:false,colors:false}};
++ await assert.rejects(restarted.list(f.context),{code:'shop_gallery_disabled'});
++});
+diff --git a/scripts/shop-gallery-benchmark.mjs b/scripts/shop-gallery-benchmark.mjs
+index f06b3b3..a46c277 100644
+--- a/scripts/shop-gallery-benchmark.mjs
++++ b/scripts/shop-gallery-benchmark.mjs
+@@ -45,8 +45,8 @@ export async function benchmarkGalleryCopy({filename,tenantId,storeId,shopDomain
+   const gallery=createShopDesignGallery({secret:'local-benchmark-not-a-shop-session',resolve:ids=>({store,binding:registry.resolve(ids)}),cardFor:(_store,b)=>{cardReads++;return shopGalleryModel(get(b.productId,b.productRevision));},modelFor:()=>fail('full_model_read_in_gallery'),allowedAssets:()=>fail('asset_read_in_gallery'),onMeasure:entry=>measurements.push(entry),checkBinding});
+   async function measure(){
+    approvalHashes.clear();const start=performance.now(),binding=registry.resolve(identity),context={store,binding,session:{sid:'local-copy-benchmark'}};
+-   checkBinding(store,binding,shopGalleryModel(get(binding.productId,binding.productRevision)));
+-   const result=await gallery.list(context);registry.resolve(identity);
++   const sourceModel=shopGalleryModel(get(binding.productId,binding.productRevision));checkBinding(store,binding,sourceModel);
++   const result=await gallery.list(context,{sourceModel});registry.resolve(identity);
+    return {ms:+(performance.now()-start).toFixed(2),status:result.status||'ready',cards:result.total,firstPage:result.items.length};
+   }
+   const started=performance.now(),cold=await measure();await gallery.warm({store,binding:{shopDomain}});const preparationMs=+(performance.now()-started).toFixed(2),warm=await measure();

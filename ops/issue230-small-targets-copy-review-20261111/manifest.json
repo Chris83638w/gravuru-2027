@@ -1,0 +1,63 @@
+{
+  "schema": "gravuru-small-target-copy-helper-package/v1",
+  "destination": "ops/issue230-small-targets-copy-review-20261111",
+  "readOnly": true,
+  "appChanged": false,
+  "actualDatabaseOpened": false,
+  "scope": {
+    "groups": 6,
+    "uniqueProducts": 22,
+    "groupOccurrences": 32,
+    "variants": 126,
+    "auditSha256": "d2cb6cac1149da13db9ed9c2af83f27f3060a4531840636542e9fe95f4d6346f",
+    "aliasesSha256": "2ddc13a66c323ece8228867e1e8bf32388f7d82b129ff37128d37fb12a79f694"
+  },
+  "tests": {
+    "passed": 4,
+    "failed": 0,
+    "skipped": 0,
+    "syntheticOnly": true
+  },
+  "files": [
+    {
+      "name": ".gitattributes",
+      "bytes": 8,
+      "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da"
+    },
+    {
+      "name": "copy-guard.mjs",
+      "bytes": 1518,
+      "sha256": "466ffb3e96fa8bcc2b569a3069abe7ea4ca00a856fae9a8cc65ac186b39a1671"
+    },
+    {
+      "name": "inspect-small-targets-copy.mjs",
+      "bytes": 17617,
+      "sha256": "f7885dbd2c7b23686a6086a6b8b4c6f2dea6c76b04f55f8062b91adc4fe98fee"
+    },
+    {
+      "name": "inspect-small-targets-copy.test.mjs",
+      "bytes": 10080,
+      "sha256": "747d6a194690cad812d0aff990ace9ffbd668923b8a99bef1ea2025b33e89713"
+    },
+    {
+      "name": "v9-source-aliases.json",
+      "bytes": 4209,
+      "sha256": "2ddc13a66c323ece8228867e1e8bf32388f7d82b129ff37128d37fb12a79f694"
+    },
+    {
+      "name": "source-pin-check.json",
+      "bytes": 2441,
+      "sha256": "9b6f13700e972788143f5d7a5472aa9fdf95cc29ff355c0dc0fff42cd4ad0153"
+    },
+    {
+      "name": "tests.txt",
+      "bytes": 897,
+      "sha256": "1b5c376160e18a2c7f77b3a96ea16d156615862d503cbcd5a04d99779d6b5816"
+    },
+    {
+      "name": "README.md",
+      "bytes": 7371,
+      "sha256": "6791c333186481e3656d53764461c23f0004f52d7219381ec6feafa22a0a91b6"
+    }
+  ]
+}

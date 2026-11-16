@@ -1,9 +1,10 @@
 import { DatabaseSync } from 'node:sqlite';
-import { randomUUID } from 'node:crypto';
-import { mkdirSync } from 'node:fs';
+import { randomUUID, createHash } from 'node:crypto';
+import { mkdirSync, realpathSync, statSync } from 'node:fs';
 import { dirname } from 'node:path';
 import {createProductCatalog} from './product-catalog.mjs';
 import {tenantOption,ensureTenantColumn,TENANT_COLUMN} from './tenant.mjs';
+import {customerDatabaseRead,databaseEpoch} from './customer-read-scope.mjs';
 
 const OWNED_FIELDS = ['id', 'revision', 'publishedRevision', 'status', 'createdAt', 'updatedAt', 'metadata'];
 
@@ -19,6 +20,7 @@ export function createProductRepository({ filename, validateDocument = (value) =
   if (typeof snapshotMetadata !== 'function') throw new TypeError('snapshotMetadata must be a synchronous function.');
   if (filename !== ':memory:') mkdirSync(dirname(filename), { recursive: true });
   const db = new DatabaseSync(filename);
+  const importProjectionCache=new Map();
   const transact = (work) => {
     db.exec('BEGIN IMMEDIATE');
     try {
@@ -156,12 +158,14 @@ export function createProductRepository({ filename, validateDocument = (value) =
   }
 
   function record(row, revision = row.revision) {
+    return customerDatabaseRead(db,'product:'+tenant+':'+row.id+':'+revision,()=>{
     const snap = snapshot(row.id, revision);
     return {
       id: row.id, revision: snap.revision, publishedRevision: snap.published_revision,
       status: snap.status, document: JSON.parse(snap.document), metadata: JSON.parse(snap.metadata),
       createdAt: row.created_at, updatedAt: snap.created_at,
     };
+    });
   }
 
   const state = (row) => row.archived ? 'archived' : row.published_revision !== null ? 'active' : 'draft';
@@ -219,7 +223,47 @@ export function createProductRepository({ filename, validateDocument = (value) =
   }
 
   return {
+    transactionalImportGuards: true,
     tenantId:tenant,
+    // Compact, authoritative source identities; do not load every font/image
+    // payload just to populate the module-profile product selector.
+    moduleSources() {
+      return db.prepare(`SELECT p.id,p.name,p.revision FROM products p
+        JOIN product_revisions r ON r.product_id=p.id AND r.tenant_id=p.tenant_id AND r.revision=p.revision
+        WHERE p.tenant_id=? AND p.archived=0 AND p.kind='product'
+        AND json_extract(r.document,'$.schema')='gravuru-product/v1'
+        ORDER BY p.name COLLATE NOCASE,p.id`).all(tenant);
+    },
+    // A derived cache belongs to this physical store, not another copied test
+    // database with coincidentally equal product IDs/revisions. Edits do not
+    // change inode/birthtime; replacing the database safely loses cache hits.
+    cacheIdentity() {
+      if (filename === ':memory:') return null;
+      try {
+        const real = realpathSync(filename), stat = statSync(real,{bigint:true});
+        if (stat.ino <= 0n || stat.birthtimeNs <= 0n) return null;
+        return createHash('sha256').update(JSON.stringify(['workshop-revisions/v1',real,String(stat.dev),String(stat.ino),String(stat.birthtimeNs)])).digest('hex');
+      } catch { return null; }
+    },
+    // Lesender Nachweis „seit dem letzten Aufruf nichts geschrieben“ für Antwortspeicher (customer-model-response-cache.mjs).
+    readEpoch:()=>databaseEpoch(db),
+    // Lesender Stand EINES Produkts für Antwortspeicher (customer-model-response-cache.mjs): Kopfzeile des Produkts (Revision,
+    // Veröffentlichung, Archivierung) und Dasein der Revision, ohne document/metadata. Gleiche Prüfungen und Fehler (Status, Code,
+    // Text) wie get(id,{revision}) in derselben Reihenfolge: Produkt/Mandant (404 not_found), Revisionszahl (422 invalid_revision),
+    // Revision (404 revision_not_found). Status, Veröffentlichung und Zeitstempel der gewählten Revision selbst werden NICHT
+    // gelesen: product_revisions ist unveränderlich (Trigger), und die Spalten hinter document liegen in der Zeile hinter dem
+    // bis zu 12 MB großen Dokument (SQLite liest dafür die ganze Überlaufkette, gemessen ~2 ms statt 0,002 ms über den Index).
+    // Das Dasein prüft deshalb nur der Index (product_id, revision); der Mandant wird an der Produktzeile gefiltert (Verbund über products.tenant_id).
+    revisionState(id,{revision}={}){
+      return customerDatabaseRead(db,'state:'+tenant+':'+typeof id+':'+String(id)+':'+typeof revision+':'+String(revision),()=>{
+        const head=product(id);
+        if(revision!==undefined)positiveRevision(revision);
+        const at=revision??head.revision;
+        if(!db.prepare('SELECT r.revision FROM product_revisions r JOIN products p ON p.id = r.product_id WHERE r.product_id = ? AND r.revision = ? AND p.tenant_id = ?').get(id,at,tenant))throw failure(404,'revision_not_found','Revision nicht gefunden.');
+        return {tenantId:tenant,id:head.id,revision:at,headRevision:head.revision,headPublishedRevision:head.published_revision,archived:Boolean(head.archived),status:state(head),
+          schema:JSON.stringify([db.prepare('PRAGMA main.schema_version').get(),db.prepare('PRAGMA temp.schema_version').get()])};
+      });
+    },
     firstId:()=>db.prepare('SELECT id FROM products WHERE tenant_id = ? ORDER BY created_at,id LIMIT 1').get(tenant)?.id||null,
     catalog:options=>catalog.list(options),
     // The dry-run uses the same pure validation as the transactional write.
@@ -229,9 +273,33 @@ export function createProductRepository({ filename, validateDocument = (value) =
       const row=db.prepare('SELECT * FROM import_items WHERE import_key = ? AND tenant_id = ?').get(key, tenant);
       return row ? {key:row.import_key,fingerprint:row.fingerprint,id:row.product_id} : null;
     },
-    importBatch(entries) {
+    // Registered gallery targets are part of the immutable first native
+    // revision and its import journal, committed together. Project only the
+    // small registration objects in SQLite; never hydrate all embedded fonts.
+    importItems({prefix} = {}) {
+      if(typeof prefix!=='string'||!/^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$/.test(prefix))throw failure(422,'invalid_import_prefix','Ein eindeutiges Importpräfix ist erforderlich.');
+      // Immutable R1 metadata need only be extracted when its small journal
+      // changes. Ordinary image/CSS requests must not reparse font payloads.
+      const stamp=JSON.stringify(db.prepare('SELECT import_key,fingerprint,product_id FROM import_items WHERE tenant_id=? AND substr(import_key,1,length(?))=? ORDER BY import_key').all(tenant,prefix,prefix));
+      const cached=importProjectionCache.get(prefix);if(cached?.stamp===stamp)return structuredClone(cached.rows);
+      const rows=db.prepare(`SELECT i.import_key,i.fingerprint,i.product_id,
+        (SELECT json_group_array(json_extract(d.value,'$.katalog.galleryAssignment'))
+         FROM json_each(r.document,'$.config.profile.designs') d
+         WHERE json_type(d.value,'$.katalog.galleryAssignment')='object') AS registrations
+        FROM import_items i JOIN product_revisions r ON r.product_id=i.product_id AND r.tenant_id=i.tenant_id AND r.revision=1
+        WHERE i.tenant_id=? AND substr(i.import_key,1,length(?))=? ORDER BY i.import_key`).all(tenant,prefix,prefix)
+        .map(row=>({key:row.import_key,fingerprint:row.fingerprint,id:row.product_id,registrations:JSON.parse(row.registrations)}));
+      if(importProjectionCache.size>=8)importProjectionCache.clear();importProjectionCache.set(prefix,{stamp,rows});
+      return structuredClone(rows);
+    },
+    importBatch(entries, { beforeWrite } = {}) {
       if(!Array.isArray(entries)||entries.length<1||entries.length>100)throw failure(422,'invalid_batch','Eine Serie umfasst 1 bis 100 Produkte.');
+      if(beforeWrite!==undefined&&typeof beforeWrite!=='function')throw failure(422,'invalid_import_guard','Die Anlageprüfung ist ungültig.');
       return transact(()=>{
+        // A reviewed creation plan is rechecked under the same write lock as
+        // the actual product import. Callbacks are server-owned and synchronous.
+        const guarded=beforeWrite?.();
+        if(guarded&&typeof guarded.then==='function')throw failure(422,'async_import_guard','Die Anlageprüfung muss vor dem Schreiben abgeschlossen sein.');
         const keys=new Set(),targets=new Set();
         const validated=entries.map(entry=>{
           if(!/^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$/.test(entry.key)||keys.has(entry.key))throw failure(422,'invalid_import_key','Jede Zeile benötigt einen eindeutigen Importschlüssel.');
@@ -264,6 +332,13 @@ export function createProductRepository({ filename, validateDocument = (value) =
       const row = product(id);
       if (revision !== undefined) positiveRevision(revision);
       return record(row, revision ?? row.revision);
+    },
+    // Current identity/state only: polling a large gallery must not read or
+    // JSON-parse its immutable glyph/image payloads just to compare revisions.
+    head(id) {
+      const row = typeof id === 'string' ? db.prepare('SELECT id,revision,archived,published_revision FROM products WHERE id=? AND tenant_id=?').get(id,tenant) : null;
+      if (!row) throw failure(404, 'not_found', 'Konfiguration nicht gefunden.');
+      return {id:row.id, revision:row.revision, status:state(row)};
     },
     list({ query = '', includeArchived = false } = {}) {
       if (typeof query !== 'string' || typeof includeArchived !== 'boolean') {

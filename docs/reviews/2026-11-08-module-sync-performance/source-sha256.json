@@ -1,0 +1,34 @@
+[
+  {
+    "path": "app/workshop/product-model.mjs",
+    "sha256": "30749bf2ecf44b0085ccc5d3aebca9fd5e04bd8c3bbd7908776190593fa64f8f"
+  },
+  {
+    "path": "app/workshop/shop-preparation.mjs",
+    "sha256": "a457d17afd01f0314d923b322b5c0d86aee0afe880c530c64f4bad59356eb3bb"
+  },
+  {
+    "path": "app/workshop/shop-product-binding-store.mjs",
+    "sha256": "b957a5c104849e1b0f4b3ea646f7746b7066c451060d276ccddd9270e59f5971"
+  },
+  {
+    "path": "app/workshop/shop-product-binding-read-snapshot.mjs",
+    "sha256": "05d4ebc13a07c59d4248aca484d68824f225ac5eaee9c777dee46f0d2898136e"
+  },
+  {
+    "path": "app/workshop/shop-product-binding-adapter.mjs",
+    "sha256": "8bb592e8abffda09b4c00cbd9e891dd2d86a7c6c130622a4aeb893c4c29bf9bd"
+  },
+  {
+    "path": "app/workshop/shop-product-binding-plan.mjs",
+    "sha256": "f570331f162ba8d4ec9feaea9f5a7571654609ba4f9fe31eb8ef301601f84bc5"
+  },
+  {
+    "path": "app/workshop/catalog-live-orders.mjs",
+    "sha256": "11939d994706afe798bc928633962c290b37ce2e00b1442427158a0847a684d9"
+  },
+  {
+    "path": "app/workshop/shop-product-binding-check.mjs",
+    "sha256": "fa64a98057fd745391012cb7314b6072a169e79b9b6737cf611a268b7a4a8d68"
+  }
+]

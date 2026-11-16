@@ -1,0 +1,25 @@
+{
+  "base": "c6f9910596774f3742fa5064b5c60254d1fe00fc",
+  "files": [
+    {
+      "path": "app/workshop/shop-design-gallery.mjs",
+      "bytes": 23155,
+      "sha256": "82b2c59c97a1bea3b54ed356570e59e9a6fa134c92fff0fe3e6332696d420858"
+    },
+    {
+      "path": "app/workshop/shop-product-binding-store.mjs",
+      "bytes": 32056,
+      "sha256": "424dc43e4eed2f864cf7d78fd043827760d8c78ef731b5186b8de8fec2a30032"
+    },
+    {
+      "path": "app/workshop/shop-product-binding-gallery-memory.test.mjs",
+      "bytes": 9155,
+      "sha256": "02c2e21c565d9f1a066d0cfe40c4e4df74b7352964d7fb46c085e624e33d2fcb"
+    },
+    {
+      "path": "scripts/shop-gallery-benchmark.mjs",
+      "bytes": 8287,
+      "sha256": "f74c425e58bcfbd4d9e881873e5ea623b1cd3605f574e05ae069edf3b1df9336"
+    }
+  ]
+}

@@ -44,3 +44,11 @@ test('theme transfer accepts only this shop and its signed-proxy handoff path',(
 });
 
 test('theme edits carry the actual cart revision even after abandoned preparation',()=>{assert.deepEqual(shopCartRequest({saved,cartEdit:{configId:konfig,rev:1,cartLineId:'theme',draftId:'adraft_a'},quantity:2}),{draftId:'adraft_a',expectedRevision:3,quantity:2,configId:konfig,cartLineId:'theme',cartRevision:1});});
+
+test('only the approved theme-cart presentation crosses from the current editor context',()=>{
+ const input={saved,cartEdit:{configId:konfig,rev:1,cartLineId:'theme',draftId:saved.draftId},quantity:2};
+ const baseline=shopCartRequest(input);
+ assert.deepEqual(shopCartRequest({...input,cartMode:'theme',presentation:'prio-r15'}),{...baseline,presentation:'prio-r15'});
+ for(const presentation of [undefined,null,'demo','PRIO-R15','https://evil.example/ui.mjs',['prio-r15'],{ui:'prio-r15'}])assert.deepEqual(shopCartRequest({...input,cartMode:'theme',presentation}),baseline);
+ for(const cartMode of [undefined,'storefront','legacy'])assert.deepEqual(shopCartRequest({...input,cartMode,presentation:'prio-r15'}),baseline,'legacy cart payload remains byte-for-byte compatible');
+});

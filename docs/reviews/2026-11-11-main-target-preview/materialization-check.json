@@ -1,0 +1,14 @@
+{
+  "allPassed": true,
+  "previewOnly": true,
+  "inputPlanFileSha256": "c3bb9aa77fdb72a50503d3f3cfc631e43ea3f9465c9e239fa4f9cd3e4e942d33",
+  "helperSha256": "83f138d437cfe8a0d42989ba528a7e7675e69ae2e75220a221933a59cf029a45",
+  "productGroupDocumentSha256": "2da2130230341917f7a99d2a12889c1e2f10e408f64d3532e9c5ea6bae65713c",
+  "idBindingDocumentSha256": "deb2ce71bf57d5ff85e5f186378d94f58edeecc1ce4d7c4151bebf6e8072886f",
+  "transportSerializedSha256": "2da2130230341917f7a99d2a12889c1e2f10e408f64d3532e9c5ea6bae65713c",
+  "materializedBytesEqualGzipPayload": true,
+  "hashNamingCorrectionChangedDocumentBytes": false,
+  "executableImportEntryAbsent": true,
+  "storeWrites": 0,
+  "shopifyWrites": 0
+}

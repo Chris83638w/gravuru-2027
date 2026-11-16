@@ -1,0 +1,81 @@
+{
+  "checkedAt": "2026-11-11T20:07:02.178Z",
+  "operation": "Shopify get_product (read-only)",
+  "productId": "gid://shopify/Product/16190784602492",
+  "status": "DRAFT",
+  "totalVariants": 808,
+  "returnedVariants": 50,
+  "matchingVariants": [
+    {
+      "id": "gid://shopify/ProductVariant/58104615993724",
+      "title": "Rechteck · 7 × 2 cm / Schwarz / Ohne Bohrung",
+      "sku": "156-TS-Acryl-RE-70X23P3-T30-SW-K00",
+      "price": "7.99",
+      "inventoryQuantity": 0
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104616026492",
+      "title": "Rechteck · 7 × 2 cm / Schwarz / Selbstklebend – glatte Flächen",
+      "sku": "156-TS-Acryl-RE-70X23P3-T30-SW-KGL",
+      "price": "10.98",
+      "inventoryQuantity": 0
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104616059260",
+      "title": "Rechteck · 7 × 2 cm / Schwarz / Selbstklebend – raue Flächen",
+      "sku": "156-TS-Acryl-RE-70X23P3-T30-SW-KRA",
+      "price": "11.98",
+      "inventoryQuantity": 0
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104616092028",
+      "title": "Rechteck · 7 × 2 cm / Schwarz / Mit 2 Bohrlöchern",
+      "sku": "156-TS-Acryl-RE-70X23P3-T30-SW-B02",
+      "price": "10.48",
+      "inventoryQuantity": 0
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104616124796",
+      "title": "Rechteck · 7 × 2 cm / Schwarz / Mit 2 Schrauben",
+      "sku": "156-TS-Acryl-RE-70X23P3-T30-SW-B02S",
+      "price": "10.98",
+      "inventoryQuantity": 0
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104616157564",
+      "title": "Rechteck · 7 × 2 cm / Anthrazit / Ohne Bohrung",
+      "sku": "156-TS-Acryl-RE-70X23P3-T30-AN-K00",
+      "price": "7.99",
+      "inventoryQuantity": 0
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104616190332",
+      "title": "Rechteck · 7 × 2 cm / Anthrazit / Selbstklebend – glatte Flächen",
+      "sku": "156-TS-Acryl-RE-70X23P3-T30-AN-KGL",
+      "price": "10.98",
+      "inventoryQuantity": 0
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104616223100",
+      "title": "Rechteck · 7 × 2 cm / Anthrazit / Selbstklebend – raue Flächen",
+      "sku": "156-TS-Acryl-RE-70X23P3-T30-AN-KRA",
+      "price": "11.98",
+      "inventoryQuantity": 0
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104616255868",
+      "title": "Rechteck · 7 × 2 cm / Anthrazit / Mit 2 Bohrlöchern",
+      "sku": "156-TS-Acryl-RE-70X23P3-T30-AN-B02",
+      "price": "10.48",
+      "inventoryQuantity": 0
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104616288636",
+      "title": "Rechteck · 7 × 2 cm / Anthrazit / Mit 2 Schrauben",
+      "sku": "156-TS-Acryl-RE-70X23P3-T30-AN-B02S",
+      "price": "10.98",
+      "inventoryQuantity": 0
+    }
+  ],
+  "limit": "Tool returned first 50 of 808 variants. The complete expected set of two colors × five mountings is present; this does not inspect the active native server geometry."
+}

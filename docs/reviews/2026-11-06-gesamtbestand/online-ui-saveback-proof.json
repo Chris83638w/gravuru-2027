@@ -1,0 +1,155 @@
+{
+  "schema": "gravuru-online-ui-saveback-comparison/v1",
+  "passed": true,
+  "readOnlyDatabaseProbe": true,
+  "uiChangesPerformedByRoot": true,
+  "productId": "cfg_e0e6ec7e-c731-4abd-aa8f-072b61bc3e1f",
+  "originalId": "TRE-V2A-5x2-D401",
+  "designId": "katalog-TRE-V2A-5x2-D401",
+  "baselineSha256": "e7877bd13a68ba0095aad227d080817ae45de5ab807aa4a3532370744cfb0195",
+  "afterSha256": "fc6f55263fd09ef0bcdf9f3b36765571dd02c4c525bce988477ec7df0f21ef05",
+  "intermediateRevision3Sha256": "ce64946a4c75052d307f07f4a800662acef83515f37b8dcbee5747cd3ae46acb",
+  "headRevision": 4,
+  "otherProductHeads": 347,
+  "otherDesigns": 3,
+  "checks": {
+    "productStableDuringRead": true,
+    "expectedNativeTarget": true,
+    "expectedRevisionSequence": true,
+    "originalRevisionPreserved": true,
+    "capturedUserRevision3Preserved": true,
+    "otherProductHeadsPreserved": true,
+    "mappingPreserved": true,
+    "commentsPreserved": true,
+    "approvalsPreserved": true,
+    "otherDocumentFieldsIncludingPricesAndRightsPreserved": true,
+    "otherDesignsPreserved": true,
+    "materialAndGeometryPreserved": true,
+    "originalTextRestored": true,
+    "selectedDesignMetadataPreserved": true,
+    "selectedObjectInventoryPreserved": true,
+    "userPositionSizeLineHeightPreserved": true,
+    "allOtherSelectedObjectFieldsPreserved": true,
+    "testTextPersistedInRevision2": true
+  },
+  "history": [
+    {
+      "revision": 1,
+      "changedFields": [],
+      "selectedDesignEqualsBaseline": true
+    },
+    {
+      "revision": 2,
+      "changedFields": [
+        {
+          "objectId": "text-1",
+          "field": "text"
+        },
+        {
+          "objectId": "text-1",
+          "field": "w"
+        }
+      ],
+      "selectedDesignEqualsBaseline": false
+    },
+    {
+      "revision": 3,
+      "changedFields": [
+        {
+          "objectId": "text-1",
+          "field": "h"
+        },
+        {
+          "objectId": "text-1",
+          "field": "lineHeight"
+        },
+        {
+          "objectId": "text-1",
+          "field": "size"
+        },
+        {
+          "objectId": "text-1",
+          "field": "text"
+        },
+        {
+          "objectId": "text-1",
+          "field": "w"
+        },
+        {
+          "objectId": "text-1",
+          "field": "x"
+        },
+        {
+          "objectId": "text-1",
+          "field": "y"
+        }
+      ],
+      "selectedDesignEqualsBaseline": false
+    },
+    {
+      "revision": 4,
+      "changedFields": [
+        {
+          "objectId": "text-1",
+          "field": "h"
+        },
+        {
+          "objectId": "text-1",
+          "field": "lineHeight"
+        },
+        {
+          "objectId": "text-1",
+          "field": "size"
+        },
+        {
+          "objectId": "text-1",
+          "field": "w"
+        },
+        {
+          "objectId": "text-1",
+          "field": "x"
+        },
+        {
+          "objectId": "text-1",
+          "field": "y"
+        }
+      ],
+      "selectedDesignEqualsBaseline": false
+    }
+  ],
+  "realApprovalEventsAdded": false,
+  "userChangesPreservedFromRevision": 3,
+  "restoredTextFromRevision": 1,
+  "allowedRendererTextMetrics": [
+    "text-1.w",
+    "text-1.h"
+  ],
+  "wholeDesignResetToRevision1": false,
+  "browserEvidence": "Root verifies visible editor, saved revision and reopen separately; this proof verifies persisted native state.",
+  "capturedAt": "2026-11-06T20:24:53.656861+00:00",
+  "material": {
+    "key": "acrylic-schwarz-3mm",
+    "label": "Acryl Schwarz 3 mm",
+    "mm": [
+      50,
+      20
+    ]
+  },
+  "restorationScope": "Nur den Testnamen auf den ursprünglichen Namen zurückgesetzt. Nutzerposition, Schriftgröße und Zeilenhöhe aus Revision 3 bleiben erhalten; keine vollständige Designrücksetzung.",
+  "revision3To4ChangedFields": [
+    {
+      "objectId": "text-1",
+      "field": "text"
+    },
+    {
+      "objectId": "text-1",
+      "field": "w"
+    }
+  ],
+  "checksPassed": 18,
+  "sourceFiles": {
+    "baseline": "work/gesamtbestand-host-proof-20261106/ui-saveback-baseline.json",
+    "intermediate": "work/gesamtbestand-host-proof-20261106/ui-saveback-intermediate-r3.json",
+    "after": "work/gesamtbestand-host-proof-20261106/ui-saveback-after.json"
+  }
+}

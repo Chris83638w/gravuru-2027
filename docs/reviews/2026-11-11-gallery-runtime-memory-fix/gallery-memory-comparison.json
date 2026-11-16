@@ -1,0 +1,118 @@
+{
+  "schema": "gallery-binding-retention-comparison/v1",
+  "scope": "async listActiveForGallery without transaction/revisionReadScope or customer read memo; forced-GC retention samples, not full application RSS peak",
+  "synthetic": true,
+  "baselineCommit": "c6f9910596774f3742fa5064b5c60254d1fe00fc",
+  "sourceFile": "app/workshop/shop-product-binding-store.mjs",
+  "baselineSourceSha256": "c2e26e5b378f3bbdc191657fe7b8365a34d771266610d726648f9be45ae41953",
+  "relocatedSourceSha256": "1e76dcc16c8918a7888e94f982d55f9e6686cae1f91df5588790c884a6c6d665",
+  "patchedSourceSha256": "424dc43e4eed2f864cf7d78fd043827760d8c78ef731b5186b8de8fec2a30032",
+  "testSha256": "02c2e21c565d9f1a066d0cfe40c4e4df74b7352964d7fb46c085e624e33d2fcb",
+  "node": "v24.20.0",
+  "platform": "win32",
+  "fixtureBytes": 105345024,
+  "seed": {
+    "products": 40,
+    "documentBytes": 2097152,
+    "metadataBytes": 524288
+  },
+  "before": {
+    "exit": 23,
+    "report": {
+      "schema": "gallery-read-retention-proof/v1",
+      "outcome": "retained_heap_limit",
+      "products": 40,
+      "documentBytes": 2097152,
+      "metadataBytes": 524288,
+      "retainedLimit": 50331648,
+      "childOldSpaceMiB": 128,
+      "samples": [
+        {
+          "processed": 0,
+          "heapUsed": 9402160,
+          "retainedBytes": 60688,
+          "rss": 77340672
+        },
+        {
+          "processed": 8,
+          "heapUsed": 30428312,
+          "retainedBytes": 21086840,
+          "rss": 100503552
+        },
+        {
+          "processed": 16,
+          "heapUsed": 51441600,
+          "retainedBytes": 42100128,
+          "rss": 123764736
+        },
+        {
+          "processed": 24,
+          "heapUsed": 72427136,
+          "retainedBytes": 63085664,
+          "rss": 145182720
+        }
+      ],
+      "peakRetainedBytes": 63085664,
+      "peakSampledRss": 145182720,
+      "returnedBindings": null,
+      "sqliteChanges": 0
+    },
+    "stderr": ""
+  },
+  "after": {
+    "exit": 0,
+    "report": {
+      "schema": "gallery-read-retention-proof/v1",
+      "outcome": "pass",
+      "products": 40,
+      "documentBytes": 2097152,
+      "metadataBytes": 524288,
+      "retainedLimit": 50331648,
+      "childOldSpaceMiB": 128,
+      "samples": [
+        {
+          "processed": 0,
+          "heapUsed": 9310760,
+          "retainedBytes": 60656,
+          "rss": 76566528
+        },
+        {
+          "processed": 8,
+          "heapUsed": 9377296,
+          "retainedBytes": 127192,
+          "rss": 79519744
+        },
+        {
+          "processed": 16,
+          "heapUsed": 9418720,
+          "retainedBytes": 168616,
+          "rss": 79167488
+        },
+        {
+          "processed": 24,
+          "heapUsed": 9426648,
+          "retainedBytes": 176544,
+          "rss": 79712256
+        },
+        {
+          "processed": 32,
+          "heapUsed": 9433856,
+          "retainedBytes": 183752,
+          "rss": 79720448
+        },
+        {
+          "processed": 40,
+          "heapUsed": 9380656,
+          "retainedBytes": 130552,
+          "rss": 81584128
+        }
+      ],
+      "peakRetainedBytes": 183752,
+      "peakSampledRss": 81584128,
+      "returnedBindings": 40,
+      "sqliteChanges": 0
+    },
+    "stderr": ""
+  },
+  "allPassed": true
+}

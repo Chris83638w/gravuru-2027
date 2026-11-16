@@ -1,0 +1,133 @@
+{
+  "checkedAtUtc": "2026-11-07T10:01:15.793Z",
+  "data": {
+    "shop": {
+      "id": "gid://shopify/Shop/92055503228",
+      "myshopifyDomain": "gravuru-design.myshopify.com",
+      "currencyCode": "EUR"
+    },
+    "product": {
+      "id": "gid://shopify/Product/16196606001532",
+      "handle": "gravuru-5b8d6aaea0f2451fc67bd8a62937d92e789a970ed0cf0c239db5af420e07a9af",
+      "title": "Andenkenschild Edelstahl – 5 × 2 cm",
+      "status": "DRAFT",
+      "tags": [
+        "gravuru-source-ce2811517a33eed8b84f1f34eb4da63ddb7d013e2c31e3732cd38aaa624b9239"
+      ],
+      "publishedAt": null,
+      "onlineStoreUrl": null,
+      "seo": {
+        "title": "Andenkenschild Edelstahl – 5 × 2 cm",
+        "description": null
+      },
+      "variants": {
+        "nodes": [
+          {
+            "id": "gid://shopify/ProductVariant/58162739446140",
+            "price": "7.99",
+            "selectedOptions": [
+              {
+                "name": "Befestigung",
+                "value": "Ohne Bohrung"
+              }
+            ]
+          },
+          {
+            "id": "gid://shopify/ProductVariant/58162739478908",
+            "price": "10.98",
+            "selectedOptions": [
+              {
+                "name": "Befestigung",
+                "value": "Selbstklebend – glatte Flächen"
+              }
+            ]
+          },
+          {
+            "id": "gid://shopify/ProductVariant/58162739511676",
+            "price": "11.98",
+            "selectedOptions": [
+              {
+                "name": "Befestigung",
+                "value": "Selbstklebend – raue Flächen"
+              }
+            ]
+          },
+          {
+            "id": "gid://shopify/ProductVariant/58162739544444",
+            "price": "10.48",
+            "selectedOptions": [
+              {
+                "name": "Befestigung",
+                "value": "Mit 2 Bohrlöchern"
+              }
+            ]
+          },
+          {
+            "id": "gid://shopify/ProductVariant/58162739577212",
+            "price": "10.68",
+            "selectedOptions": [
+              {
+                "name": "Befestigung",
+                "value": "Mit 2 Schrauben"
+              }
+            ]
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false
+        }
+      },
+      "media": {
+        "nodes": [
+          {
+            "id": "gid://shopify/MediaImage/70056035156348",
+            "alt": "Andenkenschild Edelstahl 5 × 2 cm – Originaldesign TRE-V2A-5x2-D401",
+            "fileStatus": "READY",
+            "status": "READY",
+            "image": {
+              "url": "https://cdn.shopify.com/s/files/1/0920/5550/3228/files/gravuru-andenken-edelstahl-5x2-d401.png?v=1794045594",
+              "width": 1800,
+              "height": 791
+            }
+          },
+          {
+            "id": "gid://shopify/MediaImage/70056037876092",
+            "alt": "Andenkenschild Edelstahl 5 × 2 cm – Originaldesign TRE-V2A-5x2-D406",
+            "fileStatus": "READY",
+            "status": "READY",
+            "image": {
+              "url": "https://cdn.shopify.com/s/files/1/0920/5550/3228/files/gravuru-andenken-edelstahl-5x2-d406.png?v=1794045602",
+              "width": 1800,
+              "height": 791
+            }
+          },
+          {
+            "id": "gid://shopify/MediaImage/70056052621692",
+            "alt": "Andenkenschild Edelstahl 5 × 2 cm – Originaldesign TRE-V2A-5x2-D408",
+            "fileStatus": "READY",
+            "status": "READY",
+            "image": {
+              "url": "https://cdn.shopify.com/s/files/1/0920/5550/3228/files/gravuru-andenken-edelstahl-5x2-d408.png?v=1794045609",
+              "width": 1800,
+              "height": 791
+            }
+          },
+          {
+            "id": "gid://shopify/MediaImage/70056059175292",
+            "alt": "Andenkenschild Edelstahl 5 × 2 cm – Originaldesign TRE-V2A-5x2-D410",
+            "fileStatus": "READY",
+            "status": "READY",
+            "image": {
+              "url": "https://cdn.shopify.com/s/files/1/0920/5550/3228/files/gravuru-andenken-edelstahl-5x2-d410.png?v=1794045617",
+              "width": 1800,
+              "height": 791
+            }
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false
+        }
+      }
+    }
+  }
+}

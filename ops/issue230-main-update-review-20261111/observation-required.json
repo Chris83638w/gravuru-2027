@@ -1,0 +1,11 @@
+{
+  "notAnObservation": true,
+  "ready": false,
+  "scope": "MAIN_POLICY in update-review.mjs",
+  "observedAt": null,
+  "preimage": null,
+  "targetMetadataSha256": null,
+  "resourcePins": null,
+  "evidence": null,
+  "instruction": "Use captureUpdateObservation in the real isolated native operator context after actual category evidence; do not fill values from assumptions."
+}

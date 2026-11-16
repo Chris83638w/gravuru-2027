@@ -1,0 +1,547 @@
+diff --git a/app/configurator/variant-m/contract.mjs b/app/configurator/variant-m/contract.mjs
+index ee2bfe519b769a07ad9d57a6147613103ee28ba3..2680c992fff983ced685bed3c03d041a49b826c0 100644
+--- a/app/configurator/variant-m/contract.mjs
++++ b/app/configurator/variant-m/contract.mjs
+@@ -42,7 +42,9 @@ export const MAX_PHOTO_BYTES = 15 * 1024 * 1024;
+ // K10 / Ü1: Verfahrensprofil des Produkts (Werkzeuge, Palette, Mindestschriftgröße, Soll-DPI).
+ export const productProcess=config=>processProfile(config.profile);
+ // New product revisions opt in explicitly. Existing logo/photo pricing remains unchanged.
+-export const vectorLogoAllowed=config=>moduleEnabled(config,'logo')&&config?.logo?.enabled===true&&config.logo.vectorUpload===true&&config.logo.extraPriceCents===1299&&config?.photo?.enabled===false&&config?.profile?.material?.kind==='steel'&&productProcess(config).method==='engraving';
++export const vectorLogoAllowed=config=>moduleEnabled(config,'logo')&&config?.logo?.enabled===true&&config.logo.vectorUpload===true&&config.logo.extraPriceCents===1299&&
++ ((config?.profile?.material?.kind==='steel'&&config?.photo?.enabled===false)||
++ (config?.profile?.material?.kind==='acrylic'&&config?.profile?.processing?.profileId==='acrylic-engraving'))&&productProcess(config).method==='engraving';
+ // Physischer Maßstab der Gestaltung (Acryl: gewählte Größe / Designbreite, sonst 1).
+ export function physicalScale(config, options={}) {
+   return config.acrylic ? acrylicSelection(acrylicOptions(resolvedOptions(config, options)), config.acrylic.pricing).size.width / config.acrylic.designWidth : 1;
+@@ -98,7 +100,7 @@ export function prepareConfig(input) {
+   if (typeof config.photo?.enabled !== 'boolean' || config.photo.mode !== 'upload-only') fail('Fotofunktion ausdrücklich festlegen.');
+   if(config.logo!==undefined&&typeof config.logo.enabled!=='boolean')fail('Logofunktion ausdrücklich festlegen.');
+   if(config.logo?.vectorUpload!==undefined&&typeof config.logo.vectorUpload!=='boolean')fail('Vektorlogo-Funktion ausdrücklich festlegen.');
+-  if(config.logo?.vectorUpload===true&&!vectorLogoAllowed(config))fail('Vektorlogos benötigen Edelstahlgravur ohne Fotoupload und einen ausdrücklichen Aufpreis von 12,99 € je Logo.');
++  if(config.logo?.vectorUpload===true&&!vectorLogoAllowed(config))fail('Vektorlogos benötigen Acrylglasgravur oder Edelstahlgravur ohne Fotoupload und einen ausdrücklichen Aufpreis von 12,99 € je Logo.');
+   validateCustomerAdditions(config);
+   if (!config.photo.enabled){p.designs = p.designs.filter(d => !d.objects.some(o => o.type === 'photoSlot'));if(config.localResources){config.localResources.photoPlaceholders=[];config.localResources.photoExamples=[];}}
+   if (!p.designs.length) fail('Für dieses Produkt gibt es keine passende Vorlage ohne Fotobereich.');
+diff --git a/app/configurator/variant-m/decision-help.mjs b/app/configurator/variant-m/decision-help.mjs
+index 5b8a4abaa01d5112f8ada59c6a23ba3615a62213..43f86a5c48709da86e95ae2615267cfce863b81c 100644
+--- a/app/configurator/variant-m/decision-help.mjs
++++ b/app/configurator/variant-m/decision-help.mjs
+@@ -16,7 +16,7 @@ export function decisionHelp(kind,config,geometry=config.profile.geometry){
+   mounting:['Befestigung','Wähle die Befestigung passend zum Montageort. Die Kacheln zeigen die verfügbaren Bohrungen und Zubehörteile samt Aufpreis. Nur die gewählte Ausführung wird bestellt.'],
+   font:['Schrift','Tippe eine Textzeile an. Darunter kannst du Schrift und Größe ändern. Die Größe wird in Millimetern auf dem Schild angegeben. In der Schriftauswahl siehst du die echten Buchstaben der jeweiligen Schrift.'],
+   motif:['Motive',motifPriceDescription(config)],
+-  photo:config.logo?.vectorUpload===true?['Logo',`Lade ein SVG-Vektorlogo bis 2 MB hoch. Mehrfarbige Flächen werden zu schwarzen Gravurflächen; weiße Aussparungen bleiben frei. Prüfe die Vorschau vor dem Übernehmen. Fotos sind auf Edelstahl nicht möglich. Je Logo ${money(config.logo.extraPriceCents)}.`]:['Foto','Verwende möglichst das Originalfoto mit guter Auflösung. Du kannst den Ausschnitt bearbeiten. Bei Schiefer und Acrylglas mit Gravur wird dein Upload zunächst in Graustufen gezeigt; unter „Bearbeiten“ kannst du das Original wiederherstellen. Vorlagenbilder bleiben unverändert.']
++  photo:config.logo?.vectorUpload===true?[config.photo.enabled?'Foto / Logo':'Logo',`Lade ein SVG-Vektorlogo bis 2 MB hoch. Mehrfarbige Flächen werden zu schwarzen Gravurflächen; weiße Aussparungen bleiben frei. Prüfe die Vorschau vor dem Übernehmen. ${config.photo.enabled?`Fotos kannst du separat als JPG, PNG oder WebP bis 15 MB hinzufügen; je Foto ${money(config.photo.extraPriceCents)}.`:'Fotos sind bei diesem Produkt nicht freigegeben.'} Je Logo ${money(config.logo.extraPriceCents)}.`]:['Foto','Verwende möglichst das Originalfoto mit guter Auflösung. Du kannst den Ausschnitt bearbeiten. Bei Schiefer und Acrylglas mit Gravur wird dein Upload zunächst in Graustufen gezeigt; unter „Bearbeiten“ kannst du das Original wiederherstellen. Vorlagenbilder bleiben unverändert.']
+  };
+  return {title:descriptions[kind][0],text:descriptions[kind][1]};
+ }
+diff --git a/app/configurator/variant-m/logo-upload.mjs b/app/configurator/variant-m/logo-upload.mjs
+index 5ca27a7da9684007124aae17ce7cb22302936071..93ace3980b113db2019ed4b23ea28bebd91b1d69 100644
+--- a/app/configurator/variant-m/logo-upload.mjs
++++ b/app/configurator/variant-m/logo-upload.mjs
+@@ -1,10 +1,18 @@
+ // Customer SVGs are converted by the bound server. Raw upload markup is never
+ // inserted into the editor DOM; preview and production use the checked result.
+ import {moduleEnabled} from './module-profile.mjs';
++import {getProcessingProfile} from '../../platform/sources/app/shared/models/processing-profiles.mjs';
+ export const VECTOR_LOGO_ACCEPT='.svg,image/svg+xml';
+ export const vectorLogoEnabled=config=>moduleEnabled(config,'logo')&&config?.logo?.enabled===true&&config.logo.vectorUpload===true;
++// Display only: retain the checked black SVG bytes and their alpha cutouts.
++// Production consumes the immutable SVG, never this material-preview filter.
++export function vectorLogoPreviewFilter(profile){
++  if(profile?.material?.kind!=='acrylic'||profile?.processing?.profileId!=='acrylic-engraving')return '';
++  const rgb=getProcessingProfile(profile).ink.slice(1).match(/../g).map(h=>parseInt(h,16)/255);
++  return `<feColorMatrix type="matrix" values="${rgb.map(n=>'0 0 0 0 '+n).join(' ')} 0 0 0 1 0"/>`;
++}
+ export function validateVectorLogoFile(file,objects=[],replacingId){
+-  if(!file||!Number.isSafeInteger(file.size)||file.size<1||file.size>2*1024*1024||!/\.svg$/i.test(file.name||'')||!['','image/svg+xml','application/xml','text/xml'].includes(file.type))throw Error('Bitte ein Vektorlogo als SVG bis 2 MB auswählen. Fotos und eingebettete Bilder sind auf Edelstahl nicht möglich.');
++  if(!file||!Number.isSafeInteger(file.size)||file.size<1||file.size>2*1024*1024||!/\.svg$/i.test(file.name||'')||!['','image/svg+xml','application/xml','text/xml'].includes(file.type))throw Error('Bitte ein Vektorlogo als SVG bis 2 MB auswählen. Fotos und eingebettete Bilder sind in SVG-Logos nicht möglich.');
+   if(!replacingId&&new Set(objects.filter(o=>o.uxUploadId).map(o=>o.uxUploadId)).size>=4)throw Error('Du kannst insgesamt vier Fotos oder Logos hinzufügen.');
+ }
+ export async function blobBase64(blob){
+@@ -36,15 +44,18 @@ export function logoPlacement(width,height,asset,prior){
+   const maxW=prior?.w||Math.min(width*.3,50),maxH=prior?.h||Math.min(height*.25,50),scale=Math.min(maxW/asset.width,maxH/asset.height);
+   return {x:prior?.x??width/2,y:prior?.y??height*.35,w:asset.width*scale,h:asset.height*scale,rotation:prior?.rotation||0};
+ }
+-export function confirmVectorLogo({dialog,asset,scene,placement,priorId,priceCents,esc}){
++export function confirmVectorLogo({dialog,asset,scene,placement,priorId,priceCents,profile,esc}){
++  const materialKind=profile?.material?.kind;
+   const originalUrl=URL.createObjectURL(asset.preview),blackUrl=URL.createObjectURL(asset.blob);
+-  const d=dialog('vector-logo','Logo als Gravur prüfen',`<p>Dein SVG wird in schwarze Gravurflächen umgewandelt. Weiße Aussparungen bleiben frei.</p><div class="ux-logo-comparison"><figure><figcaption>Originalfarben</figcaption><img src="${originalUrl}" alt="Logo in Originalfarben"></figure><figure><figcaption>Gravur auf deinem Schild</figcaption><div data-logo-surface></div></figure></div><p class="ux-logo-detail">Feine Linien und Aussparungen prüfen: Details unter 0,5 mm können auf Edelstahl verloren gehen. Die automatische Umwandlung bestätigt keine Mindeststärke.</p><p>Farbgrenzen fallen in Schwarz weg. Übernimm das Logo nur, wenn alle wichtigen Details erkennbar bleiben.</p><details><summary>Hinweise zur Umwandlung</summary><ul>${asset.warnings.map(w=>`<li>${esc(w)}</li>`).join('')}</ul></details><p><strong>Logo-Aufpreis: ${new Intl.NumberFormat('de-DE',{style:'currency',currency:'EUR'}).format(priceCents/100)}</strong></p><label class="ux-logo-check"><input type="checkbox" data-logo-confirm> Ich habe die schwarze Vorschau und die Aussparungen geprüft.</label><div class="ux-actions"><button type="button" data-ux="close">Abbrechen</button><button type="button" class="ux-primary" data-logo-accept disabled>Gravur übernehmen</button></div>`);
+-  const copy=scene.cloneNode(true);copy.removeAttribute('tabindex');copy.removeAttribute('style');copy.setAttribute('aria-label','Dein Schild mit schwarzem Logo');
++  const d=dialog('vector-logo','Logo als Gravur prüfen',`<p>Dein SVG wird in einfarbige Gravurflächen umgewandelt. Weiße Aussparungen bleiben frei.</p><div class="ux-logo-comparison"><figure><figcaption>Originalfarben</figcaption><img src="${originalUrl}" alt="Logo in Originalfarben"></figure><figure><figcaption>Gravur auf deinem Schild</figcaption><div data-logo-surface></div></figure></div><p class="ux-logo-detail">Feine Linien und Aussparungen prüfen.${materialKind==='steel'?' Details unter 0,5 mm können auf Edelstahl verloren gehen.':''} Die automatische Umwandlung bestätigt keine Mindeststärke.</p><p>Farbgrenzen fallen durch die Umwandlung weg. Übernimm das Logo nur, wenn alle wichtigen Details erkennbar bleiben.</p><details><summary>Hinweise zur Umwandlung</summary><ul>${asset.warnings.map(w=>`<li>${esc(w)}</li>`).join('')}</ul></details><p><strong>Logo-Aufpreis: ${new Intl.NumberFormat('de-DE',{style:'currency',currency:'EUR'}).format(priceCents/100)}</strong></p><label class="ux-logo-check"><input type="checkbox" data-logo-confirm> Ich habe die Gravurvorschau und die Aussparungen geprüft.</label><div class="ux-actions"><button type="button" data-ux="close">Abbrechen</button><button type="button" class="ux-primary" data-logo-accept disabled>Gravur übernehmen</button></div>`);
++  const copy=scene.cloneNode(true);copy.removeAttribute('tabindex');copy.removeAttribute('style');copy.setAttribute('aria-label','Dein Schild mit Logo als Gravur');
+   for(const node of copy.querySelectorAll('[data-object]'))if(node.getAttribute('data-object')===priorId)node.remove();
+   for(const node of copy.querySelectorAll('[data-preview-only],[data-resize],rect[stroke="#64ae87"]'))node.remove();
+   const ns='http://www.w3.org/2000/svg',group=document.createElementNS(ns,'g'),image=document.createElementNS(ns,'image');
+   group.setAttribute('transform',`translate(${placement.x} ${placement.y}) rotate(${placement.rotation})`);
+   for(const [key,value] of Object.entries({href:blackUrl,x:-placement.w/2,y:-placement.h/2,width:placement.w,height:placement.h,preserveAspectRatio:'xMidYMid meet'}))image.setAttribute(key,String(value));
++  const inkFilter=vectorLogoPreviewFilter(profile);
++  if(inkFilter){const id='vector-logo-preview-'+crypto.randomUUID(),defs=document.createElementNS(ns,'defs'),filter=document.createElementNS(ns,'filter');filter.id=id;filter.setAttribute('color-interpolation-filters','sRGB');filter.innerHTML=inkFilter;defs.append(filter);copy.prepend(defs);image.setAttribute('filter',`url(#${id})`);}
+   group.append(image);copy.append(group);d.querySelector('[data-logo-surface]').append(copy);
+   const accept=d.querySelector('[data-logo-accept]'),check=d.querySelector('[data-logo-confirm]');check.addEventListener('change',()=>{accept.disabled=!check.checked;});
+   return new Promise(resolve=>{
+diff --git a/app/configurator/variant-m/logo-upload.test.mjs b/app/configurator/variant-m/logo-upload.test.mjs
+index f58d40c391531caf197c59337343d8893436d6e5..0d59e7c5125030b528f13730221ec3b12307a999 100644
+--- a/app/configurator/variant-m/logo-upload.test.mjs
++++ b/app/configurator/variant-m/logo-upload.test.mjs
+@@ -1,13 +1,22 @@
+ import test from 'node:test';
+ import assert from 'node:assert/strict';
+ import {createHash} from 'node:crypto';
+-import {validateVectorLogoFile,requestVectorLogoPreview,logoMediaPayload,logoPlacement,vectorLogoEnabled} from './logo-upload.mjs';
++import {validateVectorLogoFile,requestVectorLogoPreview,logoMediaPayload,logoPlacement,vectorLogoEnabled,vectorLogoPreviewFilter} from './logo-upload.mjs';
+ import {uploadTabVisible} from './ux-model.mjs';
+ const source='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 10"><path fill="red" d="M0 0H20V10H0Z"/></svg>';
+ const black=source.replace('red','black'),hash=s=>createHash('sha256').update(s).digest('hex');
+ const file=()=>new File([source],'logo.svg',{type:'image/svg+xml'});
+ const binding={productId:'logo-test',productRevision:2};
+ const converted=()=>({version:'svg-black-v1',sourceSha256:hash(source),outputSha256:hash(black),width:20,height:10,svg:Buffer.from(black).toString('base64'),preview:Buffer.from(source).toString('base64'),warnings:['Farben prüfen.']});
++test('acrylic vector preview adopts engraving ink while retaining alpha and source bytes',async()=>{
++ const asset=await requestVectorLogoPreview(file(),{binding,request:async()=>({ok:true,json:async()=>converted()})});
++ const before=await asset.blob.text(),matrix=vectorLogoPreviewFilter({material:{kind:'acrylic'},processing:{profileId:'acrylic-engraving'}}).match(/values="([^"]+)"/)[1].split(' ').map(Number);
++ const transformed=[0,1,2,3].map(row=>matrix.slice(row*5,row*5+5).reduce((sum,n,i)=>sum+n*([0,0,0,.3,1][i]),0));
++ assert.deepEqual(transformed,[225/255,228/255,229/255,.3]);
++ assert.equal(vectorLogoPreviewFilter({material:{kind:'steel'},processing:{profileId:'steel-engraving'}}),'');
++ assert.equal(vectorLogoPreviewFilter({material:{kind:'acrylic'},processing:{profileId:'acrylic-print'}}),'');
++ assert.equal(await asset.blob.text(),before);assert.equal(hash(before),asset.vectorLogo.outputSha256);
++});
+ test('vector upload is explicit and does not reveal legacy upload tabs',()=>{
+  const config={photo:{enabled:false},logo:{enabled:true},profile:{designs:[]}};
+  assert.equal(vectorLogoEnabled(config),false);assert.equal(uploadTabVisible(config,'none',{photoEnabled:false}),false);
+diff --git a/app/configurator/variant-m/module-profile.mjs b/app/configurator/variant-m/module-profile.mjs
+index b12ed04cdf1ea9d8d7a31e72edb2659cb9d547c5..a31f0f80b660cf94af8aad77d6394489acbb4871 100644
+--- a/app/configurator/variant-m/module-profile.mjs
++++ b/app/configurator/variant-m/module-profile.mjs
+@@ -31,6 +31,11 @@ function templateObjects(config){
+ }
+ const editable=object=>object.customerEditable!==false&&!object.technicalLocked&&!object.locked;
+ 
++// Chris, 11.11.2026 (#230): acrylic engraving may offer photos and checked SVG
++// logos together. The existing steel SVG-only path remains photo-free.
++export const photoWithVectorLogoAllowed=config=>config?.logo?.vectorUpload!==true||
++ (config?.profile?.material?.kind==='acrylic'&&config?.profile?.processing?.profileId==='acrylic-engraving');
++
+ /** Upper bound from the saved source, independent of the selected module profile.
+  * Keep binding to that source when changing a profile: applying a restricted
+  * output does not reconstruct permissions that its source never granted. */
+@@ -42,7 +47,7 @@ export function nativeModuleAvailability(config){
+   text:additions===undefined||additions.text===true||objects.some(object=>object.type==='text'&&editable(object)),
+   motifs:additions===undefined||additions.motifs===true||objects.some(object=>['motif','motif-raster'].includes(object.type)&&editable(object)),
+   // No new photo capability on steel. Its explicitly approved upload is SVG logo.
+-  photo:config?.photo?.enabled===true&&config?.logo?.vectorUpload!==true&&config?.profile?.material?.kind!=='steel'&&process?.tools.photo===true,
++  photo:config?.photo?.enabled===true&&photoWithVectorLogoAllowed(config)&&config?.profile?.material?.kind!=='steel'&&process?.tools.photo===true,
+   logo:config?.logo?.enabled!==false,
+   colors:process?.tools.textColor===true,
+  };
+diff --git a/app/configurator/variant-m/motif-placement.mjs b/app/configurator/variant-m/motif-placement.mjs
+index 7ad7c08bc49bca481943749681e830f7d069e708..e74a4e8c028e09b456b2a4cc05a97a3e2c7a200d 100644
+--- a/app/configurator/variant-m/motif-placement.mjs
++++ b/app/configurator/variant-m/motif-placement.mjs
+@@ -3,6 +3,7 @@ import {printArtwork,physicalGeometry} from './print-export.mjs';
+ import {acrylicSelection,acrylicOptions} from './acrylic-product.mjs';
+ import {insideContour} from './print-export-model.mjs';
+ import {PLACEMENT_STEP,NO_FREE_SPACE_MESSAGE} from './workflow-model.mjs';
++import {textOutlineBounds} from '../../platform/sources/app/shared/models/text-outline-fit.mjs';
+ 
+ // Mindestgröße eines Motivs bei der Platzsuche (Chris 22./23.10.2026): 10 mm längste Seite, physisch.
+ // Begründung: Motive sind Strichzeichnungen; die Mindestlinienstärke der Verfahren ist offen (null), die
+@@ -18,17 +19,56 @@ export function placementScales(minScale,step=PLACEMENT_STEP){
+ }
+ 
+ // Search the actual visible artwork, including transparent template layers.
+-export function emptyPixelPosition(alpha,width,height,boxWidth,boxHeight,allowed=()=>true){
++export function emptyPixelPosition(alpha,width,height,boxWidth,boxHeight,allowed=()=>true,{preferred={x:width/2,y:height/2},candidate=()=>true}={}){
+  const integral=new Uint32Array((width+1)*(height+1)),stride=width+1;
+  for(let y=0;y<height;y++){let row=0;for(let x=0;x<width;x++){row+=alpha[(y*width+x)*4+3]>0||!allowed(x,y)?1:0;integral[(y+1)*stride+x+1]=integral[y*stride+x+1]+row;}}
+  const hw=Math.ceil(boxWidth/2)+2,hh=Math.ceil(boxHeight/2)+2;let best=null,distance=Infinity;
+  for(let y=hh;y<=height-hh;y+=2)for(let x=hw;x<=width-hw;x+=2){
++  if(!candidate(x,y))continue;
+   if(!allowed(x-hw,y-hh)||!allowed(x+hw,y-hh)||!allowed(x-hw,y+hh)||!allowed(x+hw,y+hh))continue;
+   const occupied=integral[(y+hh)*stride+x+hw]-integral[(y-hh)*stride+x+hw]-integral[(y+hh)*stride+x-hw]+integral[(y-hh)*stride+x-hw];
+-  const d=(x-width/2)**2+(y-height/2)**2;if(!occupied&&d<distance){distance=d;best={x,y};}
++  const d=(x-preferred.x)**2+(y-preferred.y)**2;if(!occupied&&d<distance){distance=d;best={x,y};}
+  }
+  return best;
+ }
++
++// Chris, #230 comment 6772716646 (10.11.2026 17:16): these thirteen original
++// motifs on the six fixed small signs belong large beside text; the two lines
++// may be centred. IDs from catalogue 8236b8bf, motive/motive.json. No other
++// product, existing template element, uploaded SVG/logo or motif is affected.
++const SMALL_SIGN_MOTIFS=new Set(['import-6abda909c44bc599330856dd','import-0073ea6aa7103bb1e8ec9088','import-9373218480c87a6ad167f3cb','import-41fb65efd1d8996ac305f6ab','import-1abd6f06096e47c66b0b4e00','import-286db893566ced2e6bd75bad','import-d94f1406fde432cf9dd70389','import-9c76c3476a406eaac7f05e42','import-10edf8a5dd07bd1035ba508d','import-4269dbda54a15a99e178f00a','import-0f3193fd49e254bb5975e74d','import-54b3b489bbebe12119deda9a','import-8239d6c658366716f578c984']);
++const SMALL_SIGN_LINES=new Set(['import-9373218480c87a6ad167f3cb','import-0f3193fd49e254bb5975e74d']);
++export function smallSignMotifMode(config,object){
++ if(object?.type!=='motif'||object.templateOrigin||object.uxUploadId||object.rotation||!SMALL_SIGN_MOTIFS.has(object.motif))return null;
++ const f=config?.familyFormats,s=f?.source;
++ if(f?.schema!=='gravuru-family-formats/v1'||config.productExecution?.kind!=='door-sign'||s?.subcategoryId!=='familienschilder')return null;
++ const steel=s.lineId==='edelstahl-tuerschilder'&&/^GR-ES-RE-(50|60|80)X20-T15$/.test(f.fixedSize||''),acrylic=s.lineId==='acryl-tuerschilder'&&/^TS-Acryl-RE-(50|60|80)X20-T30-SW$/.test(f.fixedSize||'');
++ if(!steel&&!acrylic)return null;
++ return SMALL_SIGN_LINES.has(object.motif)?'center':'side';
++}
++// Same pixel collision test, spacing and scale steps as the general placement.
++// Larger first; try both sides at each scale, with right as deterministic tie.
++// Only the new object changes. A full text block never triggers text shrinking.
++export function smallSignMotifPosition({mode,object,objects,fonts,alpha,width,height,sx=1,sy=1,pixelsPerMm=2,minScale=1,allowed=()=>true}){
++ if(!['side','center'].includes(mode)||!(object.w>0&&object.h>0))return null;
++ const texts=objects.filter(o=>o.type==='text'&&!o.uxHidden&&o.role!=='guide'&&o.surfaceId!=='back'&&String(o.text||'').trim()),corners=texts.flatMap(o=>{
++  const b=textOutlineBounds(o,fonts)||{left:-o.w/2,top:-o.h/2,right:o.w/2,bottom:o.h/2},a=(o.rotation||0)*Math.PI/180,c=Math.cos(a),s=Math.sin(a);
++  return [[b.left,b.top],[b.right,b.top],[b.right,b.bottom],[b.left,b.bottom]].map(([x,y])=>({x:(o.x+x*c-y*s)*sx*pixelsPerMm,y:(o.y+x*s+y*c)*sy*pixelsPerMm}));
++ });
++ if(!corners.length&&mode==='side')return null;
++ const left=Math.min(...corners.map(p=>p.x)),right=Math.max(...corners.map(p=>p.x)),centerY=corners.length?(Math.min(...corners.map(p=>p.y))+Math.max(...corners.map(p=>p.y)))/2:height/2;
++ const upper=Math.min(width/(object.w*sx*pixelsPerMm),height/(object.h*sy*pixelsPerMm));
++ if(!Number.isFinite(upper)||upper<minScale)return null;
++ for(const step of placementScales(minScale/upper)){
++  const factor=upper*step,bw=object.w*factor*sx*pixelsPerMm,bh=object.h*factor*sy*pixelsPerMm;
++  const regions=mode==='center'?[{allow:allowed,preferred:{x:width/2,y:height/2},candidate:x=>Math.abs(x-width/2)<=1}]:[
++   {allow:(x,y)=>x>=right&&allowed(x,y),preferred:{x:(right+width)/2,y:centerY}},
++   {allow:(x,y)=>x<=left&&allowed(x,y),preferred:{x:left/2,y:centerY}}
++  ];
++  for(const region of regions){const p=emptyPixelPosition(alpha,width,height,bw,bh,region.allow,region);if(p)return {x:p.x/pixelsPerMm/sx,y:p.y/pixelsPerMm/sy,w:object.w*factor,h:object.h*factor};}
++ }
++ return null;
++}
+ // Chris 22./23.10.2026: Platzsuche über die ganze Gestaltungsfläche innerhalb des Randes (safeMarginMm) in
+ // Originalgröße, danach schrittweise kleiner bis zur Mindestgröße (minScale, vom Aufrufer aus MOTIF_MIN_MM).
+ // Bestehende Elemente werden nie verschoben. Erst wenn selbst bei Mindestgröße nichts frei ist: mittig,
+@@ -47,7 +87,11 @@ export async function placeNewMotif({el,config,files,say},object,{minScale=1}={}
+  const margin=Number.isFinite(g.safeMarginMm)?Math.max(0,g.safeMarginMm):2; // Gestaltungsrand wie objectIssue/designArea (Standard 2 mm)
+  const allowed=(x,y)=>(!area||(x/scale>=area.left&&x/scale<=area.right&&y/scale>=area.top&&y/scale<=area.bottom))&&y/scale<g.height-insertion&&(g.shape==='contour'?contourContainsPoint(g,x/scale,y/scale,{marginMm:margin,holes:false}):insideContour(g,x/scale,y/scale,-margin));
+  const alpha=ctx.getImageData(0,0,canvas.width,canvas.height).data;
+- for(const s of placementScales(minScale)){
++ const smallMode=smallSignMotifMode(config,object);
++ if(smallMode){
++  const position=smallSignMotifPosition({mode:smallMode,object,objects:state.objects,fonts:el.fontData,alpha,width:canvas.width,height:canvas.height,sx,sy,pixelsPerMm:scale,minScale,allowed});
++  if(position){Object.assign(object,position);el.sync();say('');return;}
++ }else for(const s of placementScales(minScale)){
+   const position=emptyPixelPosition(alpha,canvas.width,canvas.height,object.w*s*sx*scale,object.h*s*sy*scale,allowed);
+   if(!position)continue;
+   object.x=position.x/scale/sx;object.y=position.y/scale/sy;
+diff --git a/app/configurator/variant-m/small-sign-motif-placement.test.mjs b/app/configurator/variant-m/small-sign-motif-placement.test.mjs
+new file mode 100644
+index 0000000000000000000000000000000000000000..186021b53b887fc48fcf978bc7d9a50240bed45e
+--- /dev/null
++++ b/app/configurator/variant-m/small-sign-motif-placement.test.mjs
+@@ -0,0 +1,55 @@
++import test from 'node:test';
++import assert from 'node:assert/strict';
++import {smallSignMotifMode,smallSignMotifPosition} from './motif-placement.mjs';
++const heart='import-1abd6f06096e47c66b0b4e00',line='import-0f3193fd49e254bb5975e74d';
++const config=(material='steel',width=50)=>({productExecution:{kind:'door-sign'},familyFormats:{schema:'gravuru-family-formats/v1',fixedSize:material==='steel'?`GR-ES-RE-${width}X20-T15`:`TS-Acryl-RE-${width}X20-T30-SW`,source:{lineId:material==='steel'?'edelstahl-tuerschilder':'acryl-tuerschilder',subcategoryId:'familienschilder'}}});
++const motif=(key=heart,changes={})=>({id:'new',type:'motif',motif:key,x:25,y:10,w:20,h:20,rotation:0,...changes});
++const text=(x,w,changes={})=>({id:'text',type:'text',text:'Name',x,y:10,w,h:5,rotation:0,...changes});
++function raster(width,objects){const height=40,alpha=new Uint8ClampedArray(width*height*4);for(const o of objects)for(let y=Math.max(0,Math.floor((o.y-o.h/2)*2));y<Math.min(height,Math.ceil((o.y+o.h/2)*2));y++)for(let x=Math.max(0,Math.floor((o.x-o.w/2)*2));x<Math.min(width,Math.ceil((o.x+o.w/2)*2));x++)alpha[(y*width+x)*4+3]=255;return alpha;}
++function find(objects,object=motif(),extra={}){return smallSignMotifPosition({mode:'side',object,objects,alpha:raster(100,objects),width:100,height:40,minScale:.5,...extra});}
++
++test('scope is the six fixed catalogue products and known new motifs only',()=>{
++ for(const material of ['steel','acrylic'])for(const width of [50,60,80])assert.equal(smallSignMotifMode(config(material,width),motif()),'side');
++ assert.equal(smallSignMotifMode(config(),motif(line)),'center');
++ assert.equal(smallSignMotifMode(config(),motif('import-9373218480c87a6ad167f3cb')),'center');
++ for(const o of [motif('unknown'),motif(heart,{templateOrigin:true}),motif(heart,{uxUploadId:'svg-logo'}),motif(heart,{type:'image'}),motif(heart,{rotation:30})])assert.equal(smallSignMotifMode(config(),o),null);
++ const all=config();delete all.familyFormats.fixedSize;assert.equal(smallSignMotifMode(all,motif()),null);
++ assert.equal(smallSignMotifMode(config('steel',70),motif()),null);
++ const other=config();other.familyFormats.source.subcategoryId='other';assert.equal(smallSignMotifMode(other,motif()),null);
++});
++
++test('large motif goes right of text, otherwise left, without touching the text or aspect',()=>{
++ for(const [x,side] of [[15,'right'],[35,'left']]){
++  const objects=[text(x,20)],object=motif(),before=JSON.stringify({objects,object}),p=find(objects,object);
++  assert.ok(p);assert.ok(p.w>=17&&p.h>=17);assert.equal(p.w/p.h,object.w/object.h);
++  assert.ok(side==='right'?p.x-p.w/2>25:p.x+p.w/2<25);
++  assert.ok(p.y-p.h/2>=0&&p.y+p.h/2<=20);
++  assert.equal(JSON.stringify({objects,object}),before);
++ }
++});
++
++test('a larger left region wins before shrinking into a narrow right region',()=>{
++ const objects=[text(32,16)],p=find(objects);assert.ok(p);assert.ok(p.x+p.w/2<24);assert.ok(p.w>=17);
++});
++
++test('same-size ties choose right and do not put ordinary motifs above the text',()=>{
++ const objects=[text(25,6)],p=find(objects);assert.ok(p);assert.ok(p.x-p.w/2>28);assert.ok(Math.abs(p.y-10)<=.5);
++});
++
++test('horizontal and fine separator lines are large, centred and clear of text',()=>{
++ const objects=[text(25,30,{y:6,h:4})],object=motif(line,{w:20,h:.32}),p=find(objects,object,{mode:'center'});
++ assert.ok(p);assert.ok(p.w>40&&p.w<50);assert.ok(Math.abs(p.x-25)<=.5);assert.ok(p.y-p.h/2>8);assert.equal(p.w/p.h,object.w/object.h);
++});
++
++test('existing decoration, usable contour and minimum motif size remain respected',()=>{
++ const objects=[text(15,20),{id:'old',type:'motif',x:38,y:10,w:20,h:20}];assert.equal(find(objects),null);
++ assert.equal(find([text(25,44)]),null,'do not squeeze below 10 mm or move existing text');
++ assert.equal(find([text(15,20)],motif(),{allowed:()=>false}),null);
++ assert.equal(find([]),null,'no text does not invent a side-layout');
++ const objects2=[text(15,20)],p=find(objects2,motif(heart,{w:20,h:10}));assert.ok(p);assert.equal(p.w/p.h,2,'motif never stretched');
++});
++
++test('real glyph bounds follow rotated text while every source property stays unchanged',()=>{
++ const fonts={Demo:{regular:{units:1000,glyphs:{A:{a:1000,d:'M0 0H1000V800H0Z'}}}}},objects=[text(25,10,{text:'A',font:'Demo',size:10,h:12,rotation:90})],before=JSON.stringify(objects);
++ const p=find(objects,motif(),{fonts});assert.ok(p);assert.ok(p.x-p.w/2>29);assert.equal(JSON.stringify(objects),before);
++});
+diff --git a/app/configurator/variant-m/ui-event-regressions.test.mjs b/app/configurator/variant-m/ui-event-regressions.test.mjs
+index e9b6852dd553838baad193379adb2ed0c362efa2..7b5a8f0b10020567d3d677f421c032d86115f23b 100644
+--- a/app/configurator/variant-m/ui-event-regressions.test.mjs
++++ b/app/configurator/variant-m/ui-event-regressions.test.mjs
+@@ -1,5 +1,5 @@
+ import {customerFieldLabel} from './text-fields.mjs';
+-import {moduleEnabled} from './module-profile.mjs';
++import {moduleEnabled,photoWithVectorLogoAllowed} from './module-profile.mjs';
+ import {createTextBounds} from './text-bounds.mjs';
+ import {executionOptionGroups} from './execution-registry.mjs';
+ import {alignmentContent,alignmentLabel} from './ui-icons.mjs';
+@@ -241,9 +241,16 @@ test('K10 / Ü1.2: engraving products build the text panel without a colour pick
+  assert.doesNotMatch(render(false,4),/data-ux-color/);assert.match(render(true,3),/data-ux-color/);
+  assert.match(render(false,4),/id="ux-size" type="number" min="4"/);assert.match(render(true,3),/min="3"/);
+  const photoLine=line('ux.mjs','const photoEnabled=');
+- const photo=(enabled,tool)=>{const env={moduleEnabled,config:{photo:{enabled},logo:{enabled:true}},process:{tools:{photo:tool}}};vm.createContext(env);vm.runInContext(photoLine,env);return vm.runInContext('photoEnabled',env);};
++ const photo=(enabled,tool)=>{const env={moduleEnabled,photoWithVectorLogoAllowed,config:{photo:{enabled},logo:{enabled:true}},process:{tools:{photo:tool}}};vm.createContext(env);vm.runInContext(photoLine,env);return vm.runInContext('photoEnabled',env);};
+  assert.equal(photo(true,true),true);assert.equal(photo(true,false),false);assert.equal(photo(false,true),false);
+ });
++
++test('acrylic combined upload panel distinguishes photo and SVG prices, limits and initial file chooser',()=>{
++ const markup=line('ux.mjs',"$('#ux-panel-upload').innerHTML=");
++ const render=photoEnabled=>{const env={photoEnabled,logoEnabled:true,vectorLogos:true,config:{photo:{extraPriceCents:999},logo:{extraPriceCents:1299}},money:c=>(c/100).toFixed(2),PHOTO_ACCEPT:'image/jpeg,image/png,image/webp',VECTOR_LOGO_ACCEPT:'.svg,image/svg+xml',button:(id,label)=>`<button data-ux="${id}">${label}</button>`,out:''};vm.createContext(env);vm.runInContext(markup.replace("$('#ux-panel-upload').innerHTML=",'out='),env);return env.out;};
++ const both=render(true);assert.match(both,/Deine Fotos & Logos/);assert.match(both,/Foto je 9.99/);assert.match(both,/je Logo <strong>\+12.99/);assert.match(both,/Fotos: JPG, PNG oder WebP bis 15 MB/);assert.match(both,/Logos: SVG bis 2 MB/);assert.match(both,/data-ux="photo-upload"/);assert.match(both,/accept="image\/jpeg,image\/png,image\/webp"/);
++ const logoOnly=render(false);assert.doesNotMatch(logoOnly,/data-ux="photo-upload"|Foto je/);assert.match(logoOnly,/accept="\.svg,image\/svg\+xml"/);
++});
+ // Chris 22./23.10.2026: Ein neues Element bekommt immer einen freien Platz. Die echte place()-Funktion aus workflow.mjs:
+ // Gestaltungsfläche innerhalb des Randes, Verkleinerung bis zur Mindestgröße (Text 3 mm, Motiv 10 mm), sonst mittig + Hinweis.
+ test('Neues Element: freier Platz in Originalgröße, sonst verkleinert bis zur Mindestgröße, sonst mittig mit Hinweis',async()=>{
+diff --git a/app/configurator/variant-m/ux-model.mjs b/app/configurator/variant-m/ux-model.mjs
+index 84e73fcc4f1df9c06084c838abe35343e683768a..1590248d7bfe7f992cb0d7f6657da81c493d5190 100644
+--- a/app/configurator/variant-m/ux-model.mjs
++++ b/app/configurator/variant-m/ux-model.mjs
+@@ -1,10 +1,10 @@
+ // Shared UI rules. These do not authorize a Shopify order or a paid download.
+ import {cleanObject} from './contract.mjs';
+-import {moduleEnabled} from './module-profile.mjs';
++import {moduleEnabled,photoWithVectorLogoAllowed} from './module-profile.mjs';
+ export {carryPersonalObjects,mapPersonalObjects} from './field-mapping.mjs';
+-export const uploadAllowed=(config,kind)=>kind==='photo'?moduleEnabled(config,'photo')&&config?.logo?.vectorUpload!==true&&config?.photo?.enabled!==false:kind==='logo'?moduleEnabled(config,'logo')&&config?.logo?.enabled!==false:false;
++export const uploadAllowed=(config,kind)=>kind==='photo'?moduleEnabled(config,'photo')&&photoWithVectorLogoAllowed(config)&&config?.photo?.enabled!==false:kind==='logo'?moduleEnabled(config,'logo')&&config?.logo?.enabled!==false:false;
+ export function photoAvailableForDesign(config,designId){
+-  if(!moduleEnabled(config,'photo')||config?.logo?.vectorUpload===true||config?.photo?.enabled===false)return false;
++  if(!moduleEnabled(config,'photo')||!photoWithVectorLogoAllowed(config)||config?.photo?.enabled===false)return false;
+   if(config?.photoDesignPricing===true)return true;
+   const design=config?.profile?.designs?.find(d=>d.id===designId);
+   return !design?.importedSource||design.objects.some(o=>o.type==='photoSlot');
+diff --git a/app/configurator/variant-m/ux.mjs b/app/configurator/variant-m/ux.mjs
+index e0f142bd52951e29ff0b207b58af8081a660b7cd..97876eb6218ec23d0024b9df3a710ff66fd08416 100644
+--- a/app/configurator/variant-m/ux.mjs
++++ b/app/configurator/variant-m/ux.mjs
+@@ -1,4 +1,5 @@
+-import {moduleEnabled} from './module-profile.mjs';
++import {decisionHelp} from './decision-help.mjs';
++import {moduleEnabled,photoWithVectorLogoAllowed} from './module-profile.mjs';
+ import {moduleTabs} from './module-runtime.mjs';
+ import {canDeleteTemplateElement} from './element-rights.mjs';
+ import {installGalleryWorkbench} from './gallery-workbench.mjs';
+@@ -40,7 +41,7 @@ import {installRefinements} from './refinements.mjs';
+ import {installCommerce} from './commerce.mjs';
+ import {decorateEmptyPhotoSlots} from './photo-placeholder.mjs';
+ import {emptyPhotoSlotAt,replaceablePhotoSlot,tapTracker,normalizePhotoFile,PHOTO_ACCEPT} from './photo-upload.mjs';
+-import {VECTOR_LOGO_ACCEPT,vectorLogoEnabled,validateVectorLogoFile,requestVectorLogoPreview,confirmVectorLogo,logoPlacement} from './logo-upload.mjs';
++import {VECTOR_LOGO_ACCEPT,vectorLogoEnabled,vectorLogoPreviewFilter,validateVectorLogoFile,requestVectorLogoPreview,confirmVectorLogo,logoPlacement} from './logo-upload.mjs';
+ import {placeNewMotif,MOTIF_MIN_MM} from './motif-placement.mjs';
+ import {physicalTextSize,designTextSize,applyPrintColor} from './usability-model.mjs';
+ import {installAcrylicScene} from './acrylic-scene.mjs';
+@@ -93,7 +94,7 @@ export async function installUX(el,config,legacy,{attach}={}){
+   const displayTextSize=o=>physicalTextSize(o,textScale());
+   el.uxTextScale=textScale;
+   el.uxDisplayTextSize=displayTextSize;
+-  const photoEnabled=moduleEnabled(config,'photo')&&(config?config.logo?.vectorUpload!==true&&config.photo.enabled&&process.tools.photo!==false:true), logoEnabled=moduleEnabled(config,'logo')&&config?.logo?.enabled!==false;
++  const photoEnabled=moduleEnabled(config,'photo')&&(config?photoWithVectorLogoAllowed(config)&&config.photo.enabled&&process.tools.photo!==false:true), logoEnabled=moduleEnabled(config,'logo')&&config?.logo?.enabled!==false;
+   // Reiter „Foto / Logo“ wird gar nicht erst angelegt, wenn weder Foto noch Logo möglich ist oder wenn das
+   // Produkt kein Foto vorsieht und kein Design eine Foto-/Logo-Ebene hat (Chris 22./23.10.2026, ux-model.mjs).
+   const vectorLogos=vectorLogoEnabled(config);
+@@ -140,7 +141,7 @@ export async function installUX(el,config,legacy,{attach}={}){
+   const additions=customerAdditionPolicy(config);
+   if(!additions.text)$('[data-ux=add-text]').hidden=true;
+   if(!additions.motifs){const library=$('#panel-motif');if(library)library.hidden=true;}
+-  $('#ux-panel-upload').innerHTML=`<h2>${photoEnabled&&logoEnabled?'Deine Fotos & Logos':photoEnabled?'Dein Foto':'Deine Logos'}</h2><p><span data-upload-price>${vectorLogos?`Vektorlogo als SVG · je Logo <strong>+${money(config.logo.extraPriceCents)}</strong>`:(config?.reviewOnly&&config.basePriceCents===null)?'Preise noch offen · maximal vier Dateien insgesamt.':!photoEnabled?`Je Logo ${money(config?.photo?.extraPriceCents??999)} · maximal vier Dateien insgesamt.`:config?.photo?.includedCount!==undefined?`${config.photo.includedCount} ${config.photo.includedCount===1?'Foto':'Fotos'} inklusive · weitere Fotos je ${money(config.photo.extraPriceCents)}`:'Je Datei <strong>+9,99 €</strong> · maximal vier insgesamt.'}</span><br><small>${vectorLogos?'Keine Fotos oder eingebetteten Bilder. SVG-Schriften vorher in Pfade umwandeln.':'JPG, PNG oder WebP'} · bis ${vectorLogos?2:15} MB · höchstens vier</small></p><div class="ux-upload-buttons">${photoEnabled?button('photo-upload','+ Foto hochladen','class="ux-primary"'):''}${logoEnabled?button('logo-upload','+ Logo hochladen'):''}</div><div class="ux-uploads"></div><input type="file" accept="${vectorLogos?VECTOR_LOGO_ACCEPT:PHOTO_ACCEPT}" data-ux-file hidden>`;
++  $('#ux-panel-upload').innerHTML=`<h2>${photoEnabled&&logoEnabled?'Deine Fotos & Logos':photoEnabled?'Dein Foto':'Deine Logos'}</h2><p><span data-upload-price>${vectorLogos?`${photoEnabled?`Foto je ${money(config.photo.extraPriceCents)} · `:''}Vektorlogo als SVG · je Logo <strong>+${money(config.logo.extraPriceCents)}</strong>`:(config?.reviewOnly&&config.basePriceCents===null)?'Preise noch offen · maximal vier Dateien insgesamt.':!photoEnabled?`Je Logo ${money(config?.photo?.extraPriceCents??999)} · maximal vier Dateien insgesamt.`:config?.photo?.includedCount!==undefined?`${config.photo.includedCount} ${config.photo.includedCount===1?'Foto':'Fotos'} inklusive · weitere Fotos je ${money(config.photo.extraPriceCents)}`:'Je Datei <strong>+9,99 €</strong> · maximal vier insgesamt.'}</span><br><small>${vectorLogos?`${photoEnabled?'Fotos: JPG, PNG oder WebP bis 15 MB. ':''}Logos: SVG bis 2 MB, ohne eingebettete Bilder; Schriften in Pfade umwandeln.`:'JPG, PNG oder WebP · bis 15 MB'} · höchstens vier Dateien insgesamt</small></p><div class="ux-upload-buttons">${photoEnabled?button('photo-upload','+ Foto hochladen','class="ux-primary"'):''}${logoEnabled?button('logo-upload','+ Logo hochladen'):''}</div><div class="ux-uploads"></div><input type="file" accept="${vectorLogos&&!photoEnabled?VECTOR_LOGO_ACCEPT:PHOTO_ACCEPT}" data-ux-file hidden>`;
+   const dialogs={};
+   installDialogDismissal(r);
+   function dialog(key,title,body){const d=document.createElement('dialog');d.className='ux-dialog ux-'+key+'-dialog';d.setAttribute('aria-label',title);d.innerHTML=`<header><h2>${title}</h2>${button('close','✕','aria-label="Fenster schließen"')}</header>${body}`;d.addEventListener('click',e=>{if(e.target.closest('[data-ux=close]'))d.close();});const show=d.showModal.bind(d);d.showModal=()=>{window.GravuruChat?.close?.();for(const other of all('dialog[open]'))if(other!==d&&!other.matches('.c-large-preview'))other.close();show();};r.append(d);dialogs[key]=d;return d;}
+@@ -181,11 +182,12 @@ export async function installUX(el,config,legacy,{attach}={}){
+     const file=files.get(o.uxUploadId),label=o.uxUploadKind==='logo'?'Dein Logo':'Dein Foto';
+     const ink=isPrint?(o.color||'#202824'):config?getProcessingProfile(profile).ink:'#ffffff',rgb=ink.slice(1).match(/../g).map(h=>parseInt(h,16)/255),filterId='ux-logo-'+o.id;
+     const tint=o.uxUploadKind==='logo'&&!o.uxVectorLogo&&(!isPrint||o.uxLogoTint===true);
++    const vectorFilter=o.uxVectorLogo?vectorLogoPreviewFilter(profile):'';
+     const gallerySlatePhoto=config?.workbench?.gallery&&profile.material.kind==='slate'&&o.uxUploadKind==='photo';
+     const photoColor=photoColorMode(profile,o),photoFilter=o.uxUploadKind==='photo'&&!file?.edited?photoColorFilter(photoColor):'',light=o.uxUploadKind==='photo'&&!gallerySlatePhoto?photoEngravingPreviewFilter(profile,photoColor):'';
+-    const filter=photoFilter?`<defs><filter id="${esc(filterId)}" color-interpolation-filters="sRGB">${photoFilter}</filter></defs>`:tint?`<defs><filter id="${esc(filterId)}" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="${rgb.map(n=>'0 0 0 0 '+n).join(' ')} -0.2126 -0.7152 -0.0722 0 1"/><feComposite in2="SourceAlpha" operator="in"/></filter></defs>`:'';
++    const filter=vectorFilter?`<defs><filter id="${esc(filterId)}" color-interpolation-filters="sRGB">${vectorFilter}</filter></defs>`:photoFilter?`<defs><filter id="${esc(filterId)}" color-interpolation-filters="sRGB">${photoFilter}</filter></defs>`:tint?`<defs><filter id="${esc(filterId)}" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="${rgb.map(n=>'0 0 0 0 '+n).join(' ')} -0.2126 -0.7152 -0.0722 0 1"/><feComposite in2="SourceAlpha" operator="in"/></filter></defs>`:'';
+     const placement=photoPlacement(o,file);
+-    const body=file?.url?`${filter}<image data-ux-photo="${o.uxUploadKind}" href="${esc(file.url)}" x="${o.type==='photoSlot'?placement.x:-o.w/2}" y="${o.type==='photoSlot'?placement.y:-o.h/2}" width="${o.type==='photoSlot'?placement.w:o.w}" height="${o.type==='photoSlot'?placement.h:o.h}" preserveAspectRatio="xMidYMid meet" ${o.type==='photoSlot'?`transform="rotate(${placement.angle} ${placement.cx} ${placement.cy})"`:''} ${tint||photoFilter?`filter="url(#${esc(filterId)})"`:''}/>`:`<rect x="${-o.w/2}" y="${-o.h/2}" width="${o.w}" height="${o.h}" rx="2" fill="#dce8df" stroke="#5a8c70" stroke-width=".5"/><text text-anchor="middle" dominant-baseline="central" font-family="Arial" fill="#294e3c" font-size="${Math.min(5,o.w/8)}">${label}</text>`;
++    const body=file?.url?`${filter}<image data-ux-photo="${o.uxUploadKind}" href="${esc(file.url)}" x="${o.type==='photoSlot'?placement.x:-o.w/2}" y="${o.type==='photoSlot'?placement.y:-o.h/2}" width="${o.type==='photoSlot'?placement.w:o.w}" height="${o.type==='photoSlot'?placement.h:o.h}" preserveAspectRatio="xMidYMid meet" ${o.type==='photoSlot'?`transform="rotate(${placement.angle} ${placement.cx} ${placement.cy})"`:''} ${vectorFilter||tint||photoFilter?`filter="url(#${esc(filterId)})"`:''}/>`:`<rect x="${-o.w/2}" y="${-o.h/2}" width="${o.w}" height="${o.h}" rx="2" fill="#dce8df" stroke="#5a8c70" stroke-width=".5"/><text text-anchor="middle" dominant-baseline="central" font-family="Arial" fill="#294e3c" font-size="${Math.min(5,o.w/8)}">${label}</text>`;
+     const maskId='ux-mask-'+o.id,masked=o.type==='photoSlot';
+     const mask=masked?photoClip(o,esc(maskId),previewResourceURL(photoMaskURL(o))):null;
+     const illuminated=light?`<defs><filter id="${esc(filterId)}-light" color-interpolation-filters="sRGB">${light}</filter></defs><g data-photo-preview-treatment="engraving" filter="url(#${esc(filterId)}-light)">${body}</g>`:body;
+@@ -233,7 +235,7 @@ export async function installUX(el,config,legacy,{attach}={}){
+   }
+   function uploadFromEmptySlot(event,slot){
+     event.preventDefault();event.stopImmediatePropagation();
+-    replacing=slot.id;uploadKind='photo';say('');$('[data-ux-file]').click();
++    replacing=slot.id;uploadKind='photo';say('');$('[data-ux-file]').accept=PHOTO_ACCEPT;$('[data-ux-file]').click();
+   }
+   // Only an empty placeholder opens upload. An existing photo is selected/moved.
+   const photoTap=tapTracker();el.uxCancelPhotoTap=()=>photoTap.cancel();
+@@ -351,7 +353,7 @@ export async function installUX(el,config,legacy,{attach}={}){
+     if(el.uxEnsureFonts){$('.ux-font-grid').innerHTML='<p role="status">Schriften werden geladen …</p>';try{await el.uxEnsureFonts(selectionIds(el.uxKnownFonts(),profileChoices?.fonts));}catch{$('.ux-font-grid').innerHTML='<p role="status">Die Schriften konnten nicht geladen werden. Bitte erneut öffnen.</p>';return;}if(!dialogs.font.open||fontObject!==o.id)return;}
+     renderFontPage();}
+   const questionHelp=installCustomerHelp({dialog:dialogs.help,context:()=>({photo:photoEnabled&&photoAvailableForDesign(config,el.state.designId),logo:logoEnabled&&uploadTabVisible(config,el.state.designId,{photoEnabled,logoEnabled}),vectorLogo:vectorLogos,logoCents:config?.logo?.extraPriceCents,minTextMm}),navigate:tab=>{showTab(tab);el.uxMobileSteps?.show(tab,{scroll:false});}});
+-  function guide(key){const content={text:['Text ändern','Tippe auf eine Textzeile und ersetze den Beispieltext. Alle Änderungen siehst du sofort auf deinem Produkt.'],font:['Schrift & Größe','Wähle eine Textzeile und danach „Schrift ändern“. Du siehst deinen eigenen Text in jeder Schrift. Mit Plus und Minus änderst du die Größe. Der Schriftgrößenwert beträgt mindestens '+String(minTextMm).replace('.',',')+' mm.'],guides:['Mittig ausrichten','Aktiviere „Hilfslinien“ unten links im Produktbild. Wähle deinen Text und tippe auf „Mitte“. Beim Ziehen rastet er auch an der Mitte und den Kanten anderer Texte ein. Ankerpunkte zeigen dir die Textmitten, damit du Texte untereinander setzen kannst. Gestrichelte Linie = Gestaltungsrand: Elemente bleiben innerhalb dieser Linie. Bohrungen und Beschläge zeigen das fertige Schild; sie sperren keine Gestaltung.'],motif:['Deine Motive',config?.acrylic?'Vorlagenmotive bleiben fest platziert; ihre Farbe kannst du ändern. Eigene zusätzliche Motive kannst du in der Motivbibliothek hinzufügen und bearbeiten.':'Wähle Motive aus Bestsellern oder Kategorien. In „Ebenenverwaltung“ kannst du ein freigegebenes Motiv bearbeiten.'],upload:['Fotos & Logos',vectorLogos?'Lade dein Logo als SVG hoch. Wir zeigen die Originalfarben neben der schwarzen Gravur auf deinem Schild. Prüfe die Aussparungen und bestätige erst dann. Je Logo '+money(config.logo.extraPriceCents)+'. Fotos sind auf Edelstahl nicht möglich.':config?.acrylic?'Ein Foto ist enthalten. Tippe auf das Beispielfoto, um dein eigenes Foto an derselben Position einzusetzen. Ein weiterer Upload ersetzt dieses Foto. Der Hintergrund bleibt erhalten.':(config?.reviewOnly&&config.basePriceCents===null)?'Du kannst bis zu vier Fotos und Logos testen. Die Preise für dieses Produkt sind noch offen. Dein Bild erscheint direkt in der Vorschau. Zuschneiden öffnet die Bildbearbeitung.':'Du kannst bis zu vier Fotos und Logos zusammen hinzufügen. '+uploadPriceSentence((config?.photoDesignPricing?photoPolicyForDesign(config,el.state.designId,el.state.mOptions):config?.photo))+' Dein Bild erscheint direkt in der Vorschau. Über „Bild bearbeiten“ kannst du dein Foto zuschneiden, drehen oder spiegeln.'],save:['Entwurf speichern',config?.workbench?'Mit „Entwurf speichern“ sicherst du Text, Schrift und Positionen dauerhaft in der Produktanlage. Testfotos werden nicht als Vorlage gespeichert.':'Dein aktueller Stand bleibt auf diesem Gerät erhalten – auch wenn du die Seite neu lädst. Mit „Entwurf speichern“ legst du ihn mit Fotos für 90 Tage in deinem Kundenkonto ab und kannst ihn auf jedem Gerät wieder öffnen. Dafür meldest du dich kurz an oder registrierst dich. Nach dem bezahlten Kauf ist ein PNG-Download vorgesehen.']}[key];if(!content)return;
++  function guide(key){const content={text:['Text ändern','Tippe auf eine Textzeile und ersetze den Beispieltext. Alle Änderungen siehst du sofort auf deinem Produkt.'],font:['Schrift & Größe','Wähle eine Textzeile und danach „Schrift ändern“. Du siehst deinen eigenen Text in jeder Schrift. Mit Plus und Minus änderst du die Größe. Der Schriftgrößenwert beträgt mindestens '+String(minTextMm).replace('.',',')+' mm.'],guides:['Mittig ausrichten','Aktiviere „Hilfslinien“ unten links im Produktbild. Wähle deinen Text und tippe auf „Mitte“. Beim Ziehen rastet er auch an der Mitte und den Kanten anderer Texte ein. Ankerpunkte zeigen dir die Textmitten, damit du Texte untereinander setzen kannst. Gestrichelte Linie = Gestaltungsrand: Elemente bleiben innerhalb dieser Linie. Bohrungen und Beschläge zeigen das fertige Schild; sie sperren keine Gestaltung.'],motif:['Deine Motive',config?.acrylic?'Vorlagenmotive bleiben fest platziert; ihre Farbe kannst du ändern. Eigene zusätzliche Motive kannst du in der Motivbibliothek hinzufügen und bearbeiten.':'Wähle Motive aus Bestsellern oder Kategorien. In „Ebenenverwaltung“ kannst du ein freigegebenes Motiv bearbeiten.'],upload:['Fotos & Logos',vectorLogos?decisionHelp('photo',config).text:config?.acrylic?'Ein Foto ist enthalten. Tippe auf das Beispielfoto, um dein eigenes Foto an derselben Position einzusetzen. Ein weiterer Upload ersetzt dieses Foto. Der Hintergrund bleibt erhalten.':(config?.reviewOnly&&config.basePriceCents===null)?'Du kannst bis zu vier Fotos und Logos testen. Die Preise für dieses Produkt sind noch offen. Dein Bild erscheint direkt in der Vorschau. Zuschneiden öffnet die Bildbearbeitung.':'Du kannst bis zu vier Fotos und Logos zusammen hinzufügen. '+uploadPriceSentence((config?.photoDesignPricing?photoPolicyForDesign(config,el.state.designId,el.state.mOptions):config?.photo))+' Dein Bild erscheint direkt in der Vorschau. Über „Bild bearbeiten“ kannst du dein Foto zuschneiden, drehen oder spiegeln.'],save:['Entwurf speichern',config?.workbench?'Mit „Entwurf speichern“ sicherst du Text, Schrift und Positionen dauerhaft in der Produktanlage. Testfotos werden nicht als Vorlage gespeichert.':'Dein aktueller Stand bleibt auf diesem Gerät erhalten – auch wenn du die Seite neu lädst. Mit „Entwurf speichern“ legst du ihn mit Fotos für 90 Tage in deinem Kundenkonto ab und kannst ihn auf jedem Gerät wieder öffnen. Dafür meldest du dich kurz an oder registrierst dich. Nach dem bezahlten Kauf ist ein PNG-Download vorgesehen.']}[key];if(!content)return;
+     if(['text','font','guides'].includes(key))showTab('text');else if(key==='motif')showTab('motif');else if(key==='upload')showTab('upload');
+     $('[data-ux-help-content]').innerHTML=`<h3>${content[0]}</h3><p data-ux-guide-copy>${content[1]}</p>${button('speak','Erklärung anhören')}${button('stop-speaking','Stopp')}<p class="ux-small">Vorlesen mit der verfügbaren Gerätestimme.</p>`;
+   }
+@@ -415,7 +417,7 @@ export async function installUX(el,config,legacy,{attach}={}){
+       const size=currentSize(),placement=logoPlacement(size.width,size.height,asset,prior);
+       if(!prior){const facade={state:structuredClone(el.state),fontData:el.fontData,objectSVG:o=>el.objectSVG(o),uxObjectSVG:o=>el.uxObjectSVG(o),sync(){}};await placeNewMotif({el:facade,config,files,say:()=>{}},placement,{minScale:Math.min(1,MOTIF_MIN_MM/Math.max(placement.w,placement.h))});}
+       if(fingerprint!==JSON.stringify(el.state))throw Error('Die Gestaltung wurde geändert. Bitte das Logo erneut auswählen.');
+-      const accepted=await confirmVectorLogo({dialog,asset,scene:$('.ux-preview .scene'),placement,priorId:prior?.id,priceCents:config.logo.extraPriceCents,esc});
++      const accepted=await confirmVectorLogo({dialog,asset,scene:$('.ux-preview .scene'),placement,priorId:prior?.id,priceCents:config.logo.extraPriceCents,profile:chosenProfile(),esc});
+       if(!accepted){say('Logo nicht übernommen. Deine Gestaltung bleibt erhalten.');continue;}
+       if(fingerprint!==JSON.stringify(el.state))throw Error('Die Gestaltung wurde geändert. Bitte das Logo erneut prüfen.');
+       validateVectorLogoFile(file,el.state.objects,prior?.uxUploadId);
+diff --git a/app/workshop/customer-vector-logo-media.test.mjs b/app/workshop/customer-vector-logo-media.test.mjs
+index 32b9ac5c52dec7b5a7315c19c7b96435a4e5fff5..4ec3685fd37b64be7ed59772cfc9079dbf6b9708 100644
+--- a/app/workshop/customer-vector-logo-media.test.mjs
++++ b/app/workshop/customer-vector-logo-media.test.mjs
+@@ -17,12 +17,13 @@ import {productionSummary} from './production-summary.mjs';
+ import {createAcrylicEngravingProof} from './acrylic-engraving-proof.mjs';
+ import {saveDraft} from '../configurator/variant-m/contract.mjs';
+ import {appProxySignature} from './shopify-app-proxy.mjs';
++import {asAcrylicUploadFamily} from './test-fixtures/acrylic-upload-source.mjs';
+ 
+ const resources=JSON.parse(fs.readFileSync(new URL('../designs/acrylic-unser-anfang/resources.json',import.meta.url)));
+ const ORIGINAL=Buffer.from('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 20"><rect x="1" y="1" width="18" height="18" fill="red"/><rect x="10" y="1" width="18" height="18" fill="blue"/><circle cx="10" cy="10" r="2" fill="white"/></svg>');
+ const PNG=Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==','base64');
+ const preparePhoto=async()=>({original:PNG,preview:PNG,width:1,height:1});
+-function fixture(){
++function fixture(material='steel'){
+  const c=makeAcrylicConfig({profile:{kind:'universal-product',schemaVersion:2}},resources,'a'.repeat(64));delete c.acrylic;
+  const p=c.profile;p.material={kind:'steel',color:'#a0a0a0',thicknessMm:1.5};p.processing={profileId:'steel-engraving'};
+  p.geometry={width:220,height:140,shape:'rect',cornerRadiusMm:0,safeMarginMm:0,holes:[{x:7,y:70,diameter:4}]};
+@@ -31,6 +32,7 @@ function fixture(){
+  p.optionGroups=[{id:'mounting',name:'Befestigung',required:true,defaultValueId:'none',values:[{id:'none',label:'Ohne',priceCents:0,currency:'EUR',holes:p.geometry.holes}]}];
+  c.basePriceCents=2299;c.extraMotifCents=169;c.photo={enabled:false,mode:'upload-only',includedCount:0,extraPriceCents:999};c.logo={enabled:true,vectorUpload:true,extraPriceCents:1299};
+  c.localResources.photoExamples=[];c.localResources.photoPlaceholders=[];
++ if(material==='acrylic')asAcrylicUploadFamily(c);
+  const document=makeProductDocument(c),config=document.config,record={id:config.profile.id,revision:2,status:'draft',document};
+  return {record,config};
+ }
+@@ -52,6 +54,21 @@ test('server preview accepts only an explicitly enabled steel revision and retur
+  await assert.rejects(()=>customerVectorLogoPreview(f.config,{name:'logo.svg',original:ORIGINAL.toString('base64'),priceCents:0}),/nur die SVG/);
+ });
+ 
++test('acrylic simultaneous photo and checked SVG survive native snapshot and artwork with separate charges',async()=>{
++ const f=fixture('acrylic'),{input,media}=await inputFor(f);
++ input.objects.push({id:'own-photo',type:'photoSlot',x:45,y:90,w:20,h:20,rotation:0,photoShape:'rect',fieldKey:'photo-own',required:false,customerEditable:true,uxPersonal:true,uxUploadId:'up-photo',uxUploadKind:'photo'});
++ input.media.push({id:'up-photo',original:PNG.toString('base64')});
++ const bundle=await prepareAcrylicReview({...f,input,assets:{},preparePhoto}),saved=readReviewPackage(bundle.package,bundle.manifest.packageSha256,['gravuru-native-review/v1']);
++ assert.equal(bundle.manifest.selection.price.chargedLogos,1);assert.equal(bundle.manifest.selection.price.chargedUploads,1);assert.equal(bundle.manifest.selection.price.unitCents,4597);
++ const logoEntry=saved.manifest.photos.find(p=>p.kind==='vector-logo');assert.deepEqual(saved.files.get(logoEntry.edited.path),Buffer.from(media.edited,'base64'));
++ assert.equal(saved.manifest.photos.length,2);
++ const artwork=await acrylicArtwork(bundle.package,bundle.manifest.packageSha256,{engraving:true});
++ assert.match(artwork.svg,/viewBox="0 0 30 20"/);assert.match(artwork.svg,/<image/);assert.equal(artwork.photos.length,1);
++ const proof=await createAcrylicEngravingProof(bundle.package,bundle.manifest.packageSha256,{mode:'raster',dpi:300,mirror:true});
++ assert.equal(proof.pdf.subarray(0,5).toString(),'%PDF-');assert.equal(proof.metadata.photoSources.length,1);assert.equal(proof.metadata.settings.mirror,true);assert.equal(proof.metadata.productionReady,false);
++ const forged=structuredClone(input);forged.media[0].edited=Buffer.from('<svg/>').toString('base64');await assert.rejects(()=>prepareAcrylicReview({...f,input:forged,assets:{},preparePhoto}),/Logo|SVG/);
++});
++
+ test('text-on-top survives immutable saving and production while historical packages retain their order',async()=>{
+  const f=fixture(),{input}=await inputFor(f);
+  for(const textOnTop of [undefined,true]){
+diff --git a/app/workshop/customer-vector-logo-pricing.test.mjs b/app/workshop/customer-vector-logo-pricing.test.mjs
+index 5f9e6ae2a205583245d92fb27982c661728bba48..7ab2bdb1e32096e0f2056a4c89262e7ae9f5c8da 100644
+--- a/app/workshop/customer-vector-logo-pricing.test.mjs
++++ b/app/workshop/customer-vector-logo-pricing.test.mjs
+@@ -13,12 +13,15 @@ import {createOrderIntake} from './order-intake.mjs';
+ import {prepareCartRequest,verifyCartResponse} from './storefront-cart.mjs';
+ import {prepareShopProduct} from './shop-preparation.mjs';
+ import {cartTransformRun} from '../../ops/shopify/checkout-image/cart_transform_run.mjs';
++import {MODULE_PROFILE_SCHEMA,nativeModuleAvailability,applyModuleProfile} from '../configurator/variant-m/module-profile.mjs';
++import {decisionHelp} from '../configurator/variant-m/decision-help.mjs';
++import {asAcrylicUploadFamily} from './test-fixtures/acrylic-upload-source.mjs';
+ 
+ const resources=JSON.parse(fs.readFileSync(new URL('../designs/acrylic-unser-anfang/resources.json',import.meta.url)));
+ const metadata={version:'svg-black-v1',sourceSha256:'a'.repeat(64),outputSha256:'b'.repeat(64)};
+ const logo=(id='logo-1')=>({id,type:'image',x:110,y:70,w:20,h:20,rotation:0,uxUploadId:id,uxUploadKind:'logo',uxVectorLogo:{...metadata}});
+ const photo=id=>({id,type:'photoSlot',uxUploadId:id,uxUploadKind:'photo'});
+-function fixture(){
++function fixture(material='steel'){
+  const c=makeAcrylicConfig({profile:{kind:'universal-product',schemaVersion:2}},resources,'a'.repeat(64));delete c.acrylic;
+  const p=c.profile;p.material={kind:'steel',color:'#a0a0a0',thicknessMm:1.5};p.processing={profileId:'steel-engraving'};
+  p.geometry={width:220,height:140,shape:'rect',cornerRadiusMm:0,safeMarginMm:0,holes:[]};
+@@ -27,6 +30,7 @@ function fixture(){
+  p.optionGroups=[{id:'mounting',name:'Befestigung',required:true,defaultValueId:'none',values:[{id:'none',label:'Ohne',priceCents:0,currency:'EUR',holes:[]}]}];
+  c.basePriceCents=2299;c.extraMotifCents=169;c.photo={enabled:false,mode:'upload-only',includedCount:1,extraPriceCents:999};c.logo={enabled:true,vectorUpload:true,extraPriceCents:1299};
+  c.localResources.photoExamples=[];c.localResources.photoPlaceholders=[];
++ if(material==='acrylic')asAcrylicUploadFamily(c);
+  const record={id:'cfg_logo_synthetic',revision:2,status:'draft',document:makeProductDocument(c)},config=record.document.config;
+  const state={designId:'test',objects:[...structuredClone(config.profile.designs[0].objects),logo()],mOptions:{mounting:'none'}};
+  const pricing={schema:'gravuru-personalization-pricing/v2',enabled:true,productId:'gid://shopify/Product/101',revision:31,currency:'EUR',variants:{301:2299},extraMotifCents:169,extraPhotoCents:999,extraLogoCents:1299};
+@@ -48,6 +52,27 @@ test('new logo price is per visible upload, independent of included photos; old
+  assert.throws(()=>uploadQuote([logo()],1,false,policy,{...f.config.logo,extraPriceCents:0}),/Preisregel/);
+ });
+ 
++test('approved acrylic photo and SVG logo coexist through module, draft, price and checkout contracts',()=>{
++ const f=fixture('acrylic'),before=structuredClone(f.config);
++ const profile={schema:MODULE_PROFILE_SCHEMA,id:'approved-acrylic-uploads',revision:1,modules:{options:true,designs:true,text:true,motifs:true,photo:true,logo:true,colors:false}};
++ const config=applyModuleProfile(f.config,profile);
++ assert.equal(nativeModuleAvailability(config).photo,true);assert.equal(vectorLogoAllowed(config),true);
++ assert.equal(uploadAllowed(config,'photo'),true);assert.equal(uploadAllowed(config,'logo'),true);assert.equal(photoAvailableForDesign(config,'test'),true);
++ assert.equal(decisionHelp('photo',config).title,'Foto / Logo');assert.match(decisionHelp('photo',config).text,/Fotos kannst du separat/);
++ const s=structuredClone(f.state);s.objects.push({...photo('own-photo'),x:40,y:70,w:20,h:20,rotation:0,photoShape:'rect',fieldKey:'photo-personal',required:false});
++ const saved=saveDraft(config,s,s.mOptions,resources.fonts,resources.motifs),restored=readDraft(config,saved,resources.fonts,resources.motifs);
++ assert.equal(restored.design.objects.filter(o=>o.uxUploadId).length,2);
++ const price=commercePrice(config,s,2);assert.equal(price.chargedUploads,1);assert.equal(price.chargedLogos,1);assert.equal(price.unitCents,4597);
++ const manifest={...f.manifest,product:{...f.manifest.product,basePriceCents:price.unitCents},selection:{...f.manifest.selection,price}};
++ const result=personalizationForSnapshot(capturePersonalization(f.pricing,{variantId:'301',baseCents:2299,document:{...f.record.document,config}}),manifest);
++ const attrs=Object.fromEntries(personalizationAttributes(result.personalization).map(a=>[a.key,a.value]));
++ const transformed=cartTransformRun(transformInput(f.pricing,attrs));assert.equal(transformed.operations[0].lineUpdate.price.adjustment.fixedPricePerUnit.amount,'45.97');
++ assert.deepEqual(f.config,before);
++ const print=structuredClone(config);print.profile.processing.profileId='color-print';assert.throws(()=>prepareConfig(print),/Foto.*Produktquelle|Vektorlogos/);
++ const small=applyModuleProfile(f.config,{...profile,modules:{...profile.modules,photo:false,logo:false}});
++ assert.equal(uploadAllowed(small,'photo'),false);assert.equal(uploadAllowed(small,'logo'),false);assert.throws(()=>saveDraft(small,s,s.mOptions,resources.fonts,resources.motifs),/Fotomodul|Logomodul|Fotobereich|Vektorlogo/);
++});
++
+ test('explicit steel revision preserves confirmed logo metadata in drafts and refuses raster/forged logos',()=>{
+  const f=fixture(),before=structuredClone(f.config);
+  assert.equal(vectorLogoAllowed(f.config),true);assert.deepEqual(prepareConfig(f.config),before);
+diff --git a/app/workshop/customer-vector-logo.py b/app/workshop/customer-vector-logo.py
+index 8fb586741100646ce34d9ca2977011ef527f100d..ec946989b3014d93b0db554ab4106d2e73bd20e2 100644
+--- a/app/workshop/customer-vector-logo.py
++++ b/app/workshop/customer-vector-logo.py
+@@ -82,7 +82,7 @@ def sanitized_source(raw):
+                 count += 1
+                 require(depth <= 24 and count <= MAX_ELEMENTS, 'Das SVG hat zu viele oder zu tief verschachtelte Elemente.', 'logo_complexity')
+                 tag = tag_name(element.tag)
+-                require(tag not in {'image', 'foreignObject'}, 'Fotos oder eingebettete Rasterbilder sind in Edelstahl-Logos nicht möglich. Bitte eine reine Vektordatei hochladen.', 'logo_raster')
++                require(tag not in {'image', 'foreignObject'}, 'Fotos oder eingebettete Rasterbilder sind in SVG-Logos nicht möglich. Bitte eine reine Vektordatei hochladen.', 'logo_raster')
+                 require(tag not in {'text', 'tspan', 'textPath'}, 'Bitte die Schrift im Logo zuerst in Pfade umwandeln; Schriften werden nicht ersetzt.', 'logo_text')
+                 require(tag in TAGS, 'Das SVG enthält nicht unterstützte Inhalte. Bitte als einfache Vektorpfade ohne Verläufe, Masken oder Effekte exportieren.', 'logo_effect')
+                 require(tag != 'svg' or depth == 1, 'Verschachtelte SVG-Zeichenflächen werden nicht unterstützt.', 'logo_effect')
+diff --git a/app/workshop/test-fixtures/acrylic-upload-source.mjs b/app/workshop/test-fixtures/acrylic-upload-source.mjs
+new file mode 100644
+index 0000000000000000000000000000000000000000..0be848909e2be776c0f4fc0993866075e96594ee
+--- /dev/null
++++ b/app/workshop/test-fixtures/acrylic-upload-source.mjs
+@@ -0,0 +1,14 @@
++// Synthetic single-format configuration for simultaneous upload contract tests.
++// This is never an Issue 230 source record or a live catalogue geometry.
++export function asAcrylicUploadFamily(config){
++ const p=config.profile,key='synthetic-acrylic-upload-size',themeId='familienschilder';
++ p.material={kind:'acrylic',color:'#17191b',thicknessMm:3,variant:'schwarz',engravingSide:'back'};
++ p.processing={profileId:'acrylic-engraving'};p.themeId=themeId;
++ config.photo.enabled=true;config.photo.includedCount=0;
++ p.optionGroups[0].values.push({id:'K00',label:'Ohne Befestigung',priceCents:0,currency:'EUR',holes:[]});
++ for(const d of p.designs){d.themes=[themeId];d.katalog={designId:'SYNTHETIC-'+d.id,plateMm:[p.geometry.width,p.geometry.height]};}
++ config.familyFormats={schema:'gravuru-family-formats/v1',defaultSize:key,fixedSize:key,defaultColor:'schwarz',colors:[{id:'schwarz',label:'Schwarz'}],
++  source:{shopProduct:{sizeKey:key,themeId,defaultDesignId:p.designs.find(d=>d.id===p.defaultDesignId).katalog.designId}},designs:structuredClone(p.designs),
++  formats:[{key,form:'RE',label:'Synthetic test format',geometry:structuredClone(p.geometry),variants:[{color:'schwarz',familyId:'acryl-3mm-tuerschilder-schwarz',sizeKey:key,basePriceCents:config.basePriceCents,material:structuredClone(p.material),mounting:structuredClone(p.optionGroups[0].values),designIds:p.designs.map(d=>d.id)}]}]};
++ return config;
++}

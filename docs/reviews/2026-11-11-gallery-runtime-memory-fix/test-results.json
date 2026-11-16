@@ -1,0 +1,11 @@
+{
+  "source": "Observed local tool outputs; focused synthetic fixtures only",
+  "runs": [
+    {"command": "node --test app/workshop/shop-design-gallery.test.mjs app/workshop/shop-design-gallery-alle.test.mjs app/workshop/shop-design-gallery-variant.test.mjs", "tests": 43, "passed": 42, "failed": 1, "durationMs": 1331.6035, "failure": "EPERM mkdtemp C:\\Windows\\temp\\g27-persist-gallery-XXXXXX after nonexistent relative TEMP configuration"},
+    {"command": "node --test --test-name-pattern='persisted SQLite snapshot survives reopening' app/workshop/shop-design-gallery.test.mjs", "temp": "existing workspace work directory", "tests": 1, "passed": 1, "failed": 0, "durationMs": 318.0134},
+    {"command": "node --test --test-name-pattern='benchmark' app/workshop/shop-product-binding-store.test.mjs", "temp": "existing workspace work directory", "tests": 2, "passed": 2, "failed": 0, "durationMs": 1564.4966}
+  ],
+  "uniqueTargetedTestsPassed": 45,
+  "liveDatabaseOpened": false,
+  "actualCopyMemoryMeasured": false
+}

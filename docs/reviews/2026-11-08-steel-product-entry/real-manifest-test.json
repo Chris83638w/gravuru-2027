@@ -1,0 +1,14 @@
+{
+  "checkedAt": "2026-11-08T01:26:01.999Z",
+  "actualIdsChecked": 404,
+  "cases": [
+    "with global app-embed JSON",
+    "without global app-embed JSON"
+  ],
+  "allFreshSelectionUrlsKeepUi": true,
+  "initialVariant": "58104606556540",
+  "otherThemeJsonUnchanged": true,
+  "sourceModuleSha256": "af077ed8ed4e3c24467112a5c9af2bace9608a815c4d1ce07312facd3b924f2b",
+  "browserVerification": false,
+  "shopOrServerWrites": false
+}

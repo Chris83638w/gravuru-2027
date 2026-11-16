@@ -9,16 +9,16 @@ class NodePort{
  removeAttribute(key){delete this[key];}querySelectorAll(){return [];}replaceChildren(...nodes){this.children=[];this.append(...nodes);}
  addEventListener(type,fn){(this.listeners[type]??=[]).push(fn);}
  removeEventListener(type,fn){this.listeners[type]=(this.listeners[type]||[]).filter(f=>f!==fn);}
- dispatch(type,event){for(const fn of this.listeners[type]||[])fn(event);}
+ dispatch(type,event){event.type=type;for(const fn of this.listeners[type]||[])fn(event);}
  setPointerCapture(id){this.capture.add(id);}hasPointerCapture(id){return this.capture.has(id);}releasePointerCapture(id){this.capture.delete(id);}
- set innerHTML(value){this.html=value;this.buttons=new Map([...value.matchAll(/data-view-action="([^"]+)"/g)].map(([,action])=>{const node=new NodePort();node.dataset.viewAction=action;node.control=true;return [action,node];}));}
- querySelector(selector){return this.buttons?.get(selector.match(/data-view-action=([^\]]+)/)?.[1])||null;}
+ set innerHTML(value){this.html=value;this.slider=new NodePort();this.slider.control=true;this.out=new NodePort();this.buttons=new Map([...value.matchAll(/data-view-action="([^"]+)"/g)].map(([,action])=>{const node=new NodePort();node.dataset.viewAction=action;node.control=true;return [action,node];}));}
+ querySelector(selector){if(selector==='input')return this.slider;if(selector==='output')return this.out;return this.buttons?.get(selector.match(/data-view-action=([^\]]+)/)?.[1])||null;}
  closest(selector){if(selector==='.plate-holder'||selector==='.plate-holder,.acryl-backdrop,.acryl-base')return this.plate?this:null;if(selector==='[data-view-action]')return this.dataset.viewAction?this:null;if(selector==='[data-ux-handle]')return null;if(selector==='.scene [data-object],[data-ux-handle]')return this.object||this.handle?this:null;if(selector==='.scene [data-object]')return this.object?this:null;if(selector.includes('button'))return this.control?this:null;return null;}
 }
 async function runtime(t){
- const saved=new Map(),frames=new Map(),windowPort=new NodePort();let frameId=0,reduced=false,mobile=false;
+ const saved=new Map(),frames=new Map(),windowPort=new NodePort(),documentPort=new NodePort();documentPort.createElement=()=>new NodePort();documentPort.createElementNS=()=>new NodePort();let frameId=0,reduced=false,mobile=false;
  const set=(key,value)=>{saved.set(key,globalThis[key]);globalThis[key]=value;};
- set('document',{createElement:()=>new NodePort(),createElementNS:()=>new NodePort()});set('window',windowPort);set('fetch',async()=>({ok:true,text:async()=>''}));set('matchMedia',query=>({matches:query==='(prefers-reduced-motion: reduce)'?reduced:query==='(max-width:767px)'&&mobile}));set('requestAnimationFrame',fn=>{frames.set(++frameId,fn);return frameId;});set('cancelAnimationFrame',id=>frames.delete(id));set('ResizeObserver',class{observe(){}});set('CSS',{escape:value=>value});
+ set('document',documentPort);set('window',windowPort);set('fetch',async()=>({ok:true,text:async()=>''}));set('matchMedia',query=>({matches:query==='(prefers-reduced-motion: reduce)'?reduced:query==='(max-width:767px)'&&mobile}));set('requestAnimationFrame',fn=>{frames.set(++frameId,fn);return frameId;});set('cancelAnimationFrame',id=>frames.delete(id));set('ResizeObserver',class{observe(){}});set('CSS',{escape:value=>value});
  t.after(()=>{windowPort.dispatch('pagehide',{});for(const [key,value]of saved)if(value===undefined)delete globalThis[key];else globalThis[key]=value;});
  const stage=new NodePort(),holder=new NodePort(),r=new NodePort(),el=new NodePort(),object=new NodePort();holder.plate=true;object.object=true;object.dataset.object='text';
  stage.getBoundingClientRect=()=>({left:10,top:20,right:810,bottom:520,width:800,height:500});holder.getBoundingClientRect=()=>({left:110,top:70,right:710,bottom:470,width:600,height:400});
@@ -29,15 +29,108 @@ async function runtime(t){
  let selected=true;const original=structuredClone(el.state),api=await installViewZoom({el,r,selected:()=>selected?el.state.objects[0]:null}),controls=stage.children.find(n=>n.className==='ux-view-zoom');
  const event=(target=holder,extra={})=>({target,button:0,pointerType:'touch',pointerId:1,clientX:410,clientY:270,deltaY:0,deltaMode:0,preventDefault(){this.prevented=true;},stopImmediatePropagation(){this.stopped=true;},composedPath:()=>[target,stage,r,el],...extra});
  const frame=time=>{const current=[...frames];frames.clear();for(const [,fn]of current)fn(time);};
- return {el,r,stage,holder,object,original,api,controls,event,deselect:()=>{selected=false;},photo:value=>{photoMode=value;},reduced:value=>{reduced=value;},mobile:value=>{mobile=value;},frame,flush:()=>{let time=0;while(frames.size){assert.ok(time<10000,'animation must settle');frame(time+=16);}},get handles(){return handleRefresh;},get toolbar(){return toolbarRefresh;},get cancels(){return cancels;}};
+ return {el,r,stage,holder,object,original,api,controls,event,documentPort,windowPort,deselect:()=>{selected=false;},photo:value=>{photoMode=value;},reduced:value=>{reduced=value;},mobile:value=>{mobile=value;},frame,flush:()=>{let time=0;while(frames.size){assert.ok(time<10000,'animation must settle');frame(time+=16);}},get handles(){return handleRefresh;},get toolbar(){return toolbarRefresh;},get cancels(){return cancels;}};
 }
-test('wheel over text, motif artwork links and selection handles zooms only the view; toolbar controls remain native',async t=>{
+
+test('blank deselection may replace the SVG target: document release must not leave a phantom finger',async t=>{
+ const f=await runtime(t),saved=structuredClone(f.el.state);f.mobile(true);
+ for(const type of ['pointerup','pointercancel','lostpointercapture']){
+  f.el.dispatch('pointerdown',f.event(f.holder,{pointerId:31}));
+  // The renderer removed the touched SVG node; the release is retargeted outside the host.
+  const outside=new NodePort(),release=f.event(outside,{pointerId:31,composedPath:()=>[outside,f.documentPort]});
+  f.documentPort.dispatch(type,release);
+  const touch=f.event(f.object,{pointerId:32});f.el.dispatch('pointerdown',touch);
+  assert.equal(touch.prevented,undefined,type+' must leave the next text/motif drag native');
+  assert.equal(f.cancels,0,'a finished finger must not look like a second touch');
+  f.el.dispatch('pointerup',f.event(f.object,{pointerId:32}));
+ }
+ assert.deepEqual(f.el.state,saved);assert.equal(f.el.uxViewZoom(),1);
+});
+
+test('new primary touch recovers when Chromium drops all end events of a detached blank target',async t=>{
+ const f=await runtime(t),saved=structuredClone(f.el.state);
+ // Real browser repro: blank pointerdown redraws/removes the touched SVG image;
+ // neither host nor document receives its pointerup, cancel or capture loss.
+ f.el.dispatch('pointerdown',f.event(f.holder,{pointerId:101,isPrimary:true}));
+ assert.equal(f.api.gesture.has(101),true);
+ for(const kind of ['text','motif']){
+  f.el.state.objects[0].type=kind;
+  const next=f.event(f.object,{pointerId:102,isPrimary:true});f.el.dispatch('pointerdown',next);
+  assert.equal(next.prevented,undefined,kind+' must reach the native object handler');
+  assert.deepEqual(f.api.gesture.ids(),[102]);
+  // A real second finger stays blocked; isPrimary is browser-owned, not inferred
+  // from position, timing or element selection.
+  const second=f.event(f.object,{pointerId:103,isPrimary:false});f.el.dispatch('pointerdown',second);
+  assert.equal(second.prevented,true);assert.deepEqual(f.api.gesture.ids(),[102,103]);
+  f.el.dispatch('pointerup',f.event(f.object,{pointerId:103,isPrimary:false}));
+  f.el.dispatch('pointerup',f.event(f.object,{pointerId:102,isPrimary:true}));
+ }
+ f.el.state.objects[0].type=saved.objects[0].type;
+ assert.deepEqual(f.el.state,saved);assert.equal(f.el.uxViewZoom(),1);
+});
+
+test('fresh primary contact also releases a lost TouchEvent handover without changing the design',async t=>{
+ const f=await runtime(t),saved=structuredClone(f.el.state);
+ f.el.dispatch('touchstart',touchBatch(f,[contact(f,201,360),contact(f,202,460)]));
+ const next=f.event(f.object,{pointerId:203,isPrimary:true});f.el.dispatch('pointerdown',next);
+ assert.equal(next.prevented,undefined);assert.deepEqual(f.api.gesture.ids(),[203]);
+ assert.equal(f.object.listeners.touchend.length,0);
+ assert.deepEqual(f.el.state,saved);assert.equal(f.el.uxViewZoom(),1);
+});
+
+test('document finalizers leave native in-host gestures and unrelated pointers untouched, then detach on pagehide',async t=>{
+ const f=await runtime(t),outside=new NodePort();
+ f.el.dispatch('pointerdown',f.event(f.object,{pointerId:41}));
+ const nativeUp=f.event(f.holder,{pointerId:41});f.documentPort.dispatch('pointerup',nativeUp);
+ assert.equal(f.api.gesture.has(41),true,'the host must finish its own gesture');
+ assert.equal(nativeUp.prevented,undefined);assert.equal(nativeUp.stopped,undefined);
+ const unrelated=f.event(outside,{pointerId:99,composedPath:()=>[outside,f.documentPort]});
+ f.documentPort.dispatch('pointerup',unrelated);
+ assert.equal(f.api.gesture.has(41),true);assert.equal(unrelated.prevented,undefined);assert.equal(unrelated.stopped,undefined);
+ f.el.dispatch('pointerup',nativeUp);assert.equal(f.api.gesture.has(41),false);
+ f.el.uxSetViewZoom(2);
+ f.el.dispatch('pointerdown',f.event(f.holder,{pointerId:42}));assert.equal(f.el.capture.has(42),true);
+ const release=f.event(outside,{pointerId:42,composedPath:()=>[outside,f.documentPort]});
+ f.documentPort.dispatch('pointercancel',release);
+ assert.equal(f.api.gesture.has(42),false);assert.equal(f.el.capture.has(42),false);
+ assert.equal(release.prevented,undefined);assert.equal(release.stopped,undefined);
+ f.windowPort.dispatch('pagehide',{});
+ for(const type of ['pointerup','pointercancel','lostpointercapture'])assert.equal(f.documentPort.listeners[type].length,0,type);
+ assert.deepEqual(f.el.state,f.original);
+});
+
+test('lost implicit SVG capture keeps a pointer transferred to the native holder active',async t=>{
+ const f=await runtime(t),outside=new NodePort();
+ f.el.dispatch('pointerdown',f.event(f.object,{pointerId:51}));f.holder.setPointerCapture(51);
+ f.documentPort.dispatch('lostpointercapture',f.event(outside,{pointerId:51,composedPath:()=>[f.documentPort]}));
+ assert.equal(f.api.gesture.has(51),true);
+ const second=f.event(f.object,{pointerId:52});f.el.dispatch('pointerdown',second);
+ assert.equal(second.prevented,true,'a real second finger must still cancel the object gesture');
+ assert.equal(f.cancels,1);
+ f.el.dispatch('pointerup',f.event(f.holder,{pointerId:52}));f.el.dispatch('pointerup',f.event(f.holder,{pointerId:51}));
+});
+
+test('BFCache restore reinstalls outside finalizers once and later pagehide removes them again',async t=>{
+ const f=await runtime(t),outside=new NodePort();
+ for(let cycle=0;cycle<2;cycle++){
+  f.windowPort.dispatch('pagehide',{persisted:true});
+  for(const type of ['pointerup','pointercancel','lostpointercapture'])assert.equal(f.documentPort.listeners[type].length,0);
+  f.windowPort.dispatch('pageshow',{persisted:true});f.windowPort.dispatch('pageshow',{persisted:true});
+  for(const type of ['pointerup','pointercancel','lostpointercapture'])assert.equal(f.documentPort.listeners[type].length,1);
+  f.el.dispatch('pointerdown',f.event(f.holder,{pointerId:61}));
+  f.documentPort.dispatch('pointerup',f.event(outside,{pointerId:61,composedPath:()=>[outside,f.documentPort]}));
+  const next=f.event(f.object,{pointerId:62});f.el.dispatch('pointerdown',next);
+  assert.equal(next.prevented,undefined);f.el.dispatch('pointerup',f.event(f.object,{pointerId:62}));
+ }
+ assert.deepEqual(f.el.state,f.original);
+});
+test('wheel over artwork, handles and toolbar remains native scrolling',async t=>{
  const f=await runtime(t),before=structuredClone(f.el.state);
  for(const type of ['text','motif','handle']){
   f.el.state.objects[0].type=type==='handle'?'text':type;
   const target=new NodePort();target.object=type!=='handle';target.handle=type==='handle';target.control=true;
   const event=f.event(target,{deltaY:-80,pointerType:'mouse'}),zoom=f.api.view().scale;
-  f.el.dispatch('wheel',event);assert.equal(event.prevented,true,type);assert.ok(f.api.view().scale>zoom,type);
+  f.el.dispatch('wheel',event);assert.equal(event.prevented,undefined,type);assert.equal(f.api.view().scale,zoom,type);
  }
  f.el.state.objects[0].type=before.objects[0].type;assert.deepEqual(f.el.state,before);
  const input=new NodePort();input.control=true;const event=f.event(input,{deltaY:-80});
@@ -48,13 +141,13 @@ test('wheel over text, motif artwork links and selection handles zooms only the 
 test('real view adapter uses full width, refreshes overlays and never edits the saved design',async t=>{
  const f=await runtime(t);assert.equal(f.el.uxViewZoom(),1);assert.ok(f.holder.properties.get('transform').endsWith('scale(1)'));
  f.el.uxSetViewZoom(2);assert.equal(f.el.uxViewZoom(),2);assert.ok(f.holder.properties.get('transform').endsWith('scale(2)'));assert.ok(f.handles>=2&&f.toolbar>=2);
- const wheel=f.event(f.holder,{deltaY:-120,clientX:450});f.el.dispatch('wheel',wheel);assert.equal(wheel.prevented,true);assert.ok(f.api.view().scale>2);assert.notEqual(f.api.view().x,0);
- f.api.fit();assert.deepEqual(f.api.view(),{scale:1,x:0,y:0});assert.equal(f.controls,undefined);assert.deepEqual(f.el.state,f.original);
-});test('real pointer adapter captures blank pan and pinch, leaves object drag and photo-crop input alone',async t=>{
+ const wheel=f.event(f.holder,{deltaY:-120,clientX:450});f.el.dispatch('wheel',wheel);assert.equal(wheel.prevented,undefined);assert.equal(f.api.view().scale,2);
+ f.api.fit();assert.deepEqual(f.api.view(),{scale:1,x:0,y:0});assert.ok(f.controls?.querySelector('input'));assert.deepEqual(f.el.state,f.original);
+});test('real pointer adapter captures blank pan and blocks pinch, leaves object drag and photo-crop input alone',async t=>{
  const f=await runtime(t);f.el.uxSetViewZoom(2);
  const drag=f.event(f.object,{pointerId:3,clientX:320});f.el.dispatch('pointerdown',drag);assert.equal(drag.prevented,undefined);
  const second=f.event(f.holder,{pointerId:4,clientX:500});f.el.dispatch('pointerdown',second);assert.equal(second.prevented,true);assert.equal(f.cancels,1);assert.equal(f.el.capture.has(3),true);assert.equal(f.el.capture.has(4),true);
- const move=f.event(f.holder,{pointerId:4,clientX:590});f.el.dispatch('pointermove',move);assert.equal(move.prevented,true);assert.equal(f.el.uxViewZoom(),3);
+ const move=f.event(f.holder,{pointerId:4,clientX:590});f.el.dispatch('pointermove',move);assert.equal(move.prevented,true);assert.equal(f.el.uxViewZoom(),2);
  f.el.dispatch('pointerup',f.event(f.holder,{pointerId:4}));f.el.dispatch('pointerup',f.event(f.holder,{pointerId:3}));assert.equal(f.el.capture.size,0);
  const down=f.event(f.holder,{pointerType:'mouse',pointerId:8});f.el.dispatch('pointerdown',down);assert.equal(down.prevented,true);const before=f.api.view();f.el.dispatch('pointermove',f.event(f.holder,{pointerType:'mouse',pointerId:8,clientX:430,clientY:280}));assert.equal(f.api.view().x,before.x+20);assert.equal(f.api.view().y,before.y+10);f.el.dispatch('pointerup',f.event(f.holder,{pointerType:'mouse',pointerId:8}));
  f.photo(true);const crop=f.event(f.object,{pointerId:9}),wheel=f.event(f.holder,{deltaY:-80});f.el.dispatch('pointerdown',crop);f.el.dispatch('wheel',wheel);assert.equal(crop.prevented,undefined);assert.equal(wheel.prevented,undefined);
@@ -73,15 +166,15 @@ test('navigation fits smoothly, stops on a new gesture and obeys reduced motion;
 });
 function touchBatch(f,contacts,changed=contacts){return f.event(f.object,{touches:contacts,changedTouches:changed});}
 function contact(f,id,x,y=270){return {identifier:id,target:f.object,clientX:x,clientY:y};}
-test('two simultaneous contacts on selected text zoom the view, never the 10 mm text or saved geometry',async t=>{
+test('two simultaneous contacts on selected text leave view and 10 mm text unchanged or saved geometry',async t=>{
  const f=await runtime(t);Object.assign(f.el.state.objects[0],{text:'Meyer',size:10});const saved=structuredClone(f.el.state);
  const start=touchBatch(f,[contact(f,31,360),contact(f,32,460)]);f.el.dispatch('touchstart',start);assert.equal(start.prevented,true);
- const moved=touchBatch(f,[contact(f,31,315),contact(f,32,505)]);f.el.dispatch('touchmove',moved);assert.equal(moved.prevented,true);assert.equal(f.el.uxViewZoom(),1.9);
+ const moved=touchBatch(f,[contact(f,31,315),contact(f,32,505)]);f.el.dispatch('touchmove',moved);assert.equal(moved.prevented,true);assert.equal(f.el.uxViewZoom(),1);
  assert.deepEqual(f.el.state,saved);assert.equal(f.el.state.objects[0].size,10);
  // Compatibility pointer events cannot hand either contact to the object handler.
  for(const type of ['pointerdown','pointermove','pointerup']){const e=f.event(f.object,{pointerId:31,clientX:315});f.el.dispatch(type,e);assert.equal(e.stopped,true,type);}
  f.el.dispatch('touchend',touchBatch(f,[contact(f,31,315)],[contact(f,32,505)]));
- const late=touchBatch(f,[contact(f,31,200)]);f.el.dispatch('touchmove',late);assert.equal(late.stopped,true);assert.equal(f.el.uxViewZoom(),1.9);
+ const late=touchBatch(f,[contact(f,31,200)]);f.el.dispatch('touchmove',late);assert.equal(late.stopped,true);assert.equal(f.el.uxViewZoom(),1);
  f.el.dispatch('touchend',touchBatch(f,[contact(f,99,900)],[contact(f,31,200)]));assert.deepEqual(f.el.state,saved); // an unrelated finger elsewhere must not keep the view locked
  const next=f.event(f.object,{pointerId:40});f.el.dispatch('pointerdown',next);assert.equal(next.prevented,undefined,'a new single-finger drag remains available');
 });
@@ -90,7 +183,7 @@ test('simultaneous touch handover restores a started corner resize and does not 
  f.el.uxCancelObjectGesture=()=>{cancelled++;f.el.state=structuredClone(saved);};
  f.el.dispatch('pointerdown',f.event(f.object,{pointerId:41,clientX:360}));f.el.state.objects[0].size=19;f.el.state.objects[0].w*=1.9;
  f.el.dispatch('touchstart',touchBatch(f,[contact(f,41,360),contact(f,42,460)]));assert.ok(cancelled>=1);assert.deepEqual(f.el.state,saved);
- f.el.dispatch('touchmove',touchBatch(f,[contact(f,41,300),contact(f,42,520)]));assert.equal(f.el.uxViewZoom(),2.2);assert.deepEqual(f.el.state,saved);
+ f.el.dispatch('touchmove',touchBatch(f,[contact(f,41,300),contact(f,42,520)]));assert.equal(f.el.uxViewZoom(),1);assert.deepEqual(f.el.state,saved);
  f.el.dispatch('touchcancel',touchBatch(f,[],[contact(f,41,300),contact(f,42,520)]));
  const click=f.event(f.object);f.el.dispatch('click',click);assert.equal(click.stopped,true);assert.deepEqual(f.el.state,saved);
 });
@@ -98,7 +191,7 @@ test('two fingers also leave the customer photo crop unchanged; single-finger cr
  const f=await runtime(t);f.photo(true);const saved=structuredClone(f.el.state);let cancelled=0;f.el.uxCancelPhotoGesture=()=>cancelled++;
  const one=touchBatch(f,[contact(f,51,360)]);f.el.dispatch('touchstart',one);assert.equal(one.prevented,undefined);
  f.el.dispatch('touchstart',touchBatch(f,[contact(f,51,360),contact(f,52,460)]));assert.ok(cancelled>0);
- f.el.dispatch('touchmove',touchBatch(f,[contact(f,51,310),contact(f,52,510)]));assert.equal(f.el.uxViewZoom(),2);assert.deepEqual(f.el.state,saved);
+ f.el.dispatch('touchmove',touchBatch(f,[contact(f,51,310),contact(f,52,510)]));assert.equal(f.el.uxViewZoom(),1);assert.deepEqual(f.el.state,saved);
  f.el.dispatch('touchend',touchBatch(f,[],[contact(f,51,310),contact(f,52,510)]));
  const crop=f.event(f.object,{pointerId:53});f.el.dispatch('pointerdown',crop);assert.equal(crop.prevented,undefined);
 });
@@ -106,7 +199,7 @@ test('two fingers also leave the customer photo crop unchanged; single-finger cr
 test('touch batches continue on a replaced SVG target and remove direct listeners when complete',async t=>{
  const f=await runtime(t),saved=structuredClone(f.el.state),start=[contact(f,61,360),contact(f,62,460)];f.el.dispatch('touchstart',touchBatch(f,start));
  assert.equal(f.object.listeners.touchmove.length,1);
- f.object.dispatch('touchmove',touchBatch(f,[contact(f,61,310),contact(f,62,510)]));assert.equal(f.el.uxViewZoom(),2);assert.deepEqual(f.el.state,saved);
+ f.object.dispatch('touchmove',touchBatch(f,[contact(f,61,310),contact(f,62,510)]));assert.equal(f.el.uxViewZoom(),1);assert.deepEqual(f.el.state,saved);
  f.object.dispatch('touchend',touchBatch(f,[],start));assert.equal(f.object.listeners.touchmove.length,0);assert.equal(f.object.listeners.touchend.length,0);assert.equal(f.object.listeners.touchcancel.length,0);
 });
 
@@ -129,26 +222,19 @@ test('keyboard resize and deselection preserve manual zoom without changing save
  f.deselect();f.el.sync();f.flush();assert.equal(f.api.view().scale,2);assert.deepEqual(f.el.state,f.original);
 });
 
-test('zooming and dragging install no loupe or zoom controls on mobile and desktop',async t=>{
+test('zooming and dragging retain one slider without extra controls on mobile and desktop',async t=>{
  const f=await runtime(t);
  for(const mobile of [false,true])for(const scale of [1,2,4]){
   f.mobile(mobile);f.el.uxSetViewZoom(scale);f.el.dispatch('pointerdown',f.event(f.object,{pointerId:70}));f.el.dispatch('pointermove',f.event(f.object,{pointerId:70,clientX:430}));f.el.dispatch('pointerup',f.event(f.object,{pointerId:70,clientX:430}));f.el.render();f.flush();
-  assert.equal(f.stage.children.some(n=>['ux-drag-loupe','ux-view-zoom','ux-view-whole'].includes(n.className)),false);
+  assert.equal(f.stage.children.some(n=>['ux-drag-loupe','ux-view-whole'].includes(n.className)),false);
   assert.equal(f.el.uxDragLens,undefined);assert.equal(f.api.view().scale,scale);assert.deepEqual(f.el.state,f.original);
  }
 });
-test('desktop wheel zooms in and out at the cursor and stays within 100–400 percent without buttons',async t=>{
- const f=await runtime(t);assert.equal(f.controls,undefined);
- for(let i=0;i<10;i++)f.el.dispatch('wheel',f.event(f.object,{deltaY:-300,clientX:450,pointerType:'mouse'}));
- assert.equal(f.api.view().scale,4);assert.notEqual(f.api.view().x,0);
- for(let i=0;i<10;i++)f.el.dispatch('wheel',f.event(f.object,{deltaY:300,clientX:450,pointerType:'mouse'}));
- assert.deepEqual(f.api.view(),{scale:1,x:0,y:0});assert.deepEqual(f.el.state,f.original);
-});test('mobile zooms in and back out only with two fingers, with no wheel or reset button',async t=>{
- const f=await runtime(t);f.mobile(true);f.api.refresh();f.flush();
- const e=f.event(f.holder,{deltaY:-120});f.el.dispatch('wheel',e);assert.equal(f.el.uxViewZoom(),1);assert.equal(e.prevented,undefined);
- f.el.dispatch('touchstart',touchBatch(f,[contact(f,81,360),contact(f,82,460)]));
- f.el.dispatch('touchmove',touchBatch(f,[contact(f,81,310),contact(f,82,510)]));assert.equal(f.el.uxViewZoom(),2);
- assert.equal(f.stage.children.some(n=>n.className==='ux-view-whole'),false);
- f.el.dispatch('touchmove',touchBatch(f,[contact(f,81,370),contact(f,82,450)]));assert.equal(f.el.uxViewZoom(),1);
- f.el.dispatch('touchend',touchBatch(f,[],[contact(f,81,370),contact(f,82,450)]));assert.deepEqual(f.el.state,f.original);
+test('the slider alone zooms on desktop and mobile; wheel scroll remains native',async t=>{
+ const f=await runtime(t),slider=f.controls.querySelector('input');
+ for(const mobile of [false,true]){f.mobile(mobile);slider.value='3';slider.dispatch('input',{});assert.equal(f.api.view().scale,3);
+  for(const deltaY of [-300,300]){const e=f.event(f.object,{deltaY,pointerType:'mouse'});f.el.dispatch('wheel',e);assert.equal(e.prevented,undefined);assert.equal(f.api.view().scale,3);}
+  const before=f.api.view();f.el.dispatch('touchstart',touchBatch(f,[contact(f,81,360),contact(f,82,460)]));f.el.dispatch('touchmove',touchBatch(f,[contact(f,81,310),contact(f,82,510)]));assert.deepEqual(f.api.view(),before);f.el.dispatch('touchend',touchBatch(f,[],[contact(f,81,310),contact(f,82,510)]));
+  slider.value='1';slider.dispatch('input',{});assert.deepEqual(f.api.view(),{scale:1,x:0,y:0});assert.deepEqual(f.el.state,f.original);
+ }
 });

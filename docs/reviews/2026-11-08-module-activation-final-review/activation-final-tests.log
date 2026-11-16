@@ -1,0 +1,11 @@
+✔ real 251/404 native bank: confirmed module activation, atomic failure, restart recovery, replay and reversible logo (327954.9308ms)
+✔ release writer defaults off, admits only exact one-product release CAS and rechecks after token await (2.2439ms)
+✔ last transport await rechecks actual source/target state before any release write (6936.8057ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 335704.7626

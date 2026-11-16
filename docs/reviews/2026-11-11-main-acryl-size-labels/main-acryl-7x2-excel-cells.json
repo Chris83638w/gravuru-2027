@@ -1,0 +1,285 @@
+{
+  "Freigabe": {
+    "C22": {
+      "value": "v4 gegenüber v3: Chris (Chat 10.11.2026 14:25): 7 × 2,33 cm ist skalierbar und bleibt im Hauptprodukt (jetzt 77 Größen); eigene Produkte sind nur 5 × 2, 6 × 2, 8 × 2; Kleinformate haben gesonderte Motive; die Abtrennung gilt auch für das live stehende Edelstahl-Türschild (Umsetzung erst nach Freigabe des Änderungsplans). Preise und Aufpreise unverändert gegenüber v2/v3."
+    }
+  },
+  "Varianten": {
+    "A23": {
+      "value": "TS-Acryl-RE-70X23P3-T30"
+    },
+    "B23": {
+      "value": "Rechteck / RE"
+    },
+    "C23": {
+      "value": "Acrylglas 3 mm, Rückseite graviert / acrylic-3mm"
+    },
+    "D23": {
+      "value": "7 × 2,33 cm"
+    },
+    "E23": {
+      "value": "70"
+    },
+    "F23": {
+      "value": "23.3"
+    },
+    "G23": {
+      "value": null
+    },
+    "H23": {
+      "value": "7.99"
+    },
+    "I23": {
+      "value": "0"
+    },
+    "J23": {
+      "value": null,
+      "formula": "IF(OR(H23=\"\",I23=\"\"),\"\",H23+I23)"
+    },
+    "K23": {
+      "value": null
+    },
+    "L23": {
+      "value": "Grundpreis: Katalog-Repo Chris83638w/gravuru-katalog., main 3c6051fb: familien/acryl/acryl-3mm-tuerschilder-schwarz.json (Blob e340d775) bzw. -anthrazit.json (Blob 491e1abc), sizes[].baseCents; Preise dort laut source.note aus serien/acryl-tuerschilder-2027.json (Chris-Excel 21.10.2026, Blob df892cab). Fester Aufpreis 0,00 = „ohne Befestigung“ (K00 = Grundpreis in der Serie; Befestigung siehe Blatt Optionen). Reihe 3:1. Maße = Edelstahl GR-ES-RE-70X23P3-T15. Grundpreis BESTÄTIGT: Chris (Chat) 10.11.2026 12:57, Katalogpreise Acryl statt „Edelstahl − 2 €“ (Blatt Preisvergleich: entschieden: Katalogpreise). Größenumfang Hauptprodukt: 77 Größen (Entscheidung Chris 10.11. 14:11/14:25, Kleinformate 5×2, 6×2, 8×2 ausgegliedert); Frage 11 offen. 7 × 2,33 cm ist skalierbar und gehört ins Hauptprodukt (Chris 14:25, Reihe 3:1)."
+    },
+    "M23": {
+      "value": "bestätigt"
+    },
+    "N23": {
+      "value": "3:1"
+    }
+  },
+  "Optionen": {
+    "A169": {
+      "value": "TS-Acryl-RE-70X23P3-T30"
+    },
+    "B169": {
+      "value": "farbe"
+    },
+    "C169": {
+      "value": "schwarz"
+    },
+    "D169": {
+      "value": "Schwarz (helle Gravur)"
+    },
+    "E169": {
+      "value": "ja"
+    },
+    "F169": {
+      "value": "0"
+    },
+    "G169": {
+      "value": "im Variantenpreis enthalten"
+    },
+    "H169": {
+      "value": "ja"
+    },
+    "I169": {
+      "value": "Farbe als Option (preisgleich). Standardfarbe nicht entschieden: Vorschlag Schwarz (Serien-Defaultvariante TS-Acryl-RE-150X100-T30-SW-K00) – bitte bestätigen"
+    },
+    "J169": {
+      "value": "Chris 31.10.2026 Farben Schwarz/Anthrazit; Katalog serien/acryl-tuerschilder-2027.json colorSurchargeCents=0 („Schwarz/Anthrazit preisgleich“, familien/acryl/*.json source.note)"
+    },
+    "K169": {
+      "value": "offen"
+    },
+    "A170": {
+      "value": "TS-Acryl-RE-70X23P3-T30"
+    },
+    "B170": {
+      "value": "farbe"
+    },
+    "C170": {
+      "value": "anthrazit"
+    },
+    "D170": {
+      "value": "Anthrazit (helle Gravur)"
+    },
+    "E170": {
+      "value": "ja"
+    },
+    "F170": {
+      "value": "0"
+    },
+    "G170": {
+      "value": "im Variantenpreis enthalten"
+    },
+    "H170": {
+      "value": "nein"
+    },
+    "I170": {
+      "value": "Farbe als Option (preisgleich). Standardfarbe nicht entschieden: Vorschlag Schwarz (Serien-Defaultvariante TS-Acryl-RE-150X100-T30-SW-K00) – bitte bestätigen"
+    },
+    "J170": {
+      "value": "Chris 31.10.2026 Farben Schwarz/Anthrazit; Katalog serien/acryl-tuerschilder-2027.json colorSurchargeCents=0 („Schwarz/Anthrazit preisgleich“, familien/acryl/*.json source.note)"
+    },
+    "K170": {
+      "value": "offen"
+    },
+    "A171": {
+      "value": "TS-Acryl-RE-70X23P3-T30"
+    },
+    "B171": {
+      "value": "befestigung"
+    },
+    "C171": {
+      "value": "K00"
+    },
+    "D171": {
+      "value": "Ohne Befestigung"
+    },
+    "E171": {
+      "value": "ja"
+    },
+    "F171": {
+      "value": "0"
+    },
+    "G171": {
+      "value": "im Variantenpreis enthalten"
+    },
+    "H171": {
+      "value": "ja"
+    },
+    "I171": {
+      "value": "Immer zuerst gewählt: „ohne Befestigung“ (rund 80 % der Hauptprodukte starten ohne Bohrloch)."
+    },
+    "J171": {
+      "value": "Chris 31.10.2026 (ENTSCHEIDUNGEN 3.22); Katalog withoutMounting=true"
+    },
+    "K171": {
+      "value": "offen"
+    },
+    "A172": {
+      "value": "TS-Acryl-RE-70X23P3-T30"
+    },
+    "B172": {
+      "value": "befestigung"
+    },
+    "C172": {
+      "value": "KGL"
+    },
+    "D172": {
+      "value": "Selbstklebend – glatte Flächen"
+    },
+    "E172": {
+      "value": "ja"
+    },
+    "F172": {
+      "value": "2.99"
+    },
+    "G172": {
+      "value": "zusätzlich je Produkt"
+    },
+    "H172": {
+      "value": "nein"
+    },
+    "I172": {
+      "value": "Regel KGL: Kleben, keine Bohrung. Zulässig laut Edelstahl-Größe GR-ES-RE-70X23P3-T15 (Acryl = identisch, Chris 31.10.). Bestätigt: Chris, Claude-Chat 10.11.2026 12:57 (Entscheidung 2)."
+    },
+    "J172": {
+      "value": "Katalog-Repo Chris83638w/gravuru-katalog., main 3c6051fb: familien/edelstahl/steel-door-signs.json (Blob 2e046d4a), mountingRules[].priceCents; Acryl-Katalog zum Vergleich: familien/acryl/acryl-3mm-tuerschilder-schwarz.json mountingRules"
+    },
+    "K172": {
+      "value": "bestätigt"
+    },
+    "A173": {
+      "value": "TS-Acryl-RE-70X23P3-T30"
+    },
+    "B173": {
+      "value": "befestigung"
+    },
+    "C173": {
+      "value": "KRA"
+    },
+    "D173": {
+      "value": "Selbstklebend – raue Flächen"
+    },
+    "E173": {
+      "value": "ja"
+    },
+    "F173": {
+      "value": "3.99"
+    },
+    "G173": {
+      "value": "zusätzlich je Produkt"
+    },
+    "H173": {
+      "value": "nein"
+    },
+    "I173": {
+      "value": "Regel KRA: Kleben, keine Bohrung. Zulässig laut Edelstahl-Größe GR-ES-RE-70X23P3-T15 (Acryl = identisch, Chris 31.10.). Bestätigt: Chris, Claude-Chat 10.11.2026 12:57 (Entscheidung 2)."
+    },
+    "J173": {
+      "value": "Katalog-Repo Chris83638w/gravuru-katalog., main 3c6051fb: familien/edelstahl/steel-door-signs.json (Blob 2e046d4a), mountingRules[].priceCents; Acryl-Katalog zum Vergleich: familien/acryl/acryl-3mm-tuerschilder-schwarz.json mountingRules"
+    },
+    "K173": {
+      "value": "bestätigt"
+    },
+    "A174": {
+      "value": "TS-Acryl-RE-70X23P3-T30"
+    },
+    "B174": {
+      "value": "befestigung"
+    },
+    "C174": {
+      "value": "B02"
+    },
+    "D174": {
+      "value": "Mit 2 Bohrlöchern"
+    },
+    "E174": {
+      "value": "ja"
+    },
+    "F174": {
+      "value": "2.49"
+    },
+    "G174": {
+      "value": "zusätzlich je Produkt"
+    },
+    "H174": {
+      "value": "nein"
+    },
+    "I174": {
+      "value": "Regel B02-E6-D4: 2 Bohrungen left-right, Ø 4 mm, Randabstand 6 mm. Zulässig laut Edelstahl-Größe GR-ES-RE-70X23P3-T15 (Acryl = identisch, Chris 31.10.). Bestätigt: Chris, Claude-Chat 10.11.2026 12:57 (Entscheidung 2)."
+    },
+    "J174": {
+      "value": "Katalog-Repo Chris83638w/gravuru-katalog., main 3c6051fb: familien/edelstahl/steel-door-signs.json (Blob 2e046d4a), mountingRules[].priceCents; Acryl-Katalog zum Vergleich: familien/acryl/acryl-3mm-tuerschilder-schwarz.json mountingRules"
+    },
+    "K174": {
+      "value": "bestätigt"
+    },
+    "A175": {
+      "value": "TS-Acryl-RE-70X23P3-T30"
+    },
+    "B175": {
+      "value": "befestigung"
+    },
+    "C175": {
+      "value": "B02S"
+    },
+    "D175": {
+      "value": "Mit 2 Schrauben"
+    },
+    "E175": {
+      "value": "ja"
+    },
+    "F175": {
+      "value": "2.69"
+    },
+    "G175": {
+      "value": "zusätzlich je Produkt"
+    },
+    "H175": {
+      "value": "nein"
+    },
+    "I175": {
+      "value": "Regel B02S-E6-D4: 2 Bohrungen left-right, Ø 4 mm, Randabstand 6 mm, inkl. Schrauben. Zulässig laut Edelstahl-Größe GR-ES-RE-70X23P3-T15 (Acryl = identisch, Chris 31.10.). Aufpreis bestätigt 10.11.2026; abweichender Acryl-Katalogwert (2,99 € / 3,39 €) überholt durch Entscheidung 10.11. Bestätigt: Chris, Claude-Chat 10.11.2026 12:57 (Entscheidung 2)."
+    },
+    "J175": {
+      "value": "Katalog-Repo Chris83638w/gravuru-katalog., main 3c6051fb: familien/edelstahl/steel-door-signs.json (Blob 2e046d4a), mountingRules[].priceCents; Acryl-Katalog zum Vergleich: familien/acryl/acryl-3mm-tuerschilder-schwarz.json mountingRules"
+    },
+    "K175": {
+      "value": "bestätigt"
+    }
+  }
+}

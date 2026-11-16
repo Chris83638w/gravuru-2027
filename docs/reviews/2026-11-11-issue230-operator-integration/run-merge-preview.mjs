@@ -1,0 +1,14 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import {spawnSync,execFileSync} from 'node:child_process';
+import {createHash} from 'node:crypto';
+import {fileURLToPath} from 'node:url';
+const out=path.dirname(fileURLToPath(import.meta.url)),repo=path.resolve(out,'../issue230-integration-history');
+const sha=b=>createHash('sha256').update(b).digest('hex'),git=(...args)=>execFileSync('git',args,{cwd:repo,env:{...process.env,GIT_OPTIONAL_LOCKS:'0'},maxBuffer:20*1024*1024});
+const left=git('rev-parse','b7f5ca2').toString().trim(),right=git('rev-parse','ac10e6c').toString().trim(),base=git('merge-base','--all',left,right).toString().trim().split('\n');
+const state=()=>({HEAD:git('rev-parse','HEAD').toString().trim(),refsSha256:sha(git('show-ref')),indexSha256:fs.existsSync(path.join(repo,'.git/index'))?sha(fs.readFileSync(path.join(repo,'.git/index'))):null});
+const before=state(),args=['-c','core.autocrlf=false','merge-tree','--write-tree','--messages','-z',left,right];
+const result=spawnSync('git',args,{cwd:repo,env:{...process.env,GIT_OPTIONAL_LOCKS:'0'},maxBuffer:100*1024*1024});
+fs.writeFileSync(path.join(out,'merge-preview.raw'),result.stdout||Buffer.alloc(0));fs.writeFileSync(path.join(out,'merge-preview.stderr.log'),result.stderr||Buffer.alloc(0));
+const metadata={left,right,base,args,exitCode:result.status,error:result.error?.message||null,before,after:state(),stdoutBytes:result.stdout?.length||0,stderrBytes:result.stderr?.length||0};
+fs.writeFileSync(path.join(out,'merge-preview-run.json'),JSON.stringify(metadata,null,2)+'\n');console.log(JSON.stringify(metadata));if(![0,1].includes(result.status))process.exitCode=1;

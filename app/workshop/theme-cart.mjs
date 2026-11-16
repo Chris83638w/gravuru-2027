@@ -6,7 +6,7 @@ import {readReviewPackage} from './review-package.mjs';
 import {NATIVE_REVIEW_SCHEMAS} from './native-review-schema.mjs';
 import {cartLineInput} from './storefront-cart.mjs';
 const fail=(status,code,message)=>{throw Object.assign(Error(message),{status,code});};
-export function prepareThemeCart({workshop,registry,shopDomain,proxyPath,customerImageUrl},binding,input,{draftToken}={}){
+export function prepareThemeCart({workshop,registry,shopDomain,proxyPath,customerImageUrl,presentation},binding,input,{draftToken}={}){
  const {cartRevision,...offerInput}=input;
  const prepared=prepareBoundCartOffer({workshop,registry,shopDomain},binding,offerInput,{draftToken});
  const {draft,manifest,offer,resolve}=prepared,ledger=workshop.customerDrafts.cartConfigurations;
@@ -31,6 +31,7 @@ export function prepareThemeCart({workshop,registry,shopDomain,proxyPath,custome
  chunks.forEach((part,i)=>{properties[i?'Gravurtext '+(i+1):'Gravurtext']=part;});
  const edit=new URL('https://'+shopDomain+proxyPath+'/start');
  edit.search=new URLSearchParams({product:binding.shopifyProductId.split('/').at(-1),variant:binding.shopifyVariantId.split('/').at(-1),config:configuration.id,rev:String(configuration.rev),line:'theme'});
+ if(presentation==='prio-r15')edit.searchParams.set('ui','prio-r15');
  properties._gravuru_bearbeiten=edit.href;
  if(customerImageUrl)properties._gravuru_bild=customerImageUrl(offer.id);
  // The edit link identifies the actual cart revision, not the last prepared offer.

@@ -1,0 +1,52 @@
+{
+  "schema": "gravuru-cart-return-local-patch/v1",
+  "revision": 2,
+  "note": "CartEdit precedence follow-up supersedes initial 10-test patch review; no commit/deploy",
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 7201,
+      "sha256": "88aa9bb213b5f8c8bd1c1110b890d3c550f695128c98e51289f70efab273eac1"
+    },
+    {
+      "path": "baseline-pins.json",
+      "bytes": 544,
+      "sha256": "9d976b85f5218769a70bd1901cf7b44b42fb5d72cee4782ddb2a84d04f144aa5"
+    },
+    {
+      "path": "checks.json",
+      "bytes": 2476,
+      "sha256": "18114c50db01796fd6b06959728beadfa0f768434c1fe7649c60a8d61b9931a0"
+    },
+    {
+      "path": "quantity-return.patch",
+      "bytes": 23003,
+      "sha256": "207ca14681b0db159332aae978024ce556ed11618d910b497e06e1ebbf9b9681"
+    },
+    {
+      "path": "screw-measurement.json",
+      "bytes": 1755,
+      "sha256": "2868e1dd7dcb97cb4848ce2b3ba0d1e97324628cd4d337681e29695819a36405"
+    },
+    {
+      "path": "session-guard-cart-edit-tests-initial.log",
+      "bytes": 4161,
+      "sha256": "5e8f392fb35d3d0668933adf998676cf92deca9188f604a0fdbc730ec5ed7971"
+    },
+    {
+      "path": "session-guard-cart-edit-tests.log",
+      "bytes": 1620,
+      "sha256": "61663bb719724b14dafb18091dbe2992981cfc965eb0e6b967daa212dc45d59e"
+    },
+    {
+      "path": "session-guard-tests-initial.log",
+      "bytes": 2165,
+      "sha256": "4fc0d1c7e0b0570bd9e384be5908bcc293a0f9d0ef440363e22fb67a196ea891"
+    },
+    {
+      "path": "session-guard-tests.log",
+      "bytes": 1277,
+      "sha256": "ab385bd54be853bd3e56f24de6b9556123dcf5cad0b88ef2818abd36331d6698"
+    }
+  ]
+}

@@ -25,6 +25,9 @@ html.gv-embed-open,html.gv-embed-open body{overflow:hidden}`;
 export function startUrl(link){
  const url=new URL(link.href,location.href);
  if(url.origin!==location.origin||url.pathname!==PROXY+'/start')return null;
+ // Entwurfsvorschauen laufen auf einer temporären Shopify-Domain. Die bestehende
+ // Einbettung erlaubt nur den eigenen Shop; dort den normalen Seitenlink nutzen.
+ if(/(^|\.)shopifypreview\.com$/.test(url.hostname))return null;
  url.searchParams.set('embed','1');
  return url.href;
 }
@@ -47,11 +50,13 @@ export function createStartTickets({fetchImpl=globalThis.fetch,now=Date.now,marg
   entry.pending=Promise.resolve().then(()=>fetchImpl(request.href,{credentials:'same-origin',cache:'no-store',headers:{Accept:'application/json'}})).then(async response=>{
    const data=response.ok?await response.json():null,until=Math.min(Date.parse(data?.expiresAt)-marginMs,fetchedAt+maxAgeMs);
    if(typeof data?.url!=='string'||!data.url.startsWith(EDITOR_ORIGIN+'/')||!(until>now()))throw Error('Startkarte ungültig');
-   entry.url=data.url;entry.until=until;entry.pending=null;return entry.url;
+   entry.url=data.url;entry.until=until;entry.pending=null;
+   try{const warm=new URL(data.warm?.url);if(warm.origin===EDITOR_ORIGIN&&!warm.username&&!warm.password&&/^\/[A-Za-z0-9_-]+(?:\/[A-Za-z0-9_-]+)*\/warm\/$/.test(warm.pathname)&&!warm.search&&!warm.hash&&JSON.stringify(data.warm?.manifest).length<4096)entry.warm={url:warm.href,manifest:data.warm.manifest};}catch{}
+   return entry.url;
   }).catch(()=>{entry.url=null;entry.pending=null;entry.failedUntil=now()+retryMs;return null;});
   return entry.pending;
  }
- return Object.freeze({get,load});
+ return Object.freeze({get,load,warm:key=>get(key)?tickets.get(key)?.warm||null:null});
 }
 
 // Global (Chris 27.10.2026: „universal, auch wenn ich ein neues Produkt anlege“): Ein Theme-Baustein im
@@ -59,25 +64,76 @@ export function createStartTickets({fetchImpl=globalThis.fetch,now=Date.now,marg
 // Fehlt auf der Vorlage der eigene Knopf, setzt diese Datei ihn an die Stelle der Kaufknöpfe; die normalen
 // Kaufknöpfe dieses Produkts werden ausgeblendet (kein Kauf ohne Gestaltung).
 const ID=/^\d{1,20}$/;
+// Optional product-local presentation data. Liquid's product.variants is capped
+// at 250; the reviewed product manifest supplies its complete ID list. These
+// display/navigation hints never replace the server's signed binding checks.
+function productPresentation(doc,raw){
+ let data;try{data=JSON.parse(doc?.getElementById?.('gravuru-konfi-presentation')?.textContent||'');}catch{return null;}
+ if(data?.schema!=='gravuru-shop-presentation/v1'||data.ui!=='prio-r15'||!ID.test(String(data.productId))||!Array.isArray(data.variants)||!data.variants.length||data.variants.length>2048)return null;
+ // The existing custom-Liquid entry need not have the global app-embed JSON.
+ // In that case accept this complete profile only beside its matching own link.
+ if(!raw){
+  const own=[...(doc?.querySelectorAll?.('[data-gravuru-personalisieren]')||[])].some(block=>block.getAttribute?.('data-product-id')===String(data.productId)&&block.getAttribute?.('data-start')===PROXY+'/start');
+  if(!own)return null;raw={productId:data.productId,variantId:data.themeVariantId,back:data.back};
+ }
+ if(String(data.productId)!==String(raw.productId))return null;
+ const variants=data.variants.map(String);
+ if(variants.some(v=>!ID.test(v))||new Set(variants).size!==variants.length||!variants.includes(String(data.variantId))||!variants.includes(String(raw.variantId)))return null;
+ return {ui:'prio-r15',variants,variantId:String(data.variantId),themeVariantId:String(raw.variantId),source:raw};
+}
 export function pageConfig(doc=globalThis.document){
- const node=doc?.getElementById?.('gravuru-konfi');if(!node)return null;
- let raw;try{raw=JSON.parse(node.textContent||'');}catch{return null;}
- const productId=String(raw?.productId??''),variants=Array.isArray(raw?.variants)?[...new Set(raw.variants.map(String))].filter(v=>ID.test(v)):[];
- if(!ID.test(productId)||!variants.length||variants.length>250)return null;
- const variantId=variants.includes(String(raw.variantId))?String(raw.variantId):variants[0];
+ const node=doc?.getElementById?.('gravuru-konfi');
+ let raw;try{raw=node?JSON.parse(node.textContent||''):null;}catch{return null;}
+ const presentation=productPresentation(doc,raw);raw??=presentation?.source;if(!raw)return null;
+ const productId=String(raw?.productId??''),variants=presentation?.variants||(Array.isArray(raw?.variants)?[...new Set(raw.variants.map(String))].filter(v=>ID.test(v)):[]);
+ if(!ID.test(productId)||!variants.length||variants.length>(presentation?2048:250))return null;
+ // Liquid's selected variant belongs to this product even when product.variants
+ // contains only the first 250 IDs. This is a start hint, never a server binding.
+ const variantId=presentation?.variantId||(ID.test(String(raw.variantId??''))?String(raw.variantId):variants[0]);
  const back=typeof raw.back==='string'&&/^\/(?!\/)[^\s]{0,300}$/.test(raw.back)?raw.back:'/';
- return {productId,variantId,variants,back};
+ return {productId,variantId,variants,back,...(presentation?{ui:presentation.ui,themeVariantId:presentation.themeVariantId}:{})};
 }
 export function startHref(config,variantId=config.variantId,search=globalThis.location?.search||''){
- const params=new URLSearchParams({product:config.productId,variant:config.variants.includes(String(variantId))?String(variantId):config.variantId,back:config.back});
+ const selected=String(variantId),known=config.variants.includes(selected)||selected===config.variantId||selected===variantSelections.get(config)?.chosen;
+ const params=new URLSearchParams({product:config.productId,variant:known?selected:config.variantId,back:config.back});
+ if(config.ui==='prio-r15')params.set('ui','prio-r15');
  const toolbar=new URLSearchParams(search).getAll('leiste');if(toolbar.length===1&&['a','b'].includes(toolbar[0]))params.set('leiste',toolbar[0]);
  return PROXY+'/start?'+params;
 }
 // Kaufformulare genau dieses Produkts (auch die mitlaufende Kaufleiste), nicht die anderer Produkte auf der Seite.
+const identifiedForms=new WeakMap();
 export function productForms(config,doc=globalThis.document){
- return [...doc.querySelectorAll('form[action*="/cart/add"]')].filter(form=>config.variants.includes(String(form.querySelector('[name="id"]')?.value||'')));
+ let known=identifiedForms.get(config);if(!known){known=new WeakSet();identifiedForms.set(config,known);}
+ return [...doc.querySelectorAll('form[action*="/cart/add"]')].filter(form=>{
+  const value=String(form.querySelector('[name="id"]')?.value||'');if(!ID.test(value))return false;
+  // The active theme's product-info (and sticky product wrapper) identifies its
+  // product explicitly. A foreign wrapper wins over any remembered form/ID.
+  const owner=form.closest?.('[data-product-id]')?.getAttribute?.('data-product-id');
+  const own=owner!=null?owner===config.productId:known.has(form)||config.variants.includes(value)||value===config.variantId;
+  if(own)known.add(form);return own;
+ });
 }
-const currentVariant=(config,doc)=>productForms(config,doc).map(form=>String(form.querySelector('[name="id"]')?.value||'')).find(v=>config.variants.includes(v))||config.variantId;
+const variantSelections=new WeakMap();
+export function currentVariant(config,doc,search=globalThis.location?.search||''){
+ const forms=productForms(config,doc),value=form=>String(form?.querySelector('[name="id"]')?.value||'');
+ if(config.ui!=='prio-r15'){
+  let state=variantSelections.get(config);if(!state){state={chosen:config.variantId};variantSelections.set(config,state);}
+  const buy=form=>!!form.querySelector('[type="submit"],[name="add"]'),sticky=form=>!!form.closest?.('[class*="sticky"],sticky-atc-bar');
+  const main=forms.filter(form=>buy(form)&&!sticky(form)),buyForms=forms.filter(buy),candidates=main.length?main:buyForms.length?buyForms:forms;
+  const choices=new Set(candidates.map(value));
+  if(choices.size===1)state.chosen=[...choices][0];
+  return state.chosen;
+ }
+ // Start at the main-image variant until a real selection changes. Prefer the
+ // main purchase form over stale installment/sticky copies of the same product.
+ const buy=form=>!!form.querySelector('[type="submit"],[name="add"]'),sticky=form=>!!form.closest?.('[class*="sticky"],sticky-atc-bar');
+ const form=forms.find(form=>buy(form)&&!sticky(form))||forms.find(buy)||forms[0],rawSelected=value(form),selected=config.variants.includes(rawSelected)?rawSelected:'';
+ let state=variantSelections.get(config);if(!state){state={form:config.themeVariantId,query:null,chosen:config.variantId};variantSelections.set(config,state);}
+ if(selected&&selected!==state.form){state.form=selected;state.chosen=selected;}
+ const values=new URLSearchParams(search).getAll('variant'),query=values.length===1&&config.variants.includes(values[0])?values[0]:null;
+ if(query&&query!==state.query)state.chosen=query;state.query=query;
+ return state.chosen;
+}
 export function prepareProductPage(config,doc=globalThis.document){
  const forms=productForms(config,doc);
  for(const form of forms)for(const node of form.querySelectorAll('[type="submit"],[name="add"],.shopify-payment-button'))node.setAttribute('data-gravuru-hidden-buy','');
@@ -215,14 +271,19 @@ export function install({root=window.Shopify?.routes?.root||'/'}={}){
   // Sperrt das Theme den Knopf nachträglich (Klasse, Stil, disabled), sofort wieder freigeben.
   new MutationObserver(records=>{for(const r of records)if(r.target?.matches?.('[data-gravuru-personalisieren] a[data-gravuru-start]'))unlockStartLink(r.target);}).observe(document.body,{attributes:true,subtree:true,attributeFilter:['class','style','disabled','aria-disabled','tabindex']});
  }
- // Fenster-Vorladen ist aus (Messung 27.10.2026, Chrome): ein unsichtbares Fenster lädt der Browser stark gebremst
- // und kostete nur Daten. Vorab kommt stattdessen nur die Startkarte (wenige Hundert Byte) nach dem Laden der Seite
- // bzw. bei erkennbarer Absicht; preload() bleibt für spätere Versuche.
+ // Keep full-editor preloading off. A tiny separate app-origin frame warms only
+ // the server's bounded public asset manifest in the same browser cache partition.
  const tickets=createStartTickets();
+ let warmFrame=null,warmSignature=null;
+ function warmAssets(key){
+  const connection=navigator.connection;if(connection?.saveData||/(^|-)2g$/.test(String(connection?.effectiveType||''))||document.visibilityState==='hidden'||frame)return;
+  const data=tickets.warm(key);if(!data)return;const signature=JSON.stringify(data);if(signature===warmSignature)return;warmSignature=signature;
+  warmFrame?.remove();warmFrame=document.createElement('iframe');warmFrame.hidden=true;warmFrame.tabIndex=-1;warmFrame.setAttribute('aria-hidden','true');warmFrame.title='Konfigurator vorbereiten';warmFrame.referrerPolicy='no-referrer';warmFrame.src=data.url+'#'+encodeURIComponent(JSON.stringify(data.manifest));document.body.append(warmFrame);
+ }
  const ownLink=()=>{const link=document.querySelector('[data-gravuru-personalisieren] a[data-gravuru-start]');if(link&&config)link.href=startHref(config,currentVariant(config,document));return link;};
- const fetchTicket=()=>{const link=ownLink();if(link&&!frame)tickets.load(startUrl(link));};
+ const fetchTicket=()=>{const link=ownLink();if(link&&!frame){const key=startUrl(link);tickets.load(key).then(()=>{const current=ownLink();if(current&&startUrl(current)===key)warmAssets(key);});}};
  connectOnIntent(document,EDITOR_ORIGIN,fetchTicket);
- if(config){const idle=()=>window.requestIdleCallback?window.requestIdleCallback(fetchTicket,{timeout:4000}):setTimeout(fetchTicket,1500);if(document.readyState==='complete')idle();else window.addEventListener('load',idle,{once:true});}
+ if(config)scheduleProductWarmup(document,window,fetchTicket);
  // Klick in der Einfangphase: Theme-Skripte (Kaufleiste, Akkordeons …) können ihn nicht vorher schlucken.
  // Klappt das Fenster nicht, läuft der normale Link weiter (ganze Seite über den App-Proxy).
  document.addEventListener('click',event=>{
@@ -239,4 +300,11 @@ export function install({root=window.Shopify?.routes?.root||'/'}={}){
 
 if(typeof window!=='undefined'&&typeof document!=='undefined'&&!globalThis.GRAVURU_SHOP_EMBED_NO_AUTO){
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>install(),{once:true});else install();
+}
+
+// Product markup and first paint are enough; unrelated images must not delay
+// the small optional warmup. Intent listeners above still promote it immediately.
+export function scheduleProductWarmup(doc,win,start){
+ const run=()=>{const paint=fn=>win.requestAnimationFrame?win.requestAnimationFrame(fn):win.setTimeout(fn,0);paint(()=>paint(()=>{if(doc.visibilityState==='hidden')return;if(win.requestIdleCallback)win.requestIdleCallback(start,{timeout:600});else win.setTimeout(start,50);}));};
+ if(doc.readyState==='loading')doc.addEventListener('DOMContentLoaded',run,{once:true});else run();
 }

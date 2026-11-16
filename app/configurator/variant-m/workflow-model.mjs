@@ -89,12 +89,58 @@ function mapDates(fromTexts,to){
  if(to.length===1)return [fromTexts.map(t=>String(t).trim()).join(' - ')];
  return null;
 }
+// Chris/Tester 13.11.2026: Die Nummern der Namensfelder sind je Design verschieden
+// (Startdesign: name = Nachname, name-2 = „Familie“; „Familie mit Schnörkel“: umgekehrt).
+// Erfasste Texte mit Vorlagentext (captureDesignContent) werden deshalb nach Inhalt und
+// Leserichtung zugeordnet: unveränderte Vorlagenwörter wie „Familie“ bleiben in dem Feld,
+// das das neue Design dafür vorsieht, der eigene Name kommt in das Namensfeld.
+const NAME_PHRASE=/^(?:familie|fam\.?|die|bei|bei familie|willkommen|willkommen bei|willkommen bei familie|herzlich willkommen|herzlich willkommen bei|hier wohnt|hier wohnen|hier wohnt familie)$/i;
+const plain=t=>String(t??'').trim().replace(/\s+/g,' ').toLowerCase();
+const readingOrder=(a,b)=>Math.abs((a.y??0)-(b.y??0))>.5?(a.y??0)-(b.y??0):(a.x??0)-(b.x??0);
+// Tester 13.11.2026: „Pflichtfeld Name kann man komplett löschen“. Das Pflichtkennzeichen sitzt je Design
+// mal auf „Familie“, mal auf dem Nachnamen (vertauschte Nummern). Deshalb gilt: Hat das Design ein
+// Pflichtfeld in der Namensgruppe, muss mindestens ein echtes Namensfeld (nicht „Familie“ o. Ä.)
+// sichtbar und ausgefüllt sein – auch wenn das Feld gelöscht wurde.
+export function missingNameField(objects,design){
+ const fields=(design?.objects||[]).filter(t=>t.type==='text'&&family(t.fieldKey)==='name');
+ if(!fields.some(t=>t.required===true))return null;
+ const names=fields.filter(t=>!NAME_PHRASE.test(String(t.text??'').trim()));if(!names.length)return null;
+ const filled=names.some(t=>{const o=(objects||[]).find(o=>o.id===t.id);return o&&!o.uxHidden&&String(o.text??'').trim()&&!sameText(o.text,t.text);});
+ const customNames=(objects||[]).some(o=>o.type==='text'&&!o.uxHidden&&family(o.fieldKey)==='name'&&!fields.some(t=>t.id===o.id)&&String(o.text??'').trim());
+ return filled||customNames?null:names[0];
+}
+function mapNameFields(from,to){
+ const fixed=from.filter(o=>o.original!==undefined&&plain(o.text)===plain(o.original));
+ let custom=from.filter(o=>!fixed.includes(o)).sort(readingOrder).map(o=>String(o.text).trim().replace(/\s+/g,' '));
+ const free=[...to].sort(readingOrder),assigned=new Map();
+ for(const f of fixed){const slot=free.find(t=>plain(t.text)===plain(f.text));if(slot)free.splice(free.indexOf(slot),1);}
+ // „Familie Müllermann“ in einem Feld: Das Wort, für das das neue Design ein eigenes Feld hat, bleibt dort.
+ for(const slot of free.filter(t=>NAME_PHRASE.test(String(t.text).trim()))){
+  const word=plain(slot.text),i=custom.findIndex(t=>plain(t)===word||plain(t).startsWith(word+' '));
+  if(i<0)continue;const rest=custom[i].slice(word.length).trim();if(rest)custom[i]=rest;else custom.splice(i,1);free.splice(free.indexOf(slot),1);
+ }
+ if(!custom.length||!free.length)return custom.length?null:assigned;
+ const names=free.filter(t=>!NAME_PHRASE.test(String(t.text).trim())),slots=names.length?names:free;
+ if(custom.length===slots.length)slots.forEach((t,i)=>assigned.set(t,custom[i]));
+ else if(custom.length>slots.length){slots.forEach((t,i)=>assigned.set(t,i<slots.length-1?custom[i]:custom.slice(i).join(' ')));}
+ else{
+  const split=splitName(custom.join(' '),slots.length);
+  if(split)slots.forEach((t,i)=>assigned.set(t,split[i]));
+  else if(custom.length===1){const best=[...slots].sort((a,b)=>(b.size??0)-(a.size??0)||readingOrder(a,b))[0];assigned.set(best,custom[0]);}
+  else custom.forEach((text,i)=>assigned.set(slots[i],text));
+ }
+ return assigned;
+}
 export function transferTexts(source,target){
  const remaining=source.filter(o=>o.type==='text'&&o.text?.trim()).map(o=>({...o})),used=new Set();
  const editable=target.filter(o=>o.type==='text'&&!o.technicalLocked&&o.customerEditable!==false),done=new Set();
  const parts=(list,fam)=>list.filter(o=>family(o.fieldKey)===fam).sort((a,b)=>partNo(a.fieldKey)-partNo(b.fieldKey));
  for(const fam of FOLLOW_FAMILY){
   const from=parts(remaining,fam),to=parts(editable,fam);
+  if(fam==='name'&&from.length&&to.length&&from.some(o=>Object.hasOwn(o,'original'))){
+   const assigned=mapNameFields(from,to);
+   if(assigned){for(const [o,text] of assigned){o.text=text;o.uxCustomerText=true;}for(const o of to)done.add(o);for(const o of from)used.add(o.id);continue;}
+  }
   if(!from.length||!to.length||from.length===to.length&&fam==='name')continue;
   if(new Set(from.map(o=>o.fieldKey)).size!==from.length||new Set(to.map(o=>o.fieldKey)).size!==to.length)continue; // mehrdeutig: wie bisher melden
   const texts=fam==='name'?splitName(from.map(o=>o.text.trim()).join(' '),to.length):mapDates(from.map(o=>o.text),to);

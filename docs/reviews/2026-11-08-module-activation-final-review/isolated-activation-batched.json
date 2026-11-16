@@ -1,0 +1,38 @@
+{
+  "state": "completed",
+  "error": null,
+  "metrics": {
+    "transactionMs": 45246.014800000004,
+    "rawRead": {
+      "calls": 431,
+      "ms": 20478.200099999987,
+      "characters": 5124056822
+    },
+    "byteComparison": {
+      "calls": 0,
+      "ms": 0
+    },
+    "sql": {
+      "calls": 32423,
+      "ms": 21987.999200001854
+    },
+    "methods": {
+      "catalogLiveApprovals": {
+        "calls": 2,
+        "ms": 227.01540000000386
+      },
+      "bindingPricing": {
+        "calls": 808,
+        "ms": 42.04940000009083
+      },
+      "bindVariants": {
+        "calls": 404,
+        "ms": 5047.618299999987
+      },
+      "approveCatalogLiveProducts": {
+        "calls": 1,
+        "ms": 718.6923000000097
+      }
+    }
+  }
+}

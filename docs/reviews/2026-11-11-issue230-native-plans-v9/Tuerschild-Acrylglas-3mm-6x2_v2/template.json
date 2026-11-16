@@ -1,0 +1,99 @@
+{
+  "id": "pgt_e0676ce8-1bac-46fd-9665-ab04684143ec",
+  "revision": 2,
+  "document": {
+    "name": "Tuerschild-Acrylglas-3mm-6x2_v2",
+    "openQuestions": [],
+    "schema": "gravuru-product-group-template/v1",
+    "scope": {
+      "lineId": "native-products",
+      "subcategoryId": "cfg_8e5ebd8e-a795-4bc8-a53f-884eb5e705d0"
+    },
+    "targets": [
+      {
+        "familyId": "cfg_8e5ebd8e-a795-4bc8-a53f-884eb5e705d0",
+        "key": "cfg_8e5ebd8e-a795-4bc8-a53f-884eb5e705d0",
+        "material": {
+          "color": "#17191b",
+          "engravingSide": "back",
+          "kind": "acrylic",
+          "thicknessMm": 3,
+          "variant": "schwarz"
+        },
+        "moduleProfile": {
+          "id": "cmp_049bdd37-97bd-456e-8237-9856a00809da",
+          "revision": 1
+        },
+        "optionFields": [],
+        "optionGroups": [
+          {
+            "defaultValueId": "schwarz",
+            "id": "color",
+            "name": "Farbe",
+            "required": true,
+            "values": [
+              {
+                "currency": "EUR",
+                "id": "schwarz",
+                "label": "Schwarz",
+                "priceCents": 0
+              },
+              {
+                "currency": "EUR",
+                "id": "anthrazit",
+                "label": "Anthrazit",
+                "priceCents": 0
+              }
+            ]
+          },
+          {
+            "defaultValueId": "K00",
+            "id": "mounting",
+            "name": "Befestigung",
+            "required": true,
+            "values": [
+              {
+                "currency": "EUR",
+                "id": "K00",
+                "label": "Ohne Bohrung",
+                "priceCents": 0
+              },
+              {
+                "currency": "EUR",
+                "id": "KGL",
+                "label": "Selbstklebend – glatte Flächen",
+                "priceCents": 0
+              },
+              {
+                "currency": "EUR",
+                "id": "KRA",
+                "label": "Selbstklebend – raue Flächen",
+                "priceCents": 0
+              },
+              {
+                "currency": "EUR",
+                "id": "B02",
+                "label": "Mit 2 Bohrlöchern",
+                "priceCents": 0
+              },
+              {
+                "currency": "EUR",
+                "id": "B02S",
+                "label": "Mit 2 Schrauben",
+                "priceCents": 0
+              }
+            ]
+          }
+        ],
+        "sizeKey": "cfg_8e5ebd8e-a795-4bc8-a53f-884eb5e705d0",
+        "source": {
+          "productId": "cfg_8e5ebd8e-a795-4bc8-a53f-884eb5e705d0",
+          "revision": 2
+        }
+      }
+    ]
+  },
+  "sha256": "b38de2aba9530a86d71c61a569aee208295db3e63394b913a0dfb24ddfc52d69",
+  "actor": "Astra v9: confirmed DE gross 19%; existing designs/tier/uploads retained",
+  "createdAt": "2026-11-11T18:50:19.340Z"
+}

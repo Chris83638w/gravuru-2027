@@ -1,0 +1,16 @@
+{
+  "sourceFiles": 617,
+  "originals": 180,
+  "sourceFilesByteIdentical": true,
+  "pairedDesigns": 135,
+  "pairedObjects": 816,
+  "scale": 0.7,
+  "offsetMm": [
+    5,
+    0
+  ],
+  "maximumPositionToleranceMm": 0.002,
+  "productsReadBack": 28,
+  "allLocalDrafts": true,
+  "shopifyWrites": 0
+}

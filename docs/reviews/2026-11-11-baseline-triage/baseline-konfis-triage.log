@@ -1,0 +1,62 @@
+✖ Werkstatt einheitlich: jede Werkstattseite trägt dieselbe erzeugte Kopfzeile und das gemeinsame Raster (2.2162ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 347.3155
+
+✖ failing tests:
+
+test at app\workshop\konfis.test.mjs:160:1
+✖ Werkstatt einheitlich: jede Werkstattseite trägt dieselbe erzeugte Kopfzeile und das gemeinsame Raster (2.2162ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  ... Skipped lines
+  
+    [
+      'acryl-gallery.html',
+      'batch.html',
+      'cart-handoff.html',
+      'catalog-structure.html',
+  ...
+      'form-variants.html',
+  +   'gallery-editor.html',
+  +   'gallery-management.html',
+      'index.html',
+      'konfis.html',
+  +   'module-profiles.html',
+  +   'motif-searches.html',
+      'orders.html',
+      'production-profiles.html',
+      'profiles.html',
+      'review-snapshots.html',
+      'shop-preparation.html',
+  
+      at TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-11-11/die-vollst-ndige-bergabe-findest-du/work/issue230-integration-candidate/app/workshop/konfis.test.mjs:164:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.start (node:internal/test_runner/test:1257:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [
+      'acryl-gallery.html',    'batch.html',
+      'cart-handoff.html',     'catalog-structure.html',
+      'contours.html',         'design-dashboard.html',
+      'export-jobs.html',      'families.html',
+      'form-product.html',     'form-variants.html',
+      'gallery-editor.html',   'gallery-management.html',
+      'index.html',            'konfis.html',
+      'module-profiles.html',  'motif-searches.html',
+      'orders.html',           'production-profiles.html',
+      'profiles.html',         'review-snapshots.html',
+      'shop-preparation.html', 'tenants.html',
+      'variant-batch.html'
+    ],
+    expected: [ 'acryl-gallery.html', 'batch.html', 'cart-handoff.html', 'catalog-structure.html', 'contours.html', 'design-dashboard.html', 'export-jobs.html', 'families.html', 'form-product.html', 'form-variants.html', 'index.html', 'konfis.html', 'orders.html', 'production-profiles.html', 'profiles.html', 'review-snapshots.html', 'shop-preparation.html', 'tenants.html', 'variant-batch.html' ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

@@ -15,6 +15,7 @@ import {parseDesignSvg,formatSeries,seriesOf,assignSeries,applyPriceOverrides,pr
 import {convertFont} from './font-library.mjs';
 import {FAMILY_MATERIALS,familyProcess} from './product-families.mjs';
 import {importKey} from './katalog-import.mjs';
+import {offeredFamilyIds} from './subcategory-materials.mjs';
 
 export const MIN_TEXT_MM=3;// Chris 23.10.2026 („3 mm Text“): kleinere Mustertexte sind zu prüfen
 export const SELECTABLE_LABEL='#00ff00';// Bogenetikett grün = im Konfigurator wählbar
@@ -69,9 +70,38 @@ export function katalogContextSig(katalog,available={}){
 function cachedTargetsOf(d,katalog){
  const sig=designStamp(d)+'|'+katalogContextSig(katalog),hit=targetsOfCache.get(d.dir);
  if(hit&&hit.sig===sig)return hit.value;
- const value=designTargets(d,katalog);targetsOfCache.set(d.dir,{sig,value});return value;
+ const value=designTargets(d,katalog);targetsOfCache.set(d.dir,{sig,value});cacheWrites+=1;return value;
 }
 export const forgetDashboardCache=()=>{targetCache.clear();targetsOfCache.clear();};
+// ---- Zwischenspeicher sichern und laden (Paket 1c-2, #229) ----
+// Der kalte Durchlauf einer großen Linie dauert auf dem Server viele Minuten; ein Neustart soll ihn nicht verwerfen.
+// Gesichert werden nur Einträge aus einfachen JSON-Werten. Ein geladener Eintrag gilt wie ein im Speicher liegender nur bei
+// passender Signatur (Zeitstempel+Größe der Designdateien, Linie, Katalogkontext); sonst wird neu gerechnet.
+let cacheWrites=0;
+export const dashboardCacheWrites=()=>cacheWrites;
+const plainJson=value=>{
+ if(value===null)return true;
+ const type=typeof value;
+ if(type==='string'||type==='boolean')return true;
+ if(type==='number')return Number.isFinite(value);
+ if(type!=='object')return false;
+ if(Array.isArray(value)){for(let i=0;i<value.length;i++){if(!(i in value)||!plainJson(value[i]))return false;}return true;}
+ const proto=Object.getPrototypeOf(value);
+ if(proto!==Object.prototype&&proto!==null)return false;
+ for(const key of Object.keys(value))if(!plainJson(value[key]))return false;
+ return true;
+};
+export function exportDashboardCache(){
+ const take=map=>{const out=[];let skipped=0;for(const [dir,entry] of map){if(typeof entry?.sig==='string'&&plainJson(entry.value))out.push([dir,entry.sig,entry.value]);else skipped+=1;}return {out,skipped};};
+ const targets=take(targetCache),targetsOf=take(targetsOfCache);
+ return {targets:targets.out,targetsOf:targetsOf.out,skipped:targets.skipped+targetsOf.skipped};
+}
+export function importDashboardCache(data){
+ let loaded=0;
+ const put=(map,rows)=>{if(!Array.isArray(rows))return;for(const row of rows){if(!Array.isArray(row)||row.length!==3)continue;const [dir,sig,value]=row;if(typeof dir!=='string'||typeof sig!=='string'||value===undefined||map.has(dir))continue;map.set(dir,{sig,value});loaded+=1;}};
+ put(targetCache,data?.targets);put(targetsOfCache,data?.targetsOf);
+ return loaded;
+}
 
 // Reihenfolge (Chris 10.11.2026: „Prio haben immer unsere Designs aus dem Katalog“):
 // 0 = unser Design aus dem Corel-Bestand (Original oder Übertragung), 1 = neu entworfen, 2 = nur Bestand ohne Lieferform 2.
@@ -224,9 +254,9 @@ function attachMainProducts(katalog,line,rows,{fonts=null}={}){
   }
   const {row,alias,ambiguous}=resolved.get(main.startDesign);
   row.isStartDesign=true;
-  const master=row.lieferform2?masters.get(row.id):null,offered=main.sizesOffered??sub.sizesOffered;
-  const keys=Array.isArray(offered)?[...new Set(offered)]:[...new Set(line.families.flatMap(id=>katalog.families.get(id).sizes.map(size=>size.key)))];
-  const targets=keys.flatMap(sizeKey=>{const found=line.families.map(id=>katalog.families.get(id)).filter(family=>family.sizes.some(size=>size.key===sizeKey));return found.length?found.map(family=>({family,sizeKey})):[{family:null,sizeKey}];});
+  const master=row.lieferform2?masters.get(row.id):null,offered=main.sizesOffered??sub.sizesOffered,offeredFamilies=offeredFamilyIds(line,sub,{families:katalog.families});
+  const keys=Array.isArray(offered)?[...new Set(offered)]:[...new Set(offeredFamilies.flatMap(id=>katalog.families.get(id).sizes.map(size=>size.key)))];
+  const targets=keys.flatMap(sizeKey=>{const found=offeredFamilies.map(id=>katalog.families.get(id)).filter(family=>family.sizes.some(size=>size.key===sizeKey));return found.length?found.map(family=>({family,sizeKey})):[{family:null,sizeKey}];});
   if(!targets.length)targets.push({family:null,sizeKey:null});
   for(const {family,sizeKey} of targets){
    const baseSize=family?.sizes.find(size=>size.key===sizeKey),entry={id:main.id,customizationId:main.externalIds?.customizationId??null,name:main.name??null,
@@ -235,7 +265,7 @@ function attachMainProducts(katalog,line,rows,{fonts=null}={}){
    if(ambiguous)entry.blockers.push(blocker('design_ambiguous','Startdesign „'+main.startDesign+'“ ist über mehrere Herkunftsangaben verknüpft.'));
    else if(!master)entry.blockers.push(blocker('design_missing','Startdesign „'+main.startDesign+'“ fehlt als Lieferform 2.'));
    else if(alias)entry.blockers.push(blocker('design_alias','„'+main.startDesign+'“ ist die Herkunft von „'+master.id+'“. Der Import benötigt die eindeutige Lieferform-2-Kennung als startDesign.'));
-   if(!family){entry.blockers.push(blocker(sizeKey?'size_unknown':'size_missing',sizeKey?'Größe „'+sizeKey+'“ gehört zu keiner Familie der Linie.':'Keine angebotene Größe mit Familie vorhanden.'));row.mainProducts.push(entry);continue;}
+   if(!family){entry.blockers.push(!offeredFamilies.length?blocker('material_not_offered','Für diese Unterkategorie wird derzeit kein Material angeboten.'):blocker(sizeKey?'size_unknown':'size_missing',sizeKey?'Größe „'+sizeKey+'“ gehört zu keiner angebotenen Materialfamilie der Unterkategorie.':'Keine angebotene Größe mit Familie vorhanden.'));row.mainProducts.push(entry);continue;}
    const pricedKey=family.id+'\0'+sub.id;
    if(!pricedCache.has(pricedKey)){try{pricedCache.set(pricedKey,{family:applyPriceOverrides(family,sub)});}catch(error){pricedCache.set(pricedKey,{error:error.message});}}
    const priced=pricedCache.get(pricedKey);
@@ -293,6 +323,9 @@ export function designDashboard(root,{linie=null,reihe=null,material=null,status
  const referenced=new Set(referencedMasters(katalog,line));
  const l2=katalog.designs.masters.filter(d=>designOfLine(ctx,d)||referenced.has(d));
  const rows=[],byBestandId=new Map(),targetVersionCache=new Map();
+ // Katalogkontext einmal je Anfrage: die Signatur enthält die verfügbaren Formschriften (mehrere MB). Je Design neu gebildet
+ // kostete das auf dem Server rund zwei Minuten je Linie (Befund 10.11.2026, #229).
+ const contextSig=katalogContextSig(katalog,available);
  for(const d of l2){
   const j=d.json||{},texts=Array.isArray(j.texts)?j.texts.filter(record):[],motifs=Array.isArray(j.motifs)?j.motifs.filter(record):[];
   const fonts=[...new Set([...(Array.isArray(j.fonts)?j.fonts:[]),...texts.map(t=>t.font)].filter(f=>typeof f==='string'&&f))].map(n=>fontStatus(n,katalog,replacements));
@@ -300,16 +333,17 @@ export function designDashboard(root,{linie=null,reihe=null,material=null,status
   const row={id:d.id,name:d.name,nameSheet:typeof j.nameSheet==='string'?j.nameSheet:null,source:'lieferform2',reihe:d.seriesFolder,formatreihe:series?.key??null,familyId:series?.familyId??null,series:series?{key:series.key,sizes:series.sizes}:null,
    material:typeof j.material==='string'?j.material:(ctx.materials.length===1?ctx.materials[0]:null),process:typeof j.process==='string'?j.process:(ctx.processes.length===1?ctx.processes[0]:null),form:typeof j.form==='string'&&j.form?j.form:null,
    plate:[d.plateMm[0],d.plateMm[1]],labelColor:null,selectable:true,hidden:j.hidden===true,released:d.released===true,freigabe:d.freigabe??null,bestseller:d.bestseller,
+   katalogPrio:j.katalog?.prio===1?1:null,
    production:{isProduction:false,hasVersion:exists(path.join(d.dir,'design-produktion.svg')),of:null},duplicate:null,
    texts:{count:texts.length,fonts:fonts.map(f=>f.name),sample:texts.map(t=>typeof t.text==='string'?t.text:'').filter(Boolean).slice(0,4)},fonts,fontsOriginal:Array.isArray(j.fontsOriginal)?j.fontsOriginal.filter(f=>typeof f==='string'):[],
    motifs:motifs.length,photos:Array.isArray(j.photos)?j.photos.length:0,themes:(d.themes||[]).map(id=>({id,name:themeName(id)})),
    lieferform2:{reihe:d.seriesFolder,dir:path.relative(root,d.dir).split(path.sep).join('/'),transferFrom:j.transfer?.fromKey??j.transfer?.from??null},bestand:null,
    files:filesFor(root,{reihe:d.seriesFolder,id:d.id}),reasons:[],warnings:Array.isArray(j.warnings)?j.warnings.filter(w=>typeof w==='string'):[],
    herkunftRang:herkunftRang(j)};
-  {const sig=designStamp(d)+'|'+line.id+'|'+katalogContextSig(katalog,available),hit=targetCache.get(d.dir);
+  {const sig=designStamp(d)+'|'+line.id+'|'+contextSig,hit=targetCache.get(d.dir);
    let value=hit&&hit.sig===sig?hit.value:null;
    if(!value){let svgText=null,versions=null;// SVG und Schriftstände einmal je Design, nicht je Familie
-    value=dashboardDesignTargets(d,katalog,line,{checksumFor:family=>{try{svgText??=d.svg();versions??=targetFontVersions({...d,svg:()=>svgText},katalog,available,targetVersionCache);return designTargetChecksum(d,family,svgText,versions);}catch{return null;}}});targetCache.set(d.dir,{sig,value});}
+    value=dashboardDesignTargets(d,katalog,line,{checksumFor:family=>{try{svgText??=d.svg();versions??=targetFontVersions({...d,svg:()=>svgText},katalog,available,targetVersionCache);return designTargetChecksum(d,family,svgText,versions);}catch{return null;}}});targetCache.set(d.dir,{sig,value});cacheWrites+=1;}
    Object.assign(row,structuredClone(value));}
   if(!series)row.reasons.push(ctx.families.length?'alte Größe: '+row.plate[0]+' × '+row.plate[1]+' mm passt in keine Formatreihe der Familie (nur Einpassen, keine Übernahme).':'Formatreihe offen (Linie ohne Familie).');
   if(!d.themes||!d.themes.length)row.reasons.push('kein Thema zugeordnet.');
@@ -366,7 +400,7 @@ export function designDashboard(root,{linie=null,reihe=null,material=null,status
  }
  const startDesignSummary=attachMainProducts(katalog,line,rows,{fonts});
  for(const row of rows)row.status=row.lieferform2?(row.reasons.length?'prüfen':'ok'):'fehlt';
- rows.sort((a,b)=>a.herkunftRang-b.herkunftRang||natural.compare(a.id,b.id));
+ rows.sort((a,b)=>(a.herkunftRang??1)-(b.herkunftRang??1)||(b.katalogPrio===1)-(a.katalogPrio===1)||natural.compare(a.id,b.id));
  const count=list=>{const c={total:list.length,ok:0,'prüfen':0,fehlt:0,selectable:0,lieferform2:0,bestandOnly:0,hidden:0,freigegeben:0};for(const r of list){c[r.status]++;if(r.released)c.freigegeben++;if(r.selectable)c.selectable++;if(r.lieferform2)c.lieferform2++;else if(r.source==='bestand')c.bestandOnly++;if(r.hidden)c.hidden++;}return c;};
  const groups=(key)=>{const m=new Map();for(const r of rows){const k=r[key]??'offen';if(!m.has(k))m.set(k,[]);m.get(k).push(r);}return [...m].sort((a,b)=>natural.compare(a[0],b[0])).map(([k,list])=>({key:k,counts:count(list)}));};
  const reihen=groups('reihe'),formatreihen=groups('formatreihe'),materials=groups('material');

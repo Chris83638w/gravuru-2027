@@ -1,0 +1,127 @@
+{
+  "schema": "gravuru-missing-original-evidence-check/v1",
+  "count": 24,
+  "passed": true,
+  "checked": [
+    {
+      "id": "gedenktafeln/Menschen/Allgemein/uv-schiefer-rechteck-D1",
+      "legacyId": "GTUV-S-30x20-D1",
+      "sourceManifestSha256": "97f4188340d88d3fbb5e3f79e09d74b3ff99b5666c7a4e81a95b8e989828ee63"
+    },
+    {
+      "id": "gedenktafeln/Menschen/Allgemein/uv-schiefer-rechteck-D10",
+      "legacyId": "GTUV-S-30x20-D10",
+      "sourceManifestSha256": "97f4188340d88d3fbb5e3f79e09d74b3ff99b5666c7a4e81a95b8e989828ee63"
+    },
+    {
+      "id": "gedenktafeln/Menschen/Allgemein/uv-schiefer-rechteck-D11",
+      "legacyId": "GTUV-S-30x20-D11",
+      "sourceManifestSha256": "97f4188340d88d3fbb5e3f79e09d74b3ff99b5666c7a4e81a95b8e989828ee63"
+    },
+    {
+      "id": "gedenktafeln/Menschen/Allgemein/uv-schiefer-rechteck-D12",
+      "legacyId": "GTUV-S-30x20-D12",
+      "sourceManifestSha256": "97f4188340d88d3fbb5e3f79e09d74b3ff99b5666c7a4e81a95b8e989828ee63"
+    },
+    {
+      "id": "gedenktafeln/Menschen/Allgemein/uv-schiefer-rechteck-D15",
+      "legacyId": "GTUV-S-30x20-D15",
+      "sourceManifestSha256": "97f4188340d88d3fbb5e3f79e09d74b3ff99b5666c7a4e81a95b8e989828ee63"
+    },
+    {
+      "id": "gedenktafeln/Menschen/Allgemein/uv-schiefer-rechteck-D16",
+      "legacyId": "GTUV-S-30x20-D16",
+      "sourceManifestSha256": "97f4188340d88d3fbb5e3f79e09d74b3ff99b5666c7a4e81a95b8e989828ee63"
+    },
+    {
+      "id": "gedenktafeln/Menschen/Allgemein/uv-schiefer-rechteck-D18",
+      "legacyId": "GTUV-S-30x20-D18",
+      "sourceManifestSha256": "97f4188340d88d3fbb5e3f79e09d74b3ff99b5666c7a4e81a95b8e989828ee63"
+    },
+    {
+      "id": "gedenktafeln/Menschen/Allgemein/uv-schiefer-rechteck-D19",
+      "legacyId": "GTUV-S-30x20-D19",
+      "sourceManifestSha256": "97f4188340d88d3fbb5e3f79e09d74b3ff99b5666c7a4e81a95b8e989828ee63"
+    },
+    {
+      "id": "gedenktafeln/Menschen/Allgemein/uv-schiefer-rechteck-D2",
+      "legacyId": "GTUV-S-30x20-D2",
+      "sourceManifestSha256": "97f4188340d88d3fbb5e3f79e09d74b3ff99b5666c7a4e81a95b8e989828ee63"
+    },
+    {
+      "id": "gedenktafeln/Menschen/Allgemein/uv-schiefer-rechteck-D20",
+      "legacyId": "GTUV-S-30x20-D20",
+      "sourceManifestSha256": "97f4188340d88d3fbb5e3f79e09d74b3ff99b5666c7a4e81a95b8e989828ee63"
+    },
+    {
+      "id": "gedenktafeln/Menschen/Allgemein/uv-schiefer-rechteck-D21",
+      "legacyId": "GTUV-S-30x20-D21",
+      "sourceManifestSha256": "97f4188340d88d3fbb5e3f79e09d74b3ff99b5666c7a4e81a95b8e989828ee63"
+    },
+    {
+      "id": "gedenktafeln/Menschen/Allgemein/uv-schiefer-rechteck-D22",
+      "legacyId": "GTUV-S-30x20-D22",
+      "sourceManifestSha256": "97f4188340d88d3fbb5e3f79e09d74b3ff99b5666c7a4e81a95b8e989828ee63"
+    },
+    {
+      "id": "gedenktafeln/Menschen/Allgemein/uv-schiefer-rechteck-D23",
+      "legacyId": "GTUV-S-30x20-D23",
+      "sourceManifestSha256": "97f4188340d88d3fbb5e3f79e09d74b3ff99b5666c7a4e81a95b8e989828ee63"
+    },
+    {
+      "id": "gedenktafeln/Menschen/Allgemein/uv-schiefer-rechteck-D24",
+      "legacyId": "GTUV-S-30x20-D24",
+      "sourceManifestSha256": "97f4188340d88d3fbb5e3f79e09d74b3ff99b5666c7a4e81a95b8e989828ee63"
+    },
+    {
+      "id": "gedenktafeln/Menschen/Allgemein/uv-schiefer-rechteck-D3",
+      "legacyId": "GTUV-S-30x20-D3",
+      "sourceManifestSha256": "97f4188340d88d3fbb5e3f79e09d74b3ff99b5666c7a4e81a95b8e989828ee63"
+    },
+    {
+      "id": "gedenktafeln/Menschen/Allgemein/uv-schiefer-rechteck-D4",
+      "legacyId": "GTUV-S-30x20-D4",
+      "sourceManifestSha256": "97f4188340d88d3fbb5e3f79e09d74b3ff99b5666c7a4e81a95b8e989828ee63"
+    },
+    {
+      "id": "gedenktafeln/Menschen/Allgemein/uv-schiefer-rechteck-D5",
+      "legacyId": "GTUV-S-30x20-D5",
+      "sourceManifestSha256": "97f4188340d88d3fbb5e3f79e09d74b3ff99b5666c7a4e81a95b8e989828ee63"
+    },
+    {
+      "id": "gedenktafeln/Menschen/Allgemein/uv-schiefer-rechteck-D6",
+      "legacyId": "GTUV-S-30x20-D6",
+      "sourceManifestSha256": "97f4188340d88d3fbb5e3f79e09d74b3ff99b5666c7a4e81a95b8e989828ee63"
+    },
+    {
+      "id": "gedenktafeln/Menschen/Allgemein/uv-schiefer-rechteck-D7",
+      "legacyId": "GTUV-S-30x20-D7",
+      "sourceManifestSha256": "97f4188340d88d3fbb5e3f79e09d74b3ff99b5666c7a4e81a95b8e989828ee63"
+    },
+    {
+      "id": "gedenktafeln/Menschen/Allgemein/uv-schiefer-rechteck-D9",
+      "legacyId": "GTUV-S-30x20-D9",
+      "sourceManifestSha256": "97f4188340d88d3fbb5e3f79e09d74b3ff99b5666c7a4e81a95b8e989828ee63"
+    },
+    {
+      "id": "gedenktafeln/Tiere/Allgemein/uv-schiefer-rechteck-D17",
+      "legacyId": "GTUV-S-30x20-D17",
+      "sourceManifestSha256": "bca1ebefd8783ca6271490342060779b09c3ee1c5a2a7866bbcb6b49bda82226"
+    },
+    {
+      "id": "gedenktafeln/Tiere/Hund/uv-schiefer-rechteck-D13",
+      "legacyId": "GTUV-S-30x20-D13",
+      "sourceManifestSha256": "bca1ebefd8783ca6271490342060779b09c3ee1c5a2a7866bbcb6b49bda82226"
+    },
+    {
+      "id": "gedenktafeln/Tiere/Hund/uv-schiefer-rechteck-D14",
+      "legacyId": "GTUV-S-30x20-D14",
+      "sourceManifestSha256": "bca1ebefd8783ca6271490342060779b09c3ee1c5a2a7866bbcb6b49bda82226"
+    },
+    {
+      "id": "gedenktafeln/Tiere/Katze/uv-schiefer-rechteck-D8",
+      "legacyId": "GTUV-S-30x20-D8",
+      "sourceManifestSha256": "bca1ebefd8783ca6271490342060779b09c3ee1c5a2a7866bbcb6b49bda82226"
+    }
+  ]
+}

@@ -14,15 +14,40 @@ const product=v=>/^cfg_[a-f0-9-]{36}$/.test(v||'');
 export function createCatalogLiveOrders({database:db,tenantId,clock=Date.now}){
  const exists=()=>!!db.prepare("SELECT 1 FROM sqlite_master WHERE type='table' AND name='catalog_live_order_approvals'").get();
  const active=(shopDomain,p)=>db.prepare('SELECT r.variant_gid FROM shop_product_binding_heads h JOIN shop_product_binding_revisions r ON r.tenant_id=h.tenant_id AND r.shop=h.shop AND r.variant_gid=h.variant_gid AND r.revision=h.revision WHERE r.tenant_id=? AND r.shop=? AND r.store_id=? AND r.product_gid=? AND r.cfg_id=? AND r.cfg_revision=?').all(tenantId,shopDomain,'acryl',p.shopifyProductId,p.productId,p.productRevision).map(r=>r.variant_gid).sort();
- function approval({shopDomain,shopifyProductId,shopifyVariantId,productId,productRevision}={}){
+ function approval({shopDomain,shopifyProductId,shopifyVariantId,productId,productRevision}={},{documentMemo=null,documents=new Map()}={}){
   if(!shop(shopDomain)||!gid(shopifyProductId,'Product')||!gid(shopifyVariantId,'ProductVariant')||!product(productId)||!Number.isSafeInteger(productRevision)||productRevision<1||!exists())return null;
   const b=db.prepare('SELECT 1 FROM form_shop_bindings WHERE tenant_id=? AND shop=? AND variant_id=? AND product_id=? AND product_revision=?').get(tenantId,shopDomain,shopifyVariantId.split('/').at(-1),productId,productRevision);
   if(!b)return null;
   const row=db.prepare('SELECT * FROM catalog_live_order_approvals WHERE tenant_id=? AND shop=? AND product_gid=? AND cfg_id=? AND cfg_revision=?').get(tenantId,shopDomain,shopifyProductId,productId,productRevision);
   if(!row||!JSON.parse(row.variants_json).includes(shopifyVariantId))return null;
-  const source=db.prepare('SELECT document FROM product_revisions WHERE tenant_id=? AND product_id=? AND revision=?').get(tenantId,productId,productRevision);
-  if(!source||sha(source.document)!==row.document_sha256)fail(409,'Der freigegebene Katalogstand stimmt nicht mehr überein.');
+  const digestOf=()=>{
+  const key=productId+'@'+productRevision,cached=documents.get(key);
+  // approvals() owns one synchronous SQLite read transaction. Other connections
+  // cannot change its snapshot; same-connection writes must force a fresh raw
+  // comparison. This avoids rereading a large bank once per bound variant.
+  const changes=db.prepare('SELECT total_changes() AS count').get().count;
+  const schemaVersion=db.prepare('PRAGMA schema_version').get().schema_version,dataVersion=db.prepare('PRAGMA data_version').get().data_version;
+  let digest;
+  if(cached&&cached.changes===changes&&cached.schemaVersion===schemaVersion&&cached.dataVersion===dataVersion&&db.isTransaction)digest=cached.sha256;
+  else{
+   const source=db.prepare('SELECT document FROM product_revisions WHERE tenant_id=? AND product_id=? AND revision=?').get(tenantId,productId,productRevision);
+   if(!source)fail(409,'Der freigegebene Katalogstand fehlt.');
+   if(cached&&cached.document!==source.document)fail(409,'Der freigegebene Katalogstand wurde innerhalb der Prüfung geändert.');
+   digest=cached?.sha256??sha(source.document);documents.set(key,{document:source.document,sha256:digest,changes,schemaVersion,dataVersion});
+  }
+   return digest;
+  };
+  // Request-local batch guards and the revision memo share the same digest computation.
+  // The approval row and exact variant binding are still checked on every call.
+  const actual=documentMemo?documentMemo.derive({scope:'catalog-live',kind:'document-sha256',db,tenantId,productId,revision:productRevision,compute:digestOf}).value:digestOf();
+  if(actual===null||actual!==row.document_sha256)fail(409,'Der freigegebene Katalogstand stimmt nicht mehr überein.');
   return {id:row.approval_id,approvedAt:row.approved_at,kind:'catalog'};
+ }
+ function approvals(inputs){
+  if(!Array.isArray(inputs)||!inputs.length||inputs.length>5000)fail(422,'Eine begrenzte Liste ausdrücklicher Freigabeprüfungen ist erforderlich.');
+  const own=!db.isTransaction;if(own)db.exec('BEGIN');
+  try{const documents=new Map(),result=inputs.map(input=>approval(input,{documents}));if(own)db.exec('COMMIT');return result;}
+  catch(error){if(own)db.exec('ROLLBACK');throw error;}
  }
  function approve({shopDomain,products,approvalId,registry}={}){
   if(!shop(shopDomain)||!Array.isArray(products)||!products.length||typeof approvalId!=='string'||!/^[A-Za-z0-9_.:-]{1,160}$/.test(approvalId)||typeof registry?.resolve!=='function')fail(422,'Eine ausdrückliche Katalogfreigabe mit festen Produktständen ist erforderlich.');
@@ -41,8 +66,9 @@ export function createCatalogLiveOrders({database:db,tenantId,clock=Date.now}){
     if(!plan.sourceReady||!plan.variants.length)fail(422,'Die Katalogausführungen sind noch nicht vollständig vorbereitet.');
     const variants=active(shopDomain,p),seen=new Set();
     if(variants.length!==plan.variants.length)fail(422,'Nicht alle Katalogausführungen sind aktiv gebunden.');
-    for(const variant of variants){
-     const bound=registry.resolve({shopifyProductId:p.shopifyProductId,shopifyVariantId:variant}),k=key(bound.options),expected=plan.variants.find(v=>key(v.options)===k);
+    const pairs=variants.map(variant=>({shopifyProductId:p.shopifyProductId,shopifyVariantId:variant})),bindings=typeof registry.resolveMany==='function'?registry.resolveMany(pairs):pairs.map(pair=>registry.resolve(pair));
+    for(const bound of bindings){
+     const k=key(bound.options),expected=plan.variants.find(v=>key(v.options)===k);
      if(bound.storeId!=='acryl'||bound.tenantId!==tenantId||bound.shopDomain!==shopDomain||bound.productId!==p.productId||bound.productRevision!==p.productRevision||!expected||expected.priceCents!==bound.unitCents||seen.has(k))fail(422,'Katalogbindung, Auswahl oder Preis passen nicht zum festen Produktstand.');
      seen.add(k);
     }
@@ -61,5 +87,5 @@ export function createCatalogLiveOrders({database:db,tenantId,clock=Date.now}){
    return {schema:'gravuru-catalog-live-release/v1',shopDomain,approvalId,products:entries.length,created,productionReady:false};
   }catch(error){if(own)db.exec('ROLLBACK');throw error;}
  }
- return {approval,approve};
+ return {approval,approvals,approve};
 }

@@ -1,9 +1,11 @@
 // Shared UI rules. These do not authorize a Shopify order or a paid download.
 import {cleanObject} from './contract.mjs';
+import {moduleEnabled,photoWithVectorLogoAllowed} from './module-profile.mjs';
 export {carryPersonalObjects,mapPersonalObjects} from './field-mapping.mjs';
-export const uploadAllowed=(config,kind)=>kind==='photo'?config?.logo?.vectorUpload!==true&&config?.photo?.enabled!==false:kind==='logo'?config?.logo?.enabled!==false:false;
+export const uploadAllowed=(config,kind)=>kind==='photo'?moduleEnabled(config,'photo')&&photoWithVectorLogoAllowed(config)&&config?.photo?.enabled!==false:kind==='logo'?moduleEnabled(config,'logo')&&config?.logo?.enabled!==false:false;
 export function photoAvailableForDesign(config,designId){
-  if(config?.logo?.vectorUpload===true||config?.photo?.enabled===false)return false;
+  if(!moduleEnabled(config,'photo')||!photoWithVectorLogoAllowed(config)||config?.photo?.enabled===false)return false;
+  if(config?.photoDesignPricing===true)return true;
   const design=config?.profile?.designs?.find(d=>d.id===designId);
   return !design?.importedSource||design.objects.some(o=>o.type==='photoSlot');
 }
@@ -14,6 +16,8 @@ export function photoAvailableForDesign(config,designId){
 // einen Fotobereich hat oder Logos erlaubt sind (Produkte mit Foto bleiben unverändert).
 export const designsHaveUploadLayer=config=>!!config?.profile?.designs?.some(d=>(d.objects||[]).some(o=>o.type==='photoSlot'||o.type==='image'));
 export function uploadTabVisible(config,designId,{photoEnabled=true,logoEnabled=true}={}){
+  photoEnabled=photoEnabled&&moduleEnabled(config,'photo');logoEnabled=logoEnabled&&moduleEnabled(config,'logo');
+  if(!photoEnabled&&!logoEnabled)return false;
   if(logoEnabled&&config?.logo?.enabled===true&&config.logo.vectorUpload===true)return true;
   if(!photoEnabled&&!designsHaveUploadLayer(config))return false;
   return photoAvailableForDesign(config,designId)||logoEnabled;

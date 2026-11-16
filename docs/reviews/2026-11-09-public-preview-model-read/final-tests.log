@@ -1,0 +1,28 @@
+✔ read phases reuse detached immutable JSON only synchronously; callers outside keep normal semantics (2.0648ms)
+✔ await boundaries do not retain a read phase or leak into a concurrent request (0.5014ms)
+✔ same-connection writes and rolled-back write epochs force a full read again (0.9928ms)
+✔ committed writes on another connection invalidate the phase without opening a read transaction (12.9962ms)
+✔ ordinary and temporary schema changes including a shadow table invalidate the phase (0.8857ms)
+✔ a write inside the synchronous loader is detected before any value can be reused (0.9158ms)
+✔ native repository preserves previous revisions and rechecks source changes in the same phase (4.3687ms)
+✔ strict native resolver supports prepare, full-binding warm lookup and direct read without trusting claimed binding fields (35.1923ms)
+✔ exact first three own templates persist over restart; lookups never render or write product data (34.9442ms)
+✔ revoked approval and inactive binding reject direct public bytes as well as warm URLs (44.661ms)
+✔ model, renderer, revision, options, assignment, tenant and shop changes cannot revive a stale public URL (112.3351ms)
+✔ identical bytes receive distinct tenant URLs and revocation cannot borrow another tenant association (34.3244ms)
+✔ tampered signed metadata/body, secret rotation and unsupported renderer retain the private fallback (22.6092ms)
+✔ customer media never becomes a prepared public template; actual private preview remains available (96.1108ms)
+✔ binding changes across preparation yield are rejected before any persistent write (3.0047ms)
+✔ cache is bounded, tamper resistant and fingerprint covers the actual renderer graph (34.0771ms)
+✔ repreparing changed model bytes uses a fresh native renderer instead of the old gallery memory cache (39.3017ms)
+✔ combined module/cache gate retires existing public URLs and prepares nothing when design choice is disabled (25.4228ms)
+✔ native read proof never caches binding or release and mutable legacy models retain the full fallback (31.7999ms)
+✔ public original model proof keeps exact native bytes, stays deeply immutable and refreshes current publication and pause (1155.506ms)
+ℹ tests 20
+ℹ suites 0
+ℹ pass 20
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1599.8997

@@ -1,4 +1,4 @@
-import {quote,resolvedOptions,choiceOptions,variantCombinations,applyQuantityTier,quantityTiersOpen,selectedProfile} from './contract.mjs';
+import {quote,resolvedOptions,choiceOptions,variantCombinations,applyQuantityTier,quantityTiersOpen,selectedProfile,photoPolicyForDesign} from './contract.mjs';
 import {quantityTierLabels} from './quantity-tiers.mjs';
 import {isFamilyFormats,familyFormatSelection} from './family-formats.mjs';
 import {uploadQuote} from './ux-model.mjs';
@@ -10,8 +10,8 @@ const baseVariantPrice=(config,options)=>quote(config,[],isFamilyFormats(config)
 export const variantKey=options=>JSON.stringify(Object.entries(options).sort());
 export function commercePrice(config,state,quantity=1){
  const q=quote(config,state.objects,state.designId,state.mOptions,quantity);
- if(isFamilyFormats(config)){const {variant}=familyFormatSelection(config,state.mOptions);q.selectedBasePriceCents=variant.basePriceCents;q.selectedTierLabels=quantityTierLabels({quantityTiers:variant.quantityTiers});}
- const photos=uploadQuote(state.objects,quantity,false,config.photo,config.logo);
+ if(isFamilyFormats(config)){const {variant}=familyFormatSelection(config,state.mOptions);q.selectedBasePriceCents??=variant.basePriceCents;q.selectedTierLabels=quantityTierLabels({quantityTiers:variant.quantityTiers});}
+ const photos=uploadQuote(state.objects,quantity,false,photoPolicyForDesign(config,state.designId,state.mOptions),config.logo);
  const uploads={chargedUploads:photos.chargedUploads??(config.photo.extraPriceCents?photos.unitCents/config.photo.extraPriceCents:0),...(photos.chargedLogos===undefined?{}:{chargedLogos:photos.chargedLogos})};
  // Explicit new contract: discount the complete unit once, including all photos.
  // Older saved unscoped revisions remain readable with their original arithmetic.
@@ -39,6 +39,7 @@ export function selectCommerceVariant(config,binding,state,quantity=1){
  if(!variant)throw Error('Diese Ausführung ist derzeit nicht bestellbar.');
  if(variant.priceCents!==baseVariantPrice(config,price.options))throw Error('Der Shop-Preis passt nicht mehr zur gespeicherten Ausführung.');
  if(binding.priceMode!=='shopify-cart-transform'&&((price.chargedMotifs??price.additionalMotifs)||price.chargedUploads||price.chargedLogos||price.fieldCents))throw Error(SURCHARGE_UNAVAILABLE_MESSAGE);
+ if(binding.priceMode!=='shopify-cart-transform'&&config.photoDesignPricing&&price.unitCents!==variant.priceCents)throw Error(SURCHARGE_UNAVAILABLE_MESSAGE);
  // Ein fester Variantenpreis kann keine Staffel abbilden; der Shop würde den Listenpreis berechnen.
  if(binding.priceMode!=='shopify-cart-transform'&&price.quantityTier)throw Error('Die Mengenstaffel ist im Shop-Warenkorb noch nicht freigeschaltet.');
  return {...price,variantId:variant.id,baseVariantCents:variant.priceCents};

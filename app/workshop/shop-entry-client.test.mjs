@@ -57,7 +57,7 @@ test('client sends the session only as a header, validates the model answer and 
 test('normal-cart preparation uses private headers and never treats a prepared URL as a confirmed payment',async()=>{
  const calls=[],response={mode:'theme',handoffUrl:'https://gravuru-design.myshopify.com/apps/konfigurator/cart#handoff='+'c'.repeat(64),totalCents:1499,paymentConfirmed:false};
  const c=createShopEntryClient({token,fetchImpl:async(url,options)=>{calls.push({url,options});return Response.json(response);}});
- const input={draftId:adraft,expectedRevision:3,quantity:1,configId:konfig,cartLineId:'theme',cartRevision:1};
+ const input={draftId:adraft,expectedRevision:3,quantity:1,configId:konfig,cartLineId:'theme',cartRevision:1,presentation:'prio-r15'};
  assert.deepEqual(await c.submitThemeCart(input,{draftToken:'b'.repeat(64)}),response);
  assert.equal(calls[0].url,'/api/shop-entry/theme-cart');assert.equal(calls[0].options.headers['X-Gravuru-Shop-Session'],token);assert.equal(calls[0].options.headers['X-Gravuru-Draft'],'b'.repeat(64));
  assert.deepEqual(JSON.parse(calls[0].options.body),input);assert.equal(calls[0].options.credentials,'omit');
@@ -154,6 +154,11 @@ test('shop embed accepts messages only from the editor host and this frame, and 
  assert.equal(startUrl({href:'/apps/konfigurator/start?product=1&variant=2&back=%2Fproducts%2Fx'}),'https://gravuru-design.myshopify.com/apps/konfigurator/start?product=1&variant=2&back=%2Fproducts%2Fx&embed=1');
  assert.equal(startUrl({href:'https://evil.example/apps/konfigurator/start?product=1'}),null);
  assert.equal(startUrl({href:'/apps/other/start?product=1'}),null);
+ const preview='https://test-92055503228.shopifypreview.com';
+ globalThis.location={href:preview+'/products_preview?preview_key=test',origin:preview};
+ assert.equal(startUrl({href:'/apps/konfigurator/start?product=1&variant=2'}),null,'Entwurf öffnet den normalen Seitenlink, kein gesperrtes iframe');
+ globalThis.location={href:'https://gravuru-design.myshopify.com/products/x',origin:'https://gravuru-design.myshopify.com'};
+ assert.match(startUrl({href:'/apps/konfigurator/start?product=1&variant=2'}),/&embed=1$/,'Der normale Shop behält die Einbettung');
 });
 
 test('global shop embed: product data from the theme block, own start link, buy buttons of exactly this product hidden',async t=>{
@@ -285,6 +290,11 @@ test('start ticket: fetched once per start address through the proxy, only edito
  answer=()=>({ok:false,json:async()=>({})});const failing=key+'&f=1',before=calls.length;
  await tickets.load(failing);await tickets.load(failing);await tickets.load(failing);assert.equal(calls.length,before+1);
  time+=61*1000;answer=()=>({ok:true,json:async()=>({url:'https://app.example/y',expiresAt:new Date(time+4*3600e3).toISOString()})});assert.equal(await tickets.load(failing),'https://app.example/y');assert.equal(calls.length,before+2);
+ const warmManifest={schema:'gravuru-shop-warm/v1',fonts:[],motifs:[]};
+ for(const [warmURL,expected] of [['https://app.example/konfigurator/shop/warm/',true],['https://evil.example/konfigurator/shop/warm/',false],['https://user:password@app.example/konfigurator/shop/warm/',false],['https://app.example/konfigurator/shop/warm/?x=1',false]]){
+  const warmKey=key+'&warm='+encodeURIComponent(warmURL);answer=()=>({ok:true,json:async()=>({url:'https://app.example/y',expiresAt:new Date(time+4*3600e3).toISOString(),warm:{url:warmURL,manifest:warmManifest}})});
+  await tickets.load(warmKey);assert.equal(!!tickets.warm(warmKey),expected);
+ }
  assert.equal(await tickets.load(null),null);
 });
 
@@ -342,4 +352,21 @@ test('hashed gallery previews use browser caching; unavailable cache falls back 
  await client.loadDesignPreview('signed-choice',url);assert.equal(calls[0].options.cache,'force-cache');assert.equal(calls[0].options.headers,undefined);
  found=false;await client.loadDesignPreview('signed-choice',url);assert.equal(calls.at(-1).options.headers['X-Gravuru-Shop-Session'],token);
  await client.loadDesignPreview('signed-choice','https://foreign.example/x.svg');assert.ok(calls.every(c=>!c.path.includes('foreign.example')));
+});
+
+
+test('design search query is encoded separately from fixed options and preserves private session headers',async()=>{
+ const calls=[],client=createShopEntryClient({token,fetchImpl:async(url,options)=>{calls.push({url,options});return Response.json({items:[],total:0,nextPage:null});}});
+ await client.loadDesignGallery(0,'preferred',{size:'fixed'},'Haus & Familie');const url=new URL(calls[0].url,'http://localhost');assert.equal(url.searchParams.get('q'),'Haus & Familie');assert.equal(url.searchParams.get('size'),'fixed');assert.equal(calls[0].options.headers['X-Gravuru-Shop-Session'],token);
+ for(const q of ['x'.repeat(81),'a\nb',{}])await assert.rejects(client.loadDesignGallery(0,'preferred',null,q));assert.equal(calls.length,1);
+});
+
+test('preview cancellation reaches public and private fetches; cancellation prevents fallback requests',async()=>{
+ const url='/konfigurator/shop/vorschauen/'+'a'.repeat(64)+'.svg',controller=new AbortController(),calls=[];
+ const client=createShopEntryClient({token,fetchImpl:async(path,options)=>{calls.push({path,options});if(path===url){controller.abort();return new Response('',{status:404});}return new Response('<svg/>');}});
+ await assert.rejects(client.loadDesignPreview('signed-choice',url,controller.signal),{name:'AbortError'});
+ assert.equal(calls.length,1);assert.equal(calls[0].options.signal,controller.signal);assert.equal(calls[0].options.headers,undefined);
+ await assert.rejects(client.loadDesignPreview('signed-choice',undefined,controller.signal),{name:'AbortError'});assert.equal(calls.length,1);
+ const fresh=new AbortController();assert.equal(await (await client.loadDesignPreview('signed-choice',undefined,fresh.signal)).text(),'<svg/>');
+ assert.equal(calls[1].options.signal,fresh.signal);assert.equal(calls[1].options.headers['X-Gravuru-Shop-Session'],token);
 });

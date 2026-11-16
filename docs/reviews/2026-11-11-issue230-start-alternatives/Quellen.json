@@ -1,0 +1,905 @@
+{
+  "schema": "gravuru-existing-start-alternatives/v1",
+  "createdAt": "2026-11-11T17:45:32.831Z",
+  "status": "proposals-not-approved",
+  "sourceRun": "v8",
+  "catalogCommit": "8236b8bfab7322447ec46661c116fa526331af3d",
+  "newDesigns": 0,
+  "modifiedDesigns": 0,
+  "planWrites": 0,
+  "xlsxWrites": 0,
+  "renderer": "work/search-material-final/app/workshop/product-preview.mjs:productPreview",
+  "browserScreenshots": false,
+  "groups": [
+    {
+      "key": "A",
+      "size": "12 × 8 cm",
+      "cards": [
+        {
+          "label": "A1",
+          "catalogId": "TAE-V2A-8x5-D4",
+          "designId": "katalog-TAE-V2A-8x5-D4",
+          "title": "Versetzt mit Trennlinie",
+          "sourcePath": "work/product-plans-catalog/designs/edelstahl-gravur-ab-80x53/TAE-V2A-8x5-D4/design.json",
+          "sourceSha256": "1bcbfb331d0098e51892abf522f7d12f31391f112426a856feb866dc591114bd",
+          "sourceName": "Zwei Zeilen, versetzt mit Linie",
+          "sourceOriginalMode": "existing catalog template",
+          "sourceFonts": [
+            "Michroma"
+          ],
+          "views": [
+            {
+              "material": "acrylic",
+              "workbook": "Tuerschild-Acrylglas-3mm_v4",
+              "planId": "pgp_aad6d5ae-b255-4d19-8c92-9d91ba09d445",
+              "planHash": "7079dae2814c9c17526ae3c254696ccd2b253318066b38a435f7a9cfb610e197",
+              "planFileSha256": "cf747b94de0255e03c5e04f66d2f829e34be8db6c0fbd0b444e8711a212b49c2",
+              "options": {
+                "size": "TS-Acryl-AB-120X80-T30-SW",
+                "color": "schwarz",
+                "mounting": "K00"
+              },
+              "geometry": {
+                "cornerRadiusMm": 5,
+                "height": 80,
+                "holes": [],
+                "safeMarginMm": 0,
+                "shape": "rect",
+                "width": 120
+              },
+              "materialProfile": {
+                "color": "#17191b",
+                "engravingSide": "back",
+                "kind": "acrylic",
+                "thicknessMm": 3,
+                "variant": "schwarz"
+              },
+              "designSha256": "08f75820d8cfaa18d1e503d806986688a7becc31025243b9694bc819713e8285",
+              "svgSha256": "60983cf8dd3bd6cfb46b0b67bd930932f96513a50bf03d9cd833e44bc632036e",
+              "pngSha256": "26f1c19101a8fc567a11fc3e52d95ad39e150311bafb281d0e3a68ec13f7ee3a",
+              "file": "Einzelansichten/A1-acrylic.png",
+              "svgFile": "Einzelansichten/A1-acrylic.svg",
+              "width": 1200,
+              "height": 826
+            }
+          ]
+        },
+        {
+          "label": "A2",
+          "catalogId": "TAE-V2A-8x5-D23",
+          "designId": "katalog-TAE-V2A-8x5-D23",
+          "title": "Schreibschrift mit Haus",
+          "sourcePath": "work/product-plans-catalog/designs/edelstahl-gravur-ab-80x53/TAE-V2A-8x5-D23/design.json",
+          "sourceSha256": "97bb1ee6eeeb6046ab30f1c6745e85176d7a04e38f718c069121c0ea1603bf73",
+          "sourceName": "Vor- und Nachname mit Haus",
+          "sourceOriginalMode": "existing catalog template",
+          "sourceFonts": [
+            "Rochester"
+          ],
+          "views": [
+            {
+              "material": "acrylic",
+              "workbook": "Tuerschild-Acrylglas-3mm_v4",
+              "planId": "pgp_aad6d5ae-b255-4d19-8c92-9d91ba09d445",
+              "planHash": "7079dae2814c9c17526ae3c254696ccd2b253318066b38a435f7a9cfb610e197",
+              "planFileSha256": "cf747b94de0255e03c5e04f66d2f829e34be8db6c0fbd0b444e8711a212b49c2",
+              "options": {
+                "size": "TS-Acryl-AB-120X80-T30-SW",
+                "color": "schwarz",
+                "mounting": "K00"
+              },
+              "geometry": {
+                "cornerRadiusMm": 5,
+                "height": 80,
+                "holes": [],
+                "safeMarginMm": 0,
+                "shape": "rect",
+                "width": 120
+              },
+              "materialProfile": {
+                "color": "#17191b",
+                "engravingSide": "back",
+                "kind": "acrylic",
+                "thicknessMm": 3,
+                "variant": "schwarz"
+              },
+              "designSha256": "cbf5beb4a4e791b94526fd3a652b1ccccd484d1929f07e3ae24197d9369793a9",
+              "svgSha256": "9dd6470b55170f422edc04c141be60a43ced39bbfdad579db2487dfad2e32c6d",
+              "pngSha256": "9d5e5ab553a47b82b6bea026a97c31b51f10eec6cba7d4b1cdb321aca1c4b751",
+              "file": "Einzelansichten/A2-acrylic.png",
+              "svgFile": "Einzelansichten/A2-acrylic.svg",
+              "width": 1200,
+              "height": 826
+            }
+          ]
+        },
+        {
+          "label": "A3",
+          "catalogId": "TAE-V2A-8x5-D801",
+          "designId": "katalog-TAE-V2A-8x5-D801",
+          "title": "Hausnummer und Name",
+          "sourcePath": "work/product-plans-catalog/designs/edelstahl-gravur-ab-80x53/TAE-V2A-8x5-D801/design.json",
+          "sourceSha256": "17712b48391dbb9ab6bf5474940d9d7afc66e837623e0f141e0e1471776a1dae",
+          "sourceName": "Hausnummer groß – feine Ziffer, Name daneben",
+          "sourceOriginalMode": "neu",
+          "sourceFonts": [
+            "Montserrat",
+            "Montserrat Light",
+            "Poppins ExtraLight"
+          ],
+          "views": [
+            {
+              "material": "acrylic",
+              "workbook": "Tuerschild-Acrylglas-3mm_v4",
+              "planId": "pgp_aad6d5ae-b255-4d19-8c92-9d91ba09d445",
+              "planHash": "7079dae2814c9c17526ae3c254696ccd2b253318066b38a435f7a9cfb610e197",
+              "planFileSha256": "cf747b94de0255e03c5e04f66d2f829e34be8db6c0fbd0b444e8711a212b49c2",
+              "options": {
+                "size": "TS-Acryl-AB-120X80-T30-SW",
+                "color": "schwarz",
+                "mounting": "K00"
+              },
+              "geometry": {
+                "cornerRadiusMm": 5,
+                "height": 80,
+                "holes": [],
+                "safeMarginMm": 0,
+                "shape": "rect",
+                "width": 120
+              },
+              "materialProfile": {
+                "color": "#17191b",
+                "engravingSide": "back",
+                "kind": "acrylic",
+                "thicknessMm": 3,
+                "variant": "schwarz"
+              },
+              "designSha256": "3c73a0993c26ffc23fa51b257fa597f21530f123b8819f09869400052831d6f2",
+              "svgSha256": "4d28c7eed4fa79e292801a01c9b0bdb62c35cf2f40e8e9a8927da7de440d7db2",
+              "pngSha256": "51ca5cd906e14f8baf719f1d14f37dc1c507dc36ca83d3df901c7d17ccae29cc",
+              "file": "Einzelansichten/A3-acrylic.png",
+              "svgFile": "Einzelansichten/A3-acrylic.svg",
+              "width": 1200,
+              "height": 826
+            }
+          ]
+        }
+      ],
+      "contactSheet": "A-Hauptacryl-12x8-Alternativen.png"
+    },
+    {
+      "key": "B",
+      "size": "5 × 2 cm",
+      "cards": [
+        {
+          "label": "B1",
+          "catalogId": "TRE-V2A-5x2-D4",
+          "designId": "katalog-TRE-V2A-5x2-D4",
+          "title": "Versetzt mit Trennlinie",
+          "sourcePath": "work/product-plans-catalog/designs/edelstahl-gravur-50x20/TRE-V2A-5x2-D4/design.json",
+          "sourceSha256": "44290e4977baf237f5c85b9198bcab71256e219889e24cc0a32a774a34592fd4",
+          "sourceName": "Zwei Zeilen, versetzt mit Linie",
+          "sourceOriginalMode": "existing catalog template",
+          "sourceFonts": [
+            "Michroma"
+          ],
+          "views": [
+            {
+              "material": "acrylic",
+              "workbook": "Tuerschild-Acrylglas-3mm-5x2_v2",
+              "planId": "pgp_03932c0e-6f8f-4177-8ab5-cf7891b5bcdc",
+              "planHash": "01cf26109b3e49708f122fc7fb46e2493faad1be1e07235b0ff33bed3e28bc96",
+              "planFileSha256": "356337f47c2cb5bda87a0c5014898aba4d7b288b34c463aa3953bb42fb3434c8",
+              "options": {
+                "color": "schwarz",
+                "mounting": "K00"
+              },
+              "geometry": {
+                "cornerRadiusMm": 0,
+                "height": 20,
+                "holes": [],
+                "safeMarginMm": 0,
+                "shape": "rect",
+                "width": 50
+              },
+              "materialProfile": {
+                "color": "#17191b",
+                "engravingSide": "back",
+                "kind": "acrylic",
+                "thicknessMm": 3,
+                "variant": "schwarz"
+              },
+              "designSha256": "a29e6434d91ad35de1b52adf89ab3d731ad5c8e754365a7b52d18b18d1c9fb49",
+              "svgSha256": "e2c7feebd04dc86dbef4d5f4593511122416001b02f7794909f94abaea58a108",
+              "pngSha256": "c4cb0348d116e8ff0394ac81c2cdd29ee7c164a3114cabdcb3784aac8d36f7cb",
+              "file": "Einzelansichten/B1-acrylic.png",
+              "svgFile": "Einzelansichten/B1-acrylic.svg",
+              "width": 1200,
+              "height": 527
+            },
+            {
+              "material": "steel",
+              "workbook": "Tuerschild-Edelstahl-5x2_v1",
+              "planId": "pgp_fae5b365-a7c0-4d85-9096-e9f5670b5b21",
+              "planHash": "ac2f8ce469cf862471a6c1c35f7c6a0142bf25b235b00b20e8038d23551a8309",
+              "planFileSha256": "6122ec0199223cc4e71ca551acc64845e648608772359a9180afd5c93232ef93",
+              "options": {
+                "mounting": "K00"
+              },
+              "geometry": {
+                "cornerRadiusMm": 0,
+                "height": 20,
+                "holes": [],
+                "safeMarginMm": 0,
+                "shape": "rect",
+                "width": 50
+              },
+              "materialProfile": {
+                "color": "#bac2c4",
+                "kind": "steel",
+                "thicknessMm": 1.5
+              },
+              "designSha256": "c1ebb692795f6710381ee904f0176876d7b3447e727f966b942e2f8bbc8595be",
+              "svgSha256": "b8dcaf05e0629ff872065f4191593cef0c2d2b45270978ef21a5ecdb648eb4b0",
+              "pngSha256": "ea02af353a3a68666559d3ede7ee8c3fc934ec991a4c34d7d6c84f895483f1c5",
+              "file": "Einzelansichten/B1-steel.png",
+              "svgFile": "Einzelansichten/B1-steel.svg",
+              "width": 1200,
+              "height": 527
+            }
+          ]
+        },
+        {
+          "label": "B2",
+          "catalogId": "TRE-V2A-5x2-D23",
+          "designId": "katalog-TRE-V2A-5x2-D23",
+          "title": "Schreibschrift mit Haus",
+          "sourcePath": "work/product-plans-catalog/designs/edelstahl-gravur-50x20/TRE-V2A-5x2-D23/design.json",
+          "sourceSha256": "6795a82533952fc8d62228bbfa3198aded14d72f9336ca647eb9f5e71649170a",
+          "sourceName": "Vor- und Nachname mit Haus",
+          "sourceOriginalMode": "existing catalog template",
+          "sourceFonts": [
+            "Rochester"
+          ],
+          "views": [
+            {
+              "material": "acrylic",
+              "workbook": "Tuerschild-Acrylglas-3mm-5x2_v2",
+              "planId": "pgp_03932c0e-6f8f-4177-8ab5-cf7891b5bcdc",
+              "planHash": "01cf26109b3e49708f122fc7fb46e2493faad1be1e07235b0ff33bed3e28bc96",
+              "planFileSha256": "356337f47c2cb5bda87a0c5014898aba4d7b288b34c463aa3953bb42fb3434c8",
+              "options": {
+                "color": "schwarz",
+                "mounting": "K00"
+              },
+              "geometry": {
+                "cornerRadiusMm": 0,
+                "height": 20,
+                "holes": [],
+                "safeMarginMm": 0,
+                "shape": "rect",
+                "width": 50
+              },
+              "materialProfile": {
+                "color": "#17191b",
+                "engravingSide": "back",
+                "kind": "acrylic",
+                "thicknessMm": 3,
+                "variant": "schwarz"
+              },
+              "designSha256": "51aebaee0433588fc849c94915f8ec718523d1295d7ce335d5140999ab4c1630",
+              "svgSha256": "9b51430dc1537041ca2f1a4f35291adf36a711c05e1f69b177d8766110d443cb",
+              "pngSha256": "dcab1fd4f51d0809484499c92bac8ec1520b160927420b3f5132cb6b08cb4fa3",
+              "file": "Einzelansichten/B2-acrylic.png",
+              "svgFile": "Einzelansichten/B2-acrylic.svg",
+              "width": 1200,
+              "height": 527
+            },
+            {
+              "material": "steel",
+              "workbook": "Tuerschild-Edelstahl-5x2_v1",
+              "planId": "pgp_fae5b365-a7c0-4d85-9096-e9f5670b5b21",
+              "planHash": "ac2f8ce469cf862471a6c1c35f7c6a0142bf25b235b00b20e8038d23551a8309",
+              "planFileSha256": "6122ec0199223cc4e71ca551acc64845e648608772359a9180afd5c93232ef93",
+              "options": {
+                "mounting": "K00"
+              },
+              "geometry": {
+                "cornerRadiusMm": 0,
+                "height": 20,
+                "holes": [],
+                "safeMarginMm": 0,
+                "shape": "rect",
+                "width": 50
+              },
+              "materialProfile": {
+                "color": "#bac2c4",
+                "kind": "steel",
+                "thicknessMm": 1.5
+              },
+              "designSha256": "2905985bfa15d86a525c10a8f4f590c654fe23bae27fa75be4dedac6d57829b4",
+              "svgSha256": "7a87848f570661a9bce71dbc1767ed12cf7af913656b777d5acc13f6d8ed3f97",
+              "pngSha256": "c1db1cd2f02663767ec31227ca58cec5500ea62dfd19411aa313a59e168784c5",
+              "file": "Einzelansichten/B2-steel.png",
+              "svgFile": "Einzelansichten/B2-steel.svg",
+              "width": 1200,
+              "height": 527
+            }
+          ]
+        },
+        {
+          "label": "B3",
+          "catalogId": "TRE-V2A-5x2-D801",
+          "designId": "katalog-TRE-V2A-5x2-D801",
+          "title": "Hausnummer und Name",
+          "sourcePath": "work/product-plans-catalog/designs/edelstahl-gravur-50x20/TRE-V2A-5x2-D801/design.json",
+          "sourceSha256": "cb160a0324bbbb615c39d9f7106675a6027e6b6224a29819bdecad94371f6b54",
+          "sourceName": "Hausnummer groß – feine Ziffer, Name daneben",
+          "sourceOriginalMode": "neu",
+          "sourceFonts": [
+            "Montserrat",
+            "Montserrat Light",
+            "Poppins ExtraLight"
+          ],
+          "views": [
+            {
+              "material": "acrylic",
+              "workbook": "Tuerschild-Acrylglas-3mm-5x2_v2",
+              "planId": "pgp_03932c0e-6f8f-4177-8ab5-cf7891b5bcdc",
+              "planHash": "01cf26109b3e49708f122fc7fb46e2493faad1be1e07235b0ff33bed3e28bc96",
+              "planFileSha256": "356337f47c2cb5bda87a0c5014898aba4d7b288b34c463aa3953bb42fb3434c8",
+              "options": {
+                "color": "schwarz",
+                "mounting": "K00"
+              },
+              "geometry": {
+                "cornerRadiusMm": 0,
+                "height": 20,
+                "holes": [],
+                "safeMarginMm": 0,
+                "shape": "rect",
+                "width": 50
+              },
+              "materialProfile": {
+                "color": "#17191b",
+                "engravingSide": "back",
+                "kind": "acrylic",
+                "thicknessMm": 3,
+                "variant": "schwarz"
+              },
+              "designSha256": "ce1e3f3199b161f936c220bd96f18d9dc0b6696961fed233d4e2cb859f38a334",
+              "svgSha256": "cda75df153d59c11379c501401fbec3a994599923cf3f823db371c344bcb32a8",
+              "pngSha256": "36961890be21bd693ffb0a22d416a6f9a311e02c98f7ed95719b3b5d0137a0d1",
+              "file": "Einzelansichten/B3-acrylic.png",
+              "svgFile": "Einzelansichten/B3-acrylic.svg",
+              "width": 1200,
+              "height": 527
+            },
+            {
+              "material": "steel",
+              "workbook": "Tuerschild-Edelstahl-5x2_v1",
+              "planId": "pgp_fae5b365-a7c0-4d85-9096-e9f5670b5b21",
+              "planHash": "ac2f8ce469cf862471a6c1c35f7c6a0142bf25b235b00b20e8038d23551a8309",
+              "planFileSha256": "6122ec0199223cc4e71ca551acc64845e648608772359a9180afd5c93232ef93",
+              "options": {
+                "mounting": "K00"
+              },
+              "geometry": {
+                "cornerRadiusMm": 0,
+                "height": 20,
+                "holes": [],
+                "safeMarginMm": 0,
+                "shape": "rect",
+                "width": 50
+              },
+              "materialProfile": {
+                "color": "#bac2c4",
+                "kind": "steel",
+                "thicknessMm": 1.5
+              },
+              "designSha256": "89cff1bb7ab0573f06c8e9a155225af6c7f07494a5f2b6deac78df925997e5bd",
+              "svgSha256": "bd27e99573cf2f1331efd03151ac8d20943c0e49ccdc04ef8e910dd683ea26c7",
+              "pngSha256": "5f0684dc3a68a8ad7e681c4eb820cf6064517e9a365be94c1401aed7668652b0",
+              "file": "Einzelansichten/B3-steel.png",
+              "svgFile": "Einzelansichten/B3-steel.svg",
+              "width": 1200,
+              "height": 527
+            }
+          ]
+        }
+      ],
+      "contactSheet": "B-5x2-Alternativen.png"
+    },
+    {
+      "key": "C",
+      "size": "6 × 2 cm",
+      "cards": [
+        {
+          "label": "C1",
+          "catalogId": "TRE-V2A-6x2-D4",
+          "designId": "katalog-TRE-V2A-6x2-D4",
+          "title": "Versetzt mit Trennlinie",
+          "sourcePath": "work/product-plans-catalog/designs/edelstahl-gravur-60x20/TRE-V2A-6x2-D4/design.json",
+          "sourceSha256": "03799ca072220ff8d676732eb56607b1390faf39c7aef4668c7b0d94b9101ed1",
+          "sourceName": "Zwei Zeilen, versetzt mit Linie",
+          "sourceOriginalMode": "existing catalog template",
+          "sourceFonts": [
+            "Michroma"
+          ],
+          "views": [
+            {
+              "material": "acrylic",
+              "workbook": "Tuerschild-Acrylglas-3mm-6x2_v2",
+              "planId": "pgp_b6bd6b74-35e6-444e-b2cb-4bf64a49e280",
+              "planHash": "66931afab9bcac13e82b87ffb2b8e47473fad169e1b623353015e69dc7e31bbc",
+              "planFileSha256": "f3097285c26faf4f9e643c06d2c1dd0fd2404d3d0a009c4213ade7fe0690bb47",
+              "options": {
+                "color": "schwarz",
+                "mounting": "K00"
+              },
+              "geometry": {
+                "cornerRadiusMm": 0,
+                "height": 20,
+                "holes": [],
+                "safeMarginMm": 0,
+                "shape": "rect",
+                "width": 60
+              },
+              "materialProfile": {
+                "color": "#17191b",
+                "engravingSide": "back",
+                "kind": "acrylic",
+                "thicknessMm": 3,
+                "variant": "schwarz"
+              },
+              "designSha256": "eb861d96b2441775d9565d49449b52887fa4f6767addf4a1e606c80ee7a8732a",
+              "svgSha256": "ba397c872eeb8e98759ed466a4f6124ecebe311dbd878a4bf5b8be831e22554c",
+              "pngSha256": "06b38c4aeeba77f827dee6812e08d52d0c0a38d361772f53a3020dacfbe43035",
+              "file": "Einzelansichten/C1-acrylic.png",
+              "svgFile": "Einzelansichten/C1-acrylic.svg",
+              "width": 1200,
+              "height": 452
+            },
+            {
+              "material": "steel",
+              "workbook": "Tuerschild-Edelstahl-6x2_v1",
+              "planId": "pgp_ea7f2afb-fb41-4e91-90e7-986d8d524cc8",
+              "planHash": "f87a05e734982b900f49de674d8748b2870113ad76b5a3e9c39b30ee2cdddf9e",
+              "planFileSha256": "bda9bc026da13c2c787a21dc06bc8c3d57700e59a4b05fe6b4b13adbbf1560fb",
+              "options": {
+                "mounting": "K00"
+              },
+              "geometry": {
+                "cornerRadiusMm": 0,
+                "height": 20,
+                "holes": [],
+                "safeMarginMm": 0,
+                "shape": "rect",
+                "width": 60
+              },
+              "materialProfile": {
+                "color": "#bac2c4",
+                "kind": "steel",
+                "thicknessMm": 1.5
+              },
+              "designSha256": "93e8184eac60d9d34274521ebd6a96a68aaba3d876aac2550b051095d7ac7031",
+              "svgSha256": "ef7bfe615cf3cdc650f193cbf81650803d5051cd3a0e0019bb6fac3e35cf2a86",
+              "pngSha256": "927ea7a292f9d89e3eceeef966c22c863b6807dcf2bd239f358c116f02b15eb8",
+              "file": "Einzelansichten/C1-steel.png",
+              "svgFile": "Einzelansichten/C1-steel.svg",
+              "width": 1200,
+              "height": 452
+            }
+          ]
+        },
+        {
+          "label": "C2",
+          "catalogId": "TRE-V2A-6x2-D23",
+          "designId": "katalog-TRE-V2A-6x2-D23",
+          "title": "Schreibschrift mit Haus",
+          "sourcePath": "work/product-plans-catalog/designs/edelstahl-gravur-60x20/TRE-V2A-6x2-D23/design.json",
+          "sourceSha256": "3b907dd3c6c760b6320aa9005268c56a5c6ad51f52ff216b52350d47f2ac39fc",
+          "sourceName": "Vor- und Nachname mit Haus",
+          "sourceOriginalMode": "existing catalog template",
+          "sourceFonts": [
+            "Rochester"
+          ],
+          "views": [
+            {
+              "material": "acrylic",
+              "workbook": "Tuerschild-Acrylglas-3mm-6x2_v2",
+              "planId": "pgp_b6bd6b74-35e6-444e-b2cb-4bf64a49e280",
+              "planHash": "66931afab9bcac13e82b87ffb2b8e47473fad169e1b623353015e69dc7e31bbc",
+              "planFileSha256": "f3097285c26faf4f9e643c06d2c1dd0fd2404d3d0a009c4213ade7fe0690bb47",
+              "options": {
+                "color": "schwarz",
+                "mounting": "K00"
+              },
+              "geometry": {
+                "cornerRadiusMm": 0,
+                "height": 20,
+                "holes": [],
+                "safeMarginMm": 0,
+                "shape": "rect",
+                "width": 60
+              },
+              "materialProfile": {
+                "color": "#17191b",
+                "engravingSide": "back",
+                "kind": "acrylic",
+                "thicknessMm": 3,
+                "variant": "schwarz"
+              },
+              "designSha256": "7d6c23a44f40ae7c117c169b872d694821108eac99e3ef5653edd33c70c7a85b",
+              "svgSha256": "fcc3cbb24acfbfea7d202f92a65c8715a2a9110d9ec235a6af93bbbcbebe9ebe",
+              "pngSha256": "6f34765ec94475a80a2a5500786688cae89a2b4ef4f2f12b3dcfd0330e7242ab",
+              "file": "Einzelansichten/C2-acrylic.png",
+              "svgFile": "Einzelansichten/C2-acrylic.svg",
+              "width": 1200,
+              "height": 452
+            },
+            {
+              "material": "steel",
+              "workbook": "Tuerschild-Edelstahl-6x2_v1",
+              "planId": "pgp_ea7f2afb-fb41-4e91-90e7-986d8d524cc8",
+              "planHash": "f87a05e734982b900f49de674d8748b2870113ad76b5a3e9c39b30ee2cdddf9e",
+              "planFileSha256": "bda9bc026da13c2c787a21dc06bc8c3d57700e59a4b05fe6b4b13adbbf1560fb",
+              "options": {
+                "mounting": "K00"
+              },
+              "geometry": {
+                "cornerRadiusMm": 0,
+                "height": 20,
+                "holes": [],
+                "safeMarginMm": 0,
+                "shape": "rect",
+                "width": 60
+              },
+              "materialProfile": {
+                "color": "#bac2c4",
+                "kind": "steel",
+                "thicknessMm": 1.5
+              },
+              "designSha256": "f9a4002ccceba321cd51c3c4ca1439b8de8f6737ec9b18e93dd01f60650fd2f6",
+              "svgSha256": "928e61f07d74f0ff3690497d971490789df20137f932694dca32bfda84b6c559",
+              "pngSha256": "794633a8a631f812550a3ddcaff3878ec3079fb9ac00c1ceb5d084664130ecb0",
+              "file": "Einzelansichten/C2-steel.png",
+              "svgFile": "Einzelansichten/C2-steel.svg",
+              "width": 1200,
+              "height": 452
+            }
+          ]
+        },
+        {
+          "label": "C3",
+          "catalogId": "TRE-V2A-6x2-D801",
+          "designId": "katalog-TRE-V2A-6x2-D801",
+          "title": "Hausnummer und Name",
+          "sourcePath": "work/product-plans-catalog/designs/edelstahl-gravur-60x20/TRE-V2A-6x2-D801/design.json",
+          "sourceSha256": "dd0159c2176633d55a158975fcae5b13361b20685cb69eb224a70d6a887c3ce7",
+          "sourceName": "Hausnummer groß – feine Ziffer, Name daneben",
+          "sourceOriginalMode": "neu",
+          "sourceFonts": [
+            "Montserrat",
+            "Montserrat Light",
+            "Poppins ExtraLight"
+          ],
+          "views": [
+            {
+              "material": "acrylic",
+              "workbook": "Tuerschild-Acrylglas-3mm-6x2_v2",
+              "planId": "pgp_b6bd6b74-35e6-444e-b2cb-4bf64a49e280",
+              "planHash": "66931afab9bcac13e82b87ffb2b8e47473fad169e1b623353015e69dc7e31bbc",
+              "planFileSha256": "f3097285c26faf4f9e643c06d2c1dd0fd2404d3d0a009c4213ade7fe0690bb47",
+              "options": {
+                "color": "schwarz",
+                "mounting": "K00"
+              },
+              "geometry": {
+                "cornerRadiusMm": 0,
+                "height": 20,
+                "holes": [],
+                "safeMarginMm": 0,
+                "shape": "rect",
+                "width": 60
+              },
+              "materialProfile": {
+                "color": "#17191b",
+                "engravingSide": "back",
+                "kind": "acrylic",
+                "thicknessMm": 3,
+                "variant": "schwarz"
+              },
+              "designSha256": "31d4c5eb0e81885644f15fe96c8f06a3f22eb0476833d0b555ed785affcf0200",
+              "svgSha256": "77059dab5b89cac0ff2f46388326ca5442627c401ae3cf66bbb8518debd60f16",
+              "pngSha256": "57078361c293f3b1c0da51db9ab1ec2e57f4ae6953ffe442a5e6ce069a95deab",
+              "file": "Einzelansichten/C3-acrylic.png",
+              "svgFile": "Einzelansichten/C3-acrylic.svg",
+              "width": 1200,
+              "height": 452
+            },
+            {
+              "material": "steel",
+              "workbook": "Tuerschild-Edelstahl-6x2_v1",
+              "planId": "pgp_ea7f2afb-fb41-4e91-90e7-986d8d524cc8",
+              "planHash": "f87a05e734982b900f49de674d8748b2870113ad76b5a3e9c39b30ee2cdddf9e",
+              "planFileSha256": "bda9bc026da13c2c787a21dc06bc8c3d57700e59a4b05fe6b4b13adbbf1560fb",
+              "options": {
+                "mounting": "K00"
+              },
+              "geometry": {
+                "cornerRadiusMm": 0,
+                "height": 20,
+                "holes": [],
+                "safeMarginMm": 0,
+                "shape": "rect",
+                "width": 60
+              },
+              "materialProfile": {
+                "color": "#bac2c4",
+                "kind": "steel",
+                "thicknessMm": 1.5
+              },
+              "designSha256": "b553d88ccd4a3fcd395891f53325157d42077961733d7c391b03980788453e5c",
+              "svgSha256": "26fd657a5b82cb200d545711b22d97b411bbd26b55826cbe868b4ececd82c3b1",
+              "pngSha256": "7b97ae6df7b76028507a760c3ded8a696faed10a0b20fdd6bcdfd9acf99ed715",
+              "file": "Einzelansichten/C3-steel.png",
+              "svgFile": "Einzelansichten/C3-steel.svg",
+              "width": 1200,
+              "height": 452
+            }
+          ]
+        }
+      ],
+      "contactSheet": "C-6x2-Alternativen.png"
+    },
+    {
+      "key": "D",
+      "size": "8 × 2 cm",
+      "cards": [
+        {
+          "label": "D1",
+          "catalogId": "TRE-V2A-8x2-D4",
+          "designId": "katalog-TRE-V2A-8x2-D4",
+          "title": "Versetzt mit Trennlinie",
+          "sourcePath": "work/product-plans-catalog/designs/edelstahl-gravur-80x20/TRE-V2A-8x2-D4/design.json",
+          "sourceSha256": "a79bf95311ec72927e648430fbd0b51f2b90da35da3432aea22ab9adb61d1ab7",
+          "sourceName": "Zwei Zeilen, versetzt mit Linie",
+          "sourceOriginalMode": "existing catalog template",
+          "sourceFonts": [
+            "Michroma"
+          ],
+          "views": [
+            {
+              "material": "acrylic",
+              "workbook": "Tuerschild-Acrylglas-3mm-8x2_v2",
+              "planId": "pgp_6126fcb8-d8b7-4b5b-9410-9c09a9198b52",
+              "planHash": "0aa24af4bd611f5a674642a98bb5603d12f23d4a7175cdea3afca55865e0ab95",
+              "planFileSha256": "afbd4228d4618a4dfce791a2d5f3533b848ab02ccf8cae7ca298321335b471ac",
+              "options": {
+                "color": "schwarz",
+                "mounting": "K00"
+              },
+              "geometry": {
+                "cornerRadiusMm": 0,
+                "height": 20,
+                "holes": [],
+                "safeMarginMm": 0,
+                "shape": "rect",
+                "width": 80
+              },
+              "materialProfile": {
+                "color": "#17191b",
+                "engravingSide": "back",
+                "kind": "acrylic",
+                "thicknessMm": 3,
+                "variant": "schwarz"
+              },
+              "designSha256": "88c595c5f05b8fe469c04f6583923a5f946d443e642323b482d0915a5ab2e295",
+              "svgSha256": "4d2bcf2a3bf52746e7ec22a483557d4b08557da0bc63301889365028445c35ec",
+              "pngSha256": "212f088a2398ffe8a582e96c52cc1225fe2ef75f41b4758a838f0833ec0e6198",
+              "file": "Einzelansichten/D1-acrylic.png",
+              "svgFile": "Einzelansichten/D1-acrylic.svg",
+              "width": 1200,
+              "height": 359
+            },
+            {
+              "material": "steel",
+              "workbook": "Tuerschild-Edelstahl-8x2_v1",
+              "planId": "pgp_c2098259-36a3-4048-a4e6-e3ffa70c9d68",
+              "planHash": "5c4b729ea5be27e1ea9b4e4a6c65e94088803618219e5025836ca6e70654ec3e",
+              "planFileSha256": "357afdc196875de89271ffee6a8766ac0c70f9d2c8fc8c532e391fc542238c97",
+              "options": {
+                "mounting": "K00"
+              },
+              "geometry": {
+                "cornerRadiusMm": 0,
+                "height": 20,
+                "holes": [],
+                "safeMarginMm": 0,
+                "shape": "rect",
+                "width": 80
+              },
+              "materialProfile": {
+                "color": "#bac2c4",
+                "kind": "steel",
+                "thicknessMm": 1.5
+              },
+              "designSha256": "b055b3a1c5d0e369c49a665ae2d6e917274c3bea30ac530b47096074670dc564",
+              "svgSha256": "72c9ad8c08dc9cb0984a2299bfbe9d20e8328aa927e628d5683b8fa315f41649",
+              "pngSha256": "59d118de2f67daa48b3df1c2f4ed0f93ad80603f819deb0336e0d944bf3cf5a9",
+              "file": "Einzelansichten/D1-steel.png",
+              "svgFile": "Einzelansichten/D1-steel.svg",
+              "width": 1200,
+              "height": 359
+            }
+          ]
+        },
+        {
+          "label": "D2",
+          "catalogId": "TRE-V2A-8x2-D23",
+          "designId": "katalog-TRE-V2A-8x2-D23",
+          "title": "Schreibschrift mit Haus",
+          "sourcePath": "work/product-plans-catalog/designs/edelstahl-gravur-80x20/TRE-V2A-8x2-D23/design.json",
+          "sourceSha256": "e8b7d08b791b72da5288f98e891738bfaedddd3064cc89e37af74e51bd2fd253",
+          "sourceName": "Vor- und Nachname mit Haus",
+          "sourceOriginalMode": "existing catalog template",
+          "sourceFonts": [
+            "Rochester"
+          ],
+          "views": [
+            {
+              "material": "acrylic",
+              "workbook": "Tuerschild-Acrylglas-3mm-8x2_v2",
+              "planId": "pgp_6126fcb8-d8b7-4b5b-9410-9c09a9198b52",
+              "planHash": "0aa24af4bd611f5a674642a98bb5603d12f23d4a7175cdea3afca55865e0ab95",
+              "planFileSha256": "afbd4228d4618a4dfce791a2d5f3533b848ab02ccf8cae7ca298321335b471ac",
+              "options": {
+                "color": "schwarz",
+                "mounting": "K00"
+              },
+              "geometry": {
+                "cornerRadiusMm": 0,
+                "height": 20,
+                "holes": [],
+                "safeMarginMm": 0,
+                "shape": "rect",
+                "width": 80
+              },
+              "materialProfile": {
+                "color": "#17191b",
+                "engravingSide": "back",
+                "kind": "acrylic",
+                "thicknessMm": 3,
+                "variant": "schwarz"
+              },
+              "designSha256": "937d8ac78a7b3ac09ccd7eb08869b9e9f7bd955584544be8faa8e3252a2e6200",
+              "svgSha256": "b3f599613a070703a58e262dc8529ef141c2a733016f5e05bf97ecb8c9f620f9",
+              "pngSha256": "da9c3313156d640ce99ff8cf52221ae03eaa5e21755536e63a382587a9f25c47",
+              "file": "Einzelansichten/D2-acrylic.png",
+              "svgFile": "Einzelansichten/D2-acrylic.svg",
+              "width": 1200,
+              "height": 359
+            },
+            {
+              "material": "steel",
+              "workbook": "Tuerschild-Edelstahl-8x2_v1",
+              "planId": "pgp_c2098259-36a3-4048-a4e6-e3ffa70c9d68",
+              "planHash": "5c4b729ea5be27e1ea9b4e4a6c65e94088803618219e5025836ca6e70654ec3e",
+              "planFileSha256": "357afdc196875de89271ffee6a8766ac0c70f9d2c8fc8c532e391fc542238c97",
+              "options": {
+                "mounting": "K00"
+              },
+              "geometry": {
+                "cornerRadiusMm": 0,
+                "height": 20,
+                "holes": [],
+                "safeMarginMm": 0,
+                "shape": "rect",
+                "width": 80
+              },
+              "materialProfile": {
+                "color": "#bac2c4",
+                "kind": "steel",
+                "thicknessMm": 1.5
+              },
+              "designSha256": "ba330854e7fa94921dd7bde141643fe332a3d1b8a937b5b6b3928bcf89d3a616",
+              "svgSha256": "65f8f1ed1dd18663e0e3f832b26b0fd896be0eb447933bfbc70720470cdcdba8",
+              "pngSha256": "20a4c6babbb371999d7d617a33a4d497cd36525d50bafd63f7e38ea16c402125",
+              "file": "Einzelansichten/D2-steel.png",
+              "svgFile": "Einzelansichten/D2-steel.svg",
+              "width": 1200,
+              "height": 359
+            }
+          ]
+        },
+        {
+          "label": "D3",
+          "catalogId": "TRE-V2A-8x2-D801",
+          "designId": "katalog-TRE-V2A-8x2-D801",
+          "title": "Hausnummer und Name",
+          "sourcePath": "work/product-plans-catalog/designs/edelstahl-gravur-80x20/TRE-V2A-8x2-D801/design.json",
+          "sourceSha256": "2e2118698d17a52df34a9c63a1a46fa09caa13a949dd7f989f8d8b3039d30cf7",
+          "sourceName": "Hausnummer groß – feine Ziffer, Name daneben",
+          "sourceOriginalMode": "neu",
+          "sourceFonts": [
+            "Montserrat",
+            "Montserrat Light",
+            "Poppins ExtraLight"
+          ],
+          "views": [
+            {
+              "material": "acrylic",
+              "workbook": "Tuerschild-Acrylglas-3mm-8x2_v2",
+              "planId": "pgp_6126fcb8-d8b7-4b5b-9410-9c09a9198b52",
+              "planHash": "0aa24af4bd611f5a674642a98bb5603d12f23d4a7175cdea3afca55865e0ab95",
+              "planFileSha256": "afbd4228d4618a4dfce791a2d5f3533b848ab02ccf8cae7ca298321335b471ac",
+              "options": {
+                "color": "schwarz",
+                "mounting": "K00"
+              },
+              "geometry": {
+                "cornerRadiusMm": 0,
+                "height": 20,
+                "holes": [],
+                "safeMarginMm": 0,
+                "shape": "rect",
+                "width": 80
+              },
+              "materialProfile": {
+                "color": "#17191b",
+                "engravingSide": "back",
+                "kind": "acrylic",
+                "thicknessMm": 3,
+                "variant": "schwarz"
+              },
+              "designSha256": "5512b6e96219f87d2c59ed1586267bcd92f353dac15e9fe137ba6638da560568",
+              "svgSha256": "4a2dc9da16395bb9e965d4d2c773678b1893d57d80dacf65785f67c88b1af72d",
+              "pngSha256": "de2bc45d5415a9c406f8a7deaa73d765659a28227cc8a8bbf67e74bae41cb70e",
+              "file": "Einzelansichten/D3-acrylic.png",
+              "svgFile": "Einzelansichten/D3-acrylic.svg",
+              "width": 1200,
+              "height": 359
+            },
+            {
+              "material": "steel",
+              "workbook": "Tuerschild-Edelstahl-8x2_v1",
+              "planId": "pgp_c2098259-36a3-4048-a4e6-e3ffa70c9d68",
+              "planHash": "5c4b729ea5be27e1ea9b4e4a6c65e94088803618219e5025836ca6e70654ec3e",
+              "planFileSha256": "357afdc196875de89271ffee6a8766ac0c70f9d2c8fc8c532e391fc542238c97",
+              "options": {
+                "mounting": "K00"
+              },
+              "geometry": {
+                "cornerRadiusMm": 0,
+                "height": 20,
+                "holes": [],
+                "safeMarginMm": 0,
+                "shape": "rect",
+                "width": 80
+              },
+              "materialProfile": {
+                "color": "#bac2c4",
+                "kind": "steel",
+                "thicknessMm": 1.5
+              },
+              "designSha256": "ca77a2d102d45f36ddeec11dff911b3105e56245a40eb04824a76b49a12b0686",
+              "svgSha256": "78201ae0bc56f3d0a81c989c357000a38f746d69b2da604bdd1d1e2ec8bd43af",
+              "pngSha256": "edd513ee8d79fd5788f823a074a6eac8900fa9f0056025768f28272133928597",
+              "file": "Einzelansichten/D3-steel.png",
+              "svgFile": "Einzelansichten/D3-steel.svg",
+              "width": 1200,
+              "height": 359
+            }
+          ]
+        }
+      ],
+      "contactSheet": "D-8x2-Alternativen.png"
+    }
+  ],
+  "rendererHashes": {
+    "app/workshop/product-preview.mjs": "e0b7a15e0586b388e37c2029df9649d512632f753158ffaa0a5ae390f49d1c49",
+    "app/configurator/variant-m/material-surface.mjs": "b2e1aade8938aa31f2373d74ecdbaf060c049e8dbafed8599175a57f45a8a9b4",
+    "app/platform/sources/app/shared/models/acrylic-plate-preview.mjs": "9d5fc1aca8482a7e53065e32e8fb5e98a812394c4b7138927bfb9ec836c0ed8c"
+  }
+}

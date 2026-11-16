@@ -1,0 +1,49 @@
+{
+  "runtimeBase": "a038e1ae7e3de3954ea204f6925c60c7b4213d4f",
+  "workspaceHead": "c6f9910596774f3742fa5064b5c60254d1fe00fc",
+  "files": [
+    {
+      "path": "app/workshop/shop-design-gallery.mjs",
+      "bytes": 23155,
+      "sha256": "82b2c59c97a1bea3b54ed356570e59e9a6fa134c92fff0fe3e6332696d420858",
+      "baseGitBlob": "c69854780e43ea86defb1953eef6835bfe337c76",
+      "baseLFsha256": "ae1e66349213618e10032145bee75b2ab16bb330a720b8d3888e5630100a2434"
+    },
+    {
+      "path": "app/workshop/shop-design-gallery.test.mjs",
+      "bytes": 37128,
+      "sha256": "75e8f68d4d5916432a32c13daa91b1a8d497735c8b253650ff0d332f048d039c",
+      "baseGitBlob": "21f693fe1cf7e93aa5a60568364d582708a99920",
+      "baseLFsha256": "5be30bee98da5481cb57976e77ee888e8e268f6e142a32d23afc8611c6ffb72d"
+    },
+    {
+      "path": "app/workshop/shop-design-gallery-alle.test.mjs",
+      "bytes": 10127,
+      "sha256": "c582faab32b9e51276e3985fc1641673f3017fac8a6c3ffe5484060b79dda823",
+      "baseGitBlob": "cfcddf1fa9881eeeaccbf58ecf344c9ed70fb2f6",
+      "baseLFsha256": "b01dbbb9945d5515f9da882d67e9eb5045d5a464270821942786e69c4ddc01c8"
+    },
+    {
+      "path": "scripts/shop-gallery-benchmark.mjs",
+      "bytes": 8287,
+      "sha256": "f74c425e58bcfbd4d9e881873e5ea623b1cd3605f574e05ae069edf3b1df9336",
+      "baseGitBlob": "f06b3b3cb7d0a568889e83676e430bdbf126b223",
+      "baseLFsha256": "9a95bef660062e917b7aaa22b9cddc2dd878d02f7eb15437138ee3b43e27eb81"
+    },
+    {
+      "path": "gallery-warmup.patch",
+      "bytes": 10924,
+      "sha256": "8bb95e51b52b6436ca23dfd550b16a053ae76d3cb7cdbef1dcd3024876a97ffa"
+    },
+    {
+      "path": "README.md",
+      "bytes": 3871,
+      "sha256": "457dc616322c51c71b2a8475eddc342f12f80cc1d7af0f6e32dc0e2db75a88ea"
+    },
+    {
+      "path": "test-results.json",
+      "bytes": 1023,
+      "sha256": "d056072a8789a1bfa469625ccb320f8feebfcea5a41cbdc523cad6d849b9e295"
+    }
+  ]
+}

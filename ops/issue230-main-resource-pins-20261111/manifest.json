@@ -1,0 +1,45 @@
+{
+  "scope": "Additive native resource pin reader; no actual operator context or execution approval",
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 6984,
+      "sha256": "8d403960c70fa97af6fde39e5467b1a6ddcc1fea5907ababfdf9d97d49f5a874"
+    },
+    {
+      "path": "independent-review.md",
+      "bytes": 4686,
+      "sha256": "95351a7991c8a77ba9776d17bce455db157d58535da261b771df4fda8c74afe6"
+    },
+    {
+      "path": "read-resource-pins.mjs",
+      "bytes": 3334,
+      "sha256": "18952021f08bd9643d905c446ac502c0739edd7d6ae692254158004211f946b8"
+    },
+    {
+      "path": "read-resource-pins.test.mjs",
+      "bytes": 13221,
+      "sha256": "0ae284caddeab2579d610dd8a0a64d7ab87ba03ad43c6916cccf5986b954169d"
+    },
+    {
+      "path": "test-shadowed-insert.txt",
+      "bytes": 239,
+      "sha256": "35574ccc22796277781570d9c026014991c493430834c159b13ebcc02e162915"
+    },
+    {
+      "path": "tests.txt",
+      "bytes": 870,
+      "sha256": "219ca164b131562abeaf4b9399fd2f5b4f31945c0476f98a6ec6829881087d0c"
+    },
+    {
+      "path": "verification-initial7.json",
+      "bytes": 940,
+      "sha256": "17f257d2d593512e6ebf16073b8721082ba7a5670a1f7ef5bff31af436b25e3e"
+    },
+    {
+      "path": "verification.json",
+      "bytes": 1715,
+      "sha256": "5ebcfc47d36ec18fc7ec94957d33a4ff72df3d149ac1cbd546e825fd1ee379d4"
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+✔ native copied repository: one update, exact readback, same identity, untouched source and foreign product, idempotent replay (456.2776ms)
+✔ no explicit execute, different Excel, tampered target/review/approval all reject before any writes (344.9195ms)
+✔ changed actual head rejects without replacing unrelated work (257.4448ms)
+✔ resource drift and native validator drift reject without a new revision (235.2536ms)
+✔ metadata changes at actual snapshot insertion roll back native import and journal (229.572ms)
+✔ missing guarded metadata wiring is detected before import (203.9553ms)
+✔ incomplete category evidence cannot become review; existing frozen evidence files cannot be overwritten (200.0923ms)
+✔ replay after a later edit is a conflict, not false success (322.8364ms)
+✔ same one-time key with another fingerprint is a conflict, never an inferred approval (236.5951ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2725.9456

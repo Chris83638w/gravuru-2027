@@ -10,6 +10,7 @@ import {createHash} from 'node:crypto';
 import {validateFamily} from './product-families.mjs';
 import {quantityTiersIssue} from '../configurator/variant-m/contract.mjs';
 import {parseThemeCatalog,findTheme} from './theme-catalog.mjs';
+import {familyOfferingIssue} from './subcategory-materials.mjs';
 
 export const LINE_SCHEMA='gravuru-line/v2';
 export const FONT_SET_ALWAYS=Object.freeze(['Michroma','Lato']);// Katalogregel 11: in jedem Schrift-Set
@@ -58,6 +59,7 @@ export function validateLine(line,{families,themes,fontSets,file='linie'}={}){
  for(const s of line.subcategories){
   if(!record(s)||!id(s.id)||!text(s.name,160))fail(file,'Unterkategorie ohne Kennung oder Namen in Linie „'+line.id+'“.');
   if(seen.has(s.id))fail(file,'Unterkategorie „'+s.id+'“ doppelt in Linie „'+line.id+'“.');seen.add(s.id);
+  const materialIssue=familyOfferingIssue(s.familyIdsOffered,{families});if(materialIssue)fail(file,'Unterkategorie „'+s.id+'“: '+materialIssue);
   if(s.themeId!==null&&s.themeId!==undefined){if(!id(s.themeId))fail(file,'Unterkategorie „'+s.id+'“: ungültige Themen-Kennung.');if(themes&&!findTheme(themes,s.themeId))fail(file,'Unterkategorie „'+s.id+'“ verweist auf das unbekannte Thema „'+s.themeId+'“.');}
   if(s.fontSet!==null&&s.fontSet!==undefined){if(!id(s.fontSet))fail(file,'Unterkategorie „'+s.id+'“: ungültiges Schrift-Set.');if(fontSets&&!fontSets.has(s.fontSet))fail(file,'Unterkategorie „'+s.id+'“ verweist auf das unbekannte Schrift-Set „'+s.fontSet+'“.');}
   const o=s.priceOverrides??{};

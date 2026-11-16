@@ -179,7 +179,7 @@ export function createOrderIntake({database:db,snapshot,clock=Date.now,autoRelea
  const statuses=createOrderStatus({database:db,clock,production:(line,shop)=>release.state(line.id,{shop}),tenantId:tenant});
  release=createProductionRelease({database:db,clock,line:lineOrRejected,shopStatus:line=>statuses.shopState(line),autoRelease,rejectedLines:()=>errorRows(),tenantId:tenant});
  const forSnapshot=snapshotId=>typeof snapshotId==='string'?db.prepare("SELECT document FROM form_order_lines WHERE json_extract(document,'$.snapshotId')=? AND tenant_id=? ORDER BY rowid").all(snapshotId,tenant).map(r=>JSON.parse(r.document)):[];
- return {tenantId:tenant,get,forSnapshot,catalogLiveApproval:catalogLive.approval,approveCatalogLiveProducts:catalogLive.approve,catalogLiveOrderScope:input=>doorbellLiveOrderScope(input,'catalog-live-approved'),doorbellLiveApproval:input=>doorbellLiveApproval(input),doorbellGalleryApprovals,doorbellLiveOrderScope,approveDoorbellLiveProducts,production:release,errors:()=>errorRows(),customer:id=>{const line=get(id);return db.prepare('SELECT customer_id FROM form_order_customers WHERE shop=? AND order_id=? AND tenant_id=?').get(line.shopDomain,line.orderId,tenant)?.customer_id||null;},status:id=>statuses.forLine(get(id)),list:()=>db.prepare('SELECT document FROM form_order_lines WHERE tenant_id=? ORDER BY rowid DESC LIMIT 200').all(tenant).map(r=>JSON.parse(r.document)),bindings:()=>db.prepare('SELECT b.*,s.options AS selection_options FROM form_shop_bindings b LEFT JOIN form_shop_binding_selections s ON s.binding_id=b.id AND s.tenant_id=b.tenant_id WHERE b.tenant_id=? ORDER BY b.rowid DESC').all(tenant).map(r=>safeBinding(r,r.selection_options===null?null:JSON.parse(r.selection_options))),
+ return {tenantId:tenant,get,forSnapshot,catalogLiveApproval:catalogLive.approval,catalogLiveApprovals:catalogLive.approvals,approveCatalogLiveProducts:catalogLive.approve,catalogLiveOrderScope:input=>doorbellLiveOrderScope(input,'catalog-live-approved'),doorbellLiveApproval:input=>doorbellLiveApproval(input),doorbellGalleryApprovals,doorbellLiveOrderScope,approveDoorbellLiveProducts,production:release,errors:()=>errorRows(),customer:id=>{const line=get(id);return db.prepare('SELECT customer_id FROM form_order_customers WHERE shop=? AND order_id=? AND tenant_id=?').get(line.shopDomain,line.orderId,tenant)?.customer_id||null;},status:id=>statuses.forLine(get(id)),list:()=>db.prepare('SELECT document FROM form_order_lines WHERE tenant_id=? ORDER BY rowid DESC LIMIT 200').all(tenant).map(r=>JSON.parse(r.document)),bindings:()=>db.prepare('SELECT b.*,s.options AS selection_options FROM form_shop_bindings b LEFT JOIN form_shop_binding_selections s ON s.binding_id=b.id AND s.tenant_id=b.tenant_id WHERE b.tenant_id=? ORDER BY b.rowid DESC').all(tenant).map(r=>safeBinding(r,r.selection_options===null?null:JSON.parse(r.selection_options))),
   // Internal immutable display-image lookup, used only AFTER capability verification.
   imageSnapshot(offerId,shopDomain){
    if(typeof offerId!=='string'||!/^offer_[a-f0-9-]{36}$/.test(offerId)||!domain(shopDomain))fail(404,'Gestaltungsbild nicht gefunden.');
@@ -191,6 +191,15 @@ export function createOrderIntake({database:db,snapshot,clock=Date.now,autoRelea
   // Caller supplies the actual saved product record, never a browser price.
   idBindings({storeId,shopDomain,adapter,personalizationPricingFor}={}){
    return createShopProductBindingStore({database:db,orderIntake:this,tenantId:tenant,storeId,shopDomain,adapter,clock,personalizationPricingFor});
+  },
+  // Server-only; no customer/HTTP endpoint exposes this immutable contract.
+  bindingPricing(bindingId){binding(bindingId);return pricing(bindingId);},
+  // Reused from PR #185/#189: binding CAS and approval on one connection.
+  withBindingTransaction(write){
+   if(typeof write!=='function'||write.constructor?.name==='AsyncFunction'||db.isTransaction)fail(422,'Die Bindungsfreigabe benötigt eine eigene synchrone Transaktion.');
+   db.exec('BEGIN IMMEDIATE');
+   try{const value=write();if(value?.then instanceof Function)fail(422,'Die Bindungsfreigabe darf keine asynchronen Schritte enthalten.');db.exec('COMMIT');return value;}
+   catch(error){db.exec('ROLLBACK');throw error;}
   },
   // Internal routing probe only; never return tokens, offers or customer data.
   ownsOfferToken(token,{shopDomain}={}){

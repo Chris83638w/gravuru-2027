@@ -1,0 +1,506 @@
+{
+  "schema": "issue230-final-geometry-audit/v1",
+  "readOnly": true,
+  "catalogPin": "8236b8bfab7322447ec46661c116fa526331af3d",
+  "codeHead": "64e026e8fd15b129a16cc97189b28506aa9e8ac2",
+  "sameNineMeasurementsAsPrior": true,
+  "verifiedOriginalFiles": 18,
+  "reportedExcludedTargetColorOccurrences": 104,
+  "noToleranceChanges": true,
+  "noOriginalChanges": true,
+  "measuredOneTargetPerDesign": true,
+  "microExactSourceVertices": [
+    {
+      "id": "TO-V2A-12x4-D5",
+      "sourceMm": [
+        120,
+        40
+      ],
+      "vertexMm": [
+        18.445,
+        34.427
+      ],
+      "normalizedEllipseValue": 1.000017496111111,
+      "integerOutsideNumerator": "25194400000000",
+      "integerDenominator": "1440000000000000000",
+      "meaning": "Exact 0.001-mm original vertex lies mathematically outside ideal ellipse; no flattening or converted-object rounding needed. This is not a manufacturing-tolerance statement."
+    },
+    {
+      "id": "TO-V2A-15x8-D5",
+      "sourceMm": [
+        150,
+        80
+      ],
+      "vertexMm": [
+        23.162,
+        68.908
+      ],
+      "normalizedEllipseValue": 1.000015866711111,
+      "integerOutsideNumerator": "142800400000000",
+      "integerDenominator": "9000000000000000000",
+      "meaning": "Exact 0.001-mm original vertex lies mathematically outside ideal ellipse; no flattening or converted-object rounding needed. This is not a manufacturing-tolerance statement."
+    }
+  ],
+  "originalD803Text": {
+    "font": "Bebas Neue",
+    "fontSha256": "31799ab7d6c16955f0c61036e7f7cc5b4d04b3309a4fd9282687f0d7440ad4e1",
+    "sizeMm": 11.92,
+    "pivotMm": [
+      15.567,
+      35.426
+    ],
+    "rotation": -90,
+    "points": 2347,
+    "clearanceMm": -1.399060164576838,
+    "pointMm": [
+      7.223000000000001,
+      55.08804000000001
+    ],
+    "char": "H",
+    "target85mmClearanceApproxMm": -1.8295402152158649,
+    "method": "Original SVG coordinates and actual pinned font glyphs, source baseline/anchor and rotation; no converter object or centre/size rounding."
+  },
+  "exceptions": [
+    {
+      "id": "TO-V2A-12x4-D5",
+      "sourceMm": [
+        120,
+        40
+      ],
+      "targetMm": [
+        120,
+        40
+      ],
+      "minimumClearanceMm": -0.00007860058795305087,
+      "classification": "submillimetre_boundary_uncertainty",
+      "objects": [
+        "motiv-2"
+      ],
+      "targetColorOccurrences": 14,
+      "sizes": [
+        "TS-Acryl-EL-120X40-T30",
+        "TS-Acryl-EL-150X50-T30",
+        "TS-Acryl-EL-180X60-T30",
+        "TS-Acryl-EL-210X70-T30",
+        "TS-Acryl-EL-240X80-T30",
+        "TS-Acryl-EL-270X90-T30",
+        "TS-Acryl-OV-300X100-T30"
+      ],
+      "jsonPath": "designs/edelstahl-gravur-oval-120x40/TO-V2A-12x4-D5/design.json",
+      "jsonSha256": "cbd3eebd90bb3c7ed87ee8ab7e31ae6061d3d8670ba9d3211580238a102f361b",
+      "svgPath": "designs/edelstahl-gravur-oval-120x40/TO-V2A-12x4-D5/design.svg",
+      "svgSha256": "f4d1152f3063c0d282594bc3f41cb4db8922fa514dec1996783134d14b9a42d3"
+    },
+    {
+      "id": "TO-V2A-15x8-D5",
+      "sourceMm": [
+        150,
+        80
+      ],
+      "targetMm": [
+        300,
+        160
+      ],
+      "minimumClearanceMm": -0.0007823060917824963,
+      "classification": "submillimetre_boundary_uncertainty",
+      "objects": [
+        "motiv-2"
+      ],
+      "targetColorOccurrences": 6,
+      "sizes": [
+        "TS-Acryl-OV-300X160-T30",
+        "TS-Acryl-OV-150X80-T30",
+        "TS-Acryl-OV-225X120-T30"
+      ],
+      "jsonPath": "designs/edelstahl-gravur-oval-150x80/TO-V2A-15x8-D5/design.json",
+      "jsonSha256": "e87ee5f28f09644e9eae10474ced62b1ae48b3d58e104e3da6e0005f1e88cac2",
+      "svgPath": "designs/edelstahl-gravur-oval-150x80/TO-V2A-15x8-D5/design.svg",
+      "svgSha256": "9bc013565883e9e24a959124668fe9c4c1344e6bdf9325e39dd5d1da04af60ea"
+    },
+    {
+      "id": "TO-V2A-15x8-D9",
+      "sourceMm": [
+        150,
+        80
+      ],
+      "targetMm": [
+        300,
+        160
+      ],
+      "minimumClearanceMm": -0.005021248987342382,
+      "classification": "actual_path_outside",
+      "objects": [
+        "motiv-1"
+      ],
+      "targetColorOccurrences": 6,
+      "sizes": [
+        "TS-Acryl-OV-300X160-T30",
+        "TS-Acryl-OV-150X80-T30",
+        "TS-Acryl-OV-225X120-T30"
+      ],
+      "jsonPath": "designs/edelstahl-gravur-oval-150x80/TO-V2A-15x8-D9/design.json",
+      "jsonSha256": "ca00abefad4536daf5dd8154daf361f093e4539c00db88b2e383f118dfaebc2b",
+      "svgPath": "designs/edelstahl-gravur-oval-150x80/TO-V2A-15x8-D9/design.svg",
+      "svgSha256": "2fdc36a195b0c078e9d78b18e1ddbff403415b9029332435c41beb7069ebb1f4"
+    },
+    {
+      "id": "TO-V2A-9x6-D46",
+      "sourceMm": [
+        90,
+        60
+      ],
+      "targetMm": [
+        90,
+        60
+      ],
+      "minimumClearanceMm": -0.0030965086894860433,
+      "classification": "actual_path_outside",
+      "objects": [
+        "motiv-1"
+      ],
+      "targetColorOccurrences": 14,
+      "sizes": [
+        "TS-Acryl-OV-90X60-T30",
+        "TS-Acryl-OV-120X80-T30",
+        "TS-Acryl-OV-150X100-T30",
+        "TS-Acryl-OV-180X120-T30",
+        "TS-Acryl-OV-210X140-T30",
+        "TS-Acryl-OV-240X160-T30",
+        "TS-Acryl-OV-300X200-T30"
+      ],
+      "jsonPath": "designs/edelstahl-gravur-oval-90x60/TO-V2A-9x6-D46/design.json",
+      "jsonSha256": "ca6f985f7e49815a42c98255d4e5afa2daf18b652b508a21feff8ecad3ad40eb",
+      "svgPath": "designs/edelstahl-gravur-oval-90x60/TO-V2A-9x6-D46/design.svg",
+      "svgSha256": "4704e146621a4a33c33e23d0d087a161d208e6b271157deb537fb1b8d62d3b47"
+    },
+    {
+      "id": "TR1-V2A-9x6-D19",
+      "sourceMm": [
+        90,
+        60
+      ],
+      "targetMm": [
+        90,
+        60
+      ],
+      "minimumClearanceMm": -0.005000000000002558,
+      "classification": "actual_path_outside",
+      "objects": [
+        "motiv-1"
+      ],
+      "targetColorOccurrences": 14,
+      "sizes": [
+        "TS-Acryl-RT1-90X60-T30",
+        "TS-Acryl-RT1-120X80-T30",
+        "TS-Acryl-RT1-150X100-T30",
+        "TS-Acryl-RT1-180X120-T30",
+        "TS-Acryl-RT1-210X140-T30",
+        "TS-Acryl-RT1-240X160-T30",
+        "TS-Acryl-RT1-300X200-T30"
+      ],
+      "jsonPath": "designs/edelstahl-gravur-retro1-90x60/TR1-V2A-9x6-D19/design.json",
+      "jsonSha256": "3b421a4a16678b2b271b2a52e26b571b7305673a51a62ef25da125572b96d5f9",
+      "svgPath": "designs/edelstahl-gravur-retro1-90x60/TR1-V2A-9x6-D19/design.svg",
+      "svgSha256": "6c82967a59283ba0ff9f1eb6482acb1d9bb66fa1d00c33c18309f4a0d6223fa4"
+    },
+    {
+      "id": "TR1-V2A-9x6-D5",
+      "sourceMm": [
+        90,
+        60
+      ],
+      "targetMm": [
+        90,
+        60
+      ],
+      "minimumClearanceMm": -0.09700000000000131,
+      "classification": "actual_path_outside",
+      "objects": [
+        "motiv-1",
+        "motiv-2"
+      ],
+      "targetColorOccurrences": 14,
+      "sizes": [
+        "TS-Acryl-RT1-90X60-T30",
+        "TS-Acryl-RT1-120X80-T30",
+        "TS-Acryl-RT1-150X100-T30",
+        "TS-Acryl-RT1-180X120-T30",
+        "TS-Acryl-RT1-210X140-T30",
+        "TS-Acryl-RT1-240X160-T30",
+        "TS-Acryl-RT1-300X200-T30"
+      ],
+      "jsonPath": "designs/edelstahl-gravur-retro1-90x60/TR1-V2A-9x6-D5/design.json",
+      "jsonSha256": "fbd49efcc44f640c05e5b8b59829bb85440bc85267b456655aa76aa09726301a",
+      "svgPath": "designs/edelstahl-gravur-retro1-90x60/TR1-V2A-9x6-D5/design.svg",
+      "svgSha256": "0c5f4affca83143009f46666238f000504179c153437ab6f834e3a6be5172410"
+    },
+    {
+      "id": "TR1-V2A-9x6-D9",
+      "sourceMm": [
+        90,
+        60
+      ],
+      "targetMm": [
+        90,
+        60
+      ],
+      "minimumClearanceMm": -0.12190272229615881,
+      "classification": "actual_path_outside",
+      "objects": [
+        "motiv-1"
+      ],
+      "targetColorOccurrences": 14,
+      "sizes": [
+        "TS-Acryl-RT1-90X60-T30",
+        "TS-Acryl-RT1-120X80-T30",
+        "TS-Acryl-RT1-150X100-T30",
+        "TS-Acryl-RT1-180X120-T30",
+        "TS-Acryl-RT1-210X140-T30",
+        "TS-Acryl-RT1-240X160-T30",
+        "TS-Acryl-RT1-300X200-T30"
+      ],
+      "jsonPath": "designs/edelstahl-gravur-retro1-90x60/TR1-V2A-9x6-D9/design.json",
+      "jsonSha256": "4ecae67b31c50c371ea1dd575c50f260bf4863780cfb80c6a8b277ba2de6d9ed",
+      "svgPath": "designs/edelstahl-gravur-retro1-90x60/TR1-V2A-9x6-D9/design.svg",
+      "svgSha256": "1a5925b12a6462a9d673d492567fc11067fd1e59ca1f9576db95fcccdd017004"
+    },
+    {
+      "id": "TR2-V2A-9x6-D15",
+      "sourceMm": [
+        90.6,
+        61.3
+      ],
+      "targetMm": [
+        90,
+        60
+      ],
+      "minimumClearanceMm": -0.20077544596961014,
+      "classification": "actual_path_outside",
+      "objects": [
+        "motiv-2"
+      ],
+      "targetColorOccurrences": 14,
+      "sizes": [
+        "TS-Acryl-RT2-90X60-T30",
+        "TS-Acryl-RT2-120X80-T30",
+        "TS-Acryl-RT2-150X100-T30",
+        "TS-Acryl-RT2-180X120-T30",
+        "TS-Acryl-RT2-210X140-T30",
+        "TS-Acryl-RT2-240X160-T30",
+        "TS-Acryl-RT2-300X200-T30"
+      ],
+      "jsonPath": "designs/edelstahl-gravur-retro2-91x61/TR2-V2A-9x6-D15/design.json",
+      "jsonSha256": "7e78c57680533c3ec7557575755cd2dad519cc8ea16942e76d8ae7e7187e0893",
+      "svgPath": "designs/edelstahl-gravur-retro2-91x61/TR2-V2A-9x6-D15/design.svg",
+      "svgSha256": "633ba61116cc01759c3c24dae711fdbc676d190a222a97ccdeb597cef59c67e9"
+    },
+    {
+      "id": "TR-V2A-6.5x6.5-D803",
+      "sourceMm": [
+        65,
+        65
+      ],
+      "targetMm": [
+        85,
+        85
+      ],
+      "minimumClearanceMm": -1.8298683966108222,
+      "classification": "actual_path_outside",
+      "objects": [
+        "text-1"
+      ],
+      "targetColorOccurrences": 8,
+      "sizes": [
+        "TS-Acryl-R-85X85-T30",
+        "TS-Acryl-R-120X120-T30",
+        "TS-Acryl-R-160X160-T30",
+        "TS-Acryl-R-200X200-T30"
+      ],
+      "jsonPath": "designs/edelstahl-gravur-65x65-rund/TR-V2A-6.5x6.5-D803/design.json",
+      "jsonSha256": "5a3b91c7518ed2508570e4a1ec711f6a223a8e56a1553e1eef3450a1b5244e22",
+      "svgPath": "designs/edelstahl-gravur-65x65-rund/TR-V2A-6.5x6.5-D803/design.svg",
+      "svgSha256": "b172c54b4daaca23d85d155355dd0d77dca6bb8ab5a46e6b2b05e221594d43ef"
+    }
+  ],
+  "products": [
+    {
+      "workbook": "Tuerschild-Acrylglas-3mm_v4.xlsx",
+      "planId": "pgp_aad6d5ae-b255-4d19-8c92-9d91ba09d445",
+      "planHash": "7079dae2814c9c17526ae3c254696ccd2b253318066b38a435f7a9cfb610e197",
+      "planFileSha256": "cf747b94de0255e03c5e04f66d2f829e34be8db6c0fbd0b444e8711a212b49c2",
+      "designs": 1205,
+      "formats": 77,
+      "formatColorEntries": 154,
+      "emptyFormatColors": 0,
+      "presentExcluded": [],
+      "excludedRefs": [],
+      "reportBlocked": [],
+      "reportUnavailable": [],
+      "issues": [
+        {
+          "code": "open_question",
+          "message": "Startdesign TAE-V2A-8x5-D1 / 12 × 8 cm / Schwarz ist ein technisch geprüfter Vorschlag, keine neue Nutzerentscheidung."
+        },
+        {
+          "code": "open_question",
+          "message": "Steuerkontext/Mengenstaffeln und Start-/Designreferenzen der unveränderten Excel bleiben zu prüfen. Foto-/Logo-Auswahl wurde am 11.11.2026 ausdrücklich bestätigt und ist keine offene Nutzerentscheidung."
+        },
+        {
+          "code": "open_question",
+          "message": "9 Originaldesigns haben native Kontur-/Randfehler (family-report.json). 2 weitere Katalogdesigns sind bewusst hidden und bleiben ausgeblendet; keine Wiederfreigabe beantragt."
+        }
+      ],
+      "valid": false
+    },
+    {
+      "workbook": "Tuerschild-Acrylglas-3mm-5x2_v2.xlsx",
+      "planId": "pgp_03932c0e-6f8f-4177-8ab5-cf7891b5bcdc",
+      "planHash": "01cf26109b3e49708f122fc7fb46e2493faad1be1e07235b0ff33bed3e28bc96",
+      "planFileSha256": "356337f47c2cb5bda87a0c5014898aba4d7b288b34c463aa3953bb42fb3434c8",
+      "designs": 27,
+      "formats": 1,
+      "formatColorEntries": 2,
+      "emptyFormatColors": 0,
+      "presentExcluded": [],
+      "excludedRefs": [],
+      "reportBlocked": [],
+      "reportUnavailable": [],
+      "issues": [
+        {
+          "code": "open_question",
+          "message": "Startdesign TRE-V2A-5x2-D1 / 5 × 2 cm / Schwarz ist ein technisch geprüfter Vorschlag, keine neue Nutzerentscheidung."
+        },
+        {
+          "code": "open_question",
+          "message": "Steuerkontext/Mengenstaffeln und Start-/Designreferenzen der unveränderten Excel bleiben zu prüfen. Foto-/Logo-Auswahl wurde am 11.11.2026 ausdrücklich bestätigt und ist keine offene Nutzerentscheidung."
+        }
+      ],
+      "valid": false
+    },
+    {
+      "workbook": "Tuerschild-Acrylglas-3mm-6x2_v2.xlsx",
+      "planId": "pgp_b6bd6b74-35e6-444e-b2cb-4bf64a49e280",
+      "planHash": "66931afab9bcac13e82b87ffb2b8e47473fad169e1b623353015e69dc7e31bbc",
+      "planFileSha256": "f3097285c26faf4f9e643c06d2c1dd0fd2404d3d0a009c4213ade7fe0690bb47",
+      "designs": 27,
+      "formats": 1,
+      "formatColorEntries": 2,
+      "emptyFormatColors": 0,
+      "presentExcluded": [],
+      "excludedRefs": [],
+      "reportBlocked": [],
+      "reportUnavailable": [],
+      "issues": [
+        {
+          "code": "open_question",
+          "message": "Startdesign TRE-V2A-6x2-D1 / 6 × 2 cm / Schwarz ist ein technisch geprüfter Vorschlag, keine neue Nutzerentscheidung."
+        },
+        {
+          "code": "open_question",
+          "message": "Steuerkontext/Mengenstaffeln und Start-/Designreferenzen der unveränderten Excel bleiben zu prüfen. Foto-/Logo-Auswahl wurde am 11.11.2026 ausdrücklich bestätigt und ist keine offene Nutzerentscheidung."
+        }
+      ],
+      "valid": false
+    },
+    {
+      "workbook": "Tuerschild-Acrylglas-3mm-8x2_v2.xlsx",
+      "planId": "pgp_6126fcb8-d8b7-4b5b-9410-9c09a9198b52",
+      "planHash": "0aa24af4bd611f5a674642a98bb5603d12f23d4a7175cdea3afca55865e0ab95",
+      "planFileSha256": "afbd4228d4618a4dfce791a2d5f3533b848ab02ccf8cae7ca298321335b471ac",
+      "designs": 27,
+      "formats": 1,
+      "formatColorEntries": 2,
+      "emptyFormatColors": 0,
+      "presentExcluded": [],
+      "excludedRefs": [],
+      "reportBlocked": [],
+      "reportUnavailable": [],
+      "issues": [
+        {
+          "code": "open_question",
+          "message": "Startdesign TRE-V2A-8x2-D1 / 8 × 2 cm / Schwarz ist ein technisch geprüfter Vorschlag, keine neue Nutzerentscheidung."
+        },
+        {
+          "code": "open_question",
+          "message": "Steuerkontext/Mengenstaffeln und Start-/Designreferenzen der unveränderten Excel bleiben zu prüfen. Foto-/Logo-Auswahl wurde am 11.11.2026 ausdrücklich bestätigt und ist keine offene Nutzerentscheidung."
+        }
+      ],
+      "valid": false
+    },
+    {
+      "workbook": "Tuerschild-Edelstahl-5x2_v1.xlsx",
+      "planId": "pgp_fae5b365-a7c0-4d85-9096-e9f5670b5b21",
+      "planHash": "ac2f8ce469cf862471a6c1c35f7c6a0142bf25b235b00b20e8038d23551a8309",
+      "planFileSha256": "6122ec0199223cc4e71ca551acc64845e648608772359a9180afd5c93232ef93",
+      "designs": 27,
+      "formats": 1,
+      "formatColorEntries": 1,
+      "emptyFormatColors": 0,
+      "presentExcluded": [],
+      "excludedRefs": [],
+      "reportBlocked": [],
+      "reportUnavailable": [],
+      "issues": [
+        {
+          "code": "open_question",
+          "message": "Startdesign TRE-V2A-5x2-D1 / 5 × 2 cm ist ein technisch geprüfter Vorschlag, keine neue Nutzerentscheidung."
+        },
+        {
+          "code": "open_question",
+          "message": "Steuerkontext/Mengenstaffeln und Start-/Designreferenzen der unveränderten Excel bleiben zu prüfen. Foto-/Logo-Auswahl wurde am 11.11.2026 ausdrücklich bestätigt und ist keine offene Nutzerentscheidung."
+        }
+      ],
+      "valid": false
+    },
+    {
+      "workbook": "Tuerschild-Edelstahl-6x2_v1.xlsx",
+      "planId": "pgp_ea7f2afb-fb41-4e91-90e7-986d8d524cc8",
+      "planHash": "f87a05e734982b900f49de674d8748b2870113ad76b5a3e9c39b30ee2cdddf9e",
+      "planFileSha256": "bda9bc026da13c2c787a21dc06bc8c3d57700e59a4b05fe6b4b13adbbf1560fb",
+      "designs": 27,
+      "formats": 1,
+      "formatColorEntries": 1,
+      "emptyFormatColors": 0,
+      "presentExcluded": [],
+      "excludedRefs": [],
+      "reportBlocked": [],
+      "reportUnavailable": [],
+      "issues": [
+        {
+          "code": "open_question",
+          "message": "Startdesign TRE-V2A-6x2-D1 / 6 × 2 cm ist ein technisch geprüfter Vorschlag, keine neue Nutzerentscheidung."
+        },
+        {
+          "code": "open_question",
+          "message": "Steuerkontext/Mengenstaffeln und Start-/Designreferenzen der unveränderten Excel bleiben zu prüfen. Foto-/Logo-Auswahl wurde am 11.11.2026 ausdrücklich bestätigt und ist keine offene Nutzerentscheidung."
+        }
+      ],
+      "valid": false
+    },
+    {
+      "workbook": "Tuerschild-Edelstahl-8x2_v1.xlsx",
+      "planId": "pgp_c2098259-36a3-4048-a4e6-e3ffa70c9d68",
+      "planHash": "5c4b729ea5be27e1ea9b4e4a6c65e94088803618219e5025836ca6e70654ec3e",
+      "planFileSha256": "357afdc196875de89271ffee6a8766ac0c70f9d2c8fc8c532e391fc542238c97",
+      "designs": 27,
+      "formats": 1,
+      "formatColorEntries": 1,
+      "emptyFormatColors": 0,
+      "presentExcluded": [],
+      "excludedRefs": [],
+      "reportBlocked": [],
+      "reportUnavailable": [],
+      "issues": [
+        {
+          "code": "open_question",
+          "message": "Startdesign TRE-V2A-8x2-D1 / 8 × 2 cm ist ein technisch geprüfter Vorschlag, keine neue Nutzerentscheidung."
+        },
+        {
+          "code": "open_question",
+          "message": "Steuerkontext/Mengenstaffeln und Start-/Designreferenzen der unveränderten Excel bleiben zu prüfen. Foto-/Logo-Auswahl wurde am 11.11.2026 ausdrücklich bestätigt und ist keine offene Nutzerentscheidung."
+        }
+      ],
+      "valid": false
+    }
+  ]
+}

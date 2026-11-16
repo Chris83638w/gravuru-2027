@@ -1,5 +1,25 @@
 const $=s=>document.querySelector(s);
 const materialNames={steel:'Edelstahl',acrylic:'Acrylglas',slate:'Schiefer',oak:'Eiche',beech:'Buche',cherry:'Kirsche','leather-brown':'Leder','acrylic-clear':'Acrylglas · klar','acrylic-anthracite':'Acrylglas · anthrazit',wood:'Holz',other:'Sonstiges',print:'Druck'};
+// Selection dialogs need names/IDs/revisions, never every product's embedded
+// font and photo document. Read the existing compact catalogue in full pages.
+export async function loadCatalogChoices(api,{kinds=['product','master']}={}){
+ if(typeof api!=='function'||!Array.isArray(kinds)||!kinds.length||new Set(kinds).size!==kinds.length||kinds.some(kind=>!['product','master'].includes(kind)))throw Error('Ungültige Produktauswahl.');
+ const products=[],seen=new Set();
+ for(const kind of kinds){
+  let total=null,pages=1;
+  for(let page=1;page<=pages;page++){
+   const query=new URLSearchParams({catalog:'1',kind,filter:'all',sort:'oldest',page:String(page),pageSize:'100'});
+   const data=await api('/api/workshop/products?'+query);
+   if(!Array.isArray(data.products)||!Number.isSafeInteger(data.total)||data.total<0||data.page!==page||data.pageSize!==100||data.pages!==Math.max(1,Math.ceil(data.total/100))||total!==null&&total!==data.total||data.products.length!==Math.min(100,Math.max(0,data.total-(page-1)*100)))throw Error('Die Produktauswahl wurde geändert oder ist unvollständig. Bitte erneut laden.');
+   total=data.total;pages=data.pages;
+   for(const product of data.products){
+    if(typeof product.id!=='string'||seen.has(product.id)||product.kind!==kind||product.status==='archived'||'document' in product)throw Error('Die Produktauswahl wurde geändert. Bitte erneut laden.');
+    seen.add(product.id);products.push(product);
+   }
+  }
+ }
+ return products;
+}
 export function installCatalog({state,loadList,notify,api,selection,setBusy}){
  state.catalogFilters={material:'',category:'',sort:'updated',page:1,pageSize:24};
  try{const saved=localStorage.getItem('gravuru-catalog-layout');if(['list','cards'].includes(saved))$('#catalog-layout').value=saved;}catch{}

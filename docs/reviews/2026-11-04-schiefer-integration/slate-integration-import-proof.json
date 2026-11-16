@@ -1,0 +1,127 @@
+{
+  "schema": "gravuru-slate-import-integration-proof/v1",
+  "localOnly": true,
+  "existingProducts": 48,
+  "existingUnchanged": 48,
+  "created": 1,
+  "variants": 15,
+  "galleryDesigns": 82,
+  "sourceDesignId": "MG-S-22x14-D1",
+  "planned": {
+    "schema": "gravuru-slate-group-import-result/v1",
+    "bundleSha256": "15256fe6145febeb5a503079421e24f100fdf36abc2f10763336699a74450417",
+    "runtime": {
+      "schema": "gravuru-slate-runtime-check/v1",
+      "runtime": "C:\\Users\\Christopher Koch\\Documents\\ChatGPT\\Shopify Import\\work\\gravuru-schiefer-integration",
+      "hashes": {
+        "app/workshop/product-model.mjs": "b59e1091e6886a61b9f8d93d15fdbc6526bf4aeb2e789eb93e4b551073c95854",
+        "app/workshop/shop-preparation.mjs": "84c7b062bcf8f3d6fc1d1357ee163ca317bb9d955b08a026aa38e35b54a953db",
+        "app/configurator/variant-m/contract.mjs": "cbfd248877ef3b1061241ceaa294597679bf2202092b9fc91fc7691267eee014"
+      },
+      "compatible": true,
+      "products": [
+        {
+          "sourceDesignId": "MG-S-22x14-D1",
+          "compatible": true,
+          "variants": 15
+        }
+      ]
+    },
+    "products": [
+      {
+        "key": "schiefer-gruppe:8343afea148fd8783508d26b4abe8b33",
+        "action": "create",
+        "sourceDesignId": "MG-S-22x14-D1"
+      }
+    ],
+    "assetAdditions": {
+      "design_sources": 0,
+      "design_assets": 0,
+      "material_surfaces": 0,
+      "photo_example_sources": 0
+    },
+    "applied": false,
+    "shopifyWrites": 0
+  },
+  "first": {
+    "schema": "gravuru-slate-group-import-result/v1",
+    "bundleSha256": "15256fe6145febeb5a503079421e24f100fdf36abc2f10763336699a74450417",
+    "runtime": {
+      "schema": "gravuru-slate-runtime-check/v1",
+      "runtime": "C:\\Users\\Christopher Koch\\Documents\\ChatGPT\\Shopify Import\\work\\gravuru-schiefer-integration",
+      "hashes": {
+        "app/workshop/product-model.mjs": "b59e1091e6886a61b9f8d93d15fdbc6526bf4aeb2e789eb93e4b551073c95854",
+        "app/workshop/shop-preparation.mjs": "84c7b062bcf8f3d6fc1d1357ee163ca317bb9d955b08a026aa38e35b54a953db",
+        "app/configurator/variant-m/contract.mjs": "cbfd248877ef3b1061241ceaa294597679bf2202092b9fc91fc7691267eee014"
+      },
+      "compatible": true,
+      "products": [
+        {
+          "sourceDesignId": "MG-S-22x14-D1",
+          "compatible": true,
+          "variants": 15
+        }
+      ]
+    },
+    "products": [
+      {
+        "key": "schiefer-gruppe:8343afea148fd8783508d26b4abe8b33",
+        "sourceDesignId": "MG-S-22x14-D1",
+        "id": "cfg_e40db2c7-7674-4fee-81bb-3b861c4bdf3e",
+        "created": true,
+        "revision": 1,
+        "fingerprint": "15fc1a0d2001e2ef9ce7aaf5b6d3060338949ba5a3597733b8a270d46a8c6f41"
+      }
+    ],
+    "assetAdditions": {
+      "design_sources": 0,
+      "design_assets": 0,
+      "material_surfaces": 0,
+      "photo_example_sources": 0
+    },
+    "applied": true,
+    "shopifyWrites": 0,
+    "backupDirectory": "C:\\Users\\Christopher Koch\\Documents\\ChatGPT\\Shopify Import\\work\\slate-integration-imported\\slate-import-backups\\1793795745201-15256fe6145f"
+  },
+  "repeated": {
+    "schema": "gravuru-slate-group-import-result/v1",
+    "bundleSha256": "15256fe6145febeb5a503079421e24f100fdf36abc2f10763336699a74450417",
+    "runtime": {
+      "schema": "gravuru-slate-runtime-check/v1",
+      "runtime": "C:\\Users\\Christopher Koch\\Documents\\ChatGPT\\Shopify Import\\work\\gravuru-schiefer-integration",
+      "hashes": {
+        "app/workshop/product-model.mjs": "b59e1091e6886a61b9f8d93d15fdbc6526bf4aeb2e789eb93e4b551073c95854",
+        "app/workshop/shop-preparation.mjs": "84c7b062bcf8f3d6fc1d1357ee163ca317bb9d955b08a026aa38e35b54a953db",
+        "app/configurator/variant-m/contract.mjs": "cbfd248877ef3b1061241ceaa294597679bf2202092b9fc91fc7691267eee014"
+      },
+      "compatible": true,
+      "products": [
+        {
+          "sourceDesignId": "MG-S-22x14-D1",
+          "compatible": true,
+          "variants": 15
+        }
+      ]
+    },
+    "products": [
+      {
+        "key": "schiefer-gruppe:8343afea148fd8783508d26b4abe8b33",
+        "action": "unchanged",
+        "id": "cfg_e40db2c7-7674-4fee-81bb-3b861c4bdf3e",
+        "revision": 1,
+        "sourceDesignId": "MG-S-22x14-D1"
+      }
+    ],
+    "assetAdditions": {
+      "design_sources": 0,
+      "design_assets": 0,
+      "material_surfaces": 0,
+      "photo_example_sources": 0
+    },
+    "applied": true,
+    "shopifyWrites": 0,
+    "journalRepaired": false
+  },
+  "shopifyWrites": 0,
+  "activeStoreWrites": 0
+}

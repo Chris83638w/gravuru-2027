@@ -1,0 +1,10 @@
+✔ native copied repository: one update, exact readback, same identity, untouched source and foreign product, idempotent replay (759.9684ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1354.7654
+Frozen copy-pilot-proof.json unchanged: D733CD5BBFB7476112FF1102BF8FE34FBF243BCE50A8A5C06A92CD1BCED9D90B

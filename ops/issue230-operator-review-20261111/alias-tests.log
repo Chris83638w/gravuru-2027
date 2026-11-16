@@ -1,0 +1,10 @@
+✔ read-only native inventory uses explicit active heads, target filters and metadata columns only (61.7659ms)
+✔ alias lookup finds actual cfg identities only in valid current product JSON and keeps ambiguity explicit (51.5171ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 196.286

@@ -1,0 +1,21 @@
+✔ fresh test link applies only to an explicit product preview or review model (0.9015ms)
+✔ fresh preview ignores the last test and never saves text or photos; ordinary recovery stays available (86.9913ms)
+✔ Sitzungsschutz: Änderung wird entprellt gespeichert, Neuladen stellt den Stand wieder her, „Neu beginnen“ setzt zurück (75.0543ms)
+✔ Sitzungsschutz: Foto-Referenzen bleiben, Bilder nicht – Hinweis zum erneuten Hochladen (54.8993ms)
+✔ Sitzungsschutz: laufende Designübernahme hat Vorrang; alte Sitzung bleibt bis zur nächsten gültigen Änderung erhalten (90.7192ms)
+✔ Sitzungsschutz: ungültige, fremde oder abgelaufene Stände werden still verworfen; gesperrter Speicher stört nicht (370.6347ms)
+✔ createSessionGuard: ungültiger Zwischenstand lässt den letzten gültigen stehen; Zeitgeber wird entprellt (0.6715ms)
+✔ Menge 10 überlebt pagehide und Wiederöffnen einschließlich Adapterzustand (68.3229ms)
+✔ ältere gespeicherte Sitzung ohne Mengenfeld stellt Gestaltung mit Menge 1 her (57.5488ms)
+✔ Sitzungsmengen halten die vorhandenen Grenzen 1–99 ein; ungültige Zwischenwerte überschreiben nichts (0.4673ms)
+✔ explizites CartEdit früh: Servermenge 3 und Gestaltung haben Vorrang vor lokaler Menge 10 samt Uploads (78.3147ms)
+✔ explizites CartEdit spät: Servermenge 3 und Gestaltung haben Vorrang vor lokaler Menge 10 samt Uploads (77.8842ms)
+✔ ungültige CartEdit-URL unterdrückt lokale Gestaltung, Menge 10 und Upload-Recovery nicht (60.4072ms)
+ℹ tests 13
+ℹ suites 0
+ℹ pass 13
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1257.593

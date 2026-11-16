@@ -1,0 +1,42 @@
+{
+  "runtime": "/var/www/vhosts/gravuru-designwerkstatt.de/private/mika-konfi-hundetest-r4-20261105",
+  "startupSha256": "1165d5aae21d8a994b4a7daf55ae1455aa3171bc058cf034cd5c5e6755d5ed87",
+  "bundle": "/_bundle/editor-d5097a3ba9e83c82.mjs",
+  "tests": [
+    "ℹ tests 141",
+    "ℹ pass 141",
+    "ℹ fail 0",
+    "ℹ skipped 0"
+  ],
+  "sourceFiles": 21,
+  "sharedAssets": 50,
+  "publicFiles": [
+    {
+      "name": "22x14.html",
+      "sha256": "02a5d504d8db900c97253f8fe0e499a36ebdb7299569e3666b305ac1ff24b7e5"
+    },
+    {
+      "name": "30x20.html",
+      "sha256": "5a378205dcadf7cc65ad0479409b28e42fed652fee3bdac5210ce2b1f72448d1"
+    },
+    {
+      "name": "22x14.json",
+      "sha256": "205d75a56828fbe5e975cff88c08445a0fa99a6788357f2ce4bd7cc542d65c37"
+    },
+    {
+      "name": "30x20.json",
+      "sha256": "76e6293e84298e0c22273c0efa6f0f82f3ca1f269246e833a9d51312a07e3599"
+    },
+    {
+      "name": "index.html",
+      "sha256": "6cf6d5cb84f5db6b9b68e2f6e0d13f43e3ab4947bcf38dbac09b232e4979754a"
+    }
+  ],
+  "basePrices": {
+    "22x14": 1999,
+    "30x20": 2499
+  },
+  "activated": true,
+  "cart": false,
+  "hostPathsCorrected": true
+}

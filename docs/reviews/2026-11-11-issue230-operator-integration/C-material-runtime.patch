@@ -1,0 +1,957 @@
+diff --git a/app/configurator/variant-m/design-search-control.mjs b/app/configurator/variant-m/design-search-control.mjs
+new file mode 100644
+index 0000000000000000000000000000000000000000..2893087c3ec25e8a88aa53ea3ec3aea78f0baef4
+--- /dev/null
++++ b/app/configurator/variant-m/design-search-control.mjs
+@@ -0,0 +1,29 @@
++import {designSearchQuery} from './design-search.mjs';
++
++// Invalidate as soon as a new input arrives, before the debounce starts. A slow
++// previous page can therefore never repopulate the grid while the user types.
++export function createDesignSearchInput({change,invalidate=()=>{},schedule=setTimeout,cancel=clearTimeout,delay=250}){
++ let timer=null,query='',composing=false;
++ const clearTimer=()=>{if(timer!==null)cancel(timer);timer=null;};
++ const flush=()=>{clearTimer();if(!composing)change(query);};
++ return {
++  get query(){return query;},
++  input(value,{immediate=false}={}){query=designSearchQuery(value);clearTimer();invalidate();if(!composing){if(immediate||!query)flush();else timer=schedule(flush,delay);}},
++  compositionStart(){composing=true;clearTimer();invalidate();},
++  compositionEnd(value){composing=false;this.input(value);},
++  flush,dispose(){clearTimer();}
++ };
++}
++export function installDesignSearchControl({container,before,onChange,onInvalidate,document:doc=document}){
++ const form=doc.createElement('div');form.className='ux-design-search';
++ form.innerHTML='<label for="ux-design-search-input">Design suchen</label><div class="ux-design-search-row"><input id="ux-design-search-input" type="search" maxlength="80" placeholder="z. B. Haus, Familie oder D23" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" enterkeyhint="search" aria-controls="ux-design-search-results"><button type="button" aria-label="Suche löschen" hidden>Leeren</button></div>';
++ if(before)before.before(form);else container.prepend(form);
++ const input=form.querySelector('input'),clear=form.querySelector('button');
++ const state=createDesignSearchInput({change:onChange,invalidate:onInvalidate});
++ const update=immediate=>{clear.hidden=!input.value;state.input(input.value,{immediate});};
++ input.addEventListener('input',()=>update(false));input.addEventListener('search',()=>update(true));
++ input.addEventListener('compositionstart',()=>state.compositionStart());input.addEventListener('compositionend',()=>{clear.hidden=!input.value;state.compositionEnd(input.value);});
++ input.addEventListener('keydown',event=>{if(event.isComposing)return;if(event.key==='Enter'){event.preventDefault();state.flush();}else if(event.key==='Escape'){event.preventDefault();input.value='';update(true);}});
++ clear.addEventListener('click',()=>{input.value='';update(true);input.focus();});
++ return {...state,input,element:form,get query(){return state.query;}};
++}
+diff --git a/app/configurator/variant-m/design-search.mjs b/app/configurator/variant-m/design-search.mjs
+new file mode 100644
+index 0000000000000000000000000000000000000000..25457a2fce69c2357dac036d800ea4144930e5c0
+--- /dev/null
++++ b/app/configurator/variant-m/design-search.mjs
+@@ -0,0 +1,39 @@
++// Search only template metadata from the already authorised product revision.
++// Customer canvas text, artwork paths and filenames are deliberately not indexed.
++export const DESIGN_SEARCH_LIMIT=80;
++export function designSearchQuery(value=''){
++ if(typeof value!=='string'||value.length>DESIGN_SEARCH_LIMIT||/[\u0000-\u001f\u007f]/.test(value))throw Object.assign(Error('Bitte einen Suchbegriff mit höchstens 80 Zeichen eingeben.'),{status:422,code:'shop_gallery_query'});
++ return value.trim().replace(/\s+/g,' ');
++}
++export const normaliseDesignSearch=value=>String(value??'').toLocaleLowerCase('de').replace(/ä/g,'ae').replace(/ö/g,'oe').replace(/ü/g,'ue').replace(/ß/g,'ss').normalize('NFKD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,' ').trim();
++const strings=value=>Array.isArray(value)?value.filter(v=>typeof v==='string'):typeof value==='string'?[value]:[];
++const names=value=>[...strings(value?.name),...strings(value?.label),...strings(value?.keywords),...strings(value?.tags)];
++export function designOriginRank(design){
++ if([0,1,2].includes(design?.herkunftRang))return design.herkunftRang;
++ if(design?.katalog?.prio===1)return 1;
++ if(design?.katalog?.transferFrom||/^\S+ \(Bestand[,)]/.test(design?.katalog?.source||''))return 0;
++ return 1;
++}
++export function designSearchMetadata(design,config={}){
++ const id=design.katalog?.designId||design.id,number=design.designNo??design.katalog?.designNo??String(id).match(/(?:^|[-_])D(\d+)(?:$|[-_])/i)?.[1];
++ const definitions=Array.isArray(config.themes)?config.themes:config.themes?.themes||[];
++ const themes=(design.themes||[]).flatMap(t=>{const key=typeof t==='string'?t:t?.id;return [key,...names(t),...names(definitions.find(d=>d.id===key))];});
++ const resources=new Map((config.localResources?.motifs||[]).map(m=>[m.key,m]));
++ let unnamedMotifs=0;const motifNames=[];
++ for(const object of design.objects||[])if(object.type==='motif'){
++  const explicit=[...strings(object.motifName),...strings(object.keywords),...names(resources.get(object.motif))];
++  if(explicit.length)motifNames.push(...explicit);else unnamedMotifs++;
++ }
++ motifNames.push(...strings(design.motifNames));
++ const text=[design.name,id,design.id,...themes,...motifNames,...strings(design.keywords),...strings(design.tags)].filter(v=>typeof v==='string').map(normaliseDesignSearch).join(' ');
++ return {text,number:number==null?null:String(Number(number)),rank:designOriginRank(design),unnamedMotifs};
++}
++export function matchesDesignSearch(metadata,query){
++ const normal=normaliseDesignSearch(query);if(/^\d+$/.test(normal))return metadata.number===String(Number(normal));
++ const parts=normal.split(' ').filter(Boolean);
++ return parts.every(part=>/^d\d+$/.test(part)?metadata.number===String(Number(part.slice(1))):metadata.text.includes(part));
++}
++export function searchDesigns(designs,query,config={}){
++ const q=designSearchQuery(query);
++ return designs.filter(d=>d.hidden!==true&&d.released!==false&&d.katalog?.fit!=='passt nicht').map(d=>({design:d,metadata:designSearchMetadata(d,config)})).filter(row=>matchesDesignSearch(row.metadata,q)).sort((a,b)=>a.metadata.rank-b.metadata.rank).map(row=>row.design);
++}
+diff --git a/app/configurator/variant-m/design-search.test.mjs b/app/configurator/variant-m/design-search.test.mjs
+new file mode 100644
+index 0000000000000000000000000000000000000000..ced8b3d44a4c6efcbac9003decfa68df08468020
+--- /dev/null
++++ b/app/configurator/variant-m/design-search.test.mjs
+@@ -0,0 +1,46 @@
++import test from 'node:test';
++import assert from 'node:assert/strict';
++import {designSearchQuery,designSearchMetadata,matchesDesignSearch,searchDesigns} from './design-search.mjs';
++import {createDesignSearchInput,installDesignSearchControl} from './design-search-control.mjs';
++import {createGalleryPager} from './gallery-pager.mjs';
++
++test('names, German spelling, complete catalogue IDs and exact D numbers use original metadata',()=>{
++ const d={id:'native-23',name:'Grüße mit weißem Haus',katalog:{designId:'TRE-V2A-5x2-D23'},objects:[{type:'text',text:'Privater Mustername'}]},m=designSearchMetadata(d);
++ for(const q of ['GRÜSSE','gruesse','weißem Haus','TRE-V2A-5x2-D23','D23','d023'])assert.equal(matchesDesignSearch(m,q),true,q);
++ for(const q of ['D2','D230','Privater Mustername'])assert.equal(matchesDesignSearch(m,q),false,q);
++ const numbered=designSearchMetadata({id:'native-1234',designNo:23,name:'Haus'});assert.equal(matchesDesignSearch(numbered,'23'),true);assert.equal(matchesDesignSearch(numbered,'12'),false);assert.equal(matchesDesignSearch(m,'5'),false);
++ assert.equal(designSearchQuery('  Haus   Familie  '),'Haus Familie');
++ for(const q of ['a'.repeat(81),'a\nb',[],null])assert.throws(()=>designSearchQuery(q),{code:'shop_gallery_query'});
++});
++test('only explicit theme/motif names and keywords count; unlabelled paths remain a measurable data gap',()=>{
++ const d={id:'d1',themes:['family'],objects:[{type:'motif',motif:'known'},{type:'motif',motif:'path-only'}]},c={themes:[{id:'family',name:'Familie'}],localResources:{motifs:[{key:'known',name:'Anker',tags:['Hafen'],svgFragment:'secret'},{key:'path-only',svgFragment:'Haus'}]}};
++ const m=designSearchMetadata(d,c);assert.equal(m.unnamedMotifs,1);
++ for(const q of ['Familie','family','Anker','Hafen'])assert.equal(matchesDesignSearch(m,q),true,q);
++ for(const q of ['Haus','secret','path-only'])assert.equal(matchesDesignSearch(m,q),false,q);
++});
++test('native search excludes hidden, withdrawn and unfit designs, with stable originals before additions',()=>{
++ const designs=[{id:'new1',name:'Haus',katalog:{prio:1}},{id:'hidden',name:'Haus',hidden:true},{id:'own1',name:'Haus',katalog:{source:'X-D1 (Bestand, Quelle.cdr)'}},{id:'revoked',name:'Haus',released:false},{id:'bad',name:'Haus',katalog:{fit:'passt nicht'}},{id:'own2',name:'Haus',herkunftRang:0},{id:'new2',name:'Haus'}];
++ const before=JSON.stringify(designs);assert.deepEqual(searchDesigns(designs,'Haus').map(d=>d.id),['own1','own2','new1','new2']);assert.equal(JSON.stringify(designs),before);
++});
++function clock(){let n=0;const jobs=new Map();return {schedule:fn=>{jobs.set(++n,fn);return n;},cancel:id=>jobs.delete(id),flush(){for(const [id,fn]of [...jobs]){jobs.delete(id);fn();}},size:()=>jobs.size};}
++test('rapid typing invalidates pending pages immediately and only the final settled query is loaded',async()=>{
++ const time=clock(),calls=[];let oldResolve;
++ const pager=createGalleryPager((page,q)=>{calls.push([page,q]);return q==='old'?new Promise(resolve=>oldResolve=resolve):Promise.resolve({items:[q],nextPage:null});});
++ const old=pager.load('old');const input=createDesignSearchInput({...time,invalidate:()=>pager.reset(),change:q=>pager.load(q)});
++ for(const q of ['H','Ha','Hau','Haus'])input.input(q);
++ oldResolve({items:['stale'],nextPage:4});assert.equal(await old,null);assert.equal(time.size(),1);
++ time.flush();await Promise.resolve();assert.deepEqual(calls,[[0,'old'],[0,'Haus']]);assert.equal(pager.next,null);
++ input.input('Familie');input.input('');await Promise.resolve();assert.deepEqual(calls.at(-1),[0,'']);time.flush();assert.equal(calls.length,3);
++});
++test('composition waits for committed input; Enter flush and dispose cancel timers',()=>{
++ const time=clock(),found=[],input=createDesignSearchInput({...time,change:q=>found.push(q)});
++ input.compositionStart();input.input('Ha');time.flush();assert.deepEqual(found,[]);input.compositionEnd('Haus');input.flush();time.flush();assert.deepEqual(found,['Haus']);input.input('Familie');input.dispose();time.flush();assert.deepEqual(found,['Haus']);
++});
++test('real search control keeps focus, keyboard clearing, live label and mobile input properties',()=>{
++ const node=()=>({value:'',hidden:false,handlers:{},addEventListener(k,fn){this.handlers[k]=fn;},focus(){this.focused=true;}}),input=node(),clear=node(),form={querySelector:s=>s==='input'?input:clear},doc={createElement:()=>form},container={prepend(n){this.child=n;}},queries=[];
++ const control=installDesignSearchControl({container,document:doc,onChange:q=>queries.push(q)});
++ assert.match(form.innerHTML,/Design suchen/);assert.match(form.innerHTML,/type="search"/);assert.match(form.innerHTML,/maxlength="80"/);assert.match(form.innerHTML,/enterkeyhint="search"/);
++ input.value='Haus';input.handlers.input();input.handlers.keydown({key:'Enter',preventDefault(){}});assert.deepEqual(queries,['Haus']);assert.equal(input.value,'Haus');
++ clear.handlers.click();assert.deepEqual(queries,['Haus','']);assert.equal(input.focused,true);assert.equal(clear.hidden,true);
++ input.value='D23';input.handlers.input();input.handlers.keydown({key:'Escape',preventDefault(){}});assert.equal(input.value,'');assert.equal(queries.at(-1),'');control.dispose();
++});
+diff --git a/app/configurator/variant-m/material-surface-preview.test.mjs b/app/configurator/variant-m/material-surface-preview.test.mjs
+index cc75664ce3a710ab7f7eece9ec08f436d0c3f778..eb9da8f811c656afcc12a3bbb0477877ee421a44 100644
+--- a/app/configurator/variant-m/material-surface-preview.test.mjs
++++ b/app/configurator/variant-m/material-surface-preview.test.mjs
+@@ -1,6 +1,7 @@
+ import test from 'node:test';
+ import assert from 'node:assert/strict';
+ import {previewSurfaceUrl, surfacePreview, validSurface,plateDepthPreview} from './material-surface.mjs';
++import {acrylicPlatePreview} from '../../platform/sources/app/shared/models/acrylic-plate-preview.mjs';
+ 
+ // Leistung mobil (20.10.2026): data:-Texturen werden für die Bildschirmvorschau einmal zur blob:-Adresse.
+ const png='data:image/png;base64,'+Buffer.from('\x89PNG\r\n\x1a\nTEST','binary').toString('base64');
+@@ -38,3 +39,13 @@ test('depth follows ellipse or exact contour, without drill holes in the shadow
+  const contour=plateDepthPreview(svg,g),noHoles=plateDepthPreview(svg,{...g,holes:[]});
+  assert.equal(contour,noHoles);assert(contour.includes(g.outlinePath));assert.match(contour,/fill-rule="evenodd"/);
+ });
++
++test('front-on acrylic has one face and original rim, with no displaced opaque second plate',()=>{
++ const profile={material:{kind:'acrylic',thicknessMm:3,engravingSide:'back',variant:'schwarz'},geometry:{width:50,height:20,shape:'rect'}},saved=structuredClone(profile),plate='<rect width="50" height="20" rx="0"';
++ const glass=acrylicPlatePreview(profile,plate,'single');
++ assert.equal((glass.back.match(/<rect/g)||[]).length,1);
++ assert.doesNotMatch(glass.back,/<use|transform="translate/);
++ assert.match(glass.back,/stroke-width=".12"/);assert.match(glass.front,/stroke-width=".22"/);
++ assert.match(glass.artwork('<path d="M1 1L2 2"/>'),/rear-frost/);
++ assert.deepEqual(profile,saved);
++});
+diff --git a/app/configurator/variant-m/material-surface.mjs b/app/configurator/variant-m/material-surface.mjs
+index 3e442d86f0816076e1acfcb9b379b8aaaf3dd33b..7f085e0fa4e5179b0d4329e34a8942e931be71d1 100644
+--- a/app/configurator/variant-m/material-surface.mjs
++++ b/app/configurator/variant-m/material-surface.mjs
+@@ -24,7 +24,9 @@ export function plateDepthPreview(svg,geometry,id='plate-depth'){
+  if(![width,height].every(n=>Number.isFinite(n)&&n>0))throw Error('Plattenschatten: Maße fehlen.');
+  const key='depth-'+String(id).replace(/[^a-zA-Z0-9_-]/g,'_');
+  const silhouette=plateClipMarkup({...geometry,holes:[]}).replace('clip-rule=','fill-rule=');
+- const shadow='<g data-plate-shadow="true" data-role="guide" aria-hidden="true" pointer-events="none"><defs><filter id="'+key+'" filterUnits="userSpaceOnUse" x="'+(-6*scale)+'" y="'+(-6*scale)+'" width="'+(width+12*scale)+'" height="'+(height+12*scale)+'"><feGaussianBlur stdDeviation="'+(.65*scale)+'"/></filter></defs><g transform="translate('+(.35*scale)+' '+(.9*scale)+')" fill="#23282c" opacity=".28" filter="url(#'+key+')">'+silhouette+'</g></g>';
++ // A diffuse shadow beneath the plate, separate from its physical edge. The
++ // directional offset gives depth without a crisp second silhouette or glow.
++ const shadow='<g data-plate-shadow="true" data-role="guide" aria-hidden="true" pointer-events="none"><defs><filter id="'+key+'" filterUnits="userSpaceOnUse" x="'+(-6*scale)+'" y="'+(-6*scale)+'" width="'+(width+12*scale)+'" height="'+(height+12*scale)+'"><feGaussianBlur stdDeviation="'+(1.05*scale)+'"/></filter></defs><g transform="translate('+(.35*scale)+' '+(1.4*scale)+')" fill="#23282c" opacity=".24" filter="url(#'+key+')">'+silhouette+'</g></g>';
+  return svg.replace(/(<svg\b[^>]*>)/,'$1'+shadow);
+ }
+ export function surfacePreview(svg,url,geometry){
+diff --git a/app/configurator/variant-m/module-profile-realm.test.mjs b/app/configurator/variant-m/module-profile-realm.test.mjs
+new file mode 100644
+index 0000000000000000000000000000000000000000..30d944cf8f497f5d5a3cb2013708b3a77fc38c19
+--- /dev/null
++++ b/app/configurator/variant-m/module-profile-realm.test.mjs
+@@ -0,0 +1,19 @@
++import test from 'node:test';
++import assert from 'node:assert/strict';
++import vm from 'node:vm';
++import {MODULE_PROFILE_SCHEMA,validateModuleProfile,moduleEnabled,moduleProfileIssue,applyModuleProfile} from './module-profile.mjs';
++const profile={schema:MODULE_PROFILE_SCHEMA,id:'cmp-parent-frame',revision:1,modules:{options:true,designs:true,text:true,motifs:true,photo:false,logo:false,colors:false}};
++test('parent-frame JSON module policy is validated without changing its pinned choices',()=>{
++ const data={moduleProfile:profile,profile:{material:{kind:'steel'},processing:{method:'engraving'},designs:[]},photo:{enabled:false},logo:{enabled:false}};
++ const foreign=vm.runInNewContext('JSON.parse(value)',{value:JSON.stringify(data)}),before=JSON.stringify(foreign);
++ assert.notEqual(Object.getPrototypeOf(foreign.moduleProfile),Object.prototype);assert.equal(validateModuleProfile(foreign.moduleProfile),foreign.moduleProfile);assert.equal(moduleEnabled(foreign,'designs'),true);assert.equal(moduleEnabled(foreign,'photo'),false);assert.equal(moduleProfileIssue(foreign),null);
++ const compiled=applyModuleProfile(foreign);assert.deepEqual(compiled.moduleProfile,profile);assert.equal(JSON.stringify(foreign),before);
++});
++test('cross-realm support does not accept classes, arrays, dates, incomplete choices or invalid versions',()=>{
++ for(const expression of ['Object.assign(new (class Profile {})(), p)','Object.assign(new Date(),p)','Object.assign([],p)','({...p,revision:0})','({...p,extra:true})','({...p,modules:{...p.modules,photo:1}})','({...p,modules:{options:true}})']){
++  const invalid=vm.runInNewContext('const p=JSON.parse(value);'+expression,{value:JSON.stringify(profile)});assert.throws(()=>validateModuleProfile(invalid),{code:'module_profile_invalid'},expression);
++ }
++ const nullPrototype=Object.assign(Object.create(null),profile);assert.equal(validateModuleProfile(nullPrototype),nullPrototype);
++ const disguised=Object.assign(Object.create(null),{constructor:Object});assert.throws(()=>validateModuleProfile(Object.assign(Object.create(disguised),profile)),{code:'module_profile_invalid'});
++ const getter=Object.create(null);Object.defineProperty(getter,'constructor',{get(){throw Error('must not read getter');}});assert.throws(()=>validateModuleProfile(Object.assign(Object.create(getter),profile)),{code:'module_profile_invalid'});
++});
+diff --git a/app/configurator/variant-m/module-profile.mjs b/app/configurator/variant-m/module-profile.mjs
+index a31f0f80b660cf94af8aad77d6394489acbb4871..16dd28d747a84c61d4f3c77e46a9d37ade6914de 100644
+--- a/app/configurator/variant-m/module-profile.mjs
++++ b/app/configurator/variant-m/module-profile.mjs
+@@ -5,7 +5,17 @@ import {processProfile} from '../../workshop/process-profiles.mjs';
+ export const MODULE_PROFILE_SCHEMA='gravuru-configurator-modules/v1';
+ export const MODULE_KEYS=Object.freeze(['options','designs','text','motifs','photo','logo','colors']);
+ export const MODULE_LABELS=Object.freeze({options:'Ausführungen',designs:'Designs',text:'Text und Schriften',motifs:'Motive',photo:'Foto',logo:'Logo',colors:'Farbwahl'});
+-const plain=v=>v!==null&&typeof v==='object'&&!Array.isArray(v)&&[Object.prototype,null].includes(Object.getPrototypeOf(v));
++// The native editor receives its pinned JSON model from its parent window.
++// That window has a different Object.prototype; class instances still do not
++// qualify. Keep the exact fields/versions/booleans below unchanged.
++const objectConstructor=Function.prototype.toString.call(Object);
++const plain=v=>{
++ if(v===null||typeof v!=='object'||Array.isArray(v))return false;
++ const prototype=Object.getPrototypeOf(v);
++ if(prototype===null)return true;
++ const constructor=Object.getOwnPropertyDescriptor(prototype,'constructor')?.value;
++ return Object.getPrototypeOf(prototype)===null&&typeof constructor==='function'&&constructor.prototype===prototype&&Function.prototype.toString.call(constructor)===objectConstructor;
++};
+ const exact=(v,keys)=>plain(v)&&Object.keys(v).length===keys.length&&keys.every(key=>Object.hasOwn(v,key));
+ const fail=(message,code='module_profile_invalid')=>{throw Object.assign(Error(message),{status:422,code});};
+ 
+diff --git a/app/configurator/variant-m/motif-search-analytics.mjs b/app/configurator/variant-m/motif-search-analytics.mjs
+index 83ae6202a13d205bf7d56411c795bc2d0afaf866..f2c3cbed548902edf34087a5260b49f8b2a47bd9 100644
+--- a/app/configurator/variant-m/motif-search-analytics.mjs
++++ b/app/configurator/variant-m/motif-search-analytics.mjs
+@@ -6,7 +6,10 @@ export function createMotifSearchReporter({send,schedule=setTimeout,cancel=clear
+ }
+ export function installMotifSearchAnalytics({el,config}){
+  const productId=config?.profile?.binding?.productId;if(!productId||config.workbench)return;
+- const reporter=createMotifSearchReporter({send:payload=>fetch('/api/workshop/motif-search-events',{method:'POST',headers:{'Content-Type':'application/json'},credentials:'same-origin',redirect:'error',keepalive:true,body:JSON.stringify({...payload,productId})})});
+- el.uxReportMotifSearch=(query,count)=>reporter.observe(query,count);
+- window.addEventListener('pagehide',reporter.flush,{once:true});
++ const reporters=Object.fromEntries(['motif','design'].map(searchKind=>[searchKind,createMotifSearchReporter({send:payload=>fetch('/api/workshop/motif-search-events',{method:'POST',headers:{'Content-Type':'application/json'},credentials:'same-origin',redirect:'error',keepalive:true,body:JSON.stringify({...payload,productId,searchKind})})})]));
++ el.uxReportMotifSearch=(query,count)=>reporters.motif.observe(query,count);
++ // The gallery calls this only for a completed current result, with its total.
++ // An empty observation cancels the previous pending result when typing resumes.
++ el.uxReportDesignSearch=(query,count)=>reporters.design.observe(query,count);
++ window.addEventListener('pagehide',()=>{reporters.motif.flush();reporters.design.flush();},{once:true});
+ }
+diff --git a/app/configurator/variant-m/motif-search-analytics.test.mjs b/app/configurator/variant-m/motif-search-analytics.test.mjs
+index ce2343b9d1ed670f8b76a3695d7788c016eaeba3..fb8c348f9c560aca71b5596e018de821872d052a 100644
+--- a/app/configurator/variant-m/motif-search-analytics.test.mjs
++++ b/app/configurator/variant-m/motif-search-analytics.test.mjs
+@@ -1,4 +1,4 @@
+-import test from 'node:test';import assert from 'node:assert/strict';import {createMotifSearchReporter} from './motif-search-analytics.mjs';
++import test from 'node:test';import assert from 'node:assert/strict';import {createMotifSearchReporter,installMotifSearchAnalytics} from './motif-search-analytics.mjs';
+ test('only settled unique searches count, never every keystroke, category rerender or cleared input',()=>{
+  const sent=[],timers=new Map();let serial=0;const reporter=createMotifSearchReporter({send:x=>sent.push(x),schedule:fn=>{timers.set(++serial,fn);return serial;},cancel:id=>timers.delete(id)});
+  for(const q of ['k','kr','kre','kreuz'])reporter.observe(q,18);assert.equal(timers.size,1);reporter.flush();assert.deepEqual(sent,[{query:'kreuz',resultCount:18}]);
+@@ -6,3 +6,13 @@ test('only settled unique searches count, never every keystroke, category rerend
+  reporter.observe('dinosaurier',0);reporter.flush();assert.deepEqual(sent.at(-1),{query:'dinosaurier',resultCount:0});
+  reporter.observe('probe',0);reporter.observe('',44);reporter.flush();assert.equal(sent.length,2);
+ });
++test('design and motif hooks count separately and a changed query cancels an unfinished result',t=>{
++ const sent=[],events={};t.mock.method(globalThis,'fetch',async(url,init)=>{sent.push({url,...JSON.parse(init.body)});return {ok:true};});
++ const old=globalThis.window;globalThis.window={addEventListener:(name,fn)=>events[name]=fn};t.after(()=>{if(old===undefined)delete globalThis.window;else globalThis.window=old;});
++ const el={};installMotifSearchAnalytics({el,config:{profile:{binding:{productId:'cfg-test'}}}});
++ el.uxReportMotifSearch('Haus',8);el.uxReportDesignSearch('Haus',41);events.pagehide();
++ assert.deepEqual(sent.map(x=>[x.searchKind,x.query,x.resultCount]),[['motif','haus',8],['design','haus',41]]);
++ el.uxReportDesignSearch('Haus',1);events.pagehide();assert.equal(sent.length,2,'paging does not count again');
++ el.uxReportDesignSearch('D23',2);el.uxReportDesignSearch('',0);events.pagehide();assert.equal(sent.length,2,'typing cancels the previous pending result');
++ el.uxReportDesignSearch('D24',0);events.pagehide();assert.equal(sent.at(-1).query,'d24');assert.equal(sent.at(-1).resultCount,0);
++});
+diff --git a/app/configurator/variant-m/native-design-search.mjs b/app/configurator/variant-m/native-design-search.mjs
+new file mode 100644
+index 0000000000000000000000000000000000000000..e4edf3be601109c1297d2d5179b6d8b876bb75e9
+--- /dev/null
++++ b/app/configurator/variant-m/native-design-search.mjs
+@@ -0,0 +1,33 @@
++import {installDesignSearchControl} from './design-search-control.mjs';
++import {searchDesigns} from './design-search.mjs';
++import {moduleEnabled} from './module-profile.mjs';
++
++// Preview/native editors hold a complete, already projected design set. They use
++// the same metadata matching, without borrowing customer/shop gallery access.
++export async function installNativeDesignSearch({el,r,config}){
++ if(!moduleEnabled(config,'designs'))return;
++ const panel=r.querySelector('#ux-panel-design'),gallery=r.querySelector('.c-gallery');if(!panel||!gallery)return;
++ const response=await fetch('/configurator/variant-m/product-design-gallery.css');if(!response.ok)throw Error('Designsuche konnte nicht geladen werden.');
++ const style=document.createElement('style');style.textContent=await response.text();r.append(style);
++ gallery.id='ux-design-search-results';
++ const status=document.createElement('p');status.className='ux-design-search-status';status.setAttribute('role','status');status.hidden=true;
++ const before=panel.querySelector('.ux-design-reveal')||gallery;
++ let reportedKey=null;
++ const control=installDesignSearchControl({container:panel,before,onInvalidate:()=>{reportedKey=null;el.uxReportDesignSearch?.('',0);},onChange:()=>{el.sync();el.uxRefreshThumbnails?.();}});control.element.after(status);
++ el.uxApplyDesignSearch=()=>{
++  const query=control.query;if(!query){for(const card of gallery.querySelectorAll('[data-design-search-hidden]')){card.removeAttribute('data-design-search-hidden');card.removeAttribute('aria-hidden');card.inert=false;}status.hidden=true;reportedKey=null;return false;}
++  const profile=el.uxSelectedProfile?.()||config.profile;
++  const filters=Object.fromEntries([...r.querySelectorAll('[data-m-filter]')].map(f=>[f.dataset.mFilter,f.value]));
++  const eligible=profile.designs.filter(d=>(!filters.category||d.category===filters.category)&&(!filters.collection||d.collections?.includes(filters.collection)));
++  const found=searchDesigns(eligible,query,config),ids=new Set(found.map(d=>d.id)),cards=new Map([...gallery.querySelectorAll('[data-c-design]')].map(card=>[card.dataset.cDesign,card]));
++  for(const [id,card]of cards){const excluded=!ids.has(id);card.hidden=excluded;card.toggleAttribute('data-design-search-hidden',excluded);card.inert=excluded;if(excluded)card.setAttribute('aria-hidden','true');else card.removeAttribute('aria-hidden');}
++  const ordered=[...found.map(d=>cards.get(d.id)).filter(Boolean),...[...cards].filter(([id])=>!ids.has(id)).map(([,card])=>card)];if(ordered.some((card,i)=>gallery.children[i]!==card))for(const card of ordered)gallery.append(card);
++  const more=r.querySelector('[data-ux=more-designs]');if(more)more.hidden=true;
++  status.hidden=false;status.textContent=found.length===1?'1 Design gefunden':found.length?found.length+' Designs gefunden':'Keine passenden Designs gefunden. Versuche einen anderen Begriff oder leere die Suche.';
++  const count=r.querySelector('[data-c-count]');if(count)count.textContent=found.length===1?'1 Design':found.length+' Designs';
++  const key=JSON.stringify([query,el.state.mOptions,found.map(d=>d.id)]);if(key!==reportedKey){reportedKey=key;el.uxReportDesignSearch?.(query,found.length);}
++  return true;
++ };
++ const sync=el.sync;el.sync=function(...args){const result=sync.apply(this,args);el.uxApplyDesignSearch();return result;};
++ window.addEventListener('pagehide',()=>control.dispose(),{once:true});
++}
+diff --git a/app/configurator/variant-m/native-design-search.test.mjs b/app/configurator/variant-m/native-design-search.test.mjs
+new file mode 100644
+index 0000000000000000000000000000000000000000..1cbdbfdc178d3095fa96f9b96a0acd09a672376f
+--- /dev/null
++++ b/app/configurator/variant-m/native-design-search.test.mjs
+@@ -0,0 +1,34 @@
++import test from 'node:test';
++import assert from 'node:assert/strict';
++import {installNativeDesignSearch} from './native-design-search.mjs';
++import {createMotifSearchReporter} from './motif-search-analytics.mjs';
++import fs from 'node:fs';
++
++test('returning to a cancelled native search reports its completed result and never exposes excluded cards',async t=>{
++ const original={document:globalThis.document,window:globalThis.window,fetch:globalThis.fetch};t.after(()=>Object.assign(globalThis,original));
++ const basic=()=>({hidden:false,attrs:new Map(),handlers:{},addEventListener(k,fn){this.handlers[k]=fn;},setAttribute(k,v){this.attrs.set(k,v);},removeAttribute(k){this.attrs.delete(k);},toggleAttribute(k,on){if(on)this.attrs.set(k,'');else this.attrs.delete(k);},after(){},before(){},focus(){}}),input={...basic(),value:''},clear=basic();
++ const control={...basic(),querySelector:s=>s==='input'?input:clear};
++ globalThis.document={createElement:tag=>tag==='div'?control:basic()};globalThis.window={addEventListener(){}};globalThis.fetch=async()=>({ok:true,text:async()=>''});
++ const designs=[{id:'a',name:'Haus',objects:[]},{id:'b',name:'Haus',hidden:true,objects:[]},{id:'c',name:'Haus',released:false,objects:[]},{id:'d',name:'Familie',objects:[]}],cards=designs.map(d=>({...basic(),dataset:{cDesign:d.id}}));
++ const gallery={...basic(),id:'',children:[...cards],querySelectorAll:s=>s==='[data-design-search-hidden]'?cards.filter(c=>c.attrs.has('data-design-search-hidden')):cards,append(card){this.children=this.children.filter(c=>c!==card);this.children.push(card);}},panel={querySelector:()=>null},more=basic();
++ const r={append(){},querySelector:s=>s==='#ux-panel-design'?panel:s==='.c-gallery'?gallery:s==='[data-ux=more-designs]'?more:null,querySelectorAll:()=>[]};
++ const sent=[],jobs=new Map();let seq=0;
++ const reporter=createMotifSearchReporter({send:item=>sent.push(item),schedule:fn=>{jobs.set(++seq,fn);return seq;},cancel:id=>jobs.delete(id)});
++ const config={profile:{designs}},el={state:{mOptions:{}},sync(){for(const c of cards)c.hidden=false;},uxReportDesignSearch:(q,total)=>reporter.observe(q,total)};
++ await installNativeDesignSearch({el,r,config});
++ input.value='Haus';input.handlers.search();assert.equal(jobs.size,1);assert.deepEqual(cards.filter(c=>!c.hidden).map(c=>c.dataset.cDesign),['a']);
++ assert.ok(cards.slice(1).every(c=>c.inert&&c.attrs.get('aria-hidden')==='true'&&c.attrs.has('data-design-search-hidden')));
++ input.value='Hausx';input.handlers.input();assert.equal(jobs.size,0);
++ input.value='Haus';input.handlers.search();assert.equal(jobs.size,1,'returning to the original query must reschedule the cancelled report');
++ for(const fn of [...jobs.values()])fn();assert.deepEqual(sent,[{query:'haus',resultCount:1}]);assert.equal(more.hidden,true);
++ input.value='';input.handlers.search();assert.equal(input.value,'');assert.equal(jobs.size,0);
++ assert.ok(cards.every(c=>!c.inert&&!c.attrs.has('aria-hidden')&&!c.attrs.has('data-design-search-hidden')));
++});
++test('native search display rule outranks the real neutral-theme display:flex override',()=>{
++ const search=fs.readFileSync(new URL('./product-design-gallery.css',import.meta.url),'utf8'),neutral=fs.readFileSync(new URL('./neutral-theme.css',import.meta.url),'utf8');
++ assert.match(neutral,/:host\(\[data-ux-neutral\]\) \.ux-shell \.ux-design-reveal \.c-design-card\{[^}]*display:flex!important/);
++ // A panel ID makes this more specific than the theme's class/attribute-only
++ // selector, independently of stylesheet insertion order. Browser QA separately
++ // checks computed display and the absence of the excluded button from focus.
++ assert.match(search,/:host\(\[data-ux-modern\]\) #ux-panel-design \.c-gallery \[data-c-design\]\[data-design-search-hidden\]\{display:none!important\}/);
++});
+diff --git a/app/configurator/variant-m/product-design-gallery.css b/app/configurator/variant-m/product-design-gallery.css
+index bb69b43d0fc3ff2bac5c2069172e9f2f49861676..946bd57755ac8300ff4647b52aba3b14b97ef7ce 100644
+--- a/app/configurator/variant-m/product-design-gallery.css
++++ b/app/configurator/variant-m/product-design-gallery.css
+@@ -25,6 +25,8 @@
+ .ux-product-design-preview-dialog [data-product-preview]{display:block;object-fit:contain;width:100%;max-height:72dvh}
+ .ux-product-design-preview-dialog [data-product-preview][hidden]{display:none}
+ .ux-product-themes select{appearance:auto!important;padding-right:32px!important}
++.ux-design-search{margin:10px 0;min-width:0}.ux-design-search>label{display:block;font-size:14px;font-weight:600;margin-bottom:6px}.ux-design-search-row{display:flex;align-items:center;gap:8px;min-width:0}.ux-design-search input{box-sizing:border-box;flex:1;width:100%;min-width:0;min-height:44px;border:1px solid #bfc4c6;border-radius:8px;padding:10px 12px;font:inherit;font-size:16px;background:#fff;color:#2f3437}.ux-design-search button{min-height:44px;border:1px solid #bfc4c6;border-radius:8px;padding:8px;background:#fff;color:#2f3437;font:inherit;cursor:pointer}.ux-design-search button[hidden],.ux-design-search-status[hidden]{display:none!important}.ux-design-search input:focus-visible,.ux-design-search button:focus-visible{outline:2px solid #435365;outline-offset:2px}.ux-design-search-status{font-size:13px;line-height:1.45}
+ 
+ :host([data-ux-modern]) #ux-panel-design .ux-product-card .ux-product-enlarge .ux-ui-icon{width:16px!important;height:16px!important}
++:host([data-ux-modern]) #ux-panel-design .c-gallery [data-c-design][data-design-search-hidden]{display:none!important}
+ @media(max-width:767px){:host([data-ux-modern]) #ux-panel-design .ux-product-card .ux-product-enlarge{display:none!important}}
+diff --git a/app/configurator/variant-m/product-design-gallery.mjs b/app/configurator/variant-m/product-design-gallery.mjs
+index f60e15281d3e2be3fff374a210110da76c6f58e5..0917b2ba202b93939b0bf43063e3ea9625939053 100644
+--- a/app/configurator/variant-m/product-design-gallery.mjs
++++ b/app/configurator/variant-m/product-design-gallery.mjs
+@@ -4,6 +4,8 @@ import {preserveProductSelection} from './product-design-transfer.mjs';
+ import {designGalleryCount} from './product-design-gallery-label.mjs';
+ import {isLayeredDoorbell} from './product-model-module.mjs';
+ import {isFamilyFormats,isAllSizesFamily} from './family-formats.mjs';
++import {installDesignSearchControl} from './design-search-control.mjs';
++import {installNativeDesignSearch} from './native-design-search.mjs';
+ 
+ const money=cents=>new Intl.NumberFormat('de-DE',{style:'currency',currency:'EUR'}).format(cents/100);
+ export const productChoiceInfo=item=>`${item.widthMm/10} × ${item.heightMm/10} cm · ${money(item.unitCents)}`;
+@@ -12,9 +14,9 @@ export async function installProductDesignGallery({el,r,config,files,say,dialog,
+  // These products already include their complete, format-specific design set.
+  // Use the native gallery without repeating it across three main products.
+  // Türschild-Konfi mit allen Größen lädt nur das Startdesign; weitere Designs kommen über diese Auswahl.
+- if(isLayeredDoorbell(config)||(isFamilyFormats(config)&&!config.familyFormats.fixedSize&&!isAllSizesFamily(config)))return;
++ if(isLayeredDoorbell(config)||(isFamilyFormats(config)&&!config.familyFormats.fixedSize&&!isAllSizesFamily(config)))return installNativeDesignSearch({el,r,config});
+  const allSizes=isAllSizesFamily(config),galleryOptions=()=>allSizes?structuredClone(el.state.mOptions||{}):undefined;
+- let api;try{api=window.parent.GravuruShopEntry?.designGallery;}catch{}if(!api)return;
++ let api;try{api=window.parent.GravuruShopEntry?.designGallery;}catch{}if(!api)return installNativeDesignSearch({el,r,config});
+  el.uxHasProductDesignGallery=true;
+  const profile=()=>el.uxSelectedProfile?.()||config.profile;
+  const design=()=>profile().designs.find(d=>d.id===el.state.designId);
+@@ -38,7 +40,9 @@ export async function installProductDesignGallery({el,r,config,files,say,dialog,
+  const gallery=section;
+  const status=gallery.querySelector('.ux-product-status'),grid=gallery.querySelector('.ux-product-grid'),more=gallery.querySelector('.ux-product-more');
+  const themeLabel=gallery.querySelector('.ux-product-themes'),themes=themeLabel.querySelector('select');
+- const pager=createGalleryPager((page,theme,options)=>api.load(page,theme,options));
++ grid.id='ux-design-search-results';
++ const pager=createGalleryPager((page,theme,options,q)=>api.load(page,theme,options,q));
++ const search=installDesignSearchControl({container:section,before:themeLabel,onChange:()=>load(),onInvalidate:()=>invalidate()});
+  let epoch=0,switching=false,retryTimer,prepareRetries=0;const urls=[],queue=[];let active=0;
+  const pump=()=>{while(active<2&&queue.length){const request=queue.shift(),{item,img,version}=request;
+   if(version!==epoch||img.previewStarted)continue;img.previewStarted=true;active++;
+@@ -58,7 +62,8 @@ export async function installProductDesignGallery({el,r,config,files,say,dialog,
+  async function load(){
+   if(pager.loading||pager.next===null)return;const version=epoch;more.disabled=true;themes.disabled=true;status.textContent='Designs werden geladen …';
+   try{
+-   const result=await pager.load(themes.value,galleryOptions());if(!result)return;
++   const firstPage=pager.next===0,query=search.query;
++   const result=await pager.load(themes.value,galleryOptions(),query);if(!result||version!==epoch)return;
+    if(result.status==='preparing'){
+     status.textContent='Designs werden vorbereitet …';more.textContent='Erneut versuchen';more.hidden=false;
+     if(prepareRetries++<4)retryTimer=setTimeout(load,1200);return;
+@@ -73,16 +78,18 @@ export async function installProductDesignGallery({el,r,config,files,say,dialog,
+     card.append(select);grid.append(card);
+     img.previewRequest={item,img,version};if(observer)observer.observe(img);else queue.push(img.previewRequest);
+    }
+-   if(!observer)pump();status.textContent=result.total?designGalleryCount(result.total):'Für dieses Produkt sind noch keine weiteren Designs verfügbar.';more.hidden=pager.next===null;
++   if(!observer)pump();status.textContent=query?(result.total===1?'1 Design gefunden':result.total?result.total+' Designs gefunden':'Keine passenden Designs gefunden. Versuche einen anderen Begriff oder leere die Suche.'):(result.total?designGalleryCount(result.total):'Für dieses Produkt sind noch keine weiteren Designs verfügbar.');more.hidden=pager.next===null;
++   if(firstPage&&query)el.uxReportDesignSearch?.(query,result.total);
+   }catch(error){status.textContent=error.message||'Die Designauswahl ist gerade nicht erreichbar. Bitte erneut versuchen.';more.textContent='Erneut versuchen';more.hidden=false;}
+   finally{if(version===epoch){more.disabled=false;themes.disabled=false;}}
+  }
+- function reset(){epoch++;pager.reset();clearTimeout(retryTimer);prepareRetries=0;observer?.disconnect();queue.length=0;grid.replaceChildren();for(const url of urls)URL.revokeObjectURL(url);urls.length=0;load();}
++ function invalidate(){epoch++;pager.reset();clearTimeout(retryTimer);prepareRetries=0;observer?.disconnect();queue.length=0;grid.replaceChildren();for(const url of urls)URL.revokeObjectURL(url);urls.length=0;more.hidden=true;el.uxReportDesignSearch?.('',0);status.textContent='Designs werden gesucht …';}
++ function reset(){invalidate();load();}
+  themes.onchange=reset;
+  // Invalidate stale pages even if size/mounting changes during a pending request.
+  let shownFor=JSON.stringify(galleryOptions()??null);
+  const sync=el.sync;el.sync=function(...args){const result=sync.apply(this,args),now=JSON.stringify(galleryOptions()??null);if(now!==shownFor){shownFor=now;reset();}for(const card of grid.querySelectorAll('.ux-product-choose'))card.setAttribute('aria-pressed',String(card.dataset.productDesignId===el.state.designId));return result;};more.onclick=()=>{clearTimeout(retryTimer);load();};
+- window.addEventListener('pagehide',()=>{epoch++;pager.reset();clearTimeout(retryTimer);observer?.disconnect();for(const url of urls)URL.revokeObjectURL(url);},{once:true});
++ window.addEventListener('pagehide',()=>{search.dispose();epoch++;pager.reset();clearTimeout(retryTimer);observer?.disconnect();for(const url of urls)URL.revokeObjectURL(url);},{once:true});
+  el.sync();
+  // Begin loading immediately; the editor itself does not wait for thumbnails.
+  load();
+diff --git a/app/configurator/variant-m/workflow.mjs b/app/configurator/variant-m/workflow.mjs
+index c0580ea8f4dea908f1ae5827387243590fce7ddc..58fc28740fb85b3f39d9a55bc760feba8bdaa02c 100644
+--- a/app/configurator/variant-m/workflow.mjs
++++ b/app/configurator/variant-m/workflow.mjs
+@@ -173,7 +173,7 @@ export async function installWorkflow(api){
+  const gallery=$('.c-gallery');let moreExpanded=false,arranging=false;
+  const moreToggle=document.createElement('button');moreToggle.type='button';moreToggle.className='workflow-more-designs';moreToggle.dataset.ux='more-designs';moreToggle.hidden=true;moreToggle.setAttribute('aria-expanded','false');
+  ($('.ux-design-reveal')||gallery).after(moreToggle);
+- function arrangeGallery(){if(arranging||!gallery)return;arranging=true;try{
++ function arrangeGallery(){if(arranging||!gallery)return;if(el.uxApplyDesignSearch?.())return;arranging=true;try{
+   const order=galleryOrder(profile.designs,config?.designSelection==='all-approved'?null:productTheme(profile)),cards=new Map(all('.c-gallery [data-c-design]').map(c=>[c.dataset.cDesign,c]));
+   const ordered=[...order.primary,...order.more].map(id=>cards.get(id)).filter(Boolean);
+   if(ordered.some((card,i)=>gallery.children[i]!==card))for(const card of ordered)gallery.append(card);
+diff --git a/app/platform/sources/app/shared/models/acrylic-plate-preview.mjs b/app/platform/sources/app/shared/models/acrylic-plate-preview.mjs
+index a0daced53600091ed29da37d7fe50fa8e0d9bcec..ccde8bccffd9e3f835c9dd4734afc898a90f2332 100644
+--- a/app/platform/sources/app/shared/models/acrylic-plate-preview.mjs
++++ b/app/platform/sources/app/shared/models/acrylic-plate-preview.mjs
+@@ -4,10 +4,13 @@ export function acrylicPlatePreview(profile,plate,id){
+  const m=profile.material;
+  if(m.kind!=='acrylic'||m.thicknessMm!==3||m.engravingSide!=='back'||!['schwarz','anthrazit'].includes(m.variant))return null;
+  const black=m.variant==='schwarz',colors=black?['#24272a','#101214','#191c1f']:['#555a5f','#363b40','#454a4f'];
+- const edge=black?'#090b0d':'#272c30',light=black?'#737b81':'#9da5ab',dx=m.thicknessMm*.2,dy=m.thicknessMm*.32;
++ const edge=black?'#090b0d':'#272c30',light=black?'#737b81':'#9da5ab';
+  const shape=attrs=>plate+' '+attrs+'/>';
+  const defs='<defs><linearGradient id="'+id+'-glass-face" x2=".7" y2="1">'+colors.map((c,i)=>'<stop offset="'+[0,.6,1][i]+'" stop-color="'+c+'"/>').join('')+'</linearGradient><linearGradient id="'+id+'-glass-light" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff" stop-opacity=".11"/><stop offset=".26" stop-color="#fff" stop-opacity=".015"/><stop offset=".275" stop-color="#fff" stop-opacity=".065"/><stop offset=".58" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#fff" stop-opacity=".025"/></linearGradient><linearGradient id="'+id+'-glass-rim" x2=".6" y2="1"><stop stop-color="'+light+'"/><stop offset=".3" stop-color="'+edge+'"/><stop offset=".7" stop-color="'+light+'"/><stop offset="1" stop-color="'+edge+'"/></linearGradient><filter id="'+id+'-rear-frost" x="-5%" y="-5%" width="110%" height="110%" color-interpolation-filters="sRGB"><feGaussianBlur stdDeviation=".035"/><feComponentTransfer><feFuncR type="linear" slope=".94"/><feFuncG type="linear" slope=".94"/><feFuncB type="linear" slope=".94"/><feFuncA type="linear" slope=".96"/></feComponentTransfer></filter></defs>';
+- const back=defs+'<g data-role="guide" data-preview-acrylic-glass="'+m.variant+'" pointer-events="none">'+shape('transform="translate('+dx+' '+dy+')" fill="'+edge+'"')+shape('fill="url(#'+id+'-glass-face)" stroke="'+edge+'" stroke-width=".12"')+'</g>';
++ // Front-on presentation: the original thin rim and a separate soft scene
++ // shadow show one plate. A shifted opaque copy looked like a second sign.
++ // This changes no material thickness, source geometry or production path.
++ const back=defs+'<g data-role="guide" data-preview-acrylic-glass="'+m.variant+'" pointer-events="none">'+shape('fill="url(#'+id+'-glass-face)" stroke="'+edge+'" stroke-width=".12"')+'</g>';
+  const front='<g data-role="guide" data-preview-glass-finish="front" pointer-events="none">'+shape('fill="url(#'+id+'-glass-light)"')+shape('fill="none" stroke="url(#'+id+'-glass-rim)" stroke-width=".22"')+'</g>';
+  return {back,front,artwork:content=>'<g data-preview-rear-engraving="true" filter="url(#'+id+'-rear-frost)">'+content+'</g>'};
+ }
+diff --git a/app/workshop/http.mjs b/app/workshop/http.mjs
+index 37d69129d992bc64509a42884f4ae4ac77cfd259..ed696fb074ad0d803fb1aa3585fff7c13521b6ac 100644
+--- a/app/workshop/http.mjs
++++ b/app/workshop/http.mjs
+@@ -405,19 +405,18 @@ function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConvert
+       if(pathname==='/api/workshop/motif-search-events'){
+         if(method!=='POST')fail(405,'method_not_allowed','Suchereignisse benötigen POST.');
+         const input=await body(req,1024);
+-        if(Object.keys(input).some(k=>!['productId','query','resultCount'].includes(k)))fail(422,'motif_search_invalid','Ungültige Suchanfrage.');
++        if(Object.keys(input).some(k=>!['productId','query','resultCount','searchKind'].includes(k))||(input.searchKind!==undefined&&!['motif','design'].includes(input.searchKind)))fail(422,'motif_search_invalid','Ungültige Suchanfrage.');
+         let product;try{product=repository.get(input.productId);}catch(error){
+           const group=error.code==='not_found'?motifSearchPreviewGroup(filename,tenantId,input.productId):null;
+           if(!group)throw error;
+-          return json(res,200,{accepted:motifSearchStats.record({query:input.query,resultCount:input.resultCount,group,source:'preview'})});
++          return json(res,200,{accepted:motifSearchStats.record({query:input.query,resultCount:input.resultCount,searchKind:input.searchKind,group,source:'preview'})});
+         }
+         if(product.status==='archived'||product.document.kind!=='product')fail(404,'product_missing','Produkt nicht verfügbar.');
+         assertKonfiAvailable(product.id);
+         const categories=product.document.categoryIds||[],family=categories.find(id=>id.startsWith('familie-'));
+         const group=(family?labelCategories([family])[family]?.label:null)||product.document.name.replace(/\s*[·–-]\s*\d+\s*[×x]\s*\d+\s*cm.*$/u,'');
+         const source=konfis.get(product.id).status==='released'?'shop':'preview';
+-        motifSearchStats.record({query:input.query,resultCount:input.resultCount,group,source});
+-        return json(res,200,{accepted:true});
++        return json(res,200,{accepted:motifSearchStats.record({query:input.query,resultCount:input.resultCount,searchKind:input.searchKind,group,source})});
+       }
+       const merchantSession=verifySession?verifySession(req.headers.authorization,'merchant'):null;
+       if(method!=='GET'&&!sameToken(req.headers['x-gravuru-csrf'],csrfToken))fail(403,'invalid_session','Bitte die Werkstatt neu laden.');
+diff --git a/app/workshop/motif-search-http.test.mjs b/app/workshop/motif-search-http.test.mjs
+index 26f0198d25c29e2e2af9e9d15f2abe7a5a6347d7..1e80c511bdb72b9303de61de2a2a484d07347ee6 100644
+--- a/app/workshop/motif-search-http.test.mjs
++++ b/app/workshop/motif-search-http.test.mjs
+@@ -15,6 +15,12 @@ test('search events accept only known products; only an authenticated merchant c
+  const now=Math.floor(Date.now()/1000),header=Buffer.from(JSON.stringify({alg:'HS256',typ:'JWT'})).toString('base64url'),payload=Buffer.from(JSON.stringify({aud:clientId,iat:now,nbf:now,exp:now+60,jti:'search-test',dest:'https://'+shop,iss:'https://'+shop+'/admin',sub:'123'})).toString('base64url'),signed=header+'.'+payload,token='Bearer '+signed+'.'+createHmac('sha256',secret).update(signed).digest('base64url');
+  const report=await request(w,'/api/workshop/motif-search-stats?source=preview','GET',undefined,token);assert.equal(report.status,200);assert.equal(report.body.totals.searches,2);assert.equal(report.body.totals.withoutResults,1);assert.deepEqual(report.body.groups,['Schiefer-Gedenktafeln']);
+  assert.equal((await request(w,'/api/workshop/motif-search-stats?source=shop','GET',undefined,token)).body.totals.searches,0);
++ assert.equal((await request(w,'/api/workshop/motif-search-events','POST',{productId:product.id,query:'D23',resultCount:2,searchKind:'design'})).body.accepted,true);
++ assert.equal((await request(w,'/api/workshop/motif-search-stats?source=preview&searchKind=design','GET',undefined,token)).body.totals.searches,1);
++ assert.equal((await request(w,'/api/workshop/motif-search-stats?source=preview','GET',undefined,token)).body.totals.searches,2,'old callers retain motif report');
++ assert.equal((await request(w,'/api/workshop/motif-search-events','POST',{productId:product.id,query:'Haus',resultCount:2,searchKind:'all'})).status,422);
++ assert.equal((await request(w,'/api/workshop/motif-search-events','POST',{productId:product.id,query:'name@example.com',resultCount:0,searchKind:'design'})).body.accepted,false);
++ assert.equal((await request(w,'/api/workshop/motif-search-stats?searchKind=design')).status,401);
+  const previewId='cfg_00000000-0000-0000-0000-000000000001';
+  fs.writeFileSync(path.join(dir,'motif-search-previews.json'),JSON.stringify({schema:'gravuru-motif-search-previews/v1',tenants:{gravuru:{[previewId]:'Prüfvorschau'},'anderer-shop':{'cfg_00000000-0000-0000-0000-000000000002':'Fremd'}}}));
+  assert.equal((await request(w,'/api/workshop/motif-search-events','POST',{productId:previewId,query:'Hund',resultCount:1})).status,200);
+diff --git a/app/workshop/motif-search-stats.mjs b/app/workshop/motif-search-stats.mjs
+index 622d2a76d0ed326725dfa7ef5cb4fd5a8a33fe17..ede6503a02d588dd76e6413b2da512f74e1931b3 100644
+--- a/app/workshop/motif-search-stats.mjs
++++ b/app/workshop/motif-search-stats.mjs
+@@ -1,36 +1,61 @@
+ import {DatabaseSync} from 'node:sqlite';
+ import {tenantOption} from './tenant.mjs';
+ 
+-export function normalizedMotifQuery(value){
++export function normalizedMotifQuery(value,searchKind='motif'){
+  if(typeof value!=='string'||value.length>100)return '';
+  const term=value.normalize('NFKC').trim().toLocaleLowerCase('de').replace(/\s+/g,' ');
+  // Do not retain emails, URLs, phone numbers or arbitrary markup as search terms.
+- if(term.length<2||term.length>80||/[@<>:/\\]|\d{5}/u.test(term)||!/[\p{L}]/u.test(term))return '';
++ const designId=searchKind==='design'&&/^(?:d\d{1,6}|[a-z][a-z0-9]*(?:-[a-z0-9.]+)+-d\d{1,6})$/u.test(term);
++ const shortDesignNumber=searchKind==='design'&&/^\d{2,4}$/u.test(term);
++ if(term.length<2||term.length>80||/[@<>:/\\]/u.test(term)||(!designId&&/\d{5}/u.test(term))||(!shortDesignNumber&&!/[\p{L}]/u.test(term)))return '';
+  return term;
+ }
+ const invalid=()=>{throw Object.assign(Error('Ungültige Suchauswertung.'),{status:422,code:'motif_search_invalid'});};
++const createTable=name=>`CREATE TABLE ${name}(tenant TEXT NOT NULL,day TEXT NOT NULL,product_group TEXT NOT NULL,term TEXT NOT NULL,source TEXT NOT NULL,search_kind TEXT NOT NULL DEFAULT 'motif' CHECK(search_kind IN ('motif','design')),searches INTEGER NOT NULL,without_results INTEGER NOT NULL,PRIMARY KEY(tenant,day,product_group,term,source,search_kind))`;
++function ensureSearchKinds(db){
++ // Rebuild the aggregate key atomically. All tenants and historical counts stay
++ // in this same database; old rows and old event callers mean motif searches.
++ db.exec('BEGIN IMMEDIATE');
++ try{
++  const columns=db.prepare('PRAGMA table_info(motif_search_daily)').all();
++  if(!columns.length)db.exec(createTable('motif_search_daily'));
++  else if(!columns.some(c=>c.name==='search_kind')){
++   const expected=['tenant','day','product_group','term','source','searches','without_results'];
++   if(columns.length!==expected.length||columns.some((c,i)=>c.name!==expected[i]))throw Error('Unbekanntes Schema der Suchauswertung; keine Migration durchgeführt.');
++   const legacyKey=columns.filter(c=>c.pk).sort((a,b)=>a.pk-b.pk).map(c=>c.name).join(',');
++   if(legacyKey!=='tenant,day,product_group,term,source')throw Error('Unbekannter Schlüssel der Suchauswertung; keine Migration durchgeführt.');
++   db.exec(createTable('motif_search_daily_with_kind'));
++   db.exec(`INSERT INTO motif_search_daily_with_kind(tenant,day,product_group,term,source,search_kind,searches,without_results) SELECT tenant,day,product_group,term,source,'motif',searches,without_results FROM motif_search_daily`);
++   db.exec('DROP TABLE motif_search_daily; ALTER TABLE motif_search_daily_with_kind RENAME TO motif_search_daily');
++  }
++  const key=db.prepare('PRAGMA table_info(motif_search_daily)').all().filter(c=>c.pk).sort((a,b)=>a.pk-b.pk).map(c=>c.name).join(',');
++  if(key!=='tenant,day,product_group,term,source,search_kind')throw Error('Unbekannter Schlüssel der Suchauswertung; keine Migration durchgeführt.');
++  db.exec('COMMIT');
++ }catch(error){db.exec('ROLLBACK');throw error;}
++}
+ export function createMotifSearchStats({filename,tenantId,clock=Date.now}){
+  const tenant=tenantOption({tenantId}),db=new DatabaseSync(filename);db.exec('PRAGMA busy_timeout=5000');
+- db.exec(`CREATE TABLE IF NOT EXISTS motif_search_daily(tenant TEXT NOT NULL,day TEXT NOT NULL,product_group TEXT NOT NULL,term TEXT NOT NULL,source TEXT NOT NULL,searches INTEGER NOT NULL,without_results INTEGER NOT NULL,PRIMARY KEY(tenant,day,product_group,term,source))`);
++ try{ensureSearchKinds(db);}catch(error){db.close();throw error;}
+  let minute=-1,count=0;
+  return {
+-  record({query,resultCount,group,source='shop'}){
+-   const term=normalizedMotifQuery(query);if(!term)return false;
++  record({query,resultCount,group,source='shop',searchKind='motif'}){
++   if(!['motif','design'].includes(searchKind))invalid();
++   const term=normalizedMotifQuery(query,searchKind);if(!term)return false;
+    if(!Number.isSafeInteger(resultCount)||resultCount<0||resultCount>100000||typeof group!=='string'||!group||group.length>160||!['shop','preview'].includes(source))invalid();
+    const now=clock(),bucket=Math.floor(now/60000);if(bucket!==minute){minute=bucket;count=0;}if(++count>600)return false;
+    const day=new Date(now).toISOString().slice(0,10);
+-   db.prepare(`INSERT INTO motif_search_daily VALUES(?,?,?,?,?,1,?) ON CONFLICT(tenant,day,product_group,term,source) DO UPDATE SET searches=searches+1,without_results=without_results+excluded.without_results`).run(tenant,day,group,term,source,resultCount===0?1:0);
++   db.prepare(`INSERT INTO motif_search_daily(tenant,day,product_group,term,source,search_kind,searches,without_results) VALUES(?,?,?,?,?,?,1,?) ON CONFLICT(tenant,day,product_group,term,source,search_kind) DO UPDATE SET searches=searches+1,without_results=without_results+excluded.without_results`).run(tenant,day,group,term,source,searchKind,resultCount===0?1:0);
+    return true;
+   },
+-  report({days=30,group='',source='shop'}={}){
+-   days=Number(days);if(![7,30,90,365].includes(days)||typeof group!=='string'||group.length>160||!['shop','preview','all'].includes(source))invalid();
++  report({days=30,group='',source='shop',searchKind='motif'}={}){
++   days=Number(days);if(![7,30,90,365].includes(days)||typeof group!=='string'||group.length>160||!['shop','preview','all'].includes(source)||!['motif','design'].includes(searchKind))invalid();
+    const from=new Date(clock()-(days-1)*86400000).toISOString().slice(0,10),to=new Date(clock()).toISOString().slice(0,10);
+-   const args=[tenant,from,to,group,group,source,source],where="tenant=? AND day BETWEEN ? AND ? AND (?='' OR product_group=?) AND (?='all' OR source=?)";
++   const args=[tenant,from,to,group,group,source,source,searchKind],where="tenant=? AND day BETWEEN ? AND ? AND (?='' OR product_group=?) AND (?='all' OR source=?) AND search_kind=?";
+    const rows=db.prepare(`SELECT term,SUM(searches) AS searches,SUM(without_results) AS withoutResults FROM motif_search_daily WHERE ${where} GROUP BY term ORDER BY searches DESC,term LIMIT 100`).all(...args);
+    const missing=db.prepare(`SELECT term,SUM(searches) AS searches,SUM(without_results) AS withoutResults FROM motif_search_daily WHERE ${where} GROUP BY term HAVING withoutResults>0 ORDER BY withoutResults DESC,term LIMIT 100`).all(...args);
+    const totals=db.prepare(`SELECT COALESCE(SUM(searches),0) AS searches,COALESCE(SUM(without_results),0) AS withoutResults FROM motif_search_daily WHERE ${where}`).get(...args);
+-   const groups=db.prepare('SELECT DISTINCT product_group AS name FROM motif_search_daily WHERE tenant=? ORDER BY product_group').all(tenant).map(x=>x.name);
+-   return {from,to,days,source,group,groups,totals,rows,missing};
++   const groups=db.prepare('SELECT DISTINCT product_group AS name FROM motif_search_daily WHERE tenant=? AND search_kind=? ORDER BY product_group').all(tenant,searchKind).map(x=>x.name);
++   return {from,to,days,source,searchKind,group,groups,totals,rows,missing};
+   },close:()=>db.close()
+  };
+ }
+diff --git a/app/workshop/motif-search-stats.test.mjs b/app/workshop/motif-search-stats.test.mjs
+index 934cfa36e961aa5a59be8026a212bf1efe16371e..799fd6a54a92df73aa46bef608384171f19b7091 100644
+--- a/app/workshop/motif-search-stats.test.mjs
++++ b/app/workshop/motif-search-stats.test.mjs
+@@ -1,5 +1,6 @@
+ import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs';import os from 'node:os';import path from 'node:path';
+ import {createMotifSearchStats,normalizedMotifQuery} from './motif-search-stats.mjs';
++import {DatabaseSync} from 'node:sqlite';
+ test('persistent reports separate tenant, period, product group and preview from real searches',t=>{
+  const dir=fs.mkdtempSync(path.join(os.tmpdir(),'motif-search-stats-')),filename=path.join(dir,'stats.sqlite');t.after(()=>fs.rmSync(dir,{recursive:true,force:true}));
+  let time=Date.UTC(2026,10,5),a=createMotifSearchStats({filename,tenantId:'gravuru',clock:()=>time});
+@@ -8,6 +9,40 @@ test('persistent reports separate tenant, period, product group and preview from
+  a=createMotifSearchStats({filename,tenantId:'gravuru',clock:()=>time});assert.equal(a.report().totals.searches,4);time+=40*86400000;assert.equal(a.report().totals.searches,0);assert.equal(a.report({days:90}).totals.searches,4);a.close();
+  const b=createMotifSearchStats({filename,tenantId:'anderer-shop'});assert.equal(b.report().totals.searches,0);b.close();
+ });
++test('historical aggregation migrates once without losing any tenant, source or counts',t=>{
++ const dir=fs.mkdtempSync(path.join(os.tmpdir(),'search-kind-migration-')),filename=path.join(dir,'stats.sqlite');t.after(()=>fs.rmSync(dir,{recursive:true,force:true}));
++ const legacy=new DatabaseSync(filename);legacy.exec(`CREATE TABLE motif_search_daily(tenant TEXT NOT NULL,day TEXT NOT NULL,product_group TEXT NOT NULL,term TEXT NOT NULL,source TEXT NOT NULL,searches INTEGER NOT NULL,without_results INTEGER NOT NULL,PRIMARY KEY(tenant,day,product_group,term,source)); INSERT INTO motif_search_daily VALUES('gravuru','2026-11-11','Schilder','haus','shop',8,2),('gravuru','2026-11-11','Schilder','haus','preview',3,1),('zweiter','2026-11-11','Andere','haus','shop',6,0);`);legacy.close();
++ const clock=()=>Date.UTC(2026,10,11);let s=createMotifSearchStats({filename,tenantId:'gravuru',clock});
++ assert.equal(s.report().totals.searches,8);assert.equal(s.report({source:'preview'}).totals.searches,3);assert.equal(s.report({searchKind:'design'}).totals.searches,0);
++ s.record({query:'Haus',resultCount:0,group:'Schilder',searchKind:'design'});s.record({query:'Haus',resultCount:4,group:'Schilder'});
++ assert.deepEqual({...s.report({searchKind:'design'}).totals},{searches:1,withoutResults:1});assert.equal(s.report().totals.searches,9);s.close();
++ s=createMotifSearchStats({filename,tenantId:'gravuru',clock});assert.equal(s.report().totals.searches,9);assert.equal(s.report({searchKind:'design'}).totals.searches,1);s.close();
++ const other=createMotifSearchStats({filename,tenantId:'zweiter',clock});assert.equal(other.report().totals.searches,6);assert.equal(other.report({searchKind:'design'}).totals.searches,0);other.close();
++});
++test('unknown legacy shape stops atomically instead of dropping data',()=>{
++ // A second on-disk reader can verify the unchanged original after a failed open.
++ const dir=fs.mkdtempSync(path.join(os.tmpdir(),'search-kind-rollback-')),filename=path.join(dir,'stats.sqlite');
++ try{const before=new DatabaseSync(filename);before.exec("CREATE TABLE motif_search_daily(tenant TEXT,custom TEXT); INSERT INTO motif_search_daily VALUES('gravuru','keep')");before.close();assert.throws(()=>createMotifSearchStats({filename,tenantId:'gravuru'}),/Unbekanntes Schema/);const after=new DatabaseSync(filename);assert.equal(after.prepare('SELECT custom FROM motif_search_daily').get().custom,'keep');assert.equal(after.prepare("SELECT count(*) AS n FROM sqlite_master WHERE name='motif_search_daily_with_kind'").get().n,0);after.close();}finally{fs.rmSync(dir,{recursive:true,force:true});}
++});
++test('design identifiers are counted without relaxing contact-data filters or conflating kinds',()=>{
++ const s=createMotifSearchStats({filename:':memory:',tenantId:'gravuru'});
++ for(const query of ['D23','TRE-V2A-5x2-D23','D12345','TRE-V2A-12000x20-D23','23'])assert.equal(s.record({query,resultCount:0,group:'Türschilder',searchKind:'design'}),true);
++ for(const query of ['name@example.com','https://example.com','017612345678','D017612345678','<img>','Name 12345678'])assert.equal(s.record({query,resultCount:0,group:'Türschilder',searchKind:'design'}),false);
++ assert.equal(s.report({searchKind:'design'}).totals.searches,5);assert.equal(s.report().totals.searches,0);
++ assert.throws(()=>s.record({query:'Haus',resultCount:0,group:'Schilder',searchKind:'preview'}));assert.throws(()=>s.report({searchKind:'all'}));s.close();
++});
++test('known legacy columns with an unexpected primary key stop without changing schema or rows',t=>{
++ const dir=fs.mkdtempSync(path.join(os.tmpdir(),'search-kind-wrong-key-')),filename=path.join(dir,'stats.sqlite');t.after(()=>fs.rmSync(dir,{recursive:true,force:true}));
++ const before=new DatabaseSync(filename);
++ before.exec("CREATE TABLE motif_search_daily(tenant TEXT NOT NULL,day TEXT NOT NULL,product_group TEXT NOT NULL,term TEXT NOT NULL,source TEXT NOT NULL,searches INTEGER NOT NULL,without_results INTEGER NOT NULL,PRIMARY KEY(tenant,day,term,source)); INSERT INTO motif_search_daily VALUES('gravuru','2026-11-11','Schilder','haus','shop',8,2),('zweiter','2026-11-11','Andere','haus','preview',6,1)");
++ const schema=before.prepare("SELECT sql FROM sqlite_master WHERE name='motif_search_daily'").get().sql,rows=before.prepare('SELECT * FROM motif_search_daily ORDER BY tenant').all();before.close();
++ let opened;try{assert.throws(()=>{opened=createMotifSearchStats({filename,tenantId:'gravuru'});},/Unbekannter Schlüssel/);}finally{opened?.close();}
++ const after=new DatabaseSync(filename);try{
++  assert.equal(after.prepare("SELECT sql FROM sqlite_master WHERE name='motif_search_daily'").get().sql,schema);
++  assert.deepEqual(after.prepare('SELECT * FROM motif_search_daily ORDER BY tenant').all(),rows);
++  assert.equal(after.prepare("SELECT count(*) AS n FROM sqlite_master WHERE name='motif_search_daily_with_kind'").get().n,0);
++ }finally{after.close();}
++});
+ test('query normalization excludes common contact data and markup, rejects invalid counts and filters',()=>{
+  for(const value of ['a','name@example.com','https://example.com','017612345678','<img>'])assert.equal(normalizedMotifQuery(value),'');assert.equal(normalizedMotifQuery('  Herz   mit Pfote '),'herz mit pfote');
+  const s=createMotifSearchStats({filename:':memory:',tenantId:'gravuru'});assert.throws(()=>s.record({query:'Hund',resultCount:-1,group:'Schiefer'}));assert.throws(()=>s.report({days:10000}));s.close();
+diff --git a/app/workshop/motif-search-ui.test.mjs b/app/workshop/motif-search-ui.test.mjs
+index 0144017606e974e8a62f6e61ea13a66637ebee9d..3fb38c21156aab92e0114a0e48576ad6527f6fbb 100644
+--- a/app/workshop/motif-search-ui.test.mjs
++++ b/app/workshop/motif-search-ui.test.mjs
+@@ -8,7 +8,7 @@ const shop='gravuru-design.myshopify.com',key='gravuru:motif-search-filters:v1:'
+ const settle=()=>new Promise(resolve=>setImmediate(resolve));
+ function page(storage=new Map(),options={}){
+  const element=()=>({children:[],textContent:'',value:'',append(...nodes){this.children.push(...nodes);},replaceChildren(...nodes){this.children=nodes;this.value=nodes[0]?.value||'';}});
+- const fields={days:{value:'30'},source:{value:'shop'},group:element()},button={disabled:false},events={},form={elements:fields,querySelector:()=>button,addEventListener:(name,fn)=>events[name]=fn};
++ const fields={days:{value:'30'},source:{value:'shop'},searchKind:{value:'motif'},group:element()},button={disabled:false},events={},form={elements:fields,querySelector:()=>button,addEventListener:(name,fn)=>events[name]=fn};
+  const nodes=Object.fromEntries(['#status','#searches','#missing','#top-terms','#missing-terms'].map(id=>[id,element()]));
+  const requests=[];
+  const context={URLSearchParams,location:{host:'app.example.com'},localStorage:{getItem:k=>{if(options.blocked)throw Error('blocked');return storage.get(k)||null;},setItem:(k,v)=>{if(options.blocked)throw Error('blocked');storage.set(k,v);}},FormData:class extends Map{constructor(f){super(Object.entries(f.elements).map(([k,v])=>[k,v.value]));}},Option:function(label,value){return {textContent:label,value};},document:{querySelector:selector=>selector==='#filters'?form:selector==='meta[name=shopify-shop]'?{content:options.shop||shop}:nodes[selector],createElement:element},merchantRequest:async path=>{
+@@ -23,16 +23,21 @@ test('chosen source, period and product group survive a fresh report page and st
+  first.fields.source.value='preview';first.fields.days.value='90';first.fields.group.value='Hunde-Gedenktafel';await first.events.change();
+  assert.equal(first.nodes['#searches'].textContent,'2');
+  const reloaded=page(storage);await settle();
+- assert.deepEqual(reloaded.requests,[{days:'90',source:'preview',group:'Hunde-Gedenktafel'}]);
++ assert.deepEqual(reloaded.requests,[{days:'90',source:'preview',searchKind:'motif',group:'Hunde-Gedenktafel'}]);
+  assert.equal(reloaded.fields.source.value,'preview');assert.equal(reloaded.fields.days.value,'90');assert.equal(reloaded.fields.group.value,'Hunde-Gedenktafel');
+  assert.equal(reloaded.nodes['#searches'].textContent,'2');assert.equal(reloaded.nodes['#missing'].textContent,'1');assert.equal(reloaded.button.disabled,false);
+  const otherShop=page(storage,{shop:'another-shop.myshopify.com'});await settle();assert.equal(otherShop.fields.source.value,'shop');assert.equal(otherShop.nodes['#searches'].textContent,'0');
+- assert.deepEqual(Object.keys(JSON.parse(storage.get(key))).sort(),['days','group','source']);
++ assert.deepEqual(Object.keys(JSON.parse(storage.get(key))).sort(),['days','group','searchKind','source']);
+ });
+ test('corrupt or blocked preference storage keeps the report usable with defaults',async()=>{
+- for(const raw of ['{bad','null','{"days":"999","source":"unknown","group":42}']){const p=page(new Map([[key,raw]]));await settle();assert.deepEqual(p.requests,[{days:'30',source:'shop',group:''}]);assert.equal(p.button.disabled,false);}
++ for(const raw of ['{bad','null','{"days":"999","source":"unknown","searchKind":"unknown","group":42}']){const p=page(new Map([[key,raw]]));await settle();assert.deepEqual(p.requests,[{days:'30',source:'shop',searchKind:'motif',group:''}]);assert.equal(p.button.disabled,false);}
+  const blocked=page(new Map(),{blocked:true});await settle();blocked.fields.source.value='preview';await blocked.events.change();assert.equal(blocked.nodes['#searches'].textContent,'2');assert.equal(blocked.button.disabled,false);
+ });
++test('search kind is sent independently of origin and survives reloading without changing old preferences',async()=>{
++ const storage=new Map([[key,JSON.stringify({days:'30',source:'preview',group:''})]]),p=page(storage);await settle();assert.equal(p.fields.searchKind.value,'motif');
++ p.fields.searchKind.value='design';await p.events.change();assert.equal(p.requests.at(-1).searchKind,'design');assert.equal(p.requests.at(-1).source,'preview');
++ const next=page(storage);await settle();assert.equal(next.fields.searchKind.value,'design');assert.equal(next.requests[0].searchKind,'design');assert.equal(next.fields.source.value,'preview');
++});
+ test('a removed saved product group falls back visibly to all groups instead of keeping a hidden filter',async()=>{
+  const p=page(new Map([[key,JSON.stringify({days:'30',source:'preview',group:'Removed'})]]));await settle();
+  assert.equal(p.requests.length,2);assert.equal(p.requests[1].group,'');assert.equal(p.fields.group.value,'');assert.equal(p.nodes['#searches'].textContent,'2');assert.equal(JSON.parse(p.storage.get(key)).group,'');assert.equal(p.button.disabled,false);
+diff --git a/app/workshop/product-preview.mjs b/app/workshop/product-preview.mjs
+index 778e05f96a0673974de5450b53b0d594dc0a6f9b..f2a85351506a449fcaadcf4536eb11266562ab04 100644
+--- a/app/workshop/product-preview.mjs
++++ b/app/workshop/product-preview.mjs
+@@ -8,7 +8,7 @@ import {keepoutPreview,spacerPreview,screwPreview} from '../configurator/variant
+ import {mountingPlacementState} from '../configurator/variant-m/mounting-placement.mjs';
+ import {designAreaPreview} from '../configurator/variant-m/design-area.mjs';
+ import {textsNearHoles,holeHintText} from '../platform/sources/app/shared/models/hole-proximity.mjs';
+-import {surfacePreview,scenePreview} from '../configurator/variant-m/material-surface.mjs';
++import {surfacePreview,scenePreview,plateDepthPreview} from '../configurator/variant-m/material-surface.mjs';
+ import {examplePhotoMarkup,emptyMaskedPhotoMarkup} from '../configurator/variant-m/photo-placeholder.mjs';
+ import {isLayeredDoorbell} from '../configurator/variant-m/doorbell-selection.mjs';
+ import {workshopResources} from './catalog.mjs';
+@@ -65,6 +65,9 @@ export function productPreview(model,{options={},examples=[],designId,layout='po
+  let svg=studioSvg(p,d,previewFonts(c),{frameKey:options.frame,color:options.color,mountingKey:options.mounting,motifs:c.localResources.motifs,media,handles:false,id:'product-card',photoExampleMarkup,originalPhotoPreview:examples.length>0});
+  svg=svg.replace('href="blob:gravuru-workshop-reference"','href="'+example+'"');
+  for(const e of examples)svg=svg.replaceAll('href="blob:workshop-'+e.assetId+'"','href="'+e.url+'"');
++ // Match the customer editor's family-product presentation. Manufacturing
++ // artwork is generated separately and never receives this guide layer.
++ if(c.familyFormats)svg=plateDepthPreview(svg,p.geometry,'product-card');
+  if(c.familyAcrylic)svg=spacerPreview(svg,p);
+  if(!c.acrylic)return scenePreview(designAreaPreview(keepoutPreview(screwPreview(surfacePreview(svg,c.materialSurface,p.geometry),p),p,{show:keepout}),c,p,{show:designArea}),c.sceneBackground);
+  backdrop??=image('scene-empty-v2.jpg');
+diff --git a/app/workshop/shop-design-gallery.mjs b/app/workshop/shop-design-gallery.mjs
+index 6f54b62ef50e855d6bd48dcc1eb75d95f810c1b0..1f5abdc71a1f5480a6adf31482a9c7e5712dcc94 100644
+--- a/app/workshop/shop-design-gallery.mjs
++++ b/app/workshop/shop-design-gallery.mjs
+@@ -7,6 +7,7 @@ import {gallerySnapshotCodec} from './shop-gallery-snapshot.mjs';
+ import {isAllSizesFamily,familyFormatOptions} from '../configurator/variant-m/family-formats.mjs';
+ import {performance} from 'node:perf_hooks';
+ import {moduleEnabled} from '../configurator/variant-m/module-profile.mjs';
++import {designSearchQuery,designSearchMetadata,matchesDesignSearch} from '../configurator/variant-m/design-search.mjs';
+ 
+ const fail=(status,code,message)=>{throw Object.assign(Error(message),{status,code});};
+ const unavailable=()=>fail(409,'shop_gallery_changed','Dieses Design ist nicht mehr verfügbar. Bitte die Designauswahl neu öffnen.');
+@@ -21,6 +22,8 @@ const fields=['sid','storeId','productId','productRevision','bindingId','assignm
+ // approval remains the importer's responsibility, just as for normal entry.
+ export function createShopDesignGallery({secret,resolve,modelFor,cardFor=modelFor,allowedAssets,checkBinding=()=>{},checkBindings,waitMs=4000,onMeasure=()=>{},previewUrl=null}){
+  const cache=new Map();
++ const searchIndexes=new WeakMap();
++ const searchMetadata=(design,config)=>{let index=searchIndexes.get(config);if(!index){index=new Map();searchIndexes.set(config,index);}if(!index.has(design.id))index.set(design.id,designSearchMetadata(design,config));return index.get(design.id);};
+  const previews=new Map(),previewFiles=new Map();let previewBytes=0;
+  const previewKey=(b,id)=>JSON.stringify([b.storeId,b.tenantId,b.productId,b.productRevision,b.options,id]);
+  const cachedPreview=(b,id)=>previews.get(previewKey(b,id));
+@@ -97,7 +100,7 @@ export function createShopDesignGallery({secret,resolve,modelFor,cardFor=modelFo
+      const design=profile.designs[designIndex];
+      let selected;const at=performance.now();try{selected=selection(binding,model,design.id,prepared);}catch{continue;}finally{timings.selectionMs+=performance.now()-at;}
+      const {geometry,price}=selected,dedupe=JSON.stringify([binding.productId,design.id,geometry.width,geometry.height,geometry.shape]);
+-     cards.push({binding,scope,process,design:{katalog:{target:design.katalog?.target}},availability:{universal:{doorbell:{schema:model.universal.doorbell?.schema}}},designId:design.id,dedupe,card:{productId:binding.productId,productRevision:binding.productRevision,designId:design.id,productName:model.name,designName:design.name||model.name,themes:design.themes||[],widthMm:geometry.width,heightMm:geometry.height,shape:geometry.shape,unitCents:price.unitCents,currency:price.currency,shopifyProductId:binding.shopifyProductId,shopifyVariantId:binding.shopifyVariantId}});
++     cards.push({binding,scope,process,search:searchMetadata(design,model.universal),design:{katalog:{target:design.katalog?.target}},availability:{universal:{doorbell:{schema:model.universal.doorbell?.schema}}},designId:design.id,dedupe,card:{productId:binding.productId,productRevision:binding.productRevision,designId:design.id,productName:model.name,designName:design.name||model.name,themes:design.themes||[],widthMm:geometry.width,heightMm:geometry.height,shape:geometry.shape,unitCents:price.unitCents,currency:price.currency,shopifyProductId:binding.shopifyProductId,shopifyVariantId:binding.shopifyVariantId}});
+      timings.cards++;
+     }
+    }catch(error){if([404,409,422,423].includes(error.status))continue;throw error;}
+@@ -184,7 +187,7 @@ export function createShopDesignGallery({secret,resolve,modelFor,cardFor=modelFo
+    const source={scope,process,theme:profile.themeId||null},cards=[];
+    for(const design of profile.designs){
+     let selected;try{selected=selection(binding,own,design.id,{profile,geometry});}catch{continue;}
+-    cards.push({binding,scope,process,design,designId:design.id,dedupe:design.id,card:{productId:binding.productId,productRevision:binding.productRevision,designId:design.id,productName:own.name,designName:design.name||own.name,themes:design.themes||[],widthMm:geometry.width,heightMm:geometry.height,shape:geometry.shape,unitCents:selected.price.unitCents,currency:selected.price.currency,shopifyProductId:binding.shopifyProductId,shopifyVariantId:binding.shopifyVariantId}});
++    cards.push({binding,scope,process,search:searchMetadata(design,own.universal),design,designId:design.id,dedupe:design.id,card:{productId:binding.productId,productRevision:binding.productRevision,designId:design.id,productName:own.name,designName:design.name||own.name,themes:design.themes||[],widthMm:geometry.width,heightMm:geometry.height,shape:geometry.shape,unitCents:selected.price.unitCents,currency:selected.price.currency,shopifyProductId:binding.shopifyProductId,shopifyVariantId:binding.shopifyVariantId}});
+    }
+    return {cards,source};
+   }
+@@ -205,7 +208,8 @@ export function createShopDesignGallery({secret,resolve,modelFor,cardFor=modelFo
+   try{return await Promise.race([availableCards(context,sourceModel,options),new Promise(resolve=>{timer=setTimeout(()=>resolve(preparing),waitMs);})]);}
+   finally{clearTimeout(timer);}
+  }
+- async function list(context,{page=0,theme='preferred',sourceModel=null,options=null}={}){
++ async function list(context,{page=0,theme='preferred',sourceModel=null,options=null,q=''}={}){
++  const query=designSearchQuery(q);
+   if(!['preferred','all'].includes(theme))fail(422,'shop_gallery_theme','Dieses Thema gibt es nicht.');
+   if(!Number.isSafeInteger(page)||page<0||page>10000)fail(422,'shop_gallery_page','Diese Seite der Designauswahl gibt es nicht.');
+   // Public entry supplies its revision-pinned source. Do not defeat the legacy
+@@ -221,8 +225,8 @@ export function createShopDesignGallery({secret,resolve,modelFor,cardFor=modelFo
+    if(previous&&row.binding.shopifyVariantId!==context.binding.shopifyVariantId&&(previous.binding.shopifyVariantId===context.binding.shopifyVariantId||previous.card.unitCents<=row.card.unitCents))continue;
+    choices.set(row.dedupe,row);
+   }
+-  const rows=[...choices.values()],start=page*40;
+-  if(theme==='preferred'&&source?.theme)rows.sort((a,b)=>Number(b.card.themes.includes(source.theme))-Number(a.card.themes.includes(source.theme)));
++  const rows=[...choices.values()].filter(row=>matchesDesignSearch(row.search,query)),start=page*40;
++  rows.sort((a,b)=>a.search.rank-b.search.rank||(!query&&theme==='preferred'&&source?.theme?Number(b.card.themes.includes(source.theme))-Number(a.card.themes.includes(source.theme)):0));
+   const items=rows.slice(start,start+40).map(({binding,designId,card})=>({...card,...(previewUrl&&cachedPreview(binding,designId)?{previewUrl:previewUrl(cachedPreview(binding,designId).hash)}:{}),target:issue(context,binding,designId,source.scope.key),current:binding.productId===context.binding.productId&&(binding.shopifyVariantId===context.binding.shopifyVariantId||options!==null&&binding.productRevision===context.binding.productRevision)}));
+   return {items,nextPage:start+40<rows.length?page+1:null,total:rows.length,...(source?.theme?{hasTheme:true}:{})};
+  }
+diff --git a/app/workshop/shop-design-gallery.test.mjs b/app/workshop/shop-design-gallery.test.mjs
+index 45dc610130b3b8f6d330ef21a27bfc6f698807e2..21f693fe1cf7e93aa5a60568364d582708a99920 100644
+--- a/app/workshop/shop-design-gallery.test.mjs
++++ b/app/workshop/shop-design-gallery.test.mjs
+@@ -341,3 +341,26 @@ test('all door-sign pages stay inside their line, excluding memorials and doorbe
+  const cards=[];let page=0;do{const result=await f.gallery.list(f.context,{page,theme:'all'});assert.equal(result.total,86);cards.push(...result.items);page=result.nextPage;}while(page!==null);
+  assert.equal(cards.length,86);assert.equal(new Set(cards.map(c=>c.designId)).size,86);assert.deepEqual([...new Set(cards.map(c=>c.productId))].sort(),['cfg_1','cfg_4']);
+ });
++
++
++test('search covers all eligible rows before paging, ranks originals first and ignores preferred theme during query',async()=>{
++ const f=fixture(),c=f.models.get('cfg_1').universal;c.profile.themeId='preferred';
++ c.profile.designs=Array.from({length:87},(_,i)=>({id:'d'+i,name:i<45?'Anderes':'Haus '+i,themes:i<45?['preferred']:['other'],katalog:{designId:'TEST-D'+i,prio:i===86?undefined:1,source:i===86?'TEST-D86 (Bestand, Original.cdr)':undefined},objects:[]}));
++ const result=await f.gallery.list(f.context,{q:'Haus'});assert.equal(result.total,42);assert.equal(result.items.length,40);assert.equal(result.items[0].designId,'d86');assert.equal(result.nextPage,1);
++ const tail=await f.gallery.list(f.context,{q:'Haus',page:1});assert.equal(tail.items.length,2);assert.equal(new Set([...result.items,...tail.items].map(d=>d.designId)).size,42);
++ assert.deepEqual((await f.gallery.list(f.context,{q:'D86'})).items.map(d=>d.designId),['d86']);
++ assert.deepEqual((await f.gallery.list(f.context,{q:'TEST-D86'})).items.map(d=>d.designId),['d86']);
++ assert.equal((await f.gallery.list(f.context,{q:'keintreffer'})).total,0);
++});
++test('search cannot reveal hidden, revoked, wrong-material or foreign-store templates',async()=>{
++ const f=fixture();f.add(2,{designs:[{id:'hidden',name:'Gesucht',hidden:true,objects:[]},{id:'revoked',name:'Gesucht',released:false,objects:[]},{id:'wrong-fit',name:'Gesucht',katalog:{fit:'passt nicht'},objects:[]}]});
++ f.add(3,{designs:[{id:'foreign',name:'Gesucht',objects:[]}]}).tenantId='foreign';f.add(4,{designs:[{id:'material',name:'Gesucht',objects:[]}]});f.models.get('cfg_4').universal.profile.material.kind='slate';
++ assert.equal((await f.gallery.list(f.context,{q:'Gesucht'})).total,0);
++ for(const q of ['x'.repeat(81),'line\nfeed',{},null])await assert.rejects(f.gallery.list(f.context,{q}),{code:'shop_gallery_query'});
++});
++test('search metadata follows the revision cache and survives signed snapshot restore',async()=>{
++ const f=fixture();let revision='r1',saved=null;f.store.registry.galleryRevision=()=>revision;f.store.registry.listActiveForGallery=async()=>f.store.registry.listActive();f.store.registry.galleryCache={read:async()=>saved,write:async(_revision,value)=>{saved=value;}};
++ f.models.get('cfg_1').universal.profile.designs[0].name='Anker';assert.equal((await f.gallery.list(f.context,{q:'Anker'})).total,1);
++ f.models.get('cfg_1').universal.profile.designs[0].name='Haus';revision='r2';assert.equal((await f.gallery.list(f.context,{q:'Anker'})).total,0);assert.equal((await f.gallery.list(f.context,{q:'Haus'})).total,1);
++ const restored=createShopDesignGallery({secret:'synthetic-only-gallery-secret',resolve:()=>{throw Error('unexpected resolution');},modelFor:()=>{throw Error('snapshot should restore without rebuilding');},allowedAssets:()=>new Set()});assert.equal((await restored.list(f.context,{q:'Haus'})).total,1);assert.equal((await restored.list(f.context,{q:'Anker'})).total,0);
++});
+diff --git a/app/workshop/shop-entry-client.test.mjs b/app/workshop/shop-entry-client.test.mjs
+index 1ac067d4b0da78920638688de2518a5a8541a9df..822237a0419fcec8f8ba57f342f0fb7643d95cc5 100644
+--- a/app/workshop/shop-entry-client.test.mjs
++++ b/app/workshop/shop-entry-client.test.mjs
+@@ -348,3 +348,10 @@ test('hashed gallery previews use browser caching; unavailable cache falls back
+  found=false;await client.loadDesignPreview('signed-choice',url);assert.equal(calls.at(-1).options.headers['X-Gravuru-Shop-Session'],token);
+  await client.loadDesignPreview('signed-choice','https://foreign.example/x.svg');assert.ok(calls.every(c=>!c.path.includes('foreign.example')));
+ });
++
++
++test('design search query is encoded separately from fixed options and preserves private session headers',async()=>{
++ const calls=[],client=createShopEntryClient({token,fetchImpl:async(url,options)=>{calls.push({url,options});return Response.json({items:[],total:0,nextPage:null});}});
++ await client.loadDesignGallery(0,'preferred',{size:'fixed'},'Haus & Familie');const url=new URL(calls[0].url,'http://localhost');assert.equal(url.searchParams.get('q'),'Haus & Familie');assert.equal(url.searchParams.get('size'),'fixed');assert.equal(calls[0].options.headers['X-Gravuru-Shop-Session'],token);
++ for(const q of ['x'.repeat(81),'a\nb',{}])await assert.rejects(client.loadDesignGallery(0,'preferred',null,q));assert.equal(calls.length,1);
++});
+diff --git a/app/workshop/shop-entry.mjs b/app/workshop/shop-entry.mjs
+index 50639143f2c4e7a8526421ea83da6fe257b634b3..6900fa8883d5a6086349d78fbe2874feafdb7539 100644
+--- a/app/workshop/shop-entry.mjs
++++ b/app/workshop/shop-entry.mjs
+@@ -408,11 +408,11 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
+     }
+     if(action==='design-gallery'){
+      if(req.method!=='GET')fail(405,'shop_entry_method','Diese Anfrageart ist nicht verfügbar.');
+-     if([...url.searchParams.keys()].some(k=>!['page','theme',...GALLERY_OPTIONS].includes(k))||['page','theme',...GALLERY_OPTIONS].some(k=>url.searchParams.getAll(k).length>1)||GALLERY_OPTIONS.some(k=>url.searchParams.has(k)&&!/^[A-Za-z0-9][A-Za-z0-9._-]{0,99}$/.test(url.searchParams.get(k)))||!['preferred','all'].includes(url.searchParams.get('theme')||'preferred')||!/^\d{1,5}$/.test(url.searchParams.get('page')||'0'))fail(422,'shop_gallery_page','Diese Seite der Designauswahl gibt es nicht.');
++     if([...url.searchParams.keys()].some(k=>!['page','theme','q',...GALLERY_OPTIONS].includes(k))||['page','theme','q',...GALLERY_OPTIONS].some(k=>url.searchParams.getAll(k).length>1)||GALLERY_OPTIONS.some(k=>url.searchParams.has(k)&&!/^[A-Za-z0-9][A-Za-z0-9._-]{0,99}$/.test(url.searchParams.get(k)))||!['preferred','all'].includes(url.searchParams.get('theme')||'preferred')||!/^\d{1,5}$/.test(url.searchParams.get('page')||'0'))fail(422,'shop_gallery_page','Diese Seite der Designauswahl gibt es nicht.');
+      checkOrigin(req,{mutating:false});const context=active(req),sourceModel=cardFor(context.store,context.binding);checkGalleryBinding(context.store,context.binding,sourceModel);
+      // Türschild-Konfi: aktuelle Ausführung aus dem Konfi (Form & Größe, Farbe, Befestigung); nur dort ausgewertet.
+      const chosen=GALLERY_OPTIONS.filter(k=>url.searchParams.has(k)),options=chosen.length&&isAllSizesFamily(sourceModel.universal)?Object.fromEntries(chosen.map(k=>[k,url.searchParams.get(k)])):null;
+-     const result=await designGallery.list(context,{page:Number(url.searchParams.get('page')||0),theme:url.searchParams.get('theme')||'preferred',sourceModel,options});active(req);
++     const result=await designGallery.list(context,{page:Number(url.searchParams.get('page')||0),theme:url.searchParams.get('theme')||'preferred',sourceModel,options,q:url.searchParams.get('q')||''});active(req);
+      return json(res,200,result);
+     }
+     if(action==='customer-vector-logo/preview'){
+diff --git a/app/workshop/shop-entry.test.mjs b/app/workshop/shop-entry.test.mjs
+index 39709d777696c8f7697c4c4f1f5f0a2f0e94962e..fb77ed077a41af8ff48059fc03800b497cd0fc07 100644
+--- a/app/workshop/shop-entry.test.mjs
++++ b/app/workshop/shop-entry.test.mjs
+@@ -345,7 +345,7 @@ async function otherGalleryCard(f,request,t){
+ test('gallery endpoints require current authentication, correct origin and strictly shaped requests',()=>run(async(f,request,{token})=>{
+  for(const [path,method,body] of [['design-gallery','GET'],['design-gallery-preview','POST',{target:'x'}],['design-switch','POST',{target:'x'}]]){const denied=await request('/api/shop-entry/'+path,method,body);assert.equal(denied.status,403);assert.equal(denied.data.error.code,'shop_entry_session');}
+  const {token:t}=await token();
+- for(const suffix of ['?page=-1','?page=1.5','?page=1&page=2','?page=10001','?product=1','?theme=foreign','?theme=all&theme=preferred'])assert.equal((await request('/api/shop-entry/design-gallery'+suffix,'GET',undefined,session(t))).status,422);
++ for(const suffix of ['?page=-1','?page=1.5','?page=1&page=2','?page=10001','?product=1','?theme=foreign','?theme=all&theme=preferred','?q=Haus&q=D23','?q='+encodeURIComponent('x'.repeat(81)),'?q=line%0Afeed'])assert.equal((await request('/api/shop-entry/design-gallery'+suffix,'GET',undefined,session(t))).status,422);
+  assert.equal((await request('/api/shop-entry/design-gallery','POST',{},session(t))).status,405);
+  for(const path of ['design-gallery-preview','design-switch']){
+   assert.equal((await request('/api/shop-entry/'+path,'GET',undefined,session(t))).status,405);
+@@ -638,3 +638,9 @@ test('startup warms the gallery without a customer and list never calls the full
+  f.store.workshop.galleryModel=(id,rev)=>{reads++;return structuredClone(f.models.get(id));};
+  f.store.registry.galleryRevision=()=> 'fixed';f.store.registry.listActiveForGallery=async()=>f.store.registry.listActive();
+ }));
++
++
++test('public search passes only eligible results and exact number matches through the authenticated gallery route',()=>run(async(f,request,{token})=>{
++ const {token:t}=await token();
++ for(const [q,total] of [['Haus',1],['D23',1],['23',1],['D230',0],['Geheim',0]]){const r=await request('/api/shop-entry/design-gallery?q='+encodeURIComponent(q),'GET',undefined,session(t));assert.equal(r.status,200,r.body.toString());assert.equal(r.data.total,total,q);}
++},f=>{galleryEntryFixture(f);const c=f.models.get(f.first.localWorkshopRecord).universal;c.profile.designs=[{id:'d1',name:'Haus',katalog:{designId:'TEST-D23'},objects:[]},{id:'secret',name:'Geheim',hidden:true,objects:[]}];}));
+diff --git a/app/workshop/shop-gallery-model.mjs b/app/workshop/shop-gallery-model.mjs
+index 9848ca41dfe666fca1bce8f1d156ac1a80082154..d3a48f37ebeb3dfa4dae61cac870ec22e72ec35b 100644
+--- a/app/workshop/shop-gallery-model.mjs
++++ b/app/workshop/shop-gallery-model.mjs
+@@ -5,6 +5,6 @@ export function shopGalleryModel(record){
+  const document=record.document,config=document?.config;
+  if(document?.schema!=='gravuru-product/v1'||!config?.profile)throw Object.assign(Error('Dieses Produkt ist nicht für die Designauswahl verfügbar.'),{status:404,code:'shop_gallery_product'});
+  const {materialSurface,sceneBackground,localResources,...universal}=config;
+- universal.localResources={motifs:(localResources?.motifs||[]).map(({key,embeddedOnly})=>({key,embeddedOnly}))};
++ universal.localResources={motifs:(localResources?.motifs||[]).map(({key,embeddedOnly,name,label,keywords,tags})=>({key,embeddedOnly,...(name?{name}:{}),...(label?{label}:{}),...(keywords?{keywords}:{}),...(tags?{tags}:{})}))};
+  return {key:'acryl',name:document.name,configuration:{id:record.id,revision:record.revision},galleryCategoryIds:[...(document.categoryIds||[])],universal};
+ }
+diff --git a/app/workshop/shop-gallery-model.test.mjs b/app/workshop/shop-gallery-model.test.mjs
+index b6cd49515ede7893a66d7e9184a4b9967a5086c1..8c8ab76745ec419a3ed1d6af7d0bc7a0432614f6 100644
+--- a/app/workshop/shop-gallery-model.test.mjs
++++ b/app/workshop/shop-gallery-model.test.mjs
+@@ -25,18 +25,19 @@ for(const [name,config] of [['doorbell',doorbellFixture()],['acrylic',makeAcryli
+    for(const design of expected.designs)for(const objects of [[],design.objects])assert.deepEqual(quote(light.universal,objects,design.id,option),quote(full,objects,design.id,option));
+   }
+   assert.equal(JSON.stringify(document),before);assert.equal(light.universal.materialSurface,undefined);assert.equal(light.universal.sceneBackground,undefined);assert.equal(light.universal.localResources.fonts,undefined);assert.equal(light.universal.localResources.photoExamples,undefined);
+-  assert.ok(light.universal.localResources.motifs.every(m=>Object.keys(m).every(k=>['key','embeddedOnly'].includes(k))));
++  assert.ok(light.universal.localResources.motifs.every(m=>Object.keys(m).every(k=>['key','embeddedOnly','name','label','keywords','tags'].includes(k))));
+  });
+ }
+ 
+ test('projection keeps embedded-only motif restrictions and all-motif pricing, without reading artwork',()=>{
+  const config=doorbellFixture();config.motifCharge='all';config.extraMotifCents=169;
+  const full=makeProductDocument(config,{name:'Motif price fixture'}).config;
+- full.localResources.motifs=[{key:'restricted',embeddedOnly:true,svgFragment:'private artwork'}];
++ full.localResources.motifs=[{key:'restricted',name:'Haus',tags:['Zuhause'],embeddedOnly:true,svgFragment:'private artwork'}];
+  for(const p of [full.profile,...full.doorbell.formats.map(f=>f.profile)])p.designs[0].objects.push({id:'motif-template',type:'motif',motif:'restricted',templateOrigin:true});
+  const light=shopGalleryModel({id:'cfg_fixture',revision:1,document:{schema:'gravuru-product/v1',name:'Fixture',config:full}}).universal;
+  const options=variantCombinations(full)[0],design=selectedProfile(full,options).designs[0];
+  assert.deepEqual(quote(light,design.objects,design.id,options),quote(full,design.objects,design.id,options));
+  for(const c of [full,light])assert.throws(()=>quote(c,[...design.objects,{id:'unauthorized',type:'motif',motif:'restricted'}],design.id,options),/Vorlagenmotiv/);
+  assert.ok(!JSON.stringify(light).includes('private artwork'));
++ assert.equal(light.localResources.motifs[0].name,'Haus');assert.deepEqual(light.localResources.motifs[0].tags,['Zuhause']);
+ });
+diff --git a/app/workshop/shop-gallery-snapshot.mjs b/app/workshop/shop-gallery-snapshot.mjs
+index 225373ef588f647d3e6c36fd95be34304ca1aae7..3c1d44c78750c6ef8e1b1ef993b34d3d95f81b7b 100644
+--- a/app/workshop/shop-gallery-snapshot.mjs
++++ b/app/workshop/shop-gallery-snapshot.mjs
+@@ -1,6 +1,6 @@
+ import {createHmac,timingSafeEqual} from 'node:crypto';
+ 
+-const schema='gravuru-shop-gallery-cache/v2';
++const schema='gravuru-shop-gallery-cache/v3';
+ const bindingFields=['storeId','tenantId','shopDomain','shopifyProductId','shopifyVariantId','productId','productRevision','bindingId','assignmentRevision','options','unitCents'];
+ const pick=(value,fields)=>Object.fromEntries(fields.map(k=>[k,value[k]]));
+ const contextScope=context=>[context.store.workshop.tenantId,context.store.storeId,context.binding.shopDomain];
+@@ -14,6 +14,7 @@ export function gallerySnapshotCodec(secret){
+     binding:pick(row.binding,bindingFields),scope:pick(row.scope,['key','lineId','familyId']),process:row.process,
+     design:{katalog:{target:row.design.katalog.target?pick(row.design.katalog.target,['lineId','familyId','explicit','released']):undefined}},
+     availability:{universal:{doorbell:{schema:row.availability.universal.doorbell.schema}}},designId:row.designId,dedupe:row.dedupe,
++    search:pick(row.search,['text','number','rank','unnamedMotifs']),
+     card:pick(row.card,['productId','productRevision','designId','productName','designName','themes','widthMm','heightMm','shape','unitCents','currency','shopifyProductId','shopifyVariantId'])
+    }))]);
+    const sources=[...snapshot.sources].map(([key,value])=>[key,{scope:pick(value.scope,['key','lineId','familyId']),process:value.process,theme:value.theme}]);
+diff --git a/app/workshop/ui/motif-searches.html b/app/workshop/ui/motif-searches.html
+index 710d5647415533acb8c8f36b09c09061d0475807..6b5c32a04f7b1c84c1a432424d4d41a66465bbb1 100644
+--- a/app/workshop/ui/motif-searches.html
++++ b/app/workshop/ui/motif-searches.html
+@@ -1,6 +1,6 @@
+-<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Motivsuche · Gravuru</title><link rel="stylesheet" href="/workshop-ui/workshop-shell.css"><link rel="stylesheet" href="/workshop-ui/motif-searches.css"><script type="module" src="/workshop-ui/motif-searches.mjs"></script></head>
++<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Suchauswertung · Gravuru</title><link rel="stylesheet" href="/workshop-ui/workshop-shell.css"><link rel="stylesheet" href="/workshop-ui/motif-searches.css"><script type="module" src="/workshop-ui/motif-searches.mjs"></script></head>
+ <body class="ws-page"><header class="ws-topbar"><a class="ws-brand" href="/werkstatt/">gravuru werkstatt</a><nav class="ws-nav" aria-label="Hauptnavigation"><a class="ws-nav-item" href="/werkstatt/katalog/">Katalog</a><a class="ws-nav-item" href="/werkstatt/designs/">Designs</a><a class="ws-nav-item" href="/werkstatt/motivsuche/" aria-current="page">Suchauswertung</a></nav></header>
+-<main><h1>Was suchen deine Kunden?</h1><p>Motivsuchbegriffe im Konfigurator. Häufige Wünsche und fehlende Motive auf einen Blick.</p>
+-<form id="filters"><label>Zeitraum<select name="days"><option value="7">Letzte 7 Tage</option><option value="30" selected>Letzte 30 Tage</option><option value="90">Letzte 90 Tage</option><option value="365">Letzte 365 Tage</option></select></label><label>Produktgruppe<select name="group"><option value="">Alle Produktgruppen</option></select></label><label>Herkunft<select name="source"><option value="shop">Shop</option><option value="preview">Vorschau / Prüfung</option><option value="all">Alle</option></select></label><button type="submit">Aktualisieren</button></form>
++<main><h1>Was suchen deine Kunden?</h1><p>Suchbegriffe für Designs und Motive im Konfigurator. Häufige Wünsche und Suchen ohne Treffer auf einen Blick.</p>
++<form id="filters"><label>Suchart<select name="searchKind"><option value="motif">Motive</option><option value="design">Designs</option></select></label><label>Zeitraum<select name="days"><option value="7">Letzte 7 Tage</option><option value="30" selected>Letzte 30 Tage</option><option value="90">Letzte 90 Tage</option><option value="365">Letzte 365 Tage</option></select></label><label>Produktgruppe<select name="group"><option value="">Alle Produktgruppen</option></select></label><label>Herkunft<select name="source"><option value="shop">Shop</option><option value="preview">Vorschau / Prüfung</option><option value="all">Alle</option></select></label><button type="submit">Aktualisieren</button></form>
+ <p id="status" role="status">Auswertung wird geladen …</p><div class="metrics"><section><span>Suchanfragen</span><strong id="searches">–</strong></section><section><span>Ohne Treffer</span><strong id="missing">–</strong></section></div>
+-<div class="reports"><section><h2>Am häufigsten gesucht</h2><div id="top-terms"></div></section><section><h2>Gesucht, aber nicht gefunden</h2><div id="missing-terms"></div></section></div><p class="note">Gezählt wird ein fertiger Suchbegriff einmal je geöffnetem Konfigurator. Neue Eingaben ersetzen unvollständige Eingaben. Die Auswertung enthält keine Kundenkennungen und beginnt mit der Aktivierung. Vorschau-Suchen werden getrennt angezeigt.</p></main></body></html>
++<div class="reports"><section><h2>Am häufigsten gesucht</h2><div id="top-terms"></div></section><section><h2>Gesucht, aber nicht gefunden</h2><div id="missing-terms"></div></section></div><p class="note">Gezählt wird ein fertiger Suchbegriff einmal je Suchart und geöffnetem Konfigurator. Neue Eingaben ersetzen unvollständige Eingaben. Nachgeladene Seiten zählen nicht erneut. Die Auswertung enthält keine Kundenkennungen. Bisherige Suchanfragen gehören zur Motivsuche; Designs werden ab Aktivierung erfasst. Vorschau-Suchen werden getrennt angezeigt.</p></main></body></html>
+diff --git a/app/workshop/ui/motif-searches.mjs b/app/workshop/ui/motif-searches.mjs
+index 1e0242321932bb838d7b0c9c5e2072839dca90e3..25fb2feb222d476e7e727f2f671eb17b95734f7d 100644
+--- a/app/workshop/ui/motif-searches.mjs
++++ b/app/workshop/ui/motif-searches.mjs
+@@ -5,8 +5,9 @@ const filterKey='gravuru:motif-search-filters:v1:'+(document.querySelector('meta
+ let savedFilters;try{savedFilters=JSON.parse(localStorage.getItem(filterKey)||'null');}catch{}
+ if(['7','30','90','365'].includes(savedFilters?.days))form.elements.days.value=savedFilters.days;
+ if(['shop','preview','all'].includes(savedFilters?.source))form.elements.source.value=savedFilters.source;
++if(['motif','design'].includes(savedFilters?.searchKind))form.elements.searchKind.value=savedFilters.searchKind;
+ let selectedGroup=typeof savedFilters?.group==='string'&&savedFilters.group.length<=160?savedFilters.group:'';
+-function rememberFilters(){try{localStorage.setItem(filterKey,JSON.stringify({days:form.elements.days.value,source:form.elements.source.value,group:selectedGroup}));}catch{/* A blocked preference store must not prevent loading the report. */}}
++function rememberFilters(){try{localStorage.setItem(filterKey,JSON.stringify({days:form.elements.days.value,source:form.elements.source.value,searchKind:form.elements.searchKind.value,group:selectedGroup}));}catch{/* A blocked preference store must not prevent loading the report. */}}
+ function table(host,rows,missing=false){
+  host.replaceChildren();if(!rows.length){const p=document.createElement('p');p.className='empty';p.textContent='Für diese Auswahl gibt es noch keine Suchanfragen.';host.append(p);return;}
+  const table=document.createElement('table'),head=document.createElement('thead'),tr=document.createElement('tr');for(const label of ['Suchbegriff',missing?'Ohne Treffer':'Anzahl']){const th=document.createElement('th');th.scope='col';th.textContent=label;tr.append(th);}head.append(tr);table.append(head);const body=document.createElement('tbody');for(const row of rows){const tr=document.createElement('tr');for(const value of [row.term,missing?row.withoutResults:row.searches]){const td=document.createElement('td');td.textContent=String(value);tr.append(td);}body.append(tr);}table.append(body);host.append(table);
+diff --git a/app/workshop/ui/shop-design-switch.mjs b/app/workshop/ui/shop-design-switch.mjs
+index ee24cb34248b2c646e45d7577864543554eada24..2249954dde74486dc8cffc067d642ab548d247d9 100644
+--- a/app/workshop/ui/shop-design-switch.mjs
++++ b/app/workshop/ui/shop-design-switch.mjs
+@@ -28,7 +28,7 @@ export function createDesignSwitch({initial,fragment,container,activate,toDataUr
+  const show=entry=>{entry.frame.hidden=false;entry.frame.inert=false;entry.frame.style.display='';entry.frame.style.visibility='';entry.frame.style.position='';entry.frame.style.inset='';};
+  const setFragment=entry=>win.history.replaceState(win.history.state,'','#'+entry.fragment);
+  function api(entry){return Object.freeze({
+-  load:(page,theme,options)=>{checkRead(entry);return entry.client.loadDesignGallery(page,theme,options);},
++  load:(page,theme,options,q)=>{checkRead(entry);return entry.client.loadDesignGallery(page,theme,options,q);},
+   preview:(target,url)=>{checkRead(entry);return entry.client.loadDesignPreview(target,url);},
+   hasPendingTransfer:()=>!!entry.pending,
+   takeTransfer:()=>{const value=entry.pending;entry.pending=null;return value;},
+diff --git a/app/workshop/ui/shop-entry-client.mjs b/app/workshop/ui/shop-entry-client.mjs
+index 1a14322fc899693c179627b1d5a7aa029e78ec4b..4c74ce5c31517496637fcc03fc3ae3ada5787ad2 100644
+--- a/app/workshop/ui/shop-entry-client.mjs
++++ b/app/workshop/ui/shop-entry-client.mjs
+@@ -193,11 +193,12 @@ export function createShopEntryClient({token,fetchImpl=globalThis.fetch}={}){
+     if(result.mode!=='theme'||result.paymentConfirmed!==false||!Number.isSafeInteger(result.totalCents)||typeof result.handoffUrl!=='string')fail('Die Warenkorbübergabe wurde nicht vorbereitet.');
+     return result;
+   }
+-  async function loadDesignGallery(page=0,theme='preferred',options=null){
++  async function loadDesignGallery(page=0,theme='preferred',options=null,q=''){
++    if(typeof q!=='string'||q.length>80||/[\u0000-\u001f\u007f]/.test(q))fail('Bitte einen Suchbegriff mit höchstens 80 Zeichen eingeben.');
+     if(!['preferred','all'].includes(theme))fail('Dieses Thema gibt es nicht.');
+     // Türschild-Konfi: Vorlagen der gerade gewählten Ausführung (Form & Größe, Farbe, Befestigung).
+     const chosen=options&&typeof options==='object'?['size','color','mounting'].filter(k=>typeof options[k]==='string'&&/^[A-Za-z0-9][A-Za-z0-9._-]{0,99}$/.test(options[k])):[];
+-    const extra=chosen.map(k=>'&'+k+'='+encodeURIComponent(options[k])).join('');
++    const extra=chosen.map(k=>'&'+k+'='+encodeURIComponent(options[k])).join('')+(q.trim()?'&q='+encodeURIComponent(q.trim()):'');
+     if(!Number.isSafeInteger(page)||page<0||page>10000)fail('Diese Seite der Designauswahl gibt es nicht.');
+     const controller=new AbortController();let timer;
+     const retry='Die Designauswahl ist gerade nicht erreichbar. Deine Gestaltung bleibt erhalten. Bitte erneut versuchen.';

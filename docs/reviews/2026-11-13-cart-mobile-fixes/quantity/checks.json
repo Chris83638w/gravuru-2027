@@ -1,0 +1,68 @@
+{
+  "schema": "gravuru-cart-return-quantity-review/v1",
+  "baseCommit": "d8bf96da2da814c62af43f4adf32b9732bcaf7b0",
+  "headAfter": "d8bf96da2da814c62af43f4adf32b9732bcaf7b0",
+  "changedFiles": [
+    {
+      "path": "app/configurator/variant-m/session-guard.mjs",
+      "bytes": 4233,
+      "sha256": "5cc52cfd3c2b0b5a129e04b5ed014f9172d8caeecadc14187eb4eed5fd6221be"
+    },
+    {
+      "path": "app/configurator/variant-m/ux.mjs",
+      "bytes": 81850,
+      "sha256": "33c42c1543a6cf7774bd81d4bf6a372b268e64bf13957e541325f1a359511684"
+    },
+    {
+      "path": "app/configurator/variant-m/session-guard.test.mjs",
+      "bytes": 23703,
+      "sha256": "dd9b217778fcba43134a3cfc122a59cfee8879a2c08668117c32e9c166555412"
+    }
+  ],
+  "syntax": [
+    {
+      "path": "app/configurator/variant-m/session-guard.mjs",
+      "exitCode": 0
+    },
+    {
+      "path": "app/configurator/variant-m/ux.mjs",
+      "exitCode": 0
+    },
+    {
+      "path": "app/configurator/variant-m/session-guard.test.mjs",
+      "exitCode": 0
+    }
+  ],
+  "tests": {
+    "command": "node --test app/configurator/variant-m/session-guard.test.mjs",
+    "nodeVersion": "v24.22.1",
+    "total": 13,
+    "passed": 13,
+    "failed": 0,
+    "skipped": 0,
+    "log": "session-guard-cart-edit-tests.log",
+    "scope": "native readDraft and real installCartEdit with token/request ports plus actual UI/adapter handler snippets; early/late restoration and local uploads checked; no live Shopify/cart or browser claim",
+    "initialAttempt": "9/10; historical fixture text failed native draft fit validation before persistence. Short valid fixture text Alt substituted; native validator unchanged.",
+    "cartEditFixtureCorrection": "Initial new two cases could not read credentials because the pre-existing fake storage omitted length/key(). Added standard storage enumeration to test fixture; runtime authentication unchanged. Initial log retained."
+  },
+  "invariants": {
+    "contractUnchanged": true,
+    "screwSourceUnchanged": true,
+    "noShopifyWrites": true,
+    "noDeployment": true,
+    "noCommit": true
+  },
+  "diffCheck": true,
+  "cartEditPrecedence": {
+    "parser": "app/configurator/variant-m/cart-edit.mjs:cartEditParams",
+    "skippedLocalSteps": [
+      "resource preload",
+      "upload restore",
+      "draft/quantity recovery"
+    ],
+    "ordinaryHistoryBackQuantity": 10,
+    "legacyNoQuantityDefault": 1,
+    "earlyAndLateServerQuantity": 3,
+    "invalidEditUrlRestoresLocal": true
+  }
+}

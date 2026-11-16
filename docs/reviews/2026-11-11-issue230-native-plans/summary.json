@@ -1,0 +1,1771 @@
+{
+  "schema": "gravuru-issue230-local-native-plan-batch/v1",
+  "catalogCommit": "8236b8bfab7322447ec46661c116fa526331af3d",
+  "excelCommit": "bf8824c80347f63ffeb2c05cc9a34a9ffed6f9bd",
+  "actualNativePlans": 7,
+  "approvalReady": 0,
+  "sourceRecords": 7,
+  "persistedPlans": 7,
+  "confirmations": 0,
+  "executions": 0,
+  "shopifyWrites": 0,
+  "comparedVariants": 823,
+  "priceDifferences": 0,
+  "catalogList": {
+    "rows": 1298,
+    "uniqueIds": 1297,
+    "duplicates": [
+      {
+        "id": "TRE-V2A-7x2-D34",
+        "produkt": "Hauptprodukt (Form + Größe)",
+        "reihe": "edelstahl-gravur-70x23",
+        "form": "Rechteck",
+        "groessen": [
+          "GR-ES-RE-70X23P3-T15"
+        ],
+        "groessenLabel": [
+          "7 × 2 cm"
+        ],
+        "mindestFlaecheCm2": null,
+        "motive": 1,
+        "herkunft": "neu (Claude, Prüfrunde 10.11. Ja)",
+        "freigabeEdelstahl": "freigegeben",
+        "acrylZiele": [
+          "acryl-3mm-tuerschilder-anthrazit",
+          "acryl-3mm-tuerschilder-schwarz"
+        ],
+        "rang": 1,
+        "gruppe": "Ergänzungen Claude (Familie/Willkommen/Hochzeit)",
+        "entwurf": "D34"
+      }
+    ]
+  },
+  "results": [
+    {
+      "workbook": "Tuerschild-Acrylglas-3mm_v4.xlsx",
+      "excelSha256": "495e7e59d7abf6a46f1fb7098a75e666162e58be3cad99ad75de6db5d3923841",
+      "catalogCommit": "8236b8bfab7322447ec46661c116fa526331af3d",
+      "source": {
+        "id": "cfg_8d95909c-fcd9-4cf8-87e7-152eb21e7204",
+        "revision": 1,
+        "sha256": "d4aa5e78a870decbecbda937e76feb740c299f8e52bd5c1fd3a8d93a93f715ad",
+        "status": "draft",
+        "publishedRevision": null
+      },
+      "registry": {
+        "key": "cfg_8d95909c-fcd9-4cf8-87e7-152eb21e7204",
+        "productId": "cfg_8d95909c-fcd9-4cf8-87e7-152eb21e7204",
+        "familyId": "cfg_8d95909c-fcd9-4cf8-87e7-152eb21e7204",
+        "sizeKey": "cfg_8d95909c-fcd9-4cf8-87e7-152eb21e7204",
+        "name": "Türschild Acrylglas 3 mm – Form und Größe selbst wählen (Schwarz / Anthrazit)",
+        "label": "Türschild Acrylglas 3 mm – Form und Größe selbst wählen (Schwarz / Anthrazit)",
+        "detailsLoaded": false
+      },
+      "template": {
+        "id": "pgt_c868a507-a372-4111-9f3c-56af17cbf534",
+        "revision": 1,
+        "sha256": "68e3035902c1e41efc7acd4d1da238af1058fd9d06d755185250209c5db8bfcb"
+      },
+      "planId": "pgp_aad6d5ae-b255-4d19-8c92-9d91ba09d445",
+      "planHash": "7079dae2814c9c17526ae3c254696ccd2b253318066b38a435f7a9cfb610e197",
+      "valid": false,
+      "approvalReady": false,
+      "proposedStart": {
+        "sizeKey": "TS-Acryl-AB-120X80-T30-SW",
+        "themeId": "familienschilder",
+        "defaultDesignId": "TAE-V2A-8x5-D1",
+        "groessenWahl": "alle"
+      },
+      "priceOverrides": [
+        {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "rule": "B02S-E4-D4",
+          "skuSuffix": "B02S",
+          "before": 299,
+          "after": 269,
+          "source": "Confirmed Excel and Issue 230 comment 6766806272"
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "rule": "B02S-E6-D4",
+          "skuSuffix": "B02S",
+          "before": 299,
+          "after": 269,
+          "source": "Confirmed Excel and Issue 230 comment 6766806272"
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "rule": "B02S-E8-D4",
+          "skuSuffix": "B02S",
+          "before": 299,
+          "after": 269,
+          "source": "Confirmed Excel and Issue 230 comment 6766806272"
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "rule": "B04S-E8-D4",
+          "skuSuffix": "B04S",
+          "before": 339,
+          "after": 329,
+          "source": "Confirmed Excel and Issue 230 comment 6766806272"
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "rule": "B04S-E15-D4",
+          "skuSuffix": "B04S",
+          "before": 339,
+          "after": 329,
+          "source": "Confirmed Excel and Issue 230 comment 6766806272"
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "rule": "B04S-E10-D4",
+          "skuSuffix": "B04S",
+          "before": 339,
+          "after": 329,
+          "source": "Confirmed Excel and Issue 230 comment 6766806272"
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "rule": "B04S-E6-D4",
+          "skuSuffix": "B04S",
+          "before": 339,
+          "after": 329,
+          "source": "Confirmed Excel and Issue 230 comment 6766806272"
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "rule": "B02S-KONTUR",
+          "skuSuffix": "B02S",
+          "before": 299,
+          "after": 269,
+          "source": "Confirmed Excel and Issue 230 comment 6766806272"
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-anthrazit",
+          "rule": "B02S-E4-D4",
+          "skuSuffix": "B02S",
+          "before": 299,
+          "after": 269,
+          "source": "Confirmed Excel and Issue 230 comment 6766806272"
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-anthrazit",
+          "rule": "B02S-E6-D4",
+          "skuSuffix": "B02S",
+          "before": 299,
+          "after": 269,
+          "source": "Confirmed Excel and Issue 230 comment 6766806272"
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-anthrazit",
+          "rule": "B02S-E8-D4",
+          "skuSuffix": "B02S",
+          "before": 299,
+          "after": 269,
+          "source": "Confirmed Excel and Issue 230 comment 6766806272"
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-anthrazit",
+          "rule": "B04S-E8-D4",
+          "skuSuffix": "B04S",
+          "before": 339,
+          "after": 329,
+          "source": "Confirmed Excel and Issue 230 comment 6766806272"
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-anthrazit",
+          "rule": "B04S-E15-D4",
+          "skuSuffix": "B04S",
+          "before": 339,
+          "after": 329,
+          "source": "Confirmed Excel and Issue 230 comment 6766806272"
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-anthrazit",
+          "rule": "B04S-E10-D4",
+          "skuSuffix": "B04S",
+          "before": 339,
+          "after": 329,
+          "source": "Confirmed Excel and Issue 230 comment 6766806272"
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-anthrazit",
+          "rule": "B04S-E6-D4",
+          "skuSuffix": "B04S",
+          "before": 339,
+          "after": 329,
+          "source": "Confirmed Excel and Issue 230 comment 6766806272"
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-anthrazit",
+          "rule": "B02S-KONTUR",
+          "skuSuffix": "B02S",
+          "before": 299,
+          "after": 269,
+          "source": "Confirmed Excel and Issue 230 comment 6766806272"
+        }
+      ],
+      "comparison": {
+        "compared": 778,
+        "actual": 778,
+        "differences": []
+      },
+      "designs": {
+        "requested": 1217,
+        "native": 1205,
+        "missing": [
+          "TQ-V2A-8x8-D14",
+          "TO-V2A-12x4-D5",
+          "TO-V2A-15x8-D5",
+          "TO-V2A-15x8-D9",
+          "TO-V2A-9x6-D38",
+          "TO-V2A-9x6-D46",
+          "TR1-V2A-9x6-D19",
+          "TR1-V2A-9x6-D5",
+          "TR1-V2A-9x6-D9",
+          "TR2-V2A-9x6-D15",
+          "TR-V2A-6.5x6.5-D803"
+        ],
+        "requestedUnique": 1216,
+        "hiddenIds": [
+          "TQ-V2A-8x8-D14",
+          "TO-V2A-9x6-D38"
+        ],
+        "fitExcludedIds": [
+          "TO-V2A-12x4-D5",
+          "TO-V2A-15x8-D5",
+          "TO-V2A-15x8-D9",
+          "TO-V2A-9x6-D46",
+          "TR1-V2A-9x6-D19",
+          "TR1-V2A-9x6-D5",
+          "TR1-V2A-9x6-D9",
+          "TR2-V2A-9x6-D15",
+          "TR-V2A-6.5x6.5-D803"
+        ],
+        "duplicatePolicy": "first occurrence after rank ascending; rank 0 retained"
+      },
+      "nativeModules": {
+        "options": true,
+        "designs": true,
+        "text": true,
+        "motifs": true,
+        "photo": true,
+        "logo": true,
+        "colors": false
+      },
+      "requestedModules": [
+        {
+          "key": "options",
+          "requested": "an",
+          "confirmation": "offen"
+        },
+        {
+          "key": "designs",
+          "requested": "an",
+          "confirmation": "offen"
+        },
+        {
+          "key": "text",
+          "requested": "an",
+          "confirmation": "offen"
+        },
+        {
+          "key": "motifs",
+          "requested": "an",
+          "confirmation": "offen"
+        },
+        {
+          "key": "photo",
+          "requested": "an",
+          "confirmation": "bestätigt"
+        },
+        {
+          "key": "logo",
+          "requested": "an",
+          "confirmation": "offen"
+        },
+        {
+          "key": "colors",
+          "requested": "an",
+          "confirmation": "offen"
+        }
+      ],
+      "openQuestions": [
+        "Startdesign TAE-V2A-8x5-D1 / 12 × 8 cm / Schwarz ist ein technisch geprüfter Vorschlag, keine neue Nutzerentscheidung.",
+        "Steuerkontext/Mengenstaffeln und Start-/Designreferenzen der unveränderten Excel bleiben zu prüfen. Foto-/Logo-Auswahl wurde am 11.11.2026 ausdrücklich bestätigt und ist keine offene Nutzerentscheidung.",
+        "9 Originaldesigns haben native Kontur-/Randfehler (family-report.json). 2 weitere Katalogdesigns sind bewusst hidden und bleiben ausgeblendet; keine Wiederfreigabe beantragt."
+      ],
+      "confirmations": 0,
+      "executions": 0,
+      "shopifyWrites": 0,
+      "profileSelections": {
+        "selections": {
+          "fonts": null,
+          "motifs": null,
+          "colors": null,
+          "bestsellers": null
+        },
+        "sources": {
+          "fonts": {
+            "level": "unbound",
+            "categoryId": null,
+            "mode": "inherit",
+            "profileId": null,
+            "profileRevision": null
+          },
+          "motifs": {
+            "level": "unbound",
+            "categoryId": null,
+            "mode": "inherit",
+            "profileId": null,
+            "profileRevision": null
+          },
+          "colors": {
+            "level": "unbound",
+            "categoryId": null,
+            "mode": "inherit",
+            "profileId": null,
+            "profileRevision": null
+          },
+          "bestsellers": {
+            "level": "unbound",
+            "categoryId": null,
+            "mode": "inherit",
+            "profileId": null,
+            "profileRevision": null
+          }
+        },
+        "settingsRevision": 1,
+        "categoryPriority": "last-non-inherit-wins",
+        "warnings": []
+      },
+      "smallMotifProfile": null,
+      "previousPreparation": {
+        "sourceHash": "d4aa5e78a870decbecbda937e76feb740c299f8e52bd5c1fd3a8d93a93f715ad",
+        "planId": "pgp_366fe5a3-d1c0-4244-aee0-614c35409b5c",
+        "planHash": "864a9a667ddedb95809b6487177c971f217b3afcedf59895ed4b3ab2f0275610"
+      },
+      "moduleProfilePins": [
+        {
+          "id": "cmp_8b4e451e-a9c0-400d-a148-094475734fb5",
+          "revision": 1,
+          "sha256": "426c0c7c30fef430107c46f2a8cdb729a897e69211f6bd92f65b36112816901f"
+        }
+      ],
+      "effectiveModules": {
+        "colors": false,
+        "designs": true,
+        "logo": true,
+        "motifs": true,
+        "options": true,
+        "photo": true,
+        "text": true
+      },
+      "uploadDecision": {
+        "date": "2026-11-11",
+        "source": "Explicit user response in current Codex chat, relayed by root to product_plans",
+        "mainAcrylic": {
+          "photo": true,
+          "svgLogo": true,
+          "photoCents": 999,
+          "logoCents": 1299
+        },
+        "sixSmallProducts": {
+          "photo": false,
+          "logo": false
+        },
+        "scope": "Upload modules only; no product confirmation or execution"
+      }
+    },
+    {
+      "workbook": "Tuerschild-Acrylglas-3mm-5x2_v2.xlsx",
+      "excelSha256": "119e2f48ec4d92c91a1463946a95ef0d2f30deb2e07c0c13ce59c73583a339cd",
+      "catalogCommit": "8236b8bfab7322447ec46661c116fa526331af3d",
+      "source": {
+        "id": "cfg_a185d396-3f2d-40cc-8199-b802743da334",
+        "revision": 1,
+        "sha256": "7d951cec1d47abc13b1c2c6d6e0552c0616e4843fc941e4c75943ad89aeb53f8",
+        "status": "draft",
+        "publishedRevision": null
+      },
+      "registry": {
+        "key": "cfg_a185d396-3f2d-40cc-8199-b802743da334",
+        "productId": "cfg_a185d396-3f2d-40cc-8199-b802743da334",
+        "familyId": "cfg_a185d396-3f2d-40cc-8199-b802743da334",
+        "sizeKey": "cfg_a185d396-3f2d-40cc-8199-b802743da334",
+        "name": "Türschild Acrylglas 3 mm 5 × 2 cm (Schwarz/Anthrazit)",
+        "label": "Türschild Acrylglas 3 mm 5 × 2 cm (Schwarz/Anthrazit)",
+        "detailsLoaded": false
+      },
+      "template": {
+        "id": "pgt_31a79772-234a-485c-beec-c7565a7157c6",
+        "revision": 1,
+        "sha256": "20bc106ba6543daec811722fbd333c0d769c01ac7ada702822b4e9a06d49b83d"
+      },
+      "planId": "pgp_03932c0e-6f8f-4177-8ab5-cf7891b5bcdc",
+      "planHash": "01cf26109b3e49708f122fc7fb46e2493faad1be1e07235b0ff33bed3e28bc96",
+      "valid": false,
+      "approvalReady": false,
+      "proposedStart": {
+        "sizeKey": "TS-Acryl-RE-50X20-T30-SW",
+        "themeId": "familienschilder",
+        "defaultDesignId": "TRE-V2A-5x2-D1"
+      },
+      "priceOverrides": [
+        {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "rule": "B02S-E4-D4",
+          "skuSuffix": "B02S",
+          "before": 299,
+          "after": 269,
+          "source": "Confirmed Excel and Issue 230 comment 6766806272"
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "rule": "B02S-E6-D4",
+          "skuSuffix": "B02S",
+          "before": 299,
+          "after": 269,
+          "source": "Confirmed Excel and Issue 230 comment 6766806272"
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "rule": "B02S-E8-D4",
+          "skuSuffix": "B02S",
+          "before": 299,
+          "after": 269,
+          "source": "Confirmed Excel and Issue 230 comment 6766806272"
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "rule": "B02S-KONTUR",
+          "skuSuffix": "B02S",
+          "before": 299,
+          "after": 269,
+          "source": "Confirmed Excel and Issue 230 comment 6766806272"
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-anthrazit",
+          "rule": "B02S-E4-D4",
+          "skuSuffix": "B02S",
+          "before": 299,
+          "after": 269,
+          "source": "Confirmed Excel and Issue 230 comment 6766806272"
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-anthrazit",
+          "rule": "B02S-E6-D4",
+          "skuSuffix": "B02S",
+          "before": 299,
+          "after": 269,
+          "source": "Confirmed Excel and Issue 230 comment 6766806272"
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-anthrazit",
+          "rule": "B02S-E8-D4",
+          "skuSuffix": "B02S",
+          "before": 299,
+          "after": 269,
+          "source": "Confirmed Excel and Issue 230 comment 6766806272"
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-anthrazit",
+          "rule": "B02S-KONTUR",
+          "skuSuffix": "B02S",
+          "before": 299,
+          "after": 269,
+          "source": "Confirmed Excel and Issue 230 comment 6766806272"
+        }
+      ],
+      "comparison": {
+        "compared": 10,
+        "actual": 10,
+        "differences": []
+      },
+      "designs": {
+        "requested": 27,
+        "native": 27,
+        "missing": [],
+        "requestedUnique": 27,
+        "hiddenIds": [],
+        "fitExcludedIds": [],
+        "duplicatePolicy": "first occurrence after rank ascending; rank 0 retained"
+      },
+      "nativeModules": {
+        "options": true,
+        "designs": true,
+        "text": true,
+        "motifs": true,
+        "photo": false,
+        "logo": false,
+        "colors": false
+      },
+      "requestedModules": [
+        {
+          "key": "options",
+          "requested": "an",
+          "confirmation": "offen"
+        },
+        {
+          "key": "designs",
+          "requested": "an",
+          "confirmation": "offen"
+        },
+        {
+          "key": "text",
+          "requested": "an",
+          "confirmation": "offen"
+        },
+        {
+          "key": "motifs",
+          "requested": "an",
+          "confirmation": "offen"
+        },
+        {
+          "key": "photo",
+          "requested": "offen",
+          "confirmation": "offen"
+        },
+        {
+          "key": "logo",
+          "requested": "offen",
+          "confirmation": "offen"
+        },
+        {
+          "key": "colors",
+          "requested": "an",
+          "confirmation": "offen"
+        }
+      ],
+      "openQuestions": [
+        "Startdesign TRE-V2A-5x2-D1 / 5 × 2 cm / Schwarz ist ein technisch geprüfter Vorschlag, keine neue Nutzerentscheidung.",
+        "Steuerkontext/Mengenstaffeln und Start-/Designreferenzen der unveränderten Excel bleiben zu prüfen. Foto-/Logo-Auswahl wurde am 11.11.2026 ausdrücklich bestätigt und ist keine offene Nutzerentscheidung."
+      ],
+      "confirmations": 0,
+      "executions": 0,
+      "shopifyWrites": 0,
+      "profileSelections": {
+        "selections": {
+          "fonts": null,
+          "motifs": [
+            "import-6abda909c44bc599330856dd",
+            "import-0073ea6aa7103bb1e8ec9088",
+            "import-9373218480c87a6ad167f3cb",
+            "import-41fb65efd1d8996ac305f6ab",
+            "import-1abd6f06096e47c66b0b4e00",
+            "import-286db893566ced2e6bd75bad",
+            "import-d94f1406fde432cf9dd70389",
+            "import-9c76c3476a406eaac7f05e42",
+            "import-10edf8a5dd07bd1035ba508d",
+            "import-4269dbda54a15a99e178f00a",
+            "import-0f3193fd49e254bb5975e74d",
+            "import-54b3b489bbebe12119deda9a",
+            "import-8239d6c658366716f578c984"
+          ],
+          "colors": null,
+          "bestsellers": null
+        },
+        "sources": {
+          "fonts": {
+            "level": "unbound",
+            "categoryId": null,
+            "mode": "inherit",
+            "profileId": null,
+            "profileRevision": null
+          },
+          "motifs": {
+            "level": "product",
+            "categoryId": null,
+            "mode": "override",
+            "profileId": "prf_0fce513a-0973-45eb-8d03-09728290e17d",
+            "profileRevision": 1
+          },
+          "colors": {
+            "level": "unbound",
+            "categoryId": null,
+            "mode": "inherit",
+            "profileId": null,
+            "profileRevision": null
+          },
+          "bestsellers": {
+            "level": "unbound",
+            "categoryId": null,
+            "mode": "inherit",
+            "profileId": null,
+            "profileRevision": null
+          }
+        },
+        "settingsRevision": 1,
+        "categoryPriority": "last-non-inherit-wins",
+        "warnings": []
+      },
+      "smallMotifProfile": {
+        "id": "prf_0fce513a-0973-45eb-8d03-09728290e17d",
+        "revision": 1,
+        "count": 13
+      },
+      "previousPreparation": {
+        "sourceHash": "9c55558092bbe84a68c9296c09169abca7e789753edef0113d280e442346bf6b",
+        "planId": "pgp_4f57e6a6-7225-49e6-90a6-73b4e1c454c6",
+        "planHash": "94f25d75c65f6f126980643a987271c2f0e4afbf07894fb7758dd0a740249383"
+      },
+      "moduleProfilePins": [
+        {
+          "id": "cmp_049bdd37-97bd-456e-8237-9856a00809da",
+          "revision": 1,
+          "sha256": "1becdb8eecb674692efc51e031516f695f5c26e2ed40111f417f87817aef4dc3"
+        }
+      ],
+      "effectiveModules": {
+        "colors": false,
+        "designs": true,
+        "logo": false,
+        "motifs": true,
+        "options": true,
+        "photo": false,
+        "text": true
+      },
+      "uploadDecision": {
+        "date": "2026-11-11",
+        "source": "Explicit user response in current Codex chat, relayed by root to product_plans",
+        "mainAcrylic": {
+          "photo": true,
+          "svgLogo": true,
+          "photoCents": 999,
+          "logoCents": 1299
+        },
+        "sixSmallProducts": {
+          "photo": false,
+          "logo": false
+        },
+        "scope": "Upload modules only; no product confirmation or execution"
+      }
+    },
+    {
+      "workbook": "Tuerschild-Acrylglas-3mm-6x2_v2.xlsx",
+      "excelSha256": "7e588c53b57091cd5870a6bc24b81f5cca7d4ddb55cb722ce5156100d3267673",
+      "catalogCommit": "8236b8bfab7322447ec46661c116fa526331af3d",
+      "source": {
+        "id": "cfg_8e5ebd8e-a795-4bc8-a53f-884eb5e705d0",
+        "revision": 1,
+        "sha256": "4e74e4921f46d07382e2e2b605c3aaf237b11492905ed4e662a5e91aec22d3f5",
+        "status": "draft",
+        "publishedRevision": null
+      },
+      "registry": {
+        "key": "cfg_8e5ebd8e-a795-4bc8-a53f-884eb5e705d0",
+        "productId": "cfg_8e5ebd8e-a795-4bc8-a53f-884eb5e705d0",
+        "familyId": "cfg_8e5ebd8e-a795-4bc8-a53f-884eb5e705d0",
+        "sizeKey": "cfg_8e5ebd8e-a795-4bc8-a53f-884eb5e705d0",
+        "name": "Türschild Acrylglas 3 mm 6 × 2 cm (Schwarz/Anthrazit)",
+        "label": "Türschild Acrylglas 3 mm 6 × 2 cm (Schwarz/Anthrazit)",
+        "detailsLoaded": false
+      },
+      "template": {
+        "id": "pgt_e0676ce8-1bac-46fd-9665-ab04684143ec",
+        "revision": 1,
+        "sha256": "5474fff3e1b81fc4f7bcf0268a3b66646652ce4fd19cba5e3d333d0e671be73a"
+      },
+      "planId": "pgp_b6bd6b74-35e6-444e-b2cb-4bf64a49e280",
+      "planHash": "66931afab9bcac13e82b87ffb2b8e47473fad169e1b623353015e69dc7e31bbc",
+      "valid": false,
+      "approvalReady": false,
+      "proposedStart": {
+        "sizeKey": "TS-Acryl-RE-60X20-T30-SW",
+        "themeId": "familienschilder",
+        "defaultDesignId": "TRE-V2A-6x2-D1"
+      },
+      "priceOverrides": [
+        {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "rule": "B02S-E4-D4",
+          "skuSuffix": "B02S",
+          "before": 299,
+          "after": 269,
+          "source": "Confirmed Excel and Issue 230 comment 6766806272"
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "rule": "B02S-E6-D4",
+          "skuSuffix": "B02S",
+          "before": 299,
+          "after": 269,
+          "source": "Confirmed Excel and Issue 230 comment 6766806272"
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "rule": "B02S-E8-D4",
+          "skuSuffix": "B02S",
+          "before": 299,
+          "after": 269,
+          "source": "Confirmed Excel and Issue 230 comment 6766806272"
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "rule": "B02S-KONTUR",
+          "skuSuffix": "B02S",
+          "before": 299,
+          "after": 269,
+          "source": "Confirmed Excel and Issue 230 comment 6766806272"
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-anthrazit",
+          "rule": "B02S-E4-D4",
+          "skuSuffix": "B02S",
+          "before": 299,
+          "after": 269,
+          "source": "Confirmed Excel and Issue 230 comment 6766806272"
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-anthrazit",
+          "rule": "B02S-E6-D4",
+          "skuSuffix": "B02S",
+          "before": 299,
+          "after": 269,
+          "source": "Confirmed Excel and Issue 230 comment 6766806272"
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-anthrazit",
+          "rule": "B02S-E8-D4",
+          "skuSuffix": "B02S",
+          "before": 299,
+          "after": 269,
+          "source": "Confirmed Excel and Issue 230 comment 6766806272"
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-anthrazit",
+          "rule": "B02S-KONTUR",
+          "skuSuffix": "B02S",
+          "before": 299,
+          "after": 269,
+          "source": "Confirmed Excel and Issue 230 comment 6766806272"
+        }
+      ],
+      "comparison": {
+        "compared": 10,
+        "actual": 10,
+        "differences": []
+      },
+      "designs": {
+        "requested": 27,
+        "native": 27,
+        "missing": [],
+        "requestedUnique": 27,
+        "hiddenIds": [],
+        "fitExcludedIds": [],
+        "duplicatePolicy": "first occurrence after rank ascending; rank 0 retained"
+      },
+      "nativeModules": {
+        "options": true,
+        "designs": true,
+        "text": true,
+        "motifs": true,
+        "photo": false,
+        "logo": false,
+        "colors": false
+      },
+      "requestedModules": [
+        {
+          "key": "options",
+          "requested": "an",
+          "confirmation": "offen"
+        },
+        {
+          "key": "designs",
+          "requested": "an",
+          "confirmation": "offen"
+        },
+        {
+          "key": "text",
+          "requested": "an",
+          "confirmation": "offen"
+        },
+        {
+          "key": "motifs",
+          "requested": "an",
+          "confirmation": "offen"
+        },
+        {
+          "key": "photo",
+          "requested": "offen",
+          "confirmation": "offen"
+        },
+        {
+          "key": "logo",
+          "requested": "offen",
+          "confirmation": "offen"
+        },
+        {
+          "key": "colors",
+          "requested": "an",
+          "confirmation": "offen"
+        }
+      ],
+      "openQuestions": [
+        "Startdesign TRE-V2A-6x2-D1 / 6 × 2 cm / Schwarz ist ein technisch geprüfter Vorschlag, keine neue Nutzerentscheidung.",
+        "Steuerkontext/Mengenstaffeln und Start-/Designreferenzen der unveränderten Excel bleiben zu prüfen. Foto-/Logo-Auswahl wurde am 11.11.2026 ausdrücklich bestätigt und ist keine offene Nutzerentscheidung."
+      ],
+      "confirmations": 0,
+      "executions": 0,
+      "shopifyWrites": 0,
+      "profileSelections": {
+        "selections": {
+          "fonts": null,
+          "motifs": [
+            "import-6abda909c44bc599330856dd",
+            "import-0073ea6aa7103bb1e8ec9088",
+            "import-9373218480c87a6ad167f3cb",
+            "import-41fb65efd1d8996ac305f6ab",
+            "import-1abd6f06096e47c66b0b4e00",
+            "import-286db893566ced2e6bd75bad",
+            "import-d94f1406fde432cf9dd70389",
+            "import-9c76c3476a406eaac7f05e42",
+            "import-10edf8a5dd07bd1035ba508d",
+            "import-4269dbda54a15a99e178f00a",
+            "import-0f3193fd49e254bb5975e74d",
+            "import-54b3b489bbebe12119deda9a",
+            "import-8239d6c658366716f578c984"
+          ],
+          "colors": null,
+          "bestsellers": null
+        },
+        "sources": {
+          "fonts": {
+            "level": "unbound",
+            "categoryId": null,
+            "mode": "inherit",
+            "profileId": null,
+            "profileRevision": null
+          },
+          "motifs": {
+            "level": "product",
+            "categoryId": null,
+            "mode": "override",
+            "profileId": "prf_0fce513a-0973-45eb-8d03-09728290e17d",
+            "profileRevision": 1
+          },
+          "colors": {
+            "level": "unbound",
+            "categoryId": null,
+            "mode": "inherit",
+            "profileId": null,
+            "profileRevision": null
+          },
+          "bestsellers": {
+            "level": "unbound",
+            "categoryId": null,
+            "mode": "inherit",
+            "profileId": null,
+            "profileRevision": null
+          }
+        },
+        "settingsRevision": 1,
+        "categoryPriority": "last-non-inherit-wins",
+        "warnings": []
+      },
+      "smallMotifProfile": {
+        "id": "prf_0fce513a-0973-45eb-8d03-09728290e17d",
+        "revision": 1,
+        "count": 13
+      },
+      "previousPreparation": {
+        "sourceHash": "69d8a6960e90b298b14309394590052ea1c51a6594376e41cc40d821cc9451fa",
+        "planId": "pgp_e2ea3aad-8536-494b-9fe1-f863cc599cf0",
+        "planHash": "143c324608de1e0bcbcc47a9bebb1ea859c0e0edadd25f0632049cdf6742a02d"
+      },
+      "moduleProfilePins": [
+        {
+          "id": "cmp_049bdd37-97bd-456e-8237-9856a00809da",
+          "revision": 1,
+          "sha256": "1becdb8eecb674692efc51e031516f695f5c26e2ed40111f417f87817aef4dc3"
+        }
+      ],
+      "effectiveModules": {
+        "colors": false,
+        "designs": true,
+        "logo": false,
+        "motifs": true,
+        "options": true,
+        "photo": false,
+        "text": true
+      },
+      "uploadDecision": {
+        "date": "2026-11-11",
+        "source": "Explicit user response in current Codex chat, relayed by root to product_plans",
+        "mainAcrylic": {
+          "photo": true,
+          "svgLogo": true,
+          "photoCents": 999,
+          "logoCents": 1299
+        },
+        "sixSmallProducts": {
+          "photo": false,
+          "logo": false
+        },
+        "scope": "Upload modules only; no product confirmation or execution"
+      }
+    },
+    {
+      "workbook": "Tuerschild-Acrylglas-3mm-8x2_v2.xlsx",
+      "excelSha256": "02a4b9749dcbacbd8d13957e5194ad4ae27cc0f2e81922f5a3b95b0151f47cc2",
+      "catalogCommit": "8236b8bfab7322447ec46661c116fa526331af3d",
+      "source": {
+        "id": "cfg_ecf40ca9-b1f0-4782-ae2d-768cbe62d03d",
+        "revision": 1,
+        "sha256": "21479a11ae22c881fe40a05975d8beb7aa2e1fafc30db657b04bd3591ee36ed2",
+        "status": "draft",
+        "publishedRevision": null
+      },
+      "registry": {
+        "key": "cfg_ecf40ca9-b1f0-4782-ae2d-768cbe62d03d",
+        "productId": "cfg_ecf40ca9-b1f0-4782-ae2d-768cbe62d03d",
+        "familyId": "cfg_ecf40ca9-b1f0-4782-ae2d-768cbe62d03d",
+        "sizeKey": "cfg_ecf40ca9-b1f0-4782-ae2d-768cbe62d03d",
+        "name": "Türschild Acrylglas 3 mm 8 × 2 cm (Schwarz/Anthrazit)",
+        "label": "Türschild Acrylglas 3 mm 8 × 2 cm (Schwarz/Anthrazit)",
+        "detailsLoaded": false
+      },
+      "template": {
+        "id": "pgt_2c75a0ba-8628-47b6-807c-5889687ad8f1",
+        "revision": 1,
+        "sha256": "e8d27fb095d25bdf6847b93b8ef2d5107cd2ce3f789df2539c1bdf8cb4ba0835"
+      },
+      "planId": "pgp_6126fcb8-d8b7-4b5b-9410-9c09a9198b52",
+      "planHash": "0aa24af4bd611f5a674642a98bb5603d12f23d4a7175cdea3afca55865e0ab95",
+      "valid": false,
+      "approvalReady": false,
+      "proposedStart": {
+        "sizeKey": "TS-Acryl-RE-80X20-T30-SW",
+        "themeId": "familienschilder",
+        "defaultDesignId": "TRE-V2A-8x2-D1"
+      },
+      "priceOverrides": [
+        {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "rule": "B02S-E4-D4",
+          "skuSuffix": "B02S",
+          "before": 299,
+          "after": 269,
+          "source": "Confirmed Excel and Issue 230 comment 6766806272"
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "rule": "B02S-E6-D4",
+          "skuSuffix": "B02S",
+          "before": 299,
+          "after": 269,
+          "source": "Confirmed Excel and Issue 230 comment 6766806272"
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "rule": "B02S-E8-D4",
+          "skuSuffix": "B02S",
+          "before": 299,
+          "after": 269,
+          "source": "Confirmed Excel and Issue 230 comment 6766806272"
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "rule": "B02S-KONTUR",
+          "skuSuffix": "B02S",
+          "before": 299,
+          "after": 269,
+          "source": "Confirmed Excel and Issue 230 comment 6766806272"
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-anthrazit",
+          "rule": "B02S-E4-D4",
+          "skuSuffix": "B02S",
+          "before": 299,
+          "after": 269,
+          "source": "Confirmed Excel and Issue 230 comment 6766806272"
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-anthrazit",
+          "rule": "B02S-E6-D4",
+          "skuSuffix": "B02S",
+          "before": 299,
+          "after": 269,
+          "source": "Confirmed Excel and Issue 230 comment 6766806272"
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-anthrazit",
+          "rule": "B02S-E8-D4",
+          "skuSuffix": "B02S",
+          "before": 299,
+          "after": 269,
+          "source": "Confirmed Excel and Issue 230 comment 6766806272"
+        },
+        {
+          "familyId": "acryl-3mm-tuerschilder-anthrazit",
+          "rule": "B02S-KONTUR",
+          "skuSuffix": "B02S",
+          "before": 299,
+          "after": 269,
+          "source": "Confirmed Excel and Issue 230 comment 6766806272"
+        }
+      ],
+      "comparison": {
+        "compared": 10,
+        "actual": 10,
+        "differences": []
+      },
+      "designs": {
+        "requested": 27,
+        "native": 27,
+        "missing": [],
+        "requestedUnique": 27,
+        "hiddenIds": [],
+        "fitExcludedIds": [],
+        "duplicatePolicy": "first occurrence after rank ascending; rank 0 retained"
+      },
+      "nativeModules": {
+        "options": true,
+        "designs": true,
+        "text": true,
+        "motifs": true,
+        "photo": false,
+        "logo": false,
+        "colors": false
+      },
+      "requestedModules": [
+        {
+          "key": "options",
+          "requested": "an",
+          "confirmation": "offen"
+        },
+        {
+          "key": "designs",
+          "requested": "an",
+          "confirmation": "offen"
+        },
+        {
+          "key": "text",
+          "requested": "an",
+          "confirmation": "offen"
+        },
+        {
+          "key": "motifs",
+          "requested": "an",
+          "confirmation": "offen"
+        },
+        {
+          "key": "photo",
+          "requested": "offen",
+          "confirmation": "offen"
+        },
+        {
+          "key": "logo",
+          "requested": "offen",
+          "confirmation": "offen"
+        },
+        {
+          "key": "colors",
+          "requested": "an",
+          "confirmation": "offen"
+        }
+      ],
+      "openQuestions": [
+        "Startdesign TRE-V2A-8x2-D1 / 8 × 2 cm / Schwarz ist ein technisch geprüfter Vorschlag, keine neue Nutzerentscheidung.",
+        "Steuerkontext/Mengenstaffeln und Start-/Designreferenzen der unveränderten Excel bleiben zu prüfen. Foto-/Logo-Auswahl wurde am 11.11.2026 ausdrücklich bestätigt und ist keine offene Nutzerentscheidung."
+      ],
+      "confirmations": 0,
+      "executions": 0,
+      "shopifyWrites": 0,
+      "profileSelections": {
+        "selections": {
+          "fonts": null,
+          "motifs": [
+            "import-6abda909c44bc599330856dd",
+            "import-0073ea6aa7103bb1e8ec9088",
+            "import-9373218480c87a6ad167f3cb",
+            "import-41fb65efd1d8996ac305f6ab",
+            "import-1abd6f06096e47c66b0b4e00",
+            "import-286db893566ced2e6bd75bad",
+            "import-d94f1406fde432cf9dd70389",
+            "import-9c76c3476a406eaac7f05e42",
+            "import-10edf8a5dd07bd1035ba508d",
+            "import-4269dbda54a15a99e178f00a",
+            "import-0f3193fd49e254bb5975e74d",
+            "import-54b3b489bbebe12119deda9a",
+            "import-8239d6c658366716f578c984"
+          ],
+          "colors": null,
+          "bestsellers": null
+        },
+        "sources": {
+          "fonts": {
+            "level": "unbound",
+            "categoryId": null,
+            "mode": "inherit",
+            "profileId": null,
+            "profileRevision": null
+          },
+          "motifs": {
+            "level": "product",
+            "categoryId": null,
+            "mode": "override",
+            "profileId": "prf_0fce513a-0973-45eb-8d03-09728290e17d",
+            "profileRevision": 1
+          },
+          "colors": {
+            "level": "unbound",
+            "categoryId": null,
+            "mode": "inherit",
+            "profileId": null,
+            "profileRevision": null
+          },
+          "bestsellers": {
+            "level": "unbound",
+            "categoryId": null,
+            "mode": "inherit",
+            "profileId": null,
+            "profileRevision": null
+          }
+        },
+        "settingsRevision": 1,
+        "categoryPriority": "last-non-inherit-wins",
+        "warnings": []
+      },
+      "smallMotifProfile": {
+        "id": "prf_0fce513a-0973-45eb-8d03-09728290e17d",
+        "revision": 1,
+        "count": 13
+      },
+      "previousPreparation": {
+        "sourceHash": "12f382a3244185954078138cebef2b027b838fa430dfc8bab593865166ff6f2e",
+        "planId": "pgp_915bdcc6-eea6-4d02-b85a-2838c0092150",
+        "planHash": "9034d712bbf1488c8b91f2a0da196c6f40e8ad23667f1b7c78238cc759d66236"
+      },
+      "moduleProfilePins": [
+        {
+          "id": "cmp_049bdd37-97bd-456e-8237-9856a00809da",
+          "revision": 1,
+          "sha256": "1becdb8eecb674692efc51e031516f695f5c26e2ed40111f417f87817aef4dc3"
+        }
+      ],
+      "effectiveModules": {
+        "colors": false,
+        "designs": true,
+        "logo": false,
+        "motifs": true,
+        "options": true,
+        "photo": false,
+        "text": true
+      },
+      "uploadDecision": {
+        "date": "2026-11-11",
+        "source": "Explicit user response in current Codex chat, relayed by root to product_plans",
+        "mainAcrylic": {
+          "photo": true,
+          "svgLogo": true,
+          "photoCents": 999,
+          "logoCents": 1299
+        },
+        "sixSmallProducts": {
+          "photo": false,
+          "logo": false
+        },
+        "scope": "Upload modules only; no product confirmation or execution"
+      }
+    },
+    {
+      "workbook": "Tuerschild-Edelstahl-5x2_v1.xlsx",
+      "excelSha256": "9fe8b60b35e3c9f4de5ab5d738608b49e509041cb584f4e8d6a9242fb09357d0",
+      "catalogCommit": "8236b8bfab7322447ec46661c116fa526331af3d",
+      "source": {
+        "id": "cfg_9c64f1b8-5e95-49ae-8937-d5990a3b26a6",
+        "revision": 1,
+        "sha256": "c37159312125ef333a01ea1ab96d1c25fe46edfd946c52495a7e9039f2f1f466",
+        "status": "draft",
+        "publishedRevision": null
+      },
+      "registry": {
+        "key": "cfg_9c64f1b8-5e95-49ae-8937-d5990a3b26a6",
+        "productId": "cfg_9c64f1b8-5e95-49ae-8937-d5990a3b26a6",
+        "familyId": "cfg_9c64f1b8-5e95-49ae-8937-d5990a3b26a6",
+        "sizeKey": "cfg_9c64f1b8-5e95-49ae-8937-d5990a3b26a6",
+        "name": "Türschild Edelstahl 5 × 2 cm (gebürstet, Gravur)",
+        "label": "Türschild Edelstahl 5 × 2 cm (gebürstet, Gravur)",
+        "detailsLoaded": false
+      },
+      "template": {
+        "id": "pgt_26088966-d1b9-4212-92a3-4a3e3bb6a617",
+        "revision": 1,
+        "sha256": "278979ee06bfba708bf6052c631d4ebc2cd38af0d1ca11d6f5ebd5924ab6d5a5"
+      },
+      "planId": "pgp_fae5b365-a7c0-4d85-9096-e9f5670b5b21",
+      "planHash": "ac2f8ce469cf862471a6c1c35f7c6a0142bf25b235b00b20e8038d23551a8309",
+      "valid": false,
+      "approvalReady": false,
+      "proposedStart": {
+        "sizeKey": "GR-ES-RE-50X20-T15",
+        "themeId": "familienschilder",
+        "defaultDesignId": "TRE-V2A-5x2-D1"
+      },
+      "priceOverrides": [],
+      "comparison": {
+        "compared": 5,
+        "actual": 5,
+        "differences": []
+      },
+      "designs": {
+        "requested": 27,
+        "native": 27,
+        "missing": [],
+        "requestedUnique": 27,
+        "hiddenIds": [],
+        "fitExcludedIds": [],
+        "duplicatePolicy": "first occurrence after rank ascending; rank 0 retained"
+      },
+      "nativeModules": {
+        "options": true,
+        "designs": true,
+        "text": true,
+        "motifs": true,
+        "photo": false,
+        "logo": true,
+        "colors": false
+      },
+      "requestedModules": [
+        {
+          "key": "options",
+          "requested": "an",
+          "confirmation": "bestätigt"
+        },
+        {
+          "key": "designs",
+          "requested": "an",
+          "confirmation": "offen"
+        },
+        {
+          "key": "text",
+          "requested": "an",
+          "confirmation": "offen"
+        },
+        {
+          "key": "motifs",
+          "requested": "an",
+          "confirmation": "offen"
+        },
+        {
+          "key": "photo",
+          "requested": "aus",
+          "confirmation": "bestätigt"
+        },
+        {
+          "key": "logo",
+          "requested": "offen",
+          "confirmation": "offen"
+        },
+        {
+          "key": "colors",
+          "requested": "aus",
+          "confirmation": "bestätigt"
+        }
+      ],
+      "openQuestions": [
+        "Startdesign TRE-V2A-5x2-D1 / 5 × 2 cm ist ein technisch geprüfter Vorschlag, keine neue Nutzerentscheidung.",
+        "Steuerkontext/Mengenstaffeln und Start-/Designreferenzen der unveränderten Excel bleiben zu prüfen. Foto-/Logo-Auswahl wurde am 11.11.2026 ausdrücklich bestätigt und ist keine offene Nutzerentscheidung."
+      ],
+      "confirmations": 0,
+      "executions": 0,
+      "shopifyWrites": 0,
+      "profileSelections": {
+        "selections": {
+          "fonts": null,
+          "motifs": [
+            "import-6abda909c44bc599330856dd",
+            "import-0073ea6aa7103bb1e8ec9088",
+            "import-9373218480c87a6ad167f3cb",
+            "import-41fb65efd1d8996ac305f6ab",
+            "import-1abd6f06096e47c66b0b4e00",
+            "import-286db893566ced2e6bd75bad",
+            "import-d94f1406fde432cf9dd70389",
+            "import-9c76c3476a406eaac7f05e42",
+            "import-10edf8a5dd07bd1035ba508d",
+            "import-4269dbda54a15a99e178f00a",
+            "import-0f3193fd49e254bb5975e74d",
+            "import-54b3b489bbebe12119deda9a",
+            "import-8239d6c658366716f578c984"
+          ],
+          "colors": null,
+          "bestsellers": null
+        },
+        "sources": {
+          "fonts": {
+            "level": "unbound",
+            "categoryId": null,
+            "mode": "inherit",
+            "profileId": null,
+            "profileRevision": null
+          },
+          "motifs": {
+            "level": "product",
+            "categoryId": null,
+            "mode": "override",
+            "profileId": "prf_0fce513a-0973-45eb-8d03-09728290e17d",
+            "profileRevision": 1
+          },
+          "colors": {
+            "level": "unbound",
+            "categoryId": null,
+            "mode": "inherit",
+            "profileId": null,
+            "profileRevision": null
+          },
+          "bestsellers": {
+            "level": "unbound",
+            "categoryId": null,
+            "mode": "inherit",
+            "profileId": null,
+            "profileRevision": null
+          }
+        },
+        "settingsRevision": 1,
+        "categoryPriority": "last-non-inherit-wins",
+        "warnings": []
+      },
+      "smallMotifProfile": {
+        "id": "prf_0fce513a-0973-45eb-8d03-09728290e17d",
+        "revision": 1,
+        "count": 13
+      },
+      "previousPreparation": {
+        "sourceHash": "f910c2150a106f2c3051e06f1971f5997f86f3835f13b563c5bc0d6d280bd871",
+        "planId": "pgp_bba31a18-cbf2-4595-979e-2563e04a833f",
+        "planHash": "d5af498d8d252d6924cfa4c81f9684959ac4b3374dfa90814c1ba41dd25c53dc"
+      },
+      "moduleProfilePins": [
+        {
+          "id": "cmp_049bdd37-97bd-456e-8237-9856a00809da",
+          "revision": 1,
+          "sha256": "1becdb8eecb674692efc51e031516f695f5c26e2ed40111f417f87817aef4dc3"
+        }
+      ],
+      "effectiveModules": {
+        "colors": false,
+        "designs": true,
+        "logo": false,
+        "motifs": true,
+        "options": true,
+        "photo": false,
+        "text": true
+      },
+      "uploadDecision": {
+        "date": "2026-11-11",
+        "source": "Explicit user response in current Codex chat, relayed by root to product_plans",
+        "mainAcrylic": {
+          "photo": true,
+          "svgLogo": true,
+          "photoCents": 999,
+          "logoCents": 1299
+        },
+        "sixSmallProducts": {
+          "photo": false,
+          "logo": false
+        },
+        "scope": "Upload modules only; no product confirmation or execution"
+      }
+    },
+    {
+      "workbook": "Tuerschild-Edelstahl-6x2_v1.xlsx",
+      "excelSha256": "de58b14ae5e33146a52a17f7c1b176dd58cebb75479617d10852f5e91623e0f5",
+      "catalogCommit": "8236b8bfab7322447ec46661c116fa526331af3d",
+      "source": {
+        "id": "cfg_d50868ac-bb33-476f-a07f-3a9a1b9af583",
+        "revision": 1,
+        "sha256": "3ef423c8c81ba076b3b61eaf116467464a42a70f266536451a870ab09824f516",
+        "status": "draft",
+        "publishedRevision": null
+      },
+      "registry": {
+        "key": "cfg_d50868ac-bb33-476f-a07f-3a9a1b9af583",
+        "productId": "cfg_d50868ac-bb33-476f-a07f-3a9a1b9af583",
+        "familyId": "cfg_d50868ac-bb33-476f-a07f-3a9a1b9af583",
+        "sizeKey": "cfg_d50868ac-bb33-476f-a07f-3a9a1b9af583",
+        "name": "Türschild Edelstahl 6 × 2 cm (gebürstet, Gravur)",
+        "label": "Türschild Edelstahl 6 × 2 cm (gebürstet, Gravur)",
+        "detailsLoaded": false
+      },
+      "template": {
+        "id": "pgt_176dd091-f9dc-4f7f-9bd1-42c350beb7f5",
+        "revision": 1,
+        "sha256": "e8d5f73a313e937d233ee654e5cc3e50eb1194b2092a43bc03e0feea635a7bf2"
+      },
+      "planId": "pgp_ea7f2afb-fb41-4e91-90e7-986d8d524cc8",
+      "planHash": "f87a05e734982b900f49de674d8748b2870113ad76b5a3e9c39b30ee2cdddf9e",
+      "valid": false,
+      "approvalReady": false,
+      "proposedStart": {
+        "sizeKey": "GR-ES-RE-60X20-T15",
+        "themeId": "familienschilder",
+        "defaultDesignId": "TRE-V2A-6x2-D1"
+      },
+      "priceOverrides": [],
+      "comparison": {
+        "compared": 5,
+        "actual": 5,
+        "differences": []
+      },
+      "designs": {
+        "requested": 27,
+        "native": 27,
+        "missing": [],
+        "requestedUnique": 27,
+        "hiddenIds": [],
+        "fitExcludedIds": [],
+        "duplicatePolicy": "first occurrence after rank ascending; rank 0 retained"
+      },
+      "nativeModules": {
+        "options": true,
+        "designs": true,
+        "text": true,
+        "motifs": true,
+        "photo": false,
+        "logo": true,
+        "colors": false
+      },
+      "requestedModules": [
+        {
+          "key": "options",
+          "requested": "an",
+          "confirmation": "bestätigt"
+        },
+        {
+          "key": "designs",
+          "requested": "an",
+          "confirmation": "offen"
+        },
+        {
+          "key": "text",
+          "requested": "an",
+          "confirmation": "offen"
+        },
+        {
+          "key": "motifs",
+          "requested": "an",
+          "confirmation": "offen"
+        },
+        {
+          "key": "photo",
+          "requested": "aus",
+          "confirmation": "bestätigt"
+        },
+        {
+          "key": "logo",
+          "requested": "offen",
+          "confirmation": "offen"
+        },
+        {
+          "key": "colors",
+          "requested": "aus",
+          "confirmation": "bestätigt"
+        }
+      ],
+      "openQuestions": [
+        "Startdesign TRE-V2A-6x2-D1 / 6 × 2 cm ist ein technisch geprüfter Vorschlag, keine neue Nutzerentscheidung.",
+        "Steuerkontext/Mengenstaffeln und Start-/Designreferenzen der unveränderten Excel bleiben zu prüfen. Foto-/Logo-Auswahl wurde am 11.11.2026 ausdrücklich bestätigt und ist keine offene Nutzerentscheidung."
+      ],
+      "confirmations": 0,
+      "executions": 0,
+      "shopifyWrites": 0,
+      "profileSelections": {
+        "selections": {
+          "fonts": null,
+          "motifs": [
+            "import-6abda909c44bc599330856dd",
+            "import-0073ea6aa7103bb1e8ec9088",
+            "import-9373218480c87a6ad167f3cb",
+            "import-41fb65efd1d8996ac305f6ab",
+            "import-1abd6f06096e47c66b0b4e00",
+            "import-286db893566ced2e6bd75bad",
+            "import-d94f1406fde432cf9dd70389",
+            "import-9c76c3476a406eaac7f05e42",
+            "import-10edf8a5dd07bd1035ba508d",
+            "import-4269dbda54a15a99e178f00a",
+            "import-0f3193fd49e254bb5975e74d",
+            "import-54b3b489bbebe12119deda9a",
+            "import-8239d6c658366716f578c984"
+          ],
+          "colors": null,
+          "bestsellers": null
+        },
+        "sources": {
+          "fonts": {
+            "level": "unbound",
+            "categoryId": null,
+            "mode": "inherit",
+            "profileId": null,
+            "profileRevision": null
+          },
+          "motifs": {
+            "level": "product",
+            "categoryId": null,
+            "mode": "override",
+            "profileId": "prf_0fce513a-0973-45eb-8d03-09728290e17d",
+            "profileRevision": 1
+          },
+          "colors": {
+            "level": "unbound",
+            "categoryId": null,
+            "mode": "inherit",
+            "profileId": null,
+            "profileRevision": null
+          },
+          "bestsellers": {
+            "level": "unbound",
+            "categoryId": null,
+            "mode": "inherit",
+            "profileId": null,
+            "profileRevision": null
+          }
+        },
+        "settingsRevision": 1,
+        "categoryPriority": "last-non-inherit-wins",
+        "warnings": []
+      },
+      "smallMotifProfile": {
+        "id": "prf_0fce513a-0973-45eb-8d03-09728290e17d",
+        "revision": 1,
+        "count": 13
+      },
+      "previousPreparation": {
+        "sourceHash": "4a4f05966a487efa78f35053c608e588e1d687382dbc84d9edf3d00b0f9d7b49",
+        "planId": "pgp_e21b589f-5772-439c-9d48-bf3f9c9d7d23",
+        "planHash": "acbba5d79e6469ef02ecf0b3b98236c7a3eaabcfa40ef4a888342f158ee19cd6"
+      },
+      "moduleProfilePins": [
+        {
+          "id": "cmp_049bdd37-97bd-456e-8237-9856a00809da",
+          "revision": 1,
+          "sha256": "1becdb8eecb674692efc51e031516f695f5c26e2ed40111f417f87817aef4dc3"
+        }
+      ],
+      "effectiveModules": {
+        "colors": false,
+        "designs": true,
+        "logo": false,
+        "motifs": true,
+        "options": true,
+        "photo": false,
+        "text": true
+      },
+      "uploadDecision": {
+        "date": "2026-11-11",
+        "source": "Explicit user response in current Codex chat, relayed by root to product_plans",
+        "mainAcrylic": {
+          "photo": true,
+          "svgLogo": true,
+          "photoCents": 999,
+          "logoCents": 1299
+        },
+        "sixSmallProducts": {
+          "photo": false,
+          "logo": false
+        },
+        "scope": "Upload modules only; no product confirmation or execution"
+      }
+    },
+    {
+      "workbook": "Tuerschild-Edelstahl-8x2_v1.xlsx",
+      "excelSha256": "440f3a19ad1fac20d446b19b9fe9810a1daee6292d0ab3591a7f21f39dca7317",
+      "catalogCommit": "8236b8bfab7322447ec46661c116fa526331af3d",
+      "source": {
+        "id": "cfg_c2dc9d76-a1f5-4f89-8b1c-89fd0f94555f",
+        "revision": 1,
+        "sha256": "9520da5156363805a1c11853b13795a09321410dc7b9ef1aa3fe711eb76ef2e3",
+        "status": "draft",
+        "publishedRevision": null
+      },
+      "registry": {
+        "key": "cfg_c2dc9d76-a1f5-4f89-8b1c-89fd0f94555f",
+        "productId": "cfg_c2dc9d76-a1f5-4f89-8b1c-89fd0f94555f",
+        "familyId": "cfg_c2dc9d76-a1f5-4f89-8b1c-89fd0f94555f",
+        "sizeKey": "cfg_c2dc9d76-a1f5-4f89-8b1c-89fd0f94555f",
+        "name": "Türschild Edelstahl 8 × 2 cm (gebürstet, Gravur)",
+        "label": "Türschild Edelstahl 8 × 2 cm (gebürstet, Gravur)",
+        "detailsLoaded": false
+      },
+      "template": {
+        "id": "pgt_abb30c39-1c05-4b4a-a666-812591d03a25",
+        "revision": 1,
+        "sha256": "c0501c00a717b14d33625ba451f16f8d7df4e2c5008d3372c24dbbda93a23a0c"
+      },
+      "planId": "pgp_c2098259-36a3-4048-a4e6-e3ffa70c9d68",
+      "planHash": "5c4b729ea5be27e1ea9b4e4a6c65e94088803618219e5025836ca6e70654ec3e",
+      "valid": false,
+      "approvalReady": false,
+      "proposedStart": {
+        "sizeKey": "GR-ES-RE-80X20-T15",
+        "themeId": "familienschilder",
+        "defaultDesignId": "TRE-V2A-8x2-D1"
+      },
+      "priceOverrides": [],
+      "comparison": {
+        "compared": 5,
+        "actual": 5,
+        "differences": []
+      },
+      "designs": {
+        "requested": 27,
+        "native": 27,
+        "missing": [],
+        "requestedUnique": 27,
+        "hiddenIds": [],
+        "fitExcludedIds": [],
+        "duplicatePolicy": "first occurrence after rank ascending; rank 0 retained"
+      },
+      "nativeModules": {
+        "options": true,
+        "designs": true,
+        "text": true,
+        "motifs": true,
+        "photo": false,
+        "logo": true,
+        "colors": false
+      },
+      "requestedModules": [
+        {
+          "key": "options",
+          "requested": "an",
+          "confirmation": "bestätigt"
+        },
+        {
+          "key": "designs",
+          "requested": "an",
+          "confirmation": "offen"
+        },
+        {
+          "key": "text",
+          "requested": "an",
+          "confirmation": "offen"
+        },
+        {
+          "key": "motifs",
+          "requested": "an",
+          "confirmation": "offen"
+        },
+        {
+          "key": "photo",
+          "requested": "aus",
+          "confirmation": "bestätigt"
+        },
+        {
+          "key": "logo",
+          "requested": "offen",
+          "confirmation": "offen"
+        },
+        {
+          "key": "colors",
+          "requested": "aus",
+          "confirmation": "bestätigt"
+        }
+      ],
+      "openQuestions": [
+        "Startdesign TRE-V2A-8x2-D1 / 8 × 2 cm ist ein technisch geprüfter Vorschlag, keine neue Nutzerentscheidung.",
+        "Steuerkontext/Mengenstaffeln und Start-/Designreferenzen der unveränderten Excel bleiben zu prüfen. Foto-/Logo-Auswahl wurde am 11.11.2026 ausdrücklich bestätigt und ist keine offene Nutzerentscheidung."
+      ],
+      "confirmations": 0,
+      "executions": 0,
+      "shopifyWrites": 0,
+      "profileSelections": {
+        "selections": {
+          "fonts": null,
+          "motifs": [
+            "import-6abda909c44bc599330856dd",
+            "import-0073ea6aa7103bb1e8ec9088",
+            "import-9373218480c87a6ad167f3cb",
+            "import-41fb65efd1d8996ac305f6ab",
+            "import-1abd6f06096e47c66b0b4e00",
+            "import-286db893566ced2e6bd75bad",
+            "import-d94f1406fde432cf9dd70389",
+            "import-9c76c3476a406eaac7f05e42",
+            "import-10edf8a5dd07bd1035ba508d",
+            "import-4269dbda54a15a99e178f00a",
+            "import-0f3193fd49e254bb5975e74d",
+            "import-54b3b489bbebe12119deda9a",
+            "import-8239d6c658366716f578c984"
+          ],
+          "colors": null,
+          "bestsellers": null
+        },
+        "sources": {
+          "fonts": {
+            "level": "unbound",
+            "categoryId": null,
+            "mode": "inherit",
+            "profileId": null,
+            "profileRevision": null
+          },
+          "motifs": {
+            "level": "product",
+            "categoryId": null,
+            "mode": "override",
+            "profileId": "prf_0fce513a-0973-45eb-8d03-09728290e17d",
+            "profileRevision": 1
+          },
+          "colors": {
+            "level": "unbound",
+            "categoryId": null,
+            "mode": "inherit",
+            "profileId": null,
+            "profileRevision": null
+          },
+          "bestsellers": {
+            "level": "unbound",
+            "categoryId": null,
+            "mode": "inherit",
+            "profileId": null,
+            "profileRevision": null
+          }
+        },
+        "settingsRevision": 1,
+        "categoryPriority": "last-non-inherit-wins",
+        "warnings": []
+      },
+      "smallMotifProfile": {
+        "id": "prf_0fce513a-0973-45eb-8d03-09728290e17d",
+        "revision": 1,
+        "count": 13
+      },
+      "previousPreparation": {
+        "sourceHash": "ad512f5e8dfc1375b9960bb0d8080b65feabcbfb8ef2558f2843bf8db8b323d1",
+        "planId": "pgp_cf332f0f-a2be-4358-8101-2a1ec897f161",
+        "planHash": "bd82619ef2effa2f9a701668a6f7e989ee488000bd0e167d6d9d5dcb9c03aeda"
+      },
+      "moduleProfilePins": [
+        {
+          "id": "cmp_049bdd37-97bd-456e-8237-9856a00809da",
+          "revision": 1,
+          "sha256": "1becdb8eecb674692efc51e031516f695f5c26e2ed40111f417f87817aef4dc3"
+        }
+      ],
+      "effectiveModules": {
+        "colors": false,
+        "designs": true,
+        "logo": false,
+        "motifs": true,
+        "options": true,
+        "photo": false,
+        "text": true
+      },
+      "uploadDecision": {
+        "date": "2026-11-11",
+        "source": "Explicit user response in current Codex chat, relayed by root to product_plans",
+        "mainAcrylic": {
+          "photo": true,
+          "svgLogo": true,
+          "photoCents": 999,
+          "logoCents": 1299
+        },
+        "sixSmallProducts": {
+          "photo": false,
+          "logo": false
+        },
+        "scope": "Upload modules only; no product confirmation or execution"
+      }
+    }
+  ]
+}

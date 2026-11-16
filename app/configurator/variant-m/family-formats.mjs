@@ -1,5 +1,5 @@
 // N39: only catalog-bound formats. Free merchant steelFormats keep their stricter rules.
-import {transferTexts} from './workflow-model.mjs';
+import {changedCustomerTexts,transferTexts} from './workflow-model.mjs';
 import {measureText} from '../../platform/sources/app/shared/models/text-paths.mjs';
 import {surfaceObjectIssue,validateDesignContent,validateGeometryHoles} from '../../platform/sources/app/shared/models/design-content.mjs';
 import {validateUniversalElements,validateOptionGroups} from '../../platform/sources/app/shared/models/universal-elements.mjs';
@@ -55,6 +55,15 @@ export function familyFormatChoices(c,o={}){
   const ar=a.geometry.width/a.geometry.height,br=b.geometry.width/b.geometry.height;
   return Math.abs(ar/br-1)>.01?ar-br:a.geometry.width*a.geometry.height-b.geometry.width*b.geometry.height;
  })}));
+}
+// Formwechsel (Tester/Chris 13.11.2026): nicht auf die kleinste Größe springen, sondern die verfügbare
+// Größe der neuen Form nehmen, die der bisherigen in Fläche und Seitenverhältnis am nächsten kommt.
+export function nearestFamilySize(sizes,current){
+ const list=(sizes||[]).filter(s=>s.available);if(!list.length)return null;
+ const w=current?.width,h=current?.height;if(!(w>0&&h>0))return list[0];
+ // Fläche zählt voll, Seitenverhältnis halb: rund 8,5 cm wird oval 12 × 8 cm, nicht das schmale 15 × 5 cm.
+ const score=s=>[Math.abs(Math.log((s.geometry.width*s.geometry.height)/(w*h)))+.5*Math.abs(Math.log((s.geometry.width/s.geometry.height)/(w/h))),Math.abs(Math.log(s.geometry.width/w))+Math.abs(Math.log(s.geometry.height/h))];
+ return list.map(s=>({s,k:score(s)})).sort((a,b)=>a.k[0]-b.k[0]||a.k[1]-b.k[1])[0].s;
 }
 export function scaleFamilyObjects(objects,from,to){
  const scale=Math.min(to.width/from.width,to.height/from.height),dx=(to.width-from.width*scale)/2,dy=(to.height-from.height*scale)/2;
@@ -114,7 +123,12 @@ export function familyFormatState(c,state,requested,{fonts={},motifs=[]}={}){
  if(sameForm&&exact){objects=scaleFamilyObjects(state.objects,before.geometry,after.geometry);}
  else{
   objects=clone(target.objects);
-  const edited=state.objects.filter(o=>o.type==='text'&&!o.uxHidden&&o.customerEditable!==false&&o.text!==source.objects.find(s=>s.id===o.id)?.text);
+  const editable=state.objects.filter(o=>o.type==='text'&&!o.uxHidden&&o.customerEditable!==false);
+  // Keep complete name/date groups: omitting an unchanged second field makes
+  // transferTexts split a multiword first field into the second one. Retain the
+  // existing shape-switch transfer of other edited texts (including slogans).
+  const grouped=new Set(changedCustomerTexts(editable,source));
+  const edited=editable.filter(o=>grouped.has(o)||o.text!==source.objects.find(s=>s.id===o.id)?.text);
   const remaining=transferTexts(edited,objects);
   const extras=[...remaining,...state.objects.filter(o=>o.type==='photoSlot'&&o.uxUploadId||o.uxUploadKind==='logo')];
   for(const original of extras){const moved=scaleFamilyObjects([original],before.geometry,after.geometry)[0];if(objects.some(o=>o.id===moved.id))moved.id='carry-'+moved.id;objects.push(moved);}

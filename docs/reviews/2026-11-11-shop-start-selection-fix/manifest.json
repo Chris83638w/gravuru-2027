@@ -1,0 +1,60 @@
+{
+  "schema": "gravuru-start-selection-proof/v1",
+  "files": [
+    {
+      "file": "over250-start-selection.patch",
+      "bytes": 11382,
+      "sha256": "459de9b6478b1919532df84f29b4e281ff4a8bbf83dc17003fc680197cf4f9cb"
+    },
+    {
+      "file": "over250-patch-handoff.md",
+      "bytes": 4371,
+      "sha256": "5ca8ab563aa2776e9483347c01b2b7ae9da76792bdb2307da4b0f0530a63e187"
+    },
+    {
+      "file": "over250-patch-manifest.json",
+      "bytes": 825,
+      "sha256": "acd29f021ecd41559eca6543d3063ab22364352f38f7b182724bb60a0ef89d71"
+    },
+    {
+      "file": "over250-independent-review.md",
+      "bytes": 3874,
+      "sha256": "eb58d22638c80057e0f97ef131f455a4ae1f441b4fa4a7f0f22ae23bc33c8578"
+    },
+    {
+      "file": "main-variants-over250-fix-proposal.md",
+      "bytes": 5126,
+      "sha256": "812261112a97415a9e5945350f2684353822d3c0bb4e91d4415ee798129c131e"
+    },
+    {
+      "file": "over250-sticky-theme-evidence.json",
+      "bytes": 1452,
+      "sha256": "158e9762282ab70ca8f1c01c758855ba038e1d6860e1e3032d37742a1e49c450"
+    },
+    {
+      "file": "over250-patch-tests.log",
+      "bytes": 1994,
+      "sha256": "99f4dd16d1c3e009ebc174fe8986d3befbe6c3ea16700f4eef40366aeeadbc39"
+    },
+    {
+      "file": "over250-global-embed-test.log",
+      "bytes": 251,
+      "sha256": "3a933e2fcf0dae0f9b0ffad22deca8ecb08bb9eb8da46adaafbe346686b91e5e"
+    },
+    {
+      "file": "over250-server-negative-tests-allowed.log",
+      "bytes": 332,
+      "sha256": "d5b6e54af583bc2eee0121270908e76bbc728083020e9b290ac9ddc4faaf716e"
+    },
+    {
+      "file": "over250-patch-real-data-check.mjs",
+      "bytes": 1696,
+      "sha256": "01c873b08d151bb1e838895b8206cd4c8e9ec69e5c124db76ac52ed6dc4da41a"
+    },
+    {
+      "file": "over250-real-data-check.log",
+      "bytes": 165,
+      "sha256": "697892743b76d116f9bcb86c490310adfb8daf989ccf273b93f2659176bac00c"
+    }
+  ]
+}

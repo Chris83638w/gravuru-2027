@@ -1,0 +1,109 @@
+- banner:
+  - link "Übersicht":
+    - /url: /
+  - text: · Lokale v8-Prüfung · Suche + Material · keine Shopänderung
+- main "Dein Türschild gestalten":
+  - iframe [active]:
+    - main:
+      - main:
+        - status
+        - region "Produktvorschau":
+          - main:
+            - img "Gestaltbares Schild. Element auswählen und verschieben."
+            - generic: 50 mm
+            - generic: 20 mm
+          - button "Große Vorschau"
+        - region "Designs":
+          - button "Zurück"
+          - heading "Designs" [level=2]
+          - button "Fertig"
+          - tabpanel "Designs":
+            - heading "Dein Design" [level=2]
+            - generic: Design suchen
+            - searchbox "Design suchen"
+            - generic "Designübersicht":
+              - button "Design Zwei Zeilen, mittig" [pressed]:
+                - img "Zwei Zeilen, mittig"
+                - generic: ✓
+              - button "Design Zwei Zeilen, versetzt":
+                - img "Zwei Zeilen, versetzt"
+              - button "Design Vor- und Nachname mit Haus":
+                - img "Vor- und Nachname mit Haus":
+              - button "Design Vor- und Nachname mit Glocke":
+                - img "Vor- und Nachname mit Glocke":
+              - button "Design Name mit Briefumschlag":
+                - img "Name mit Briefumschlag":
+              - button "Design Zwei Zeilen mit Trennlinie":
+                - img "Zwei Zeilen mit Trennlinie":
+              - button "Design Familie mit Hund":
+                - img "Familie mit Hund":
+              - button "Design Familie mit Pfote, Schreibschrift":
+                - img "Familie mit Pfote, Schreibschrift":
+              - button "Design Familie mit Katze, Serifenschrift":
+                - img "Designvorschau wird geladen"
+              - button "Design Zwei Namen mit Unendlichkeitszeichen":
+                - img "Designvorschau wird geladen"
+              - button "Design Zwei Zeilen, versetzt mit Linie":
+                - img "Designvorschau wird geladen"
+              - button "Design Name mit Vogel, Schreibschrift":
+                - img "Designvorschau wird geladen"
+              - button "Design Vor- und Nachname mit Vogel":
+                - img "Designvorschau wird geladen"
+              - button "Design Zwei Zeilen mit Zierlinien":
+                - img "Designvorschau wird geladen"
+              - button "Design Familie mit Herzen, Schreibschrift":
+                - img "Designvorschau wird geladen"
+              - button "Design Zwei Vornamen und Nachname mit Herz":
+                - img "Designvorschau wird geladen"
+              - button "Design Familie mit Anker":
+                - img "Designvorschau wird geladen"
+              - button "Design Hausnummer groß – feine Ziffer, Name daneben":
+                - img "Designvorschau wird geladen"
+              - button "Design Monogramm – Initiale im feinen Ring":
+                - img "Designvorschau wird geladen"
+              - button "Design Typo-Linie – Name und Nummer unter der Linie":
+                - img "Designvorschau wird geladen"
+              - button "Design Herzlinie – Name mit feiner Herzlinie":
+                - img "Designvorschau wird geladen"
+              - button "Design Linienraster – Name links, Nummer rechts":
+                - img "Designvorschau wird geladen"
+              - button "Design Seit 2019 – Gründungsjahr zwischen Linien":
+                - img "Designvorschau wird geladen"
+              - button "Design Herzlich willkommen bei Familie mit Herz":
+                - img "Designvorschau wird geladen"
+              - button "Design Willkommen bei Familie mit verschlungenen Herzen":
+                - img "Designvorschau wird geladen"
+              - button "Design Infinity mit Vornamen und Datum":
+                - img "Designvorschau wird geladen"
+              - button "Design Mr & Mrs mit Herz und Nachname":
+                - img "Designvorschau wird geladen"
+            - button "Weitere Designs anzeigen (4)"
+            - paragraph: 23 Designs
+        - button "Zurück zum Produkt"
+        - generic: gravuru
+        - generic "Dein Produkt gestalten": Konfigurator
+        - button "Rückgängig":
+        - button "Wiederholen" [disabled]:
+        - button "Ebenen (2)":
+        - button "Entwurf speichern":
+        - button "Hilfe": "?"
+        - generic: Ansicht
+        - slider "Ansicht vergrößern"
+        - status: 100 %
+        - button "Gestaltung zurücksetzen"
+        - button "Ausführung und Größe auswählen":
+          - generic: Acrylglas · 5 × 2 cm
+        - strong: 6,99 €
+        - navigation "Gestaltung verwalten":
+          - button "Ausführung":
+            - generic: Ausführung
+          - button "Designs" [pressed]:
+            - generic: Designs
+          - button "Text":
+            - generic: Text
+          - button "Motive":
+            - generic: Motive
+          - button "Warenkorb":
+            - generic: Warenkorb
+        - status
+    - generic: › › › › › › › › › › ›

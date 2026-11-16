@@ -1,9 +1,12 @@
 import {customerFieldLabel} from './text-fields.mjs';
+import {moduleEnabled,photoWithVectorLogoAllowed} from './module-profile.mjs';
+import {createTextBounds} from './text-bounds.mjs';
 import {executionOptionGroups} from './execution-registry.mjs';
 import {alignmentContent,alignmentLabel} from './ui-icons.mjs';
 import {selectionScaleFactor} from './selection-arrows.mjs';
 import {previewResourceURL} from './preview-resource.mjs';
 import test from 'node:test';
+import {fitUploadedPhoto} from './photo-upload-geometry.mjs';
 import {fontDisplayName} from './font-display.mjs';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -14,9 +17,10 @@ import {scaleObject} from './image-processing.mjs';
 import {makeAcrylicConfig} from './acrylic-product.mjs';
 import {prepareConfig,validateDesign} from './contract.mjs';
 import {measureText,setTextSize} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
-import {rightForProperty} from './element-rights.mjs';
+import {rightForProperty,canDeleteTemplateElement} from './element-rights.mjs';
 import {emptyPhotoMarkup,decorateEmptyPhotoSlots,examplePhotoMarkup} from './photo-placeholder.mjs';
 import {textLimits,textLimitIssue,textLength,textLimitCount,sameSampleText,requiredTextMissing,clampText} from '../../workshop/theme-limits.mjs';
+import {missingNameField} from './workflow-model.mjs';
 import {applyLinkText} from './design-gallery-model.mjs';
 
 // Execute the actual registered handlers from the presentation modules with
@@ -28,10 +32,23 @@ const eventTarget=()=>({listeners:{},addEventListener(type,fn){(this.listeners[t
 const dispatch=async(target,type,event)=>{for(const fn of target.listeners[type]||[])await fn(event);};
 const inertEvent=target=>({target,preventDefault(){},stopImmediatePropagation(){}});
 
+test('real tab handler preserves legacy text fallback and never reopens a disabled module',()=>{
+ const run=config=>{
+  const tabs=['options','design','text','motif','upload'].map(id=>({id:'ux-tab-'+id,dataset:{uxTab:id},hidden:!!config?.moduleProfile&&id==='text',disabled:!!config?.moduleProfile&&id==='text',setAttribute(){},focus(){}}));
+  const panels=tabs.map(tab=>({id:tab.id.replace('tab','panel'),hidden:false}));
+  const env={config,$:selector=>tabs.find(tab=>'#'+tab.id===selector),all:selector=>selector==='[data-ux-tab]'?tabs:panels,activeTab:null,el:{uxUpdateTextUI(){}}};
+  vm.createContext(env);vm.runInContext(line('ux.mjs','function showTab(key,focus=false)'),env);
+  vm.runInContext("showTab('missing')",env);const fallback=env.activeTab;
+  vm.runInContext("showTab('text')",env);return {fallback,selected:env.activeTab,visible:panels.filter(p=>!p.hidden).map(p=>p.id)};
+ };
+ assert.equal(run({}).fallback,'text');
+ assert.deepEqual(run({moduleProfile:{}}),{fallback:'options',selected:'options',visible:['ux-panel-options']});
+});
+
 test('direct-link UI passes the active text policy through to the real text importer',()=>{
  const text='N'.repeat(100),object={id:'name',type:'text',text:'Name',required:true,maxLength:32},template={objects:[object],themes:['namensschilder']};
- const env={link:{text,notes:[]},config:{textRules:{maxCharsPerField:80}},profile:{},design:()=>template,dirty:false,applyLinkText,el:{state:{objects:[{...object}]},normalize(){},sync(){}}};
- vm.createContext(env);vm.runInContext(line('ux.mjs','if(link.text){const result=applyLinkText'),env);
+ const env={moduleEnabled,link:{text,notes:[]},config:{textRules:{maxCharsPerField:80}},profile:{},design:()=>template,dirty:false,applyLinkText,el:{state:{objects:[{...object}]},normalize(){},sync(){}}};
+ vm.createContext(env);vm.runInContext(line('ux.mjs',"if(link.text&&moduleEnabled(config,'text')){const result=applyLinkText"),env);
  assert.equal(env.el.state.objects[0].text,'N'.repeat(80));assert.equal(env.dirty,true);assert.equal(env.link.notes.length,1);
 });
 function textEnvironment(){
@@ -62,7 +79,7 @@ test('large text: real input, focusout, field refresh and workflow sync all reta
   vm.runInContext(line('ux.mjs','const esc=value=>'),env);
   vm.runInContext(line('ux.mjs','const fieldLabel='),env);
   // K1: Limits und Feldhinweise aus dem echten Modul, Vorlage mit Pflichtfeld und Thema.
-  Object.assign(env,{textLimits,textLimitIssue,textLength,textLimitCount,sameSampleText,requiredTextMissing,fontDisplayName,customerFieldLabel,touchedText:new Set(),textValidationAttempted:false,textControls:{closest:()=>null},design:()=>env.profile.designs[0]});
+  Object.assign(env,{missingNameField,textLimits,textLimitIssue,textLength,textLimitCount,sameSampleText,requiredTextMissing,fontDisplayName,customerFieldLabel,canDeleteTemplateElement,touchedText:new Set(),textValidationAttempted:false,textControls:{closest:()=>null},design:()=>env.profile.designs[0]});
   env.profile.designs[0].themes=['namensschilder'];env.profile.designs[0].objects=[{id:'name',type:'text',text:'Anna',required:true}];
   for(const marker of ['const templateText=','const limitsFor=','const textIndex='])vm.runInContext(line('ux.mjs',marker),env);
   vm.runInContext(block('ux.mjs','  function textFieldIssue(o,{required=true}={}){','\n  }'),env);
@@ -77,17 +94,18 @@ test('large text: real input, focusout, field refresh and workflow sync all reta
   object.text='L'.repeat(33);assert.deepEqual(issues(),[{id:'name',message:'Namen: Text zu lang: höchstens 32 Zeichen.'}]);
   object.text='Lena\nMax\nTom';assert.deepEqual(issues(),[{id:'name',message:'Namen: Höchstens 2 Zeilen.'}]);
   object.text='Lena';object.uxTextOverflow='length';assert.match(issues()[0].message,/Text zu lang: Passt auch in der Mindestgröße/);delete object.uxTextOverflow;
-  object.uxHidden=true;assert.deepEqual(issues(),[{id:'name',message:'Pflichtfeld „Namen“ fehlt. Bitte einblenden und ausfüllen.'}]);delete object.uxHidden;
+  object.uxHidden=true;assert.deepEqual(issues(),[]);
+  env.config.workshopElementRights={'test-design':{name:{delete:false}}};assert.deepEqual(issues(),[{id:'name',message:'Pflichtfeld „Namen“ fehlt. Bitte einblenden und ausfüllen.'}]);delete object.uxHidden;
  Object.assign(env,{changing:false,known:new Set(['name']),rename(){},guides(){},arrangeGallery(){}});
  vm.runInContext(line('workflow.mjs','const sync=el.sync;el.sync=function'),env);
  input.value='stale';env.el.sync();assert.equal(Number(input.value),12);
 });
 test('K1: actual text input handler keeps 32 chars / 2 lines and the direct editor clamps alike',async()=>{
  const {env,object,r}=textEnvironment();
- Object.assign(env,{textLimits,textLimitIssue,textLength,sameSampleText,clampText,dirty:false,updatePrice(){},design:()=>env.profile.designs[0],profile:{designs:[{id:'d',themes:['namensschilder'],objects:[{id:'name',type:'text',text:'Anna'}]}]}});
+ Object.assign(env,{textLimits,textLimitIssue,textLength,sameSampleText,clampText,dirty:false,updatePrice(){},sessionGuard:null,design:()=>env.profile.designs[0],profile:{designs:[{id:'d',themes:['namensschilder'],objects:[{id:'name',type:'text',text:'Anna'}]}]}});
  env.el.state.designId='d';env.el.record=()=>{};const said=[];env.say=m=>said.push(m);
  for(const marker of ['const templateText=','const limitsFor='])vm.runInContext(line('ux.mjs',marker),env);
- vm.runInContext(block('ux.mjs',"  r.addEventListener('input',e=>{const t=e.target;if(t.dataset.uxText){","updatePrice();});"),env);
+ vm.runInContext(block('ux.mjs',"  r.addEventListener('input',e=>{const t=e.target;if(t.dataset.uxText){","updatePrice();sessionGuard?.touch();}});"),env);
  vm.runInContext(line('ux.mjs',"r.addEventListener('keydown',e=>{const t=e.target;if(!t.dataset?.uxText||e.key!=='Enter')return;"),env);
  const field={value:'A'.repeat(40),selectionStart:40,dataset:{uxText:'name'},matches(){return false;},setSelectionRange(a){this.selectionStart=a;}};
  await dispatch(r,'input',inertEvent(field));assert.equal(object.text.length,32);assert.equal(field.value.length,32);assert.equal(said.at(-1),'Höchstens 32 Zeichen.');
@@ -147,7 +165,7 @@ test('fixed acrylic photo: actual editor apply keeps shape/geometry and remains 
  prepareConfig(config);
  const design=structuredClone(config.profile.designs[0]),object=design.objects.find(o=>o.id==='photo-main'),before=structuredClone(object),d=eventTarget(),files=new Map();
  let closed=false;d.close=()=>{closed=true;};
- const env={productionImage:()=>({canvas:env.canvas,limited:false}),d,inputColor:'original',angle:0,flip:1,el:{uxCanEdit:()=>true},objectId:object.id,selected:()=>object,files,source:{file:{name:'test.png'},url:'blob:original'},canvas:{width:1200,height:1200,toBlob:callback=>callback({})},options:()=>({shape:'circle'}),mutate:fn=>fn(),say(){},crypto:{randomUUID:()=> 'new-image'},URL:{createObjectURL:()=> 'blob:edited'},$:()=>({textContent:''})};
+ const env={persistUpload:async()=>{},productionImage:()=>({canvas:env.canvas,limited:false}),d,inputColor:'original',angle:0,flip:1,el:{uxCanEdit:()=>true},objectId:object.id,selected:()=>object,files,source:{file:{name:'test.png'},url:'blob:original'},canvas:{width:1200,height:1200,toBlob:callback=>callback({})},options:()=>({shape:'circle'}),mutate:fn=>fn(),say(){},crypto:{randomUUID:()=> 'new-image'},URL:{createObjectURL:()=> 'blob:edited'},$:()=>({textContent:''})};
  vm.runInNewContext(block('photo-editor.mjs',"  d.addEventListener('click',async e=>{","\n  });"),env);
  const button={dataset:{ux:'photo-apply'},disabled:false};
  await dispatch(d,'click',inertEvent({closest:()=>button}));
@@ -181,7 +199,7 @@ test('imported acrylic photo: actual upload handler replaces semantic slot twice
  const {uploadTarget}=await import('./ux-model.mjs');
  const slot={id:'customer-photo-main',fieldKey:'photo-main',type:'photoSlot',photoShape:'arch',w:120,h:140,acrylicFixed:true};
  const objects=[slot],files=new Map();let count=0;
- const env={config:{acrylic:{},photo:{enabled:true}},el:{state:{objects,selected:null},uxCanEdit:()=>true,normalize(){},sync(){}},uploadTarget,
+ const env={persistUpload:async()=>{},fitUploadedPhoto,config:{acrylic:{},photo:{enabled:true}},el:{state:{objects,selected:null},uxCanEdit:()=>true,normalize(){},sync(){}},uploadTarget,
  uploadAllowed:()=>true,photoAvailableForDesign:()=>true,validateUpload(){},files,mutate:fn=>fn(),say(){},showTab(){},requestAnimationFrame(){},uploadKind:'photo',replacing:null,uploadPending:false,
  URL:{createObjectURL:()=> 'blob:test',revokeObjectURL(){}},crypto:{randomUUID:()=>String(++count)},Image:class{naturalWidth=900;naturalHeight=1200;async decode(){}},all:()=>[]};
  vm.createContext(env);vm.runInContext(block('ux.mjs','  async function acceptFiles(','\n  }\n  r.addEventListener').replace('\n  r.addEventListener',''),env);
@@ -236,9 +254,16 @@ test('K10 / Ü1.2: engraving products build the text panel without a colour pick
  const render=(freeColor,minTextMm)=>{const env={freeColor,minTextMm,alignmentContent,alignmentLabel,icons:{},button:(k,l,extra='')=>`<button data-ux="${k}" ${extra}>${l}</button>`,config:null,out:''};vm.createContext(env);vm.runInContext(markup.replace("$('#ux-panel-text').innerHTML=",'out='),env);return env.out;};
  assert.doesNotMatch(render(false,4),/data-ux-color/);assert.match(render(true,3),/data-ux-color/);
  assert.match(render(false,4),/id="ux-size" type="number" min="4"/);assert.match(render(true,3),/min="3"/);
- const photoLine=line('ux.mjs','const photoEnabled=config?');
- const photo=(enabled,tool)=>{const env={config:{photo:{enabled},logo:{enabled:true}},process:{tools:{photo:tool}}};vm.createContext(env);vm.runInContext(photoLine,env);return vm.runInContext('photoEnabled',env);};
+ const photoLine=line('ux.mjs','const photoEnabled=');
+ const photo=(enabled,tool)=>{const env={moduleEnabled,photoWithVectorLogoAllowed,config:{photo:{enabled},logo:{enabled:true}},process:{tools:{photo:tool}}};vm.createContext(env);vm.runInContext(photoLine,env);return vm.runInContext('photoEnabled',env);};
  assert.equal(photo(true,true),true);assert.equal(photo(true,false),false);assert.equal(photo(false,true),false);
+});
+
+test('acrylic combined upload panel distinguishes photo and SVG prices, limits and initial file chooser',()=>{
+ const markup=line('ux.mjs',"$('#ux-panel-upload').innerHTML=");
+ const render=photoEnabled=>{const env={photoEnabled,logoEnabled:true,vectorLogos:true,config:{photo:{extraPriceCents:999},logo:{extraPriceCents:1299}},money:c=>(c/100).toFixed(2),PHOTO_ACCEPT:'image/jpeg,image/png,image/webp',VECTOR_LOGO_ACCEPT:'.svg,image/svg+xml',button:(id,label)=>`<button data-ux="${id}">${label}</button>`,out:''};vm.createContext(env);vm.runInContext(markup.replace("$('#ux-panel-upload').innerHTML=",'out='),env);return env.out;};
+ const both=render(true);assert.match(both,/Deine Fotos & Logos/);assert.match(both,/Foto je 9.99/);assert.match(both,/je Logo <strong>\+12.99/);assert.match(both,/Fotos: JPG, PNG oder WebP bis 15 MB/);assert.match(both,/Logos: SVG bis 2 MB/);assert.match(both,/data-ux="photo-upload"/);assert.match(both,/accept="image\/jpeg,image\/png,image\/webp"/);
+ const logoOnly=render(false);assert.doesNotMatch(logoOnly,/data-ux="photo-upload"|Foto je/);assert.match(logoOnly,/accept="\.svg,image\/svg\+xml"/);
 });
 // Chris 22./23.10.2026: Ein neues Element bekommt immer einen freien Platz. Die echte place()-Funktion aus workflow.mjs:
 // Gestaltungsfläche innerhalb des Randes, Verkleinerung bis zur Mindestgröße (Text 3 mm, Motiv 10 mm), sonst mittig + Hinweis.
@@ -389,19 +414,19 @@ test('Befestigungskacheln: jede Befestigung als Kachel mit Icon, Bezeichnung und
  env.selectPicture({target:{closest:()=>({dataset:{pictureGroup:'mounting',pictureOption:'B02S'}})}});
  assert.deepEqual(choices,[['mounting','B02S']],'Kachel nutzt denselben Änderungsweg wie die Auswahlliste');
  // Einheitlicher Auswahlhaken: completion.mjs markiert die Kacheln wie Designs und nutzt dieselben Symbole.
- assert.match(line('completion.mjs',"const choices='"),/\[data-ux=mount-choice\],\[data-picture-option\]'/);
+ for(const selector of ['[data-ux=mount-choice]','[data-picture-option]','[data-slate-accessory]'])assert.ok(line('completion.mjs',"const choices='").includes(selector));
  assert.match(source('completion.mjs'),/import \{MOUNT_ICONS,mountIconSvg\} from '\.\/option-media\.mjs'/);
 });
 
 test('workflow glyph bounds and autofit caches distinguish catalogue typography',()=>{
  const object={id:'name',type:'text',text:'A\nA',font:'Source',size:5,bold:false,italic:false,w:10,letterSpacing:0,textAnchor:'middle',lineHeight:6};
- let renders=0,rendered;
- const env={el:{fontData:{},state:{fkFrame:'none'},uxTextScale:()=>1},r:{append(){}},
-  textPaths:o=>{renders++;rendered={x:o.textAnchor==='start'?-o.w/2:o.textAnchor==='end'?o.w/2:0,y:0,width:o.w+o.letterSpacing,height:o.lineHeight};return '<path/>';},
-  document:{createElementNS:()=>({style:{},firstElementChild:{getBBox:()=>rendered},remove(){}})},object};
+ let renders=0,measuring;
+ const env={el:{fontData:{Source:{regular:{units:1000,glyphs:{A:{a:500,d:'M0 0H500V700H0Z'}}}}},state:{fkFrame:'none'},uxTextScale:()=>1},r:{append(){}},
+  createTextBounds:el=>{const measure=createTextBounds(el);return o=>{measuring=o;return measure(o);};},object};
+ env.el.shadowRoot=env.r;
+ env.el.ownerDocument={createElementNS:()=>({style:{},firstElementChild:{getBBox:()=>{renders++;const o=measuring;return {x:o.textAnchor==='start'?-o.w/2:o.textAnchor==='end'?o.w/2:0,y:0,width:o.w+o.letterSpacing,height:o.lineHeight};}},remove(){}})};
  vm.createContext(env);
- vm.runInContext(line('workflow.mjs','const boundsCache=new Map();'),env);
- vm.runInContext(line('workflow.mjs','function bounds(o){'),env);
+ vm.runInContext(line('workflow.mjs','const bounds=createTextBounds(el);'),env);
  vm.runInContext(line('workflow.mjs','const fitted=new Map(),signature='),env);
  const original=vm.runInContext('bounds(object)',env),signature=vm.runInContext('signature(object)',env);
  assert.equal(original.height,6);assert.equal(renders,1);
@@ -429,9 +454,11 @@ test('LF2 customer size input and normalization preserve the source leading rati
 });
 
 test('usability glyph cache distinguishes catalogue spacing and alignment for edge limits',()=>{
- let renders=0,rendered;const object={text:'A\nA',font:'Source',size:5,w:10,lineHeight:6,textAnchor:'middle',letterSpacing:0};
- const env={object,el:{fontData:{}},r:{append(){}},textPaths:o=>{renders++;rendered={x:0,y:0,width:o.w+o.letterSpacing,height:o.lineHeight};return '<path/>';},document:{createElementNS:()=>({style:{},firstElementChild:{getBBox:()=>rendered},remove(){}})}};
- vm.createContext(env);vm.runInContext(line('usability.mjs','const boundsCache=new Map();'),env);vm.runInContext(block('usability.mjs','  function textBounds(o){','\n  }'),env);
+ let renders=0,measuring;const object={text:'A\nA',font:'Source',size:5,w:10,lineHeight:6,textAnchor:'middle',letterSpacing:0};
+ const env={object,el:{fontData:{Source:{regular:{units:1000,glyphs:{A:{a:500,d:'M0 0H500V700H0Z'}}}}},shadowRoot:{append(){}}},
+  createTextBounds:el=>{const measure=createTextBounds(el);return o=>{measuring=o;return measure(o);};}};
+ env.el.ownerDocument={createElementNS:()=>({style:{},firstElementChild:{getBBox:()=>{renders++;return {x:0,y:0,width:measuring.w+measuring.letterSpacing,height:measuring.lineHeight};}},remove(){}})};
+ vm.createContext(env);vm.runInContext(line('usability.mjs','const textBounds=createTextBounds(el);'),env);
  const original=vm.runInContext('textBounds(object)',env);assert.equal(original.height,6);
  for(const change of [{lineHeight:20},{textAnchor:'start'},{letterSpacing:2},{w:30}]){env.changed={...object,...change};const before=renders,measured=vm.runInContext('textBounds(changed)',env);assert.equal(renders,before+1);assert.equal(vm.runInContext('textBounds({...changed})',env),measured);assert.equal(renders,before+1);if(change.lineHeight)assert.equal(measured.height,20);}
 });

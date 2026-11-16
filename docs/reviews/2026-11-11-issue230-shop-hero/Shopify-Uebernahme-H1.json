@@ -1,0 +1,72 @@
+{
+  "schema": "gravuru-approved-shop-hero-update/v1",
+  "proposal": "H1",
+  "userApproval": "Ja, H1 als Hauptbild verwenden",
+  "productId": "gid://shopify/Product/16190784602492",
+  "productTitle": "Türschild Acrylglas 3 mm – Form und Größe selbst wählen",
+  "localFile": "H1-Acryl-Vanessa-Krueger.png",
+  "sha256": "e5c9970d7bd7290dd7c9af96d995cef5cfe36f79aa3413a62e067a032390bd8b",
+  "upload": {
+    "fileId": "gid://shopify/MediaImage/70116579869052",
+    "url": "https://cdn.shopify.com/s/files/1/0920/5550/3228/files/gravuru-tuerschild-acryl-h1-vanessa-krueger-e5c9970d.png?v=1794421762"
+  },
+  "operations": [
+    {
+      "operation": "upload_image",
+      "newFiles": 1
+    },
+    {
+      "operation": "fileUpdate",
+      "id": "gid://shopify/MediaImage/70116579869052",
+      "referencesToAdd": [
+        "gid://shopify/Product/16190784602492"
+      ],
+      "userErrors": []
+    },
+    {
+      "operation": "productReorderMedia",
+      "productId": "gid://shopify/Product/16190784602492",
+      "moves": [
+        {
+          "id": "gid://shopify/MediaImage/70116579869052",
+          "newPosition": "0"
+        }
+      ],
+      "mediaUserErrors": []
+    }
+  ],
+  "verification": {
+    "featuredImageUrl": "https://cdn.shopify.com/s/files/1/0920/5550/3228/files/gravuru-tuerschild-acryl-h1-vanessa-krueger-e5c9970d.png?v=1794421762",
+    "expectedFeaturedImage": true,
+    "imagesInOrder": [
+      {
+        "url": "https://cdn.shopify.com/s/files/1/0920/5550/3228/files/gravuru-tuerschild-acryl-h1-vanessa-krueger-e5c9970d.png?v=1794421762",
+        "altText": "Personalisiertes Türschild aus schwarzem Acrylglas, 3 mm, mit Vanessa Krüger und Hausmotiv – Beispielgestaltung",
+        "mediaId": "gid://shopify/MediaImage/70116579869052"
+      },
+      {
+        "url": "https://cdn.shopify.com/s/files/1/0920/5550/3228/files/gravuru-tuerschild-acryl-leer-pr156-e5a1504afe98.webp?v=1793717959",
+        "altText": "Türschild Acrylglas 3 mm – Form und Größe selbst wählen – leeres Schild, Vorschau 12 × 8 cm",
+        "mediaId": "gid://shopify/MediaImage/70017733919100"
+      }
+    ],
+    "statusBefore": "DRAFT",
+    "statusAfter": "DRAFT",
+    "totalVariantsBefore": 808,
+    "totalVariantsAfter": 808,
+    "returnedVariantRowsCompared": 50,
+    "returnedVariantRowsIdentical": true,
+    "titleDescriptionTagsIdentical": true
+  },
+  "scope": {
+    "productsCreated": 0,
+    "productsUpdated": 1,
+    "productMediaAdded": 1,
+    "productMediaDeleted": 0,
+    "variantWrites": 0,
+    "priceWrites": 0,
+    "statusWrites": 0,
+    "configuratorWrites": 0,
+    "published": false
+  }
+}

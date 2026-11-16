@@ -1,12 +1,13 @@
 // Additive exact-ID activation over the EXISTING order-intake connection. No DB
 // constructor, Shopify call, option register, price formula or production release.
 import {createHash, randomUUID} from 'node:crypto';
-import {withBindingReadSnapshot} from './shop-product-binding-read-snapshot.mjs';
+import {withBindingReadSnapshot,registerBindingReadScope} from './shop-product-binding-read-snapshot.mjs';
 import {isDeepStrictEqual} from 'node:util';
 import {resolveShopProductBinding} from './shop-product-binding-plan.mjs';
-import {prepareShopProduct} from './shop-preparation.mjs';
+import {prepareShopProduct,withShopPreparationSnapshot} from './shop-preparation.mjs';
 import {createShopGalleryCache} from './shop-gallery-cache.mjs';
 import {performance} from 'node:perf_hooks';
+import {customerDatabaseRead,databaseEpoch} from './customer-read-scope.mjs';
 
 const plain = v => v !== null && typeof v === 'object' && !Array.isArray(v) && [Object.prototype,null].includes(Object.getPrototypeOf(v));
 const positive = v => Number.isSafeInteger(v) && v > 0;
@@ -38,11 +39,20 @@ export function createShopProductBindingStore({database:db,orderIntake,tenantId,
     fail('shop_binding_store_configuration','Die private ID-Speicherung ist nicht eingerichtet.',503);
   const scope={tenantId,storeId,shopDomain};
   function ensureScope(){if(orderIntake.tenantId!==tenantId||Object.keys(scope).some(k=>adapter[k]!==scope[k]))fail('shop_binding_store_scope','Store, Shop und Mandant stimmen nicht überein.',503);}
+  let revisionReadScope;
   function transaction(work){
     const nested=db.isTransaction,savepoint='id_binding_'+randomUUID().replaceAll('-','');
-    db.exec(nested?'SAVEPOINT '+savepoint:'BEGIN IMMEDIATE');
-    try{const value=sync(work);db.exec(nested?'RELEASE SAVEPOINT '+savepoint:'COMMIT');return value;}
-    catch(error){if(nested){db.exec('ROLLBACK TO SAVEPOINT '+savepoint);db.exec('RELEASE SAVEPOINT '+savepoint);}else db.exec('ROLLBACK');throw error;}
+    const recursive=db.prepare('PRAGMA recursive_triggers').get().recursive_triggers,previousScope=revisionReadScope;
+    if(!recursive)db.exec('PRAGMA recursive_triggers=ON');
+    revisionReadScope??=new Map();
+    try{
+      db.exec(nested?'SAVEPOINT '+savepoint:readOnly?'BEGIN':'BEGIN IMMEDIATE');
+      try{const value=sync(work);db.exec(nested?'RELEASE SAVEPOINT '+savepoint:'COMMIT');return value;}
+      catch(error){if(nested){db.exec('ROLLBACK TO SAVEPOINT '+savepoint);db.exec('RELEASE SAVEPOINT '+savepoint);}else db.exec('ROLLBACK');throw error;}
+    }finally{
+      revisionReadScope=previousScope;
+      db.exec('PRAGMA recursive_triggers='+(recursive?'ON':'OFF'));
+    }
   }
   ensureScope();
   // Legacy is an explicit fixed server scope, never inferred from missing columns.
@@ -80,8 +90,8 @@ export function createShopProductBindingStore({database:db,orderIntake,tenantId,
     ON r.tenant_id=h.tenant_id AND r.shop=h.shop AND r.variant_gid=h.variant_gid AND r.revision=h.revision
     WHERE h.tenant_id=? AND h.shop=? AND h.variant_gid=?`).get(tenantId,shopDomain,variant);
   function ids(value){if(!plain(value)||Object.keys(value).length!==2||!productGid.test(value.shopifyProductId)||!variantGid.test(value.shopifyVariantId))fail('shop_binding_identity','Beide vollständigen Shopify-IDs sind erforderlich.',422);return value;}
-  function productRow(id,revision,{requireHead=false,withMetadata=true}={}){
-    const columns=`p.revision AS head,p.archived,p.kind,r.document,${withMetadata?'r.metadata,':''}r.status`;
+  function productRow(id,revision,{requireHead=false,withMetadata=true,withDocument=true}={}){
+    const columns=`p.revision AS head,p.archived,p.kind,${withDocument?'r.document,':''}${withMetadata?'r.metadata,':''}r.status`;
     const row=legacySingleStore?db.prepare(`SELECT ${columns}
       FROM products p JOIN product_revisions r ON r.product_id=p.id WHERE p.id=? AND r.revision=?`).get(id,revision):db.prepare(`SELECT ${columns}
       FROM products p JOIN product_revisions r ON r.product_id=p.id AND r.tenant_id=p.tenant_id
@@ -90,6 +100,74 @@ export function createShopProductBindingStore({database:db,orderIntake,tenantId,
       fail('shop_binding_cfg_changed','Der bestätigte Produktstand ist nicht mehr verfügbar oder aktuell.');
     return row;
   }
+  let checkedSchema;
+  function immutableRevisionSchema(){
+    const version=db.prepare('PRAGMA schema_version').get().schema_version;
+    const tempVersion=db.prepare('PRAGMA temp.schema_version').get().schema_version;
+    if(checkedSchema?.version!==version||checkedSchema?.tempVersion!==tempVersion){
+      const rows=db.prepare("SELECT name,sql FROM sqlite_master WHERE type='trigger' AND tbl_name='product_revisions'").all();
+      const native=event=>rows.some(row=>{
+        const name='immutable_revision_'+event.toLowerCase(),sql=row.sql?.replace(/\s+/g,' ').trim().replace(/;$/,'').replace(/^CREATE TRIGGER IF NOT EXISTS /,'CREATE TRIGGER ');
+        return row.name===name&&sql===`CREATE TRIGGER ${name} BEFORE ${event} ON product_revisions BEGIN SELECT RAISE(ABORT, 'Product revisions are immutable'); END`;
+      });
+      const headTriggers=db.prepare("SELECT name,sql FROM sqlite_master WHERE type='trigger' AND tbl_name IN ('shop_product_binding_revisions','shop_product_binding_heads') UNION ALL SELECT name,sql FROM sqlite_temp_master WHERE type='trigger' AND tbl_name IN ('shop_product_binding_revisions','shop_product_binding_heads')").all();
+      const expectedHeadTriggers=new Map([
+        ['shop_product_binding_revision_fixed',"CREATE TRIGGER shop_product_binding_revision_fixed BEFORE UPDATE ON shop_product_binding_revisions BEGIN SELECT RAISE(ABORT,'Active binding revisions are immutable');END"],
+        ['shop_product_binding_revision_keep',"CREATE TRIGGER shop_product_binding_revision_keep BEFORE DELETE ON shop_product_binding_revisions BEGIN SELECT RAISE(ABORT,'Active binding revisions are immutable');END"],
+        ['shop_product_binding_head_keep',"CREATE TRIGGER shop_product_binding_head_keep BEFORE DELETE ON shop_product_binding_heads BEGIN SELECT RAISE(ABORT,'Active binding heads require an explicit transition');END"],
+      ]);
+      const normalize=sql=>sql?.replace(/\s+/g,' ').trim().replace(/;$/,'').replace(/^CREATE (TABLE|TRIGGER) IF NOT EXISTS /,'CREATE $1 ');
+      const expectedHeadTables=new Map([
+        ['shop_product_binding_revisions',normalize(`CREATE TABLE shop_product_binding_revisions(
+      tenant_id TEXT NOT NULL,shop TEXT NOT NULL,variant_gid TEXT NOT NULL,revision INTEGER NOT NULL CHECK(revision>0),
+      product_gid TEXT NOT NULL,store_id TEXT NOT NULL,binding_id TEXT NOT NULL REFERENCES form_shop_bindings(id),
+      cfg_id TEXT NOT NULL,cfg_revision INTEGER NOT NULL CHECK(cfg_revision>0),document_sha256 TEXT NOT NULL,
+      evidence_read_at TEXT NOT NULL,created_at TEXT NOT NULL,
+      PRIMARY KEY(tenant_id,shop,variant_gid,revision))`)],
+        ['shop_product_binding_heads',normalize(`CREATE TABLE shop_product_binding_heads(
+      tenant_id TEXT NOT NULL,shop TEXT NOT NULL,variant_gid TEXT NOT NULL,revision INTEGER NOT NULL,
+      PRIMARY KEY(tenant_id,shop,variant_gid),
+      FOREIGN KEY(tenant_id,shop,variant_gid,revision) REFERENCES shop_product_binding_revisions(tenant_id,shop,variant_gid,revision))`)],
+      ]);
+      const headTables=db.prepare("SELECT name,sql FROM sqlite_master WHERE type='table' AND name IN ('shop_product_binding_revisions','shop_product_binding_heads')").all();
+      const extendedHeads=db.prepare("SELECT 1 FROM sqlite_temp_master WHERE name IN ('shop_product_binding_revisions','shop_product_binding_heads') UNION ALL SELECT 1 FROM sqlite_master WHERE type='index' AND sql IS NOT NULL AND tbl_name IN ('shop_product_binding_revisions','shop_product_binding_heads') LIMIT 1").get();
+      const pureHeads=!extendedHeads&&headTriggers.length===expectedHeadTriggers.size&&headTriggers.every(row=>normalize(row.sql)===expectedHeadTriggers.get(row.name))&&headTables.length===expectedHeadTables.size&&headTables.every(row=>normalize(row.sql)===expectedHeadTables.get(row.name));
+      checkedSchema={version,tempVersion,immutable:!legacySingleStore&&native('UPDATE')&&native('DELETE'),pureHeads};
+    }
+    return checkedSchema;
+  }
+  function revisionStamp(id,revision,{requireHead=false}={}){
+    const schema=immutableRevisionSchema();
+    // REPLACE executes delete triggers only with recursive_triggers enabled.
+    // Check every write epoch too: OFF -> REPLACE -> ON must not evade the guard.
+    const recursive=db.prepare('PRAGMA recursive_triggers').get().recursive_triggers;
+    const light=db.isTransaction&&revisionReadScope&&schema.immutable&&recursive===1;
+    const row=productRow(id,revision,{requireHead,withMetadata:!light,withDocument:!light});
+    if(light){
+      const changes=db.prepare('SELECT total_changes() AS count').get().count,key=id+'@'+revision,previous=revisionReadScope.get(key);
+      if(!previous||previous.changes!==changes){
+        const raw=productRow(id,revision,{requireHead});
+        if(previous&&(previous.document!==raw.document||previous.metadata!==raw.metadata))fail('shop_binding_cfg_changed','Der feste Produktbeleg wurde innerhalb der Prüfung ersetzt.');
+        revisionReadScope.set(key,{changes,document:raw.document,metadata:raw.metadata});
+      }
+    }
+    return {schema:light?schema.version:null,...row};
+  }
+  // Mutable head/archive/status is always reread. Unknown/legacy schemas keep
+  // the full raw-document guard; no assumption about their immutability.
+  const readProductStamp=id=>{
+    if(!db.isTransaction)fail('shop_binding_snapshot_scope','Die Produktprüfung benötigt einen gesperrten Datenstand.',503);
+    const head=legacySingleStore?db.prepare('SELECT revision FROM products WHERE id=?').get(id):db.prepare('SELECT revision FROM products WHERE id=? AND tenant_id=?').get(id,tenantId);
+    if(!head)fail('shop_binding_cfg_changed','Der bestätigte Produktstand fehlt.');
+    return revisionStamp(id,head.revision,{requireHead:true});
+  };
+  function withReadSnapshot(read){
+    if(typeof read!=='function')fail('shop_binding_snapshot_scope','Eine synchrone Prüfung ist erforderlich.',422);
+    return transaction(()=>withBindingReadSnapshot(adapter,()=>sync(read),{readProductStamp}));
+  }
+  // An audit registry must not replace an existing writable adapter's reader;
+  // its temporary read-only connection may be closed immediately after audit.
+  if(!readOnly)registerBindingReadScope(adapter,withReadSnapshot);
   function bindingFor(id){
     const row=legacySingleStore?db.prepare(`SELECT b.*,s.options FROM form_shop_bindings b LEFT JOIN form_shop_binding_selections s
       ON s.binding_id=b.id WHERE b.id=?`).get(id):db.prepare(`SELECT b.*,s.options FROM form_shop_bindings b LEFT JOIN form_shop_binding_selections s
@@ -104,19 +182,57 @@ export function createShopProductBindingStore({database:db,orderIntake,tenantId,
       fail('shop_binding_active_integrity','Bindung, Ausführung und fester Produktstand stimmen nicht überein.');
   }
   function parseDocument(text){try{return JSON.parse(text);}catch{fail('shop_binding_document','Der gespeicherte Produktbeleg ist ungültig.',422);}}
-  function result(row,records=new Map(),timings){
+  function compactReadStamp(stamp){
+    // Gallery scans keep one stamp per fixed product. Preserve the exact raw
+    // byte comparison without retaining every embedded font/image document.
+    // The write-side revisionStamp and its under-lock raw guard stay unchanged.
+    if(stamp===null)return null;
+    const result={...stamp};
+    for(const field of ['document','metadata'])if(typeof result[field]==='string'){
+      result[field]={rawSha256:createHash('sha256').update(result[field]).digest('hex')};
+    }
+    return result;
+  }
+  function result(row,records=new Map(),timings,memo=null,galleryMemo=null){
     if(row.store_id!==storeId)fail('shop_binding_store_scope','Die Zuordnung gehört zu einem anderen Store.',503);
     const key=row.cfg_id+'@'+row.cfg_revision;let record=records.get(key);
+    // Only an asynchronous gallery scan opts in. Never reuse the write-side
+    // transaction stamp, or retain document/metadata bytes across an await.
+    const galleryEpoch=galleryMemo&&!db.isTransaction?databaseEpoch(db):null;
+    const cached=galleryEpoch===null?null:galleryMemo.get(key);
+    let at=performance.now();const stamp=cached?.epoch===galleryEpoch&&galleryEpoch!==null
+      ?{...cached.stamp,...productRow(row.cfg_id,row.cfg_revision,{withMetadata:false,withDocument:false})}
+      :memo&&!legacySingleStore?null:customerDatabaseRead(db,'binding-stamp:'+tenantId+':'+key,()=>compactReadStamp(revisionStamp(row.cfg_id,row.cfg_revision)));if(timings)timings.documentReadMs+=performance.now()-at;
+    if(record&&!isDeepStrictEqual(record.stamp,stamp))fail('shop_binding_cfg_changed','Der Produktbeleg wurde innerhalb der Prüfung geändert.');
     if(!record){
+      const read=()=>customerDatabaseRead(db,'binding-document:'+tenantId+':'+key,()=>{
       let at=performance.now();const source=productRow(row.cfg_id,row.cfg_revision,{withMetadata:false});if(timings)timings.documentReadMs+=performance.now()-at;
       at=performance.now();const document=parseDocument(source.document);if(timings)timings.documentParseMs+=performance.now()-at;
-      at=performance.now();record={digest:digest(document),productionStatus:document.productionProfile==null?'profile-assignment-pending':'not-released'};if(timings){timings.documentHashMs+=performance.now()-at;timings.products++;}
+      at=performance.now();record={digest:digest(document),productionStatus:document.productionProfile==null?'profile-assignment-pending':'not-released',status:source.status};if(timings){timings.documentHashMs+=performance.now()-at;timings.products++;}
+      return record;
+      });
+      // Nur Kundenweg mit Antwortspeicher (memo): Ableitung (Prüfsumme) der unveränderlichen Revision wiederverwenden, wenn der
+      // frische Beleg (rowid, Schema, Kopf) passt. Archivierung, Art und Status werden trotzdem bei jedem Aufruf entschieden –
+      // mit denselben Bedingungen und demselben Fehler wie productRow; ohne Beleg oder bei Fehlschlag gilt der bisherige Weg.
+      if(memo&&!legacySingleStore){
+        const found=memo.derive({scope:storeId,kind:'binding-record',db,tenantId,productId:row.cfg_id,revision:row.cfg_revision,compute:read});
+        record=found.value;
+        if(found.hit&&(found.marker.archived||found.marker.kind!=='product'||record.status==='archived'))record=read();
+      }else record=read();
+      record={...record,stamp};
       // Retain only the digest, never all parsed documents of a large catalogue.
-      records.set(key,record);
+      if(galleryEpoch===null)records.set(key,record);
     }
-    const at=performance.now(),bound=bindingFor(row.binding_id);if(timings)timings.bindingReadMs+=performance.now()-at;
+    at=performance.now();const bound=bindingFor(row.binding_id);if(timings)timings.bindingReadMs+=performance.now()-at;
     if(record.digest!==row.document_sha256)fail('shop_binding_active_integrity','Der feste Produktbeleg wurde verändert.');
     assertBinding(bound,{shopifyVariantId:row.variant_gid,productId:row.cfg_id,productRevision:row.cfg_revision,baseUnitCents:bound.unit_cents,options:bound.options});
+    if(galleryEpoch!==null){
+      // Include the document/digest and binding reads in the same checked
+      // epoch. Changes cause the next read to compare against the ORIGINAL
+      // compact stamp; they never silently replace a gallery's baseline.
+      if(databaseEpoch(db)!==galleryEpoch)fail('shop_binding_cfg_changed','Der Produktbeleg wurde während der Galerieprüfung geändert.');
+      records.set(key,record);galleryMemo.set(key,{epoch:galleryEpoch,stamp});
+    }
     return {...scope,shopifyProductId:row.product_gid,shopifyVariantId:row.variant_gid,
       bindingId:row.binding_id,productId:row.cfg_id,productRevision:row.cfg_revision,
       options:clone(bound.options),unitCents:bound.unit_cents,assignmentRevision:row.revision,
@@ -137,7 +253,7 @@ export function createShopProductBindingStore({database:db,orderIntake,tenantId,
         fail('shop_binding_expected_head','Erwartete Zuordnungsstände sind unvollständig oder ungültig.',422);
       expected.set(item.shopifyVariantId,item.revision);
     }
-    return transaction(()=>{
+    return withReadSnapshot(()=>{
       storedScope();
       const now=clock();if(!Number.isSafeInteger(now)||now<0)fail('shop_binding_freshness','Ungültige Prüfzeit.',422);
       // All current heads and documents are checked AFTER BEGIN IMMEDIATE on the
@@ -147,23 +263,35 @@ export function createShopProductBindingStore({database:db,orderIntake,tenantId,
       const checked=withBindingReadSnapshot(adapter,()=>plan.entries.map(entry=>{
         if(!expected.has(entry.shopifyVariantId))fail('shop_binding_expected_head','Ein erwarteter Zuordnungsstand fehlt.',422);
         const resolved=resolveShopProductBinding(plan,{...scope,shopifyProductId:entry.shopifyProductId,shopifyVariantId:entry.shopifyVariantId,adapter,now});
-        const row=productRow(resolved.productId,resolved.productRevision,{requireHead:true}),record=sync(adapter.getCurrentProduct,resolved.productId);
-        if(digest(JSON.parse(row.document))!==resolved.documentSha256||!isDeepStrictEqual(JSON.parse(row.document),record.document)||
-          !isDeepStrictEqual(JSON.parse(row.metadata),record.metadata)||row.status!==record.status)
-          fail('shop_binding_cfg_changed','Die bestehende Datenbank stimmt nicht mit dem bestätigten Produktbeleg überein.');
+        const record=sync(adapter.getCurrentProduct,resolved.productId),stamp=revisionStamp(resolved.productId,resolved.productRevision,{requireHead:true});
+        const recordKey=resolved.productId+'@'+resolved.productRevision,previous=checkedRecords.get(recordKey);
+        if(previous){
+          if(!isDeepStrictEqual(previous.stamp,stamp)||(previous.record!==record&&!isDeepStrictEqual(previous.record,record))||previous.digest!==resolved.documentSha256)
+            fail('shop_binding_cfg_changed','Der Produktbeleg wurde innerhalb der atomaren Prüfung geändert.');
+        }else{
+          const row=productRow(resolved.productId,resolved.productRevision,{requireHead:true}),document=parseDocument(row.document),metadata=parseDocument(row.metadata),hash=digest(document);
+          if(hash!==resolved.documentSha256||!isDeepStrictEqual(document,record.document)||!isDeepStrictEqual(metadata,record.metadata)||row.status!==record.status)
+            fail('shop_binding_cfg_changed','Die bestehende Datenbank stimmt nicht mit dem bestätigten Produktbeleg überein.');
+          checkedRecords.set(recordKey,{stamp,record,digest:hash});
+        }
         const old=currentHead(resolved.shopifyVariantId),expectedRevision=expected.get(resolved.shopifyVariantId);
         if((old?.revision??null)!==expectedRevision)fail('shop_binding_head_conflict','Die aktive Zuordnung wurde inzwischen geändert.');
         if(old&&(old.product_gid!==resolved.shopifyProductId||old.store_id!==storeId||old.cfg_id!==resolved.productId))
           fail('shop_binding_active_conflict','Die Variante besitzt bereits eine andere aktive Produkt- oder Storezuordnung.');
-        const recordKey=resolved.productId+'@'+resolved.productRevision;
-        const previous=checkedRecords.get(recordKey);
-        if(previous&&!isDeepStrictEqual(previous,record))
-          fail('shop_binding_cfg_changed','Der Produktbeleg hat sich innerhalb der atomaren Pruefung geaendert.');
-        if(!previous)checkedRecords.set(recordKey,record);
-        return {entry:resolved,record:previous??record,old};
+        return {entry:resolved,record:previous?.record??record,old};
       }));
       let createdBindings=0,changedAssignments=0;
-      const assignments=checked.map(({entry,record,old})=>{
+      const resultRecords=new Map();
+      const assignmentRow=row=>{
+        const schema=immutableRevisionSchema();
+        // Only exact native head writes have no trigger callbacks/side effects.
+        // A custom/legacy schema keeps the previous immediate complete check.
+        return schema.immutable&&schema.pureHeads?{row}:{value:result(row,resultRecords)};
+      };
+      const preparedRecords=new Map(),sources=[...checkedRecords.entries()];
+      const withinPrepared=(index,read)=>index===sources.length?read():withShopPreparationSnapshot(sources[index][1].record,record=>{preparedRecords.set(sources[index][0],record);return withinPrepared(index+1,read);});
+      const assignmentRows=withinPrepared(0,()=>checked.map(({entry,record:sourceRecord,old})=>{
+        const record=preparedRecords.get(entry.productId+'@'+entry.productRevision)??sourceRecord;
         let bindingId=entry.binding.id;
         if(entry.binding.mode==='reuse')assertBinding(bindingFor(bindingId),entry);
         else{
@@ -176,14 +304,22 @@ export function createShopProductBindingStore({database:db,orderIntake,tenantId,
           bindingId=saved.bindings[0].id;createdBindings+=saved.created;
           assertBinding(bindingFor(bindingId),entry);
         }
-        if(old&&old.binding_id===bindingId&&old.cfg_revision===entry.productRevision&&old.document_sha256===entry.documentSha256)return result(old);
+        // A provider/binding callback must not alter the product after its read.
+        const verified=checkedRecords.get(entry.productId+'@'+entry.productRevision);
+        if(!isDeepStrictEqual(revisionStamp(entry.productId,entry.productRevision,{requireHead:true}),verified.stamp))fail('shop_binding_cfg_changed','Der Produktstand wurde während der Speicherung geändert.');
+        if(old&&old.binding_id===bindingId&&old.cfg_revision===entry.productRevision&&old.document_sha256===entry.documentSha256)return assignmentRow(old);
         const next=(old?.revision??0)+1;
         db.prepare(`INSERT INTO shop_product_binding_revisions(tenant_id,shop,variant_gid,revision,product_gid,store_id,binding_id,cfg_id,cfg_revision,document_sha256,evidence_read_at,created_at)
           VALUES(?,?,?,?,?,?,?,?,?,?,?,?)`).run(tenantId,shopDomain,entry.shopifyVariantId,next,entry.shopifyProductId,storeId,bindingId,entry.productId,entry.productRevision,entry.documentSha256,plan.evidenceReadAt,new Date(now).toISOString());
         if(old){const update=db.prepare('UPDATE shop_product_binding_heads SET revision=? WHERE tenant_id=? AND shop=? AND variant_gid=? AND revision=?').run(next,tenantId,shopDomain,entry.shopifyVariantId,old.revision);if(update.changes!==1)fail('shop_binding_head_conflict','Die aktive Zuordnung wurde inzwischen geändert.');}
         else db.prepare('INSERT INTO shop_product_binding_heads(tenant_id,shop,variant_gid,revision) VALUES(?,?,?,?)').run(tenantId,shopDomain,entry.shopifyVariantId,next);
-        changedAssignments++;return result(currentHead(entry.shopifyVariantId));
-      });
+        changedAssignments++;return assignmentRow(currentHead(entry.shopifyVariantId));
+      }));
+      // Keep every provider/binding callback check above. Materialize the return
+      // values only once the synchronous batch has finished writing its heads;
+      // these internal result reads need no intermediate view of each head write.
+      // Final source/binding integrity checks still run for every returned row.
+      const assignments=assignmentRows.map(item=>item.value??result(item.row,resultRecords));
       const finished=clock(),readAt=Date.parse(plan.evidenceReadAt);
       if(!Number.isSafeInteger(finished)||finished<now||!Number.isFinite(readAt)||finished-readAt>plan.maxEvidenceAgeMs)
         fail('shop_binding_freshness','Die ID-Prüfung ist vor Abschluss der Speicherung abgelaufen.');
@@ -191,7 +327,11 @@ export function createShopProductBindingStore({database:db,orderIntake,tenantId,
         written:createdBindings>0||changedAssignments>0,shopifyWrites:false,productionReady:false,publicAccess:false,checkoutEnabled:false};
     });
   }
-  function resolve(input){storedScope();const pair=ids(input),row=currentHead(pair.shopifyVariantId);if(!row||row.product_gid!==pair.shopifyProductId)fail('shop_binding_active_not_found','Keine ausdrückliche aktive Zuordnung für diese beiden Shopify-IDs.',404);return result(row);}
+  function resolve(input,{documentMemo=null}={}){storedScope();const pair=ids(input),row=currentHead(pair.shopifyVariantId);if(!row||row.product_gid!==pair.shopifyProductId)fail('shop_binding_active_not_found','Keine ausdrückliche aktive Zuordnung für diese beiden Shopify-IDs.',404);return result(row,undefined,undefined,documentMemo);}
+  function resolveMany(inputs){
+    if(!Array.isArray(inputs)||!inputs.length||inputs.length>5000)fail('shop_binding_identity','Eine begrenzte Liste vollständiger Shopify-IDs ist erforderlich.',422);
+    return transaction(()=>{storedScope();const records=new Map();return inputs.map(input=>{const pair=ids(input),row=currentHead(pair.shopifyVariantId);if(!row||row.product_gid!==pair.shopifyProductId)fail('shop_binding_active_not_found','Keine ausdrückliche aktive Zuordnung für diese beiden Shopify-IDs.',404);return result(row,records);});});
+  }
 
   function activeRows(){
     storedScope();
@@ -216,8 +356,8 @@ export function createShopProductBindingStore({database:db,orderIntake,tenantId,
       WHERE h.tenant_id=? AND h.shop=? AND r.store_id=? ORDER BY h.variant_gid`).all(tenantId,shopDomain,storeId);
     return createHash('sha256').update(JSON.stringify(rows)).digest('hex');
   }
-  function galleryResult(row,records,timings){
-    try{return result(row,records,timings);}
+  function galleryResult(row,records,timings,galleryMemo=null){
+    try{return result(row,records,timings,null,galleryMemo);}
     catch(error){
       if(!['shop_binding_cfg_changed','shop_binding_active_integrity','shop_binding_document'].includes(error.code))throw error;
       // Fixed diagnostic codes only: never document text, tokens or customer fields.
@@ -229,15 +369,15 @@ export function createShopProductBindingStore({database:db,orderIntake,tenantId,
     const records=new Map();return activeRows().map(row=>galleryResult(row,records)).filter(Boolean);
   }
   async function listActiveForGallery({onMeasure=()=>{}}={}){
-    const started=performance.now(),rows=activeRows(),records=new Map(),bindings=[];
+    const started=performance.now(),rows=activeRows(),records=new Map(),galleryMemo=new Map(),bindings=[];
     const timings={activeRowsMs:performance.now()-started,documentReadMs:0,documentParseMs:0,documentHashMs:0,bindingReadMs:0,products:0,bindings:rows.length};
     for(let i=0;i<rows.length;i++){
       if(i%8===0)await new Promise(resolve=>setImmediate(resolve));
-      const binding=galleryResult(rows[i],records,timings);if(binding)bindings.push(binding);
+      const binding=galleryResult(rows[i],records,timings,galleryMemo);if(binding)bindings.push(binding);
     }
     onMeasure({...timings,totalMs:performance.now()-started});return bindings;
   }
   function history(input){storedScope();const pair=ids(input);return db.prepare('SELECT * FROM shop_product_binding_revisions WHERE tenant_id=? AND shop=? AND variant_gid=? AND product_gid=? ORDER BY revision').all(tenantId,shopDomain,pair.shopifyVariantId,pair.shopifyProductId).map(row=>({...scope,shopifyProductId:row.product_gid,shopifyVariantId:row.variant_gid,assignmentRevision:row.revision,bindingId:row.binding_id,productId:row.cfg_id,productRevision:row.cfg_revision,documentSha256:row.document_sha256,evidenceReadAt:row.evidence_read_at,createdAt:row.created_at,productionReady:false}));}
   const galleryCache=createShopGalleryCache({database:db,...scope,readOnly});
-  return Object.freeze({...scope,persist,resolve,history,listActive,galleryRevision,listActiveForGallery,galleryCache});
+  return Object.freeze({...scope,persist,resolve,resolveMany,withReadSnapshot,history,listActive,galleryRevision,listActiveForGallery,galleryCache});
 }

@@ -38,14 +38,26 @@ test('doorbell selection uses a persistent slot through deselection, mobile and 
 test('desktop tools sit above the plate; repeated placement preserves the original controls and listeners',()=>{
   const f=fixture();let undo=0,edit=0;f.toolbar.addEventListener('click',()=>undo++);f.panel.addEventListener('click',()=>edit++);
   for(let i=0;i<3;i++)assert.equal(f.place(false,false),true);
-  assert.deepEqual(f.preview.children,[f.toolbar,f.panel,f.preview.canvas]);assert.deepEqual(f.workbench.children,[]);assert.equal(f.workbench.hidden,true);assert.equal(f.panel.classes.has('is-workbench'),true);
+  assert.deepEqual(f.heading.children,[f.toolbar]);assert.deepEqual(f.preview.children,[f.panel,f.preview.canvas]);assert.deepEqual(f.workbench.children,[]);assert.equal(f.workbench.hidden,true);assert.equal(f.panel.classes.has('is-workbench'),true);
   f.toolbar.dispatchEvent(new Event('click'));f.panel.dispatchEvent(new Event('click'));assert.equal(undo,1);assert.equal(edit,1);
 });
 
-test('mobile keeps general tools in the heading and the two-row text dock before the plate',()=>{
+test('mobile keeps general tools in the heading and the text dock before the plate',()=>{
   const f=fixture();f.place(false,false);assert.equal(f.place(true,false),false);
   assert.deepEqual(f.heading.children,[f.toolbar]);assert.deepEqual(f.preview.children,[f.panel,f.preview.canvas]);assert.equal(f.workbench.hidden,true);
   assert.equal(f.panel.classes.has('is-docked'),true);assert.equal(f.panel.classes.has('is-workbench'),false);assert.equal(f.panel.classes.has('is-fullscreen-dock'),false);
+});
+
+test('mobile selection retains its reserved slot and original listeners through fullscreen',()=>{
+ const f=fixture(),stableHost=new Node();f.preview.insertBefore(stableHost,f.preview.canvas);let edits=0;f.panel.addEventListener('click',()=>edits++);
+ const children=[...f.preview.children];
+ for(const hidden of [true,false,true,false]){
+  f.panel.hidden=hidden;placeDirectToolbar({...f,stableHost,mobile:true,full:false});
+  assert.deepEqual(f.preview.children,children);assert.equal(f.panel.parentNode,stableHost);assert.equal(f.panel.hidden,hidden);
+  placeDirectToolbar({...f,stableHost,mobile:true,full:true});assert.equal(f.panel.parentNode,f.stage);
+  placeDirectToolbar({...f,stableHost,mobile:true,full:false});assert.equal(f.panel.parentNode,stableHost);
+ }
+ f.panel.dispatchEvent(new Event('click'));assert.equal(edits,1);
 });
 
 test('fullscreen and viewport changes return both original bars to the correct hosts',()=>{
@@ -55,9 +67,9 @@ test('fullscreen and viewport changes return both original bars to the correct h
     assert.deepEqual(f.full.children,[f.full.close,f.toolbar]);assert.equal(f.panel.parentNode,f.stage);assert.equal(f.workbench.hidden,true);
     assert.equal(f.panel.classes.has('is-workbench'),false);assert.equal(f.panel.classes.has('is-fullscreen-dock'),mobile);
     f.place(!mobile,true);assert.equal(f.panel.parentNode,f.stage);assert.equal(f.panel.classes.has('is-fullscreen-dock'),!mobile);
-    f.place(!mobile,false);assert.equal(f.toolbar.parentNode,!mobile?f.heading:f.preview);assert.equal(f.panel.parentNode,f.preview);
+    f.place(!mobile,false);assert.equal(f.toolbar.parentNode,f.heading);assert.equal(f.panel.parentNode,f.preview);
   }
-  f.place(false,false);assert.deepEqual(f.preview.children,[f.toolbar,f.panel,f.preview.canvas]);assert.equal(f.full.children.length,1);
+  f.place(false,false);assert.deepEqual(f.heading.children,[f.toolbar]);assert.deepEqual(f.preview.children,[f.panel,f.preview.canvas]);assert.equal(f.full.children.length,1);
 });
 
 test('returning from canvas placement removes absolute offsets and scale; hidden state stays hidden',()=>{

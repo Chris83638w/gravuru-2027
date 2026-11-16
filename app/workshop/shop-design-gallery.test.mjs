@@ -8,6 +8,7 @@ import assert from 'node:assert/strict';
 import {doorbellFixture} from './test-fixtures/doorbell-config.mjs';
 import {quote} from '../configurator/variant-m/contract.mjs';
 import {createShopDesignGallery} from './shop-design-gallery.mjs';
+import {MODULE_PROFILE_SCHEMA} from '../configurator/variant-m/module-profile.mjs';
 
 // Synthetic immutable-model transport only. Real quote, geometry, signing and
 // preview code run here; no Shopify connection or production data is opened.
@@ -28,6 +29,18 @@ test('gallery cards and signed target resolve the exact product, variant, option
  const f=fixture(),b=f.add(2,{price:2499}),card=(await f.gallery.list(f.context)).items.find(i=>i.productId===b.productId);
  assert.equal(card.unitCents,2499);assert.equal(card.currency,'EUR');assert.equal(card.widthMm,120);assert.equal(card.heightMm,80);assert.equal(card.shape,'rect');assert.equal(card.current,false);
  const target=f.gallery.target(f.context,card.target);assert.deepEqual(target.binding,b);assert.equal(target.price.unitCents,2499);assert.equal(target.design.id,'d1');assert.equal(target.model.configuration.id,b.productId);
+});
+
+test('disabled source design module refuses listing, cached target and preview even when the destination permits designs',async()=>{
+ const f=fixture(),destination=f.add(2),card=(await f.gallery.list(f.context)).items.find(item=>item.productId===destination.productId);
+ const source=f.models.get(f.context.binding.productId);
+ source.universal.moduleProfile={schema:MODULE_PROFILE_SCHEMA,id:'fixed-design',revision:1,modules:{options:true,designs:false,text:true,motifs:true,photo:false,logo:false,colors:false}};
+ await assert.rejects(()=>f.gallery.list(f.context,{sourceModel:source}),{status:403,code:'shop_gallery_disabled'});
+ assert.throws(()=>f.gallery.target(f.context,card.target),{status:403,code:'shop_gallery_disabled'});
+ assert.throws(()=>f.gallery.preview(f.context,card.target),{status:403,code:'shop_gallery_disabled'});
+ assert.equal(f.gallery.start(f.context,source,'d1'),null);
+ delete source.universal.moduleProfile;
+ assert.equal(f.gallery.target(f.context,card.target).binding.productId,destination.productId,'legacy source retains its existing signed-target behavior');
 });
 
 test('signed targets cannot be forged, borrowed from another session or switched to a different store',async()=>{
@@ -270,7 +283,7 @@ test('invalid signature, changed secret, wrong scope and cache I/O failures rebu
   f.store.registry.galleryCache={read:()=>saved,write:(_r,value)=>{saved=value;}};
   const options={secret:'cache-secret',resolve:()=>{},modelFor:(_s,b)=>f.models.get(b.productId),allowedAssets:()=>new Set()};
   await createShopDesignGallery(options).list(f.context);assert.equal(reads,1);
-  if(scenario==='tampered')saved.payload=saved.payload.replace('Design 1','Forged design');
+  if(scenario==='tampered')saved.payload+=' ';
   if(scenario==='secret')options.secret='rotated-secret';
   if(scenario==='scope')f.store.storeId='another-store';
   if(scenario==='read-error')f.store.registry.galleryCache.read=()=>{throw Error('storage unavailable');};
@@ -317,4 +330,65 @@ test('template previews are content-addressed and reused without accepting stale
  f.bindings.get(f.context.binding.shopifyVariantId).assignmentRevision++;
  assert.throws(()=>f.gallery.preview(f.context,second.target),{code:'shop_gallery_changed'});
  assert.equal(f.gallery.previewFile('0'.repeat(64)),null);
+});
+
+
+test('all door-sign pages stay inside their line, excluding memorials and doorbells',async()=>{
+ const f=fixture();f.models.get('cfg_1').universal.profile.designs=Array.from({length:85},(_,i)=>({id:'door-'+i,objects:[]}));
+ for(const [n,line] of [[2,'linie-gedenktafeln'],[3,'linie-funkklingeln']]){f.add(n);f.models.get('cfg_'+n).galleryCategoryIds=[line];}
+ f.add(4,{designs:[{id:'door-other-format',objects:[]}]});
+ f.models.get('cfg_4').universal.profile.geometry.width=180;
+ const cards=[];let page=0;do{const result=await f.gallery.list(f.context,{page,theme:'all'});assert.equal(result.total,86);cards.push(...result.items);page=result.nextPage;}while(page!==null);
+ assert.equal(cards.length,86);assert.equal(new Set(cards.map(c=>c.designId)).size,86);assert.deepEqual([...new Set(cards.map(c=>c.productId))].sort(),['cfg_1','cfg_4']);
+});
+
+
+test('search covers all eligible rows before paging, ranks originals first and ignores preferred theme during query',async()=>{
+ const f=fixture(),c=f.models.get('cfg_1').universal;c.profile.themeId='preferred';
+ c.profile.designs=Array.from({length:87},(_,i)=>({id:'d'+i,name:i<45?'Anderes':'Haus '+i,themes:i<45?['preferred']:['other'],katalog:{designId:'TEST-D'+i,prio:i===86?undefined:1,source:i===86?'TEST-D86 (Bestand, Original.cdr)':undefined},objects:[]}));
+ const result=await f.gallery.list(f.context,{q:'Haus'});assert.equal(result.total,42);assert.equal(result.items.length,40);assert.equal(result.items[0].designId,'d86');assert.equal(result.nextPage,1);
+ const tail=await f.gallery.list(f.context,{q:'Haus',page:1});assert.equal(tail.items.length,2);assert.equal(new Set([...result.items,...tail.items].map(d=>d.designId)).size,42);
+ assert.deepEqual((await f.gallery.list(f.context,{q:'D86'})).items.map(d=>d.designId),['d86']);
+ assert.deepEqual((await f.gallery.list(f.context,{q:'TEST-D86'})).items.map(d=>d.designId),['d86']);
+ assert.equal((await f.gallery.list(f.context,{q:'keintreffer'})).total,0);
+});
+test('search cannot reveal hidden, revoked, wrong-material or foreign-store templates',async()=>{
+ const f=fixture();f.add(2,{designs:[{id:'hidden',name:'Gesucht',hidden:true,objects:[]},{id:'revoked',name:'Gesucht',released:false,objects:[]},{id:'wrong-fit',name:'Gesucht',katalog:{fit:'passt nicht'},objects:[]}]});
+ f.add(3,{designs:[{id:'foreign',name:'Gesucht',objects:[]}]}).tenantId='foreign';f.add(4,{designs:[{id:'material',name:'Gesucht',objects:[]}]});f.models.get('cfg_4').universal.profile.material.kind='slate';
+ assert.equal((await f.gallery.list(f.context,{q:'Gesucht'})).total,0);
+ for(const q of ['x'.repeat(81),'line\nfeed',{},null])await assert.rejects(f.gallery.list(f.context,{q}),{code:'shop_gallery_query'});
+});
+test('search metadata follows the revision cache and survives signed snapshot restore',async()=>{
+ const f=fixture();let revision='r1',saved=null;f.store.registry.galleryRevision=()=>revision;f.store.registry.listActiveForGallery=async()=>f.store.registry.listActive();f.store.registry.galleryCache={read:async()=>saved,write:async(_revision,value)=>{saved=value;}};
+ f.models.get('cfg_1').universal.profile.designs[0].name='Anker';assert.equal((await f.gallery.list(f.context,{q:'Anker'})).total,1);
+ f.models.get('cfg_1').universal.profile.designs[0].name='Haus';revision='r2';assert.equal((await f.gallery.list(f.context,{q:'Anker'})).total,0);assert.equal((await f.gallery.list(f.context,{q:'Haus'})).total,1);
+ const restored=createShopDesignGallery({secret:'synthetic-only-gallery-secret',resolve:()=>{throw Error('unexpected resolution');},modelFor:()=>{throw Error('snapshot should restore without rebuilding');},allowedAssets:()=>new Set()});assert.equal((await restored.list(f.context,{q:'Haus'})).total,1);assert.equal((await restored.list(f.context,{q:'Anker'})).total,0);
+});
+
+test('fixed products warm no global cards; selected designs retain paging, search, price and permission checks',async()=>{
+ const f=fixture(),own=f.models.get('cfg_1');own.universal.familyFormats={fixedSize:'120x80'};
+ own.universal.profile.designs=Array.from({length:85},(_,i)=>({id:'d'+i,name:'Haus '+i,objects:[]}));
+ own.universal.profile.designs.push({id:'hidden',name:'Haus hidden',hidden:true,objects:[]},{id:'revoked',name:'Haus revoked',released:false,objects:[]},{id:'misfit',name:'Haus misfit',katalog:{fit:'passt nicht'},objects:[]});
+ f.add(2);f.models.get('cfg_2').universal.familyFormats={fixedSize:'120x80'};
+ const b=f.bindings.get(f.context.binding.shopifyVariantId);
+ f.bindings.set('gid://shopify/ProductVariant/999',{...b,shopifyVariantId:'gid://shopify/ProductVariant/999',bindingId:'other-mounting'});
+ let modelReads=0,saved,allowed=true;const measures=[];
+ f.store.registry.galleryRevision=()=> 'fixed-r1';f.store.registry.listActiveForGallery=async()=>f.store.registry.listActive();
+ f.store.registry.galleryCache={read:()=>saved,write:(_r,value)=>{saved=value;}};
+ const options={secret:'fixed-warm-test',resolve:ids=>({store:f.store,binding:structuredClone(f.bindings.get(ids.shopifyVariantId))}),modelFor:(_s,b)=>f.models.get(b.productId),cardFor:(_s,b)=>{modelReads++;return f.models.get(b.productId);},allowedAssets:()=>new Set(),onMeasure:m=>measures.push(m),checkBinding:()=>{if(!allowed)throw Object.assign(Error('paused'),{status:423});}};
+ const gallery=createShopDesignGallery(options);await gallery.warm(f.context);
+ assert.equal(modelReads,2,'one lightweight model per product/revision despite extra bindings');
+ assert.equal(measures.find(m=>m.event==='shop_gallery_build_measure').cards,0);
+ assert.deepEqual(JSON.parse(saved.payload).scopes,[]);assert.deepEqual(JSON.parse(saved.payload).sources,[]);
+ const pages=await Promise.all([0,1,2].map(page=>gallery.list(f.context,{sourceModel:own,page,q:'Haus'})));
+ assert.deepEqual(pages.map(p=>[p.items.length,p.nextPage,p.total]),[[40,1,85],[40,2,85],[5,null,85]]);
+ assert.ok(pages.flatMap(p=>p.items).every(c=>c.productId==='cfg_1'&&c.shopifyVariantId===b.shopifyVariantId&&c.unitCents===1999&&c.widthMm===120&&c.heightMm===80));
+ assert.equal(modelReads,2,'the public own-model path does not need the global cache');
+ const restarted=createShopDesignGallery(options),fallback=await restarted.list(f.context,{q:'D23'});
+ assert.deepEqual(fallback.items.map(c=>c.designId),['d23']);assert.equal(restarted.target(f.context,fallback.items[0].target).price.unitCents,1999);
+ assert.equal(measures.filter(m=>m.event==='shop_gallery_cache_hit').length,1);
+ allowed=false;await assert.rejects(restarted.list(f.context),{status:423});allowed=true;
+ b.assignmentRevision++;await assert.rejects(restarted.list(f.context),{code:'shop_gallery_changed'});b.assignmentRevision--;
+ own.universal.moduleProfile={schema:MODULE_PROFILE_SCHEMA,id:'disabled',revision:1,modules:{options:true,designs:false,text:true,motifs:true,photo:false,logo:false,colors:false}};
+ await assert.rejects(restarted.list(f.context),{code:'shop_gallery_disabled'});
 });

@@ -1,0 +1,310 @@
+{
+  "schema": "issue230-start-preview-v7-to-v8-review/v1",
+  "readOnly": true,
+  "allPassed": true,
+  "browserScreenshot": false,
+  "designApproval": false,
+  "method": "Existing v7 native-render previews preserved byte-for-byte. Compared all config fields except cmp module identity/revision; actual effective modules, full selected profiles, designs, geometry, material, options and local resources identical in v8. No rerender or screenshot claimed.",
+  "rows": [
+    {
+      "workbook": "Tuerschild-Acrylglas-3mm-5x2_v2",
+      "originalPlanId": "pgp_4f57e6a6-7225-49e6-90a6-73b4e1c454c6",
+      "originalPlanHash": "94f25d75c65f6f126980643a987271c2f0e4afbf07894fb7758dd0a740249383",
+      "finalPlanId": "pgp_03932c0e-6f8f-4177-8ab5-cf7891b5bcdc",
+      "finalPlanHash": "01cf26109b3e49708f122fc7fb46e2493faad1be1e07235b0ff33bed3e28bc96",
+      "renderInputHash": "6b9125247b0e1536f956a009a9c11f082143c784b186e0618dcfc7c2abab5b67",
+      "designId": "katalog-TRE-V2A-5x2-D1",
+      "geometry": {
+        "cornerRadiusMm": 0,
+        "height": 20,
+        "holes": [],
+        "safeMarginMm": 0,
+        "shape": "rect",
+        "width": 50
+      },
+      "material": {
+        "color": "#17191b",
+        "engravingSide": "back",
+        "kind": "acrylic",
+        "thicknessMm": 3,
+        "variant": "schwarz"
+      },
+      "options": {
+        "color": "schwarz",
+        "mounting": "K00"
+      },
+      "svgFile": "Acrylglas-3mm-5x2_v2.svg",
+      "svgSha256": "4f4bd62cf3693fa40b75925123c1eb5377a8a81530a33c47a643ddf5119ad001",
+      "pngFile": "Acrylglas-3mm-5x2_v2.png",
+      "pngSha256": "b58e3cfdf42507efb002e1bad35d948aeedf82ccdcc82d6ec30fd7cc63829b1a",
+      "checks": {
+        "originalPlanMatchesPreview": true,
+        "allConfigExceptModuleIdentitySame": true,
+        "selectedOptionsSame": true,
+        "selectedProfileSame": true,
+        "selectedDesignSame": true,
+        "previewGeometryMatches": true,
+        "previewMaterialMatches": true,
+        "svgBytesUnchanged": true,
+        "pngBytesUnchanged": true
+      },
+      "allPassed": true
+    },
+    {
+      "workbook": "Tuerschild-Acrylglas-3mm-6x2_v2",
+      "originalPlanId": "pgp_e2ea3aad-8536-494b-9fe1-f863cc599cf0",
+      "originalPlanHash": "143c324608de1e0bcbcc47a9bebb1ea859c0e0edadd25f0632049cdf6742a02d",
+      "finalPlanId": "pgp_b6bd6b74-35e6-444e-b2cb-4bf64a49e280",
+      "finalPlanHash": "66931afab9bcac13e82b87ffb2b8e47473fad169e1b623353015e69dc7e31bbc",
+      "renderInputHash": "8ecb497b57521316c2faf766106be942bf00c42a2a791fd6f5a94c5b27b7eddd",
+      "designId": "katalog-TRE-V2A-6x2-D1",
+      "geometry": {
+        "cornerRadiusMm": 0,
+        "height": 20,
+        "holes": [],
+        "safeMarginMm": 0,
+        "shape": "rect",
+        "width": 60
+      },
+      "material": {
+        "color": "#17191b",
+        "engravingSide": "back",
+        "kind": "acrylic",
+        "thicknessMm": 3,
+        "variant": "schwarz"
+      },
+      "options": {
+        "color": "schwarz",
+        "mounting": "K00"
+      },
+      "svgFile": "Acrylglas-3mm-6x2_v2.svg",
+      "svgSha256": "bad249f5eb7bd11dff33dd1f291d760bbeec8b21f77a4239fa4f4edd81c260c6",
+      "pngFile": "Acrylglas-3mm-6x2_v2.png",
+      "pngSha256": "be192194ff669397a8678aa426f450520cc5509471d6b8e08a9106b6d7f3169e",
+      "checks": {
+        "originalPlanMatchesPreview": true,
+        "allConfigExceptModuleIdentitySame": true,
+        "selectedOptionsSame": true,
+        "selectedProfileSame": true,
+        "selectedDesignSame": true,
+        "previewGeometryMatches": true,
+        "previewMaterialMatches": true,
+        "svgBytesUnchanged": true,
+        "pngBytesUnchanged": true
+      },
+      "allPassed": true
+    },
+    {
+      "workbook": "Tuerschild-Acrylglas-3mm-8x2_v2",
+      "originalPlanId": "pgp_915bdcc6-eea6-4d02-b85a-2838c0092150",
+      "originalPlanHash": "9034d712bbf1488c8b91f2a0da196c6f40e8ad23667f1b7c78238cc759d66236",
+      "finalPlanId": "pgp_6126fcb8-d8b7-4b5b-9410-9c09a9198b52",
+      "finalPlanHash": "0aa24af4bd611f5a674642a98bb5603d12f23d4a7175cdea3afca55865e0ab95",
+      "renderInputHash": "6d8288ea22e7efc1814003777d3073a5fbb1d50ac5d9a332e6ce56859e3dfd7f",
+      "designId": "katalog-TRE-V2A-8x2-D1",
+      "geometry": {
+        "cornerRadiusMm": 0,
+        "height": 20,
+        "holes": [],
+        "safeMarginMm": 0,
+        "shape": "rect",
+        "width": 80
+      },
+      "material": {
+        "color": "#17191b",
+        "engravingSide": "back",
+        "kind": "acrylic",
+        "thicknessMm": 3,
+        "variant": "schwarz"
+      },
+      "options": {
+        "color": "schwarz",
+        "mounting": "K00"
+      },
+      "svgFile": "Acrylglas-3mm-8x2_v2.svg",
+      "svgSha256": "6bede359fb0aeaf33966a1539a6cd2cdef39b64db8ef083791315d237a725429",
+      "pngFile": "Acrylglas-3mm-8x2_v2.png",
+      "pngSha256": "5b02338f015fb636b8f0c3dd808ee1b7559ef332a9cfa0e40597b27913649061",
+      "checks": {
+        "originalPlanMatchesPreview": true,
+        "allConfigExceptModuleIdentitySame": true,
+        "selectedOptionsSame": true,
+        "selectedProfileSame": true,
+        "selectedDesignSame": true,
+        "previewGeometryMatches": true,
+        "previewMaterialMatches": true,
+        "svgBytesUnchanged": true,
+        "pngBytesUnchanged": true
+      },
+      "allPassed": true
+    },
+    {
+      "workbook": "Tuerschild-Acrylglas-3mm_v4",
+      "originalPlanId": "pgp_366fe5a3-d1c0-4244-aee0-614c35409b5c",
+      "originalPlanHash": "864a9a667ddedb95809b6487177c971f217b3afcedf59895ed4b3ab2f0275610",
+      "finalPlanId": "pgp_aad6d5ae-b255-4d19-8c92-9d91ba09d445",
+      "finalPlanHash": "7079dae2814c9c17526ae3c254696ccd2b253318066b38a435f7a9cfb610e197",
+      "renderInputHash": "e7105ee7b4715e5d1edfed477956b6b1a5e04c285615d02544b83c5d46de04c1",
+      "designId": "katalog-TAE-V2A-8x5-D1",
+      "geometry": {
+        "cornerRadiusMm": 5,
+        "height": 80,
+        "holes": [],
+        "safeMarginMm": 0,
+        "shape": "rect",
+        "width": 120
+      },
+      "material": {
+        "color": "#17191b",
+        "engravingSide": "back",
+        "kind": "acrylic",
+        "thicknessMm": 3,
+        "variant": "schwarz"
+      },
+      "options": {
+        "size": "TS-Acryl-AB-120X80-T30-SW",
+        "color": "schwarz",
+        "mounting": "K00"
+      },
+      "svgFile": "Acrylglas-3mm_v4.svg",
+      "svgSha256": "2e06cc259a6bae4d03e81ef8264baef970df85196aee83a00db6855b53d645b4",
+      "pngFile": "Acrylglas-3mm_v4.png",
+      "pngSha256": "8ae9081f391d8c2511aae5d95ae957a73af725b02889009977ff4363a33a1c22",
+      "checks": {
+        "originalPlanMatchesPreview": true,
+        "allConfigExceptModuleIdentitySame": true,
+        "selectedOptionsSame": true,
+        "selectedProfileSame": true,
+        "selectedDesignSame": true,
+        "previewGeometryMatches": true,
+        "previewMaterialMatches": true,
+        "svgBytesUnchanged": true,
+        "pngBytesUnchanged": true
+      },
+      "allPassed": true
+    },
+    {
+      "workbook": "Tuerschild-Edelstahl-5x2_v1",
+      "originalPlanId": "pgp_bba31a18-cbf2-4595-979e-2563e04a833f",
+      "originalPlanHash": "d5af498d8d252d6924cfa4c81f9684959ac4b3374dfa90814c1ba41dd25c53dc",
+      "finalPlanId": "pgp_fae5b365-a7c0-4d85-9096-e9f5670b5b21",
+      "finalPlanHash": "ac2f8ce469cf862471a6c1c35f7c6a0142bf25b235b00b20e8038d23551a8309",
+      "renderInputHash": "4df3899068138649c4667bf5e285baf39bcec991888b138ebc50f29365d81a93",
+      "designId": "katalog-TRE-V2A-5x2-D1",
+      "geometry": {
+        "cornerRadiusMm": 0,
+        "height": 20,
+        "holes": [],
+        "safeMarginMm": 0,
+        "shape": "rect",
+        "width": 50
+      },
+      "material": {
+        "color": "#bac2c4",
+        "kind": "steel",
+        "thicknessMm": 1.5
+      },
+      "options": {
+        "mounting": "K00"
+      },
+      "svgFile": "Edelstahl-5x2_v1.svg",
+      "svgSha256": "13dd3d3727c49eefa152142906e458a66e67c899ea8b2ef76cf401c731864ca6",
+      "pngFile": "Edelstahl-5x2_v1.png",
+      "pngSha256": "913b410d5982207b1186016ba0f5ef75125d9bb973024c0f56853003b20300b5",
+      "checks": {
+        "originalPlanMatchesPreview": true,
+        "allConfigExceptModuleIdentitySame": true,
+        "selectedOptionsSame": true,
+        "selectedProfileSame": true,
+        "selectedDesignSame": true,
+        "previewGeometryMatches": true,
+        "previewMaterialMatches": true,
+        "svgBytesUnchanged": true,
+        "pngBytesUnchanged": true
+      },
+      "allPassed": true
+    },
+    {
+      "workbook": "Tuerschild-Edelstahl-6x2_v1",
+      "originalPlanId": "pgp_e21b589f-5772-439c-9d48-bf3f9c9d7d23",
+      "originalPlanHash": "acbba5d79e6469ef02ecf0b3b98236c7a3eaabcfa40ef4a888342f158ee19cd6",
+      "finalPlanId": "pgp_ea7f2afb-fb41-4e91-90e7-986d8d524cc8",
+      "finalPlanHash": "f87a05e734982b900f49de674d8748b2870113ad76b5a3e9c39b30ee2cdddf9e",
+      "renderInputHash": "f2c710a792f8e18b9ba647405061643646214f26ad746b6ba090a57608938348",
+      "designId": "katalog-TRE-V2A-6x2-D1",
+      "geometry": {
+        "cornerRadiusMm": 0,
+        "height": 20,
+        "holes": [],
+        "safeMarginMm": 0,
+        "shape": "rect",
+        "width": 60
+      },
+      "material": {
+        "color": "#bac2c4",
+        "kind": "steel",
+        "thicknessMm": 1.5
+      },
+      "options": {
+        "mounting": "K00"
+      },
+      "svgFile": "Edelstahl-6x2_v1.svg",
+      "svgSha256": "fbc0d0a296eadd2bce8ef70bdd1e52defbe5ed5cbd9b29b95c6603d5b01a1f3d",
+      "pngFile": "Edelstahl-6x2_v1.png",
+      "pngSha256": "934d204c0b476f60a4283632315e4a6a59ebd57c15f72bd8bfb88c612004d8c3",
+      "checks": {
+        "originalPlanMatchesPreview": true,
+        "allConfigExceptModuleIdentitySame": true,
+        "selectedOptionsSame": true,
+        "selectedProfileSame": true,
+        "selectedDesignSame": true,
+        "previewGeometryMatches": true,
+        "previewMaterialMatches": true,
+        "svgBytesUnchanged": true,
+        "pngBytesUnchanged": true
+      },
+      "allPassed": true
+    },
+    {
+      "workbook": "Tuerschild-Edelstahl-8x2_v1",
+      "originalPlanId": "pgp_cf332f0f-a2be-4358-8101-2a1ec897f161",
+      "originalPlanHash": "bd82619ef2effa2f9a701668a6f7e989ee488000bd0e167d6d9d5dcb9c03aeda",
+      "finalPlanId": "pgp_c2098259-36a3-4048-a4e6-e3ffa70c9d68",
+      "finalPlanHash": "5c4b729ea5be27e1ea9b4e4a6c65e94088803618219e5025836ca6e70654ec3e",
+      "renderInputHash": "0740dfaae6ff0d8b1b90b35945055aa55e4241462d55d9a3a247072156eae24b",
+      "designId": "katalog-TRE-V2A-8x2-D1",
+      "geometry": {
+        "cornerRadiusMm": 0,
+        "height": 20,
+        "holes": [],
+        "safeMarginMm": 0,
+        "shape": "rect",
+        "width": 80
+      },
+      "material": {
+        "color": "#bac2c4",
+        "kind": "steel",
+        "thicknessMm": 1.5
+      },
+      "options": {
+        "mounting": "K00"
+      },
+      "svgFile": "Edelstahl-8x2_v1.svg",
+      "svgSha256": "b6d97744a9ab100e339cdc0abf87fe8de9741b7c09633c5f4b08ee20c13394a2",
+      "pngFile": "Edelstahl-8x2_v1.png",
+      "pngSha256": "b0f77dd447d4bdffeab1701ac1e495cc50fb231b8cb79c80f976a345eea4fb61",
+      "checks": {
+        "originalPlanMatchesPreview": true,
+        "allConfigExceptModuleIdentitySame": true,
+        "selectedOptionsSame": true,
+        "selectedProfileSame": true,
+        "selectedDesignSame": true,
+        "previewGeometryMatches": true,
+        "previewMaterialMatches": true,
+        "svgBytesUnchanged": true,
+        "pngBytesUnchanged": true
+      },
+      "allPassed": true
+    }
+  ]
+}

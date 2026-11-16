@@ -1,0 +1,31 @@
+✔ reset loads the selected template without carrying edits and retains product options and undo (1.0943ms)
+✔ reset button requires explicit confirmation; cancel and dismissal preserve the design (1.1611ms)
+✔ blank deselection may replace the SVG target: document release must not leave a phantom finger (3.3243ms)
+✔ new primary touch recovers when Chromium drops all end events of a detached blank target (1.2504ms)
+✔ fresh primary contact also releases a lost TouchEvent handover without changing the design (1.2539ms)
+✔ document finalizers leave native in-host gestures and unrelated pointers untouched, then detach on pagehide (0.5509ms)
+✔ lost implicit SVG capture keeps a pointer transferred to the native holder active (0.4346ms)
+✔ BFCache restore reinstalls outside finalizers once and later pagehide removes them again (0.5216ms)
+✔ wheel over artwork, handles and toolbar remains native scrolling (0.3613ms)
+✔ real view adapter uses full width, refreshes overlays and never edits the saved design (0.4679ms)
+✔ real pointer adapter captures blank pan and blocks pinch, leaves object drag and photo-crop input alone (0.5277ms)
+✔ view resets on a different design or dimensions without putting zoom into undo/draft state (0.4244ms)
+✔ navigation fits smoothly, stops on a new gesture and obeys reduced motion; text taps never zoom (0.5518ms)
+✔ two simultaneous contacts on selected text leave view and 10 mm text unchanged or saved geometry (0.4638ms)
+✔ simultaneous touch handover restores a started corner resize and does not create a late click (0.5693ms)
+✔ two fingers also leave the customer photo crop unchanged; single-finger crop remains available (0.3888ms)
+✔ touch batches continue on a replaced SVG target and remove direct listeners when complete (0.5402ms)
+✔ text field focus and selection never zoom on mobile or desktop; navigation still fits (1.0678ms)
+✔ double-clicks on free plate never zoom and text double-clicks remain available for editing (0.3541ms)
+✔ two sequential blank taps do not zoom or reset an already zoomed view (0.3188ms)
+✔ keyboard resize and deselection preserve manual zoom without changing saved geometry (1.6424ms)
+✔ zooming and dragging retain one slider without extra controls on mobile and desktop (1.1911ms)
+✔ the slider alone zooms on desktop and mobile; wheel scroll remains native (2.0485ms)
+ℹ tests 23
+ℹ suites 0
+ℹ pass 23
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 139.3506

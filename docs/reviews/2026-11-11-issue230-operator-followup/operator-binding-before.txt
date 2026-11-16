@@ -1,0 +1,43 @@
+✖ 100 exact native bindings share one large checked record, while changed later evidence rolls back (2410.1245ms)
+✔ fresh readiness indexes preserve cross-product and same-selection conflicts among 15120 bindings (102.5713ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 1
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2761.341
+
+✖ failing tests:
+
+test at app\workshop\shop-product-binding-store.doorbell-memory.test.mjs:13:1
+✖ 100 exact native bindings share one large checked record, while changed later evidence rolls back (2410.1245ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + Comparison {}
+  - Comparison {
+  -   code: 'shop_binding_cfg_changed'
+  - }
+  
+      at TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-11-11/die-vollst-ndige-bergabe-findest-du/work/issue230-integration-candidate/app/workshop/shop-product-binding-store.doorbell-memory.test.mjs:31:9)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: TypeError: Cannot assign to read only property 'syntheticPayload' of object '#<Object>'
+        at getCurrentProduct (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-11-11/die-vollst-ndige-bergabe-findest-du/work/issue230-integration-candidate/app/workshop/shop-product-binding-store.doorbell-memory.test.mjs:29:136)
+        at sync (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-11-11/die-vollst-ndige-bergabe-findest-du/work/issue230-integration-candidate/app/workshop/shop-product-binding-store.mjs:28:35)
+        at file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-11-11/die-vollst-ndige-bergabe-findest-du/work/issue230-integration-candidate/app/workshop/shop-product-binding-store.mjs:242:22
+        at Array.map (<anonymous>)
+        at file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-11-11/die-vollst-ndige-bergabe-findest-du/work/issue230-integration-candidate/app/workshop/shop-product-binding-store.mjs:239:70
+        at Object.withBindingReadSnapshot (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-11-11/die-vollst-ndige-bergabe-findest-du/work/issue230-integration-candidate/app/workshop/shop-product-binding-adapter.mjs:58:189)
+        at withBindingReadSnapshot (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-11-11/die-vollst-ndige-bergabe-findest-du/work/issue230-integration-candidate/app/workshop/shop-product-binding-read-snapshot.mjs:22:99)
+        at file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-11-11/die-vollst-ndige-bergabe-findest-du/work/issue230-integration-candidate/app/workshop/shop-product-binding-store.mjs:239:21
+        at sync (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-11-11/die-vollst-ndige-bergabe-findest-du/work/issue230-integration-candidate/app/workshop/shop-product-binding-store.mjs:28:35)
+        at withBindingReadSnapshot.readProductStamp.readProductStamp (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-11-11/die-vollst-ndige-bergabe-findest-du/work/issue230-integration-candidate/app/workshop/shop-product-binding-store.mjs:166:64),
+    expected: { code: 'shop_binding_cfg_changed' },
+    operator: 'throws',
+    diff: 'simple'
+  }

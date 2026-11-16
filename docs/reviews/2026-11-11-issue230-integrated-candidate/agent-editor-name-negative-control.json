@@ -1,0 +1,32 @@
+{
+  "input": [
+    [
+      "name",
+      "Test Eins"
+    ],
+    [
+      "name-2",
+      "Familie"
+    ]
+  ],
+  "ac10": [
+    [
+      "name",
+      "Test"
+    ],
+    [
+      "name-2",
+      "Eins"
+    ]
+  ],
+  "candidate": [
+    [
+      "name",
+      "Test Eins"
+    ],
+    [
+      "name-2",
+      "Familie"
+    ]
+  ]
+}

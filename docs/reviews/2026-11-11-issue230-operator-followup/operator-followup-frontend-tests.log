@@ -1,0 +1,24 @@
+✔ picture groups retain all choices and put color immediately after position (4.5657ms)
+✔ each format, frame, color and position has a different geometry-derived picture (5.9518ms)
+✔ rights repair uses the selected format and position without reverting decorative artwork (3.2704ms)
+✔ format selection plus rights repair retains custom text and the correct price (3.6936ms)
+✔ doorbells use their complete local gallery instead of requesting repeated cross-product cards (1.2358ms)
+✔ native search without an editor root or mounted gallery is a no-op and never requests browser resources (1.4792ms)
+✔ returning to a cancelled native search reports its completed result and never exposes excluded cards (4.0391ms)
+✔ native search display rule outranks the real neutral-theme display:flex override (4.5909ms)
+✔ Fotorahmen ohne Füllung oder feste Acrylkontur ist für den Fototipp durchlässig, Texte nicht (1.483ms)
+✔ Leerer Fotobereich wird direkt und unter dem Rahmen getroffen; Rechte, Sperre und Upload zählen (2.0574ms)
+✔ Tipp gilt nur ohne Ziehen und für denselben Zeiger (0.2519ms)
+✔ HEIC wird erkannt, in JPEG gewandelt, wenn der Browser es liest, sonst verständlich gemeldet (1.4187ms)
+✔ Alle Foto-Eingabefelder des Kundeneditors: Galerie wählbar (JPG/PNG/WebP, kein capture) (2.4041ms)
+✔ actual upload buttons select independent photo/SVG inputs and dispatch by kind for photo-only, SVG-only and both (2.0647ms)
+✔ Fotohinweis ist als Vorschau-Hilfe markiert und fehlt in Prüfansicht und Fertigungsdatei (0.9365ms)
+✔ Früher Fototipp wird direkt nach dem ersten Zeichnen eingebaut und von der Oberfläche abgelöst (0.8512ms)
+ℹ tests 16
+ℹ suites 0
+ℹ pass 16
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 259.9981

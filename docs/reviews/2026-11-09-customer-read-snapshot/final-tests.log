@@ -1,0 +1,122 @@
+✔ read phases reuse detached immutable JSON only synchronously; callers outside keep normal semantics (2.954ms)
+✔ await boundaries do not retain a read phase or leak into a concurrent request (0.6185ms)
+✔ same-connection writes and rolled-back write epochs force a full read again (0.6412ms)
+✔ committed writes on another connection invalidate the phase without opening a read transaction (17.6159ms)
+✔ ordinary and temporary schema changes including a shadow table invalidate the phase (0.8562ms)
+✔ a write inside the synchronous loader is detected before any value can be reused (0.8919ms)
+✔ native repository preserves previous revisions and rechecks source changes in the same phase (5.389ms)
+✔ creates server-owned stable IDs and persists independent JSON snapshots after restart (24.6108ms)
+✔ two connections cannot silently overwrite a stale edit or state mutation (23.9448ms)
+✔ published document is immutable while subsequent drafts evolve (21.4202ms)
+✔ archive and unarchive create concurrency-protected revisions and preserve publication (15.3136ms)
+✔ copy has a fresh identity and records master provenance without sharing mutable documents (17.0846ms)
+✔ master references are validated and referenced masters cannot become products (15.0286ms)
+✔ restore appends a new revision atomically and keeps published and historical snapshots (20.9426ms)
+✔ restore does not implicitly unarchive or republish (13.9406ms)
+✔ validation failures roll back all writes and leave the connection usable (14.2275ms)
+✔ a database failure after updating the product rolls back the entire revision transaction (18.8028ms)
+✔ missing or invalid expected revisions and database-owned input are rejected (13.2149ms)
+✔ search supports case-insensitive Unicode names and literal SQL punctuation (12.2577ms)
+✔ migration is durable and idempotent, enforces foreign keys, and rejects future schemas (28.8481ms)
+✔ metadata is detached, immutable and pinned across profile changes and restart (22.1761ms)
+✔ metadata callback failures roll back product changes and earlier batch rows including import keys (37.1963ms)
+✔ metadata callbacks must synchronously return JSON objects (12.6977ms)
+✔ migration from schema 1 preserves historical records with empty metadata (36.4181ms)
+✔ migration from schema 2 preserves historical records with empty metadata (37.9364ms)
+✔ manufacturing usage separates current and activated product revisions, includes archives, excludes history-only references (18.7111ms)
+✔ a disabled design module keeps the pinned default and refuses explicit customer design overrides (70.6223ms)
+✔ customer logo conversion stays behind the shop session, same origin and exact product revision (636.5944ms)
+✔ signed start resolves the binding through the registry and redirects with a session in the fragment (32.4792ms)
+✔ approved presentation opt-in survives signed start and prefetch without granting new session rights (16.4721ms)
+✔ invalid, foreign-shop, expired and replayed-old signatures are refused before any registry lookup (14.4923ms)
+✔ toolbar query crosses the signed start only for embedded windows and ignores invalid or duplicate cosmetic values (21.2151ms)
+✔ missing, duplicate and form bindings answer with a customer message instead of an editor (18.5752ms)
+✔ paused product and anonymous customer handling on start (15.5034ms)
+✔ page and script are served with a strict policy and nothing else leaks (16.4905ms)
+✔ complete shop entry module graph is served by the production shop-entry allowlist (10.1092ms)
+✔ start image uses the bound design and the existing session-gated gallery preview (17.9436ms)
+✔ model route serves only the bound product, preselects the shop variant and pins assignment revision (16.3887ms)
+✔ session expiry ends model, asset and cart access; a fresh start works again (19.5273ms)
+✔ design assets are limited to the resources named by this product model (16.7201ms)
+✔ cart uses the registry binding of the configured variant, never the page variant or browser prices (28.1662ms)
+✔ unbound or ambiguous configured variants block before any cart call; foreign drafts too (17.6159ms)
+✔ a failed handoff forgets the remembered cart and reports a retryable customer message (12.9065ms)
+✔ invalid personalization contracts stay distinct from missing surcharge support (11.4389ms)
+✔ parallel cart clicks of one session are serialised while a body is still arriving (20.0394ms)
+✔ draft save route refuses foreign products and oversized or malformed bodies before any review work (16.1269ms)
+✔ rate limits answer 429 and misconfiguration fails closed (15.0671ms)
+✔ gallery endpoints require current authentication, correct origin and strictly shaped requests (32.5393ms)
+{"event":"shop_gallery_build_measure","storeId":"acryl","registryMs":0.7022999999999229,"modelMs":0.09510000000022956,"profileMs":0.34999999999990905,"selectionMs":0.5535999999999603,"models":3,"bindings":15,"cards":15,"totalMs":3.007699999999886}
+✔ public gallery and switch endpoints enforce the source module instead of trusting a previously issued target (25.3555ms)
+{"event":"shop_gallery_build_measure","storeId":"acryl","registryMs":0.05089999999995598,"modelMs":0.050700000000006185,"profileMs":0.21099999999955799,"selectionMs":0.10690000000022337,"models":3,"bindings":15,"cards":15,"totalMs":0.9167999999999665}
+✔ design switching issues a session for the exact destination and leaves the original session and draft intact (22.0542ms)
+{"event":"shop_gallery_build_measure","storeId":"acryl","registryMs":0.045900000000074215,"modelMs":0.055700000000115324,"profileMs":0.22939999999971405,"selectionMs":0.17050000000062937,"models":3,"bindings":15,"cards":15,"totalMs":1.0212999999998829}
+✔ gallery preview renders the selected plate with private no-store headers and signed targets belong to one source session (21.0544ms)
+{"event":"shop_gallery_build_measure","storeId":"acryl","registryMs":0.048800000000028376,"modelMs":0.05639999999993961,"profileMs":0.20759999999950196,"selectionMs":0.14249999999969987,"models":3,"bindings":15,"cards":15,"totalMs":1.1914999999999054}
+{"event":"shop_gallery_build_measure","storeId":"acryl","registryMs":0.057299999999941065,"modelMs":0.14799999999991087,"profileMs":0.1670000000001437,"selectionMs":0.08430000000043947,"models":2,"bindings":15,"cards":10,"totalMs":1.125099999999975}
+{"event":"shop_gallery_build_measure","storeId":"acryl","registryMs":0.0363999999999578,"modelMs":0.03559999999993124,"profileMs":0.1300999999996293,"selectionMs":0.09030000000029759,"models":2,"bindings":15,"cards":10,"totalMs":0.741399999999885}
+{"event":"shop_gallery_build_measure","storeId":"acryl","registryMs":0.03719999999998436,"modelMs":0.1110999999998512,"profileMs":0.5331999999996242,"selectionMs":0.11500000000023647,"models":2,"bindings":15,"cards":10,"totalMs":1.9506999999998698}
+{"event":"shop_gallery_build_measure","storeId":"acryl","registryMs":0.04289999999991778,"modelMs":0.032500000000027285,"profileMs":0.172099999999773,"selectionMs":0.07460000000014588,"models":2,"bindings":15,"cards":10,"totalMs":0.9691000000000258}
+{"event":"shop_gallery_build_measure","storeId":"acryl","registryMs":0.04060000000004038,"modelMs":0.02719999999999345,"profileMs":0.12690000000020518,"selectionMs":0.06899999999950523,"models":2,"bindings":15,"cards":10,"totalMs":0.7367000000001553}
+{"event":"shop_gallery_build_measure","storeId":"acryl","registryMs":0.0385999999998603,"modelMs":0.042200000000093496,"profileMs":0.19220000000041182,"selectionMs":0.08619999999996253,"models":3,"bindings":15,"cards":14,"totalMs":0.8106999999999971}
+✔ gallery and switch recheck paused, missing, mismatched and foreign models after a card was displayed (35.0951ms)
+{"event":"shop_gallery_build_measure","storeId":"acryl","registryMs":0.04030000000011569,"modelMs":0.051899999999932334,"profileMs":0.18239999999991596,"selectionMs":0.0933999999997468,"models":3,"bindings":15,"cards":15,"totalMs":0.8255000000001473}
+✔ gallery tokens pin destination assignment revision, product revision and recomputed base price (20.9881ms)
+{"event":"shop_gallery_build_measure","storeId":"acryl","registryMs":0.046500000000150976,"modelMs":0.052500000000009095,"profileMs":0.17609999999990578,"selectionMs":0.11380000000031032,"models":3,"bindings":15,"cards":15,"totalMs":0.9514000000001488}
+✔ a valid old configId and private photo revision stay with the original product after a design switch (18.8081ms)
+✔ host integration takes the customer entry only as an explicit, well-formed setting (29.3862ms)
+✔ fixed catalog signs require their own approved revision before entry and selected cart variant (17.0081ms)
+✔ a fixed catalog sign cannot open when catalog intake was disabled at startup (12.3036ms)
+✔ new doorbells require the exact live approval at start and on every private session request (11.5392ms)
+✔ an approved doorbell still cannot start while its live order intake is disabled (9.7279ms)
+✔ changing a doorbell variant rechecks its live approval before any cart handoff (10.8417ms)
+✔ embed start: window flag in the fragment, page framable only by the own shop, embed module served through the proxy (13.3317ms)
+✔ embed scripts load on every product page without using up the cart rate limit (22.1741ms)
+✔ customer model passes through the model slimmer with a revision key; the stored model stays complete (13.6604ms)
+✔ own fonts no design uses are served as immutable files from the shop entry and listed for lazy loading (11.7062ms)
+✔ start ticket (format=json) returns the same target as the redirect and counts separately from real starts (8.3822ms)
+✔ warm manifest is optional public metadata; cart-edit tickets never preload private saved designs (10.6577ms)
+{"event":"shop_gallery_build_measure","storeId":"acryl","registryMs":0.04079999999999018,"modelMs":0.05719999999996617,"profileMs":0.19329999999968095,"selectionMs":0.11530000000038854,"models":3,"bindings":15,"cards":15,"totalMs":0.9139000000000124}
+{"event":"shop_gallery_build_measure","storeId":"acryl","registryMs":0.036200000000008004,"modelMs":0.04840000000035616,"profileMs":0.1791000000000622,"selectionMs":0.12229999999976826,"models":3,"bindings":15,"cards":15,"totalMs":0.8266000000000986}
+{"event":"shop_gallery_build_measure","storeId":"acryl","registryMs":0.03760000000011132,"modelMs":0.04320000000029722,"profileMs":0.1665999999993346,"selectionMs":0.11589999999978318,"models":3,"bindings":15,"cards":15,"totalMs":0.7936999999999443}
+✔ repeated design switches cannot extend the original source session (16.9269ms)
+{"event":"shop_gallery_build_measure","storeId":"acryl","registryMs":0.09910000000013497,"modelMs":0.16699999999968895,"profileMs":0.32539999999994507,"selectionMs":0.1373999999998432,"models":3,"bindings":15,"cards":15,"totalMs":2.9469000000001415}
+✔ startup warms the gallery without a customer and list never calls the full model builder (15.9392ms)
+{"event":"public_preview_prepared","prepared":3,"bytes":1845}
+✔ public template HTTP warmup persists across restart, never renders on start and rejects revoked and legacy image URLs (143.0218ms)
+✔ combined public cache and module guards reject stale gallery targets and disabled logo upload through real HTTP (50.1435ms)
+[shop-gallery] {"event":"shop_gallery_binding_skipped","storeId":"synthetic-store","code":"shop_binding_cfg_changed"}
+✔ customer read phases keep current heads and archive/tenant checks authoritative (84.6447ms)
+✔ customer read phase detects same-connection document tampering even if revision IDs stay unchanged (44.6818ms)
+✔ exact ID assignment persists on the existing connection with real form geometry and no profile release (45.0438ms)
+✔ existing bindings are not activated implicitly and their immutable price contracts are preserved on reuse (46.9608ms)
+✔ native option rows are reused, copied on output and never duplicated into the registry (1446.8464ms)
+✔ explicit head CAS preserves historical revisions and a new source revision is never silently selected (54.9925ms)
+✔ a product changed or archived after planning cannot create any binding or active assignment (41.1508ms)
+✔ SQL head CAS rejects a stale adapter even when its own in-memory proof is internally consistent (39.0312ms)
+✔ a matching cfg ID/revision from a different database is not accepted as a source (38.3418ms)
+✔ all new legacy bindings and ID assignments roll back when a later SQL write fails (42.7394ms)
+✔ nested failures roll back only this operation and a successful outer rollback removes the entire assignment (41.5288ms)
+✔ a second SQLite writer cannot change the product between locked head check and binding insertion (42.7125ms)
+✔ forged or expired plans and incomplete head expectations are rejected without writes (36.0773ms)
+✔ explicit ID mapping cannot be switched to another Shopify product, store, tenant or cfg (43.5385ms)
+✔ active assignment revisions are append-only and archive changes block use without deleting history (38.6993ms)
+✔ asynchronous personalization provider is rejected and partial legacy writes remain absent (37.2826ms)
+✔ evidence expiring during a synchronous write rolls back before commit (38.8336ms)
+✔ listActive returns only assignment heads, preserves pinned source revisions and copies option data (2175.4054ms)
+✔ listActive excludes archived products while retaining other active records and all binding history (44.0081ms)
+✔ listActive cannot leak a foreign tenant or shop and refuses a different store scope (36.751ms)
+✔ gallery skips broken documents/bindings, logs only fixed diagnostics, while exact resolution stays strict (140.0344ms)
+✔ gallery revision heads change on activation, new product revision and archive (36.5537ms)
+✔ read-only audit opens the existing registry without schema changes and cannot persist (38.4986ms)
+✔ benchmark reads a native copy cold and warm without changing any binding or product (1332.2984ms)
+✔ covering revision index preserves all head checks and read-only older copies need no migration (35.9027ms)
+✔ benchmark cache uses a separate file, survives reopening, and rejects the source as cache (1359.8258ms)
+ℹ tests 96
+ℹ suites 0
+ℹ pass 96
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 7694.3909

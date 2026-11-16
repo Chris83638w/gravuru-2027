@@ -1,0 +1,120 @@
+{
+  "baseline": {
+    "build": {
+      "verifiedResources": 76,
+      "models": 1,
+      "editorBytes": 374704,
+      "lazyResources": {
+        "fonts": 30,
+        "motifs": 703
+      },
+      "bundle": {
+        "url": "/_bundle/editor-e49b3da45a697a36.mjs",
+        "modules": 154,
+        "styles": 16,
+        "bytes": 1452543,
+        "gzipBytes": 484634
+      }
+    },
+    "htmlSha": "c2cff8848d89b0a2260ed5a7f5d824e08b1837482241445d310606d4ee2545d4"
+  },
+  "candidate": {
+    "build": {
+      "verifiedResources": 76,
+      "models": 1,
+      "editorBytes": 374704,
+      "lazyResources": {
+        "fonts": 30,
+        "motifs": 703
+      },
+      "bundle": {
+        "url": "/_bundle/editor-b9827ca8587a6c7b.mjs",
+        "modules": 154,
+        "styles": 16,
+        "bytes": 1453655,
+        "gzipBytes": 484942
+      }
+    },
+    "html": "ddcdc1f39eabd95ea2d298d2940bc83f99df24b1fcf38b0cf8e7836c043d7993",
+    "htmlBytes": 374704,
+    "bundles": [
+      {
+        "name": "editor-2e3da3b988eb0da4.mjs",
+        "sha256": "b227638c16aebd6cd7c685c44d3ace5b75205e3e1774b5ddd39c34c9d32e1ccf",
+        "bytes": 37895,
+        "gzipSha256": "def2dc087e7060dd1fbccd82e7b3fe8a4fc1029526927a55f9b1ca4abb2a6169",
+        "gzipBytes": 12418
+      },
+      {
+        "name": "editor-69eb9880b804359a.mjs",
+        "sha256": "7601bdd524c58ddacbd0edf5e4067139002f220c67763e7eb7dafd8dbb8331a3",
+        "bytes": 3342,
+        "gzipSha256": "dccea5df39be2913d38d9bd0a5115d3d8dea97ace54af1ce9ba157b6c9a4b348",
+        "gzipBytes": 1614
+      },
+      {
+        "name": "editor-b9827ca8587a6c7b.mjs",
+        "sha256": "8b8be52b19d5c759adb60ee2966c30fb57e1bac28a3376f1d5397f7d5c78a4d1",
+        "bytes": 1453655,
+        "gzipSha256": "fc05623634fc549aea06c225b5753351310f18453c99f8d2e0fb679abe8cb7d3",
+        "gzipBytes": 484942
+      },
+      {
+        "name": "editor-bf7d088b9bdf015e.mjs",
+        "sha256": "85980521d93b13147e844a0bf7986f128ff92fdd078fecead57f2494f0db513c",
+        "bytes": 134324,
+        "gzipSha256": "f0363d6be516e4df83012046a1e599a0beca8e555b0361dc746dce64d8bfd4f8",
+        "gzipBytes": 38138
+      },
+      {
+        "name": "editor-c419119a6ef437c6.mjs",
+        "sha256": "d6230c6059e2b8b5e4334ea0d3a401aa41f362b6fa3fe8035b8784b74d7ef78c",
+        "bytes": 7915,
+        "gzipSha256": "4b412bd07d5838b1cd4b9e60f88ae6e5b1c2f09e210f77d7800f778c739e5a25",
+        "gzipBytes": 3037
+      },
+      {
+        "name": "editor-e1e24f0ee6b66daf.mjs",
+        "sha256": "d4fc652911bec1326419762462fb206660c26d5d97e9823e16501c179262a58c",
+        "bytes": 10914,
+        "gzipSha256": "8731a573ad56981184aeb0407a9cfa17920818e0e67c4f31a691ed37004911e8",
+        "gzipBytes": 3880
+      }
+    ]
+  },
+  "protected": 51,
+  "styles": 36,
+  "sourceDelta": [
+    {
+      "relative": "app/configurator/variant-m/product-design-gallery.mjs",
+      "before": "3fd3dd7cd080a08868e91feece9cd536e7795ab3636cbbcf5c773d490d75961e",
+      "after": "041ac15c181b664282ec9e337704d17f6624894c5fec7a3f8b20d9c6975dbfcd",
+      "bytes": 10672
+    },
+    {
+      "relative": "app/workshop/ui/shop-design-switch.mjs",
+      "before": "7eb0f39b94948165f1d17bf5b0bafc6ccd271e0d3def12fc3a05070b8d092fc9",
+      "after": "83af68c2c70b902d577cef0110e560720962a09decb931c8ba732c4f90677e0c",
+      "bytes": 5864
+    },
+    {
+      "relative": "app/configurator/variant-m/server.mjs",
+      "before": "f1445f2dc4f90637a77c3b80c0cd6271dd204d4136c9d598343bce3cc904500b",
+      "after": "c3d8a32805e272d78cfbe16dad1b7570c9e72a738f93fa930bddbac7a3bf50ca",
+      "bytes": 17100
+    },
+    {
+      "relative": "app/workshop/acryl-employee-host.mjs",
+      "before": "20cbb93fb4430e8a21c33ddccd132da17c111883a147b66d310b2f7a80b15766",
+      "after": "0ff5ab74f792da5729ea6d34637d89950858d05994403893882a1e26b41bda4d",
+      "bytes": 12300
+    },
+    {
+      "relative": "app/workshop/prepared-editor-bundles.mjs",
+      "before": null,
+      "after": "2c4152da80c5a669fb5c8420c3a8b1ac3811d37045d1598bf257b6713e40d450",
+      "bytes": 3949
+    }
+  ],
+  "noLiveAccess": true
+}

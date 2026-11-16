@@ -1,4 +1,5 @@
 import {merchantImageAttribute} from './merchant-media.mjs';
+import {loadCatalogChoices} from './catalog-ui.mjs';
 import {merchantRequest as fetch} from './merchant-request.mjs';
 const $=s=>document.querySelector(s),esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let current=null,members=[],defaultId='',products=[],csrf='',busy=false,dirty=false;
@@ -31,4 +32,4 @@ $('#variant-form').oninput=()=>{dirty=true;};
 $('#variant-form').onsubmit=async e=>{e.preventDefault();if(busy)return;const f=e.currentTarget,document={name:f.elements.name.value,archived:f.elements.archived.checked,defaultVariantId:defaultId,variants:members,...(current?.document.axes?{axes:structuredClone(current.document.axes)}:{})};lock(true);try{const result=await api('/api/workshop/variants'+(current?'/'+current.id:''),{document,...(current?{expectedRevision:current.revision}:{})},current?'PATCH':'POST');dirty=false;await list();await open(result.id);notice('Ausführungsgruppe gespeichert. Preise, Geometrie und Designs bleiben an ihre Produktstände gebunden.');}catch(e){notice(e.message,true);}finally{lock(false);}};
 $('#reload').onclick=async()=>{if(current&&confirmLeave())try{await open(current.id);notice('Gespeicherten Stand geladen.');}catch(e){notice(e.message,true);}};
 addEventListener('beforeunload',e=>{if(dirty){e.preventDefault();e.returnValue='';}});
-try{lock(true);csrf=(await api('/api/workshop/session')).csrfToken;products=(await api('/api/workshop/products')).products.filter(p=>p.kind==='product'&&p.overview?.formProduct);await list();const id=new URLSearchParams(location.search).get('group');if(id)await open(id);if(!products.length)notice('Zuerst ein Formprodukt mit Material, Stärke, Preis und Design speichern.');}catch(e){notice(e.message,true);}finally{lock(false);}
+try{lock(true);csrf=(await api('/api/workshop/session')).csrfToken;products=(await loadCatalogChoices(api,{kinds:['product']})).filter(p=>p.overview?.formProduct);await list();const id=new URLSearchParams(location.search).get('group');if(id)await open(id);if(!products.length)notice('Zuerst ein Formprodukt mit Material, Stärke, Preis und Design speichern.');}catch(e){notice(e.message,true);}finally{lock(false);}

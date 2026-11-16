@@ -1,5 +1,5 @@
 import {createHash} from 'node:crypto';
-import {isBindingReadSnapshot,withBindingReadSnapshot} from './shop-product-binding-read-snapshot.mjs';
+import {isBindingReadSnapshot,isBindingProductSnapshot,withBindingReadSnapshot} from './shop-product-binding-read-snapshot.mjs';
 import {planShopProductBindings} from './shop-product-binding-plan.mjs';
 
 const fail = (code, message, status = 422) => { throw Object.assign(new Error(message), {code, status}); };
@@ -8,6 +8,8 @@ const plain = value => value !== null && typeof value === 'object' && !Array.isA
 const fields = (value, keys) => plain(value) && Object.keys(value).length === keys.length && keys.every(key => Object.hasOwn(value, key));
 const digest = value => createHash('sha256').update(JSON.stringify(value)).digest('hex');
 const bindingDigests=new WeakMap();
+const recordDigests=new WeakMap();
+function recordDigest(record){if(!isBindingProductSnapshot(record))return digest(record);if(!recordDigests.has(record))recordDigests.set(record,digest(record));return recordDigests.get(record);}
 function bindingDigest(rows){if(!isBindingReadSnapshot(rows))return digest(rows);if(!bindingDigests.has(rows))bindingDigests.set(rows,digest(rows));return bindingDigests.get(rows);}
 const allowed = ['shopifyProductId', 'shopifyVariantId', 'productId', 'productRevision', 'options'];
 const productGid = /^gid:\/\/shopify\/Product\/[1-9][0-9]{0,19}$/;
@@ -84,7 +86,7 @@ export function createShopProductBindingCheck({adapter, reader, clock = Date.now
       productionProfileRef: !profileMissing && readiness.productionProfileRef ? {id: readiness.productionProfileRef.id,
         revision: readiness.productionProfileRef.revision, sha256: readiness.productionProfileRef.sha256} : null};
     return {unitCents: selected.unitCents, readiness: publicReadiness,
-      stateHash: digest({record, selected, readiness, bindingsSha256:bindingDigest(bindings)})};
+      stateHash: digest({recordSha256:recordDigest(record), selected, readiness, bindingsSha256:bindingDigest(bindings)})};
   }
   return Object.freeze({async check(input) {
     ensureScope();

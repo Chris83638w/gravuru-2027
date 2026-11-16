@@ -5,8 +5,10 @@ import vm from 'node:vm';
 import {customerHeading,customerSelectionHeading} from './customer-heading.mjs';
 import {answerCustomerQuestion} from './customer-help.mjs';
 import {captureDesignContent,carryDesignContent,capturePhotoFiles} from './design-content-transfer.mjs';
+import {isPhotoUnsupported} from './photo-drop-confirm.mjs';
 import {templateRightsIssue} from './element-rights.mjs';
 import {screwPreview} from './option-media.mjs';
+import {mountingPlacementState,touchesMounting} from './mounting-placement.mjs';
 const text=(id,key,value)=>({id,type:'text',fieldKey:key,text:value,font:'catalogue-font',size:5,x:20,y:15,w:30,h:10,rotation:0,customerEditable:true});
 const photo={id:'photo-old',type:'photoSlot',fieldKey:'portrait',x:10,y:20,w:12,h:15,rotation:0,photoShape:'rect',customerEditable:true};
 const old={id:'old',objects:[text('name','name','Vorname'),text('motto','spruch','Vorlage'),photo,{id:'art',type:'motif',motif:'house'}]};
@@ -45,8 +47,13 @@ test('personal text without a matching field stays as a new editable text; locke
 });
 test('photo incompatibility and character constraints reject the whole switch without losing the source',()=>{
  const objects=edited(),before=structuredClone(objects),content=captureDesignContent(objects,old);
- for(const c of [{...config,photo:{enabled:false}},{...config,workshopElementRights:{next:{}}}])assert.throws(()=>carryDesignContent(content,next,c),/bisherige Gestaltung/);
- assert.throws(()=>carryDesignContent({...content,photos:[...content.photos,...content.photos]},next,config),/Fotobereiche/);
+ // Chris 13.11.2026: ohne Fotofunktion Hinweis vor dem Wechsel; nach Bestätigung (dropPhotos) ohne Foto.
+ assert.throws(()=>carryDesignContent(content,next,{...config,photo:{enabled:false}}),e=>e.code==='photo-unsupported'&&/keine Fotofunktion/.test(e.message));
+ const dropped=carryDesignContent(content,next,{...config,photo:{enabled:false}},{dropPhotos:true});assert.equal(dropped.droppedPhotos,1);assert.ok(dropped.objects.every(o=>!o.uxUploadId));
+ assert.throws(()=>carryDesignContent(content,next,{...config,workshopElementRights:{next:{}}}),/bisherige Gestaltung/);
+ // Mit Fotofunktion kommt ein Foto ohne freien Fotobereich frei platziert mit (Seitenverhältnis bleibt).
+ const two=carryDesignContent({...content,photos:[...content.photos,{...content.photos[0],fieldKey:'other',w:40,h:20}]},next,config,{id:()=> 'free-photo',geometry:{width:200,height:100}});
+ const free=two.objects.find(o=>o.id==='free-photo');assert.equal(free.type,'photoSlot');assert.equal(free.uxUploadId,'upload-1');assert.ok(Math.abs(free.w/free.h-2)<1e-9);assert.deepEqual(two.added,['free-photo']);
  const tooLong={...content,texts:[{...content.texts[0],text:'x'.repeat(1000)}]};assert.throws(()=>carryDesignContent(tooLong,next,config),/bisherige Gestaltung/);
  assert.deepEqual(objects,before);
 });
@@ -58,10 +65,28 @@ test('photo transfer carries original bytes and editing data, never ephemeral UR
 test('actual local design-switch handler retains all texts/photos and aborts before mutations on incompatibility',()=>{
  const code=fs.readFileSync(new URL('./workflow.mjs',import.meta.url),'utf8'),a=code.indexOf(' let changing=false;'),z=code.indexOf(' // The existing library',a);assert(a>=0&&z>a);
  let records=0;const messages=[],el={state:{designId:'old',objects:edited()},id:()=> 'personal-new',chooseDesign(id){records++;this.state.designId=id;this.state.objects=structuredClone(next.objects);},normalize(){},sync(){}};
- const context={el,config,chosenProfile:()=>config.profile,captureDesignContent,carryDesignContent,place(){},say:s=>messages.push(s),known:new Set()};vm.createContext(context);vm.runInContext(code.slice(a,z),context);
+ let confirms=0;const context={el,config,chosenProfile:()=>config.profile,captureDesignContent,carryDesignContent,mountingPlacementState,place(){},say:s=>messages.push(s),known:new Set(),dialog(){},isPhotoUnsupported,createPhotoDropConfirm:()=>()=>{confirms++;return Promise.resolve(false);}};vm.createContext(context);vm.runInContext(code.slice(a,z),context);
  assert.equal(el.chooseDesign('next'),true);assert.equal(records,1);assert.equal(el.state.objects.find(o=>o.id==='new-photo').uxUploadId,'upload-1');assert.equal(el.state.objects.find(o=>o.id==='new-name').text,'Anna Müller');
  el.state={designId:'old',objects:edited()};const original=structuredClone(el.state);context.config={...config,photo:{enabled:false}};
- assert.equal(el.chooseDesign('next'),false);assert.equal(records,1);assert.deepEqual(el.state,original);assert.match(messages.at(-1),/Fotobereiche/);
+ assert.equal(el.chooseDesign('next'),false);assert.equal(records,1);assert.deepEqual(el.state,original);assert.equal(confirms,1,'Hinweis „keine Fotofunktion“ vor dem Wechsel');
+});
+test('actual design-switch handler fits the transferred slate design and restores it without cumulative enlargement',()=>{
+ const code=fs.readFileSync(new URL('./workflow.mjs',import.meta.url),'utf8'),a=code.indexOf(' let changing=false;'),z=code.indexOf(' // The existing library',a);
+ const line=(id,w)=>({id,type:'motif',motif:'line',x:110,y:70,w,h:.5,rotation:0,customerEditable:true});
+ const designs=[{id:'a',objects:[{...text('a-name','name','Bruno'),x:110,y:35},line('a-line',198)]},{id:'b',objects:[{...text('b-name','name','Emma'),x:110,y:40},line('b-line',200)]}];
+ const config={productExecution:{schema:'gravuru-product-execution/v1',kind:'memorial',sourceFamilyId:'schiefer-tafeln-natur'},profile:{id:'slate',material:{kind:'slate'},geometry:{width:220,height:140,shape:'rect',safeMarginMm:0,holes:[{x:17,y:70,diameter:4},{x:203,y:70,diameter:4}]},mountingPreview:{spacers:true,diameter:12,keepoutMm:0},designs}};
+ const profile=config.profile,none={...profile,geometry:{...profile.geometry,holes:[]}},before=structuredClone(designs);
+ const el={state:{designId:'a',objects:structuredClone(designs[0].objects)},id:()=> 'added',normalize(){},sync(){},chooseDesign(id){this.state.designId=id;this.state.objects=structuredClone(designs.find(d=>d.id===id).objects);this.state.uxHolePlacement=null;Object.assign(this.state,mountingPlacementState(config,this.state,profile,profile));}};
+ el.state.objects[0].text='Buddy';Object.assign(el.state,mountingPlacementState(config,el.state,none,profile));
+ const context={el,config,chosenProfile:()=>profile,captureDesignContent,carryDesignContent,mountingPlacementState,place(){},say(message){throw Error(message);},known:new Set(),dialog(){},isPhotoUnsupported,createPhotoDropConfirm:()=>()=>Promise.resolve(false)};vm.createContext(context);vm.runInContext(code.slice(a,z),context);
+ for(const id of ['b','a','b','a']){
+  assert.equal(el.chooseDesign(id),true);
+  assert(el.state.objects.every(o=>!touchesMounting(o,profile)),'selected template stays clear of spacers');
+  assert.equal(el.state.objects.find(o=>o.type==='text').text,'Buddy');
+  const restored=mountingPlacementState(config,el.state,profile,none),expected=structuredClone(designs.find(d=>d.id===id).objects);Object.assign(expected[0],{text:'Buddy',uxCustomerText:true});
+  assert.deepEqual(restored.objects,expected,'no stale inverse transform after a design switch');
+ }
+ assert.deepEqual(designs,before,'catalogue masters are unchanged');
 });
 test('screw preview uses 5-mm heads without changing drilling or adding engraving objects',()=>{
  const profile={geometry:{holes:[{x:12,y:20,diameter:4}]},mountingPreview:{screws:true}},before=structuredClone(profile);
@@ -74,17 +99,20 @@ test('actual field UI moves its highlight and open font controls with selection 
   constructor(id){this.dataset={uxRow:id};this.attrs={};this.classes=new Set();this.classList={toggle:(key,on)=>on?this.classes.add(key):this.classes.delete(key)};}
   append(node){node.parentNode=this;this.child=node;}
   setAttribute(key,value){this.attrs[key]=value;}removeAttribute(key){delete this.attrs[key];}
-  querySelector(){return this.disclosure||null;}
+  querySelector(){return this.disclosure||null;}closest(){return null;}
  }
  const rows=['a','b'].map(id=>{const row=new Element(id);row.disclosure=new Element();row.disclosure.dataset={textOptions:id};return row;}),controls=new Element(),fieldNodes=rows.map((row,i)=>({dataset:{uxText:row.dataset.uxRow},getBoundingClientRect:()=>({top:100+i*120,bottom:140+i*120})}));
  const fields={querySelectorAll:s=>s==='.ux-text-row'?rows:fieldNodes},editor={scrollTop:0,getBoundingClientRect:()=>({top:100,bottom:200}),scrollTo(value){this.scrollTop=value.top;}},panel={hidden:false};
  const r={querySelector:s=>({'.ux-fields':fields,'.ux-controls':controls,'.ux-editor':editor,'#ux-panel-text':panel})[s],addEventListener:(type,fn)=>callbacks[type]=fn};
- const el={},env={el,r,object:{id:'a',type:'text'},requestAnimationFrame:fn=>fn(),ResizeObserver:class{constructor(fn){resizers.push(fn);}observe(){}disconnect(){}},window:{addEventListener(){}},document:{createElement:()=>new Element()}};
+ const el={dataset:{}},env={el,r,object:{id:'a',type:'text'},requestAnimationFrame:fn=>fn(),cancelAnimationFrame(){},ResizeObserver:class{constructor(fn){resizers.push(fn);}observe(){}disconnect(){}},window:{addEventListener(){}},document:{createElement:()=>new Element()}};
  env.selected=()=>env.object;env.select=id=>{env.object={id,type:'text'};el.uxUpdateTextUI();};vm.createContext(env);vm.runInContext(code.slice(code.indexOf('export function installTextFields')).replace('export ',''),env);vm.runInContext('installTextFields({el,r,selected,select})',env);
  assert.equal(rows[0].attrs['aria-current'],'true');assert.equal(rows[1].attrs['aria-current'],undefined);
- callbacks.click({target:{closest:()=>rows[0].disclosure}});assert.equal(controls.parentNode,rows[0]);assert.equal(controls.hidden,false);
+ callbacks.focusin({target:{closest:s=>s==='[data-ux-text]'?fieldNodes[0]:null}});assert.equal(controls.parentNode,rows[0]);assert.equal(controls.hidden,false);
+ callbacks.click({target:{closest:s=>s==='[data-text-options]'?rows[0].disclosure:null}});assert.equal(controls.hidden,true,'manual collapse remains available');
+ callbacks.click({target:{closest:s=>s==='[data-ux-text]'?fieldNodes[0]:null}});assert.equal(controls.hidden,false,'clicking the already focused field reopens its controls');
  env.select('b');assert.equal(rows[0].attrs['aria-current'],undefined);assert.equal(rows[1].attrs['aria-current'],'true');assert.equal(controls.parentNode,rows[1]);assert.equal(rows[1].disclosure.attrs['aria-expanded'],'true');assert.ok(editor.scrollTop>0);
  editor.scrollTop=0;resizers[0]();assert.ok(editor.scrollTop>0,'same selected text is still revealed after a viewport resize');
+ el.dataset.uxMobileTabs='true';editor.scrollTop=12;resizers[0]();assert.equal(editor.scrollTop,12,'mobile preview resize must not pull the list back to the selected field');
  env.object={id:'motif',type:'motif'};el.uxUpdateTextUI();assert.equal(controls.hidden,true);assert.ok(rows.every(row=>!row.classes.has('is-selected')));
 });
 

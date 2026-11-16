@@ -1,0 +1,48 @@
+✖ private full editor HTTP saves same card, refreshes approval/quick preview, rejects stale/foreign writes and hides no resource failure (1105.6195ms)
+✖ inline positions use native renderer/CAS through authenticated HTTPS proxy and preserve other designs, formats and comments (1159.6156ms)
+✔ explicit steel targets render and save native positions while material, source, format and revision gates remain closed (479.9633ms)
+✔ target-level acrylic binding distinguishes colour and thickness during native position editing (874.4247ms)
+✔ proportional inline sizes persist native text, motif, graphic strokes and masked photo dimensions and reopen in the full configurator (2088.0988ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 3
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 6459.5677
+
+✖ failing tests:
+
+test at app\workshop\gallery-editor-http.test.mjs:13:1
+✖ private full editor HTTP saves same card, refreshes approval/quick preview, rejects stale/foreign writes and hides no resource failure (1105.6195ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  409 !== 200
+  
+      at TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-11-11/die-vollst-ndige-bergabe-findest-du/work/issue230-integration-candidate/app/workshop/gallery-editor-http.test.mjs:32:43)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 409,
+    expected: 200,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at app\workshop\slate-review-positions.test.mjs:35:1
+✖ inline positions use native renderer/CAS through authenticated HTTPS proxy and preserve other designs, formats and comments (1159.6156ms)
+  AssertionError [ERR_ASSERTION]: The "string" argument must be of type string. Received type object (null)
+      at TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-11-11/die-vollst-ndige-bergabe-findest-du/work/issue230-integration-candidate/app/workshop/slate-review-positions.test.mjs:69:53)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: null,
+    expected: /^[a-f0-9]{64}$/,
+    operator: 'match',
+    diff: 'simple'
+  }

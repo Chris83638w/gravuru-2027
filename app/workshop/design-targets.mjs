@@ -2,6 +2,7 @@
 // Legacy freigabe is retained as history, never as a cross-family approval.
 import {assignSeries,sourceContourSizes,SERIES_TOLERANCE} from './katalog-convert.mjs';
 import {FAMILY_MATERIALS,familyProcess,geometryOf} from './product-families.mjs';
+import {assignedSlateSizes} from './slate-design-targets.mjs';
 const record=v=>v!==null&&typeof v==='object'&&!Array.isArray(v);
 const jsonOf=design=>record(design?.json)?design.json:design;
 const id=v=>typeof v==='string'&&/^[a-z0-9][a-z0-9_.-]{0,79}$/i.test(v);
@@ -100,6 +101,8 @@ const namedForm=value=>{
  return ({herz:'heart',heart:'heart',kreuz:'cross',cross:'cross',plaque:'plaque'})[name]??null;
 };
 function sourceFormOf(master,katalog,family){
+ const slate=assignedSlateSizes(master.json,family);
+ if(slate.length)return groupForm(family.groups.find(g=>g.key===slate[0].groupKey));
  const named=namedForm(master.json.form);if(named)return named;
  const all=values(katalog.families);if(!all.length)all.push(family);
  const primary=master.json.masterSheet?.familySize,explicit=Array.isArray(master.json.sizes)?master.json.sizes:[];
@@ -112,6 +115,8 @@ function sourceFormOf(master,katalog,family){
  const forms=unique(sources.map(({f,s})=>groupForm(f.groups.find(g=>g.key===s.groupKey))).filter(Boolean));return forms.length===1?forms[0]:null;
 }
 function targetAssignment(family,master,katalog){
+ const slate=assignedSlateSizes(master.json,family);
+ if(slate.length)return {assignment:{...assignSeries(family,[master])[0],sizes:slate.map(s=>s.key),oldSize:false,proportionalFit:true},contourKeys:[],slateKeys:slate.map(s=>s.key)};
  // A family explicitly derived from another catalogue family keeps that
  // source's size restrictions. Compare the actual plate geometry as well:
  // the provenance path alone must never authorize a different plate.
@@ -128,7 +133,7 @@ function targetAssignment(family,master,katalog){
 export function designTargetCompatibility(design,family,size,{katalog={}}={}){
  const master=preparedDesign(design);return targetCompatibility(master,family,size,katalog,targetAssignment(family,master,katalog));
 }
-function targetCompatibility(master,family,size,katalog,{assignment,contourKeys,shared}){
+function targetCompatibility(master,family,size,katalog,{assignment,contourKeys,shared,slateKeys=[]}){
  const json=master.json,targetForm=groupForm(family.groups.find(g=>g.key===size.groupKey)),sourceForm=sourceFormOf(master,katalog,family),issues=[];
  if(!sourceForm)issues.push('Die Quellform ist nicht eindeutig. Vor einer Ziel-Freigabe muss sie an der Quelle geklärt werden.');
  else if(sourceForm!==targetForm)issues.push('Andere Form ('+sourceForm+' → '+targetForm+'): Eine eigene Variante mit Vorschau und Freigabe ist erforderlich.');
@@ -143,7 +148,8 @@ function targetCompatibility(master,family,size,katalog,{assignment,contourKeys,
  // Their existing contain fit is preserved; this exception cannot open a new form.
  const sourceContour=targetForm?.startsWith('contour:')&&sourceForm===targetForm&&(contourKeys.includes(size.key)||ownKeys.includes(size.key));
  if(!valid)issues.push('Mastermaße fehlen; das Zielformat ist nicht prüfbar.');
- else if(!sourceContour&&Math.abs((from[1]*(to[0]/from[0]))/to[1]-1)>SERIES_TOLERANCE)issues.push('Anderes Seitenverhältnis: Eine eigene eingepasste Variante mit Vorschau und Freigabe ist erforderlich.');
+ else if(!sourceContour&&!slateKeys.includes(size.key)&&Math.abs((from[1]*(to[0]/from[0]))/to[1]-1)>SERIES_TOLERANCE)issues.push('Anderes Seitenverhältnis: Eine eigene eingepasste Variante mit Vorschau und Freigabe ist erforderlich.');
+ if(slateKeys.includes(size.key)&&size.photoDesignCents===undefined&&(json.withPhoto===true||json.photos?.length))issues.push('Diese Zieltafel ist ohne Foto freigegeben; das vorhandene Fotodesign bleibt unverändert und kann hier nicht angeboten werden.');
  return {status:issues.length?'passt nicht':'passt',variantRequired:issues.length>0,issues,sourceForm,targetForm};
 }
 export function assignTargetSeries(family,designs,katalog={}){

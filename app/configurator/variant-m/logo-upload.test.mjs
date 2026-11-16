@@ -1,13 +1,22 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
-import {validateVectorLogoFile,requestVectorLogoPreview,logoMediaPayload,logoPlacement,vectorLogoEnabled} from './logo-upload.mjs';
+import {validateVectorLogoFile,requestVectorLogoPreview,logoMediaPayload,logoPlacement,vectorLogoEnabled,vectorLogoPreviewFilter} from './logo-upload.mjs';
 import {uploadTabVisible} from './ux-model.mjs';
 const source='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 10"><path fill="red" d="M0 0H20V10H0Z"/></svg>';
 const black=source.replace('red','black'),hash=s=>createHash('sha256').update(s).digest('hex');
 const file=()=>new File([source],'logo.svg',{type:'image/svg+xml'});
 const binding={productId:'logo-test',productRevision:2};
 const converted=()=>({version:'svg-black-v1',sourceSha256:hash(source),outputSha256:hash(black),width:20,height:10,svg:Buffer.from(black).toString('base64'),preview:Buffer.from(source).toString('base64'),warnings:['Farben prüfen.']});
+test('acrylic vector preview adopts engraving ink while retaining alpha and source bytes',async()=>{
+ const asset=await requestVectorLogoPreview(file(),{binding,request:async()=>({ok:true,json:async()=>converted()})});
+ const before=await asset.blob.text(),matrix=vectorLogoPreviewFilter({material:{kind:'acrylic'},processing:{profileId:'acrylic-engraving'}}).match(/values="([^"]+)"/)[1].split(' ').map(Number);
+ const transformed=[0,1,2,3].map(row=>matrix.slice(row*5,row*5+5).reduce((sum,n,i)=>sum+n*([0,0,0,.3,1][i]),0));
+ assert.deepEqual(transformed,[225/255,228/255,229/255,.3]);
+ assert.equal(vectorLogoPreviewFilter({material:{kind:'steel'},processing:{profileId:'steel-engraving'}}),'');
+ assert.equal(vectorLogoPreviewFilter({material:{kind:'acrylic'},processing:{profileId:'acrylic-print'}}),'');
+ assert.equal(await asset.blob.text(),before);assert.equal(hash(before),asset.vectorLogo.outputSha256);
+});
 test('vector upload is explicit and does not reveal legacy upload tabs',()=>{
  const config={photo:{enabled:false},logo:{enabled:true},profile:{designs:[]}};
  assert.equal(vectorLogoEnabled(config),false);assert.equal(uploadTabVisible(config,'none',{photoEnabled:false}),false);

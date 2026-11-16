@@ -1,0 +1,237 @@
+{
+  "schema": "gravuru-main-target-update-intent-preview/v1",
+  "executable": false,
+  "confirmed": false,
+  "imported": false,
+  "executed": false,
+  "shopifyWrites": 0,
+  "storeWrites": 0,
+  "codeCommit": "af6fd986c735d97bddc974261398ab8c4e88e00b",
+  "actual": {
+    "productId": "cfg_8e7ebe96-28d2-406f-b31e-036ee61f47e0",
+    "expectedRevision": 1,
+    "proposedRevision": 2,
+    "storeId": "acryl",
+    "shopDomain": "gravuru-design.myshopify.com",
+    "tenantId": "gravuru",
+    "shopifyProductId": "gid://shopify/Product/16190784602492",
+    "documentSha256": "d2886e119ea9715af2b8905ebab8ecc1d199b07f8653476ce5e0fa26cd8cca79",
+    "status": "draft",
+    "publishedRevision": null,
+    "archived": false,
+    "assignmentRevision": 1,
+    "documentHashMethod": "id-binding-string-canonical"
+  },
+  "importContract": "Native repository.importBatch update, not product-group execute/new-product creation.",
+  "v9": {
+    "planId": "pgp_80a0c3b9-b599-428f-8626-05e3ace880b6",
+    "planHash": "83cd95dc900fcbc9631086f54c26591e2dbab75d285cc80fa46d64673f63bb33",
+    "source": {
+      "id": "cfg_8d95909c-fcd9-4cf8-87e7-152eb21e7204",
+      "revision": 2,
+      "sha256": "d4aa5e78a870decbecbda937e76feb740c299f8e52bd5c1fd3a8d93a93f715ad",
+      "status": "draft",
+      "publishedRevision": null,
+      "metadataSha256": "8271b263e19ed11543c4c2411390d2cc6cdfbc34bcb6a407ca00b5278b6602d6"
+    },
+    "template": {
+      "id": "pgt_c868a507-a372-4111-9f3c-56af17cbf534",
+      "revision": 2,
+      "sha256": "4691b77daa1f287b4300c607392d61b3f8a8974dee1ab6ae0ee935aa9640265e"
+    },
+    "moduleProfile": {
+      "id": "cmp_8b4e451e-a9c0-400d-a148-094475734fb5",
+      "modules": {
+        "colors": false,
+        "designs": true,
+        "logo": true,
+        "motifs": true,
+        "options": true,
+        "photo": true,
+        "text": true
+      },
+      "name": "Acryl-Hauptprodukt: Foto und SVG-Logo an (Chris, 11.11.2026)",
+      "revision": 1,
+      "sha256": "426c0c7c30fef430107c46f2a8cdb729a897e69211f6bd92f65b36112816901f"
+    },
+    "compiledProductGroupDocumentSha256": "746f682929262b9a127a8d0613155dfba790ca57c524d027aa99797c5b40e3f8",
+    "compiledIdBindingDocumentSha256": "d75c917483a5ddedd380ac48c02c4ec3aea36b46f688557b8b9769fc5536eda2",
+    "sourceAndTemplateHashMethod": "product-group-object-canonical"
+  },
+  "pins": {
+    "moduleProfile": {
+      "id": "cmp_8b4e451e-a9c0-400d-a148-094475734fb5",
+      "modules": {
+        "colors": false,
+        "designs": true,
+        "logo": true,
+        "motifs": true,
+        "options": true,
+        "photo": true,
+        "text": true
+      },
+      "revision": 1,
+      "schema": "gravuru-configurator-modules/v1"
+    },
+    "profileAssignments": {
+      "bestsellers": {
+        "mode": "inherit",
+        "profileId": null
+      },
+      "colors": {
+        "mode": "inherit",
+        "profileId": null
+      },
+      "fonts": {
+        "mode": "inherit",
+        "profileId": null
+      },
+      "motifs": {
+        "mode": "inherit",
+        "profileId": null
+      }
+    },
+    "localResolvedProfiles": {
+      "selections": {
+        "fonts": null,
+        "motifs": null,
+        "colors": null,
+        "bestsellers": null
+      },
+      "sources": {
+        "fonts": {
+          "level": "unbound",
+          "categoryId": null,
+          "mode": "inherit",
+          "profileId": null,
+          "profileRevision": null
+        },
+        "motifs": {
+          "level": "unbound",
+          "categoryId": null,
+          "mode": "inherit",
+          "profileId": null,
+          "profileRevision": null
+        },
+        "colors": {
+          "level": "unbound",
+          "categoryId": null,
+          "mode": "inherit",
+          "profileId": null,
+          "profileRevision": null
+        },
+        "bestsellers": {
+          "level": "unbound",
+          "categoryId": null,
+          "mode": "inherit",
+          "profileId": null,
+          "profileRevision": null
+        }
+      },
+      "settingsRevision": 1,
+      "categoryPriority": "last-non-inherit-wins",
+      "warnings": []
+    },
+    "productionProfile": null,
+    "targetResolutionVerified": false,
+    "targetCategoryIds": [
+      "extern-shopifyproductid-16190784602492",
+      "linie-acryl-tuerschilder"
+    ],
+    "localResolvedProfilesMeaning": "Historical v9 empty-category resolution only, not the expected actual-category result."
+  },
+  "counts": {
+    "shopifyBefore": 808,
+    "plannedDocumentCombinations": 778,
+    "matchedExistingVariantIds": 778,
+    "preservedResidualVariantIds": 30,
+    "newProducts": 0,
+    "newShopifyVariants": 0,
+    "deletions": 0,
+    "labelAffectedVariants": 30,
+    "unchangedV9Prices": 778,
+    "existingShopPriceDifferences": 158
+  },
+  "preserve": {
+    "productId": "cfg_8e7ebe96-28d2-406f-b31e-036ee61f47e0",
+    "shopifyProductId": "gid://shopify/Product/16190784602492",
+    "all808VariantIds": true,
+    "all808Skus": true,
+    "featuredMediaId": "gid://shopify/MediaImage/70116579869052",
+    "otherExistingMediaId": "gid://shopify/MediaImage/70017733919100",
+    "shopifyStatus": "DRAFT",
+    "publication": false,
+    "titleDescriptionTagsMedia": "No Shopify mutation payload; preserve existing values."
+  },
+  "openEvidence": [
+    "Resolve both preserved actual categories and effective profile/settings pins on the private copy using the category-aware read-only helper.",
+    "Fresh actual-head/assignment-head/Shopify evidence under native guards before any separately authorized write.",
+    "Final concrete batch approval and separately authorized binding/price rollout; no import authorization in this preview."
+  ],
+  "limits": [
+    "This is not a new persisted pgp plan and has no confirmation or execution token.",
+    "SQL revision 2 is the proposed successor of expected revision 1, not a revision created by this preview.",
+    "The 30 residual variants stay unchanged at revision 1; no implicit transfer or deletion.",
+    "Existing Shop price differences are separate from display-label correction.",
+    "Original imported config.profile identifiers remain source provenance; native HTTP model replaces profile.id/binding/revision with the real stored cfg identity.",
+    "Native module snapshot portability is established; category-specific resource resolution remains a separate private-copy check."
+  ],
+  "proposedUpdate": {
+    "importAction": "update",
+    "productId": "cfg_8e7ebe96-28d2-406f-b31e-036ee61f47e0",
+    "expectedRevision": 1,
+    "proposedSuccessorRevision": 2,
+    "documentArtifactFile": "target-document.preview.json.gz",
+    "payloadStatus": "No import key, document entry, confirmation token or write callback; not an importBatch input.",
+    "documentProductGroupSha256": "ae09cbf6b58719b61729c7fab7a5685b464aae1e8d08691a706111e97b58e407",
+    "documentIdBindingSha256": "f0bb7d95e89e3aae66ab04454d6476132fe197aaae7c1da48ce8209ced62d285"
+  },
+  "previewRevision": "preserve-confirmed-existing-metadata-20261111",
+  "codeCommitMeaning": "Historical preview basis; native current validator SHA is pinned in verification.json; no HEAD guard.",
+  "metadataEvidence": "https://github.com/Chris83638w/gravuru-2027/issues/168#issuecomment-6807404988",
+  "appliedMetadataChanges": [
+    {
+      "path": [
+        "categoryIds"
+      ],
+      "before": [],
+      "after": [
+        "extern-shopifyproductid-16190784602492",
+        "linie-acryl-tuerschilder"
+      ]
+    },
+    {
+      "path": [
+        "config",
+        "profile",
+        "name"
+      ],
+      "before": "Türschild Acrylglas 3 mm – Form und Größe selbst wählen (Schwarz / Anthrazit)",
+      "after": "Türschild Acrylglas 3 mm – Form und Größe selbst wählen"
+    },
+    {
+      "path": [
+        "name"
+      ],
+      "before": "Türschild Acrylglas 3 mm – Form und Größe selbst wählen (Schwarz / Anthrazit)",
+      "after": "Türschild Acrylglas 3 mm – Form und Größe selbst wählen"
+    },
+    {
+      "path": [
+        "seo",
+        "title"
+      ],
+      "before": "Türschild Acrylglas 3 mm – Form und Größe selbst wählen (Schwarz / Ant",
+      "after": "Türschild Acrylglas 3 mm – Form und Größe selbst wählen"
+    }
+  ],
+  "operatorCopyEvidence": {
+    "url": "https://github.com/Chris83638w/gravuru-2027/issues/168#issuecomment-6807293318",
+    "summary": "808 IDs/options match;158 known price differences;resource defaults/settings and manufacturing reference+metadata match;catalog approval covers808. This prior result predates restoration of the actual category list."
+  },
+  "moduleContract": {
+    "embeddedSnapshotPortableForDirectUpdate": true,
+    "registryExistenceRequiredForSelectedGroupPlanWorkflow": true,
+    "missingTablesInWorkshopCopyDoNotProveMissingSeparateManagementLibrary": true
+  }
+}

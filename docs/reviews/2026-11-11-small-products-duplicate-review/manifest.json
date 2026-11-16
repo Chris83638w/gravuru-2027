@@ -1,0 +1,50 @@
+{
+  "schema": "gravuru-small-products-review-payload/v1",
+  "files": [
+    {
+      "file": "candidate-query.graphql",
+      "bytes": 368,
+      "sha256": "c5512b959e9d711323fadc93968664c5ad7e661b6de58bb030faa9ade766f41e"
+    },
+    {
+      "file": "global-variant-search.graphql",
+      "bytes": 173,
+      "sha256": "1d4cc11df9063a06102221b4993c2fb14fa8294ff27417f3a1f70838796011d9"
+    },
+    {
+      "file": "inventory-query.graphql",
+      "bytes": 561,
+      "sha256": "c4429bbc0a84c35282db283a72f5a9564d35d690aecc252a0f5fb3bfc2940435"
+    },
+    {
+      "file": "pagination.json",
+      "bytes": 57136,
+      "sha256": "e5d726fc6f196c828bc93c58949d75eb56131fc5b8d8f86d2108e2ba0e980cb4"
+    },
+    {
+      "file": "README.md",
+      "bytes": 9268,
+      "sha256": "5afd6f2b8ccbbab85916c24c5f532e2bb196632fc69b0bd8120ce032a718be49"
+    },
+    {
+      "file": "relevant-bindings.json",
+      "bytes": 38908,
+      "sha256": "b90791ace4cf297b73680b7e9f3c06452f76893e2e3c0e25da5e43658687eb0b"
+    },
+    {
+      "file": "six-groups.json",
+      "bytes": 131596,
+      "sha256": "d2cb6cac1149da13db9ed9c2af83f27f3060a4531840636542e9fe95f4d6346f"
+    },
+    {
+      "file": "summary.json",
+      "bytes": 2736,
+      "sha256": "10d07dccfff65a34e2e2966dce56c70b530e87743ea59f1fd8797e0ce5f3d65c"
+    },
+    {
+      "file": "variant-metafields.graphql",
+      "bytes": 170,
+      "sha256": "89e99df588bf5ec586362f786bb505b39b71b85ebf81088c8c2d48df56b37be4"
+    }
+  ]
+}

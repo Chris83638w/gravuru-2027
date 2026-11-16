@@ -1,0 +1,144 @@
+TAP version 13
+# Subtest: optional Plesk management path preserves default and rejects request-like/remote paths
+ok 1 - optional Plesk management path preserves default and rejects request-like/remote paths
+  ---
+  duration_ms: 57.497
+  type: 'test'
+  ...
+# Subtest: optional Plesk management key is accepted only by existing private config allowlist
+ok 2 - optional Plesk management key is accepted only by existing private config allowlist
+  ---
+  duration_ms: 29.8692
+  type: 'test'
+  ...
+# Subtest: Plesk gallery mount without config keeps existing management behind unchanged private proxy
+ok 3 - Plesk gallery mount without config keeps existing management behind unchanged private proxy
+  ---
+  duration_ms: 901.4662
+  type: 'test'
+  ...
+# Subtest: Plesk gallery mount uses native registry factory behind unchanged private proxy
+ok 4 - Plesk gallery mount uses native registry factory behind unchanged private proxy
+  ---
+  duration_ms: 660.0012
+  type: 'test'
+  ...
+# Subtest: Plesk configured mount fails before installing routes for absent or malformed factory
+ok 5 - Plesk configured mount fails before installing routes for absent or malformed factory
+  ---
+  duration_ms: 4.4453
+  type: 'test'
+  ...
+# Subtest: gallery proxy authenticates and checks exact external origin before forwarding CSRF
+ok 6 - gallery proxy authenticates and checks exact external origin before forwarding CSRF
+  ---
+  duration_ms: 42.9242
+  type: 'test'
+  ...
+# Subtest: review mode requires separated private paths and remains optional
+ok 7 - review mode requires separated private paths and remains optional
+  ---
+  duration_ms: 37.369
+  type: 'test'
+  ...
+# Subtest: mapping preserves local IDs while rejecting mismatched, duplicate or published designs
+ok 8 - mapping preserves local IDs while rejecting mismatched, duplicate or published designs
+  ---
+  duration_ms: 1.4017
+  type: 'test'
+  ...
+# Subtest: only explicitly typed and source-backed blank-only packages may omit originals
+ok 9 - only explicitly typed and source-backed blank-only packages may omit originals
+  ---
+  duration_ms: 0.3541
+  type: 'test'
+  ...
+# Subtest: protected gallery saves and reads comments through its own CSRF contract
+ok 10 - protected gallery saves and reads comments through its own CSRF contract
+  ---
+  duration_ms: 93.7022
+  type: 'test'
+  ...
+# Subtest: approval endpoint and script retain private proxy authentication, origin and CSRF protection
+not ok 11 - approval endpoint and script retain private proxy authentication, origin and CSRF protection
+  ---
+  duration_ms: 90.176
+  type: 'test'
+  location: 'C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-11-11\\die-vollst-ndige-bergabe-findest-du\\work\\issue230-integration-candidate\\ops\\plesk\\slate-review-runtime.test.mjs:97:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    422 !== 404
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 404
+  actual: 422
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-11-11/die-vollst-ndige-bergabe-findest-du/work/issue230-integration-candidate/ops/plesk/slate-review-runtime.test.mjs:133:10)
+    process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    async Test.run (node:internal/test_runner/test:1404:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:969:7)
+  ...
+# Subtest: real gallery reads no unreviewed native formats initially and fingerprints only displayed targets
+not ok 12 - real gallery reads no unreviewed native formats initially and fingerprints only displayed targets
+  ---
+  duration_ms: 1052.6827
+  type: 'test'
+  location: 'C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-11-11\\die-vollst-ndige-bergabe-findest-du\\work\\issue230-integration-candidate\\scripts\\gallery-review-performance.test.mjs:12:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    0 !== 2
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 2
+  actual: 0
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-11-11/die-vollst-ndige-bergabe-findest-du/work/issue230-integration-candidate/scripts/gallery-review-performance.test.mjs:40:9)
+    process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    async Test.run (node:internal/test_runner/test:1404:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+  ...
+# Subtest: 60 long catalogue identities use a bounded CSRF-protected read body without writing approvals
+ok 13 - 60 long catalogue identities use a bounded CSRF-protected read body without writing approvals
+  ---
+  duration_ms: 165.0283
+  type: 'test'
+  ...
+# Subtest: management configuration is an explicit local server factory; absence preserves default
+ok 14 - management configuration is an explicit local server factory; absence preserves default
+  ---
+  duration_ms: 17.5592
+  type: 'test'
+  ...
+# Subtest: PR194 real gallery mounts one supplied management service with current source registry and unchanged guards
+not ok 15 - PR194 real gallery mounts one supplied management service with current source registry and unchanged guards
+  ---
+  duration_ms: 2141.1871
+  type: 'test'
+  location: 'C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-11-11\\die-vollst-ndige-bergabe-findest-du\\work\\issue230-integration-candidate\\scripts\\slate-management-mount.test.mjs:35:1'
+  failureType: 'testCodeFailure'
+  error: "Cannot read properties of undefined (reading 'length')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-11-11/die-vollst-ndige-bergabe-findest-du/work/issue230-integration-candidate/scripts/slate-management-mount.test.mjs:51:112)
+    process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    async Test.run (node:internal/test_runner/test:1404:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:969:7)
+  ...
+1..15
+# tests 15
+# suites 0
+# pass 12
+# fail 3
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2601.9704

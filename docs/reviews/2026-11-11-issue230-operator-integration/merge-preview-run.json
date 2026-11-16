@@ -1,0 +1,31 @@
+{
+  "left": "b7f5ca2ac639462a4148fadd662b4b89466c484c",
+  "right": "ac10e6cee00469591514dcb4fa477b0547a54c48",
+  "base": [
+    "7b8bc287012140cb3aba05f2aadbbe52248c6a55"
+  ],
+  "args": [
+    "-c",
+    "core.autocrlf=false",
+    "merge-tree",
+    "--write-tree",
+    "--messages",
+    "-z",
+    "b7f5ca2ac639462a4148fadd662b4b89466c484c",
+    "ac10e6cee00469591514dcb4fa477b0547a54c48"
+  ],
+  "exitCode": 1,
+  "error": null,
+  "before": {
+    "HEAD": "b7f5ca2ac639462a4148fadd662b4b89466c484c",
+    "refsSha256": "8e6d8fc52bbcdde5879a996c8c7063673b90a0bd1263366bd78dd2f7077b27e0",
+    "indexSha256": null
+  },
+  "after": {
+    "HEAD": "b7f5ca2ac639462a4148fadd662b4b89466c484c",
+    "refsSha256": "8e6d8fc52bbcdde5879a996c8c7063673b90a0bd1263366bd78dd2f7077b27e0",
+    "indexSha256": null
+  },
+  "stdoutBytes": 15960,
+  "stderrBytes": 0
+}

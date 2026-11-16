@@ -1,0 +1,14 @@
+{
+  "date": "2026-11-06",
+  "url": "http://127.0.0.1:8996/originale/",
+  "design": "GT-S-30x20-D2",
+  "defaultDesign": "GT-S-30x20-D1",
+  "nonDefaultDeepLink": true,
+  "textSavedAndReloadedAtRevision": 2,
+  "textRestoredAtRevision": 3,
+  "photoReplacedSavedAndReloadedAtRevision": 4,
+  "photoMaskAndGeometryUnchanged": true,
+  "defaultDesignUnchanged": true,
+  "testEditsRestoredExactlyAtRevision": 5,
+  "localOnly": true
+}

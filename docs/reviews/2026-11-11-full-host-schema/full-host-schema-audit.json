@@ -1,0 +1,470 @@
+{
+  "base": "ac10e6cee00469591514dcb4fa477b0547a54c48",
+  "head": "a038e1ae7e3de3954ea204f6925c60c7b4213d4f",
+  "scope": "Versioned app/ops/scripts; no real DB opened; static source comparison plus isolated SQLite :memory: DDL syntax/inventory",
+  "runtimeSourceFiles": 907,
+  "ddlDelta": [
+    {
+      "file": "app/workshop/configurator-module-profiles.mjs",
+      "kind": "+",
+      "line": "CREATE TABLE IF NOT EXISTS configurator_module_profiles(tenant_id TEXT NOT NULL,id TEXT NOT NULL,revision INTEGER NOT NULL,PRIMARY KEY(tenant_id,id));"
+    },
+    {
+      "file": "app/workshop/configurator-module-profiles.mjs",
+      "kind": "+",
+      "line": "CREATE TABLE IF NOT EXISTS configurator_module_profile_revisions(tenant_id TEXT NOT NULL,id TEXT NOT NULL,revision INTEGER NOT NULL,document TEXT NOT NULL,sha256 TEXT NOT NULL,actor TEXT NOT NULL,created_at TEXT NOT NULL,PRIMARY KEY(tenant_id,id,revision));"
+    },
+    {
+      "file": "app/workshop/configurator-module-profiles.mjs",
+      "kind": "+",
+      "line": "CREATE TRIGGER IF NOT EXISTS configurator_module_revision_immutable BEFORE UPDATE ON configurator_module_profile_revisions BEGIN SELECT RAISE(ABORT,'Module profile revisions are immutable');END;"
+    },
+    {
+      "file": "app/workshop/configurator-module-profiles.mjs",
+      "kind": "+",
+      "line": "CREATE TRIGGER IF NOT EXISTS configurator_module_revision_retained BEFORE DELETE ON configurator_module_profile_revisions BEGIN SELECT RAISE(ABORT,'Module profile revisions are immutable');END;`);"
+    },
+    {
+      "file": "app/workshop/gallery-photo-media.mjs",
+      "kind": "+",
+      "line": "db.exec(`CREATE TABLE IF NOT EXISTS review_photo_edits ("
+    },
+    {
+      "file": "app/workshop/gallery-photo-media.mjs",
+      "kind": "+",
+      "line": "CREATE TRIGGER IF NOT EXISTS review_photo_edit_immutable BEFORE UPDATE ON review_photo_edits BEGIN SELECT RAISE(ABORT,'immutable review photo'); END;`);"
+    },
+    {
+      "file": "app/workshop/gallery-shop-sync-media.mjs",
+      "kind": "+",
+      "line": "CREATE TABLE IF NOT EXISTS gallery_sync_product_images(scope TEXT NOT NULL,sha256 TEXT NOT NULL,png BLOB NOT NULL,PRIMARY KEY(scope,sha256));"
+    },
+    {
+      "file": "app/workshop/gallery-shop-sync-media.mjs",
+      "kind": "+",
+      "line": "CREATE TRIGGER IF NOT EXISTS gallery_sync_product_images_immutable BEFORE UPDATE ON gallery_sync_product_images BEGIN SELECT RAISE(ABORT,'immutable product preview');END;`);"
+    },
+    {
+      "file": "app/workshop/gallery-shop-sync.mjs",
+      "kind": "+",
+      "line": "db.exec(`CREATE TABLE IF NOT EXISTS gallery_shop_sync_plans(scope TEXT NOT NULL,id TEXT NOT NULL,sha TEXT NOT NULL,document TEXT NOT NULL,created_at TEXT NOT NULL,PRIMARY KEY(scope,id));"
+    },
+    {
+      "file": "app/workshop/gallery-shop-sync.mjs",
+      "kind": "+",
+      "line": "CREATE TRIGGER IF NOT EXISTS gallery_shop_sync_plans_immutable BEFORE UPDATE ON gallery_shop_sync_plans BEGIN SELECT RAISE(ABORT,'sync plans are immutable');END;"
+    },
+    {
+      "file": "app/workshop/gallery-shop-sync.mjs",
+      "kind": "+",
+      "line": "CREATE TRIGGER IF NOT EXISTS gallery_shop_sync_plans_retention BEFORE DELETE ON gallery_shop_sync_plans BEGIN SELECT RAISE(ABORT,'sync plan retention');END;"
+    },
+    {
+      "file": "app/workshop/gallery-shop-sync.mjs",
+      "kind": "+",
+      "line": "CREATE TABLE IF NOT EXISTS gallery_shop_sync_operations(scope TEXT NOT NULL,id TEXT NOT NULL,plan_id TEXT NOT NULL,document TEXT NOT NULL,owner TEXT,lease_until INTEGER NOT NULL DEFAULT 0,PRIMARY KEY(scope,id),UNIQUE(scope,plan_id));"
+    },
+    {
+      "file": "app/workshop/gallery-shop-sync.mjs",
+      "kind": "+",
+      "line": "CREATE TABLE IF NOT EXISTS gallery_shop_sync_target_owners(scope TEXT NOT NULL,target_key TEXT NOT NULL,operation_id TEXT NOT NULL,PRIMARY KEY(scope,target_key));"
+    },
+    {
+      "file": "app/workshop/gallery-shop-sync.mjs",
+      "kind": "+",
+      "line": "CREATE TABLE IF NOT EXISTS gallery_shop_sync_confirmations(scope TEXT NOT NULL,id TEXT NOT NULL,plan_id TEXT NOT NULL,plan_sha TEXT NOT NULL,created_at TEXT NOT NULL,PRIMARY KEY(scope,id),UNIQUE(scope,plan_id,plan_sha));"
+    },
+    {
+      "file": "app/workshop/gallery-shop-sync.mjs",
+      "kind": "+",
+      "line": "CREATE TRIGGER IF NOT EXISTS gallery_shop_sync_confirmations_immutable BEFORE UPDATE ON gallery_shop_sync_confirmations BEGIN SELECT RAISE(ABORT,'sync confirmations are immutable');END;`);"
+    },
+    {
+      "file": "app/workshop/motif-search-stats.mjs",
+      "kind": "+",
+      "line": "const createTable=name=>`CREATE TABLE ${name}(tenant TEXT NOT NULL,day TEXT NOT NULL,product_group TEXT NOT NULL,term TEXT NOT NULL,source TEXT NOT NULL,search_kind TEXT NOT NULL DEFAULT 'motif' CHECK(search_kind IN ('motif','design')),searches INTEGER NOT NULL,without_results INTEGER NOT NULL,PRIMARY KEY(tenant,day,product_group,term,source,search_kind))`;"
+    },
+    {
+      "file": "app/workshop/motif-search-stats.mjs",
+      "kind": "+",
+      "line": "db.exec('DROP TABLE motif_search_daily; ALTER TABLE motif_search_daily_with_kind RENAME TO motif_search_daily');"
+    },
+    {
+      "file": "app/workshop/motif-search-stats.mjs",
+      "kind": "-",
+      "line": "db.exec(`CREATE TABLE IF NOT EXISTS motif_search_daily(tenant TEXT NOT NULL,day TEXT NOT NULL,product_group TEXT NOT NULL,term TEXT NOT NULL,source TEXT NOT NULL,searches INTEGER NOT NULL,without_results INTEGER NOT NULL,PRIMARY KEY(tenant,day,product_group,term,source))`);"
+    },
+    {
+      "file": "app/workshop/product-group-templates.mjs",
+      "kind": "+",
+      "line": "CREATE TABLE IF NOT EXISTS product_group_templates(tenant_id TEXT NOT NULL,id TEXT NOT NULL,revision INTEGER NOT NULL,PRIMARY KEY(tenant_id,id));"
+    },
+    {
+      "file": "app/workshop/product-group-templates.mjs",
+      "kind": "+",
+      "line": "CREATE TABLE IF NOT EXISTS product_group_template_revisions(tenant_id TEXT NOT NULL,id TEXT NOT NULL,revision INTEGER NOT NULL,document TEXT NOT NULL,sha256 TEXT NOT NULL,actor TEXT NOT NULL,created_at TEXT NOT NULL,PRIMARY KEY(tenant_id,id,revision));"
+    },
+    {
+      "file": "app/workshop/product-group-templates.mjs",
+      "kind": "+",
+      "line": "CREATE TABLE IF NOT EXISTS product_group_creation_plans(tenant_id TEXT NOT NULL,id TEXT NOT NULL,document TEXT NOT NULL,sha256 TEXT NOT NULL,created_at TEXT NOT NULL,PRIMARY KEY(tenant_id,id));"
+    },
+    {
+      "file": "app/workshop/product-group-templates.mjs",
+      "kind": "+",
+      "line": "CREATE TABLE IF NOT EXISTS product_group_confirmations(tenant_id TEXT NOT NULL,id TEXT NOT NULL,plan_id TEXT NOT NULL,plan_hash TEXT NOT NULL,actor TEXT NOT NULL,created_at TEXT NOT NULL,PRIMARY KEY(tenant_id,id),UNIQUE(tenant_id,plan_id,plan_hash));"
+    },
+    {
+      "file": "app/workshop/product-group-templates.mjs",
+      "kind": "+",
+      "line": "CREATE TABLE IF NOT EXISTS product_group_creation_results(tenant_id TEXT NOT NULL,plan_id TEXT NOT NULL,document TEXT NOT NULL,created_at TEXT NOT NULL,PRIMARY KEY(tenant_id,plan_id));"
+    },
+    {
+      "file": "app/workshop/product-group-templates.mjs",
+      "kind": "+",
+      "line": "CREATE TRIGGER IF NOT EXISTS product_group_revision_immutable BEFORE UPDATE ON product_group_template_revisions BEGIN SELECT RAISE(ABORT,'Template revisions are immutable');END;"
+    },
+    {
+      "file": "app/workshop/product-group-templates.mjs",
+      "kind": "+",
+      "line": "CREATE TRIGGER IF NOT EXISTS product_group_revision_retained BEFORE DELETE ON product_group_template_revisions BEGIN SELECT RAISE(ABORT,'Template revisions are immutable');END;"
+    },
+    {
+      "file": "app/workshop/product-group-templates.mjs",
+      "kind": "+",
+      "line": "CREATE TRIGGER IF NOT EXISTS product_group_plan_immutable BEFORE UPDATE ON product_group_creation_plans BEGIN SELECT RAISE(ABORT,'Creation plans are immutable');END;"
+    },
+    {
+      "file": "app/workshop/product-group-templates.mjs",
+      "kind": "+",
+      "line": "CREATE TRIGGER IF NOT EXISTS product_group_confirmation_immutable BEFORE UPDATE ON product_group_confirmations BEGIN SELECT RAISE(ABORT,'Creation confirmations are immutable');END;`);"
+    },
+    {
+      "file": "app/workshop/shop-product-binding-store.mjs",
+      "kind": "+",
+      "line": "const name='immutable_revision_'+event.toLowerCase(),sql=row.sql?.replace(/\\s+/g,' ').trim().replace(/;$/,'').replace(/^CREATE TRIGGER IF NOT EXISTS /,'CREATE TRIGGER ');"
+    },
+    {
+      "file": "app/workshop/shop-product-binding-store.mjs",
+      "kind": "+",
+      "line": "return row.name===name&&sql===`CREATE TRIGGER ${name} BEFORE ${event} ON product_revisions BEGIN SELECT RAISE(ABORT, 'Product revisions are immutable'); END`;"
+    },
+    {
+      "file": "app/workshop/shop-product-binding-store.mjs",
+      "kind": "+",
+      "line": "['shop_product_binding_revision_fixed',\"CREATE TRIGGER shop_product_binding_revision_fixed BEFORE UPDATE ON shop_product_binding_revisions BEGIN SELECT RAISE(ABORT,'Active binding revisions are immutable');END\"],"
+    },
+    {
+      "file": "app/workshop/shop-product-binding-store.mjs",
+      "kind": "+",
+      "line": "['shop_product_binding_revision_keep',\"CREATE TRIGGER shop_product_binding_revision_keep BEFORE DELETE ON shop_product_binding_revisions BEGIN SELECT RAISE(ABORT,'Active binding revisions are immutable');END\"],"
+    },
+    {
+      "file": "app/workshop/shop-product-binding-store.mjs",
+      "kind": "+",
+      "line": "['shop_product_binding_head_keep',\"CREATE TRIGGER shop_product_binding_head_keep BEFORE DELETE ON shop_product_binding_heads BEGIN SELECT RAISE(ABORT,'Active binding heads require an explicit transition');END\"],"
+    },
+    {
+      "file": "app/workshop/shop-product-binding-store.mjs",
+      "kind": "+",
+      "line": "['shop_product_binding_revisions',normalize(`CREATE TABLE shop_product_binding_revisions("
+    },
+    {
+      "file": "app/workshop/shop-product-binding-store.mjs",
+      "kind": "+",
+      "line": "['shop_product_binding_heads',normalize(`CREATE TABLE shop_product_binding_heads("
+    },
+    {
+      "file": "scripts/lib/design-review-approvals.mjs",
+      "kind": "+",
+      "line": "CREATE TABLE IF NOT EXISTS design_review_approval_events ("
+    },
+    {
+      "file": "scripts/lib/design-review-approvals.mjs",
+      "kind": "+",
+      "line": "CREATE TRIGGER IF NOT EXISTS design_review_approval_immutable_update BEFORE UPDATE ON design_review_approval_events"
+    },
+    {
+      "file": "scripts/lib/design-review-approvals.mjs",
+      "kind": "+",
+      "line": "CREATE TRIGGER IF NOT EXISTS design_review_approval_immutable_delete BEFORE DELETE ON design_review_approval_events"
+    },
+    {
+      "file": "scripts/lib/slate-review-comments.mjs",
+      "kind": "+",
+      "line": "CREATE TABLE IF NOT EXISTS review_comments ("
+    }
+  ],
+  "unchanged": [
+    {
+      "file": "app/workshop/repository.mjs",
+      "executableDdlTemplateCount": 4,
+      "sameExecutableDdl": true,
+      "ddlSha256": "817559878ae9e505baca66709c29d9342471dd3b3316aff1a1a8d41e8625e58e"
+    },
+    {
+      "file": "app/workshop/order-intake.mjs",
+      "executableDdlTemplateCount": 2,
+      "sameExecutableDdl": true,
+      "ddlSha256": "abc6c74e5fdd74a8f4a451b9752c01f26ec0fa07723cdeacd508160d1557044d"
+    },
+    {
+      "file": "app/workshop/form-customer-store.mjs",
+      "executableDdlTemplateCount": 1,
+      "sameExecutableDdl": true,
+      "ddlSha256": "a4e3b813efd60ef50df15a75e2b9d5d8f1ee94caf40bf183243a551d67a059cf"
+    },
+    {
+      "file": "app/workshop/shop-product-binding-store.mjs",
+      "executableDdlTemplateCount": 1,
+      "sameExecutableDdl": true,
+      "ddlSha256": "5c4a394de9c3e926ce39702fad0195055d34578ee33260a169e978580021d005"
+    },
+    {
+      "file": "app/workshop/catalog-live-orders.mjs",
+      "executableDdlTemplateCount": 1,
+      "sameExecutableDdl": true,
+      "ddlSha256": "591c1e2ff589fd5a73bbce9e0a3bd94e45b222c8173059f7c5f3e39446844581"
+    },
+    {
+      "file": "app/workshop/tenant.mjs",
+      "executableDdlTemplateCount": 3,
+      "sameExecutableDdl": true,
+      "ddlSha256": "62dad92b54ad4af82319882e337072c0e2d2e4e3718461aaded7d7bc09f440ee"
+    }
+  ],
+  "schemas": [
+    {
+      "file": "app/workshop/gallery-photo-media.mjs",
+      "sourceSha256": "289116130b6dc79b2a38ee521ff3efa4892730173938d0be4c7f50c5220fda43",
+      "literalDdlExecutedInIsolatedMemoryOnly": true,
+      "objects": [
+        {
+          "type": "table",
+          "name": "review_photo_edits",
+          "tbl_name": "review_photo_edits",
+          "sql": "CREATE TABLE review_photo_edits (\n  asset_id TEXT NOT NULL REFERENCES design_assets(id), tenant_id TEXT NOT NULL,\n  original_sha256 TEXT NOT NULL REFERENCES design_sources(sha256),\n  processed_sha256 TEXT NOT NULL REFERENCES design_sources(sha256),\n  edit_source_sha256 TEXT NOT NULL REFERENCES design_sources(sha256),\n  metadata TEXT NOT NULL, PRIMARY KEY(tenant_id,asset_id))"
+        },
+        {
+          "type": "trigger",
+          "name": "review_photo_edit_immutable",
+          "tbl_name": "review_photo_edits",
+          "sql": "CREATE TRIGGER review_photo_edit_immutable BEFORE UPDATE ON review_photo_edits BEGIN SELECT RAISE(ABORT,'immutable review photo'); END"
+        }
+      ]
+    },
+    {
+      "file": "app/workshop/configurator-module-profiles.mjs",
+      "sourceSha256": "ccab1695f4ac21bc3819623b8871f641cd503587cbd7aaf6790d57820aff5720",
+      "literalDdlExecutedInIsolatedMemoryOnly": true,
+      "objects": [
+        {
+          "type": "table",
+          "name": "configurator_module_profile_revisions",
+          "tbl_name": "configurator_module_profile_revisions",
+          "sql": "CREATE TABLE configurator_module_profile_revisions(tenant_id TEXT NOT NULL,id TEXT NOT NULL,revision INTEGER NOT NULL,document TEXT NOT NULL,sha256 TEXT NOT NULL,actor TEXT NOT NULL,created_at TEXT NOT NULL,PRIMARY KEY(tenant_id,id,revision))"
+        },
+        {
+          "type": "table",
+          "name": "configurator_module_profiles",
+          "tbl_name": "configurator_module_profiles",
+          "sql": "CREATE TABLE configurator_module_profiles(tenant_id TEXT NOT NULL,id TEXT NOT NULL,revision INTEGER NOT NULL,PRIMARY KEY(tenant_id,id))"
+        },
+        {
+          "type": "trigger",
+          "name": "configurator_module_revision_immutable",
+          "tbl_name": "configurator_module_profile_revisions",
+          "sql": "CREATE TRIGGER configurator_module_revision_immutable BEFORE UPDATE ON configurator_module_profile_revisions BEGIN SELECT RAISE(ABORT,'Module profile revisions are immutable');END"
+        },
+        {
+          "type": "trigger",
+          "name": "configurator_module_revision_retained",
+          "tbl_name": "configurator_module_profile_revisions",
+          "sql": "CREATE TRIGGER configurator_module_revision_retained BEFORE DELETE ON configurator_module_profile_revisions BEGIN SELECT RAISE(ABORT,'Module profile revisions are immutable');END"
+        }
+      ]
+    },
+    {
+      "file": "app/workshop/product-group-templates.mjs",
+      "sourceSha256": "e37c7ea780512efc02724c34e89c54461ad844e7875de96f7e301227450f5faf",
+      "literalDdlExecutedInIsolatedMemoryOnly": true,
+      "objects": [
+        {
+          "type": "table",
+          "name": "product_group_confirmations",
+          "tbl_name": "product_group_confirmations",
+          "sql": "CREATE TABLE product_group_confirmations(tenant_id TEXT NOT NULL,id TEXT NOT NULL,plan_id TEXT NOT NULL,plan_hash TEXT NOT NULL,actor TEXT NOT NULL,created_at TEXT NOT NULL,PRIMARY KEY(tenant_id,id),UNIQUE(tenant_id,plan_id,plan_hash))"
+        },
+        {
+          "type": "table",
+          "name": "product_group_creation_plans",
+          "tbl_name": "product_group_creation_plans",
+          "sql": "CREATE TABLE product_group_creation_plans(tenant_id TEXT NOT NULL,id TEXT NOT NULL,document TEXT NOT NULL,sha256 TEXT NOT NULL,created_at TEXT NOT NULL,PRIMARY KEY(tenant_id,id))"
+        },
+        {
+          "type": "table",
+          "name": "product_group_creation_results",
+          "tbl_name": "product_group_creation_results",
+          "sql": "CREATE TABLE product_group_creation_results(tenant_id TEXT NOT NULL,plan_id TEXT NOT NULL,document TEXT NOT NULL,created_at TEXT NOT NULL,PRIMARY KEY(tenant_id,plan_id))"
+        },
+        {
+          "type": "table",
+          "name": "product_group_template_revisions",
+          "tbl_name": "product_group_template_revisions",
+          "sql": "CREATE TABLE product_group_template_revisions(tenant_id TEXT NOT NULL,id TEXT NOT NULL,revision INTEGER NOT NULL,document TEXT NOT NULL,sha256 TEXT NOT NULL,actor TEXT NOT NULL,created_at TEXT NOT NULL,PRIMARY KEY(tenant_id,id,revision))"
+        },
+        {
+          "type": "table",
+          "name": "product_group_templates",
+          "tbl_name": "product_group_templates",
+          "sql": "CREATE TABLE product_group_templates(tenant_id TEXT NOT NULL,id TEXT NOT NULL,revision INTEGER NOT NULL,PRIMARY KEY(tenant_id,id))"
+        },
+        {
+          "type": "trigger",
+          "name": "product_group_confirmation_immutable",
+          "tbl_name": "product_group_confirmations",
+          "sql": "CREATE TRIGGER product_group_confirmation_immutable BEFORE UPDATE ON product_group_confirmations BEGIN SELECT RAISE(ABORT,'Creation confirmations are immutable');END"
+        },
+        {
+          "type": "trigger",
+          "name": "product_group_plan_immutable",
+          "tbl_name": "product_group_creation_plans",
+          "sql": "CREATE TRIGGER product_group_plan_immutable BEFORE UPDATE ON product_group_creation_plans BEGIN SELECT RAISE(ABORT,'Creation plans are immutable');END"
+        },
+        {
+          "type": "trigger",
+          "name": "product_group_revision_immutable",
+          "tbl_name": "product_group_template_revisions",
+          "sql": "CREATE TRIGGER product_group_revision_immutable BEFORE UPDATE ON product_group_template_revisions BEGIN SELECT RAISE(ABORT,'Template revisions are immutable');END"
+        },
+        {
+          "type": "trigger",
+          "name": "product_group_revision_retained",
+          "tbl_name": "product_group_template_revisions",
+          "sql": "CREATE TRIGGER product_group_revision_retained BEFORE DELETE ON product_group_template_revisions BEGIN SELECT RAISE(ABORT,'Template revisions are immutable');END"
+        }
+      ]
+    },
+    {
+      "file": "app/workshop/gallery-shop-sync.mjs",
+      "sourceSha256": "0d62e2d956de0b1cda1d1c59fa0534fe537f3bb8569251c6fd9c2678b3b71d49",
+      "literalDdlExecutedInIsolatedMemoryOnly": true,
+      "objects": [
+        {
+          "type": "table",
+          "name": "gallery_shop_sync_confirmations",
+          "tbl_name": "gallery_shop_sync_confirmations",
+          "sql": "CREATE TABLE gallery_shop_sync_confirmations(scope TEXT NOT NULL,id TEXT NOT NULL,plan_id TEXT NOT NULL,plan_sha TEXT NOT NULL,created_at TEXT NOT NULL,PRIMARY KEY(scope,id),UNIQUE(scope,plan_id,plan_sha))"
+        },
+        {
+          "type": "table",
+          "name": "gallery_shop_sync_operations",
+          "tbl_name": "gallery_shop_sync_operations",
+          "sql": "CREATE TABLE gallery_shop_sync_operations(scope TEXT NOT NULL,id TEXT NOT NULL,plan_id TEXT NOT NULL,document TEXT NOT NULL,owner TEXT,lease_until INTEGER NOT NULL DEFAULT 0,PRIMARY KEY(scope,id),UNIQUE(scope,plan_id))"
+        },
+        {
+          "type": "table",
+          "name": "gallery_shop_sync_plans",
+          "tbl_name": "gallery_shop_sync_plans",
+          "sql": "CREATE TABLE gallery_shop_sync_plans(scope TEXT NOT NULL,id TEXT NOT NULL,sha TEXT NOT NULL,document TEXT NOT NULL,created_at TEXT NOT NULL,PRIMARY KEY(scope,id))"
+        },
+        {
+          "type": "table",
+          "name": "gallery_shop_sync_target_owners",
+          "tbl_name": "gallery_shop_sync_target_owners",
+          "sql": "CREATE TABLE gallery_shop_sync_target_owners(scope TEXT NOT NULL,target_key TEXT NOT NULL,operation_id TEXT NOT NULL,PRIMARY KEY(scope,target_key))"
+        },
+        {
+          "type": "trigger",
+          "name": "gallery_shop_sync_confirmations_immutable",
+          "tbl_name": "gallery_shop_sync_confirmations",
+          "sql": "CREATE TRIGGER gallery_shop_sync_confirmations_immutable BEFORE UPDATE ON gallery_shop_sync_confirmations BEGIN SELECT RAISE(ABORT,'sync confirmations are immutable');END"
+        },
+        {
+          "type": "trigger",
+          "name": "gallery_shop_sync_plans_immutable",
+          "tbl_name": "gallery_shop_sync_plans",
+          "sql": "CREATE TRIGGER gallery_shop_sync_plans_immutable BEFORE UPDATE ON gallery_shop_sync_plans BEGIN SELECT RAISE(ABORT,'sync plans are immutable');END"
+        },
+        {
+          "type": "trigger",
+          "name": "gallery_shop_sync_plans_retention",
+          "tbl_name": "gallery_shop_sync_plans",
+          "sql": "CREATE TRIGGER gallery_shop_sync_plans_retention BEFORE DELETE ON gallery_shop_sync_plans BEGIN SELECT RAISE(ABORT,'sync plan retention');END"
+        }
+      ]
+    },
+    {
+      "file": "app/workshop/gallery-shop-sync-media.mjs",
+      "sourceSha256": "6acbd47863f17c7414d7859864450b1309f13f87683f60af628c8574d193b5c1",
+      "literalDdlExecutedInIsolatedMemoryOnly": true,
+      "objects": [
+        {
+          "type": "table",
+          "name": "gallery_sync_product_images",
+          "tbl_name": "gallery_sync_product_images",
+          "sql": "CREATE TABLE gallery_sync_product_images(scope TEXT NOT NULL,sha256 TEXT NOT NULL,png BLOB NOT NULL,PRIMARY KEY(scope,sha256))"
+        },
+        {
+          "type": "trigger",
+          "name": "gallery_sync_product_images_immutable",
+          "tbl_name": "gallery_sync_product_images",
+          "sql": "CREATE TRIGGER gallery_sync_product_images_immutable BEFORE UPDATE ON gallery_sync_product_images BEGIN SELECT RAISE(ABORT,'immutable product preview');END"
+        }
+      ]
+    },
+    {
+      "file": "scripts/lib/slate-review-comments.mjs",
+      "sourceSha256": "122c9aef13c98c22a7c4e2125dc2f6673663a23d80c4321e5e8e1857a274b32d",
+      "literalDdlExecutedInIsolatedMemoryOnly": true,
+      "objects": [
+        {
+          "type": "table",
+          "name": "review_comments",
+          "tbl_name": "review_comments",
+          "sql": "CREATE TABLE review_comments (\n      design_id TEXT NOT NULL, revision INTEGER NOT NULL,\n      text TEXT NOT NULL, updated_at TEXT NOT NULL,\n      PRIMARY KEY(design_id, revision)\n    )"
+        }
+      ]
+    },
+    {
+      "file": "scripts/lib/design-review-approvals.mjs",
+      "sourceSha256": "33e37a2ce82048f6eb195984634130b4ebb42fb4865262d4a6197a74b0c603ef",
+      "literalDdlExecutedInIsolatedMemoryOnly": true,
+      "objects": [
+        {
+          "type": "table",
+          "name": "design_review_approval_events",
+          "tbl_name": "design_review_approval_events",
+          "sql": "CREATE TABLE design_review_approval_events (\n      target_key TEXT NOT NULL, revision INTEGER NOT NULL,\n      approved INTEGER NOT NULL CHECK(approved IN (0,1)), fingerprint TEXT,\n      metadata TEXT NOT NULL, actor TEXT NOT NULL, created_at TEXT NOT NULL,\n      PRIMARY KEY(target_key,revision)\n    )"
+        },
+        {
+          "type": "trigger",
+          "name": "design_review_approval_immutable_delete",
+          "tbl_name": "design_review_approval_events",
+          "sql": "CREATE TRIGGER design_review_approval_immutable_delete BEFORE DELETE ON design_review_approval_events\n      BEGIN SELECT RAISE(ABORT,'Review approval events are immutable'); END"
+        },
+        {
+          "type": "trigger",
+          "name": "design_review_approval_immutable_update",
+          "tbl_name": "design_review_approval_events",
+          "sql": "CREATE TRIGGER design_review_approval_immutable_update BEFORE UPDATE ON design_review_approval_events\n      BEGIN SELECT RAISE(ABORT,'Review approval events are immutable'); END"
+        }
+      ]
+    }
+  ],
+  "serverOnlyImportTools": {
+    "names": [
+      "assets.mjs",
+      "bind-products.mjs",
+      "import-products.mjs",
+      "remote-import.mjs"
+    ],
+    "versionedReferences": [],
+    "privateAppCjsNotAvailable": true
+  },
+  "limitations": [
+    "Static source scan includes optional modules, not proof they are mounted by the private host.",
+    "Actual live SQLite schemas and external legacy-release modules were not opened.",
+    "No full createWorkshop/host constructor was executed."
+  ]
+}

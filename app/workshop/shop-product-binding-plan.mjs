@@ -2,8 +2,11 @@
 // Leseadapter müssen aus genau einem vertrauenswürdigen Mandanten-Store kommen;
 // niemals Browserdaten als Produkt-, Preis-, Profil- oder Shopify-Beleg verwenden.
 import {createHash} from 'node:crypto';
-import {isBindingReadSnapshot} from './shop-product-binding-read-snapshot.mjs';
+import {isBindingReadSnapshot,isBindingProductSnapshot} from './shop-product-binding-read-snapshot.mjs';
 const bindingIndexes=new WeakMap();
+// Only deeply frozen records made inside a guarded native read phase qualify.
+// Untrusted/mutable adapters retain their full per-call digest validation.
+const productDigests=new WeakMap();
 
 export const SHOP_BINDING_PLAN_SCHEMA = 'gravuru-shop-product-binding-plan/v1';
 const plans = new WeakSet();
@@ -41,7 +44,7 @@ function canonical(value) {
   if (object(value)) return '{' + Object.keys(value).sort().map(k => JSON.stringify(k) + ':' + canonical(value[k])).join(',') + '}';
   fail('shop_binding_document', 'Produktbeleg enthält keine gültigen JSON-Daten.');
 }
-const digest = value => createHash('sha256').update(canonical(value)).digest('hex');
+const digest = value => {const cacheable=isBindingProductSnapshot(value),cached=cacheable?productDigests.get(value):null;if(cached)return cached;const hash=createHash('sha256').update(canonical(value)).digest('hex');if(cacheable)productDigests.set(value,hash);return hash;};
 const equal = (a, b) => canonical(a) === canonical(b);
 function freeze(value) { if (value && typeof value === 'object') { Object.values(value).forEach(freeze); Object.freeze(value); } return value; }
 function read(adapter, method, ...args) {

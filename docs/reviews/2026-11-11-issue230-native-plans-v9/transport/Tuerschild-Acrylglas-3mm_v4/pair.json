@@ -1,0 +1,405 @@
+{
+  "workbook": "Tuerschild-Acrylglas-3mm_v4.xlsx",
+  "excelSha256": "495e7e59d7abf6a46f1fb7098a75e666162e58be3cad99ad75de6db5d3923841",
+  "catalogCommit": "8236b8bfab7322447ec46661c116fa526331af3d",
+  "source": {
+    "id": "cfg_8d95909c-fcd9-4cf8-87e7-152eb21e7204",
+    "revision": 2,
+    "sha256": "d4aa5e78a870decbecbda937e76feb740c299f8e52bd5c1fd3a8d93a93f715ad",
+    "status": "draft",
+    "publishedRevision": null,
+    "metadataSha256": "8271b263e19ed11543c4c2411390d2cc6cdfbc34bcb6a407ca00b5278b6602d6"
+  },
+  "registry": {
+    "key": "cfg_8d95909c-fcd9-4cf8-87e7-152eb21e7204",
+    "productId": "cfg_8d95909c-fcd9-4cf8-87e7-152eb21e7204",
+    "familyId": "cfg_8d95909c-fcd9-4cf8-87e7-152eb21e7204",
+    "sizeKey": "cfg_8d95909c-fcd9-4cf8-87e7-152eb21e7204",
+    "name": "Türschild Acrylglas 3 mm – Form und Größe selbst wählen (Schwarz / Anthrazit)",
+    "label": "Türschild Acrylglas 3 mm – Form und Größe selbst wählen (Schwarz / Anthrazit)",
+    "detailsLoaded": false
+  },
+  "template": {
+    "id": "pgt_c868a507-a372-4111-9f3c-56af17cbf534",
+    "revision": 2,
+    "sha256": "4691b77daa1f287b4300c607392d61b3f8a8974dee1ab6ae0ee935aa9640265e"
+  },
+  "planId": "pgp_80a0c3b9-b599-428f-8626-05e3ace880b6",
+  "planHash": "83cd95dc900fcbc9631086f54c26591e2dbab75d285cc80fa46d64673f63bb33",
+  "valid": true,
+  "approvalReady": true,
+  "proposedStart": {
+    "sizeKey": "TS-Acryl-AB-120X80-T30-SW",
+    "themeId": "familienschilder",
+    "defaultDesignId": "TAE-V2A-8x5-D1",
+    "groessenWahl": "alle"
+  },
+  "priceOverrides": [
+    {
+      "familyId": "acryl-3mm-tuerschilder-schwarz",
+      "rule": "B02S-E4-D4",
+      "skuSuffix": "B02S",
+      "before": 299,
+      "after": 269,
+      "source": "Confirmed Excel and Issue 230 comment 6766806272"
+    },
+    {
+      "familyId": "acryl-3mm-tuerschilder-schwarz",
+      "rule": "B02S-E6-D4",
+      "skuSuffix": "B02S",
+      "before": 299,
+      "after": 269,
+      "source": "Confirmed Excel and Issue 230 comment 6766806272"
+    },
+    {
+      "familyId": "acryl-3mm-tuerschilder-schwarz",
+      "rule": "B02S-E8-D4",
+      "skuSuffix": "B02S",
+      "before": 299,
+      "after": 269,
+      "source": "Confirmed Excel and Issue 230 comment 6766806272"
+    },
+    {
+      "familyId": "acryl-3mm-tuerschilder-schwarz",
+      "rule": "B04S-E8-D4",
+      "skuSuffix": "B04S",
+      "before": 339,
+      "after": 329,
+      "source": "Confirmed Excel and Issue 230 comment 6766806272"
+    },
+    {
+      "familyId": "acryl-3mm-tuerschilder-schwarz",
+      "rule": "B04S-E15-D4",
+      "skuSuffix": "B04S",
+      "before": 339,
+      "after": 329,
+      "source": "Confirmed Excel and Issue 230 comment 6766806272"
+    },
+    {
+      "familyId": "acryl-3mm-tuerschilder-schwarz",
+      "rule": "B04S-E10-D4",
+      "skuSuffix": "B04S",
+      "before": 339,
+      "after": 329,
+      "source": "Confirmed Excel and Issue 230 comment 6766806272"
+    },
+    {
+      "familyId": "acryl-3mm-tuerschilder-schwarz",
+      "rule": "B04S-E6-D4",
+      "skuSuffix": "B04S",
+      "before": 339,
+      "after": 329,
+      "source": "Confirmed Excel and Issue 230 comment 6766806272"
+    },
+    {
+      "familyId": "acryl-3mm-tuerschilder-schwarz",
+      "rule": "B02S-KONTUR",
+      "skuSuffix": "B02S",
+      "before": 299,
+      "after": 269,
+      "source": "Confirmed Excel and Issue 230 comment 6766806272"
+    },
+    {
+      "familyId": "acryl-3mm-tuerschilder-anthrazit",
+      "rule": "B02S-E4-D4",
+      "skuSuffix": "B02S",
+      "before": 299,
+      "after": 269,
+      "source": "Confirmed Excel and Issue 230 comment 6766806272"
+    },
+    {
+      "familyId": "acryl-3mm-tuerschilder-anthrazit",
+      "rule": "B02S-E6-D4",
+      "skuSuffix": "B02S",
+      "before": 299,
+      "after": 269,
+      "source": "Confirmed Excel and Issue 230 comment 6766806272"
+    },
+    {
+      "familyId": "acryl-3mm-tuerschilder-anthrazit",
+      "rule": "B02S-E8-D4",
+      "skuSuffix": "B02S",
+      "before": 299,
+      "after": 269,
+      "source": "Confirmed Excel and Issue 230 comment 6766806272"
+    },
+    {
+      "familyId": "acryl-3mm-tuerschilder-anthrazit",
+      "rule": "B04S-E8-D4",
+      "skuSuffix": "B04S",
+      "before": 339,
+      "after": 329,
+      "source": "Confirmed Excel and Issue 230 comment 6766806272"
+    },
+    {
+      "familyId": "acryl-3mm-tuerschilder-anthrazit",
+      "rule": "B04S-E15-D4",
+      "skuSuffix": "B04S",
+      "before": 339,
+      "after": 329,
+      "source": "Confirmed Excel and Issue 230 comment 6766806272"
+    },
+    {
+      "familyId": "acryl-3mm-tuerschilder-anthrazit",
+      "rule": "B04S-E10-D4",
+      "skuSuffix": "B04S",
+      "before": 339,
+      "after": 329,
+      "source": "Confirmed Excel and Issue 230 comment 6766806272"
+    },
+    {
+      "familyId": "acryl-3mm-tuerschilder-anthrazit",
+      "rule": "B04S-E6-D4",
+      "skuSuffix": "B04S",
+      "before": 339,
+      "after": 329,
+      "source": "Confirmed Excel and Issue 230 comment 6766806272"
+    },
+    {
+      "familyId": "acryl-3mm-tuerschilder-anthrazit",
+      "rule": "B02S-KONTUR",
+      "skuSuffix": "B02S",
+      "before": 299,
+      "after": 269,
+      "source": "Confirmed Excel and Issue 230 comment 6766806272"
+    }
+  ],
+  "comparison": {
+    "compared": 778,
+    "actual": 778,
+    "differences": []
+  },
+  "designs": {
+    "requested": 1217,
+    "native": 1205,
+    "missing": [
+      "TQ-V2A-8x8-D14",
+      "TO-V2A-12x4-D5",
+      "TO-V2A-15x8-D5",
+      "TO-V2A-15x8-D9",
+      "TO-V2A-9x6-D38",
+      "TO-V2A-9x6-D46",
+      "TR1-V2A-9x6-D19",
+      "TR1-V2A-9x6-D5",
+      "TR1-V2A-9x6-D9",
+      "TR2-V2A-9x6-D15",
+      "TR-V2A-6.5x6.5-D803"
+    ],
+    "requestedUnique": 1216,
+    "hiddenIds": [
+      "TQ-V2A-8x8-D14",
+      "TO-V2A-9x6-D38"
+    ],
+    "fitExcludedIds": [
+      "TO-V2A-12x4-D5",
+      "TO-V2A-15x8-D5",
+      "TO-V2A-15x8-D9",
+      "TO-V2A-9x6-D46",
+      "TR1-V2A-9x6-D19",
+      "TR1-V2A-9x6-D5",
+      "TR1-V2A-9x6-D9",
+      "TR2-V2A-9x6-D15",
+      "TR-V2A-6.5x6.5-D803"
+    ],
+    "duplicatePolicy": "first occurrence after rank ascending; rank 0 retained"
+  },
+  "nativeModules": {
+    "options": true,
+    "designs": true,
+    "text": true,
+    "motifs": true,
+    "photo": true,
+    "logo": true,
+    "colors": false
+  },
+  "requestedModules": [
+    {
+      "key": "options",
+      "requested": "an",
+      "confirmation": "offen"
+    },
+    {
+      "key": "designs",
+      "requested": "an",
+      "confirmation": "offen"
+    },
+    {
+      "key": "text",
+      "requested": "an",
+      "confirmation": "offen"
+    },
+    {
+      "key": "motifs",
+      "requested": "an",
+      "confirmation": "offen"
+    },
+    {
+      "key": "photo",
+      "requested": "an",
+      "confirmation": "bestätigt"
+    },
+    {
+      "key": "logo",
+      "requested": "an",
+      "confirmation": "offen"
+    },
+    {
+      "key": "colors",
+      "requested": "an",
+      "confirmation": "offen"
+    }
+  ],
+  "openQuestions": [],
+  "confirmations": 0,
+  "executions": 0,
+  "shopifyWrites": 0,
+  "profileSelections": {
+    "selections": {
+      "fonts": null,
+      "motifs": null,
+      "colors": null,
+      "bestsellers": null
+    },
+    "sources": {
+      "fonts": {
+        "level": "unbound",
+        "categoryId": null,
+        "mode": "inherit",
+        "profileId": null,
+        "profileRevision": null
+      },
+      "motifs": {
+        "level": "unbound",
+        "categoryId": null,
+        "mode": "inherit",
+        "profileId": null,
+        "profileRevision": null
+      },
+      "colors": {
+        "level": "unbound",
+        "categoryId": null,
+        "mode": "inherit",
+        "profileId": null,
+        "profileRevision": null
+      },
+      "bestsellers": {
+        "level": "unbound",
+        "categoryId": null,
+        "mode": "inherit",
+        "profileId": null,
+        "profileRevision": null
+      }
+    },
+    "settingsRevision": 1,
+    "categoryPriority": "last-non-inherit-wins",
+    "warnings": []
+  },
+  "smallMotifProfile": null,
+  "previousPreparation": {
+    "run": "v8",
+    "sourceRevision": 1,
+    "sourceHash": "d4aa5e78a870decbecbda937e76feb740c299f8e52bd5c1fd3a8d93a93f715ad",
+    "templateRevision": 1,
+    "templateHash": "68e3035902c1e41efc7acd4d1da238af1058fd9d06d755185250209c5db8bfcb",
+    "planId": "pgp_aad6d5ae-b255-4d19-8c92-9d91ba09d445",
+    "planHash": "7079dae2814c9c17526ae3c254696ccd2b253318066b38a435f7a9cfb610e197"
+  },
+  "moduleProfilePins": [
+    {
+      "id": "cmp_8b4e451e-a9c0-400d-a148-094475734fb5",
+      "revision": 1,
+      "sha256": "426c0c7c30fef430107c46f2a8cdb729a897e69211f6bd92f65b36112816901f"
+    }
+  ],
+  "effectiveModules": {
+    "colors": false,
+    "designs": true,
+    "logo": true,
+    "motifs": true,
+    "options": true,
+    "photo": true,
+    "text": true
+  },
+  "uploadDecision": {
+    "date": "2026-11-11",
+    "source": "Explicit user response in current Codex chat, relayed by root to product_plans",
+    "mainAcrylic": {
+      "photo": true,
+      "svgLogo": true,
+      "photoCents": 999,
+      "logoCents": 1299
+    },
+    "sixSmallProducts": {
+      "photo": false,
+      "logo": false
+    },
+    "scope": "Upload modules only; no product confirmation or execution"
+  },
+  "approvalScope": "Ready for explicit review only; not confirmed, executed or published",
+  "removedOpenQuestions": [
+    {
+      "question": "Startdesign TAE-V2A-8x5-D1 / 12 × 8 cm / Schwarz ist ein technisch geprüfter Vorschlag, keine neue Nutzerentscheidung.",
+      "evidence": "decisions.starts: explicit user instruction to retain existing designs/start templates"
+    },
+    {
+      "question": "Steuerkontext/Mengenstaffeln und Start-/Designreferenzen der unveränderten Excel bleiben zu prüfen. Foto-/Logo-Auswahl wurde am 11.11.2026 ausdrücklich bestätigt und ist keine offene Nutzerentscheidung.",
+      "evidence": "decisions.tax + quantityDiscount + starts + uploads: all substantiated, no new prices"
+    },
+    {
+      "question": "9 Originaldesigns haben native Kontur-/Randfehler (family-report.json). 2 weitere Katalogdesigns sind bewusst hidden und bleiben ausgeblendet; keine Wiederfreigabe beantragt.",
+      "evidence": "decisions.geometry: exclusions remain unchanged in source and review evidence; informational fact, not an unresolved choice"
+    }
+  ],
+  "decisions": {
+    "manifestSha256": "730168634964272693b514e3efd742975bd56af30a96a7ae751a2aed7fe71a64",
+    "tax": {
+      "pricePresentation": "gross",
+      "vatPercent": 19,
+      "country": "DE",
+      "confirmed": true,
+      "date": "2026-11-11",
+      "quote": "Ja, inklusive 19 % MwSt.",
+      "source": "Explicit user reply in the current Codex chat, relayed by coordinator to product_plans; all seven base prices and surcharges.",
+      "storage": "Revision metadata and external decision manifest only; no unsupported product-config tax field."
+    },
+    "quantityDiscount": {
+      "confirmed": true,
+      "decisionDate": "2026-10-20",
+      "tiers": [
+        {
+          "minQuantity": 3,
+          "percentOff": 5
+        },
+        {
+          "minQuantity": 5,
+          "percentOff": 10
+        },
+        {
+          "minQuantity": 10,
+          "percentOff": 15
+        }
+      ],
+      "scope": "complete-unit",
+      "basis": "Full unit price including mounting, additional/changed motifs, photo and SVG logo; existing line-item quantity contract, highest attained tier, one half-up rounding to integer cents.",
+      "sources": [
+        {
+          "commit": "64e026e8fd15b129a16cc97189b28506aa9e8ac2",
+          "path": "ENTSCHEIDUNGEN.md",
+          "section": "4.16"
+        },
+        {
+          "commit": "64e026e8fd15b129a16cc97189b28506aa9e8ac2",
+          "path": "docs/plans/STAFFEL-SHOP-BESTAND-20261019.md",
+          "section": "Entscheidung 20.10.2026 (Chris)"
+        },
+        {
+          "commit": "64e026e8fd15b129a16cc97189b28506aa9e8ac2",
+          "path": "docs/handoffs/2026-10-22-entscheidungen-und-funktionserhalt.md",
+          "section": "Abschluss, Warenkorb und Preise"
+        }
+      ],
+      "supersedes": "Historical Excel wording treating the already confirmed tier as a new operator proposal."
+    },
+    "startsKept": true
+  }
+}

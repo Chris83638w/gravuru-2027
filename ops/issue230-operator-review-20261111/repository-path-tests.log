@@ -1,0 +1,12 @@
+✔ real application migration preserves exactly eight aggregate rows, hides terms and is idempotent (81.1286ms)
+✔ copy acknowledgement, path, module hash, count and unknown schema guards abort before mutation (79.6123ms)
+✔ read-only native inventory uses explicit active heads, target filters and metadata columns only (71.9062ms)
+✔ alias lookup finds actual cfg identities only in valid current product JSON and keeps ambiguity explicit (76.3982ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 467.788

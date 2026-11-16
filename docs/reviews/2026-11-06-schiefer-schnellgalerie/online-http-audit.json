@@ -1,0 +1,213 @@
+{
+  "scope": "private-slate-http-probe",
+  "origin": "https://test-2027.gravuru-designwerkstatt.de",
+  "checkedAt": "2026-11-06T03:16:01.518273+00:00",
+  "passed": true,
+  "checks": [
+    {
+      "name": "anonymous_gallery",
+      "ok": true,
+      "status": 401,
+      "bodyBytes": 0
+    },
+    {
+      "name": "anonymous_comments",
+      "ok": true,
+      "status": 401,
+      "bodyBytes": 0
+    },
+    {
+      "name": "authenticated_health",
+      "ok": true,
+      "status": 200,
+      "bodyBytes": 71
+    },
+    {
+      "name": "authenticated_gallery",
+      "ok": true,
+      "status": 200,
+      "bodyBytes": 550265
+    },
+    {
+      "name": "gallery_counts",
+      "ok": true,
+      "originals": 325,
+      "editableOriginals": 233,
+      "unpreparedOriginals": 92,
+      "categories": 17
+    },
+    {
+      "name": "static_gallery.css",
+      "ok": true,
+      "status": 200,
+      "bodyBytes": 3509
+    },
+    {
+      "name": "static_gallery.js",
+      "ok": true,
+      "status": 200,
+      "bodyBytes": 3532
+    },
+    {
+      "name": "static_comments.js",
+      "ok": true,
+      "status": 200,
+      "bodyBytes": 2002
+    },
+    {
+      "name": "gallery_links_GT-S-30x20-D5",
+      "ok": true
+    },
+    {
+      "name": "native_preview_GT-S-30x20-D5",
+      "ok": true,
+      "status": 200,
+      "bodyBytes": 346325,
+      "sha256": "9269b9efbbc6c8c223526d9f7916b9bcbaa6d3101e725eeb70dbda3052b4ffcc"
+    },
+    {
+      "name": "editor_GT-S-30x20-D5",
+      "ok": true,
+      "status": 200,
+      "bodyBytes": 16851
+    },
+    {
+      "name": "gallery_links_TRE-S-10x10-D12",
+      "ok": true
+    },
+    {
+      "name": "native_preview_TRE-S-10x10-D12",
+      "ok": true,
+      "status": 200,
+      "bodyBytes": 162472,
+      "sha256": "34c39a9ad8d819bbd4e155c7834f72518418fb5c625ffdf576d01ef5d16acb54"
+    },
+    {
+      "name": "editor_TRE-S-10x10-D12",
+      "ok": true,
+      "status": 200,
+      "bodyBytes": 16851
+    },
+    {
+      "name": "gallery_links_TQ-S-20x20-D15",
+      "ok": true
+    },
+    {
+      "name": "native_preview_TQ-S-20x20-D15",
+      "ok": true,
+      "status": 200,
+      "bodyBytes": 446817,
+      "sha256": "15765cfc614fe0c516abbf9eaef3387ffbb09ac7edfae753a5000512f978edc5"
+    },
+    {
+      "name": "editor_TQ-S-20x20-D15",
+      "ok": true,
+      "status": 200,
+      "bodyBytes": 16851
+    },
+    {
+      "name": "comments_get",
+      "ok": true,
+      "status": 200,
+      "bodyBytes": 19420
+    },
+    {
+      "name": "snapshot_D5_comment",
+      "ok": true,
+      "textSha256": "abbeced9b6288927477832c57c05a83879489c0c9b57fa3c184fdcdfa0cd9125",
+      "revision": 1,
+      "expectedRevision": 1
+    },
+    {
+      "name": "safe_invalid_write_probe_ready",
+      "ok": true
+    },
+    {
+      "name": "valid_csrf_unknown_design",
+      "ok": true,
+      "status": 404,
+      "bodyBytes": 47
+    },
+    {
+      "name": "valid_csrf_invalid_payload",
+      "ok": true,
+      "status": 422,
+      "bodyBytes": 34
+    },
+    {
+      "name": "missing_csrf",
+      "ok": true,
+      "status": 403,
+      "bodyBytes": 40
+    },
+    {
+      "name": "foreign_origin",
+      "ok": true,
+      "status": 403,
+      "bodyBytes": 0
+    },
+    {
+      "name": "all_comments_unchanged",
+      "ok": true,
+      "beforeSha256": "f00236fb0514144e589cd790cbbd363d85f02cae0822ba8feb92fd4888a4501c",
+      "afterSha256": "f00236fb0514144e589cd790cbbd363d85f02cae0822ba8feb92fd4888a4501c"
+    },
+    {
+      "name": "private_data_blocked_1",
+      "ok": true,
+      "status": 404,
+      "bodyBytes": 0
+    },
+    {
+      "name": "private_data_blocked_2",
+      "ok": true,
+      "status": 404,
+      "bodyBytes": 0
+    },
+    {
+      "name": "private_data_blocked_3",
+      "ok": true,
+      "status": 404,
+      "bodyBytes": 0
+    },
+    {
+      "name": "private_data_blocked_4",
+      "ok": true,
+      "status": 404,
+      "bodyBytes": 0
+    },
+    {
+      "name": "private_data_blocked_5",
+      "ok": true,
+      "status": 404,
+      "bodyBytes": 0
+    },
+    {
+      "name": "private_data_blocked_6",
+      "ok": true,
+      "status": 404,
+      "bodyBytes": 0
+    },
+    {
+      "name": "private_data_blocked_7",
+      "ok": true,
+      "status": 404,
+      "bodyBytes": 0
+    },
+    {
+      "name": "private_data_blocked_8",
+      "ok": true,
+      "status": 404,
+      "bodyBytes": 0
+    },
+    {
+      "name": "private_data_blocked_9",
+      "ok": true,
+      "status": 404,
+      "bodyBytes": 0
+    }
+  ],
+  "validWritesSubmitted": 0,
+  "redirectsFollowed": 0,
+  "browserVerified": false
+}

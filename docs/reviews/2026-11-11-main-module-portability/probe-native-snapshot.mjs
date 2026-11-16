@@ -1,0 +1,33 @@
+// Read-only proof against the actual reviewed target, not a synthetic model.
+// Run with Node --permission and only the three read grants shown in README.
+import fs from 'node:fs';
+import path from 'node:path';
+import {pathToFileURL} from 'node:url';
+import {createHash} from 'node:crypto';
+import {gunzipSync} from 'node:zlib';
+import assert from 'node:assert/strict';
+const [codeRoot,input]=process.argv.slice(2);
+assert.equal(process.argv.length,4);
+assert.equal(process.permission?.has('fs.write'),false,'Run under the documented no-write permission boundary.');
+const hash=bytes=>createHash('sha256').update(bytes).digest('hex');
+const objectCanonical=v=>Array.isArray(v)?v.map(objectCanonical):v&&typeof v==='object'?Object.fromEntries(Object.keys(v).sort().map(k=>[k,objectCanonical(v[k])])):v;
+const groupHash=v=>hash(JSON.stringify(objectCanonical(v)));
+const stringCanonical=v=>Array.isArray(v)?'['+v.map(stringCanonical).join(',')+']':v&&typeof v==='object'?'{'+Object.keys(v).sort().map(k=>JSON.stringify(k)+':'+stringCanonical(v[k])).join(',')+'}':JSON.stringify(v);
+const bindingHash=v=>hash(stringCanonical(v));
+const bytes=fs.readFileSync(input),before=hash(bytes),document=JSON.parse(input.endsWith('.gz')?gunzipSync(bytes):bytes);
+assert.equal(groupHash(document),'2da2130230341917f7a99d2a12889c1e2f10e408f64d3532e9c5ea6bae65713c');
+assert.equal(bindingHash(document),'deb2ce71bf57d5ff85e5f186378d94f58edeecc1ce4d7c4151bebf6e8072886f');
+const moduleFile=path.join(codeRoot,'app/configurator/variant-m/module-profile.mjs');
+const modelFile=path.join(codeRoot,'app/workshop/product-model.mjs');
+const {validateModuleProfile,moduleProfileIssue,nativeModuleAvailability,moduleEnabled}=await import(pathToFileURL(moduleFile));
+const {validateProductDocument}=await import(pathToFileURL(modelFile));
+validateModuleProfile(document.config.moduleProfile);
+assert.equal(moduleProfileIssue(document.config),null);
+const validated=validateProductDocument(document);
+assert.equal(groupHash(validated),groupHash(document));
+assert.equal(bindingHash(validated),bindingHash(document));
+assert.equal(hash(fs.readFileSync(input)),before);
+const effective=Object.fromEntries(Object.keys(document.config.moduleProfile.modules).map(k=>[k,moduleEnabled(validated.config,k)]));
+assert.deepEqual(effective,document.config.moduleProfile.modules);
+assert.equal(effective.photo,true);assert.equal(effective.logo,true);
+console.log(JSON.stringify({proof:'actual reviewed target validated with native pure APIs and no supplied registry',passed:true,noFileWritePermission:true,registryInstanceProvided:false,repositoryInstanceCreated:false,sqlConstructorCalled:false,importOrProfileCreationCalled:false,sourceFileUnchanged:true,inputFileSha256:before,productGroupDocumentSha256:groupHash(validated),idBindingDocumentSha256:bindingHash(validated),profile:validated.config.moduleProfile,available:nativeModuleAvailability(validated.config),effectiveModules:effective,codeFiles:[moduleFile,modelFile].map(file=>({path:path.relative(codeRoot,file).replaceAll('\\','/'),sha256:hash(fs.readFileSync(file))})),limits:['No actual server database was opened.','This proves the embedded module snapshot and native product validator, not a completed product import or public checkout.','Resource/asset/manufacturing lookups belong to the existing actual workshop context and retain their separate checks.']},null,2));

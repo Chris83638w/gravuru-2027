@@ -1,0 +1,26 @@
+{
+  "schema": "gravuru-performance-followup-local-install-verification/v1",
+  "at": "2026-11-10T05:50:37.922Z",
+  "installerSha": "9aa96ac7f9cbbdc3a66a19c26e42b6621959134f1eb60b6ebe77f1cf02ab63b3",
+  "sourceCommit": "3bfe6a3151517ffdfb78ba5e010ab55de0aeace0",
+  "syntheticWrapper": true,
+  "actualNativeBuild": true,
+  "platform": "Windows fixture with reviewed Linux CLI guard simulated only in VM",
+  "results": [
+    "read-only --check: all filesystem mutation methods forbidden; no backup, sources or preview written",
+    "changed source rejected before any write",
+    "previously absent helper must still be absent; no overwrite or backup created",
+    "changed protected style rejected before writes",
+    "new helper published first, before every existing-source replacement",
+    "success: five exact files, all prior hash assets retained, existing OS-variant gzip retained",
+    "second installation blocked by single backup/receipt",
+    "fault at atomic final HTML rename: four source files restored and previously absent helper removed, old HTML and all previous bundles unchanged",
+    "failure after publishing HTML: old HTML/sources restored, newly added helper removed, old and new hashed assets retained"
+  ],
+  "receipt": {
+    "html": "ddcdc1f39eabd95ea2d298d2940bc83f99df24b1fcf38b0cf8e7836c043d7993",
+    "styles": 36,
+    "previousBundlesRetained": 14
+  },
+  "noLiveAccess": true
+}

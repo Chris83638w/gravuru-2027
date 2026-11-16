@@ -1,0 +1,60 @@
+{
+  "proof": "actual reviewed target validated with native pure APIs and no supplied registry",
+  "passed": true,
+  "noFileWritePermission": true,
+  "registryInstanceProvided": false,
+  "repositoryInstanceCreated": false,
+  "sqlConstructorCalled": false,
+  "importOrProfileCreationCalled": false,
+  "sourceFileUnchanged": true,
+  "inputFileSha256": "6b2d5989b1dd4859f4a6923faab2cbf9f25102f1f3e95edd77dad48b386c52cc",
+  "productGroupDocumentSha256": "2da2130230341917f7a99d2a12889c1e2f10e408f64d3532e9c5ea6bae65713c",
+  "idBindingDocumentSha256": "deb2ce71bf57d5ff85e5f186378d94f58edeecc1ce4d7c4151bebf6e8072886f",
+  "profile": {
+    "id": "cmp_8b4e451e-a9c0-400d-a148-094475734fb5",
+    "modules": {
+      "colors": false,
+      "designs": true,
+      "logo": true,
+      "motifs": true,
+      "options": true,
+      "photo": true,
+      "text": true
+    },
+    "revision": 1,
+    "schema": "gravuru-configurator-modules/v1"
+  },
+  "available": {
+    "options": true,
+    "designs": true,
+    "text": true,
+    "motifs": true,
+    "photo": true,
+    "logo": true,
+    "colors": false
+  },
+  "effectiveModules": {
+    "colors": false,
+    "designs": true,
+    "logo": true,
+    "motifs": true,
+    "options": true,
+    "photo": true,
+    "text": true
+  },
+  "codeFiles": [
+    {
+      "path": "app/configurator/variant-m/module-profile.mjs",
+      "sha256": "cfc54268d73fa3b8c635b318ec182e58de868b335a37975b2106b2b41bc21e6b"
+    },
+    {
+      "path": "app/workshop/product-model.mjs",
+      "sha256": "f452d2590c6c9ec00fac260fd154d8fb5ec4f0fed1b7d34f98d16d594ae114a8"
+    }
+  ],
+  "limits": [
+    "No actual server database was opened.",
+    "This proves the embedded module snapshot and native product validator, not a completed product import or public checkout.",
+    "Resource/asset/manufacturing lookups belong to the existing actual workshop context and retain their separate checks."
+  ]
+}

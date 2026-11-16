@@ -1,5 +1,6 @@
 import {merchantRequest as fetch} from './merchant-request.mjs';
 import {readBatchImport} from './batch-reader.mjs';
+import {loadCatalogChoices} from './catalog-ui.mjs';
 import {merchantImageAttribute} from './merchant-media.mjs';
 import {indexDesignSources,designSourceName,designSourceSettings,resolveDesignSourcePath} from './design-source-path.mjs';
 import {readDesignZip,ZIP_LIMITS} from './design-zip.mjs';
@@ -145,12 +146,12 @@ $('#import').addEventListener('click',async()=>{
     $('#summary').textContent=result.products.length+' Konfigurationen gespeichert · '+(result.errors?.length||0)+' Fehler';
     hasErrors=(result.errors?.length||0)>0;
     status(result.products.filter(p=>p.created).length+' neue Konfigurationen · '+result.products.filter(p=>p.updated).length+' Aktualisierungen gespeichert. '+(result.errors?.length||0)+' fehlerhafte Datensätze bleiben zur Korrektur offen.');prepared=null;
-    try{setupDesignExport((await api('/api/workshop/products')).products);$('#export-status').textContent='Produktauswahl nach der Übernahme aktualisiert.';}
+    try{setupDesignExport(await loadCatalogChoices(api,{kinds:['product']}));$('#export-status').textContent='Produktauswahl nach der Übernahme aktualisiert.';}
     catch(error){$('#export-status').textContent='Die Tabelle wurde gespeichert. Die Produktauswahl konnte nicht aktualisiert werden: '+error.message+' Bitte die Seite neu laden.';}
   }catch(error){status(error.message,true);}finally{disabled(false);}
 });
 try{
-  const {products}=await api('/api/workshop/products');
+  const products=await loadCatalogChoices(api);
   setupDesignExport(products);
   $('#master').innerHTML=products.filter(p=>p.kind==='master'&&p.status!=='archived').map(p=>'<option value="'+escape(p.id)+'" data-revision="'+p.revision+'">'+escape(p.name)+(p.overview?.formProduct?' · Freie Form':' · Acrylvorlage')+' · Stand '+p.revision+'</option>').join('');
   if(!$('#master').options.length)status('Für Neuanlagen zuerst einen Master anlegen. Bestehende Produkte können mit action=update auch ohne Master aktualisiert werden.',true);

@@ -1,0 +1,141 @@
+{
+  "schema": "gravuru/catalog-ff-acceptance/v1",
+  "date": "2026-11-11",
+  "timezone": "Europe/Berlin",
+  "subject": "Issue 233: Serverkatalog auf 8236b8bfa",
+  "sourceRepository": "Chris83638w/gravuru-2027",
+  "runnerCommit": "8ab147140f305ea1f6a47b4e106b7af3367bc76d",
+  "runnerSha256": "7104c52f22138ffae40d1f1a774674fe3ab7bc44a5d82c167955198a47001935",
+  "manifestSha256": "5cca0332016c40d99ecbf2aaf93e9897c81d4e4fbaa39df83dc2635b5b414b3f",
+  "localTests": {
+    "passed": 8,
+    "failed": 0,
+    "skipped": 0,
+    "syntaxCheck": true,
+    "includes": [
+      "native Git fast-forward in isolated fixture",
+      "preservation of local JSON/SVG/audit",
+      "forced late failure rollback",
+      "NUL-delimited multi-file attributes"
+    ]
+  },
+  "preflight": {
+    "at": "2026-11-11T17:00:33.980Z",
+    "ok": true,
+    "head": "b5d8f28bc1b634412e628c2967fde587a92ff2fb",
+    "target": "8236b8bfab7322447ec46661c116fa526331af3d",
+    "files": 552,
+    "added": 168,
+    "modified": 384,
+    "dirty": 3,
+    "writers": {
+      "ok": true,
+      "sameUser": 9,
+      "candidates": 0,
+      "processes": [],
+      "locks": [],
+      "unreadable": 0
+    },
+    "merges": [
+      "7812cc223d7989bce4f2491daaa1b2fc51b848ca22f5e5d05ccbd1e58044805b",
+      "e809e7b9c93614813e9c0188ea2b508b8890ee2a4eea62a6bb0dffd726c5c20d",
+      "6f6b6f162ab2d46928aff612f27f5d617f1b6bf938eba0f757c3db4374ec8aea"
+    ]
+  },
+  "appCatalogConfiguration": {
+    "source": "app.cjs",
+    "GRAVURU_KATALOG": "/var/www/vhosts/gravuru-designwerkstatt.de/private/issue139-katalog-20261102",
+    "matchesExpected": true,
+    "kind": "direct_literal"
+  },
+  "apply": {
+    "ok": true,
+    "head": "8236b8bfab7322447ec46661c116fa526331af3d",
+    "files": 552,
+    "dirty": 3,
+    "backup": "/var/www/vhosts/gravuru-designwerkstatt.de/private/mika-catalog-ff-20261111/2026-11-11T17-02-47-073Z-0c6e01f5-07e2-4d44-ba86-fc5e623c5f6e",
+    "appChanges": false,
+    "restart": false,
+    "at": "2026-11-11T17:02:53.740Z"
+  },
+  "postcheck": {
+    "ok": true,
+    "head": "8236b8bfab7322447ec46661c116fa526331af3d",
+    "branch": "issue139-catalog-20261102",
+    "finalHashes": 553,
+    "targetFiles": 552,
+    "backupHashes": 385,
+    "dirty": 3,
+    "svg": "bytegleich",
+    "json": "local+target",
+    "audit": "beide_appendices",
+    "locks": 0
+  },
+  "counts": {
+    "catalogFilesNew": 168,
+    "catalogFilesModified": 384,
+    "catalogFilesDeleted": 0,
+    "finalFileHashesVerified": 553,
+    "existingBackupFileHashesVerified": 385,
+    "previouslyAbsentFilesRecorded": 168,
+    "localChangesPreserved": 3,
+    "shopifyProductsCreated": 0,
+    "shopifyProductsUpdated": 0
+  },
+  "scope": {
+    "appFilesChanged": false,
+    "restart": false,
+    "shopifyMutation": false,
+    "browserAcceptanceCompleted": false,
+    "designApprovalCompleted": false,
+    "customerPublicationClaimed": false,
+    "existingCustomerVisualCheckCompleted": true,
+    "workshopPostUpdatePerformanceMeasured": false
+  },
+  "evidenceFiles": [
+    {
+      "file": "Server-Nachpruefung.txt",
+      "sha256": "960cb43fcf8a077a0f4d7a31351f097d6f92e97a52cbf71e01fd2bd4e9b503d9"
+    },
+    {
+      "file": "Server-Nachpruefung.jpg",
+      "sha256": "2ad6175e71ec1e8b38f5494c6ec907ffc6240af49a9d5f4490fc30947a8c3145"
+    },
+    {
+      "file": "Server-Pruefung-v2.jpg",
+      "sha256": "ec770bd130423190c8e9a00de0deb204c99e9a4b3e5888cf1502cb30971a9b69"
+    },
+    {
+      "file": "Kundenkonfigurator-danach.txt",
+      "sha256": "933bbb83c07e7c41751d5bd4410579603ef06074b9102d09d4b594a4a468ec03"
+    },
+    {
+      "file": "Kundenkonfigurator-danach.jpg",
+      "sha256": "c46f36ec7c000877de819e015d86d4e359e1994a8acdf94ba19ddae5c2e2f383"
+    }
+  ],
+  "openChecks": [
+    "Werkstatt-Sichtprüfung und tatsächliche Ladezeit",
+    "Reihenfolge der Katalogdesigns in der Werkstatt",
+    "Separate Freigabe der 1298 Designs durch Operator"
+  ],
+  "customerVisualCheck": {
+    "completed": true,
+    "product": "existing steel configurator",
+    "sizeMm": [
+      120,
+      80
+    ],
+    "displayedPriceCents": 1999,
+    "availableDesignCount": 21,
+    "firstDesignLabels": [
+      "Zwei Zeilen, mittig",
+      "Zwei Zeilen, versetzt",
+      "Zwei Zeilen mit Trennlinie"
+    ],
+    "someLaterThumbnailsStillLoading": true,
+    "cartClicked": false,
+    "newProductPlansChecked": false,
+    "new1298DesignApprovalChecked": false
+  }
+}

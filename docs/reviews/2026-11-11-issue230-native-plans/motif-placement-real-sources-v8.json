@@ -1,0 +1,1173 @@
+{
+  "readOnly": true,
+  "rows": [
+    {
+      "workbook": "Tuerschild-Acrylglas-3mm_v4.xlsx",
+      "planId": "pgp_aad6d5ae-b255-4d19-8c92-9d91ba09d445",
+      "fixedSize": null,
+      "lineId": "acryl-tuerschilder",
+      "defaultDesign": "katalog-TAE-V2A-8x5-D1",
+      "motifs": [
+        {
+          "key": "import-6abda909c44bc599330856dd",
+          "file": "motive-kleine-schilder/anker-3.svg",
+          "mode": null,
+          "scopeCorrect": true,
+          "placement": null,
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        },
+        {
+          "key": "import-0073ea6aa7103bb1e8ec9088",
+          "file": "motive-kleine-schilder/brief.svg",
+          "mode": null,
+          "scopeCorrect": true,
+          "placement": null,
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        },
+        {
+          "key": "import-9373218480c87a6ad167f3cb",
+          "file": "motive-kleine-schilder/feine-trennlinie.svg",
+          "mode": null,
+          "scopeCorrect": true,
+          "placement": null,
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        },
+        {
+          "key": "import-41fb65efd1d8996ac305f6ab",
+          "file": "motive-kleine-schilder/haus.svg",
+          "mode": null,
+          "scopeCorrect": true,
+          "placement": null,
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        },
+        {
+          "key": "import-1abd6f06096e47c66b0b4e00",
+          "file": "motive-kleine-schilder/herz-2.svg",
+          "mode": null,
+          "scopeCorrect": true,
+          "placement": null,
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        },
+        {
+          "key": "import-286db893566ced2e6bd75bad",
+          "file": "motive-kleine-schilder/klingel.svg",
+          "mode": null,
+          "scopeCorrect": true,
+          "placement": null,
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        },
+        {
+          "key": "import-d94f1406fde432cf9dd70389",
+          "file": "motive-kleine-schilder/pfote-1.svg",
+          "mode": null,
+          "scopeCorrect": true,
+          "placement": null,
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        },
+        {
+          "key": "import-9c76c3476a406eaac7f05e42",
+          "file": "motive-kleine-schilder/schmetterling-1.svg",
+          "mode": null,
+          "scopeCorrect": true,
+          "placement": null,
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        },
+        {
+          "key": "import-10edf8a5dd07bd1035ba508d",
+          "file": "motive-kleine-schilder/stern-1.svg",
+          "mode": null,
+          "scopeCorrect": true,
+          "placement": null,
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        },
+        {
+          "key": "import-4269dbda54a15a99e178f00a",
+          "file": "motive-kleine-schilder/strich-haus.svg",
+          "mode": null,
+          "scopeCorrect": true,
+          "placement": null,
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        },
+        {
+          "key": "import-0f3193fd49e254bb5975e74d",
+          "file": "motive-kleine-schilder/strich-horizontal.svg",
+          "mode": null,
+          "scopeCorrect": true,
+          "placement": null,
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        },
+        {
+          "key": "import-54b3b489bbebe12119deda9a",
+          "file": "motive-kleine-schilder/verschlungene-herzen.svg",
+          "mode": null,
+          "scopeCorrect": true,
+          "placement": null,
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        },
+        {
+          "key": "import-8239d6c658366716f578c984",
+          "file": "motive-kleine-schilder/vogel-1.svg",
+          "mode": null,
+          "scopeCorrect": true,
+          "placement": null,
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        }
+      ],
+      "allPassed": true,
+      "sourceObjectsUnchanged": true,
+      "noSpaceRetainsFailure": true
+    },
+    {
+      "workbook": "Tuerschild-Acrylglas-3mm-5x2_v2.xlsx",
+      "planId": "pgp_03932c0e-6f8f-4177-8ab5-cf7891b5bcdc",
+      "fixedSize": "TS-Acryl-RE-50X20-T30-SW",
+      "lineId": "acryl-tuerschilder",
+      "defaultDesign": "katalog-TRE-V2A-5x2-D1",
+      "motifs": [
+        {
+          "key": "import-6abda909c44bc599330856dd",
+          "file": "motive-kleine-schilder/anker-3.svg",
+          "mode": "side",
+          "scopeCorrect": true,
+          "placement": null,
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        },
+        {
+          "key": "import-0073ea6aa7103bb1e8ec9088",
+          "file": "motive-kleine-schilder/brief.svg",
+          "mode": "side",
+          "scopeCorrect": true,
+          "placement": null,
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        },
+        {
+          "key": "import-9373218480c87a6ad167f3cb",
+          "file": "motive-kleine-schilder/feine-trennlinie.svg",
+          "mode": "center",
+          "scopeCorrect": true,
+          "placement": {
+            "x": 24.5,
+            "y": 2.5,
+            "w": 45,
+            "h": 0.72
+          },
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        },
+        {
+          "key": "import-41fb65efd1d8996ac305f6ab",
+          "file": "motive-kleine-schilder/haus.svg",
+          "mode": "side",
+          "scopeCorrect": true,
+          "placement": null,
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        },
+        {
+          "key": "import-1abd6f06096e47c66b0b4e00",
+          "file": "motive-kleine-schilder/herz-2.svg",
+          "mode": "side",
+          "scopeCorrect": true,
+          "placement": null,
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        },
+        {
+          "key": "import-286db893566ced2e6bd75bad",
+          "file": "motive-kleine-schilder/klingel.svg",
+          "mode": "side",
+          "scopeCorrect": true,
+          "placement": null,
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        },
+        {
+          "key": "import-d94f1406fde432cf9dd70389",
+          "file": "motive-kleine-schilder/pfote-1.svg",
+          "mode": "side",
+          "scopeCorrect": true,
+          "placement": null,
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        },
+        {
+          "key": "import-9c76c3476a406eaac7f05e42",
+          "file": "motive-kleine-schilder/schmetterling-1.svg",
+          "mode": "side",
+          "scopeCorrect": true,
+          "placement": null,
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        },
+        {
+          "key": "import-10edf8a5dd07bd1035ba508d",
+          "file": "motive-kleine-schilder/stern-1.svg",
+          "mode": "side",
+          "scopeCorrect": true,
+          "placement": null,
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        },
+        {
+          "key": "import-4269dbda54a15a99e178f00a",
+          "file": "motive-kleine-schilder/strich-haus.svg",
+          "mode": "side",
+          "scopeCorrect": true,
+          "placement": null,
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        },
+        {
+          "key": "import-0f3193fd49e254bb5975e74d",
+          "file": "motive-kleine-schilder/strich-horizontal.svg",
+          "mode": "center",
+          "scopeCorrect": true,
+          "placement": {
+            "x": 24.5,
+            "y": 2.5,
+            "w": 45,
+            "h": 0.72
+          },
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        },
+        {
+          "key": "import-54b3b489bbebe12119deda9a",
+          "file": "motive-kleine-schilder/verschlungene-herzen.svg",
+          "mode": "side",
+          "scopeCorrect": true,
+          "placement": null,
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        },
+        {
+          "key": "import-8239d6c658366716f578c984",
+          "file": "motive-kleine-schilder/vogel-1.svg",
+          "mode": "side",
+          "scopeCorrect": true,
+          "placement": null,
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        }
+      ],
+      "allPassed": true,
+      "sourceObjectsUnchanged": true,
+      "noSpaceRetainsFailure": true
+    },
+    {
+      "workbook": "Tuerschild-Acrylglas-3mm-6x2_v2.xlsx",
+      "planId": "pgp_b6bd6b74-35e6-444e-b2cb-4bf64a49e280",
+      "fixedSize": "TS-Acryl-RE-60X20-T30-SW",
+      "lineId": "acryl-tuerschilder",
+      "defaultDesign": "katalog-TRE-V2A-6x2-D1",
+      "motifs": [
+        {
+          "key": "import-6abda909c44bc599330856dd",
+          "file": "motive-kleine-schilder/anker-3.svg",
+          "mode": "side",
+          "scopeCorrect": true,
+          "placement": null,
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        },
+        {
+          "key": "import-0073ea6aa7103bb1e8ec9088",
+          "file": "motive-kleine-schilder/brief.svg",
+          "mode": "side",
+          "scopeCorrect": true,
+          "placement": null,
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        },
+        {
+          "key": "import-9373218480c87a6ad167f3cb",
+          "file": "motive-kleine-schilder/feine-trennlinie.svg",
+          "mode": "center",
+          "scopeCorrect": true,
+          "placement": {
+            "x": 30,
+            "y": 9.5,
+            "w": 54,
+            "h": 0.8640000000000001
+          },
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        },
+        {
+          "key": "import-41fb65efd1d8996ac305f6ab",
+          "file": "motive-kleine-schilder/haus.svg",
+          "mode": "side",
+          "scopeCorrect": true,
+          "placement": null,
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        },
+        {
+          "key": "import-1abd6f06096e47c66b0b4e00",
+          "file": "motive-kleine-schilder/herz-2.svg",
+          "mode": "side",
+          "scopeCorrect": true,
+          "placement": null,
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        },
+        {
+          "key": "import-286db893566ced2e6bd75bad",
+          "file": "motive-kleine-schilder/klingel.svg",
+          "mode": "side",
+          "scopeCorrect": true,
+          "placement": null,
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        },
+        {
+          "key": "import-d94f1406fde432cf9dd70389",
+          "file": "motive-kleine-schilder/pfote-1.svg",
+          "mode": "side",
+          "scopeCorrect": true,
+          "placement": null,
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        },
+        {
+          "key": "import-9c76c3476a406eaac7f05e42",
+          "file": "motive-kleine-schilder/schmetterling-1.svg",
+          "mode": "side",
+          "scopeCorrect": true,
+          "placement": null,
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        },
+        {
+          "key": "import-10edf8a5dd07bd1035ba508d",
+          "file": "motive-kleine-schilder/stern-1.svg",
+          "mode": "side",
+          "scopeCorrect": true,
+          "placement": null,
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        },
+        {
+          "key": "import-4269dbda54a15a99e178f00a",
+          "file": "motive-kleine-schilder/strich-haus.svg",
+          "mode": "side",
+          "scopeCorrect": true,
+          "placement": null,
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        },
+        {
+          "key": "import-0f3193fd49e254bb5975e74d",
+          "file": "motive-kleine-schilder/strich-horizontal.svg",
+          "mode": "center",
+          "scopeCorrect": true,
+          "placement": {
+            "x": 30,
+            "y": 9.5,
+            "w": 54,
+            "h": 0.8640000000000001
+          },
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        },
+        {
+          "key": "import-54b3b489bbebe12119deda9a",
+          "file": "motive-kleine-schilder/verschlungene-herzen.svg",
+          "mode": "side",
+          "scopeCorrect": true,
+          "placement": null,
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        },
+        {
+          "key": "import-8239d6c658366716f578c984",
+          "file": "motive-kleine-schilder/vogel-1.svg",
+          "mode": "side",
+          "scopeCorrect": true,
+          "placement": null,
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        }
+      ],
+      "allPassed": true,
+      "sourceObjectsUnchanged": true,
+      "noSpaceRetainsFailure": true
+    },
+    {
+      "workbook": "Tuerschild-Acrylglas-3mm-8x2_v2.xlsx",
+      "planId": "pgp_6126fcb8-d8b7-4b5b-9410-9c09a9198b52",
+      "fixedSize": "TS-Acryl-RE-80X20-T30-SW",
+      "lineId": "acryl-tuerschilder",
+      "defaultDesign": "katalog-TRE-V2A-8x2-D1",
+      "motifs": [
+        {
+          "key": "import-6abda909c44bc599330856dd",
+          "file": "motive-kleine-schilder/anker-3.svg",
+          "mode": "side",
+          "scopeCorrect": true,
+          "placement": {
+            "x": 70.5,
+            "y": 10.5,
+            "w": 16.200000000000003,
+            "h": 16.200000000000003
+          },
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        },
+        {
+          "key": "import-0073ea6aa7103bb1e8ec9088",
+          "file": "motive-kleine-schilder/brief.svg",
+          "mode": "side",
+          "scopeCorrect": true,
+          "placement": {
+            "x": 70.5,
+            "y": 10.5,
+            "w": 16.200000000000003,
+            "h": 16.200000000000003
+          },
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        },
+        {
+          "key": "import-9373218480c87a6ad167f3cb",
+          "file": "motive-kleine-schilder/feine-trennlinie.svg",
+          "mode": "center",
+          "scopeCorrect": true,
+          "placement": {
+            "x": 39.5,
+            "y": 9.5,
+            "w": 58.32000000000001,
+            "h": 0.9331200000000002
+          },
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        },
+        {
+          "key": "import-41fb65efd1d8996ac305f6ab",
+          "file": "motive-kleine-schilder/haus.svg",
+          "mode": "side",
+          "scopeCorrect": true,
+          "placement": {
+            "x": 70.5,
+            "y": 10.5,
+            "w": 16.200000000000003,
+            "h": 16.200000000000003
+          },
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        },
+        {
+          "key": "import-1abd6f06096e47c66b0b4e00",
+          "file": "motive-kleine-schilder/herz-2.svg",
+          "mode": "side",
+          "scopeCorrect": true,
+          "placement": {
+            "x": 70.5,
+            "y": 10.5,
+            "w": 16.200000000000003,
+            "h": 16.200000000000003
+          },
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        },
+        {
+          "key": "import-286db893566ced2e6bd75bad",
+          "file": "motive-kleine-schilder/klingel.svg",
+          "mode": "side",
+          "scopeCorrect": true,
+          "placement": {
+            "x": 70.5,
+            "y": 10.5,
+            "w": 16.200000000000003,
+            "h": 16.200000000000003
+          },
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        },
+        {
+          "key": "import-d94f1406fde432cf9dd70389",
+          "file": "motive-kleine-schilder/pfote-1.svg",
+          "mode": "side",
+          "scopeCorrect": true,
+          "placement": {
+            "x": 70.5,
+            "y": 10.5,
+            "w": 16.200000000000003,
+            "h": 16.200000000000003
+          },
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        },
+        {
+          "key": "import-9c76c3476a406eaac7f05e42",
+          "file": "motive-kleine-schilder/schmetterling-1.svg",
+          "mode": "side",
+          "scopeCorrect": true,
+          "placement": {
+            "x": 70.5,
+            "y": 10.5,
+            "w": 16.200000000000003,
+            "h": 16.200000000000003
+          },
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        },
+        {
+          "key": "import-10edf8a5dd07bd1035ba508d",
+          "file": "motive-kleine-schilder/stern-1.svg",
+          "mode": "side",
+          "scopeCorrect": true,
+          "placement": {
+            "x": 70.5,
+            "y": 10.5,
+            "w": 16.200000000000003,
+            "h": 16.200000000000003
+          },
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        },
+        {
+          "key": "import-4269dbda54a15a99e178f00a",
+          "file": "motive-kleine-schilder/strich-haus.svg",
+          "mode": "side",
+          "scopeCorrect": true,
+          "placement": {
+            "x": 70.5,
+            "y": 10.5,
+            "w": 16.200000000000003,
+            "h": 16.200000000000003
+          },
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        },
+        {
+          "key": "import-0f3193fd49e254bb5975e74d",
+          "file": "motive-kleine-schilder/strich-horizontal.svg",
+          "mode": "center",
+          "scopeCorrect": true,
+          "placement": {
+            "x": 39.5,
+            "y": 9.5,
+            "w": 58.32000000000001,
+            "h": 0.9331200000000002
+          },
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        },
+        {
+          "key": "import-54b3b489bbebe12119deda9a",
+          "file": "motive-kleine-schilder/verschlungene-herzen.svg",
+          "mode": "side",
+          "scopeCorrect": true,
+          "placement": {
+            "x": 70.5,
+            "y": 10.5,
+            "w": 16.200000000000003,
+            "h": 16.200000000000003
+          },
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        },
+        {
+          "key": "import-8239d6c658366716f578c984",
+          "file": "motive-kleine-schilder/vogel-1.svg",
+          "mode": "side",
+          "scopeCorrect": true,
+          "placement": {
+            "x": 70.5,
+            "y": 10.5,
+            "w": 16.200000000000003,
+            "h": 16.200000000000003
+          },
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        }
+      ],
+      "allPassed": true,
+      "sourceObjectsUnchanged": true,
+      "noSpaceRetainsFailure": true
+    },
+    {
+      "workbook": "Tuerschild-Edelstahl-5x2_v1.xlsx",
+      "planId": "pgp_fae5b365-a7c0-4d85-9096-e9f5670b5b21",
+      "fixedSize": "GR-ES-RE-50X20-T15",
+      "lineId": "edelstahl-tuerschilder",
+      "defaultDesign": "katalog-TRE-V2A-5x2-D1",
+      "motifs": [
+        {
+          "key": "import-6abda909c44bc599330856dd",
+          "file": "motive-kleine-schilder/anker-3.svg",
+          "mode": "side",
+          "scopeCorrect": true,
+          "placement": null,
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        },
+        {
+          "key": "import-0073ea6aa7103bb1e8ec9088",
+          "file": "motive-kleine-schilder/brief.svg",
+          "mode": "side",
+          "scopeCorrect": true,
+          "placement": null,
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        },
+        {
+          "key": "import-9373218480c87a6ad167f3cb",
+          "file": "motive-kleine-schilder/feine-trennlinie.svg",
+          "mode": "center",
+          "scopeCorrect": true,
+          "placement": {
+            "x": 24.5,
+            "y": 2.5,
+            "w": 45,
+            "h": 0.72
+          },
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        },
+        {
+          "key": "import-41fb65efd1d8996ac305f6ab",
+          "file": "motive-kleine-schilder/haus.svg",
+          "mode": "side",
+          "scopeCorrect": true,
+          "placement": null,
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        },
+        {
+          "key": "import-1abd6f06096e47c66b0b4e00",
+          "file": "motive-kleine-schilder/herz-2.svg",
+          "mode": "side",
+          "scopeCorrect": true,
+          "placement": null,
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        },
+        {
+          "key": "import-286db893566ced2e6bd75bad",
+          "file": "motive-kleine-schilder/klingel.svg",
+          "mode": "side",
+          "scopeCorrect": true,
+          "placement": null,
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        },
+        {
+          "key": "import-d94f1406fde432cf9dd70389",
+          "file": "motive-kleine-schilder/pfote-1.svg",
+          "mode": "side",
+          "scopeCorrect": true,
+          "placement": null,
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        },
+        {
+          "key": "import-9c76c3476a406eaac7f05e42",
+          "file": "motive-kleine-schilder/schmetterling-1.svg",
+          "mode": "side",
+          "scopeCorrect": true,
+          "placement": null,
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        },
+        {
+          "key": "import-10edf8a5dd07bd1035ba508d",
+          "file": "motive-kleine-schilder/stern-1.svg",
+          "mode": "side",
+          "scopeCorrect": true,
+          "placement": null,
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        },
+        {
+          "key": "import-4269dbda54a15a99e178f00a",
+          "file": "motive-kleine-schilder/strich-haus.svg",
+          "mode": "side",
+          "scopeCorrect": true,
+          "placement": null,
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        },
+        {
+          "key": "import-0f3193fd49e254bb5975e74d",
+          "file": "motive-kleine-schilder/strich-horizontal.svg",
+          "mode": "center",
+          "scopeCorrect": true,
+          "placement": {
+            "x": 24.5,
+            "y": 2.5,
+            "w": 45,
+            "h": 0.72
+          },
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        },
+        {
+          "key": "import-54b3b489bbebe12119deda9a",
+          "file": "motive-kleine-schilder/verschlungene-herzen.svg",
+          "mode": "side",
+          "scopeCorrect": true,
+          "placement": null,
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        },
+        {
+          "key": "import-8239d6c658366716f578c984",
+          "file": "motive-kleine-schilder/vogel-1.svg",
+          "mode": "side",
+          "scopeCorrect": true,
+          "placement": null,
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        }
+      ],
+      "allPassed": true,
+      "sourceObjectsUnchanged": true,
+      "noSpaceRetainsFailure": true
+    },
+    {
+      "workbook": "Tuerschild-Edelstahl-6x2_v1.xlsx",
+      "planId": "pgp_ea7f2afb-fb41-4e91-90e7-986d8d524cc8",
+      "fixedSize": "GR-ES-RE-60X20-T15",
+      "lineId": "edelstahl-tuerschilder",
+      "defaultDesign": "katalog-TRE-V2A-6x2-D1",
+      "motifs": [
+        {
+          "key": "import-6abda909c44bc599330856dd",
+          "file": "motive-kleine-schilder/anker-3.svg",
+          "mode": "side",
+          "scopeCorrect": true,
+          "placement": null,
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        },
+        {
+          "key": "import-0073ea6aa7103bb1e8ec9088",
+          "file": "motive-kleine-schilder/brief.svg",
+          "mode": "side",
+          "scopeCorrect": true,
+          "placement": null,
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        },
+        {
+          "key": "import-9373218480c87a6ad167f3cb",
+          "file": "motive-kleine-schilder/feine-trennlinie.svg",
+          "mode": "center",
+          "scopeCorrect": true,
+          "placement": {
+            "x": 30,
+            "y": 9.5,
+            "w": 54,
+            "h": 0.8640000000000001
+          },
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        },
+        {
+          "key": "import-41fb65efd1d8996ac305f6ab",
+          "file": "motive-kleine-schilder/haus.svg",
+          "mode": "side",
+          "scopeCorrect": true,
+          "placement": null,
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        },
+        {
+          "key": "import-1abd6f06096e47c66b0b4e00",
+          "file": "motive-kleine-schilder/herz-2.svg",
+          "mode": "side",
+          "scopeCorrect": true,
+          "placement": null,
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        },
+        {
+          "key": "import-286db893566ced2e6bd75bad",
+          "file": "motive-kleine-schilder/klingel.svg",
+          "mode": "side",
+          "scopeCorrect": true,
+          "placement": null,
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        },
+        {
+          "key": "import-d94f1406fde432cf9dd70389",
+          "file": "motive-kleine-schilder/pfote-1.svg",
+          "mode": "side",
+          "scopeCorrect": true,
+          "placement": null,
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        },
+        {
+          "key": "import-9c76c3476a406eaac7f05e42",
+          "file": "motive-kleine-schilder/schmetterling-1.svg",
+          "mode": "side",
+          "scopeCorrect": true,
+          "placement": null,
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        },
+        {
+          "key": "import-10edf8a5dd07bd1035ba508d",
+          "file": "motive-kleine-schilder/stern-1.svg",
+          "mode": "side",
+          "scopeCorrect": true,
+          "placement": null,
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        },
+        {
+          "key": "import-4269dbda54a15a99e178f00a",
+          "file": "motive-kleine-schilder/strich-haus.svg",
+          "mode": "side",
+          "scopeCorrect": true,
+          "placement": null,
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        },
+        {
+          "key": "import-0f3193fd49e254bb5975e74d",
+          "file": "motive-kleine-schilder/strich-horizontal.svg",
+          "mode": "center",
+          "scopeCorrect": true,
+          "placement": {
+            "x": 30,
+            "y": 9.5,
+            "w": 54,
+            "h": 0.8640000000000001
+          },
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        },
+        {
+          "key": "import-54b3b489bbebe12119deda9a",
+          "file": "motive-kleine-schilder/verschlungene-herzen.svg",
+          "mode": "side",
+          "scopeCorrect": true,
+          "placement": null,
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        },
+        {
+          "key": "import-8239d6c658366716f578c984",
+          "file": "motive-kleine-schilder/vogel-1.svg",
+          "mode": "side",
+          "scopeCorrect": true,
+          "placement": null,
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        }
+      ],
+      "allPassed": true,
+      "sourceObjectsUnchanged": true,
+      "noSpaceRetainsFailure": true
+    },
+    {
+      "workbook": "Tuerschild-Edelstahl-8x2_v1.xlsx",
+      "planId": "pgp_c2098259-36a3-4048-a4e6-e3ffa70c9d68",
+      "fixedSize": "GR-ES-RE-80X20-T15",
+      "lineId": "edelstahl-tuerschilder",
+      "defaultDesign": "katalog-TRE-V2A-8x2-D1",
+      "motifs": [
+        {
+          "key": "import-6abda909c44bc599330856dd",
+          "file": "motive-kleine-schilder/anker-3.svg",
+          "mode": "side",
+          "scopeCorrect": true,
+          "placement": {
+            "x": 70.5,
+            "y": 10.5,
+            "w": 16.200000000000003,
+            "h": 16.200000000000003
+          },
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        },
+        {
+          "key": "import-0073ea6aa7103bb1e8ec9088",
+          "file": "motive-kleine-schilder/brief.svg",
+          "mode": "side",
+          "scopeCorrect": true,
+          "placement": {
+            "x": 70.5,
+            "y": 10.5,
+            "w": 16.200000000000003,
+            "h": 16.200000000000003
+          },
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        },
+        {
+          "key": "import-9373218480c87a6ad167f3cb",
+          "file": "motive-kleine-schilder/feine-trennlinie.svg",
+          "mode": "center",
+          "scopeCorrect": true,
+          "placement": {
+            "x": 39.5,
+            "y": 9.5,
+            "w": 58.32000000000001,
+            "h": 0.9331200000000002
+          },
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        },
+        {
+          "key": "import-41fb65efd1d8996ac305f6ab",
+          "file": "motive-kleine-schilder/haus.svg",
+          "mode": "side",
+          "scopeCorrect": true,
+          "placement": {
+            "x": 70.5,
+            "y": 10.5,
+            "w": 16.200000000000003,
+            "h": 16.200000000000003
+          },
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        },
+        {
+          "key": "import-1abd6f06096e47c66b0b4e00",
+          "file": "motive-kleine-schilder/herz-2.svg",
+          "mode": "side",
+          "scopeCorrect": true,
+          "placement": {
+            "x": 70.5,
+            "y": 10.5,
+            "w": 16.200000000000003,
+            "h": 16.200000000000003
+          },
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        },
+        {
+          "key": "import-286db893566ced2e6bd75bad",
+          "file": "motive-kleine-schilder/klingel.svg",
+          "mode": "side",
+          "scopeCorrect": true,
+          "placement": {
+            "x": 70.5,
+            "y": 10.5,
+            "w": 16.200000000000003,
+            "h": 16.200000000000003
+          },
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        },
+        {
+          "key": "import-d94f1406fde432cf9dd70389",
+          "file": "motive-kleine-schilder/pfote-1.svg",
+          "mode": "side",
+          "scopeCorrect": true,
+          "placement": {
+            "x": 70.5,
+            "y": 10.5,
+            "w": 16.200000000000003,
+            "h": 16.200000000000003
+          },
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        },
+        {
+          "key": "import-9c76c3476a406eaac7f05e42",
+          "file": "motive-kleine-schilder/schmetterling-1.svg",
+          "mode": "side",
+          "scopeCorrect": true,
+          "placement": {
+            "x": 70.5,
+            "y": 10.5,
+            "w": 16.200000000000003,
+            "h": 16.200000000000003
+          },
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        },
+        {
+          "key": "import-10edf8a5dd07bd1035ba508d",
+          "file": "motive-kleine-schilder/stern-1.svg",
+          "mode": "side",
+          "scopeCorrect": true,
+          "placement": {
+            "x": 70.5,
+            "y": 10.5,
+            "w": 16.200000000000003,
+            "h": 16.200000000000003
+          },
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        },
+        {
+          "key": "import-4269dbda54a15a99e178f00a",
+          "file": "motive-kleine-schilder/strich-haus.svg",
+          "mode": "side",
+          "scopeCorrect": true,
+          "placement": {
+            "x": 70.5,
+            "y": 10.5,
+            "w": 16.200000000000003,
+            "h": 16.200000000000003
+          },
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        },
+        {
+          "key": "import-0f3193fd49e254bb5975e74d",
+          "file": "motive-kleine-schilder/strich-horizontal.svg",
+          "mode": "center",
+          "scopeCorrect": true,
+          "placement": {
+            "x": 39.5,
+            "y": 9.5,
+            "w": 58.32000000000001,
+            "h": 0.9331200000000002
+          },
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        },
+        {
+          "key": "import-54b3b489bbebe12119deda9a",
+          "file": "motive-kleine-schilder/verschlungene-herzen.svg",
+          "mode": "side",
+          "scopeCorrect": true,
+          "placement": {
+            "x": 70.5,
+            "y": 10.5,
+            "w": 16.200000000000003,
+            "h": 16.200000000000003
+          },
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        },
+        {
+          "key": "import-8239d6c658366716f578c984",
+          "file": "motive-kleine-schilder/vogel-1.svg",
+          "mode": "side",
+          "scopeCorrect": true,
+          "placement": {
+            "x": 70.5,
+            "y": 10.5,
+            "w": 16.200000000000003,
+            "h": 16.200000000000003
+          },
+          "placementSafe": true,
+          "logoExcluded": true,
+          "originalExcluded": true
+        }
+      ],
+      "allPassed": true,
+      "sourceObjectsUnchanged": true,
+      "noSpaceRetainsFailure": true
+    }
+  ],
+  "allPassed": true,
+  "smallChecks": 78,
+  "mainExclusionChecks": 13,
+  "limitation": "Uses actual persisted configs, template objects, embedded fonts and pinned motif IDs. Conservative coverage of real object bounds; line sample aspect is explicit synthetic geometry. No browser raster/screenshot acceptance inferred."
+}

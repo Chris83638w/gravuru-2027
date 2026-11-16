@@ -73,12 +73,13 @@
 @media(min-width:768px){:host([data-ux-layout][data-ux-neutral]) .ux-direct-tail{display:none!important}}
 :host([data-ux-layout][data-ux-neutral]) .ux-selection-handles .ux-handle-delete::after{content:"";position:absolute;width:44px;height:44px;left:50%;top:50%;transform:translate(-50%,-50%);background:transparent;pointer-events:auto}
 @media(max-width:767px){
- :host([data-ux-layout][data-ux-neutral]) .ux-preview{max-height:calc(100% - 120px)!important}
- :host([data-ux-layout][data-ux-neutral]) .ux-editor{flex:1 0 120px}
+ /* The modern mobile shell owns viewport sizing, including reduced heights. */
+ :host([data-ux-layout][data-ux-neutral]:not([data-ux-modern])) .ux-preview{max-height:calc(100% - 120px)!important}
+ :host([data-ux-layout][data-ux-neutral]:not([data-ux-modern])) .ux-editor{flex:1 0 120px}
  :host([data-ux-layout][data-ux-neutral]) #ux-panel-text>p:first-of-type{display:none}
  :host([data-ux-layout][data-ux-neutral]) #ux-panel-text>h2{margin:0 0 4px!important;font-size:18px}
- :host([data-ux-layout][data-ux-neutral]) .ux-layout:has(#ux-panel-motif:not([hidden])) .ux-preview{max-height:calc(100% - 248px)!important}
- :host([data-ux-layout][data-ux-neutral]) .ux-layout:has(#ux-panel-motif:not([hidden])) .ux-editor{flex-basis:248px}
+ :host([data-ux-layout][data-ux-neutral]:not([data-ux-modern])) .ux-layout:has(#ux-panel-motif:not([hidden])) .ux-preview{max-height:calc(100% - 248px)!important}
+ :host([data-ux-layout][data-ux-neutral]:not([data-ux-modern])) .ux-layout:has(#ux-panel-motif:not([hidden])) .ux-editor{flex-basis:248px}
  :host([data-ux-layout][data-ux-neutral]) #ux-panel-motif{margin-top:0!important;padding:8px!important}
  :host([data-ux-layout][data-ux-neutral]) .completion-motif-nav [data-ux]{padding:6px!important;font-size:12px!important}
  :host([data-ux-layout][data-ux-neutral]) .workflow-motif-entry .ux-motif-pricing{margin:6px 0 8px!important;padding:6px 8px;font-size:12px;line-height:1.35}
@@ -265,3 +266,19 @@
 .ux-conflict-compact .ux-conflict-actions{display:flex;flex:none;gap:6px}
 :host([data-ux-layout][data-ux-neutral]) .ux-conflict-hints .ux-conflict-compact .ux-conflict-actions button{width:auto!important;min-height:30px!important;height:30px!important;padding:3px 8px!important;margin:0!important;border-radius:6px!important;font-size:12px!important;line-height:1.2!important;font-weight:650!important;white-space:nowrap}
 @media(max-width:767px){.ux-conflict-compact{flex-wrap:wrap;gap:4px;padding:4px 6px}.ux-conflict-compact .ux-conflict-copy{flex-basis:100%}.ux-conflict-compact .ux-conflict-actions{margin-left:auto}:host([data-ux-layout][data-ux-neutral]) .ux-conflict-hints .ux-conflict-compact .ux-conflict-actions button{min-height:44px!important;height:44px!important}}
+
+/* Mikail 05.11.: visible action hierarchy on mobile and desktop. */
+:host([data-ux-layout][data-ux-neutral]){--ux-action:#176b58;--ux-action-soft:#e8f4ef;--ux-action-border:#9bc8b8}
+:host([data-ux-layout][data-ux-neutral]) .ux-shell .ux-tabs button[aria-selected=true]{background:var(--ux-action-soft)!important;color:#145541!important;border-bottom-color:var(--ux-action)!important}
+:host([data-ux-layout][data-ux-neutral]) :is(.ux-shell,.ux-dialog,.c-large-preview) :is(.ux-primary,[data-ux=photo-upload],[data-ux=photo-apply],[data-ux=account],.ux-preview-back){background:var(--ux-action)!important;color:#fff!important;border-color:var(--ux-action)!important}
+:host([data-ux-layout][data-ux-neutral]) .ux-shell .ux-panel button[data-ux=choose-upload],
+:host([data-ux-layout][data-ux-neutral]) .ux-shell .ux-heading>button[data-ux=account]{background:var(--ux-action)!important;color:#fff!important;border-color:var(--ux-action)!important}
+:host([data-ux-layout][data-ux-neutral]) :is(.ux-shell,.ux-dialog,.c-large-preview) :is([data-ux=fonts],[data-ux=edit-upload],[data-ux=replace-upload],[data-ux=add-text],[data-ux=multi-texts],[data-ux=photo-position-crop],[data-ux=photo-position-move],.ux-enlarge){background:var(--ux-action-soft)!important;color:#145541!important;border-color:var(--ux-action-border)!important}
+:host([data-ux-layout][data-ux-neutral]) :is(.ux-shell,.ux-dialog) :is(button,input,textarea,select,summary):focus-visible{outline-color:var(--ux-action)!important}
+:host([data-ux-layout][data-ux-neutral]) :is(.ux-shell,.ux-dialog) input[type=range]{accent-color:var(--ux-action)!important}
+:host([data-ux-layout][data-ux-neutral]) .fk-buy-dock .fk-buy-inner>button:is(.fk-buy-button,.completion-finish){background:#16834b!important;color:#fff!important;border:1px solid #16834b!important;box-shadow:0 3px 10px #16834b26!important}
+:host([data-ux-layout][data-ux-neutral]) .fk-buy-dock .fk-buy-inner>button:is(.fk-buy-button,.completion-finish):hover{background:#116b3c!important;border-color:#116b3c!important}
+:host([data-ux-layout][data-ux-neutral]) .fk-buy-dock .fk-buy-inner>button:is(.fk-buy-button,.completion-finish):focus-visible{outline:3px solid #16834b!important;outline-offset:3px}
+:host([data-ux-layout][data-ux-neutral]) .ux-selection-handles [data-ux-handle][hidden]{display:none!important}
+.ux-photo-size{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:#e8f4ef;border:1px solid #9bc8b8;border-radius:12px;padding:12px;color:#145541;font-weight:600}
+.ux-photo-size input{flex:1;min-width:120px}.ux-photo-size output{font-size:13px;font-variant-numeric:tabular-nums}

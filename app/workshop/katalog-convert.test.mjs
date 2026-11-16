@@ -15,6 +15,14 @@ const katalog=()=>openKatalog(FIXTURE);
 const fonts=()=>workshopResources().fonts;// Laufzeitschriften der Werkstatt (Montserrat, Cinzel …)
 const herz=k=>k.designs.masters.find(d=>d.id==='test-herz');
 
+test('Neue-Struktur priority survives native conversion and proportional size adaptation',()=>{
+ const k=katalog(),d=herz(k),font=fonts();
+ const source={...d,json:{...d.json,katalog:{prio:1}}};
+ const t=katalogDesignToTemplate(source,k.families.get('test-schilder'),k.theme('namensschilder'),{fonts:font}).template;
+ assert.equal(t.katalog.prio,1);
+ assert.equal(scaleTemplate(t,[90,60],[220,140],font,{contain:true}).katalog.prio,1);
+});
+
 test('139: nested inherited stroke-only paint stays unfilled, including round joins and explicit child override',()=>{
  const f=katalog().families.get('test-schilder');
  const r=katalogDesignToTemplate({id:'inherited-stroke',name:'Kranz',themes:[],fields:{}},f,null,{fonts:fonts(),svgText:'<svg viewBox="0 0 90 60"><g id="motiv-wreath"><g fill="none" stroke="#000000" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 50 C0 30 10 10 30 5"/><g><path d="M50 50 L70 10 L80 40Z" fill="#000000" stroke="none"/></g></g></g></svg>'});
@@ -89,7 +97,7 @@ test('Design → Vorlage: Kundenfelder, separat ersetzbare Motive, Rechte und Gu
  const motif=t.objects[0];
  assert.equal(motif.motif,'katalog-test-herz-motiv-1');assert.equal(motif.locked,undefined);assert.equal(motif.customerEditable,true);assert.deepEqual([motif.x,motif.y,motif.w,motif.h],[14,28,20,16],'Hüllbox aus Stütz- und Kontrollpunkten');
  assert.equal(t.objects[4].role,'guide');assert.equal(t.objects[4].locked,true);
- assert.deepEqual(r.rights['text-1'],{content:true,color:false,replace:false,move:true,scale:true,delete:false});
+ assert.deepEqual(r.rights['text-1'],{content:true,color:false,replace:false,move:true,scale:true,delete:true},'Auch der Name darf bewusst entfernt werden');
  assert.deepEqual(r.rights['text-2'],{content:true,color:false,replace:false,move:true,scale:true,delete:true});
  assert.deepEqual(r.rights['motiv-1'],{content:false,color:false,replace:true,move:false,scale:false,delete:true},'Gravur: Motiv austauschbar, Farbe und Position unverändert');
  assert.deepEqual(r.rights['guide-1'],{content:false,color:false,replace:false,move:false,scale:false,delete:false});

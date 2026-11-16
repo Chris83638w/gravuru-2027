@@ -1,0 +1,308 @@
+{
+  "schema": "issue230-independent-persisted-plan-review/v1",
+  "readOnly": true,
+  "root": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-11-11\\die-vollst-ndige-bergabe-findest-du\\work\\product-plans-run-v6",
+  "counts": {
+    "products": 7,
+    "plans": 7,
+    "confirmations": 0,
+    "executions": 0
+  },
+  "results": [
+    {
+      "workbook": "Tuerschild-Acrylglas-3mm-5x2_v2.xlsx",
+      "planId": "pgp_0868a8f2-d0de-48ad-9290-2dea51371ba3",
+      "planHash": "c333b9826f19d00eadba899bcffa92c9c1f66ff3f465c15292a9d98c5f93345f",
+      "variants": 10,
+      "valid": false,
+      "checks": {
+        "storedPlanShaMatches": true,
+        "exportedPlanEqualsStored": true,
+        "sourceFileEqualsPersisted": true,
+        "sourceRefMatches": true,
+        "templateHashMatches": true,
+        "excelHashPaired": true,
+        "expectedNativeProductCount": true,
+        "uniqueCombinations": true,
+        "compiledSourceWithPinnedModulesSame": true,
+        "pinnedModuleHashesMatch": true,
+        "moduleProposalMatchesPlan": true,
+        "openQuestionsIncluded": true,
+        "stillUnconfirmed": true,
+        "stillUnexecuted": true
+      },
+      "allPassed": true,
+      "issues": [
+        {
+          "code": "open_question",
+          "message": "Startdesign TRE-V2A-5x2-D1 / 5 × 2 cm / Schwarz ist ein technisch geprüfter Vorschlag, keine neue Nutzerentscheidung."
+        },
+        {
+          "code": "open_question",
+          "message": "Offene Module gemäß unveränderter Excel: options=an, designs=an, text=an, motifs=an, photo=offen, logo=offen, colors=an. Modulprofil noch nicht bestätigt."
+        },
+        {
+          "code": "open_question",
+          "message": "Steuerkontext/Mengenstaffeln und Freigaben der unveränderten Excel sind vollständig offen zu prüfen; keine zusätzliche Entscheidung abgeleitet."
+        },
+        {
+          "code": "open_question",
+          "message": "Die bestätigte 13-Motiv-Auswahl ist als echtes natives Motivprofil gespeichert; automatische Platzierung rechts/links neben Text (Strich-Ausnahmen) muss noch im vorhandenen Kundenadapter geprüft/angeschlossen werden."
+        }
+      ]
+    },
+    {
+      "workbook": "Tuerschild-Acrylglas-3mm-6x2_v2.xlsx",
+      "planId": "pgp_853b95af-a140-45e2-9375-f8a8dd8a013a",
+      "planHash": "6b6d34709e85c1c7e046fe510bb7079a1be35e0286ee9f3e99ed6f93c59907c0",
+      "variants": 10,
+      "valid": false,
+      "checks": {
+        "storedPlanShaMatches": true,
+        "exportedPlanEqualsStored": true,
+        "sourceFileEqualsPersisted": true,
+        "sourceRefMatches": true,
+        "templateHashMatches": true,
+        "excelHashPaired": true,
+        "expectedNativeProductCount": true,
+        "uniqueCombinations": true,
+        "compiledSourceWithPinnedModulesSame": true,
+        "pinnedModuleHashesMatch": true,
+        "moduleProposalMatchesPlan": true,
+        "openQuestionsIncluded": true,
+        "stillUnconfirmed": true,
+        "stillUnexecuted": true
+      },
+      "allPassed": true,
+      "issues": [
+        {
+          "code": "open_question",
+          "message": "Startdesign TRE-V2A-6x2-D1 / 6 × 2 cm / Schwarz ist ein technisch geprüfter Vorschlag, keine neue Nutzerentscheidung."
+        },
+        {
+          "code": "open_question",
+          "message": "Offene Module gemäß unveränderter Excel: options=an, designs=an, text=an, motifs=an, photo=offen, logo=offen, colors=an. Modulprofil noch nicht bestätigt."
+        },
+        {
+          "code": "open_question",
+          "message": "Steuerkontext/Mengenstaffeln und Freigaben der unveränderten Excel sind vollständig offen zu prüfen; keine zusätzliche Entscheidung abgeleitet."
+        },
+        {
+          "code": "open_question",
+          "message": "Die bestätigte 13-Motiv-Auswahl ist als echtes natives Motivprofil gespeichert; automatische Platzierung rechts/links neben Text (Strich-Ausnahmen) muss noch im vorhandenen Kundenadapter geprüft/angeschlossen werden."
+        }
+      ]
+    },
+    {
+      "workbook": "Tuerschild-Acrylglas-3mm-8x2_v2.xlsx",
+      "planId": "pgp_1d20d28a-7f30-41ef-a33b-e0b278a1a966",
+      "planHash": "a1bae5f5637ef5037a452d528dbe7928e5097c8a8303b1e62e5e5c77891d06bc",
+      "variants": 10,
+      "valid": false,
+      "checks": {
+        "storedPlanShaMatches": true,
+        "exportedPlanEqualsStored": true,
+        "sourceFileEqualsPersisted": true,
+        "sourceRefMatches": true,
+        "templateHashMatches": true,
+        "excelHashPaired": true,
+        "expectedNativeProductCount": true,
+        "uniqueCombinations": true,
+        "compiledSourceWithPinnedModulesSame": true,
+        "pinnedModuleHashesMatch": true,
+        "moduleProposalMatchesPlan": true,
+        "openQuestionsIncluded": true,
+        "stillUnconfirmed": true,
+        "stillUnexecuted": true
+      },
+      "allPassed": true,
+      "issues": [
+        {
+          "code": "open_question",
+          "message": "Startdesign TRE-V2A-8x2-D1 / 8 × 2 cm / Schwarz ist ein technisch geprüfter Vorschlag, keine neue Nutzerentscheidung."
+        },
+        {
+          "code": "open_question",
+          "message": "Offene Module gemäß unveränderter Excel: options=an, designs=an, text=an, motifs=an, photo=offen, logo=offen, colors=an. Modulprofil noch nicht bestätigt."
+        },
+        {
+          "code": "open_question",
+          "message": "Steuerkontext/Mengenstaffeln und Freigaben der unveränderten Excel sind vollständig offen zu prüfen; keine zusätzliche Entscheidung abgeleitet."
+        },
+        {
+          "code": "open_question",
+          "message": "Die bestätigte 13-Motiv-Auswahl ist als echtes natives Motivprofil gespeichert; automatische Platzierung rechts/links neben Text (Strich-Ausnahmen) muss noch im vorhandenen Kundenadapter geprüft/angeschlossen werden."
+        }
+      ]
+    },
+    {
+      "workbook": "Tuerschild-Acrylglas-3mm_v4.xlsx",
+      "planId": "pgp_6720276e-c53e-4f9a-b0eb-2ea6d468e703",
+      "planHash": "0000d819c61180ce0ae1d30b71499e2109d8ece68e31323b39e9edbc0c550497",
+      "variants": 778,
+      "valid": false,
+      "checks": {
+        "storedPlanShaMatches": true,
+        "exportedPlanEqualsStored": true,
+        "sourceFileEqualsPersisted": true,
+        "sourceRefMatches": true,
+        "templateHashMatches": true,
+        "excelHashPaired": true,
+        "expectedNativeProductCount": true,
+        "uniqueCombinations": true,
+        "compiledSourceWithPinnedModulesSame": true,
+        "pinnedModuleHashesMatch": true,
+        "moduleProposalMatchesPlan": true,
+        "openQuestionsIncluded": true,
+        "stillUnconfirmed": true,
+        "stillUnexecuted": true
+      },
+      "allPassed": true,
+      "issues": [
+        {
+          "code": "open_question",
+          "message": "Startdesign TAE-V2A-8x5-D1 / 12 × 8 cm / Schwarz ist ein technisch geprüfter Vorschlag, keine neue Nutzerentscheidung."
+        },
+        {
+          "code": "open_question",
+          "message": "Offene Module gemäß unveränderter Excel: options=an, designs=an, text=an, motifs=an, logo=an, colors=an. Modulprofil noch nicht bestätigt."
+        },
+        {
+          "code": "open_question",
+          "message": "Steuerkontext/Mengenstaffeln und Freigaben der unveränderten Excel sind vollständig offen zu prüfen; keine zusätzliche Entscheidung abgeleitet."
+        },
+        {
+          "code": "open_question",
+          "message": "9 Originaldesigns haben native Kontur-/Randfehler (family-report.json). 2 weitere Katalogdesigns sind bewusst hidden und bleiben ausgeblendet; keine Wiederfreigabe beantragt."
+        }
+      ]
+    },
+    {
+      "workbook": "Tuerschild-Edelstahl-5x2_v1.xlsx",
+      "planId": "pgp_d8449da5-0339-48b8-8356-6c3ce76c66a8",
+      "planHash": "ac75e9b321c426948adc40c316e182cc0be9c8428c6d9044695fa688aa5b1260",
+      "variants": 5,
+      "valid": false,
+      "checks": {
+        "storedPlanShaMatches": true,
+        "exportedPlanEqualsStored": true,
+        "sourceFileEqualsPersisted": true,
+        "sourceRefMatches": true,
+        "templateHashMatches": true,
+        "excelHashPaired": true,
+        "expectedNativeProductCount": true,
+        "uniqueCombinations": true,
+        "compiledSourceWithPinnedModulesSame": true,
+        "pinnedModuleHashesMatch": true,
+        "moduleProposalMatchesPlan": true,
+        "openQuestionsIncluded": true,
+        "stillUnconfirmed": true,
+        "stillUnexecuted": true
+      },
+      "allPassed": true,
+      "issues": [
+        {
+          "code": "open_question",
+          "message": "Startdesign TRE-V2A-5x2-D1 / 5 × 2 cm ist ein technisch geprüfter Vorschlag, keine neue Nutzerentscheidung."
+        },
+        {
+          "code": "open_question",
+          "message": "Offene Module gemäß unveränderter Excel: designs=an, text=an, motifs=an, logo=offen. Modulprofil noch nicht bestätigt."
+        },
+        {
+          "code": "open_question",
+          "message": "Steuerkontext/Mengenstaffeln und Freigaben der unveränderten Excel sind vollständig offen zu prüfen; keine zusätzliche Entscheidung abgeleitet."
+        },
+        {
+          "code": "open_question",
+          "message": "Die bestätigte 13-Motiv-Auswahl ist als echtes natives Motivprofil gespeichert; automatische Platzierung rechts/links neben Text (Strich-Ausnahmen) muss noch im vorhandenen Kundenadapter geprüft/angeschlossen werden."
+        }
+      ]
+    },
+    {
+      "workbook": "Tuerschild-Edelstahl-6x2_v1.xlsx",
+      "planId": "pgp_f6e8ac45-ab2d-4d13-83df-e735f58cfde5",
+      "planHash": "f35b350f337181a7d1e93fdc77f3c857618b689f44fc4ead51982ffac465cb45",
+      "variants": 5,
+      "valid": false,
+      "checks": {
+        "storedPlanShaMatches": true,
+        "exportedPlanEqualsStored": true,
+        "sourceFileEqualsPersisted": true,
+        "sourceRefMatches": true,
+        "templateHashMatches": true,
+        "excelHashPaired": true,
+        "expectedNativeProductCount": true,
+        "uniqueCombinations": true,
+        "compiledSourceWithPinnedModulesSame": true,
+        "pinnedModuleHashesMatch": true,
+        "moduleProposalMatchesPlan": true,
+        "openQuestionsIncluded": true,
+        "stillUnconfirmed": true,
+        "stillUnexecuted": true
+      },
+      "allPassed": true,
+      "issues": [
+        {
+          "code": "open_question",
+          "message": "Startdesign TRE-V2A-6x2-D1 / 6 × 2 cm ist ein technisch geprüfter Vorschlag, keine neue Nutzerentscheidung."
+        },
+        {
+          "code": "open_question",
+          "message": "Offene Module gemäß unveränderter Excel: designs=an, text=an, motifs=an, logo=offen. Modulprofil noch nicht bestätigt."
+        },
+        {
+          "code": "open_question",
+          "message": "Steuerkontext/Mengenstaffeln und Freigaben der unveränderten Excel sind vollständig offen zu prüfen; keine zusätzliche Entscheidung abgeleitet."
+        },
+        {
+          "code": "open_question",
+          "message": "Die bestätigte 13-Motiv-Auswahl ist als echtes natives Motivprofil gespeichert; automatische Platzierung rechts/links neben Text (Strich-Ausnahmen) muss noch im vorhandenen Kundenadapter geprüft/angeschlossen werden."
+        }
+      ]
+    },
+    {
+      "workbook": "Tuerschild-Edelstahl-8x2_v1.xlsx",
+      "planId": "pgp_0a234181-0829-4f7c-bfb7-7704932d6507",
+      "planHash": "4bf7241215b49678519a6d1a3fc847afe6896fc520d01cc54bacc203464d216e",
+      "variants": 5,
+      "valid": false,
+      "checks": {
+        "storedPlanShaMatches": true,
+        "exportedPlanEqualsStored": true,
+        "sourceFileEqualsPersisted": true,
+        "sourceRefMatches": true,
+        "templateHashMatches": true,
+        "excelHashPaired": true,
+        "expectedNativeProductCount": true,
+        "uniqueCombinations": true,
+        "compiledSourceWithPinnedModulesSame": true,
+        "pinnedModuleHashesMatch": true,
+        "moduleProposalMatchesPlan": true,
+        "openQuestionsIncluded": true,
+        "stillUnconfirmed": true,
+        "stillUnexecuted": true
+      },
+      "allPassed": true,
+      "issues": [
+        {
+          "code": "open_question",
+          "message": "Startdesign TRE-V2A-8x2-D1 / 8 × 2 cm ist ein technisch geprüfter Vorschlag, keine neue Nutzerentscheidung."
+        },
+        {
+          "code": "open_question",
+          "message": "Offene Module gemäß unveränderter Excel: designs=an, text=an, motifs=an, logo=offen. Modulprofil noch nicht bestätigt."
+        },
+        {
+          "code": "open_question",
+          "message": "Steuerkontext/Mengenstaffeln und Freigaben der unveränderten Excel sind vollständig offen zu prüfen; keine zusätzliche Entscheidung abgeleitet."
+        },
+        {
+          "code": "open_question",
+          "message": "Die bestätigte 13-Motiv-Auswahl ist als echtes natives Motivprofil gespeichert; automatische Platzierung rechts/links neben Text (Strich-Ausnahmen) muss noch im vorhandenen Kundenadapter geprüft/angeschlossen werden."
+        }
+      ]
+    }
+  ],
+  "allPassed": true
+}

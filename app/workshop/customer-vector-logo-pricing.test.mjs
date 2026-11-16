@@ -13,12 +13,15 @@ import {createOrderIntake} from './order-intake.mjs';
 import {prepareCartRequest,verifyCartResponse} from './storefront-cart.mjs';
 import {prepareShopProduct} from './shop-preparation.mjs';
 import {cartTransformRun} from '../../ops/shopify/checkout-image/cart_transform_run.mjs';
+import {MODULE_PROFILE_SCHEMA,nativeModuleAvailability,applyModuleProfile} from '../configurator/variant-m/module-profile.mjs';
+import {decisionHelp} from '../configurator/variant-m/decision-help.mjs';
+import {asAcrylicUploadFamily} from './test-fixtures/acrylic-upload-source.mjs';
 
 const resources=JSON.parse(fs.readFileSync(new URL('../designs/acrylic-unser-anfang/resources.json',import.meta.url)));
 const metadata={version:'svg-black-v1',sourceSha256:'a'.repeat(64),outputSha256:'b'.repeat(64)};
 const logo=(id='logo-1')=>({id,type:'image',x:110,y:70,w:20,h:20,rotation:0,uxUploadId:id,uxUploadKind:'logo',uxVectorLogo:{...metadata}});
 const photo=id=>({id,type:'photoSlot',uxUploadId:id,uxUploadKind:'photo'});
-function fixture(){
+function fixture(material='steel'){
  const c=makeAcrylicConfig({profile:{kind:'universal-product',schemaVersion:2}},resources,'a'.repeat(64));delete c.acrylic;
  const p=c.profile;p.material={kind:'steel',color:'#a0a0a0',thicknessMm:1.5};p.processing={profileId:'steel-engraving'};
  p.geometry={width:220,height:140,shape:'rect',cornerRadiusMm:0,safeMarginMm:0,holes:[]};
@@ -27,6 +30,7 @@ function fixture(){
  p.optionGroups=[{id:'mounting',name:'Befestigung',required:true,defaultValueId:'none',values:[{id:'none',label:'Ohne',priceCents:0,currency:'EUR',holes:[]}]}];
  c.basePriceCents=2299;c.extraMotifCents=169;c.photo={enabled:false,mode:'upload-only',includedCount:1,extraPriceCents:999};c.logo={enabled:true,vectorUpload:true,extraPriceCents:1299};
  c.localResources.photoExamples=[];c.localResources.photoPlaceholders=[];
+ if(material==='acrylic')asAcrylicUploadFamily(c);
  const record={id:'cfg_logo_synthetic',revision:2,status:'draft',document:makeProductDocument(c)},config=record.document.config;
  const state={designId:'test',objects:[...structuredClone(config.profile.designs[0].objects),logo()],mOptions:{mounting:'none'}};
  const pricing={schema:'gravuru-personalization-pricing/v2',enabled:true,productId:'gid://shopify/Product/101',revision:31,currency:'EUR',variants:{301:2299},extraMotifCents:169,extraPhotoCents:999,extraLogoCents:1299};
@@ -46,6 +50,27 @@ test('new logo price is per visible upload, independent of included photos; old 
  assert.throws(()=>uploadQuote([...objects,logo('five')],1,false,policy,f.config.logo),/Maximal vier/);
  assert.throws(()=>uploadQuote([logo('same'),photo('same')],1,false,policy,f.config.logo),/zugleich/);
  assert.throws(()=>uploadQuote([logo()],1,false,policy,{...f.config.logo,extraPriceCents:0}),/Preisregel/);
+});
+
+test('approved acrylic photo and SVG logo coexist through module, draft, price and checkout contracts',()=>{
+ const f=fixture('acrylic'),before=structuredClone(f.config);
+ const profile={schema:MODULE_PROFILE_SCHEMA,id:'approved-acrylic-uploads',revision:1,modules:{options:true,designs:true,text:true,motifs:true,photo:true,logo:true,colors:false}};
+ const config=applyModuleProfile(f.config,profile);
+ assert.equal(nativeModuleAvailability(config).photo,true);assert.equal(vectorLogoAllowed(config),true);
+ assert.equal(uploadAllowed(config,'photo'),true);assert.equal(uploadAllowed(config,'logo'),true);assert.equal(photoAvailableForDesign(config,'test'),true);
+ assert.equal(decisionHelp('photo',config).title,'Foto / Logo');assert.match(decisionHelp('photo',config).text,/Fotos kannst du separat/);
+ const s=structuredClone(f.state);s.objects.push({...photo('own-photo'),x:40,y:70,w:20,h:20,rotation:0,photoShape:'rect',fieldKey:'photo-personal',required:false});
+ const saved=saveDraft(config,s,s.mOptions,resources.fonts,resources.motifs),restored=readDraft(config,saved,resources.fonts,resources.motifs);
+ assert.equal(restored.design.objects.filter(o=>o.uxUploadId).length,2);
+ const price=commercePrice(config,s,2);assert.equal(price.chargedUploads,1);assert.equal(price.chargedLogos,1);assert.equal(price.unitCents,4597);
+ const manifest={...f.manifest,product:{...f.manifest.product,basePriceCents:price.unitCents},selection:{...f.manifest.selection,price}};
+ const result=personalizationForSnapshot(capturePersonalization(f.pricing,{variantId:'301',baseCents:2299,document:{...f.record.document,config}}),manifest);
+ const attrs=Object.fromEntries(personalizationAttributes(result.personalization).map(a=>[a.key,a.value]));
+ const transformed=cartTransformRun(transformInput(f.pricing,attrs));assert.equal(transformed.operations[0].lineUpdate.price.adjustment.fixedPricePerUnit.amount,'45.97');
+ assert.deepEqual(f.config,before);
+ const print=structuredClone(config);print.profile.processing.profileId='color-print';assert.throws(()=>prepareConfig(print),/Foto.*Produktquelle|Vektorlogos/);
+ const small=applyModuleProfile(f.config,{...profile,modules:{...profile.modules,photo:false,logo:false}});
+ assert.equal(uploadAllowed(small,'photo'),false);assert.equal(uploadAllowed(small,'logo'),false);assert.throws(()=>saveDraft(small,s,s.mOptions,resources.fonts,resources.motifs),/Fotomodul|Logomodul|Fotobereich|Vektorlogo/);
 });
 
 test('explicit steel revision preserves confirmed logo metadata in drafts and refuses raster/forged logos',()=>{

@@ -1,0 +1,271 @@
+{
+  "commit": "6cf536f206cd3b50e77bd2bbb1df9be390c35e8f",
+  "localRef": "refs/remotes/origin/dev/acryl-original18-konfi-20261110",
+  "metadata": [
+    "6cf536f206cd3b50e77bd2bbb1df9be390c35e8f",
+    "999abda57543239939e3c43465bf0db8eb4793e6",
+    "f69c8dbfd1703e4abe2da80c1955d086cddbe547",
+    "2026-11-10T17:16:21+01:00",
+    "Support 18 native acrylic originals in shared Prio configurator"
+  ],
+  "diffstat": "STATUS.md                                          |   8 +\n app/configurator/variant-m/acrylic-scene.css       |  13 ++\n app/configurator/variant-m/acrylic-scene.mjs       |  55 ++++++\n app/configurator/variant-m/contract.mjs            |   1 +\n app/configurator/variant-m/contract.test.mjs       |  20 +++\n .../variant-m/scalable-acrylic-scene.mjs           |  54 ++++++\n .../variant-m/scalable-acrylic-scene.test.mjs      |  82 +++++++++\n app/configurator/variant-m/scalable-size-state.mjs |   5 +-\n app/configurator/variant-m/ux.mjs                  |   2 +-\n app/configurator/variant-m/workshop-review.mjs     |   4 +-\n .../variant-m/workshop-review.test.mjs             |  24 +++\n app/workshop/batch-scalable-acrylic.test.mjs       |  94 ++++++++++\n app/workshop/batch.mjs                             |  14 +-\n app/workshop/product-model.mjs                     |  16 +-\n app/workshop/scalable-acrylic-product.test.mjs     |  96 ++++++++++\n app/workshop/shop-entry.mjs                        |   4 +-\n app/workshop/shop-entry.test.mjs                   |  51 ++++++\n app/workshop/shop-preparation.mjs                  |  24 +++\n app/workshop/shop-preparation.run-cache.test.mjs   | 121 +++++++++++++\n app/workshop/theme-cart-flow.test.mjs              |   5 +-\n .../2026-11-10-original18-konfi-server-shopify.md  |  76 ++++++++\n scripts/acryl-original18/assets.mjs                |  43 +++++\n scripts/acryl-original18/bind-products.mjs         | 138 +++++++++++++++\n scripts/acryl-original18/bind-products.test.mjs    |  44 +++++\n scripts/acryl-original18/binding-cache.mjs         |   8 +\n scripts/acryl-original18/build.mjs                 | 171 ++++++++++++++++++\n scripts/acryl-original18/deploy-followup.mjs       | 197 +++++++++++++++++++++\n scripts/acryl-original18/deploy.mjs                | 170 ++++++++++++++++++\n scripts/acryl-original18/enable-prio.mjs           |  45 +++++\n scripts/acryl-original18/import-products.mjs       | 105 +++++++++++\n scripts/acryl-original18/normalize-vectors.py      |  48 +++++\n scripts/acryl-original18/package.mjs               |  45 +++++\n scripts/acryl-original18/remote-import.mjs         |  14 ++\n scripts/acryl-original18/render.mjs                |  29 +++\n scripts/acryl-original18/server.mjs                |  95 ++++++++++\n 35 files changed, 1912 insertions(+), 9 deletions(-)",
+  "changedFiles": [
+    {
+      "status": "M",
+      "path": "STATUS.md"
+    },
+    {
+      "status": "M",
+      "path": "app/configurator/variant-m/acrylic-scene.css"
+    },
+    {
+      "status": "M",
+      "path": "app/configurator/variant-m/acrylic-scene.mjs"
+    },
+    {
+      "status": "M",
+      "path": "app/configurator/variant-m/contract.mjs"
+    },
+    {
+      "status": "M",
+      "path": "app/configurator/variant-m/contract.test.mjs"
+    },
+    {
+      "status": "A",
+      "path": "app/configurator/variant-m/scalable-acrylic-scene.mjs"
+    },
+    {
+      "status": "A",
+      "path": "app/configurator/variant-m/scalable-acrylic-scene.test.mjs"
+    },
+    {
+      "status": "M",
+      "path": "app/configurator/variant-m/scalable-size-state.mjs"
+    },
+    {
+      "status": "M",
+      "path": "app/configurator/variant-m/ux.mjs"
+    },
+    {
+      "status": "M",
+      "path": "app/configurator/variant-m/workshop-review.mjs"
+    },
+    {
+      "status": "A",
+      "path": "app/configurator/variant-m/workshop-review.test.mjs"
+    },
+    {
+      "status": "A",
+      "path": "app/workshop/batch-scalable-acrylic.test.mjs"
+    },
+    {
+      "status": "M",
+      "path": "app/workshop/batch.mjs"
+    },
+    {
+      "status": "M",
+      "path": "app/workshop/product-model.mjs"
+    },
+    {
+      "status": "A",
+      "path": "app/workshop/scalable-acrylic-product.test.mjs"
+    },
+    {
+      "status": "M",
+      "path": "app/workshop/shop-entry.mjs"
+    },
+    {
+      "status": "M",
+      "path": "app/workshop/shop-entry.test.mjs"
+    },
+    {
+      "status": "M",
+      "path": "app/workshop/shop-preparation.mjs"
+    },
+    {
+      "status": "A",
+      "path": "app/workshop/shop-preparation.run-cache.test.mjs"
+    },
+    {
+      "status": "M",
+      "path": "app/workshop/theme-cart-flow.test.mjs"
+    },
+    {
+      "status": "A",
+      "path": "docs/handoffs/2026-11-10-original18-konfi-server-shopify.md"
+    },
+    {
+      "status": "A",
+      "path": "scripts/acryl-original18/assets.mjs"
+    },
+    {
+      "status": "A",
+      "path": "scripts/acryl-original18/bind-products.mjs"
+    },
+    {
+      "status": "A",
+      "path": "scripts/acryl-original18/bind-products.test.mjs"
+    },
+    {
+      "status": "A",
+      "path": "scripts/acryl-original18/binding-cache.mjs"
+    },
+    {
+      "status": "A",
+      "path": "scripts/acryl-original18/build.mjs"
+    },
+    {
+      "status": "A",
+      "path": "scripts/acryl-original18/deploy-followup.mjs"
+    },
+    {
+      "status": "A",
+      "path": "scripts/acryl-original18/deploy.mjs"
+    },
+    {
+      "status": "A",
+      "path": "scripts/acryl-original18/enable-prio.mjs"
+    },
+    {
+      "status": "A",
+      "path": "scripts/acryl-original18/import-products.mjs"
+    },
+    {
+      "status": "A",
+      "path": "scripts/acryl-original18/normalize-vectors.py"
+    },
+    {
+      "status": "A",
+      "path": "scripts/acryl-original18/package.mjs"
+    },
+    {
+      "status": "A",
+      "path": "scripts/acryl-original18/remote-import.mjs"
+    },
+    {
+      "status": "A",
+      "path": "scripts/acryl-original18/render.mjs"
+    },
+    {
+      "status": "A",
+      "path": "scripts/acryl-original18/server.mjs"
+    }
+  ],
+  "files": [
+    {
+      "path": "app/workshop/batch.mjs",
+      "bytes": 17500,
+      "sha256": "07b1ea062561485c6ecfca5ed3f34d9237c42f7a71e0ea8b2f69ab1079c18b78",
+      "serverPrefix": "07b1ea0",
+      "prefixMatches": true
+    },
+    {
+      "path": "app/workshop/product-model.mjs",
+      "bytes": 14953,
+      "sha256": "1993bc362715e9a7736d6ad6d170a4a111ec607f3bdcce207d6fd5e2bdc9cb65",
+      "serverPrefix": "1993bc3",
+      "prefixMatches": true
+    },
+    {
+      "path": "app/workshop/shop-entry.mjs",
+      "bytes": 53564,
+      "sha256": "364703b87c00522a663257301dafff1998c744308febea7543dfc358c69b0d50",
+      "serverPrefix": "ab2dfbc",
+      "prefixMatches": false
+    },
+    {
+      "path": "app/workshop/shop-preparation.mjs",
+      "bytes": 8516,
+      "sha256": "4410b6a61593efcb4a6539cb65c53139ed957d0879943e1ff946563ea0bee6c4",
+      "serverPrefix": "4410b6a",
+      "prefixMatches": true
+    },
+    {
+      "path": "app/configurator/variant-m/acrylic-scene.css",
+      "bytes": 5009,
+      "sha256": "372bf868189a5b07bde21905035a06ea30c6f283aa567ea16b9701f4264b5e6e",
+      "serverPrefix": "372bf86",
+      "prefixMatches": true
+    },
+    {
+      "path": "app/configurator/variant-m/acrylic-scene.mjs",
+      "bytes": 17125,
+      "sha256": "9dc52c5e3023da9aa3674a8a09442cff87fbab278efe56f1f89b8f0b086e0586",
+      "serverPrefix": "9dc52c5",
+      "prefixMatches": true
+    },
+    {
+      "path": "app/configurator/variant-m/contract.mjs",
+      "bytes": 39787,
+      "sha256": "c8a6eb14ef56b0d9565728708d93ccc9362b5bcc3d53fc80b1b6be092dc98393",
+      "serverPrefix": "c8a6eb1",
+      "prefixMatches": true
+    },
+    {
+      "path": "app/configurator/variant-m/scalable-size-state.mjs",
+      "bytes": 4178,
+      "sha256": "149e44ad34fa4f07d25f4e2b7c078b43297163ffcb1607da875d5e364f707257",
+      "serverPrefix": "149e44a",
+      "prefixMatches": true
+    },
+    {
+      "path": "app/configurator/variant-m/ux.mjs",
+      "bytes": 80552,
+      "sha256": "a0018174ebde933edc8fa83c0559efcb2d98c704719380ecbd7c9217e2200ed6",
+      "serverPrefix": "a001817",
+      "prefixMatches": true
+    },
+    {
+      "path": "app/configurator/variant-m/workshop-review.mjs",
+      "bytes": 9400,
+      "sha256": "4248d5521f9d943f95f32647bdedc5a913437dc0260c97f0a9d924dcdeed5a1e",
+      "serverPrefix": "4248d55",
+      "prefixMatches": true
+    },
+    {
+      "path": "app/configurator/variant-m/scalable-acrylic-scene.mjs",
+      "bytes": 3724,
+      "sha256": "e83864e3dc1bb5881ce368c7244820c0b1eeb5c2d0e1661786289f85b02f73c4",
+      "serverPrefix": "e83864e",
+      "prefixMatches": true
+    }
+  ],
+  "all11PrefixesMatch": false,
+  "objectCompleteness": {
+    "checkedUniqueObjects": 4283,
+    "snapshotEntries": 4318,
+    "missingObjects": [],
+    "completeSnapshotAndDirectParent": true,
+    "fullAncestryClaimed": false
+  },
+  "boundedSecretScan": {
+    "scope": "35 complete changed files only, not full history or repository; common hardcoded credential patterns; hits omit values",
+    "scanHits": [
+      {
+        "path": "STATUS.md",
+        "line": 1602,
+        "kind": "known_token"
+      },
+      {
+        "path": "STATUS.md",
+        "line": 1632,
+        "kind": "known_token"
+      },
+      {
+        "path": "app/workshop/shop-entry.test.mjs",
+        "line": 15,
+        "kind": "credential_literal"
+      },
+      {
+        "path": "app/workshop/theme-cart-flow.test.mjs",
+        "line": 28,
+        "kind": "credential_literal"
+      }
+    ]
+  },
+  "limits": [
+    "7-character matches corroborate only the server prefixes quoted by Claude; no independent full server hashes available.",
+    "Existing remote-tracking ref is local evidence, not evidence that GitHub still contains or serves the commit.",
+    "A complete commit snapshot does not imply complete transitive history or a proven safe direct push."
+  ]
+}

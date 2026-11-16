@@ -1,0 +1,264 @@
+{
+  "workbook": "Tuerschild-Edelstahl-8x2_v1.xlsx",
+  "excelSha256": "440f3a19ad1fac20d446b19b9fe9810a1daee6292d0ab3591a7f21f39dca7317",
+  "catalogCommit": "8236b8bfab7322447ec46661c116fa526331af3d",
+  "source": {
+    "id": "cfg_c2dc9d76-a1f5-4f89-8b1c-89fd0f94555f",
+    "revision": 2,
+    "sha256": "9520da5156363805a1c11853b13795a09321410dc7b9ef1aa3fe711eb76ef2e3",
+    "status": "draft",
+    "publishedRevision": null,
+    "metadataSha256": "b1beebfe5c01834e02d1a7299ffee8c4ed19e0dd93b541718a9157a44fb090ec"
+  },
+  "registry": {
+    "key": "cfg_c2dc9d76-a1f5-4f89-8b1c-89fd0f94555f",
+    "productId": "cfg_c2dc9d76-a1f5-4f89-8b1c-89fd0f94555f",
+    "familyId": "cfg_c2dc9d76-a1f5-4f89-8b1c-89fd0f94555f",
+    "sizeKey": "cfg_c2dc9d76-a1f5-4f89-8b1c-89fd0f94555f",
+    "name": "Türschild Edelstahl 8 × 2 cm (gebürstet, Gravur)",
+    "label": "Türschild Edelstahl 8 × 2 cm (gebürstet, Gravur)",
+    "detailsLoaded": false
+  },
+  "template": {
+    "id": "pgt_abb30c39-1c05-4b4a-a666-812591d03a25",
+    "revision": 2,
+    "sha256": "bb1c8ed8834ba9b2975989515ae51dad725bb5e61d22577286db029459fb6476"
+  },
+  "planId": "pgp_869d2800-de7c-48d6-96f4-87a5f889186e",
+  "planHash": "634a3d3f45e462a03a4b79add03cc0d323e7587378d8cc402a3495f638652199",
+  "valid": true,
+  "approvalReady": true,
+  "proposedStart": {
+    "sizeKey": "GR-ES-RE-80X20-T15",
+    "themeId": "familienschilder",
+    "defaultDesignId": "TRE-V2A-8x2-D1"
+  },
+  "priceOverrides": [],
+  "comparison": {
+    "compared": 5,
+    "actual": 5,
+    "differences": []
+  },
+  "designs": {
+    "requested": 27,
+    "native": 27,
+    "missing": [],
+    "requestedUnique": 27,
+    "hiddenIds": [],
+    "fitExcludedIds": [],
+    "duplicatePolicy": "first occurrence after rank ascending; rank 0 retained"
+  },
+  "nativeModules": {
+    "options": true,
+    "designs": true,
+    "text": true,
+    "motifs": true,
+    "photo": false,
+    "logo": true,
+    "colors": false
+  },
+  "requestedModules": [
+    {
+      "key": "options",
+      "requested": "an",
+      "confirmation": "bestätigt"
+    },
+    {
+      "key": "designs",
+      "requested": "an",
+      "confirmation": "offen"
+    },
+    {
+      "key": "text",
+      "requested": "an",
+      "confirmation": "offen"
+    },
+    {
+      "key": "motifs",
+      "requested": "an",
+      "confirmation": "offen"
+    },
+    {
+      "key": "photo",
+      "requested": "aus",
+      "confirmation": "bestätigt"
+    },
+    {
+      "key": "logo",
+      "requested": "offen",
+      "confirmation": "offen"
+    },
+    {
+      "key": "colors",
+      "requested": "aus",
+      "confirmation": "bestätigt"
+    }
+  ],
+  "openQuestions": [],
+  "confirmations": 0,
+  "executions": 0,
+  "shopifyWrites": 0,
+  "profileSelections": {
+    "selections": {
+      "fonts": null,
+      "motifs": [
+        "import-6abda909c44bc599330856dd",
+        "import-0073ea6aa7103bb1e8ec9088",
+        "import-9373218480c87a6ad167f3cb",
+        "import-41fb65efd1d8996ac305f6ab",
+        "import-1abd6f06096e47c66b0b4e00",
+        "import-286db893566ced2e6bd75bad",
+        "import-d94f1406fde432cf9dd70389",
+        "import-9c76c3476a406eaac7f05e42",
+        "import-10edf8a5dd07bd1035ba508d",
+        "import-4269dbda54a15a99e178f00a",
+        "import-0f3193fd49e254bb5975e74d",
+        "import-54b3b489bbebe12119deda9a",
+        "import-8239d6c658366716f578c984"
+      ],
+      "colors": null,
+      "bestsellers": null
+    },
+    "sources": {
+      "fonts": {
+        "level": "unbound",
+        "categoryId": null,
+        "mode": "inherit",
+        "profileId": null,
+        "profileRevision": null
+      },
+      "motifs": {
+        "level": "product",
+        "categoryId": null,
+        "mode": "override",
+        "profileId": "prf_0fce513a-0973-45eb-8d03-09728290e17d",
+        "profileRevision": 1
+      },
+      "colors": {
+        "level": "unbound",
+        "categoryId": null,
+        "mode": "inherit",
+        "profileId": null,
+        "profileRevision": null
+      },
+      "bestsellers": {
+        "level": "unbound",
+        "categoryId": null,
+        "mode": "inherit",
+        "profileId": null,
+        "profileRevision": null
+      }
+    },
+    "settingsRevision": 1,
+    "categoryPriority": "last-non-inherit-wins",
+    "warnings": []
+  },
+  "smallMotifProfile": {
+    "id": "prf_0fce513a-0973-45eb-8d03-09728290e17d",
+    "revision": 1,
+    "count": 13
+  },
+  "previousPreparation": {
+    "run": "v8",
+    "sourceRevision": 1,
+    "sourceHash": "9520da5156363805a1c11853b13795a09321410dc7b9ef1aa3fe711eb76ef2e3",
+    "templateRevision": 1,
+    "templateHash": "c0501c00a717b14d33625ba451f16f8d7df4e2c5008d3372c24dbbda93a23a0c",
+    "planId": "pgp_c2098259-36a3-4048-a4e6-e3ffa70c9d68",
+    "planHash": "5c4b729ea5be27e1ea9b4e4a6c65e94088803618219e5025836ca6e70654ec3e"
+  },
+  "moduleProfilePins": [
+    {
+      "id": "cmp_049bdd37-97bd-456e-8237-9856a00809da",
+      "revision": 1,
+      "sha256": "1becdb8eecb674692efc51e031516f695f5c26e2ed40111f417f87817aef4dc3"
+    }
+  ],
+  "effectiveModules": {
+    "colors": false,
+    "designs": true,
+    "logo": false,
+    "motifs": true,
+    "options": true,
+    "photo": false,
+    "text": true
+  },
+  "uploadDecision": {
+    "date": "2026-11-11",
+    "source": "Explicit user response in current Codex chat, relayed by root to product_plans",
+    "mainAcrylic": {
+      "photo": true,
+      "svgLogo": true,
+      "photoCents": 999,
+      "logoCents": 1299
+    },
+    "sixSmallProducts": {
+      "photo": false,
+      "logo": false
+    },
+    "scope": "Upload modules only; no product confirmation or execution"
+  },
+  "approvalScope": "Ready for explicit review only; not confirmed, executed or published",
+  "removedOpenQuestions": [
+    {
+      "question": "Startdesign TRE-V2A-8x2-D1 / 8 × 2 cm ist ein technisch geprüfter Vorschlag, keine neue Nutzerentscheidung.",
+      "evidence": "decisions.starts: explicit user instruction to retain existing designs/start templates"
+    },
+    {
+      "question": "Steuerkontext/Mengenstaffeln und Start-/Designreferenzen der unveränderten Excel bleiben zu prüfen. Foto-/Logo-Auswahl wurde am 11.11.2026 ausdrücklich bestätigt und ist keine offene Nutzerentscheidung.",
+      "evidence": "decisions.tax + quantityDiscount + starts + uploads: all substantiated, no new prices"
+    }
+  ],
+  "decisions": {
+    "manifestSha256": "730168634964272693b514e3efd742975bd56af30a96a7ae751a2aed7fe71a64",
+    "tax": {
+      "pricePresentation": "gross",
+      "vatPercent": 19,
+      "country": "DE",
+      "confirmed": true,
+      "date": "2026-11-11",
+      "quote": "Ja, inklusive 19 % MwSt.",
+      "source": "Explicit user reply in the current Codex chat, relayed by coordinator to product_plans; all seven base prices and surcharges.",
+      "storage": "Revision metadata and external decision manifest only; no unsupported product-config tax field."
+    },
+    "quantityDiscount": {
+      "confirmed": true,
+      "decisionDate": "2026-10-20",
+      "tiers": [
+        {
+          "minQuantity": 3,
+          "percentOff": 5
+        },
+        {
+          "minQuantity": 5,
+          "percentOff": 10
+        },
+        {
+          "minQuantity": 10,
+          "percentOff": 15
+        }
+      ],
+      "scope": "complete-unit",
+      "basis": "Full unit price including mounting, additional/changed motifs, photo and SVG logo; existing line-item quantity contract, highest attained tier, one half-up rounding to integer cents.",
+      "sources": [
+        {
+          "commit": "64e026e8fd15b129a16cc97189b28506aa9e8ac2",
+          "path": "ENTSCHEIDUNGEN.md",
+          "section": "4.16"
+        },
+        {
+          "commit": "64e026e8fd15b129a16cc97189b28506aa9e8ac2",
+          "path": "docs/plans/STAFFEL-SHOP-BESTAND-20261019.md",
+          "section": "Entscheidung 20.10.2026 (Chris)"
+        },
+        {
+          "commit": "64e026e8fd15b129a16cc97189b28506aa9e8ac2",
+          "path": "docs/handoffs/2026-10-22-entscheidungen-und-funktionserhalt.md",
+          "section": "Abschluss, Warenkorb und Preise"
+        }
+      ],
+      "supersedes": "Historical Excel wording treating the already confirmed tier as a new operator proposal."
+    },
+    "startsKept": true
+  }
+}

@@ -1,0 +1,102 @@
+{
+  "schema": "gravuru-private-management-deployment-proof/v1",
+  "archive": "module-management-runtime-v2.tar.gz",
+  "bytes": 32431787,
+  "sha256": "d37a8086c3a189ca50c6b3de3ab8aabbb042ba832cfd081f273df579b30033b9",
+  "manifestSha256": "b7da749e5643e224219c38ffb6b90a45b83435a99c19913ee256ed20a713cf63",
+  "commit": "044494a06b05571364e57dffc83b8a0a4458050d",
+  "files": 1267,
+  "unpackedBytes": 48292391,
+  "baseCommit": "a71b3eb4bfdbb02a8d6b811c9f188fefcac72f06",
+  "productionDelta": [
+    {
+      "path": "app/workshop/configurator-module-http.mjs",
+      "bytes": 3502,
+      "sha256": "70c9eaefe325258016fb8328e77c98803b183550f328bd13b6bdde212cb7adb8",
+      "beforeSha256": "39076f8ca5f14f354ef5f73d02a04820d966c091db2f151ed9cb985f5d3706fb"
+    },
+    {
+      "path": "app/workshop/http.mjs",
+      "bytes": 126005,
+      "sha256": "e24c9cb59ed5ed60abcb90f4f93e65bd84d21db3a15ed3b5c961e5262d034b37",
+      "beforeSha256": "c53b4bf265e73fff217f9b1bc6ff6af0f0b5ce4bc8c12c0568ac7a1b9e287fb0"
+    },
+    {
+      "path": "app/workshop/product-group-templates.mjs",
+      "bytes": 28917,
+      "sha256": "b374510ec754cbe799236940a8b0d34f29da5cb2103452b00b0f0ff3c92a9768",
+      "beforeSha256": "6710aad14fc714a849a30482fd6568139bd4324857fd8502c83f078f51085b08"
+    },
+    {
+      "path": "app/workshop/ui/gallery-management.mjs",
+      "bytes": 24542,
+      "sha256": "29bccc6baef77220d649d358b12b017aeb214695299de35af1aa685d2dd7a73a",
+      "beforeSha256": "8f30781ccf829efd86be5bf3162e320816dddb96704707352ed6dae64059acb0"
+    },
+    {
+      "path": "app/workshop/ui/module-profiles.mjs",
+      "bytes": 17080,
+      "sha256": "9e4aa47d421a4c726ddc6d562279bc6b3781fb49a9a813cb14eebeb9cd12f313",
+      "beforeSha256": "e6fbd4b840f7de5cbd5a5e462d8f8c03e9cc3eb89973adb6aa8ce06a12a16354"
+    },
+    {
+      "path": "scripts/lib/gallery-management-http.mjs",
+      "bytes": 6446,
+      "sha256": "d7a7a66d8d2939ed5ef7abaa8c8c990848693584e6c3ce300d784aebbb7eee24",
+      "beforeSha256": "db6849f45163eb9b82f9f8cf70c90e2ab57930004d8f7df25eab6bfc288a4c2c"
+    },
+    {
+      "path": "scripts/lib/gallery-management-targets.mjs",
+      "bytes": 2450,
+      "sha256": "d7362b2979bfcc447783452e78f899d04035435808799f9c8cb1b199a93715dd",
+      "beforeSha256": "f64e62f4adb9c0d5cb9e031871a0f1b31322850bb05a02fbb118f8f0e6e120b4"
+    },
+    {
+      "path": "scripts/lib/slate-review-gallery.mjs",
+      "bytes": 20919,
+      "sha256": "fb318bbcfa2554cf8a33300c9c7c5aa10198031e07c4901ff164e0c4f69e695c",
+      "beforeSha256": "328d3f0222b5193ccda1718884b4785ded9a2c797017088293fafa65ea9f4c90"
+    }
+  ],
+  "tests": {
+    "passed": 7,
+    "files": [
+      "scripts/lib/gallery-management-lazy-sources.test.mjs",
+      "scripts/lib/gallery-module-management-host.test.mjs",
+      "app/workshop/configurator-module-http.test.mjs",
+      "scripts/gallery-management.test.mjs"
+    ],
+    "independentReview": "module_contract: no blocking findings; no duplicate test run"
+  },
+  "serverChecks": {
+    "reportedBy": "root operator",
+    "activatedAt": "2026-11-08T14:53:50.931Z",
+    "sourceWrapperSha256": "4b5fc121142a1a6f7e5862de5f196885dfc92ce11cf4b3326d947b0312550640",
+    "customerWrapperSha256": "31781a783270f4704d0a1831f62aa50a4c44566a6ec6fa18c691a1205a81f6b9",
+    "context": {
+      "status": 200,
+      "milliseconds": 19,
+      "sourceCount": 348,
+      "allDetailsUnloaded": true,
+      "executionEnabled": false
+    },
+    "moduleLibrary": {
+      "status": 200,
+      "milliseconds": 19,
+      "profiles": 2,
+      "revision": 1,
+      "localOnly": true,
+      "shopifyWrites": 0
+    },
+    "sync": {
+      "status": 200,
+      "milliseconds": 9244,
+      "nestedTargetInspection": "pending"
+    },
+    "restart": {
+      "ready": true,
+      "milliseconds": 9463
+    }
+  },
+  "customerModuleActivation": "not included; separate controlled rollout required"
+}

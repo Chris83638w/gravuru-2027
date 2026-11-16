@@ -1,0 +1,22 @@
+{
+  "at": "2026-11-09T16:10:23.154Z",
+  "path": "/_acryl-bundle/editor-e49b3da45a697a36.mjs",
+  "durationMs": 115811.7,
+  "encodedBytes": 196568,
+  "decodedBytes": 418213,
+  "expectedDecodedBytes": 1454759,
+  "warning": "Editor-Bündel nicht geladen, Einzelmodule: TypeError: Failed to fetch dynamically imported module",
+  "fallback": {
+    "editorSourceRequests": 167,
+    "platformSourceRequests": 18
+  },
+  "initialPageTransient": {
+    "status": 200,
+    "contentLength": 0,
+    "reload": {
+      "status": 200,
+      "decodedBytes": 6649
+    }
+  },
+  "notClaimed": "Root cause of exterior network interruption; no general performance acceptance."
+}

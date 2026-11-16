@@ -1,0 +1,15 @@
+✔ native projections preserve all overridden profiles, exact ordering, empty choices, filter and stored production SHA (11.1228ms)
+✔ settings changes inside a single native projection are rejected (3.5965ms)
+✔ a winning native profile changed after resolve cannot form a mixed revision pin (2.7315ms)
+✔ a shadowed profile changed between complete projections still causes drift (3.1062ms)
+✔ missing native resources, wrong production assignment and asynchronous readers retain hard failures (3.6428ms)
+✔ real native reader plugs into capture, guarded snapshot and copied importBatch with exact replay (395.0474ms)
+✔ native profile mutation inside the actual insertion hook rolls the copied product and journal back (232.8446ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 869.7055

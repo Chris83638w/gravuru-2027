@@ -2,6 +2,17 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {cartTransformRun as live} from './price-v1.mjs';
 import {cartTransformRun as master} from './cart_transform_run.mjs';
+import {cartTransformStrict as strictTransform,cartTransformRun as isolatedTransform,rejectedPricingLines} from './cart_transform_run.mjs';
+
+// Chris 15.11.2026: Abgewiesene Positionen sperren nicht mehr den ganzen Warenkorb. Streng geprüft
+// wird weiter: die bisherige Prüfung wirft, die Position bekommt keinen Preis und steht auf der Sperrliste.
+function assertRejected(value,pattern){
+ if(pattern)assert.throws(()=>strictTransform(structuredClone(value)),pattern);else assert.throws(()=>strictTransform(structuredClone(value)));
+ const rejected=rejectedPricingLines(structuredClone(value));assert.ok(rejected.length>0,'Position steht auf der Sperrliste');
+ const ops=isolatedTransform(structuredClone(value)).operations;
+ for(const r of rejected)assert.ok(!ops.some(o=>o.lineUpdate?.cartLineId===r.lineId&&o.lineUpdate.price),'abgewiesene Position ohne Preis');
+}
+
 const productId='gid://shopify/Product/16077798965628',variantId='gid://shopify/ProductVariant/57265913332092';
 const tiers=[{minQuantity:3,percentOff:5},{minQuantity:5,percentOff:10},{minQuantity:10,percentOff:15}];
 function input({v2=false,quantity=1,motifs=0,uploads=0,logos=0,rate='1',withTiers=true}={}){
@@ -21,14 +32,22 @@ test('V2 applies 12.99 per logo and discounts complete unit once with the releas
  }
  assert.equal(master(input({v2:true,logos:1,motifs:1})).operations[0].lineUpdate.price.adjustment.fixedPricePerUnit.amount,'34.67');
 });
+test('V3 checkout rejects tampered selections directly and keeps earlier carts in a mixed cart unchanged',()=>{
+ const v3=()=>{const v=input({withTiers:false}),l=v.cart.lines[0];l.merchandise.product.pricing.jsonValue.schema='gravuru-personalization-pricing/v3';l.merchandise.product.pricing.jsonValue.optionPrices={silikon:699,'staender-klar':1399};l.options={value:'silikon,staender-klar'};return v;};
+ assert.equal(master(v3()).operations[0].lineUpdate.price.adjustment.fixedPricePerUnit.amount,'40.97');
+ for(const value of [undefined,'','constructor','silikon,silikon','silikon:1','staender-klar,silikon']){const v=v3();v.cart.lines[0].options.value=value;assertRejected(v);}
+ const old=input({motifs:1}),logo=input({v2:true,logos:1}),newOptions=v3();logo.cart.lines[0].id='logo';newOptions.cart.lines[0].id='options';
+ assert.deepEqual(master({...old,cart:{lines:[...old.cart.lines,...logo.cart.lines,...newOptions.cart.lines]}}).operations,[...live(old).operations,...master(logo).operations,...master(newOptions).operations]);
+ const historical=v3(),line=historical.cart.lines[0],prior=structuredClone(line.merchandise.product.pricing.jsonValue);line.merchandise.product.pricing.jsonValue={...prior,revision:2,history:[prior]};assert.deepEqual(master(historical),master(v3()));
+});
 test('invalid or unpriced logos, invalid scopes and stale pricing fail closed',()=>{
  for(const change of [
   v=>v.cart.lines[0].logos.value='5',v=>v.cart.lines[0].logos.value='-1',v=>v.cart.lines[0].uploads.value='4',
   v=>v.cart.lines[0].revision.value='2',v=>v.cart.lines[0].merchandise.product.pricing.jsonValue.extraLogoCents=0,
   v=>delete v.cart.lines[0].merchandise.product.pricing.jsonValue.quantityTierScope,
   v=>v.cart.lines[0].merchandise.product.pricing.jsonValue.enabled=false,
- ]){const v=input({v2:true,logos:1});change(v);assert.throws(()=>master(v));}
- assert.throws(()=>master(input({logos:1})));
+ ]){const v=input({v2:true,logos:1});change(v);assertRejected(v);}
+ assertRejected(input({logos:1}));
 });
 test('mixed carts preserve existing lines and add only trusted checkout images',()=>{
  const old=input({quantity:3,motifs:2}),added=input({v2:true,logos:1});added.cart.lines[0].id='logo';
@@ -53,7 +72,7 @@ function registerOld(v){
  return v;
 }
 test('pre-contract cart reproduces live failure; only an app-owned saved-offer match preserves it',()=>{
- assert.throws(()=>master(oldD8()),/Invalid personalization quantity/);
+ assertRejected(oldD8(),/Invalid personalization quantity/);
  const v=registerOld(oldD8());
  assert.equal(master(v).operations[0].lineUpdate.price.adjustment.fixedPricePerUnit.amount,'19.99');
  const current=input({v2:true,logos:1,motifs:1});current.cart.lines[0].id='new-logo';
@@ -73,8 +92,8 @@ test('legacy migration cannot authorize altered offers, designs, variants, quant
   l=>l.merchandise.product.pricing.jsonValue.legacyOffers[0].quantity=1.5,
   l=>l.merchandise.product.pricing.jsonValue.legacyOffers[0].extra='untrusted',
  ];
- for(const mutate of mutations){const v=registerOld(oldD8());mutate(v.cart.lines[0]);assert.throws(()=>master(v));}
- const v=registerOld(oldD8());v.presentmentCurrencyRate='0';assert.throws(()=>master(v));
+ for(const mutate of mutations){const v=registerOld(oldD8());mutate(v.cart.lines[0]);assertRejected(v);}
+ const v=registerOld(oldD8());v.presentmentCurrencyRate='0';assertRejected(v);
  const current=input({v2:true,logos:1});current.cart.lines[0].merchandise.product.pricing.jsonValue.legacyOffers=registerOld(oldD8()).cart.lines[0].merchandise.product.pricing.jsonValue.legacyOffers;
  assert.deepEqual(master(current),master(input({v2:true,logos:1})));
 });
@@ -93,7 +112,7 @@ test('new no-logo contract preserves saved V2 and exact legacy carts without mut
  const current=withHistory(input({v2:true,motifs:1}));current.cart.lines[0].revision.value='2';
  const expected=input({motifs:1});expected.cart.lines[0].revision.value='2';expected.cart.lines[0].merchandise.product.pricing.jsonValue.revision=2;
  assert.deepEqual(master(current),live(expected));
- current.cart.lines[0].logos.value='1';assert.throws(()=>master(current),/Logo requires V2/);
+ current.cart.lines[0].logos.value='1';assertRejected(current,/Logo requires V2/);
 });
 test('historical contracts cannot weaken revision, legacy offer or product validation',()=>{
  const mutations=[
@@ -105,8 +124,8 @@ test('historical contracts cannot weaken revision, legacy offer or product valid
   l=>l.merchandise.product.pricing.jsonValue.history[0].history=[],
   l=>l.merchandise.product.pricing.jsonValue.history.push(l.merchandise.product.pricing.jsonValue.history[0]),
  ];
- for(const mutate of mutations){const value=withHistory(input({v2:true,logos:1}));mutate(value.cart.lines[0]);assert.throws(()=>master(value));}
+ for(const mutate of mutations){const value=withHistory(input({v2:true,logos:1}));mutate(value.cart.lines[0]);assertRejected(value);}
  for(const mutate of [l=>l.offer.value='e'.repeat(64),l=>l.quantity=2,l=>l.configRevision.value='9']){
-  const value=withHistory(registerOld(oldD8()));mutate(value.cart.lines[0]);assert.throws(()=>master(value));
+  const value=withHistory(registerOld(oldD8()));mutate(value.cart.lines[0]);assertRejected(value);
  }
 });

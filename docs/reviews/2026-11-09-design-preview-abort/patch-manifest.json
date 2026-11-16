@@ -1,0 +1,30 @@
+{
+  "schema": "gravuru-source-patch/v1",
+  "basis": "a143acbc30c9e128c2c5f950bbb882ad740e1f96",
+  "liveApplied": false,
+  "tests": {
+    "pass": 42,
+    "fail": 0,
+    "skip": 0
+  },
+  "files": [
+    {
+      "path": "app/configurator/variant-m/product-design-gallery.mjs",
+      "activeSha256": "34dc24dea73f0efa2f3495db7f757ce60a2e680decae536587a918ac3e7ed25a",
+      "afterSha256": "3fd3dd7cd080a08868e91feece9cd536e7795ab3636cbbcf5c773d490d75961e",
+      "bytes": 9572
+    },
+    {
+      "path": "app/workshop/ui/shop-design-switch.mjs",
+      "activeSha256": "1971c7c2cc9e01ec0c452350664ef1f9988dea353d84f6e7f1d26d78bba5410e",
+      "afterSha256": "7eb0f39b94948165f1d17bf5b0bafc6ccd271e0d3def12fc3a05070b8d092fc9",
+      "bytes": 5140
+    },
+    {
+      "path": "app/workshop/ui/shop-entry-client.mjs",
+      "activeSha256": "6ee4ae62c7e821b74c4b1f743f62d794972e2a0218ebd2725e2399a07351e069",
+      "afterSha256": "1b622fd99e09357e0eba7be5e6bd5f7c3663d9caa7863144c5717a811389cc9f",
+      "bytes": 18004
+    }
+  ]
+}

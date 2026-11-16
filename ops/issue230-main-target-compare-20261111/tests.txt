@@ -1,0 +1,22 @@
+✔ complete 808-row read compares 778 target plus 30 preserved options and all prices without writes or private output (255.0483ms)
+✔ missing, extra, wrong-head and changed native options remain explicit, not a partial green result (237.5342ms)
+✔ missing profiles copy is a precise unresolved check and altered artifact pins stop before reading a DB (225.1854ms)
+✔ unknown schema, live-style filename and dependent WAL copy are rejected without migration (196.0985ms)
+✔ native numeric-key hash methods deliberately differ and are stable across property insertion order (0.3938ms)
+✔ large-copy hashing uses bounded chunks and matches byte SHA across several chunk boundaries (23.4223ms)
+✔ legacy tables require explicit single-store gravuru scope, never arbitrary tenant inference (348.6696ms)
+✔ manufacturing metadata exposes only the stored pin and motifCharge retains its actual value (354.4479ms)
+✔ target defaults are projected by IDs/counts/hashes and native bestseller filtering without exporting items (278.7571ms)
+✔ two exact categories match native resolver: ordered overrides, inherit/empty, filtered favorites, pinned sources without item output (56.6012ms)
+✔ absent category and explicit inherit preserve earlier source; equal selections can still change source pin (35.6911ms)
+✔ no assignments to either category is proven separately from merely keeping the categories (29.0044ms)
+✔ wrong category order, changed resolver bytes and non-query-only handle fail closed without writes (44.0512ms)
+✔ dangling or wrongly typed later category override cannot silently fall back to defaults (53.2978ms)
+ℹ tests 14
+ℹ suites 0
+ℹ pass 14
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2082.9526

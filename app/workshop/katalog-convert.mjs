@@ -19,6 +19,7 @@ import {customerLayoutIssue} from '../configurator/variant-m/contract.mjs';
 import {applyNewMotifRights,checkWholePrintDesign} from '../configurator/variant-m/new-motif-rights.mjs';
 import {familyProductConfig,familyProcess,geometryOf,validateFamily,sizeQuantityTiers} from './product-families.mjs';
 import {quantityTiersIssue} from '../configurator/variant-m/contract.mjs';
+import {slateDesignGroup} from './slate-design-targets.mjs';
 import fs from 'node:fs';
 import {createHash} from 'node:crypto';
 import {makeProductDocument,validateProductDocument} from './product-model.mjs';
@@ -254,7 +255,7 @@ export function katalogDesignToTemplate(design,family,theme,{fonts={},svgText}={
     const issue=textLimitIssue(o.text,textLimits(o,{themes:design.themes||[]},{themeId}));if(issue)fail(design.id+': Mustertext „'+fieldKey+'“ – '+issue);
     if(o.size<process.minTextMm-0.005)notes.push('Text „'+fieldKey+'“ ist mit '+o.size+' mm kleiner als die Mindestgröße '+process.minTextMm+' mm des Verfahrens.');
     const locked=rule.locked===true;
-    rights[id]={content:true,color:print,replace:false,move:!locked,scale:!locked,delete:!locked&&!o.required};
+    rights[id]={content:true,color:print,replace:false,move:!locked,scale:!locked,delete:!locked};
    }
    usedFonts.add(font);objects.push(o);
   }else if(layer.kind==='foto'){
@@ -285,6 +286,8 @@ export function katalogDesignToTemplate(design,family,theme,{fonts={},svgText}={
  if(!objects.length)fail(design.id+': keine Ebenen text-/motiv-/deko-/foto- gefunden.');
  if(objects.length>20)fail(design.id+': höchstens 20 Elemente je Vorlage ('+objects.length+' gefunden).');
  const template={id:templateId,name:design.name,objects,marks:[],themes:design.themes??[],bestseller:design.bestseller===true,katalog:{designId:design.id,source:design.source,plateMm:[plate[0],plate[1]]}};
+ if(design.json?.katalog?.prio===1)template.katalog.prio=1;
+ if(family.id.startsWith('schiefer-tafeln-')){const group=slateDesignGroup(design.json??design);if(group)template.collections=[group];}
  if(motifPolicy.wholePrintDesign!==undefined)template.wholePrintDesign=motifPolicy.wholePrintDesign;
  return {template,motifs,rights,photo,placeholders,photoAssets,fonts:[...usedFonts],notes,process:process.id};
 }

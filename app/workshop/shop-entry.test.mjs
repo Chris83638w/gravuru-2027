@@ -6,6 +6,7 @@ import {once} from 'node:events';
 import {createShopEntry} from './shop-entry.mjs';
 import {appProxySignature} from './shopify-app-proxy.mjs';
 import {createModelSlimmer} from './shop-model-slim.mjs';
+import {MODULE_PROFILE_SCHEMA} from '../configurator/variant-m/module-profile.mjs';
 
 // Fixture: die drei 7×2-Hauptprodukte (Edelstahl-Türschilder, Befestigung als Variante) aus der Shopify-
 // Übergabe vom 22.10.2026. Shopify-IDs und Preise stammen aus der Datei; Werkstattmodell, Registry, Entwürfe
@@ -56,6 +57,20 @@ async function run(fn,mutate=()=>{}){
 }
 const session=t=>({'X-Gravuru-Shop-Session':t});
 
+test('a disabled design module keeps the pinned default and refuses explicit customer design overrides',()=>run(async(f,request,{token})=>{
+ const issued=await token(),headers=session(issued.token);
+ for(const route of ['/api/shop-entry/model','/api/shop-entry/model?design=d1']){
+  const response=await request(route,'GET',undefined,headers);
+  assert.equal(response.status,200,response.body.toString());assert.equal(response.data.model.universal.profile.defaultDesignId,'d1');assert.equal(response.data.startPreview,null);
+ }
+ const response=await request('/api/shop-entry/model?design=d2','GET',undefined,headers);
+ assert.equal(response.status,403);assert.equal(response.data.error.code,'shop_entry_design_disabled');
+},f=>{
+ const source=f.models.get(f.first.localWorkshopRecord);
+ source.universal.profile.designs.push({id:'d2',objects:[]});
+ source.universal.moduleProfile={schema:MODULE_PROFILE_SCHEMA,id:'fixed-design',revision:1,modules:{options:true,designs:false,text:true,motifs:true,photo:true,logo:true,colors:false}};
+}));
+
 test('customer logo conversion stays behind the shop session, same origin and exact product revision',()=>run(async(f,request,{token})=>{
  const issued=await token(),headers=session(issued.token),input={productId:f.first.localWorkshopRecord,productRevision:3,name:'synthetic.svg',original:Buffer.from('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><rect x="1" y="1" width="18" height="18" fill="red"/></svg>').toString('base64')};
  const route='/api/shop-entry/customer-vector-logo/preview';
@@ -81,6 +96,23 @@ test('signed start resolves the binding through the registry and redirects with 
  // Alle 15 Varianten der drei Hauptprodukte sind erreichbar; jedes Token nennt den eigenen cfg-Stand.
  for(const product of f.models.keys()){const p=mapping.products.find(x=>x.localWorkshopRecord===product);for(const v of p.variants){const t=await token({product:p.shopifyProductId.split('/').at(-1),variant:v.shopifyVariantId.split('/').at(-1)});const payload=JSON.parse(Buffer.from(t.token.split('.')[1],'base64url').toString());assert.equal(payload.c,product);assert.equal(payload.va,v.shopifyVariantId.split('/').at(-1));}}
 }));
+test('approved presentation opt-in survives signed start and prefetch without granting new session rights',()=>run(async(f,request,{open,token})=>{
+ const original=await token(),updated=await token({ui:'prio-r15'});
+ assert.equal(original.fragment.get('ui'),null);assert.equal(updated.fragment.get('ui'),'prio-r15');
+ const decode=value=>JSON.parse(Buffer.from(value.token.split('.')[1],'base64url').toString());
+ for(const key of ['st','p','va','c','r','b','a','cu'])assert.deepEqual(decode(updated)[key],decode(original)[key]);
+ const ticket=await open({ui:'prio-r15',format:'json'});assert.equal(ticket.status,200);
+ assert.equal(new URLSearchParams(new URL(ticket.data.url).hash.slice(1)).get('ui'),'prio-r15');
+ for(const ui of ['demo','https://foreign.example/a.mjs','PRIO-R15'])assert.equal((await token({ui})).fragment.get('ui'),null);
+ const duplicate=signed(f,{product:f.ids.shopifyProductId.split('/').at(-1),variant:f.ids.shopifyVariantId.split('/').at(-1),ui:'prio-r15'});
+ duplicate.append('ui','prio-r15');duplicate.set('signature',appProxySignature(duplicate,secret));
+ const repeated=await request(proxyPath+'/start?'+duplicate);assert.equal(repeated.status,302);
+ assert.equal(new URLSearchParams(new URL(repeated.headers.location).hash.slice(1)).get('ui'),null);
+ const forged=signed(f,{product:f.ids.shopifyProductId.split('/').at(-1),variant:f.ids.shopifyVariantId.split('/').at(-1)});
+ forged.set('ui','prio-r15');assert.equal((await request(proxyPath+'/start?'+forged)).status,401);
+ assert.equal(f.cartCalls.length,0);
+}));
+
 test('invalid, foreign-shop, expired and replayed-old signatures are refused before any registry lookup',()=>run(async(f,request,{open})=>{
  let lookups=0;const resolve=f.store.registry.resolve;f.store.registry.resolve=v=>{lookups++;return resolve(v);};
  const base={product:f.ids.shopifyProductId.split('/').at(-1),variant:f.ids.shopifyVariantId.split('/').at(-1)};
@@ -119,6 +151,9 @@ test('paused product and anonymous customer handling on start',()=>run(async(f,r
  const customer=await token({logged_in_customer_id:'42'});assert.equal(JSON.parse(Buffer.from(customer.token.split('.')[1],'base64url').toString()).cu,'gid://shopify/Customer/42');
 }));
 test('page and script are served with a strict policy and nothing else leaks',()=>run(async(f,request)=>{
+ const warm=await request('/konfigurator/shop/warm/');assert.equal(warm.status,200);assert.match(warm.headers['content-security-policy'],/frame-ancestors https:\/\//);assert.match(warm.body.toString(),/shop-warm\.mjs/);assert.doesNotMatch(warm.body.toString(),/shop-entry-page|api\/|iframe|UniversalConfig/);
+ assert.equal((await request('/konfigurator/shop/warm/?model=1')).status,404);assert.equal((await request('/konfigurator/shop/warm/','POST',{})).status,405);
+ assert.equal((await request('/konfigurator/shop/shop-warm.mjs','GET',undefined,{'Sec-Fetch-Site':'cross-site'})).status,403);
  const page=await request('/konfigurator/shop/');assert.equal(page.status,200);assert.match(page.headers['content-type'],/text\/html/);assert.ok(page.body.toString().includes('/konfigurator/shop/shop-entry-page.mjs'));assert.match(page.headers['content-security-policy'],/frame-src 'self'/);
  const script=await request('/konfigurator/shop/shop-entry-page.mjs',undefined,undefined,{'Sec-Fetch-Site':'same-origin'});assert.equal(script.status,200);assert.match(script.headers['content-type'],/text\/javascript/);assert.ok(script.body.toString().includes('./shop-entry-client.mjs'));
  const client=await request('/konfigurator/shop/shop-entry-client.mjs',undefined,undefined,{'Sec-Fetch-Site':'same-origin'});assert.equal(client.status,200);assert.ok(client.body.toString().includes('/api/shop-entry/'));
@@ -313,7 +348,7 @@ async function otherGalleryCard(f,request,t){
 test('gallery endpoints require current authentication, correct origin and strictly shaped requests',()=>run(async(f,request,{token})=>{
  for(const [path,method,body] of [['design-gallery','GET'],['design-gallery-preview','POST',{target:'x'}],['design-switch','POST',{target:'x'}]]){const denied=await request('/api/shop-entry/'+path,method,body);assert.equal(denied.status,403);assert.equal(denied.data.error.code,'shop_entry_session');}
  const {token:t}=await token();
- for(const suffix of ['?page=-1','?page=1.5','?page=1&page=2','?page=10001','?product=1','?theme=foreign','?theme=all&theme=preferred'])assert.equal((await request('/api/shop-entry/design-gallery'+suffix,'GET',undefined,session(t))).status,422);
+ for(const suffix of ['?page=-1','?page=1.5','?page=1&page=2','?page=10001','?product=1','?theme=foreign','?theme=all&theme=preferred','?q=Haus&q=D23','?q='+encodeURIComponent('x'.repeat(81)),'?q=line%0Afeed'])assert.equal((await request('/api/shop-entry/design-gallery'+suffix,'GET',undefined,session(t))).status,422);
  assert.equal((await request('/api/shop-entry/design-gallery','POST',{},session(t))).status,405);
  for(const path of ['design-gallery-preview','design-switch']){
   assert.equal((await request('/api/shop-entry/'+path,'GET',undefined,session(t))).status,405);
@@ -323,6 +358,19 @@ test('gallery endpoints require current authentication, correct origin and stric
   assert.equal((await request('/api/shop-entry/'+path,'POST',{target:'x'},{...session(t),Origin:undefined})).status,403);
  }
  f.tick(5*60*60*1000);const expired=await request('/api/shop-entry/design-gallery','GET',undefined,session(t));assert.equal(expired.status,403);assert.equal(expired.data.error.code,'shop_entry_expired');
+},galleryEntryFixture));
+
+test('public gallery and switch endpoints enforce the source module instead of trusting a previously issued target',()=>run(async(f,request,{token})=>{
+ const {token:t}=await token(),card=await otherGalleryCard(f,request,t),source=f.models.get(f.first.localWorkshopRecord);
+ source.universal.moduleProfile={schema:MODULE_PROFILE_SCHEMA,id:'fixed-design',revision:1,modules:{options:true,designs:false,text:true,motifs:true,photo:false,logo:false,colors:false}};
+ const listed=await request('/api/shop-entry/design-gallery','GET',undefined,session(t));
+ assert.equal(listed.status,403);assert.equal(listed.data.error.code,'shop_gallery_disabled');
+ for(const path of ['design-gallery-preview','design-switch']){
+  const response=await request('/api/shop-entry/'+path,'POST',{target:card.target},session(t));
+  assert.equal(response.status,403,response.body.toString());assert.equal(response.data.error.code,'shop_gallery_disabled');
+ }
+ assert.equal((await request('/api/shop-entry/model','GET',undefined,session(t))).status,200);
+ assert.equal(f.cartCalls.length,0);
 },galleryEntryFixture));
 
 test('design switching issues a session for the exact destination and leaves the original session and draft intact',()=>run(async(f,request,{token})=>{
@@ -561,6 +609,12 @@ test('start ticket (format=json) returns the same target as the redirect and cou
  assert.equal((await request(proxyPath+'/start?'+unsigned)).status,401,'nur signiert über den App-Proxy');
 },f=>{f.options.limits={startPerMinute:1,requestsPerMinute:1000};}));
 
+test('warm manifest is optional public metadata; cart-edit tickets never preload private saved designs',()=>run(async(f,request,{open})=>{
+ const ticket=await open({format:'json',embed:'1'});assert.equal(ticket.status,200);assert.equal(ticket.data.warm.url,origin+'/konfigurator/shop/warm/');
+ assert.deepEqual(Object.keys(ticket.data.warm.manifest).sort(),['catalogPath','editorPath','fonts','motifs','schema']);assert.doesNotMatch(JSON.stringify(ticket.data.warm),/PRIVATE CUSTOMER|data:image|blob:|gse1\.|konfig_/);
+ const edited=await open({format:'json',config:'konfig_'+uuid(9),rev:'1',line:'theme'});assert.equal(edited.status,200);assert.equal(edited.data.warm,undefined);
+}));
+
 test('repeated design switches cannot extend the original source session',()=>run(async(f,request,{token})=>{
  let current=(await token()).token;
  const deadline=JSON.parse(Buffer.from(current.split('.')[1],'base64url')).exp*1000;
@@ -593,3 +647,71 @@ test('startup warms the gallery without a customer and list never calls the full
  f.store.workshop.galleryModel=(id,rev)=>{reads++;return structuredClone(f.models.get(id));};
  f.store.registry.galleryRevision=()=> 'fixed';f.store.registry.listActiveForGallery=async()=>f.store.registry.listActive();
 }));
+
+
+test('public search passes only eligible results and exact number matches through the authenticated gallery route',()=>run(async(f,request,{token})=>{
+ const {token:t}=await token();
+ for(const [q,total] of [['Haus',1],['D23',1],['23',1],['D230',0],['Geheim',0]]){const r=await request('/api/shop-entry/design-gallery?q='+encodeURIComponent(q),'GET',undefined,session(t));assert.equal(r.status,200,r.body.toString());assert.equal(r.data.total,total,q);}
+},f=>{galleryEntryFixture(f);const c=f.models.get(f.first.localWorkshopRecord).universal;c.profile.designs=[{id:'d1',name:'Haus',katalog:{designId:'TEST-D23'},objects:[]},{id:'secret',name:'Geheim',hidden:true,objects:[]}];}));
+test('public template HTTP warmup persists across restart, never renders on start and rejects revoked and legacy image URLs',async t=>{
+ const {default:os}=await import('node:os'),{default:path}=await import('node:path'),{createHash}=await import('node:crypto');
+ const directory=fs.mkdtempSync(path.join(os.tmpdir(),'public-template-http-'));t.after(()=>fs.rmSync(directory,{recursive:true,force:true}));
+ let paused=false,urls,bodyHash;
+ const setup=f=>{
+  f.options.publicPreviewDirectory=directory;
+  const model=f.models.get(f.first.localWorkshopRecord),binding=f.bindings.get(f.ids.shopifyProductId+'|'+f.ids.shopifyVariantId);
+  model.galleryCategoryIds=['linie-edelstahl','familie-fixture'];
+  model.universal={basePriceCents:binding.unitCents,extraMotifCents:169,motifCharge:'additional',photo:{},familyFormats:{fixedSize:'120x80'},profile:{kind:'universal-product',id:'http-template',geometry:{shape:'rect',width:120,height:80,holes:[]},material:{kind:'steel'},processing:{method:'engraving'},optionGroups:[],defaultDesignId:'d1',designs:Array.from({length:5},(_,i)=>({id:'d'+(i+1),objects:[]}))},localResources:{fonts:{},motifs:[],photoExamples:[]}};
+  binding.options={};f.store.workshop.galleryModel=id=>structuredClone(f.models.get(id));f.store.workshop.konfis={paused:()=>paused};f.store.registry.listActive=()=>[structuredClone(binding)];
+ };
+ await run(async(f,request,{open,token,entry})=>{
+  const cold=await open({format:'json'});assert.equal(cold.status,200);assert.deepEqual(cold.data.warm.manifest.previews,undefined);assert.deepEqual(fs.readdirSync(directory),[],'customer start creates no render/cache files');
+  assert.equal((await request('/api/shop-entry/public-preview-prepare','POST',f.ids)).status,404,'no public preparation route');
+  const prepared=await entry.preparePublicDesignPreviews(f.ids);assert.equal(prepared.prepared,3);urls=prepared.items.map(x=>x.url);
+  const ticket=await open({format:'json'});assert.deepEqual(ticket.data.warm.manifest.previews,urls);assert.equal(fs.readdirSync(directory).length,3);
+  assert.ok(!JSON.stringify(ticket.data.warm.manifest).includes('sgt1.'));
+  const image=await request(urls[0]);assert.equal(image.status,200);assert.match(image.headers['cache-control'],/public.*immutable/);bodyHash=createHash('sha256').update(image.body).digest('hex');
+  assert.equal((await request('/konfigurator/shop/vorschauen/'+bodyHash+'.svg')).status,404,'old renderer memory hash is never a public fallback while feature is enabled');
+  assert.equal((await request(urls[0],'GET',undefined,{Origin:'https://foreign.example'})).status,403);
+  const {token:sessionToken}=await token(),headers=session(sessionToken),gallery=await request('/api/shop-entry/design-gallery','GET',undefined,headers);assert.equal(gallery.status,200);assert.deepEqual(gallery.data.items.slice(0,3).map(x=>x.previewUrl),urls);
+  const fallback=await request('/api/shop-entry/design-gallery-preview','POST',{target:gallery.data.items[3].target},headers);assert.equal(fallback.status,200);assert.equal(fallback.headers['cache-control'],'private, no-store');
+  const after=await request('/api/shop-entry/design-gallery','GET',undefined,headers);assert.equal(after.data.items[3].previewUrl,undefined);
+ },setup);
+ await run(async(f,request,{open,entry})=>{
+  assert.ok((await entry.publicPreviewPreparation).items.every(x=>x.cached),'explicit startup prepares only this one already cached variant');
+  const ticket=await open({format:'json'});assert.equal(ticket.status,200);assert.deepEqual(ticket.data.warm.manifest.previews,urls,'fresh entry process uses identical saved URLs');
+  assert.equal((await request(urls[0],'HEAD')).status,200);assert.ok((await entry.preparePublicDesignPreviews(f.ids)).items.every(x=>x.cached));
+  paused=true;assert.equal((await request(urls[0])).status,404);assert.equal((await request('/konfigurator/shop/vorschauen/'+bodyHash+'.svg')).status,404);
+  assert.deepEqual((await open({format:'json'})).data.warm.manifest.previews,undefined);
+ },f=>{setup(f);f.options.publicPreviewPrepare=f.ids;});
+});
+
+test('combined public cache and module guards reject stale gallery targets and disabled logo upload through real HTTP',async t=>{
+ const {default:os}=await import('node:os'),{default:path}=await import('node:path');
+ const directory=fs.mkdtempSync(path.join(os.tmpdir(),'combined-cache-modules-'));t.after(()=>fs.rmSync(directory,{recursive:true,force:true}));
+ await run(async(f,request,{open,token,entry})=>{
+  const source=f.models.get(f.first.localWorkshopRecord),original=JSON.stringify(source.universal.profile);
+  const prepared=await entry.preparePublicDesignPreviews(f.ids);assert.equal(prepared.prepared,3);
+  const oldUrl=prepared.items[0].url;assert.equal((await request(oldUrl)).status,200);
+  const issued=await token(),headers=session(issued.token),before=await request('/api/shop-entry/design-gallery','GET',undefined,headers);
+  assert.equal(before.status,200);const target=before.data.items[0].target;
+  source.universal.moduleProfile.modules.designs=false;source.universal.moduleProfile.revision++;
+  assert.equal((await request(oldUrl)).status,404);
+  const warm=await open({format:'json'});assert.equal(warm.status,200);assert.equal(warm.data.warm.manifest.previews,undefined);
+  const model=await request('/api/shop-entry/model','GET',undefined,headers);assert.equal(model.status,200);assert.equal(model.data.startPreview,null);assert.equal(model.data.model.universal.profile.defaultDesignId,'d1');
+  for(const [route,method,data] of [['design-gallery','GET',undefined],['design-gallery-preview','POST',{target}],['design-switch','POST',{target}]]){
+   const result=await request('/api/shop-entry/'+route,method,data,headers);assert.equal(result.status,403,route);assert.equal(result.data.error.code,'shop_gallery_disabled');
+  }
+  const input={productId:f.first.localWorkshopRecord,productRevision:3,name:'synthetic.svg',original:Buffer.from('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><rect width="20" height="20"/></svg>').toString('base64')};
+  const denied=await request('/api/shop-entry/customer-vector-logo/preview','POST',input,headers);
+  assert.equal(denied.status,422);assert.equal(denied.data.error.code,'customer_vector_logo');assert.match(denied.data.error.message,/nicht freigegeben/);
+  assert.deepEqual(await entry.preparePublicDesignPreviews(f.ids),{prepared:0,items:[]});assert.equal(fs.readdirSync(directory).length,3);
+  assert.equal(JSON.stringify(source.universal.profile),original);assert.equal(source.universal.logo.extraPriceCents,1299);
+ },f=>{
+  f.options.publicPreviewDirectory=directory;
+  const model=f.models.get(f.first.localWorkshopRecord),binding=f.bindings.get(f.ids.shopifyProductId+'|'+f.ids.shopifyVariantId);
+  model.galleryCategoryIds=['linie-edelstahl','familie-fixture'];
+  model.universal={basePriceCents:binding.unitCents,extraMotifCents:169,motifCharge:'additional',photo:{enabled:false},logo:{enabled:true,vectorUpload:true,extraPriceCents:1299},familyFormats:{fixedSize:'120x80'},moduleProfile:{schema:MODULE_PROFILE_SCHEMA,id:'combined-review',revision:1,modules:{options:true,designs:true,text:true,motifs:true,photo:false,logo:false,colors:false}},profile:{kind:'universal-product',id:'http-template',geometry:{shape:'rect',width:120,height:80,holes:[]},material:{kind:'steel'},processing:{profileId:'steel-engraving'},optionGroups:[],defaultDesignId:'d1',designs:Array.from({length:5},(_,i)=>({id:'d'+(i+1),objects:[]}))},localResources:{fonts:{},motifs:[],photoExamples:[]}};
+  binding.options={};f.store.workshop.galleryModel=id=>structuredClone(f.models.get(id));f.store.registry.listActive=()=>[structuredClone(binding)];
+ });
+});

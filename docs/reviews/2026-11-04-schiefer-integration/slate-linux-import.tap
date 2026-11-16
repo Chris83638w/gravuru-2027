@@ -1,0 +1,40 @@
+TAP version 13
+# Subtest: plans without product writes; append import preserves existing product and repeats without a revision
+ok 1 - plans without product writes; append import preserves existing product and repeats without a revision
+  ---
+  duration_ms: 757.972023
+  type: 'test'
+  ...
+# Subtest: owned update appends a revision; outside changes and duplicate profiles block before writes
+ok 2 - owned update appends a revision; outside changes and duplicate profiles block before writes
+  ---
+  duration_ms: 546.112949
+  type: 'test'
+  ...
+# Subtest: changed image, approval, prices and originals are rejected before any target write
+ok 3 - changed image, approval, prices and originals are rejected before any target write
+  ---
+  duration_ms: 180.296681
+  type: 'test'
+  ...
+# Subtest: runtime gate checks the specified runtime and reports price differences
+ok 4 - runtime gate checks the specified runtime and reports price differences
+  ---
+  duration_ms: 287.191176
+  type: 'test'
+  ...
+# Subtest: immutable resource collisions and an existing writer lock cannot be overwritten
+ok 5 - immutable resource collisions and an existing writer lock cannot be overwritten
+  ---
+  duration_ms: 202.082033
+  type: 'test'
+  ...
+1..5
+# tests 5
+# suites 0
+# pass 5
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2089.319126

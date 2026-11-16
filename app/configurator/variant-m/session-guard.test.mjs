@@ -2,8 +2,9 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
-import {createSessionGuard,uploadReferences,sessionGuardKey,SESSION_GUARD_SCHEMA,SESSION_GUARD_TTL_MS} from './session-guard.mjs';
+import {createSessionGuard,uploadReferences,sessionGuardKey,SESSION_GUARD_SCHEMA,SESSION_GUARD_TTL_MS,freshPreviewRequested} from './session-guard.mjs';
 import {makeAcrylicConfig} from './acrylic-product.mjs';
+import {cartEditParams,installCartEdit} from './cart-edit.mjs';
 import {prepareConfig,saveDraft,readDraft,DRAFT_SCHEMA} from './contract.mjs';
 import {measureText} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
 
@@ -13,7 +14,7 @@ const line=(name,marker)=>{const rows=source(name).split('\n').filter(s=>s.inclu
 function block(name,start,end){const text=source(name),i=text.indexOf(start);assert(i>=0,start);const j=text.indexOf(end,i);assert(j>=0,end);return text.slice(i,j+end.length);}
 const clone=v=>structuredClone(v);
 // localStorage-Ersatz: speichert Strings, kann optional bei jedem Zugriff werfen.
-function fakeStorage(initial={}){const data=new Map(Object.entries(initial));return {data,failing:false,getItem(k){if(this.failing)throw Error('blocked');return data.has(k)?data.get(k):null;},setItem(k,v){if(this.failing)throw Error('blocked');data.set(k,String(v));},removeItem(k){if(this.failing)throw Error('blocked');data.delete(k);}};}
+function fakeStorage(initial={}){const data=new Map(Object.entries(initial));return {data,failing:false,get length(){return data.size;},key(index){return [...data.keys()][index]??null;},getItem(k){if(this.failing)throw Error('blocked');return data.has(k)?data.get(k):null;},setItem(k,v){if(this.failing)throw Error('blocked');data.set(k,String(v));},removeItem(k){if(this.failing)throw Error('blocked');data.delete(k);}};}
 function acrylicConfig(){
   const resources=JSON.parse(fs.readFileSync(new URL('../../designs/acrylic-unser-anfang/resources.json',import.meta.url),'utf8'));
   const config=makeAcrylicConfig({profile:{kind:'universal-product',schemaVersion:2}},resources,'a'.repeat(64));
@@ -31,25 +32,52 @@ function editor(config,resources){
   return el;
 }
 // Lädt die K7-Blöcke aus ux.mjs in einen Kontext: Guard anlegen, Sync-Hook, Wiederherstellung beim Start, „Neu beginnen“.
-function mountUx({config,resources,storage,timers,pendingDesignTransfer=false}){
+function mountUx({config,resources,storage,timers,pendingDesignTransfer=false,search='',deferRecovery=false}){
   const el=editor(config,resources),said=[],banner={hidden:true},files=new Map();
-  const env={el,config,profile:config.profile,files,uploadReferences,say:m=>said.push(m),said,banner,$:s=>s==='[data-ux-session]'?banner:{hidden:true},update(){},notifyCorrection(){},
-    installAccountDrafts:()=>null,dialogs:{account:{}},button(){},esc:v=>v,uploadPending:false,URL:{revokeObjectURL(){}},location:{reload(){env.reloaded=true;}},
+  const quantityListeners=[],quantityField={value:'1',events:[],matches:s=>s==='[data-fk-quantity]',addEventListener(type,fn){if(type==='input')quantityListeners.push(fn);},dispatchEvent(event){this.events.push(event);for(const fn of quantityListeners)fn(event);return true;}};
+  const env={sessionUploads:null,persistUpload(){},missingUploads:[],el,config,profile:config.profile,files,uploadReferences,say:m=>said.push(m),said,banner,quantityField,quantity:1,Event:class{constructor(type,options){this.type=type;Object.assign(this,options);}},$:s=>s==='[data-ux-session]'?banner:s==='[data-fk-quantity]'?quantityField:{hidden:true},update(){},updatePrice(){env.priceUpdates=(env.priceUpdates||0)+1;},notifyCorrection(){},
+    freshPreviewRequested,cartEditParams,installAccountDrafts:()=>null,dialogs:{account:{}},button(){},esc:v=>v,uploadPending:false,URL:{revokeObjectURL(){}},location:{search,reload(){env.reloaded=true;}},
     window:{parent:{GravuruShopEntry:{designGallery:{hasPendingTransfer:()=>pendingDesignTransfer}}},localStorage:storage,addEventListener(type,fn){(env.listeners[type]||=[]).push(fn);}},listeners:{},
     createSessionGuard:options=>createSessionGuard({...options,schedule:fn=>{timers.queued=fn;return 1;},cancel:()=>{timers.queued=null;}})};
   vm.createContext(env);
+  vm.runInContext(line('adapter.mjs',"const qty=$('[data-fk-quantity]');qty.addEventListener"),env);
+  env.changeQuantity=value=>{quantityField.value=String(value);quantityField.dispatchEvent(new env.Event('input',{bubbles:true}));env.t=quantityField;vm.runInContext(block('ux.mjs',"if(t.matches('[data-fk-quantity]'))",'sessionGuard?.touch();}'),env);};
+  vm.runInContext(line('ux.mjs','const freshPreview='),env);
   vm.runInContext(line('ux.mjs','const chosenProfile='),env);
   vm.runInContext(line('ux.mjs',"const oldSync=el.sync;el.sync=function(...args){"),env);
   vm.runInContext(block('ux.mjs','  function restoreDraft(draft){','\n  }'),env);
   vm.runInContext(block('ux.mjs','  let sessionGuard=null,initialDraft=null,accountDrafts=null;','\n  }'),env);
   vm.runInContext(line('ux.mjs','const pendingDesignTransfer='),env);
-  vm.runInContext(block('ux.mjs','  if(sessionGuard&&!config?.workbench){','  }else sessionGuard=null;'),env);
+  vm.runInContext(line('ux.mjs','const recoverLocalSession='),env);
+  vm.runInContext(line('ux.mjs','const savedSession='),env);
+  env.missingUploads=vm.runInContext('savedSession?.uploads||[]',env);
+  env.prepareLocalRecovery=()=>vm.runInContext('(async()=>{'+line('ux.mjs','&&el.uxEnsureDraftResources){const stored=sessionGuard.read();')+'\n'+line('ux.mjs','const savedSession=')+'\n'+line('ux.mjs','const missingUploads=savedSession?')+'\nreturn {savedSession,missingUploads};})()',env);
+  env.finishRecovery=()=>vm.runInContext(block('ux.mjs','  if(sessionGuard&&!config?.workbench){','  }else sessionGuard=null;'),env);
+  if(!deferRecovery)env.finishRecovery();
   vm.runInContext(line('ux.mjs',"if(config&&!config.workbench&&typeof el.draftPayload==='function')accountDrafts=installAccountDrafts("),env);
   env.restart=()=>{env.action='session-restart';vm.runInContext('(function(){'+line('ux.mjs',"if(action==='session-restart')")+'})()',env);};
   env.guard=()=>vm.runInContext('sessionGuard',env);
   return env;
 }
 const text=el=>el.state.objects.find(o=>o.id==='names').text;
+
+test('fresh test link applies only to an explicit product preview or review model',()=>{
+ assert.equal(freshPreviewRequested({productPreview:true},'?fresh=1'),true);
+ assert.equal(freshPreviewRequested({reviewOnly:true},'?fresh=1'),true);
+ for(const config of [null,{}, {productPreview:false},{reviewOnly:false}])assert.equal(freshPreviewRequested(config,'?fresh=1'),false);
+ for(const query of ['', '?fresh=0','?fresh=true'])assert.equal(freshPreviewRequested({productPreview:true},query),false);
+});
+test('fresh preview ignores the last test and never saves text or photos; ordinary recovery stays available',()=>{
+ const {config,resources}=acrylicConfig(),storage=fakeStorage(),timers={queued:null};config.reviewOnly=true;
+ const normal=mountUx({config,resources,storage,timers}),original=text(normal.el);
+ normal.el.state.objects.find(o=>o.id==='names').text='Alter Test';normal.el.sync();timers.queued();timers.queued=null;
+ const stored=[...storage.data];
+ const fresh=mountUx({config,resources,storage,timers,search:'?fresh=1'});assert.equal(fresh.guard(),null);assert.equal(text(fresh.el),original);
+ fresh.el.state.objects.find(o=>o.id==='names').text='Neuer Test';fresh.el.sync();assert.equal(timers.queued,null);assert.deepEqual([...storage.data],stored);
+ const uploads={...fresh,createSessionUploads(){throw Error('Fresh uploads must remain in memory');}};vm.runInNewContext(line('ux.mjs','const freshPreview=')+'\n'+line('ux.mjs','const sessionUploads='),uploads);
+ assert.equal(text(mountUx({config,resources,storage,timers,search:'?fresh=1'}).el),original);
+ assert.equal(text(mountUx({config,resources,storage,timers}).el),'Alter Test');
+});
 
 test('Sitzungsschutz: Änderung wird entprellt gespeichert, Neuladen stellt den Stand wieder her, „Neu beginnen“ setzt zurück',()=>{
   const {config,resources}=acrylicConfig(),storage=fakeStorage(),timers={queued:null};
@@ -88,7 +116,7 @@ test('Sitzungsschutz: Foto-Referenzen bleiben, Bilder nicht – Hinweis zum erne
   assert.deepEqual(stored.uploads,[{objectId:slot.id,uploadId:'upload-1',kind:'photo',name:'oma.jpg'}]);
   const second=mountUx({config,resources,storage,timers});
   assert.equal(second.el.state.objects.find(o=>o.type==='photoSlot').uxUploadId,'upload-1');
-  assert.equal(second.files.size,0);assert.match(second.said.at(-1),/Bitte fehlende Dateien erneut auswählen oder deinen gespeicherten Entwurf laden/);
+  assert.equal(second.files.size,0);assert.match(second.said.at(-1),/ältere Bilddatei/);
 });
 
 test('Sitzungsschutz: laufende Designübernahme hat Vorrang; alte Sitzung bleibt bis zur nächsten gültigen Änderung erhalten',()=>{
@@ -148,7 +176,87 @@ test('createSessionGuard: ungültiger Zwischenstand lässt den letzten gültigen
   assert.deepEqual(JSON.parse(storage.data.get(guard.key)).draft,{a:1},'letzter gültiger Stand bleibt');
   payload={draft:{a:2},uploads:[{objectId:'o',uploadId:'u',kind:'logo',name:'l.png',extra:'nicht speichern'}]};assert.equal(guard.flush(),true);
   assert.deepEqual(JSON.parse(storage.data.get(guard.key)).uploads,[{objectId:'o',uploadId:'u',kind:'logo',name:'l.png'}]);
-  assert.deepEqual(guard.recover(),{uploads:[{objectId:'o',uploadId:'u',kind:'logo',name:'l.png'}],savedAt:1000});assert.deepEqual(calls,[{a:2}]);
+  assert.deepEqual(guard.recover(),{uploads:[{objectId:'o',uploadId:'u',kind:'logo',name:'l.png'}],savedAt:1000,quantity:1});assert.deepEqual(calls,[{a:2}]);
   assert.deepEqual(uploadReferences([{id:'p',uxUploadId:'u1',uxUploadKind:'photo'},{id:'t',type:'text'}],new Map([['u1',{file:{name:'f.jpg'}}]])),[{objectId:'p',uploadId:'u1',kind:'photo',name:'f.jpg'}]);
   assert.throws(()=>createSessionGuard({storage,productId:'',profileRevision:'r',payload(){},restore(){}}));
+});
+
+// Claudes echter Rücksprung nutzt history.back(); bei neuem Editoraufbau greift
+// der lokale Sitzungsschutz. Kein Shopify-Warenkorb/Browserlauf wird hier simuliert.
+test('Menge 10 überlebt pagehide und Wiederöffnen einschließlich Adapterzustand',()=>{
+  const {config,resources}=acrylicConfig(),storage=fakeStorage(),timers={queued:null};
+  const first=mountUx({config,resources,storage,timers});
+  first.el.state.objects.find(o=>o.id==='names').text='Mengenprüfung';first.el.sync();timers.queued();
+  first.changeQuantity(10);
+  assert.equal(first.quantity,10);assert.equal(first.priceUpdates,1);
+  assert.equal(typeof timers.queued,'function','reine Mengenänderung plant eine Sicherung');
+  first.listeners.pagehide[0]();
+  assert.equal(JSON.parse(storage.data.get(first.guard().key)).quantity,10);
+  const reopened=mountUx({config,resources,storage,timers});
+  assert.equal(reopened.quantityField.value,'10');assert.equal(reopened.quantity,10,'echter Adapter-input-Hook übernimmt die Menge');
+  assert.equal(reopened.quantityField.events.at(-1).bubbles,true);
+  assert.equal(text(reopened.el),'Mengenprüfung');
+});
+
+test('ältere gespeicherte Sitzung ohne Mengenfeld stellt Gestaltung mit Menge 1 her',()=>{
+  const {config,resources}=acrylicConfig(),storage=fakeStorage(),timers={queued:null};
+  const first=mountUx({config,resources,storage,timers});
+  first.el.state.objects.find(o=>o.id==='names').text='Alt';first.el.sync();first.changeQuantity(10);assert.equal(first.guard().flush(),true);
+  const key=first.guard().key,old=JSON.parse(storage.data.get(key));delete old.quantity;storage.setItem(key,JSON.stringify(old));
+  const reopened=mountUx({config,resources,storage,timers});
+  assert.equal(text(reopened.el),'Alt');assert.equal(reopened.quantityField.value,'1');assert.equal(reopened.quantity,1);
+});
+
+test('Sitzungsmengen halten die vorhandenen Grenzen 1–99 ein; ungültige Zwischenwerte überschreiben nichts',()=>{
+  const storage=fakeStorage();let quantity=10;const options={storage,productId:'cfg_quantity',profileRevision:'cfg_quantity:1',payload:()=>({draft:{design:{}},quantity}),restore(){},clock:()=>1000};
+  const guard=createSessionGuard(options);guard.arm();assert.equal(guard.flush(),true);
+  const valid=storage.data.get(guard.key);
+  for(const value of [0,-1,100,1.5,NaN,'10']){quantity=value;assert.equal(guard.flush(),false);assert.equal(storage.data.get(guard.key),valid);}
+  for(const value of [0,100,1.5,'10',null]){storage.setItem(guard.key,JSON.stringify({...JSON.parse(valid),quantity:value}));assert.equal(guard.recover(),null);assert.equal(storage.data.has(guard.key),false);}
+  for(const value of [1,99]){quantity=value;assert.equal(guard.flush(),true);assert.equal(guard.recover().quantity,value);}
+});
+
+const CART_EDIT_QUERY='?config=konfig_11111111-1111-4111-8111-111111111111&rev=2';
+function savedLocalTen(){
+  const {config,resources}=acrylicConfig(),storage=fakeStorage(),timers={queued:null};
+  const first=mountUx({config,resources,storage,timers});
+  first.el.state.objects.find(o=>o.id==='names').text='Lokal';
+  const photo=first.el.state.objects.find(o=>o.type==='photoSlot');Object.assign(photo,{uxUploadId:'local-photo',uxUploadKind:'photo'});
+  first.files.set('local-photo',{file:{name:'local.jpg'}});first.el.sync();first.changeQuantity(10);assert.equal(first.guard().flush(),true);
+  storage.setItem('gravuru-acrylic-private:cart-test',JSON.stringify({token:'a'.repeat(64)}));
+  return {config,resources,storage,timers};
+}
+async function restoreNativeCartThree(env,{config,resources,storage}){
+  const saved=editor(config,resources);saved.state.objects.find(o=>o.id==='names').text='Server';
+  const document=saved.draftPayload({draft:true}),status={textContent:'',style:{removeProperty(){}}};
+  env.el.import=async file=>env.el.restoreDraft(JSON.parse(await file.text()),{draft:true});
+  const api={el:env.el,config,files:env.files,r:{querySelector:s=>s==='[data-fk-quantity]'?env.quantityField:status}};
+  const loaded={editorKind:'native',hints:[],photos:[],document,quantity:3,configuration:{cartLineId:null},draft:{id:'adraft_22222222-2222-4222-8222-222222222222',revision:1}};
+  const result=await installCartEdit(api,{storage,search:CART_EDIT_QUERY,request:async(path,options)=>{
+    assert.equal(path,'/api/workshop/cart-configurations/konfig_11111111-1111-4111-8111-111111111111/2');assert.equal(options.headers['X-Gravuru-Draft'],'a'.repeat(64));
+    return {ok:true,status:200,json:async()=>loaded};
+  }});
+  assert.equal(result?.configId,'konfig_11111111-1111-4111-8111-111111111111',status.textContent);
+}
+for(const timing of ['früh','spät'])test('explizites CartEdit '+timing+': Servermenge 3 und Gestaltung haben Vorrang vor lokaler Menge 10 samt Uploads',async()=>{
+  const setup=savedLocalTen(),env=mountUx({...setup,search:CART_EDIT_QUERY,deferRecovery:true});
+  const key=env.guard().key,before=setup.storage.data.get(key);let resourcesRead=0,uploadsRead=0;
+  env.el.uxEnsureDraftResources=async()=>{resourcesRead++;};env.sessionUploads={restore:async()=>{uploadsRead++;return [];},prune(){}};
+  if(timing==='früh')await restoreNativeCartThree(env,setup);
+  const preparation=await env.prepareLocalRecovery();env.missingUploads=preparation.missingUploads;env.finishRecovery();
+  assert.equal(preparation.savedSession,null);assert.equal(resourcesRead,0);assert.equal(uploadsRead,0,'keine lokalen Bilder über die CartEdit-Dateien legen');
+  assert.equal(env.banner.hidden,true);assert.equal(setup.storage.data.get(key),before,'ausgelassene Recovery löscht oder überschreibt den letzten Stand nicht');
+  if(timing==='spät')await restoreNativeCartThree(env,setup);
+  assert.equal(env.quantityField.value,'3');assert.equal(env.quantity,3);assert.equal(text(env.el),'Server');
+  assert.equal(env.el.state.objects.some(o=>o.uxUploadId==='local-photo'),false);
+  env.changeQuantity(5);assert.equal(env.guard().flush(),true,'nach CartEdit bleibt Sitzungsschutz aktiv');assert.equal(JSON.parse(setup.storage.data.get(key)).quantity,5);
+});
+
+test('ungültige CartEdit-URL unterdrückt lokale Gestaltung, Menge 10 und Upload-Recovery nicht',async()=>{
+  const setup=savedLocalTen(),env=mountUx({...setup,search:'?config=konfig_invalid&rev=2',deferRecovery:true});let resourcesRead=0,uploadsRead=0;
+  env.el.uxEnsureDraftResources=async draft=>{resourcesRead++;assert.equal(draft.design.objects.find(o=>o.id==='names').text,'Lokal');};
+  env.sessionUploads={restore:async uploads=>{uploadsRead++;assert.equal(uploads[0].uploadId,'local-photo');return [];},prune(){}};
+  const preparation=await env.prepareLocalRecovery();env.missingUploads=preparation.missingUploads;env.finishRecovery();
+  assert.equal(resourcesRead,1);assert.equal(uploadsRead,1);assert.equal(text(env.el),'Lokal');assert.equal(env.quantity,10);
+  assert.equal(env.el.state.objects.some(o=>o.uxUploadId==='local-photo'),true);
 });

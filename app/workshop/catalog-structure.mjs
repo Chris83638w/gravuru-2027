@@ -1,6 +1,6 @@
 import {DatabaseSync} from 'node:sqlite';
 import {readFileSync} from 'node:fs';import {createHash} from 'node:crypto';import {tenantOption} from './tenant.mjs';
-import {readKatalogStructure,patchMainProduct} from './katalog-linien.mjs';
+import {readKatalogStructure,patchMainProduct,patchSubcategoryMaterials} from './katalog-linien.mjs';
 const fail=(status,message)=>{throw Object.assign(Error(message),{status,code:'catalog_structure'});};
 export function validateStructure(d){
  if(d?.schema!=='gravuru-workshop-structure/v1'||!Array.isArray(d.lines)||!Array.isArray(d.mainProducts))fail(422,'Katalogstruktur fehlt.');
@@ -20,8 +20,9 @@ export function createCatalogStructure({filename=':memory:',tenantId,source,kata
   const root=katalogRoot();
   if(root){const copy=readKatalogStructure(root,{statics:data});for(const l of copy.lines)for(const sub of l.subcategories)sub.targetCount=s.targets[l.id+'/'+sub.id]??null;return {...copy,settingsRevision:row?.revision??0,settingsUpdatedAt:row?.created_at??null,saveEffect:'katalog',editable:true};}
   const copy=structuredClone(data);for(const p of copy.mainProducts){const a=s.assignments[p.key];p.subcategoryIds=a?.subcategoryIds??(p.subcategoryId?[p.subcategoryId]:[]);}for(const l of copy.lines)for(const sub of l.subcategories)sub.targetCount=s.targets[l.id+'/'+sub.id]??null;return {...copy,settingsRevision:row?.revision??0,sourceSha256:digest,settingsUpdatedAt:row?.created_at??null,saveEffect:'organization-only',automaticPublication:false};}
- function save(input,{actor='werkstatt'}={}){const current=read();if(!input||Object.keys(input).some(k=>!['expectedRevision','sourceSha256','action','lineId','subcategoryId','targetCount','productKey','subcategoryIds','katalogId','name','startDesign','sizesOffered','status'].includes(k)))fail(422,'Unbekannte Katalogfelder.');
+ function save(input,{actor='werkstatt'}={}){const current=read();if(!input||Object.keys(input).some(k=>!['expectedRevision','sourceSha256','action','lineId','subcategoryId','targetCount','productKey','subcategoryIds','katalogId','name','startDesign','sizesOffered','status','familyIdsOffered'].includes(k)))fail(422,'Unbekannte Katalogfelder.');
  const root=katalogRoot();
+ if(input.action==='materials'){if(!root)fail(422,'Für Materialangebote muss der Katalog verbunden sein.');patchSubcategoryMaterials(root,input,{actor});return read();}
  if(root&&['edit','assign','add'].includes(input.action)){if(input.sourceSha256!==current.sourceSha256)fail(409,'Der Katalog wurde inzwischen geändert. Bitte neu laden.');patchMainProduct(root,input,{actor});return read();}
  if(!root&&input.sourceSha256!==digest)fail(409,'Der Katalog wurde inzwischen abgeglichen. Bitte neu laden.');
  if(root&&input.sourceSha256!==current.sourceSha256)fail(409,'Der Katalog wurde inzwischen geändert. Bitte neu laden.');

@@ -1,0 +1,18 @@
+query CartValidationsGenerateRunInput {
+  buyerJourney { step }
+  cart {
+    lines {
+      id
+      quantity
+      configuration: attribute(key: "_gravuru_config") { value }
+      configRevision: attribute(key: "_gravuru_rev") { value }
+      offer: attribute(key: "_gravuru_offer") { value }
+      motifs: attribute(key: "_gravuru_motifs") { value }
+      uploads: attribute(key: "_gravuru_uploads") { value }
+      logos: attribute(key: "_gravuru_logos") { value }
+      revision: attribute(key: "_gravuru_revision") { value }
+      designFile: attribute(key: "Bearbeitbarer Entwurf") { value }
+      merchandise { __typename ... on ProductVariant { id product { id title pricing: metafield(namespace: "$app", key: "personalization") { value } } } }
+    }
+  }
+}

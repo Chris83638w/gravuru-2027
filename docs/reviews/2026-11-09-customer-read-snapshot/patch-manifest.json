@@ -1,0 +1,43 @@
+{
+  "schema": "gravuru-source-patch/v1",
+  "basis": "4dc5653b2ee31d2e3e28f10614e5433469348a5a",
+  "scope": "server-only synchronous read reuse; no UI/data/price writes",
+  "liveApplied": false,
+  "files": [
+    {
+      "path": "app/workshop/customer-read-scope.mjs",
+      "activeSha256": null,
+      "afterSha256": "f47460a1fdce7b9328b58fde7fb24f50d8d1c0d70d64c3784f575cd2b93f533a",
+      "bytes": 2064,
+      "lineEndings": "LF"
+    },
+    {
+      "path": "app/workshop/repository.mjs",
+      "activeSha256": "9095a1dbc199c74784e908ef7bb0692162631b8540b9c0484c491ce7fdaa4dcc",
+      "afterSha256": "ccc35a82957c63527c6cf5975b9e9aff24e7aa0b6bbf24aff09eab4448a39cc8",
+      "bytes": 20105,
+      "lineEndings": "LF"
+    },
+    {
+      "path": "app/workshop/shop-product-binding-store.mjs",
+      "activeSha256": "5aeb5ef24a177fa987d0fdd8b62688e56177494e2cdd4745249e29302d0f31ea",
+      "afterSha256": "42c4999be33367519d9e4656b2a780d625c4578580d5c4ab09b3c0de652c5b48",
+      "bytes": 21041,
+      "lineEndings": "LF"
+    },
+    {
+      "path": "app/workshop/http.mjs",
+      "activeSha256": "718d7df4ad1dd4f05c3fe4e0ecfc6f5ae8a68e77855fa90c7c7df83159559ee9",
+      "afterSha256": "711711bbea02f02e2333b462741af17389d0a9bbc32a3ad4a2b145a8212d6787",
+      "bytes": 123472,
+      "lineEndings": "LF"
+    },
+    {
+      "path": "app/workshop/shop-entry.mjs",
+      "activeSha256": "8bf53f6048cd4ef3409169c728ad570f136c47c2b92fa8d2fb57dabff65ceb44",
+      "afterSha256": "2d8015b927a1f5e88b641519bd111532c7d2e98a9d7e6fb12b4d27623f4805a3",
+      "bytes": 53216,
+      "lineEndings": "LF"
+    }
+  ]
+}

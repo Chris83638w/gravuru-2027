@@ -26,6 +26,11 @@ test('local preview serves complete acrylic model but no write, shop or admin ro
       assert.equal((await request(route)).status,200,route);
     }
     const head=await request('/models.json',{method:'HEAD'});assert.equal(head.status,200);assert.equal(head.body.length,0);
+    for(const asset of ['shop-shell.mjs','demo.mjs','demo.css','shopping-cart.svg','motif-size-limit.mjs']){
+      const served=await request('/configurator/mobile-demo/'+asset);assert.equal(served.status,200,asset);
+      assert.match(served.headers['content-type'],asset.endsWith('.svg')?/image\/svg\+xml/:asset.endsWith('.css')?/text\/css/:/text\/javascript/);
+    }
+    for(const asset of ['demo.test.mjs','assets.mjs','missing.svg','../server.mjs','%2e%2e%2fvariant-m/server.mjs'])assert.equal((await request('/configurator/mobile-demo/'+asset)).status,404,asset);
     assert.match(head.headers['content-security-policy'],/frame-ancestors 'self'/);
     for(const route of ['/api/session','/api/product-workbench','/produktanlage.html','/.env','/workshop/http.mjs','/workshop/theme-limits.test.mjs','/_runtime/%2e%2e%2f%2e%2e%2fQUELLEN-MANIFEST.json','/configurator/variant-m/server.test.mjs/../../../../.git/config'])assert.equal((await request(route)).status,404,route);
     assert.equal((await request('/api/acrylic/export',{method:'POST'})).status,405);

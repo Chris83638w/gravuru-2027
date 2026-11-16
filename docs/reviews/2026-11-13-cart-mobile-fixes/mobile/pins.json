@@ -1,0 +1,48 @@
+{
+  "schema": "gravuru-mobile-reset-layout-fix/v2",
+  "date": "2026-11-13",
+  "baseCommit": "d8bf96da2da814c62af43f4adf32b9732bcaf7b0",
+  "baseRuntime": "f85390bd3494920679b06c3b39cabf96c95c1343",
+  "files": [
+    {
+      "file": "app/configurator/variant-m/design-reset.mjs",
+      "beforeSha256": "a3a4d09c22205fa2f2ba824b6788757774512743e75f8617146e78f8bd9a8f06",
+      "afterSha256": "45b44abf6e6590284376d526a0b1f0f43d786b988b2403b6bebd96e4aef34e89",
+      "bytes": 2913,
+      "runtimeBaseMatches": true
+    },
+    {
+      "file": "app/configurator/variant-m/design-reset.test.mjs",
+      "beforeSha256": "1ac71a34262414e04ec547a45a5fda4b14713ffd15108c14428ba7b5dfc69b51",
+      "afterSha256": "bfb79e6343f64dfad52f1b92c4190f337240c7161fb2c55de3bd1cee3af6207d",
+      "bytes": 9148,
+      "runtimeBaseMatches": true
+    },
+    {
+      "file": "app/configurator/variant-m/modern-navigation.css",
+      "beforeSha256": "6b8457738d8054d62962f40f564a8487325079454a2fdd208bdceed7ee75690f",
+      "afterSha256": "eb2fcd4bc1c98b8dcf11b4a692221572da26a7388fc15d0910e4fad5e2b3b766",
+      "bytes": 16307,
+      "runtimeBaseMatches": true
+    }
+  ],
+  "patchSha256": "3cabc5e58f36ba7628de81fd741490e8fe18b775673de92209316d168f8ca0f8",
+  "tests": {
+    "command": "node --test app/configurator/variant-m/design-reset.test.mjs",
+    "passed": 5,
+    "failed": 0,
+    "skipped": 0,
+    "exitCode": 0,
+    "node": "v24.20.0",
+    "logSha256": "f65df9a402a1b2257a0edd8f9d3af5d88ad75ebd7a5bea0108ae603af49d5442"
+  },
+  "browserAfterFix": false,
+  "serverWrites": 0,
+  "shopWrites": 0,
+  "packagingHead": "1104811e647d14850f60c6c149573e15b8edafe0",
+  "browserFinding": {
+    "firstFix": "Native mobile stage shrank to 88x22px; fixed by preserving stage height plus actual separate control row.",
+    "finalCssCheck": "Pending Root browser readback after rebuild."
+  },
+  "readmeSha256": "b46e45626509298d0750eaec27227e4428c3969d64b9fd03c3f0d807e20642d5"
+}

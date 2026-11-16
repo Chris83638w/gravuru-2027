@@ -1,3 +1,5 @@
+import {moduleEnabled} from './module-profile.mjs';
+
 export const ELEMENT_RIGHT_FIELDS=Object.freeze({
   content:['text','font','bold','italic'], color:['color','preserveColors','opacity'],
   replace:['motif','uxUploadId','uxUploadKind','uxPhotoBackground','uxPhotoCrop','uxPhotoColor'],
@@ -26,7 +28,13 @@ export function legacyElementRights(object){
 // without an entry for an element fails closed.
 export function designElementRights(config,designId,source){
   const document=config?.workshopElementRights;
-  return Object.fromEntries(source.map(object=>[object.id,document?{...(document[designId]?.[object.id]??{})}:legacyElementRights(object)]));
+  return Object.fromEntries(source.map(object=>{
+    const rights=document?{...(document[designId]?.[object.id]??{})}:legacyElementRights(object);
+    if(!moduleEnabled(config,'colors'))rights.color=false;
+    if(object.type==='text'&&!moduleEnabled(config,'text'))rights.content=false;
+    if(object.type==='motif'&&!moduleEnabled(config,'motifs')||object.type==='photoSlot'&&!moduleEnabled(config,'photo')||object.uxUploadKind==='logo'&&!moduleEnabled(config,'logo'))rights.replace=false;
+    return [object.id,rights];
+  }));
 }
 
 // Free additions by the customer. Without an explicit product flag, text and
@@ -36,8 +44,8 @@ export function designElementRights(config,designId,source){
 export const CUSTOMER_ADDITION_LIMIT=19;
 export function customerAdditionPolicy(config){
   const p=config?.customerAdditions;
-  if(p===undefined)return {text:true,motifs:true,maxElements:CUSTOMER_ADDITION_LIMIT};
-  return {text:p.text===true,motifs:p.motifs===true,maxElements:p.maxElements};
+  if(p===undefined)return {text:moduleEnabled(config,'text'),motifs:moduleEnabled(config,'motifs'),maxElements:CUSTOMER_ADDITION_LIMIT};
+  return {text:p.text===true&&moduleEnabled(config,'text'),motifs:p.motifs===true&&moduleEnabled(config,'motifs'),maxElements:p.maxElements};
 }
 export function validateCustomerAdditions(config){
   const p=config?.customerAdditions;
@@ -50,7 +58,12 @@ export const isDecorationLine=(object,design)=>object.uxDecoration===true&&objec
 
 export function canEditElement(config,designId,object,right){
   if(!object)return false;
-  if(config?.workbench?.embedded)return true;
+  if(config?.workbench?.embedded)return !config.workbench.gallery||!(object.technicalLocked||object.role==='guide'||object.type==='motif-raster');
+  if(right==='color'&&!moduleEnabled(config,'colors'))return false;
+  if(right==='content'&&object.type==='text'&&!moduleEnabled(config,'text'))return false;
+  if(right==='replace'&&object.type==='motif'&&!moduleEnabled(config,'motifs'))return false;
+  if(right==='replace'&&object.type==='photoSlot'&&!moduleEnabled(config,'photo'))return false;
+  if(right==='replace'&&object.uxUploadKind==='logo'&&!moduleEnabled(config,'logo'))return false;
   const source=config?.profile?.designs?.find(d=>d.id===designId)?.objects.find(o=>o.id===object.id);
   // Layer order of template elements is fixed; only added elements may be reordered above them.
   if(right==='order')return !source;
@@ -125,6 +138,9 @@ export function templateRightsIssue(config,design,source,objects){
   let added=0;
   for(const object of objects.filter(object=>!originals.has(object.id)&&!isDecorationLine(object,design))){
     if(object.type==='image'&&object.uxUploadKind==='logo'&&object.uxUploadId)continue;
+    // Photo uploads have their own enabled/count/file validation in the contract.
+    // A valid additional photo is not a free text/motif addition.
+    if(config.photo?.enabled&&object.type==='photoSlot'&&object.uxUploadKind==='photo'&&object.uxUploadId)continue;
     if(!['text','motif'].includes(object.type))return 'Dieses Element wird nicht zum freien Hinzufügen angeboten.';
     if(!(object.type==='text'?policy.text:policy.motifs))return object.type==='text'?'Eigener Text ist bei diesem Produkt nicht vorgesehen.':'Eigene Motive sind bei diesem Produkt nicht vorgesehen.';
     if(++added>policy.maxElements)return 'Für dieses Produkt sind höchstens '+policy.maxElements+' zusätzliche Elemente möglich.';

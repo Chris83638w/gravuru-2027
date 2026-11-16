@@ -1,0 +1,116 @@
+[
+  {
+    "label": "fault-after-all-heads-and-approval",
+    "state": "conflict",
+    "metrics": {
+      "transactionMs": 39637.5742,
+      "rawRead": {
+        "calls": 431,
+        "ms": 20278.2043999999,
+        "characters": 5124058109
+      },
+      "byteComparison": {
+        "calls": 0,
+        "ms": 0
+      },
+      "sql": {
+        "calls": 37680,
+        "ms": 21733.65730000069
+      },
+      "methods": {
+        "catalogLiveApprovals": {
+          "calls": 2,
+          "ms": 245.50789999999688
+        },
+        "bindingPricing": {
+          "calls": 808,
+          "ms": 42.82360000058543
+        },
+        "bindVariants": {
+          "calls": 404,
+          "ms": 5024.686200000375
+        },
+        "approveCatalogLiveProducts": {
+          "calls": 1,
+          "ms": 667.4645000000019
+        }
+      }
+    }
+  },
+  {
+    "label": "restart-reconcile-logo-off",
+    "state": "completed",
+    "metrics": {
+      "transactionMs": 38807.851199999976,
+      "rawRead": {
+        "calls": 431,
+        "ms": 19842.546099999774,
+        "characters": 5124058109
+      },
+      "byteComparison": {
+        "calls": 0,
+        "ms": 0
+      },
+      "sql": {
+        "calls": 37680,
+        "ms": 21367.02369999996
+      },
+      "methods": {
+        "catalogLiveApprovals": {
+          "calls": 2,
+          "ms": 243.42990000001737
+        },
+        "bindingPricing": {
+          "calls": 808,
+          "ms": 57.12470000030589
+        },
+        "bindVariants": {
+          "calls": 404,
+          "ms": 4871.061700000166
+        },
+        "approveCatalogLiveProducts": {
+          "calls": 1,
+          "ms": 675.0148000000045
+        }
+      }
+    }
+  },
+  {
+    "label": "confirmed-logo-on-new-revision",
+    "state": "completed",
+    "metrics": {
+      "transactionMs": 45669.95499999996,
+      "rawRead": {
+        "calls": 431,
+        "ms": 20521.65239999938,
+        "characters": 5124057290
+      },
+      "byteComparison": {
+        "calls": 0,
+        "ms": 0
+      },
+      "sql": {
+        "calls": 37680,
+        "ms": 22038.8403000033
+      },
+      "methods": {
+        "catalogLiveApprovals": {
+          "calls": 2,
+          "ms": 230.8979999999865
+        },
+        "bindingPricing": {
+          "calls": 808,
+          "ms": 36.08980000013253
+        },
+        "bindVariants": {
+          "calls": 404,
+          "ms": 4786.17599999957
+        },
+        "approveCatalogLiveProducts": {
+          "calls": 1,
+          "ms": 624.2954000000027
+        }
+      }
+    }
+  }
+]

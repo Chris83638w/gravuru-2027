@@ -1,0 +1,75 @@
+{
+  "schema": "gravuru-main-target-preview-package/v1",
+  "previewOnly": true,
+  "codeCommit": "af6fd986c735d97bddc974261398ab8c4e88e00b",
+  "documentProductGroupSha256": "2da2130230341917f7a99d2a12889c1e2f10e408f64d3532e9c5ea6bae65713c",
+  "documentIdBindingSha256": "deb2ce71bf57d5ff85e5f186378d94f58edeecc1ce4d7c4151bebf6e8072886f",
+  "transportSerializedSha256": "2da2130230341917f7a99d2a12889c1e2f10e408f64d3532e9c5ea6bae65713c",
+  "hashMethods": {
+    "productGroup": "Recursively sorted object construction followed by JSON.stringify; integer-like keys use JavaScript enumeration order.",
+    "idBinding": "Recursively concatenated JSON strings with lexical object-key order, including integer-like keys.",
+    "transport": "SHA256 of exact transported JSON bytes; not the later stored SQL JSON bytes."
+  },
+  "fullModelsIncluded": false,
+  "databaseIncluded": false,
+  "executableImportEntryIncluded": false,
+  "files": [
+    {
+      "name": "README.md",
+      "bytes": 12630,
+      "sha256": "c0d776b8b0801e2b31b3e1129b8c8679caad90593d3e062c6d39e540bf178cc6"
+    },
+    {
+      "name": "operator-readonly-check.md",
+      "bytes": 9042,
+      "sha256": "6fffcdd1349dbce6fb5c9bef773ef4263f4a6f20380b62d5ecd65f2326498973"
+    },
+    {
+      "name": "build-preview.mjs",
+      "bytes": 14690,
+      "sha256": "3f3659086565235aed4a1f3f39cfdcc40231dfdc2a14d97b58106f0ddc4f3fa2"
+    },
+    {
+      "name": "materialize-label-preview.mjs",
+      "bytes": 3196,
+      "sha256": "83f138d437cfe8a0d42989ba528a7e7675e69ae2e75220a221933a59cf029a45"
+    },
+    {
+      "name": "label-changes.json",
+      "bytes": 32365,
+      "sha256": "fffd0fa19fdec46497266f2d1daf624fdbaea84b129bc806ec6b97d5450d8a71"
+    },
+    {
+      "name": "update-intent.preview.json",
+      "bytes": 6612,
+      "sha256": "80bbc2cca960c3ce736c789be1feaf9b5b15be6beb4e04864583a434a68dff4b"
+    },
+    {
+      "name": "existing-price-differences.json",
+      "bytes": 42663,
+      "sha256": "9d532ccfec1bfbf0ecb4040007e68cb81e46d1763cdd9c1ef9f79c8a8f4dc29e"
+    },
+    {
+      "name": "existing-price-differences.csv",
+      "bytes": 17576,
+      "sha256": "92aa2e40ea8eb54fcc4fc0d3cad0231ce30f30f6c94bba827107a23ced49db7b"
+    },
+    {
+      "name": "verification.json",
+      "bytes": 2508,
+      "sha256": "397eee3ff2b6c7224f72b39fa399694ad736894c37492c74ac74ccb897edd766"
+    },
+    {
+      "name": "materialization-check.json",
+      "bytes": 701,
+      "sha256": "c421fdcd644777dd76a76ae635b9d690080cedcdc829db1652b7187de8ffda7e"
+    },
+    {
+      "name": "variant-mapping.preview.json.gz",
+      "bytes": 34612,
+      "sha256": "3d0647b2cb671ba09199b6f9c4b9cdbfa58f24a0eafb1d2d672a18823070c9bf"
+    }
+  ],
+  "totalBytes": 176595,
+  "mappingUncompressedSha256": "3d476d9d964158c1f96a9e55b5de5a2cfa36afd8b5d3bcd86313c12be2c77591"
+}

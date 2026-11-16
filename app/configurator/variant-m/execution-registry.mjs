@@ -2,6 +2,7 @@ import {isLayeredDoorbell} from './product-module-context.mjs';
 
 export const EXECUTION_SCHEMA='gravuru-product-execution/v1';
 export const MEMORIAL_FAMILIES=Object.freeze([
+ 'schiefer-tafeln-premium','schiefer-tafeln-geschnitten','schiefer-tafeln-natur','schiefer-tafeln-kordel',
  'gedenktafel-22x14-schiefer-natur','gedenktafel-22x14-schiefer-hunde-2027',
  'gedenktafel-30x20-schiefer-natur','gedenktafel-30x20-schiefer-premium',
  'gedenktafel-30x20-acryl-schwarz','gedenktafel-30x20-acryl-anthrazit',

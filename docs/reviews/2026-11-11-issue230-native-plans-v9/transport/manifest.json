@@ -1,0 +1,645 @@
+{
+  "schema": "gravuru-issue230-v9-plan-transport/v1",
+  "catalogCommit": "8236b8bfab7322447ec46661c116fa526331af3d",
+  "codeCommit": "64e026e8fd15b129a16cc97189b28506aa9e8ac2",
+  "repositoryBase": "docs/reviews/2026-11-11-issue230-native-plans-v9/transport",
+  "sourceRun": "work/product-plans-run-v9",
+  "compression": "gzip level 9; no JSON parsing/reserialization for transported payloads",
+  "databaseIncluded": false,
+  "gitDataIncluded": false,
+  "plans": 7,
+  "variants": 823,
+  "mainVariants": 778,
+  "smallAcrylicVariants": [
+    10,
+    10,
+    10
+  ],
+  "smallSteelVariants": [
+    5,
+    5,
+    5
+  ],
+  "nativePlanHashesVerified": 7,
+  "canonicalSourceHashesVerified": 7,
+  "exactGzipRoundtrips": 14,
+  "totalPayloadBytes": 68985006,
+  "largestPayloadBytes": 15283191,
+  "records": [
+    {
+      "workbook": "Tuerschild-Acrylglas-3mm_v4.xlsx",
+      "label": "Türschild Acrylglas 3 mm – Form und Größe selbst wählen (Schwarz / Anthrazit)",
+      "planId": "pgp_80a0c3b9-b599-428f-8626-05e3ace880b6",
+      "planHash": "83cd95dc900fcbc9631086f54c26591e2dbab75d285cc80fa46d64673f63bb33",
+      "planPath": "docs/reviews/2026-11-11-issue230-native-plans-v9/transport/Tuerschild-Acrylglas-3mm_v4/plan.json.gz",
+      "sourcePath": "docs/reviews/2026-11-11-issue230-native-plans-v9/transport/Tuerschild-Acrylglas-3mm_v4/source-document.json.gz",
+      "source": {
+        "id": "cfg_8d95909c-fcd9-4cf8-87e7-152eb21e7204",
+        "revision": 2,
+        "sha256": "d4aa5e78a870decbecbda937e76feb740c299f8e52bd5c1fd3a8d93a93f715ad",
+        "status": "draft",
+        "publishedRevision": null,
+        "metadataSha256": "8271b263e19ed11543c4c2411390d2cc6cdfbc34bcb6a407ca00b5278b6602d6"
+      },
+      "template": {
+        "id": "pgt_c868a507-a372-4111-9f3c-56af17cbf534",
+        "revision": 2,
+        "sha256": "4691b77daa1f287b4300c607392d61b3f8a8974dee1ab6ae0ee935aa9640265e"
+      },
+      "variants": 778,
+      "target": {
+        "operation": "update-existing-preserve-cfg-identity",
+        "shopifyProductId": "16190784602492",
+        "existingCfgId": "resolve-current-bound-production-cfg-id-before-write",
+        "duplicateCheckRequired": false,
+        "preserveExistingProductAndVariantIds": true
+      }
+    },
+    {
+      "workbook": "Tuerschild-Acrylglas-3mm-5x2_v2.xlsx",
+      "label": "Türschild Acrylglas 3 mm 5 × 2 cm (Schwarz/Anthrazit)",
+      "planId": "pgp_7307b213-09ef-4758-b525-88aea139502d",
+      "planHash": "cd2405c8f0a53544cfaaf87f97d84234ba9c51d58ec6b0e388bb7212ef141392",
+      "planPath": "docs/reviews/2026-11-11-issue230-native-plans-v9/transport/Tuerschild-Acrylglas-3mm-5x2_v2/plan.json.gz",
+      "sourcePath": "docs/reviews/2026-11-11-issue230-native-plans-v9/transport/Tuerschild-Acrylglas-3mm-5x2_v2/source-document.json.gz",
+      "source": {
+        "id": "cfg_a185d396-3f2d-40cc-8199-b802743da334",
+        "revision": 2,
+        "sha256": "7d951cec1d47abc13b1c2c6d6e0552c0616e4843fc941e4c75943ad89aeb53f8",
+        "status": "draft",
+        "publishedRevision": null,
+        "metadataSha256": "b1beebfe5c01834e02d1a7299ffee8c4ed19e0dd93b541718a9157a44fb090ec"
+      },
+      "template": {
+        "id": "pgt_31a79772-234a-485c-beec-c7565a7157c6",
+        "revision": 2,
+        "sha256": "bdc0ff479668e535903ad6cb17cd6e6ae04039437a8e3fbeaebc02a563d48a8e"
+      },
+      "variants": 10,
+      "target": {
+        "operation": "create-small-after-duplicate-check",
+        "shopifyProductId": null,
+        "existingCfgId": null,
+        "duplicateCheckRequired": true,
+        "preserveExistingProductAndVariantIds": true
+      }
+    },
+    {
+      "workbook": "Tuerschild-Acrylglas-3mm-6x2_v2.xlsx",
+      "label": "Türschild Acrylglas 3 mm 6 × 2 cm (Schwarz/Anthrazit)",
+      "planId": "pgp_6831ea29-73f3-40c4-abfa-834c8479d93d",
+      "planHash": "df492d24f7da24f765ff62b8b03daf44865d839045191f3b3e449ca8f37cc09f",
+      "planPath": "docs/reviews/2026-11-11-issue230-native-plans-v9/transport/Tuerschild-Acrylglas-3mm-6x2_v2/plan.json.gz",
+      "sourcePath": "docs/reviews/2026-11-11-issue230-native-plans-v9/transport/Tuerschild-Acrylglas-3mm-6x2_v2/source-document.json.gz",
+      "source": {
+        "id": "cfg_8e5ebd8e-a795-4bc8-a53f-884eb5e705d0",
+        "revision": 2,
+        "sha256": "4e74e4921f46d07382e2e2b605c3aaf237b11492905ed4e662a5e91aec22d3f5",
+        "status": "draft",
+        "publishedRevision": null,
+        "metadataSha256": "b1beebfe5c01834e02d1a7299ffee8c4ed19e0dd93b541718a9157a44fb090ec"
+      },
+      "template": {
+        "id": "pgt_e0676ce8-1bac-46fd-9665-ab04684143ec",
+        "revision": 2,
+        "sha256": "b38de2aba9530a86d71c61a569aee208295db3e63394b913a0dfb24ddfc52d69"
+      },
+      "variants": 10,
+      "target": {
+        "operation": "create-small-after-duplicate-check",
+        "shopifyProductId": null,
+        "existingCfgId": null,
+        "duplicateCheckRequired": true,
+        "preserveExistingProductAndVariantIds": true
+      }
+    },
+    {
+      "workbook": "Tuerschild-Acrylglas-3mm-8x2_v2.xlsx",
+      "label": "Türschild Acrylglas 3 mm 8 × 2 cm (Schwarz/Anthrazit)",
+      "planId": "pgp_1d526e2a-fe1d-4749-be52-5386cf227afe",
+      "planHash": "8531d241fd230a52a14a4c77bf314bdc49c578a679fc5d0d1d9a6a439f995d53",
+      "planPath": "docs/reviews/2026-11-11-issue230-native-plans-v9/transport/Tuerschild-Acrylglas-3mm-8x2_v2/plan.json.gz",
+      "sourcePath": "docs/reviews/2026-11-11-issue230-native-plans-v9/transport/Tuerschild-Acrylglas-3mm-8x2_v2/source-document.json.gz",
+      "source": {
+        "id": "cfg_ecf40ca9-b1f0-4782-ae2d-768cbe62d03d",
+        "revision": 2,
+        "sha256": "21479a11ae22c881fe40a05975d8beb7aa2e1fafc30db657b04bd3591ee36ed2",
+        "status": "draft",
+        "publishedRevision": null,
+        "metadataSha256": "b1beebfe5c01834e02d1a7299ffee8c4ed19e0dd93b541718a9157a44fb090ec"
+      },
+      "template": {
+        "id": "pgt_2c75a0ba-8628-47b6-807c-5889687ad8f1",
+        "revision": 2,
+        "sha256": "b8248c437752b60adcbe783b7ecba56b3851de4b4ed7675b3371d0070015f9f7"
+      },
+      "variants": 10,
+      "target": {
+        "operation": "create-small-after-duplicate-check",
+        "shopifyProductId": null,
+        "existingCfgId": null,
+        "duplicateCheckRequired": true,
+        "preserveExistingProductAndVariantIds": true
+      }
+    },
+    {
+      "workbook": "Tuerschild-Edelstahl-5x2_v1.xlsx",
+      "label": "Türschild Edelstahl 5 × 2 cm (gebürstet, Gravur)",
+      "planId": "pgp_7699e1dc-2f19-427d-a983-0fd6610f9bd9",
+      "planHash": "24840f5fe16a074e5f842ae85bb6529285bee334254d5d82d99f98efc9f09117",
+      "planPath": "docs/reviews/2026-11-11-issue230-native-plans-v9/transport/Tuerschild-Edelstahl-5x2_v1/plan.json.gz",
+      "sourcePath": "docs/reviews/2026-11-11-issue230-native-plans-v9/transport/Tuerschild-Edelstahl-5x2_v1/source-document.json.gz",
+      "source": {
+        "id": "cfg_9c64f1b8-5e95-49ae-8937-d5990a3b26a6",
+        "revision": 2,
+        "sha256": "c37159312125ef333a01ea1ab96d1c25fe46edfd946c52495a7e9039f2f1f466",
+        "status": "draft",
+        "publishedRevision": null,
+        "metadataSha256": "b1beebfe5c01834e02d1a7299ffee8c4ed19e0dd93b541718a9157a44fb090ec"
+      },
+      "template": {
+        "id": "pgt_26088966-d1b9-4212-92a3-4a3e3bb6a617",
+        "revision": 2,
+        "sha256": "2d76dc9c5eba6dcdb4c2cd8367905a380d71cdc7db28a55221fc86125079632a"
+      },
+      "variants": 5,
+      "target": {
+        "operation": "create-small-after-duplicate-check",
+        "shopifyProductId": null,
+        "existingCfgId": null,
+        "duplicateCheckRequired": true,
+        "preserveExistingProductAndVariantIds": true
+      }
+    },
+    {
+      "workbook": "Tuerschild-Edelstahl-6x2_v1.xlsx",
+      "label": "Türschild Edelstahl 6 × 2 cm (gebürstet, Gravur)",
+      "planId": "pgp_b216801b-a754-447b-be24-308e5f47de18",
+      "planHash": "8423f66172c8ff0258d5ca60591f42861457ba9634805d92941431dcfbf0764f",
+      "planPath": "docs/reviews/2026-11-11-issue230-native-plans-v9/transport/Tuerschild-Edelstahl-6x2_v1/plan.json.gz",
+      "sourcePath": "docs/reviews/2026-11-11-issue230-native-plans-v9/transport/Tuerschild-Edelstahl-6x2_v1/source-document.json.gz",
+      "source": {
+        "id": "cfg_d50868ac-bb33-476f-a07f-3a9a1b9af583",
+        "revision": 2,
+        "sha256": "3ef423c8c81ba076b3b61eaf116467464a42a70f266536451a870ab09824f516",
+        "status": "draft",
+        "publishedRevision": null,
+        "metadataSha256": "b1beebfe5c01834e02d1a7299ffee8c4ed19e0dd93b541718a9157a44fb090ec"
+      },
+      "template": {
+        "id": "pgt_176dd091-f9dc-4f7f-9bd1-42c350beb7f5",
+        "revision": 2,
+        "sha256": "7e75b75560592722a8b78ebb07f33565f8ffc839846d6f1f3a958d10ad20f35b"
+      },
+      "variants": 5,
+      "target": {
+        "operation": "create-small-after-duplicate-check",
+        "shopifyProductId": null,
+        "existingCfgId": null,
+        "duplicateCheckRequired": true,
+        "preserveExistingProductAndVariantIds": true
+      }
+    },
+    {
+      "workbook": "Tuerschild-Edelstahl-8x2_v1.xlsx",
+      "label": "Türschild Edelstahl 8 × 2 cm (gebürstet, Gravur)",
+      "planId": "pgp_869d2800-de7c-48d6-96f4-87a5f889186e",
+      "planHash": "634a3d3f45e462a03a4b79add03cc0d323e7587378d8cc402a3495f638652199",
+      "planPath": "docs/reviews/2026-11-11-issue230-native-plans-v9/transport/Tuerschild-Edelstahl-8x2_v1/plan.json.gz",
+      "sourcePath": "docs/reviews/2026-11-11-issue230-native-plans-v9/transport/Tuerschild-Edelstahl-8x2_v1/source-document.json.gz",
+      "source": {
+        "id": "cfg_c2dc9d76-a1f5-4f89-8b1c-89fd0f94555f",
+        "revision": 2,
+        "sha256": "9520da5156363805a1c11853b13795a09321410dc7b9ef1aa3fe711eb76ef2e3",
+        "status": "draft",
+        "publishedRevision": null,
+        "metadataSha256": "b1beebfe5c01834e02d1a7299ffee8c4ed19e0dd93b541718a9157a44fb090ec"
+      },
+      "template": {
+        "id": "pgt_abb30c39-1c05-4b4a-a666-812591d03a25",
+        "revision": 2,
+        "sha256": "bb1c8ed8834ba9b2975989515ae51dad725bb5e61d22577286db029459fb6476"
+      },
+      "variants": 5,
+      "target": {
+        "operation": "create-small-after-duplicate-check",
+        "shopifyProductId": null,
+        "existingCfgId": null,
+        "duplicateCheckRequired": true,
+        "preserveExistingProductAndVariantIds": true
+      }
+    }
+  ],
+  "files": [
+    {
+      "path": "Tuerschild-Acrylglas-3mm_v4/plan.json.gz",
+      "repositoryPath": "docs/reviews/2026-11-11-issue230-native-plans-v9/transport/Tuerschild-Acrylglas-3mm_v4/plan.json.gz",
+      "bytes": 15283191,
+      "sha256": "9647f6b8aabb2b8146cdb318345e7ce4384ef445a6711d74873f9aa0e144d702",
+      "originalPath": "work/product-plans-run-v9/Tuerschild-Acrylglas-3mm_v4/plan.json",
+      "originalBytes": 56991283,
+      "originalSha256": "c3bb9aa77fdb72a50503d3f3cfc631e43ea3f9465c9e239fa4f9cd3e4e942d33",
+      "gzip": true
+    },
+    {
+      "path": "Tuerschild-Acrylglas-3mm_v4/source-document.json.gz",
+      "repositoryPath": "docs/reviews/2026-11-11-issue230-native-plans-v9/transport/Tuerschild-Acrylglas-3mm_v4/source-document.json.gz",
+      "bytes": 15221634,
+      "sha256": "81dcfa54e33f4a6efe378d068b858bba93bf7f8470cf867366e51eac3e806c8d",
+      "originalPath": "work/product-plans-run-v9/Tuerschild-Acrylglas-3mm_v4/source-document.json",
+      "originalBytes": 53883331,
+      "originalSha256": "0f766fac0df850f5d65cabfeaa4defb51b82c84867c64ba4003b27d90de1d19a",
+      "gzip": true
+    },
+    {
+      "path": "Tuerschild-Acrylglas-3mm_v4/pair.json",
+      "repositoryPath": "docs/reviews/2026-11-11-issue230-native-plans-v9/transport/Tuerschild-Acrylglas-3mm_v4/pair.json",
+      "bytes": 12172,
+      "sha256": "68175c8b35296e6995da5de4cbcb31f8ae9edb24e3c9225e07b1adb1f9b61a50",
+      "originalPath": "work/product-plans-run-v9/Tuerschild-Acrylglas-3mm_v4/pair.json",
+      "originalBytes": 12172,
+      "originalSha256": "68175c8b35296e6995da5de4cbcb31f8ae9edb24e3c9225e07b1adb1f9b61a50",
+      "gzip": false
+    },
+    {
+      "path": "Tuerschild-Acrylglas-3mm_v4/source-metadata.json",
+      "repositoryPath": "docs/reviews/2026-11-11-issue230-native-plans-v9/transport/Tuerschild-Acrylglas-3mm_v4/source-metadata.json",
+      "bytes": 2038,
+      "sha256": "4fe8b82f5b648f91e12105c12ad68462884fea50ecd056d697b25e9e788f0b96",
+      "originalPath": "work/product-plans-run-v9/Tuerschild-Acrylglas-3mm_v4/source-metadata.json",
+      "originalBytes": 2038,
+      "originalSha256": "4fe8b82f5b648f91e12105c12ad68462884fea50ecd056d697b25e9e788f0b96",
+      "gzip": false
+    },
+    {
+      "path": "Tuerschild-Acrylglas-3mm_v4/template.json",
+      "repositoryPath": "docs/reviews/2026-11-11-issue230-native-plans-v9/transport/Tuerschild-Acrylglas-3mm_v4/template.json",
+      "bytes": 19106,
+      "sha256": "b8dc3ad6fb73f4dfce286cc20c23af6aab6c78db59b269df297b185ccb758cfb",
+      "originalPath": "work/product-plans-run-v9/Tuerschild-Acrylglas-3mm_v4/template.json",
+      "originalBytes": 19106,
+      "originalSha256": "b8dc3ad6fb73f4dfce286cc20c23af6aab6c78db59b269df297b185ccb758cfb",
+      "gzip": false
+    },
+    {
+      "path": "Tuerschild-Acrylglas-3mm-5x2_v2/plan.json.gz",
+      "repositoryPath": "docs/reviews/2026-11-11-issue230-native-plans-v9/transport/Tuerschild-Acrylglas-3mm-5x2_v2/plan.json.gz",
+      "bytes": 2471443,
+      "sha256": "ad8de8b6efe20ef7b1a5d11111b52098fc58d45af29ca64306e261a8dea62e32",
+      "originalPath": "work/product-plans-run-v9/Tuerschild-Acrylglas-3mm-5x2_v2/plan.json",
+      "originalBytes": 9707485,
+      "originalSha256": "2c4a60655e48fa2f3f533d8aef73e1de8c356bdfcc256361cfaea406638018b4",
+      "gzip": true
+    },
+    {
+      "path": "Tuerschild-Acrylglas-3mm-5x2_v2/source-document.json.gz",
+      "repositoryPath": "docs/reviews/2026-11-11-issue230-native-plans-v9/transport/Tuerschild-Acrylglas-3mm-5x2_v2/source-document.json.gz",
+      "bytes": 2459038,
+      "sha256": "482e86d97a3b80c4182c7cdb03de53b8bf760397b7ee6bd869bcb8f1bd87cb16",
+      "originalPath": "work/product-plans-run-v9/Tuerschild-Acrylglas-3mm-5x2_v2/source-document.json",
+      "originalBytes": 9367162,
+      "originalSha256": "94645c95ba8d27cd51caeaae582503b0f4f57dc71c7ef04d32cd4c15979f2d04",
+      "gzip": true
+    },
+    {
+      "path": "Tuerschild-Acrylglas-3mm-5x2_v2/pair.json",
+      "repositoryPath": "docs/reviews/2026-11-11-issue230-native-plans-v9/transport/Tuerschild-Acrylglas-3mm-5x2_v2/pair.json",
+      "bytes": 10033,
+      "sha256": "bc0a5bf40a44e60d5b576cb355020546c05c98378116af5029890a00bd32ddaf",
+      "originalPath": "work/product-plans-run-v9/Tuerschild-Acrylglas-3mm-5x2_v2/pair.json",
+      "originalBytes": 10033,
+      "originalSha256": "bc0a5bf40a44e60d5b576cb355020546c05c98378116af5029890a00bd32ddaf",
+      "gzip": false
+    },
+    {
+      "path": "Tuerschild-Acrylglas-3mm-5x2_v2/source-metadata.json",
+      "repositoryPath": "docs/reviews/2026-11-11-issue230-native-plans-v9/transport/Tuerschild-Acrylglas-3mm-5x2_v2/source-metadata.json",
+      "bytes": 2637,
+      "sha256": "0c693db07b8a6466ff04f271caea541badbeba4c9408e8895097b0cb9cb64bf4",
+      "originalPath": "work/product-plans-run-v9/Tuerschild-Acrylglas-3mm-5x2_v2/source-metadata.json",
+      "originalBytes": 2637,
+      "originalSha256": "0c693db07b8a6466ff04f271caea541badbeba4c9408e8895097b0cb9cb64bf4",
+      "gzip": false
+    },
+    {
+      "path": "Tuerschild-Acrylglas-3mm-5x2_v2/template.json",
+      "repositoryPath": "docs/reviews/2026-11-11-issue230-native-plans-v9/transport/Tuerschild-Acrylglas-3mm-5x2_v2/template.json",
+      "bytes": 2892,
+      "sha256": "5c053e6a38a3c9aa34126d9b2ef5bff900155c77ac71e3cf26fa49a87945f2cb",
+      "originalPath": "work/product-plans-run-v9/Tuerschild-Acrylglas-3mm-5x2_v2/template.json",
+      "originalBytes": 2892,
+      "originalSha256": "5c053e6a38a3c9aa34126d9b2ef5bff900155c77ac71e3cf26fa49a87945f2cb",
+      "gzip": false
+    },
+    {
+      "path": "Tuerschild-Acrylglas-3mm-6x2_v2/plan.json.gz",
+      "repositoryPath": "docs/reviews/2026-11-11-issue230-native-plans-v9/transport/Tuerschild-Acrylglas-3mm-6x2_v2/plan.json.gz",
+      "bytes": 2471848,
+      "sha256": "ec4a40c7edf7c08de4d51f497ba1cca63c17ca808d39cedfb70f5ca8a33b91f0",
+      "originalPath": "work/product-plans-run-v9/Tuerschild-Acrylglas-3mm-6x2_v2/plan.json",
+      "originalBytes": 9707918,
+      "originalSha256": "37100a4dba335facda14c50c526e6f67b22b1fa239f26d6bafe0b3146d01c344",
+      "gzip": true
+    },
+    {
+      "path": "Tuerschild-Acrylglas-3mm-6x2_v2/source-document.json.gz",
+      "repositoryPath": "docs/reviews/2026-11-11-issue230-native-plans-v9/transport/Tuerschild-Acrylglas-3mm-6x2_v2/source-document.json.gz",
+      "bytes": 2459386,
+      "sha256": "b49df47d71d9c5c99b1b54a4e78385e306df5a62b34e049067cad0a3ab208446",
+      "originalPath": "work/product-plans-run-v9/Tuerschild-Acrylglas-3mm-6x2_v2/source-document.json",
+      "originalBytes": 9367589,
+      "originalSha256": "cec58d88841ced32a6762efe73d508e47ded93c8f967970e57f0ae7799a5b77b",
+      "gzip": true
+    },
+    {
+      "path": "Tuerschild-Acrylglas-3mm-6x2_v2/pair.json",
+      "repositoryPath": "docs/reviews/2026-11-11-issue230-native-plans-v9/transport/Tuerschild-Acrylglas-3mm-6x2_v2/pair.json",
+      "bytes": 10033,
+      "sha256": "0cdac2b7b796dca5635e05848f346d87c48a17c65959e11cd280a22e4e870e87",
+      "originalPath": "work/product-plans-run-v9/Tuerschild-Acrylglas-3mm-6x2_v2/pair.json",
+      "originalBytes": 10033,
+      "originalSha256": "0cdac2b7b796dca5635e05848f346d87c48a17c65959e11cd280a22e4e870e87",
+      "gzip": false
+    },
+    {
+      "path": "Tuerschild-Acrylglas-3mm-6x2_v2/source-metadata.json",
+      "repositoryPath": "docs/reviews/2026-11-11-issue230-native-plans-v9/transport/Tuerschild-Acrylglas-3mm-6x2_v2/source-metadata.json",
+      "bytes": 2637,
+      "sha256": "0c693db07b8a6466ff04f271caea541badbeba4c9408e8895097b0cb9cb64bf4",
+      "originalPath": "work/product-plans-run-v9/Tuerschild-Acrylglas-3mm-6x2_v2/source-metadata.json",
+      "originalBytes": 2637,
+      "originalSha256": "0c693db07b8a6466ff04f271caea541badbeba4c9408e8895097b0cb9cb64bf4",
+      "gzip": false
+    },
+    {
+      "path": "Tuerschild-Acrylglas-3mm-6x2_v2/template.json",
+      "repositoryPath": "docs/reviews/2026-11-11-issue230-native-plans-v9/transport/Tuerschild-Acrylglas-3mm-6x2_v2/template.json",
+      "bytes": 2892,
+      "sha256": "39c303141e069ac7ae8fbf855c106a980979cc8c61129a478ecdfe2c6ba8043e",
+      "originalPath": "work/product-plans-run-v9/Tuerschild-Acrylglas-3mm-6x2_v2/template.json",
+      "originalBytes": 2892,
+      "originalSha256": "39c303141e069ac7ae8fbf855c106a980979cc8c61129a478ecdfe2c6ba8043e",
+      "gzip": false
+    },
+    {
+      "path": "Tuerschild-Acrylglas-3mm-8x2_v2/plan.json.gz",
+      "repositoryPath": "docs/reviews/2026-11-11-issue230-native-plans-v9/transport/Tuerschild-Acrylglas-3mm-8x2_v2/plan.json.gz",
+      "bytes": 2471952,
+      "sha256": "67c5134a1b5ab54491ccdb0bdda68489e3d879fd5bdbddf21fc89f014e8ecda3",
+      "originalPath": "work/product-plans-run-v9/Tuerschild-Acrylglas-3mm-8x2_v2/plan.json",
+      "originalBytes": 9708298,
+      "originalSha256": "8cfb1ad6e3c101218ef1917372d12aebfe1a8369e4a41816748039fce5eb9d5d",
+      "gzip": true
+    },
+    {
+      "path": "Tuerschild-Acrylglas-3mm-8x2_v2/source-document.json.gz",
+      "repositoryPath": "docs/reviews/2026-11-11-issue230-native-plans-v9/transport/Tuerschild-Acrylglas-3mm-8x2_v2/source-document.json.gz",
+      "bytes": 2459479,
+      "sha256": "75234f061469f03d657455626d96195be287187bac8fdce737a3ad908fe5cd54",
+      "originalPath": "work/product-plans-run-v9/Tuerschild-Acrylglas-3mm-8x2_v2/source-document.json",
+      "originalBytes": 9367969,
+      "originalSha256": "1ec018e04ad54cdef84bb223f32d04304b76de89c190f92514ba1837939213ca",
+      "gzip": true
+    },
+    {
+      "path": "Tuerschild-Acrylglas-3mm-8x2_v2/pair.json",
+      "repositoryPath": "docs/reviews/2026-11-11-issue230-native-plans-v9/transport/Tuerschild-Acrylglas-3mm-8x2_v2/pair.json",
+      "bytes": 10033,
+      "sha256": "3b6b864ecbcb0d1d4f8de40582466370ed32ae4c99d33cfa5d891d210a48a398",
+      "originalPath": "work/product-plans-run-v9/Tuerschild-Acrylglas-3mm-8x2_v2/pair.json",
+      "originalBytes": 10033,
+      "originalSha256": "3b6b864ecbcb0d1d4f8de40582466370ed32ae4c99d33cfa5d891d210a48a398",
+      "gzip": false
+    },
+    {
+      "path": "Tuerschild-Acrylglas-3mm-8x2_v2/source-metadata.json",
+      "repositoryPath": "docs/reviews/2026-11-11-issue230-native-plans-v9/transport/Tuerschild-Acrylglas-3mm-8x2_v2/source-metadata.json",
+      "bytes": 2637,
+      "sha256": "0c693db07b8a6466ff04f271caea541badbeba4c9408e8895097b0cb9cb64bf4",
+      "originalPath": "work/product-plans-run-v9/Tuerschild-Acrylglas-3mm-8x2_v2/source-metadata.json",
+      "originalBytes": 2637,
+      "originalSha256": "0c693db07b8a6466ff04f271caea541badbeba4c9408e8895097b0cb9cb64bf4",
+      "gzip": false
+    },
+    {
+      "path": "Tuerschild-Acrylglas-3mm-8x2_v2/template.json",
+      "repositoryPath": "docs/reviews/2026-11-11-issue230-native-plans-v9/transport/Tuerschild-Acrylglas-3mm-8x2_v2/template.json",
+      "bytes": 2892,
+      "sha256": "eeca9b2c18cccffdf90ccec842f0871c532748e2fe70dddac5a277eb8431d3ee",
+      "originalPath": "work/product-plans-run-v9/Tuerschild-Acrylglas-3mm-8x2_v2/template.json",
+      "originalBytes": 2892,
+      "originalSha256": "eeca9b2c18cccffdf90ccec842f0871c532748e2fe70dddac5a277eb8431d3ee",
+      "gzip": false
+    },
+    {
+      "path": "Tuerschild-Edelstahl-5x2_v1/plan.json.gz",
+      "repositoryPath": "docs/reviews/2026-11-11-issue230-native-plans-v9/transport/Tuerschild-Edelstahl-5x2_v1/plan.json.gz",
+      "bytes": 3918764,
+      "sha256": "b244ab1e8a4753791ac3496bbf09849fbe7cde3f3d9423d0da4300a7d4f82b3b",
+      "originalPath": "work/product-plans-run-v9/Tuerschild-Edelstahl-5x2_v1/plan.json",
+      "originalBytes": 11616157,
+      "originalSha256": "ad12d65562bd7990064dd8b20099f4283f54a21ce7812d51c8eb8bddae59c458",
+      "gzip": true
+    },
+    {
+      "path": "Tuerschild-Edelstahl-5x2_v1/source-document.json.gz",
+      "repositoryPath": "docs/reviews/2026-11-11-issue230-native-plans-v9/transport/Tuerschild-Edelstahl-5x2_v1/source-document.json.gz",
+      "bytes": 3907178,
+      "sha256": "10c60aa98ecc74afd53202ef064b90fefbd046674aee10f7c8ae2523764e0c81",
+      "originalPath": "work/product-plans-run-v9/Tuerschild-Edelstahl-5x2_v1/source-document.json",
+      "originalBytes": 11283357,
+      "originalSha256": "9521226a9e91b0b297450eb81647f31e0bbb451eedde1c86101a02a0c574accd",
+      "gzip": true
+    },
+    {
+      "path": "Tuerschild-Edelstahl-5x2_v1/pair.json",
+      "repositoryPath": "docs/reviews/2026-11-11-issue230-native-plans-v9/transport/Tuerschild-Edelstahl-5x2_v1/pair.json",
+      "bytes": 8180,
+      "sha256": "92b22a979990a25a86fdcb0388c922c4f5c20f29a6e3b9bbed10bd54496300cb",
+      "originalPath": "work/product-plans-run-v9/Tuerschild-Edelstahl-5x2_v1/pair.json",
+      "originalBytes": 8180,
+      "originalSha256": "92b22a979990a25a86fdcb0388c922c4f5c20f29a6e3b9bbed10bd54496300cb",
+      "gzip": false
+    },
+    {
+      "path": "Tuerschild-Edelstahl-5x2_v1/source-metadata.json",
+      "repositoryPath": "docs/reviews/2026-11-11-issue230-native-plans-v9/transport/Tuerschild-Edelstahl-5x2_v1/source-metadata.json",
+      "bytes": 2637,
+      "sha256": "0c693db07b8a6466ff04f271caea541badbeba4c9408e8895097b0cb9cb64bf4",
+      "originalPath": "work/product-plans-run-v9/Tuerschild-Edelstahl-5x2_v1/source-metadata.json",
+      "originalBytes": 2637,
+      "originalSha256": "0c693db07b8a6466ff04f271caea541badbeba4c9408e8895097b0cb9cb64bf4",
+      "gzip": false
+    },
+    {
+      "path": "Tuerschild-Edelstahl-5x2_v1/template.json",
+      "repositoryPath": "docs/reviews/2026-11-11-issue230-native-plans-v9/transport/Tuerschild-Edelstahl-5x2_v1/template.json",
+      "bytes": 2290,
+      "sha256": "edaff59e3b74ee9228a1a3349ca450031aa41c17a492973c602834156d0c0d8a",
+      "originalPath": "work/product-plans-run-v9/Tuerschild-Edelstahl-5x2_v1/template.json",
+      "originalBytes": 2290,
+      "originalSha256": "edaff59e3b74ee9228a1a3349ca450031aa41c17a492973c602834156d0c0d8a",
+      "gzip": false
+    },
+    {
+      "path": "Tuerschild-Edelstahl-6x2_v1/plan.json.gz",
+      "repositoryPath": "docs/reviews/2026-11-11-issue230-native-plans-v9/transport/Tuerschild-Edelstahl-6x2_v1/plan.json.gz",
+      "bytes": 3919129,
+      "sha256": "1fe158d2a0c3511687287cb07da6adc51d7b2311aae8a85e2faec669a8f785cb",
+      "originalPath": "work/product-plans-run-v9/Tuerschild-Edelstahl-6x2_v1/plan.json",
+      "originalBytes": 11616584,
+      "originalSha256": "8a0f296d0df9633261d7894d55443fcd6ae64bd3a31d95ce942335eafc76a386",
+      "gzip": true
+    },
+    {
+      "path": "Tuerschild-Edelstahl-6x2_v1/source-document.json.gz",
+      "repositoryPath": "docs/reviews/2026-11-11-issue230-native-plans-v9/transport/Tuerschild-Edelstahl-6x2_v1/source-document.json.gz",
+      "bytes": 3907504,
+      "sha256": "7777eb39e1aa0ced03c289fab39f989454ba1399ff5a7f0b38886a856cf6610c",
+      "originalPath": "work/product-plans-run-v9/Tuerschild-Edelstahl-6x2_v1/source-document.json",
+      "originalBytes": 11283784,
+      "originalSha256": "f3aa10c351d7c0343c747193eb0081842f92055dcfa0f16a072ab457104e0f92",
+      "gzip": true
+    },
+    {
+      "path": "Tuerschild-Edelstahl-6x2_v1/pair.json",
+      "repositoryPath": "docs/reviews/2026-11-11-issue230-native-plans-v9/transport/Tuerschild-Edelstahl-6x2_v1/pair.json",
+      "bytes": 8180,
+      "sha256": "3dc396ec7e7c966f77e300640c14f8f0fdb9edb0997886941a759f69e1d2b220",
+      "originalPath": "work/product-plans-run-v9/Tuerschild-Edelstahl-6x2_v1/pair.json",
+      "originalBytes": 8180,
+      "originalSha256": "3dc396ec7e7c966f77e300640c14f8f0fdb9edb0997886941a759f69e1d2b220",
+      "gzip": false
+    },
+    {
+      "path": "Tuerschild-Edelstahl-6x2_v1/source-metadata.json",
+      "repositoryPath": "docs/reviews/2026-11-11-issue230-native-plans-v9/transport/Tuerschild-Edelstahl-6x2_v1/source-metadata.json",
+      "bytes": 2637,
+      "sha256": "0c693db07b8a6466ff04f271caea541badbeba4c9408e8895097b0cb9cb64bf4",
+      "originalPath": "work/product-plans-run-v9/Tuerschild-Edelstahl-6x2_v1/source-metadata.json",
+      "originalBytes": 2637,
+      "originalSha256": "0c693db07b8a6466ff04f271caea541badbeba4c9408e8895097b0cb9cb64bf4",
+      "gzip": false
+    },
+    {
+      "path": "Tuerschild-Edelstahl-6x2_v1/template.json",
+      "repositoryPath": "docs/reviews/2026-11-11-issue230-native-plans-v9/transport/Tuerschild-Edelstahl-6x2_v1/template.json",
+      "bytes": 2290,
+      "sha256": "0b808daaea62e7c68b6e91954bb4b00d943371eb07195db55ab302998673b769",
+      "originalPath": "work/product-plans-run-v9/Tuerschild-Edelstahl-6x2_v1/template.json",
+      "originalBytes": 2290,
+      "originalSha256": "0b808daaea62e7c68b6e91954bb4b00d943371eb07195db55ab302998673b769",
+      "gzip": false
+    },
+    {
+      "path": "Tuerschild-Edelstahl-8x2_v1/plan.json.gz",
+      "repositoryPath": "docs/reviews/2026-11-11-issue230-native-plans-v9/transport/Tuerschild-Edelstahl-8x2_v1/plan.json.gz",
+      "bytes": 3919203,
+      "sha256": "49ce033e032bc89fb42dff3c6b7e3282246787a959c0b8a718cfc5c39b4b4f3b",
+      "originalPath": "work/product-plans-run-v9/Tuerschild-Edelstahl-8x2_v1/plan.json",
+      "originalBytes": 11616964,
+      "originalSha256": "6832fac837f6b85673e37789e49f720d89ded30ecca2358560e12d006aca5275",
+      "gzip": true
+    },
+    {
+      "path": "Tuerschild-Edelstahl-8x2_v1/source-document.json.gz",
+      "repositoryPath": "docs/reviews/2026-11-11-issue230-native-plans-v9/transport/Tuerschild-Edelstahl-8x2_v1/source-document.json.gz",
+      "bytes": 3907588,
+      "sha256": "6880060a9dd4177bc0cd26474fb453aae618aefbd18a92a118f6ec85573b7e68",
+      "originalPath": "work/product-plans-run-v9/Tuerschild-Edelstahl-8x2_v1/source-document.json",
+      "originalBytes": 11284164,
+      "originalSha256": "9fcf89dab365bcc053384d752c1321b66d07d228f8549aa0925c12708af600a6",
+      "gzip": true
+    },
+    {
+      "path": "Tuerschild-Edelstahl-8x2_v1/pair.json",
+      "repositoryPath": "docs/reviews/2026-11-11-issue230-native-plans-v9/transport/Tuerschild-Edelstahl-8x2_v1/pair.json",
+      "bytes": 8180,
+      "sha256": "becb84ef29f75bab3e3a267be89a189f58d03c3d0145ed2c9aa78845af5f3951",
+      "originalPath": "work/product-plans-run-v9/Tuerschild-Edelstahl-8x2_v1/pair.json",
+      "originalBytes": 8180,
+      "originalSha256": "becb84ef29f75bab3e3a267be89a189f58d03c3d0145ed2c9aa78845af5f3951",
+      "gzip": false
+    },
+    {
+      "path": "Tuerschild-Edelstahl-8x2_v1/source-metadata.json",
+      "repositoryPath": "docs/reviews/2026-11-11-issue230-native-plans-v9/transport/Tuerschild-Edelstahl-8x2_v1/source-metadata.json",
+      "bytes": 2637,
+      "sha256": "0c693db07b8a6466ff04f271caea541badbeba4c9408e8895097b0cb9cb64bf4",
+      "originalPath": "work/product-plans-run-v9/Tuerschild-Edelstahl-8x2_v1/source-metadata.json",
+      "originalBytes": 2637,
+      "originalSha256": "0c693db07b8a6466ff04f271caea541badbeba4c9408e8895097b0cb9cb64bf4",
+      "gzip": false
+    },
+    {
+      "path": "Tuerschild-Edelstahl-8x2_v1/template.json",
+      "repositoryPath": "docs/reviews/2026-11-11-issue230-native-plans-v9/transport/Tuerschild-Edelstahl-8x2_v1/template.json",
+      "bytes": 2290,
+      "sha256": "72e9caa3bc8e0459b0f516af0771bff9eb322a9df49dbdec478ae36a8a18533b",
+      "originalPath": "work/product-plans-run-v9/Tuerschild-Edelstahl-8x2_v1/template.json",
+      "originalBytes": 2290,
+      "originalSha256": "72e9caa3bc8e0459b0f516af0771bff9eb322a9df49dbdec478ae36a8a18533b",
+      "gzip": false
+    },
+    {
+      "path": "summary.json",
+      "repositoryPath": "docs/reviews/2026-11-11-issue230-native-plans-v9/transport/summary.json",
+      "bytes": 77085,
+      "sha256": "4a9963afc20016524ca66955e7ee2ae22fcc95b938f81b7d89baa76eebff9873",
+      "originalPath": "work/product-plans-run-v9/summary.json",
+      "originalBytes": 77085,
+      "originalSha256": "4a9963afc20016524ca66955e7ee2ae22fcc95b938f81b7d89baa76eebff9873",
+      "gzip": false
+    },
+    {
+      "path": "decisions.json",
+      "repositoryPath": "docs/reviews/2026-11-11-issue230-native-plans-v9/transport/decisions.json",
+      "bytes": 6332,
+      "sha256": "390de02c2d4bea6ebc6b7fd9f5d72a33bfd1ebf77954f34af8ce4c3b03aa075d",
+      "originalPath": "work/product-plans-run-v9/decisions.json",
+      "originalBytes": 6332,
+      "originalSha256": "390de02c2d4bea6ebc6b7fd9f5d72a33bfd1ebf77954f34af8ce4c3b03aa075d",
+      "gzip": false
+    },
+    {
+      "path": "verification.json",
+      "repositoryPath": "docs/reviews/2026-11-11-issue230-native-plans-v9/transport/verification.json",
+      "bytes": 1451,
+      "sha256": "586a34b72c7166103ba652a3a444f6449563267f08958baed0720a9442b461e7",
+      "originalPath": "work/product-plans-run-v9/verification.json",
+      "originalBytes": 1451,
+      "originalSha256": "586a34b72c7166103ba652a3a444f6449563267f08958baed0720a9442b461e7",
+      "gzip": false
+    },
+    {
+      "path": "design-exclusions.json",
+      "repositoryPath": "docs/reviews/2026-11-11-issue230-native-plans-v9/transport/design-exclusions.json",
+      "bytes": 1832,
+      "sha256": "a3825c6292aa7d75f63d43e0c74e1ea0cb69fc57770088b1095b6eca96b124a8",
+      "originalPath": "work/product-plans-run-v9/design-exclusions.json",
+      "originalBytes": 1832,
+      "originalSha256": "a3825c6292aa7d75f63d43e0c74e1ea0cb69fc57770088b1095b6eca96b124a8",
+      "gzip": false
+    },
+    {
+      "path": "motif-profile-pins.json",
+      "repositoryPath": "docs/reviews/2026-11-11-issue230-native-plans-v9/transport/motif-profile-pins.json",
+      "bytes": 1277,
+      "sha256": "13a46b9211a0fd7decd2ac7d98f7a7ac8154cd84144c69729a338da64e09f53c",
+      "originalPath": "work/product-plans-run-v9/motif-profile-pins.json",
+      "originalBytes": 1277,
+      "originalSha256": "13a46b9211a0fd7decd2ac7d98f7a7ac8154cd84144c69729a338da64e09f53c",
+      "gzip": false
+    },
+    {
+      "path": "upload-decision.json",
+      "repositoryPath": "docs/reviews/2026-11-11-issue230-native-plans-v9/transport/upload-decision.json",
+      "bytes": 369,
+      "sha256": "486a099e607de50cb3baf6ccde09517deed4bf5e4ea0f8259f122c21a5436c73",
+      "originalPath": "work/product-plans-run-v9/upload-decision.json",
+      "originalBytes": 369,
+      "originalSha256": "486a099e607de50cb3baf6ccde09517deed4bf5e4ea0f8259f122c21a5436c73",
+      "gzip": false
+    }
+  ]
+}

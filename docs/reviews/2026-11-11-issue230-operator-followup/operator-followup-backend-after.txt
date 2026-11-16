@@ -1,0 +1,15 @@
+✔ private full editor HTTP saves same card, refreshes approval/quick preview, rejects stale/foreign writes and hides no resource failure (1498.1258ms)
+✔ 100 exact native bindings share one large checked record, while changed later evidence rolls back (3475.8043ms)
+✔ fresh readiness indexes preserve cross-product and same-selection conflicts among 15120 bindings (160.5246ms)
+✔ inline positions use native renderer/CAS through authenticated HTTPS proxy and preserve other designs, formats and comments (2344.9377ms)
+✔ explicit steel targets render and save native positions while material, source, format and revision gates remain closed (423.1234ms)
+✔ target-level acrylic binding distinguishes colour and thickness during native position editing (119.5312ms)
+✔ proportional inline sizes persist native text, motif, graphic strokes and masked photo dimensions and reopen in the full configurator (2047.5356ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 10924.7558

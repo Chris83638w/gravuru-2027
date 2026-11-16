@@ -1,0 +1,15 @@
+# Triage: „Werkstatt einheitlich“
+
+Stand: `af6fd986c735d97bddc974261398ab8c4e88e00b`, 11.11.2026. Rein lesend; keine Code-/Teständerung.
+
+**Ergebnis:** Kein nachgewiesener Fehler an den sieben Produktplänen oder am Kundenpiloten. Der Test scheitert an einer veralteten vollständigen Seitenliste. Dahinter besteht zugleich eine reale Abweichung von der vorgesehenen gemeinsamen **Verwaltungsnavigation**; es ist nicht bloß eine falsche Beschriftung im Test.
+
+**Exakte Ursache:** `app/workshop/konfis.test.mjs:164` vergleicht sämtliche HTML-Dateien in `ui/` abzüglich fünf ausdrücklich genannter Kundenseiten mit `WORKSHOP_PAGES` aus `app/workshop/workshop-shell-markup.mjs:38`. Die Liste umfasst 19 Seiten; im Kandidaten sind es 23. Nicht erfasst sind `gallery-editor.html`, `gallery-management.html`, `module-profiles.html` und `motif-searches.html`. Der Lauf endet bereits bei dieser Mengenprüfung, bevor er Kopfzeilen vergleicht. Die vier zusätzlichen Seiten tragen tatsächlich eigene Kopfzeilen ohne die erzeugten Shell-Markierungen. Alle 19 registrierten Seiten erfüllen beim gesonderten rein lesenden Vergleich dagegen Kopfzeilengleichheit, genau eine Markierung, Seitenklasse, Hauptbereich, beide Shell-Ressourcen, Navigationsbeschriftungen und Abwesenheit der alten Seitenleiste.
+
+**Baseline:** Test und Shell-Registry sind zwischen `ac10e6c` und `af6fd98` bytegleich (Git-Blobs `89b1174e937211e2aaf32f293ebd1c93193e51aa` bzw. `8b880fd7a77c7581067d82f11b2e7d33ad157233`). Der Git-Baum von `ac10e6c` enthält bereits 20 statt 19 einschlägiger HTML-Dateien: zusätzlich `motif-searches.html`. Damit ist dieselbe Mengenabweichung aus dem Baseline-Quellbaum belegt; kein zweiter vollständiger Baseline-Testlauf durchgeführt. Der integrierte Stand ergänzt drei weitere eigenständig aufgebaute Verwaltungsseiten.
+
+**Abgrenzung:** Diese Assertion lädt keine Produktdatenbank, keinen der sieben Pläne, keine Preise, keine Shopify-Bindungen und keinen Kundeneditor. Sie belegt weder einen Defekt noch eine erfolgreiche Abnahme dieser Strecken. Betroffen ist die Einheitlichkeit/Registrierung interner Verwaltungsseiten, darunter Suchauswertung und Modulverwaltung. Eine bestehende Kundenroute oder Produktidentität wird durch die Assertion nicht verändert.
+
+**Sinnvoller Folgeschritt:** Als separates Navigationspaket die vier Seiten bewusst dem gemeinsamen Shell-Vertrag zuordnen; einen spezialisierten Galerieeditor gegebenenfalls ausdrücklich als eigenständige Editoransicht klassifizieren. Anschließend Registry, tatsächliche Kopfzeilen und Test gemeinsam abgleichen. Kein pauschales Ausblenden der vier Dateien und kein reines Sollwert-Anpassen. Der eingefrorene Operator-Kandidat bleibt unverändert.
+
+**Gezielte Reproduktion:** Im Kandidaten `node --test --test-name-pattern='Werkstatt einheitlich' app/workshop/konfis.test.mjs`: exakt 1 Test, 0 bestanden, 1 fehlgeschlagen, `ERR_ASSERTION` an Zeile 164. Log: `work/restabschluss/baseline-konfis-triage.log`. Zusätzlicher Dateivergleich ohne Test-Suite wie oben. Keine breitere Suite, keine Live-Prüfung.

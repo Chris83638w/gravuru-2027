@@ -1,0 +1,24 @@
+{
+  "schema": "gravuru/catalog-ff-runner-correction/v2",
+  "createdAt": "2026-11-11T15:02:41.438Z",
+  "serverStatus": "v1 inspect stopped read-only; v2 not executed on server; handoff to Astra 1",
+  "change": {
+    "before": "input:m.files.map(f=>f.path).join('\\n')+'\\n'",
+    "after": "input:m.files.map(f=>f.path).join('\\0')+'\\0'"
+  },
+  "runner": {
+    "file": "catalog-ff-v2.cjs",
+    "bytes": 15887,
+    "sha256": "7104c52f22138ffae40d1f1a774674fe3ab7bc44a5d82c167955198a47001935"
+  },
+  "originalRunnerSha256": "5a2a5e9893eb0bf4870c2541062a1a6f8bfdc21df265dc8fe2b213442ab569ff",
+  "manifestSha256": "5cca0332016c40d99ecbf2aaf93e9897c81d4e4fbaa39df83dc2635b5b414b3f",
+  "bundleSha256": "f8c43ef7977be31b6d50f6800c8f3f89a23b0762c5430dc67fafe6097d207a5a",
+  "testRun": {
+    "passed": 8,
+    "failed": 0,
+    "skipped": 0,
+    "durationMs": 11312.477,
+    "note": "Summary of actually observed test output; not raw stdout"
+  }
+}

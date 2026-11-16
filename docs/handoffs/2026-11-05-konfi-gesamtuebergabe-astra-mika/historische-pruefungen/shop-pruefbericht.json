@@ -1,0 +1,23 @@
+{
+  "date": "2026-11-04",
+  "product": "https://gravuru-design.myshopify.com/products/tuerschild-abger-ecken-v2a-personalisiert-leuchtturm-12x8",
+  "runtimeReportedInIssue48": "2206775a8ca2a60a691b029080b3cc2dfb2d5b27; mika-konfi-motive-navigation-r2-20261104",
+  "independentBrowserChecks": {
+    "shopifyEntry": "Passed: normal product button opens configurator while top-level URL remains Shopify",
+    "mobile375x548": "Passed: selected text -> Motive -> Alle Kategorien -> Mehr anzeigen; preview top54 height274, stage143, editor scroll1150.5; fullscreen roundtrip height274",
+    "mobile390x664": "Passed: preview top54 height332, footer601..664",
+    "textSelection": "Passed: input field and corresponding toolbar update together; canvas motif selectable",
+    "motifs": "Bestseller initially selected; full category list available; 18 to36 of721 in same panel",
+    "designs": "208 available; rendered visible thumbnails loaded",
+    "cart": "Passed: real published Leuchtturm with one added Haus motif. 19.99+1.69=21.68 EUR. Native review and authenticated handoff reached Shopify cart; preview contains house and Bearbeiten link appears beneath preview. No order/checkout.",
+    "originalDesign": "Restored after test: original 6 object IDs/transforms and all text input values equal initial UI snapshot; price19.99",
+    "existingCart": "Existing Gedenktafel untouched; test Leuchtturm line left in cart"
+  },
+  "remainingFinding": "Browser Back from successful cart restores cached overlay 'Im Warenkorb – einen Moment …' over editor. It intercepts clicks. Reload product + Jetzt personalisieren recovers saved draft without loss. Reported separately, not fixed in this read-only acceptance.",
+  "screenshots": [
+    "handy-375x548.jpg",
+    "handy-390x664.jpg",
+    "desktop-designs.jpg",
+    "warenkorb-hausmotiv.jpg"
+  ]
+}

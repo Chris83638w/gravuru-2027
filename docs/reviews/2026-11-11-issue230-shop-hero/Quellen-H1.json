@@ -1,0 +1,37 @@
+{
+  "schema": "gravuru-shop-hero-proposal/v1",
+  "proposal": "H1",
+  "status": "approved-installed-as-featured-draft",
+  "target": {
+    "id": "gid://shopify/Product/16190784602492",
+    "title": "Türschild Acrylglas 3 mm – Form und Größe selbst wählen",
+    "statusObserved": "DRAFT",
+    "previousMediaId": "gid://shopify/MediaImage/70017733919100",
+    "previousImageUrl": "https://cdn.shopify.com/s/files/1/0920/5550/3228/files/gravuru-tuerschild-acryl-leer-pr156-e5a1504afe98.webp?v=1793717959"
+  },
+  "sourceDesign": "TAE-V2A-8x5-D23",
+  "sourceNativePreview": "outputs/Startdesign-Alternativen-230/Einzelansichten/A2-acrylic.png",
+  "generation": {
+    "method": "built-in image_gen",
+    "promptFile": "Bildauftrag-H1.txt",
+    "outputWidth": 1254,
+    "outputHeight": 1254,
+    "transparentBackground": false
+  },
+  "files": {
+    "proposal": "H1-Acryl-Vanessa-Krueger.png",
+    "proposalSha256": "e5c9970d7bd7290dd7c9af96d995cef5cfe36f79aa3413a62e067a032390bd8b",
+    "previous": "Bisheriges-Hauptbild.webp",
+    "previousSha256": "ab63579ec7c77f372625d808034e404932d78157f9c9e10864343597697d5876"
+  },
+  "scope": {
+    "configuratorDesignChanges": 0,
+    "planChanges": 0,
+    "shopifyWrites": 3,
+    "publication": false,
+    "pixelIdenticalDesignClaim": false
+  },
+  "clarification": "https://github.com/Chris83638w/gravuru-2027/issues/230#issuecomment-6803956353",
+  "userApproval": "Ja, H1 als Hauptbild verwenden",
+  "verification": "Shopify-Uebernahme-H1.json"
+}

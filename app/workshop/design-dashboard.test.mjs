@@ -92,6 +92,17 @@ test('Dashboard: Zeilen je Linie aus Lieferform 2 und Bestand, Ampel mit Gründe
  assert.throws(()=>designDashboard(path.join(root,'fehlt')),e=>e.status===503&&e.code==='katalog_missing');
 });
 
+test('Originale precede new designs; catalogue priority only orders designs of the same origin',t=>{
+ // Chris: Originale/Rang 0 vor neuen Entwürfen/Rang 1; v9 handoff 11.11.2026.
+ const root=miniKatalog(t),file=path.join(root,'designs/test-reihe/T-D3/design.json');
+ const j=JSON.parse(fs.readFileSync(file));j.id='T-D9';j.katalog={prio:1};
+ write(root,'designs/test-reihe/T-D9/design.json',j);
+ fs.copyFileSync(path.join(root,'designs/test-reihe/T-D3/design.svg'),path.join(root,'designs/test-reihe/T-D9/design.svg'));forgetKatalog();
+ const rows=designDashboard(root,{linie:'test-linie',reihe:'test-reihe'}).rows;
+ assert.deepEqual(rows.map(r=>r.id),['T-D1','T-D2','T-D9','T-D3']);
+ assert.deepEqual(rows.map(r=>r.herkunftRang),[0,0,1,1]);assert.equal(rows[2].katalogPrio,1);
+});
+
 test('Designdateien: nur design.svg/-produktion.svg/original.png/preview.png unter designs/, Pfadausbruch abgelehnt',t=>{
  const root=miniKatalog(t);
  const f=designFile(root,{reihe:'test-reihe',id:'T-D1',file:'design.svg'});

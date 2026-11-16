@@ -1,0 +1,35 @@
+{
+  "date": "2026-11-04",
+  "scope": "mobile follow-up to draft PR 177 after phone review",
+  "productionDeployed": false,
+  "merged": false,
+  "previewUpdated": true,
+  "focused": {
+    "mobileAndToolbar": { "tests": 37, "passed": 37, "failed": 0 },
+    "motif": { "tests": 6, "passed": 6, "failed": 0 },
+    "bundle": { "tests": 7, "passed": 7, "failed": 0 },
+    "total": 50
+  },
+  "initialRestrictedBundleRun": {
+    "failed": 4,
+    "causes": ["EPERM local temporary file rename", "EACCES loopback test server"],
+    "sameSuiteOutsideRestrictionPassed": true
+  },
+  "fullSuiteRerun": false,
+  "bundle": {
+    "name": "editor-589bddfcecfee489.mjs",
+    "modules": 142,
+    "styles": 16,
+    "resources": 76,
+    "bytes": 1377632,
+    "gzipBytes": 464801
+  },
+  "browserViewports": [[390, 664], [375, 548], [1440, 900]],
+  "geometryEvidence": "mobile-geometry-verification.json",
+  "open": [
+    "Actual phone touch, scrolling and software keyboard acceptance",
+    "Claude review and Linux full suite on final commit",
+    "Integration with PR 174",
+    "Separate authorization and Shopify end-to-end acceptance before production deployment"
+  ]
+}

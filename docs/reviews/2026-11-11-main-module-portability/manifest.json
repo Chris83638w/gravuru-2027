@@ -1,0 +1,30 @@
+{
+  "scope": "portable embedded module snapshot, no database or mutation",
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 5660,
+      "sha256": "0600fcc35d451ebd9cffef51d50014f83d1f6a7ae22cd2f948b76ee4c3aba032"
+    },
+    {
+      "path": "approved-module-document.json",
+      "bytes": 234,
+      "sha256": "a97eca75039e72418f0d081f5c6b2b7c71fd4cde73421f28590b4f76bd20cec6"
+    },
+    {
+      "path": "independent-review.md",
+      "bytes": 4547,
+      "sha256": "9541bad0a32ec43c4da842801440f60d97d8fdcc6f8b483a4474d9dc65ff73a8"
+    },
+    {
+      "path": "native-snapshot-proof.json",
+      "bytes": 1897,
+      "sha256": "35fd7215a0c78f506f095af8b20d4e7286ad6674cc6edf6e1768a1c22e8c140e"
+    },
+    {
+      "path": "probe-native-snapshot.mjs",
+      "bytes": 3397,
+      "sha256": "635484f1f3e38d184612632f1628cd0ee2800a9b687b9ad1c6ac085d22c8f30e"
+    }
+  ]
+}

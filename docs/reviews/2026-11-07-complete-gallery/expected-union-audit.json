@@ -1,0 +1,45 @@
+{
+  "schema": "gravuru-complete-review-expected-union/v1",
+  "sourceCommit": "86c1ff5f431acfe60d4cff388958112187005550",
+  "formula": "462 + 19533 - 137 - 197 = 19661; 64 source-ID collisions retain distinct canonical cards",
+  "counts": {
+    "baseOriginals": 462,
+    "incomingOriginals": 19533,
+    "sameIdRetained": 137,
+    "sourceAliases": 197,
+    "renamedDifferentMasterSources": 64,
+    "expectedOriginals": 19661,
+    "expectedProducts": 3141,
+    "expectedPreparedTargets": 51259,
+    "expectedEditableOriginals": 6623,
+    "preservedBaseIds": 462,
+    "masterReferences": 1065,
+    "masterReferenceEdges": 5124,
+    "missingMasterTargets": 0
+  },
+  "masterReferencesInReferenceOnlyPackages": [
+    {
+      "id": "B-fruehstuecksbrettchen--hinweis",
+      "references": 1
+    },
+    {
+      "id": "B-hinweisschilder--beruf",
+      "references": 1
+    },
+    {
+      "id": "B-monogramme--allgemein",
+      "references": 73
+    },
+    {
+      "id": "B-monogramme--tiere",
+      "references": 4
+    }
+  ],
+  "maximumCategoryKey": {
+    "length": 76,
+    "id": "fruehstuecksbrettchen/Anlass/Muttertag und Vatertag/FBMUV-H-D4",
+    "key": "source:[\"fruehstuecksbrettchen\",\"Anlass\",\"Muttertag und Vatertag\",\"without\"]"
+  },
+  "missingMasterTargets": [],
+  "passed": true
+}

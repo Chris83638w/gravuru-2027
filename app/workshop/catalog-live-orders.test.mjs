@@ -10,6 +10,8 @@ import {makeProductDocument} from './product-model.mjs';
 import {createProductRepository} from './repository.mjs';
 import {prepareShopProduct} from './shop-preparation.mjs';
 import {createOrderIntake} from './order-intake.mjs';
+import {createCatalogLiveOrders} from './catalog-live-orders.mjs';
+import {DatabaseSync} from 'node:sqlite';
 import {openWorkshopDb,checkSelections,applyChecks} from '../../scripts/shop-bind.mjs';
 import {customerIntegrationFromEnv} from './acryl-employee-host.mjs';
 const SHOP='synthetic-catalog.myshopify.com',PRODUCT='gid://shopify/Product/139001';
@@ -84,4 +86,42 @@ test('catalog activation is explicit and does not change doorbell activation',()
  assert.equal(customerIntegrationFromEnv({...base,GRAVURU_CATALOG_LIVE_ORDERS:'approved-issue139-20261102'}).doorbellLiveOrders,undefined);
  for(const flag of ['true',true,'approved','approved-20261027'])assert.throws(()=>customerIntegrationFromEnv({...base,GRAVURU_CATALOG_LIVE_ORDERS:flag}),{code:'catalog_live_orders_env'});
  assert.throws(()=>customerIntegrationFromEnv({GRAVURU_CATALOG_LIVE_ORDERS:'approved-issue139-20261102'}),{code:'catalog_live_orders_env'});
+});
+
+test('approval batch reads each revision once, rechecks own writes and ends its cache with the transaction',async t=>{
+ const f=await fixture(t);f.intake.approveCatalogLiveProducts(f.args);
+ let reads=0;const db=f.ws.db,service=createCatalogLiveOrders({tenantId:'gravuru',database:{
+  get isTransaction(){return db.isTransaction;},exec:sql=>db.exec(sql),prepare(sql){if(sql.startsWith('SELECT document FROM product_revisions'))reads++;return db.prepare(sql);}
+ }});
+ assert.equal(service.approvals([f.lookup,f.lookup]).length,2);assert.equal(reads,1);
+ assert.equal(service.approvals([f.lookup]).length,1);assert.equal(reads,2,'no cached document survives a call or await boundary');
+ const altered={...f.lookup};Object.defineProperty(altered,'productRevision',{get(){
+  db.exec('DROP TRIGGER immutable_revision_update');db.prepare('UPDATE product_revisions SET document=? WHERE product_id=? AND revision=1').run(JSON.stringify({...f.record.document,name:'Unzulässiger Austausch'}),f.record.id);return 1;
+ }});
+ assert.throws(()=>service.approvals([f.lookup,altered]),/innerhalb der Prüfung geändert/);
+ assert.equal(db.isTransaction,false);assert.deepEqual(f.ws.repository.get(f.record.id).document,f.record.document,'failed batch rolls its own mutation back');
+ assert.equal(service.approvals([f.lookup])[0].kind,'catalog');
+});
+
+test('external revision mutation is isolated within the read snapshot and detected by the next approval batch',async t=>{
+ const f=await fixture(t);f.intake.approveCatalogLiveProducts(f.args);
+ const db=f.ws.db,file=db.prepare('PRAGMA database_list').all().find(x=>x.name==='main').file,other=new DatabaseSync(file);
+ try{
+ const service=createCatalogLiveOrders({tenantId:'gravuru',database:db}),changed={...f.lookup};let wrote=false;
+ Object.defineProperty(changed,'productRevision',{get(){if(!wrote){wrote=true;other.exec('DROP TRIGGER immutable_revision_update');other.prepare('UPDATE product_revisions SET document=? WHERE product_id=? AND revision=1').run(JSON.stringify({...f.record.document,name:'Externer Austausch'}),f.record.id);}return 1;}});
+ assert.ok(service.approvals([f.lookup,changed]).every(Boolean),'one read transaction sees its original immutable snapshot');
+ assert.throws(()=>service.approvals([f.lookup]),/stimmt nicht mehr/,'fresh transaction must read and reject the changed source');
+ }finally{other.close();}
+});
+
+test('schema replacement cannot reuse a cached revision when total_changes is unchanged',async t=>{
+ const f=await fixture(t);f.intake.approveCatalogLiveProducts(f.args);const db=f.ws.db;
+ const service=createCatalogLiveOrders({tenantId:'gravuru',database:db}),changed={...f.lookup};
+ Object.defineProperty(changed,'productRevision',{get(){
+  const before=db.prepare('SELECT total_changes() AS n').get().n;
+  db.exec("ALTER TABLE product_revisions RENAME TO old_product_revisions; CREATE TABLE product_revisions AS SELECT product_id,revision,json_set(document,'$.name','Schema replacement') AS document,metadata,tenant_id,status FROM old_product_revisions");
+  assert.equal(db.prepare('SELECT total_changes() AS n').get().n,before);return 1;
+ }});
+ assert.throws(()=>service.approvals([f.lookup,changed]),/innerhalb der Prüfung geändert/);
+ assert.equal(service.approvals([f.lookup])[0].kind,'catalog');
 });

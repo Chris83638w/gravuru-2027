@@ -122,3 +122,10 @@ Der bereits vorhandene Schlüssel wird auf dem Server aus seiner geschützten Da
 Für eine **explizit vorgeschlagene**, noch nicht gespeicherte Variantenbindung unterstützt derselbe Befehl zusätzlich `--binding-request /absoluter/privater/pfad.json`. Die private Datei enthält genau `record` (vollständiger unveränderter Produktdatensatz mit Revision aus der Werkstatt), `shopifyProductId` (Shopify-Produkt-GID) und `mappings` (`key` aus der bestehenden Shopvorbereitung, numerische `variantId` als Text). Keine Preise/Optionen per Hand ergänzen: Sie werden aus dem gemeinsamen Produktmodell ermittelt. Der Befehl liest nur die angegebenen Varianten und vergleicht Produkt, physische Optionen, Preis und Euro-Währung. Er sucht keine Produkte nach ähnlichem Namen und speichert keine Zuordnung.
 
 Exitcode 0 = Prüfung erfolgreich ausgeführt, bei Varianten alle angefragten Zeilen passend. `complete` zeigt zusätzlich, ob alle Ausführungen enthalten sind. Exitcode 2 = fachliche Abweichung; Exitcode 1 = unbestätigte Verbindung/Eingabe. **Auch bei `matches: true` bleiben `bindingSaved`, `checkoutReady` und `published` falsch.** Admin-Preisprüfung bestätigt weder Storefront-Verfügbarkeit noch Aufpreise, Zahlung, Kundenanmeldung oder Bestellannahme. Regulärer Plus-Shop ist kein bestätigter Testzahlungsweg. Vor jeder späteren Bindung erneut gegen den aktuellen gespeicherten Produktstand prüfen; diesen Bericht nicht als dauerhafte Freigabe verwenden.
+
+## Optionale Schiefer-Galerie
+
+Für die private Galerie mit vorhandenem Bearbeitungsstand und Kommentaren gilt
+[SLATE-REVIEW-README.md](SLATE-REVIEW-README.md). Sie ergänzt ausschließlich bei
+gesetztem `GRAVURU_SLATE_REVIEW_PACKAGE` den bestehenden geschützten Prüfstand.
+Die Snapshot-Installation erfolgt vor `plesk:prepare` in neue private Zielordner.

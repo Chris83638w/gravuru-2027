@@ -1,0 +1,531 @@
+{
+  "counts": {
+    "pairs": 58,
+    "sameTextFonts": 56,
+    "sameGeometryAt001": 0
+  },
+  "pairs": [
+    {
+      "key": "TO-A-D1",
+      "ids": [
+        "TQ-S-20x20-D1",
+        "TRE-S-10x10-D1"
+      ],
+      "sameTextFonts": true,
+      "maxNormalizedTextDifference": 0.14234999999999998
+    },
+    {
+      "key": "TO-A-D10",
+      "ids": [
+        "TQ-S-20x20-D10",
+        "TRE-S-10x10-D10"
+      ],
+      "sameTextFonts": true,
+      "maxNormalizedTextDifference": 0.028549999999999964
+    },
+    {
+      "key": "TO-A-D11",
+      "ids": [
+        "TQ-S-20x20-D11",
+        "TRE-S-10x10-D11"
+      ],
+      "sameTextFonts": true,
+      "maxNormalizedTextDifference": 0.017699999999999994
+    },
+    {
+      "key": "TO-A-D12",
+      "ids": [
+        "TQ-S-20x20-D12",
+        "TRE-S-10x10-D12"
+      ],
+      "sameTextFonts": false,
+      "maxNormalizedTextDifference": null
+    },
+    {
+      "key": "TO-A-D13",
+      "ids": [
+        "TQ-S-20x20-D13",
+        "TRE-S-10x10-D13"
+      ],
+      "sameTextFonts": true,
+      "maxNormalizedTextDifference": 0.03215000000000001
+    },
+    {
+      "key": "TO-A-D14",
+      "ids": [
+        "TQ-S-20x20-D14",
+        "TRE-S-10x10-D14"
+      ],
+      "sameTextFonts": true,
+      "maxNormalizedTextDifference": 0.02024999999999999
+    },
+    {
+      "key": "TO-A-D15",
+      "ids": [
+        "TQ-S-20x20-D15",
+        "TRE-S-10x10-D15"
+      ],
+      "sameTextFonts": true,
+      "maxNormalizedTextDifference": 0.11744999999999994
+    },
+    {
+      "key": "TO-A-D16",
+      "ids": [
+        "TQ-S-20x20-D16",
+        "TRE-S-10x10-D16"
+      ],
+      "sameTextFonts": true,
+      "maxNormalizedTextDifference": 0.027000000000000024
+    },
+    {
+      "key": "TO-A-D17",
+      "ids": [
+        "TQ-S-20x20-D17",
+        "TRE-S-10x10-D17"
+      ],
+      "sameTextFonts": true,
+      "maxNormalizedTextDifference": 0.04235
+    },
+    {
+      "key": "TQ-A-D18",
+      "ids": [
+        "TQ-S-20x20-D18",
+        "TRE-S-10x10-D18"
+      ],
+      "sameTextFonts": true,
+      "maxNormalizedTextDifference": 0.031149999999999983
+    },
+    {
+      "key": "TO-A-D19",
+      "ids": [
+        "TQ-S-20x20-D19",
+        "TRE-S-10x10-D19"
+      ],
+      "sameTextFonts": true,
+      "maxNormalizedTextDifference": 0.09765000000000001
+    },
+    {
+      "key": "TO-A-D2",
+      "ids": [
+        "TQ-S-20x20-D2",
+        "TRE-S-10x10-D2"
+      ],
+      "sameTextFonts": true,
+      "maxNormalizedTextDifference": 0.04370000000000007
+    },
+    {
+      "key": "TO-A-D20",
+      "ids": [
+        "TQ-S-20x20-D20",
+        "TRE-S-10x10-D20"
+      ],
+      "sameTextFonts": true,
+      "maxNormalizedTextDifference": 0.07765
+    },
+    {
+      "key": "TO-A-D21",
+      "ids": [
+        "TQ-S-20x20-D21",
+        "TRE-S-10x10-D21"
+      ],
+      "sameTextFonts": true,
+      "maxNormalizedTextDifference": 0.0148
+    },
+    {
+      "key": "TO-A-D22",
+      "ids": [
+        "TQ-S-20x20-D22",
+        "TRE-S-10x10-D22"
+      ],
+      "sameTextFonts": true,
+      "maxNormalizedTextDifference": 0.05170000000000008
+    },
+    {
+      "key": "TQ-A-D23",
+      "ids": [
+        "TQ-S-20x20-D23",
+        "TRE-S-10x10-D23"
+      ],
+      "sameTextFonts": true,
+      "maxNormalizedTextDifference": 0.033549999999999996
+    },
+    {
+      "key": "TO-A-D24",
+      "ids": [
+        "TQ-S-20x20-D24",
+        "TRE-S-10x10-D24"
+      ],
+      "sameTextFonts": true,
+      "maxNormalizedTextDifference": 0.05030000000000004
+    },
+    {
+      "key": "TO-A-D25",
+      "ids": [
+        "TQ-S-20x20-D25",
+        "TRE-S-10x10-D25"
+      ],
+      "sameTextFonts": true,
+      "maxNormalizedTextDifference": 0.021849999999999925
+    },
+    {
+      "key": "TQ-A-D26",
+      "ids": [
+        "TQ-S-20x20-D26",
+        "TRE-S-10x10-D26"
+      ],
+      "sameTextFonts": true,
+      "maxNormalizedTextDifference": 0.09885
+    },
+    {
+      "key": "TO-A-D27",
+      "ids": [
+        "TQ-S-20x20-D27",
+        "TRE-S-10x10-D27"
+      ],
+      "sameTextFonts": true,
+      "maxNormalizedTextDifference": 0.03474999999999995
+    },
+    {
+      "key": "TQ-A-D28",
+      "ids": [
+        "TQ-S-20x20-D28",
+        "TRE-S-10x10-D28"
+      ],
+      "sameTextFonts": true,
+      "maxNormalizedTextDifference": 0.14095000000000002
+    },
+    {
+      "key": "TO-A-D29",
+      "ids": [
+        "TQ-S-20x20-D29",
+        "TRE-S-10x10-D29"
+      ],
+      "sameTextFonts": true,
+      "maxNormalizedTextDifference": 0.04149999999999998
+    },
+    {
+      "key": "TO-A-D3",
+      "ids": [
+        "TQ-S-20x20-D3",
+        "TRE-S-10x10-D3"
+      ],
+      "sameTextFonts": true,
+      "maxNormalizedTextDifference": 0.023349999999999982
+    },
+    {
+      "key": "TO-A-D30",
+      "ids": [
+        "TQ-S-20x20-D30",
+        "TRE-S-10x10-D30"
+      ],
+      "sameTextFonts": true,
+      "maxNormalizedTextDifference": 0.09725000000000006
+    },
+    {
+      "key": "TO-A-D31",
+      "ids": [
+        "TQ-S-20x20-D31",
+        "TRE-S-10x10-D31"
+      ],
+      "sameTextFonts": true,
+      "maxNormalizedTextDifference": 0.030849999999999933
+    },
+    {
+      "key": "TO-A-D32",
+      "ids": [
+        "TQ-S-20x20-D32",
+        "TRE-S-10x10-D32"
+      ],
+      "sameTextFonts": true,
+      "maxNormalizedTextDifference": 0.02889999999999998
+    },
+    {
+      "key": "TO-A-D33",
+      "ids": [
+        "TQ-S-20x20-D33",
+        "TRE-S-10x10-D33"
+      ],
+      "sameTextFonts": true,
+      "maxNormalizedTextDifference": 0.035499999999999976
+    },
+    {
+      "key": "TO-A-D35",
+      "ids": [
+        "TQ-S-20x20-D35",
+        "TRE-S-10x10-D35"
+      ],
+      "sameTextFonts": false,
+      "maxNormalizedTextDifference": null
+    },
+    {
+      "key": "TO-A-D37",
+      "ids": [
+        "TQ-S-20x20-D37",
+        "TRE-S-10x10-D37"
+      ],
+      "sameTextFonts": true,
+      "maxNormalizedTextDifference": 0.04625000000000001
+    },
+    {
+      "key": "TO-A-D38",
+      "ids": [
+        "TQ-S-20x20-D38",
+        "TRE-S-10x10-D38"
+      ],
+      "sameTextFonts": true,
+      "maxNormalizedTextDifference": 0.0025000000000000022
+    },
+    {
+      "key": "TO-A-D39",
+      "ids": [
+        "TQ-S-20x20-D39",
+        "TRE-S-10x10-D39"
+      ],
+      "sameTextFonts": true,
+      "maxNormalizedTextDifference": 0.06685000000000002
+    },
+    {
+      "key": "TO-A-D4",
+      "ids": [
+        "TQ-S-20x20-D4",
+        "TRE-S-10x10-D4"
+      ],
+      "sameTextFonts": true,
+      "maxNormalizedTextDifference": 0.038349999999999995
+    },
+    {
+      "key": "TQ-A-D40",
+      "ids": [
+        "TQ-S-20x20-D40",
+        "TRE-S-10x10-D40"
+      ],
+      "sameTextFonts": true,
+      "maxNormalizedTextDifference": 0.03059999999999996
+    },
+    {
+      "key": "TO-A-D41",
+      "ids": [
+        "TQ-S-20x20-D41",
+        "TRE-S-10x10-D41"
+      ],
+      "sameTextFonts": true,
+      "maxNormalizedTextDifference": 0.0724499999999999
+    },
+    {
+      "key": "TO-A-D42",
+      "ids": [
+        "TQ-S-20x20-D42",
+        "TRE-S-10x10-D42"
+      ],
+      "sameTextFonts": true,
+      "maxNormalizedTextDifference": 0.04734999999999995
+    },
+    {
+      "key": "TO-A-D43",
+      "ids": [
+        "TQ-S-20x20-D43",
+        "TRE-S-10x10-D43"
+      ],
+      "sameTextFonts": true,
+      "maxNormalizedTextDifference": 0.07790000000000008
+    },
+    {
+      "key": "TO-A-D44",
+      "ids": [
+        "TQ-S-20x20-D44",
+        "TRE-S-10x10-D44"
+      ],
+      "sameTextFonts": true,
+      "maxNormalizedTextDifference": 0.02939999999999998
+    },
+    {
+      "key": "TO-A-D45",
+      "ids": [
+        "TQ-S-20x20-D45",
+        "TRE-S-10x10-D45"
+      ],
+      "sameTextFonts": true,
+      "maxNormalizedTextDifference": 0.030749999999999944
+    },
+    {
+      "key": "TO-A-D46",
+      "ids": [
+        "TQ-S-20x20-D46",
+        "TRE-S-10x10-D46"
+      ],
+      "sameTextFonts": true,
+      "maxNormalizedTextDifference": 0.05289999999999995
+    },
+    {
+      "key": "TO-A-D47",
+      "ids": [
+        "TQ-S-20x20-D47",
+        "TRE-S-10x10-D47"
+      ],
+      "sameTextFonts": true,
+      "maxNormalizedTextDifference": 0.08910000000000007
+    },
+    {
+      "key": "TQ-A-D48",
+      "ids": [
+        "TQ-S-20x20-D48",
+        "TRE-S-10x10-D48"
+      ],
+      "sameTextFonts": true,
+      "maxNormalizedTextDifference": 0.04700000000000004
+    },
+    {
+      "key": "TO-A-D49",
+      "ids": [
+        "TQ-S-20x20-D49",
+        "TRE-S-10x10-D49"
+      ],
+      "sameTextFonts": true,
+      "maxNormalizedTextDifference": 0.05005000000000015
+    },
+    {
+      "key": "TO-A-D5",
+      "ids": [
+        "TQ-S-20x20-D5",
+        "TRE-S-10x10-D5"
+      ],
+      "sameTextFonts": true,
+      "maxNormalizedTextDifference": 0.006750000000000006
+    },
+    {
+      "key": "TO-A-D50",
+      "ids": [
+        "TQ-S-20x20-D50",
+        "TRE-S-10x10-D50"
+      ],
+      "sameTextFonts": true,
+      "maxNormalizedTextDifference": 0.029650000000000065
+    },
+    {
+      "key": "TO-A-D51",
+      "ids": [
+        "TQ-S-20x20-D51",
+        "TRE-S-10x10-D51"
+      ],
+      "sameTextFonts": true,
+      "maxNormalizedTextDifference": 0.01795000000000002
+    },
+    {
+      "key": "TO-A-D52",
+      "ids": [
+        "TQ-S-20x20-D52",
+        "TRE-S-10x10-D52"
+      ],
+      "sameTextFonts": true,
+      "maxNormalizedTextDifference": 0.017349999999999977
+    },
+    {
+      "key": "TO-A-D53",
+      "ids": [
+        "TQ-S-20x20-D53",
+        "TRE-S-10x10-D53"
+      ],
+      "sameTextFonts": true,
+      "maxNormalizedTextDifference": 0.017000000000000043
+    },
+    {
+      "key": "TO-A-D54",
+      "ids": [
+        "TQ-S-20x20-D54",
+        "TRE-S-10x10-D54"
+      ],
+      "sameTextFonts": true,
+      "maxNormalizedTextDifference": 0.025550000000000017
+    },
+    {
+      "key": "TQ-A-D55",
+      "ids": [
+        "TQ-S-20x20-D55",
+        "TRE-S-10x10-D55"
+      ],
+      "sameTextFonts": true,
+      "maxNormalizedTextDifference": 0.05250000000000002
+    },
+    {
+      "key": "TO-A-D56",
+      "ids": [
+        "TQ-S-20x20-D56",
+        "TRE-S-10x10-D56"
+      ],
+      "sameTextFonts": true,
+      "maxNormalizedTextDifference": 0.05075000000000007
+    },
+    {
+      "key": "TQ-A-D57",
+      "ids": [
+        "TQ-S-20x20-D57",
+        "TRE-S-10x10-D57"
+      ],
+      "sameTextFonts": true,
+      "maxNormalizedTextDifference": 0.06445000000000001
+    },
+    {
+      "key": "TQ-A-D58",
+      "ids": [
+        "TQ-S-20x20-D58",
+        "TRE-S-10x10-D58"
+      ],
+      "sameTextFonts": true,
+      "maxNormalizedTextDifference": 0.07789999999999997
+    },
+    {
+      "key": "TO-A-D6",
+      "ids": [
+        "TQ-S-20x20-D6",
+        "TRE-S-10x10-D6"
+      ],
+      "sameTextFonts": true,
+      "maxNormalizedTextDifference": 0.010899999999999965
+    },
+    {
+      "key": "TQ-A-D60",
+      "ids": [
+        "TQ-S-20x20-D60",
+        "TRE-S-10x10-D60"
+      ],
+      "sameTextFonts": true,
+      "maxNormalizedTextDifference": 0.10794999999999999
+    },
+    {
+      "key": "TQ-A-D61",
+      "ids": [
+        "TQ-S-20x20-D61",
+        "TRE-S-10x10-D61"
+      ],
+      "sameTextFonts": true,
+      "maxNormalizedTextDifference": 0.04109999999999997
+    },
+    {
+      "key": "TO-A-D7",
+      "ids": [
+        "TQ-S-20x20-D7",
+        "TRE-S-10x10-D7"
+      ],
+      "sameTextFonts": true,
+      "maxNormalizedTextDifference": 0.047699999999999965
+    },
+    {
+      "key": "TO-A-D8",
+      "ids": [
+        "TQ-S-20x20-D8",
+        "TRE-S-10x10-D8"
+      ],
+      "sameTextFonts": true,
+      "maxNormalizedTextDifference": 0.030850000000000155
+    },
+    {
+      "key": "TO-A-D9",
+      "ids": [
+        "TQ-S-20x20-D9",
+        "TRE-S-10x10-D9"
+      ],
+      "sameTextFonts": true,
+      "maxNormalizedTextDifference": 0.04855000000000004
+    }
+  ]
+}

@@ -3,6 +3,7 @@ import {nativeDoorbellConfig} from './doorbell-product.mjs';
 import {workshopResources} from './catalog.mjs';
 import {isLayeredDoorbell} from '../configurator/variant-m/doorbell-selection.mjs';
 import {isFamilyFormats} from '../configurator/variant-m/family-formats.mjs';
+import {isScalableSizes} from '../configurator/variant-m/scalable-sizes.mjs';
 import {isFormProduct,validateFormProduct} from './form-product.mjs';
 import {nativeSlateConfig} from './slate-product.mjs';
 import {nativeSpecimenConfig} from './specimen-product.mjs';
@@ -17,6 +18,19 @@ export const PRODUCT_SCHEMA='gravuru-product/v1';
 const PROFILE_TYPES=['fonts','motifs','colors','bestsellers'];
 const RIGHTS=ELEMENT_RIGHTS;
 const DOCUMENT_KEYS=['schema','name','kind','masterId','categoryIds','seo','profileAssignments','elementRights','config'];
+const resolutionSnapshots=new WeakSet();
+// A synchronous internal batch validates once and receives a detached, deeply
+// frozen document. There is no caller-controlled "already validated" flag.
+// Outside the callback resolveProduct keeps its normal validation behaviour.
+export function withProductResolutionSnapshot(document,read){
+  if(typeof read!=='function')throw Error('Eine synchrone Produktprüfung ist erforderlich.');
+  if(resolutionSnapshots.has(document)){const result=read(document);if(result?.then instanceof Function)throw Error('Die Produktprüfung darf nicht asynchron sein.');return result;}
+  const validated=validateProductDocument(document),seen=new WeakSet();
+  function freeze(value){if(value&&typeof value==='object'&&!seen.has(value)){seen.add(value);Object.values(value).forEach(freeze);Object.freeze(value);}}
+  freeze(validated);resolutionSnapshots.add(validated);
+  try{const result=read(validated);if(result?.then instanceof Function)throw Error('Die Produktprüfung darf nicht asynchron sein.');return result;}
+  finally{resolutionSnapshots.delete(validated);}
+}
 const fail=message=>{throw Error(message);};
 const record=value=>value!==null&&typeof value==='object'&&!Array.isArray(value)&&[Object.prototype,null].includes(Object.getPrototypeOf(value));
 const id=value=>typeof value==='string'&&/^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$/.test(value);
@@ -72,7 +86,20 @@ function nativeAcrylicConfig(input){
   return validated;
 }
 
-const nativeConfig = input => isFamilyFormats(input) ? prepareConfig(input) : input?.familyAcrylic ? nativeFamilyAcrylicConfig(input) : isLayeredDoorbell(input) ? nativeDoorbellConfig(input) : input?.doorbell||input?.profile?.material?.kind==='steel' ? nativeSpecimenConfig(input) : input?.profile?.material?.kind==='slate' ? nativeSlateConfig(input) : nativeAcrylicConfig(input);
+// The explicit size table owns dimensions and cent prices. Persist that same
+// contract instead of reducing a four-size print product to the older pilot.
+function nativeScalableAcrylicConfig(input){
+  if(!isScalableSizes(input)||input.profile?.material?.kind!=='acrylic'||input.profile?.processing?.profileId!=='color-print')fail('Skalierbare Acrylprodukte benötigen ein ausdrückliches Farbdruckprofil.');
+  const config=prepareConfig(input);
+  for(const size of config.scalableSizes.sizes){
+    const p=size.profile;
+    if(p.kind!=='universal-product'||p.geometry?.shape!=='rect'||p.geometry?.holes?.length!==0||p.material?.thicknessMm!==3||p.processing?.profileId!=='color-print')fail('Skalierbare Acrylbilder benötigen rechteckiges Acrylglas mit 3 mm und Farbdruck ohne Bohrungen.');
+    if(!p.designs.some(d=>d.id===p.defaultDesignId))fail('Das Standarddesign fehlt in einer Acrylgröße.');
+    for(const d of p.designs)validateDesign(config,d,{size:size.id},config.localResources?.fonts||{},config.localResources?.motifs||[],{template:true});
+  }
+  return config;
+}
+const nativeConfig = input => isFamilyFormats(input) ? prepareConfig(input) : isScalableSizes(input)&&input?.profile?.material?.kind==='acrylic' ? nativeScalableAcrylicConfig(input) : input?.familyAcrylic ? nativeFamilyAcrylicConfig(input) : isLayeredDoorbell(input) ? nativeDoorbellConfig(input) : input?.doorbell||input?.profile?.material?.kind==='steel' ? nativeSpecimenConfig(input) : input?.profile?.material?.kind==='slate' ? nativeSlateConfig(input) : nativeAcrylicConfig(input);
 
 export function makeProductDocument(input,{name,kind='product',masterId=null}={}){
   const config=nativeConfig(input),title=text(name??config.profile.name,1,200,'Produktname');
@@ -124,7 +151,7 @@ export function validateProductDocument(document){
 }
 
 export function resolveProduct(document,{options={},designId}={}){
-  const product=validateProductDocument(document),config=product.config;
+  const product=resolutionSnapshots.has(document)?document:validateProductDocument(document),config=product.config;
   const resolved=resolvedOptions(config,options),selected=selectedProfile(config,resolved);
   const chosenId=designId===undefined?selected.defaultDesignId:designId;
   const design=selected.designs.find(item=>item.id===chosenId);

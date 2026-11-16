@@ -1,0 +1,152 @@
+TAP version 13
+# Subtest: Worker: Übersicht, Linie und Filter sind bytegleich zum direkten Weg (mit Produkt aus der Datenbank)
+ok 1 - Worker: Übersicht, Linie und Filter sind bytegleich zum direkten Weg (mit Produkt aus der Datenbank)
+  ---
+  duration_ms: 386.7975
+  type: 'test'
+  ...
+# Subtest: Worker: große Antwort wird im Worker gzip-komprimiert und entpackt bytegleich; kleine bleibt unkomprimiert
+ok 2 - Worker: große Antwort wird im Worker gzip-komprimiert und entpackt bytegleich; kleine bleibt unkomprimiert
+  ---
+  duration_ms: 1696.7192
+  type: 'test'
+  ...
+# Subtest: Worker: Zielvorschau und Designdateien sind bytegleich zum direkten Weg
+ok 3 - Worker: Zielvorschau und Designdateien sind bytegleich zum direkten Weg
+  ---
+  duration_ms: 571.0598
+  type: 'test'
+  ...
+# Subtest: Worker: Fehler haben Status, Code und Text wie im direkten Weg
+ok 4 - Worker: Fehler haben Status, Code und Text wie im direkten Weg
+  ---
+  duration_ms: 186.0818
+  type: 'test'
+  ...
+# Subtest: Leser: importItem und get liefern dasselbe wie das Repository, nur lesend
+ok 5 - Leser: importItem und get liefern dasselbe wie das Repository, nur lesend
+  ---
+  duration_ms: 50.6509
+  type: 'test'
+  ...
+# Subtest: Zusammenlegen: drei gleichzeitige gleiche Aufrufe teilen eine Rechnung
+ok 6 - Zusammenlegen: drei gleichzeitige gleiche Aufrufe teilen eine Rechnung
+  ---
+  duration_ms: 728.9448
+  type: 'test'
+  ...
+# Subtest: Zusammenlegen: nach invalidate() wird nicht an eine ältere Rechnung angehängt
+ok 7 - Zusammenlegen: nach invalidate() wird nicht an eine ältere Rechnung angehängt
+  ---
+  duration_ms: 313.1835
+  type: 'test'
+  ...
+# Subtest: Obergrenze: bei vollem Wartestand sofort 503 designs_busy
+ok 8 - Obergrenze: bei vollem Wartestand sofort 503 designs_busy
+  ---
+  duration_ms: 420.3582
+  type: 'test'
+  ...
+# Subtest: Obergrenze: viele gleichzeitige Vorschaubilder zählen nicht gegen die enge Grenze der Listenrechnungen
+ok 9 - Obergrenze: viele gleichzeitige Vorschaubilder zählen nicht gegen die enge Grenze der Listenrechnungen
+  ---
+  duration_ms: 312.8734
+  type: 'test'
+  ...
+# Subtest: Absturz: wartende Aufrufe enden mit 503 designs_worker, der nächste Aufruf startet den Worker neu
+ok 10 - Absturz: wartende Aufrufe enden mit 503 designs_worker, der nächste Aufruf startet den Worker neu
+  ---
+  duration_ms: 233.0795
+  type: 'test'
+  ...
+# Subtest: Test-Operationen sind ohne ausdrückliches Einschalten nicht erreichbar
+ok 11 - Test-Operationen sind ohne ausdrückliches Einschalten nicht erreichbar
+  ---
+  duration_ms: 110.6714
+  type: 'test'
+  ...
+# Subtest: Hauptprozess bleibt frei: während der Worker 600 ms rechnet, bleibt die größte Verzögerung unter 100 ms
+ok 12 - Hauptprozess bleibt frei: während der Worker 600 ms rechnet, bleibt die größte Verzögerung unter 100 ms
+  ---
+  duration_ms: 708.2695
+  type: 'test'
+  ...
+# Subtest: Schriften: eine geänderte Schriftliste erreicht den laufenden Worker
+ok 13 - Schriften: eine geänderte Schriftliste erreicht den laufenden Worker
+  ---
+  duration_ms: 218.6389
+  type: 'test'
+  ...
+# Subtest: Katalogstand: nach invalidate() sieht der Worker eine Änderung sofort, nicht erst nach dem 2-Sekunden-Speicher
+ok 14 - Katalogstand: nach invalidate() sieht der Worker eine Änderung sofort, nicht erst nach dem 2-Sekunden-Speicher
+  ---
+  duration_ms: 207.9209
+  type: 'test'
+  ...
+# Subtest: Katalogkontext: die Schriftliste wird je Anfrage ausgewertet, nicht je Design (Befund 10.11.2026: zwei Minuten je Linie)
+ok 15 - Katalogkontext: die Schriftliste wird je Anfrage ausgewertet, nicht je Design (Befund 10.11.2026: zwei Minuten je Linie)
+  ---
+  duration_ms: 68.3061
+  type: 'test'
+  ...
+# Subtest: Plattenspeicher: nach „Neustart“ wird nichts neu gerechnet und die Antwort ist bytegleich; anderer Programmstand wird verworfen
+ok 16 - Plattenspeicher: nach „Neustart“ wird nichts neu gerechnet und die Antwort ist bytegleich; anderer Programmstand wird verworfen
+  ---
+  duration_ms: 106.3148
+  type: 'test'
+  ...
+# Subtest: Worker: sichert den Zwischenspeicher nach einer Listenrechnung, lädt ihn beim nächsten Start und meldet Messwerte
+ok 17 - Worker: sichert den Zwischenspeicher nach einer Listenrechnung, lädt ihn beim nächsten Start und meldet Messwerte
+  ---
+  duration_ms: 471.4996
+  type: 'test'
+  ...
+# Subtest: Vorrechnen: designs.warm rechnet jede Linie einmal und meldet je Linie Dauer und Erfolg
+ok 18 - Vorrechnen: designs.warm rechnet jede Linie einmal und meldet je Linie Dauer und Erfolg
+  ---
+  duration_ms: 204.9713
+  type: 'test'
+  ...
+# {"event":"katalog_worker_ready","pid":47448,"warm":false}
+# Subtest: Speicherwächter: belegt der Prozess zu viel Arbeitsspeicher, endet nur der Worker (503 designs_memory, protokolliert); der Hauptprozess läuft weiter
+ok 19 - Speicherwächter: belegt der Prozess zu viel Arbeitsspeicher, endet nur der Worker (503 designs_memory, protokolliert); der Hauptprozess läuft weiter
+  ---
+  duration_ms: 362.2842
+  type: 'test'
+  ...
+# Subtest: Datenbank je Rechnung: gleiche Schlüssel und Produkte werden nur einmal gelesen, Fehler bleiben Fehler, Antwort bleibt gleich
+ok 20 - Datenbank je Rechnung: gleiche Schlüssel und Produkte werden nur einmal gelesen, Fehler bleiben Fehler, Antwort bleibt gleich
+  ---
+  duration_ms: 143.4409
+  type: 'test'
+  ...
+# {"event":"katalog_worker_cache_load","loaded":0,"reason":"keine Datei"}
+# {"event":"katalog_worker_ready","pid":47448,"warm":false}
+# Subtest: HTTP: mit Schalter antwortet die Werkstatt bytegleich (Kopfzeilen und Körper), ohne Schalter läuft kein Worker
+ok 21 - HTTP: mit Schalter antwortet die Werkstatt bytegleich (Kopfzeilen und Körper), ohne Schalter läuft kein Worker
+  ---
+  duration_ms: 3205.2172
+  type: 'test'
+  ...
+# {"event":"katalog_worker_cache_load","loaded":0,"reason":"keine Datei"}
+# Subtest: HTTP: Schreibweg bleibt im Hauptprozess; nach PATCH liefert der Worker sofort den neuen Stand
+ok 22 - HTTP: Schreibweg bleibt im Hauptprozess; nach PATCH liefert der Worker sofort den neuen Stand
+  ---
+  duration_ms: 1373.9424
+  type: 'test'
+  ...
+# Subtest: Schalter aus: kein Worker wird erzeugt (auch nicht bei anderen Werten als „enabled“)
+ok 23 - Schalter aus: kein Worker wird erzeugt (auch nicht bei anderen Werten als „enabled“)
+  ---
+  duration_ms: 1400.721
+  type: 'test'
+  ...
+1..23
+# tests 23
+# suites 0
+# pass 23
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 13767.28

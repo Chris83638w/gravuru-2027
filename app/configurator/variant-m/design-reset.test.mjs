@@ -1,0 +1,94 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+import {installDesignReset,resetOriginalDesign} from './design-reset.mjs';
+import {mobilePreviewHeight} from './mobile-preview-layout.mjs';
+
+function layoutFixture(t){
+ const make=()=>({children:[],parentNode:null,events:{},append(node){if(node.parentNode){const a=node.parentNode.children;a.splice(a.indexOf(node),1);}this.children.push(node);node.parentNode=this;},after(node){const parent=this.parentNode;if(node.parentNode){const a=node.parentNode.children;a.splice(a.indexOf(node),1);}parent.children.splice(parent.children.indexOf(this)+1,0,node);node.parentNode=parent;},get nextSibling(){return this.parentNode?.children[this.parentNode.children.indexOf(this)+1]||null;},contains(node){return node===this||this.children.some(c=>c.contains(node));},addEventListener(type,fn){(this.events[type]??=[]).push(fn);},dispatch(type){for(const fn of this.events[type]||[])fn();}});
+ const preview=make(),slot=make(),wrap=make(),stage=make(),holder=make(),full=make(),live=make(),dock=make();
+ preview.append(slot);slot.append(wrap);wrap.append(stage);stage.append(holder);full.append(live);
+ full.open=false;let changed;
+ const prior=globalThis.MutationObserver;globalThis.MutationObserver=class{constructor(callback){changed=callback;}observe(node,options){assert.equal(node,full);assert.deepEqual(options,{attributes:true,attributeFilter:['open']});}};
+ t.after(()=>{if(prior===undefined)delete globalThis.MutationObserver;else globalThis.MutationObserver=prior;});
+ const r={querySelector:selector=>({'.stage':stage,'.ux-preview':preview,'.c-large-preview':full,'[data-ux-stage]':slot}[selector]||null)};
+ return {make,r,preview,slot,stage,holder,full,live,dock,open(){live.append(stage);live.append(dock);full.open=true;changed();},close(){wrap.append(stage);full.open=false;full.dispatch('close');changed();}};
+}
+
+test('reset loads the selected template without carrying edits and retains product options and undo',()=>{
+ const original=[{id:'name',text:'Kalle'}],before={designId:'kalle',objects:[{id:'name',text:'Mein Hund'},{id:'photo',uxUploadId:'photo-1'}],mOptions:{size:'30x20',mounting:'gold'},selected:'photo'},el={state:structuredClone(before),history:[],sync(){}};
+ const choose=function(id,{carry}){assert.equal(id,'kalle');assert.equal(carry,false);this.history.push(structuredClone(this.state));this.state.objects=structuredClone(original);};
+ let decorated=0;resetOriginalDesign({el,choose,decorate:()=>decorated++});
+ assert.deepEqual(el.state.objects,original);assert.deepEqual(el.state.mOptions,before.mOptions);assert.equal(decorated,1);assert.equal(el.state.selected,null);
+ el.state=el.history.pop();assert.deepEqual(el.state,before);
+});
+
+test('reset button requires explicit confirmation; cancel and dismissal preserve the design',t=>{
+ const f=layoutFixture(t);
+ const control=()=>({addEventListener(type,fn){this[type]=fn;}}),open=control(),cancel=control(),confirm=control(),name={},bar=Object.assign(f.make(),{querySelector:()=>open}),dialog={open:false,querySelector:s=>s==='[data-reset-design-name]'?name:s==='[data-ux=reset-design-cancel]'?cancel:confirm,showModal(){this.open=true;},close(){this.open=false;}};
+ const prior=globalThis.document;globalThis.document={createElement:()=>bar};t.after(()=>{if(prior===undefined)delete globalThis.document;else globalThis.document=prior;});
+ let resets=0;const el={state:{designId:'kalle'}};
+ installDesignReset({el,r:f.r,config:{},dialog:()=>dialog,button:()=>'',design:()=>({name:'Kalle'}),reset:()=>resets++,say(){}});
+ open.click();assert.equal(dialog.open,true);assert.equal(name.textContent,'Kalle');assert.equal(resets,0);
+ cancel.click();assert.equal(dialog.open,false);assert.equal(resets,0);
+ confirm.click();assert.equal(resets,0,'a dismissed dialog cannot reset');
+ open.click();confirm.click();assert.equal(resets,1);assert.equal(dialog.open,false);
+});
+
+test('reset stays outside the fitted plate row and follows the same native fullscreen stage',t=>{
+ const f=layoutFixture(t),control=()=>({addEventListener(type,fn){this[type]=fn;}}),open=control(),cancel=control(),confirm=control(),name={};
+ const bar=Object.assign(f.make(),{querySelector:()=>open}),confirmation={open:false,querySelector:s=>s==='[data-reset-design-name]'?name:s==='[data-ux=reset-design-cancel]'?cancel:confirm,showModal(){this.open=true;},close(){this.open=false;}};
+ const prior=globalThis.document;globalThis.document={createElement:()=>bar};t.after(()=>{if(prior===undefined)delete globalThis.document;else globalThis.document=prior;});
+ const el={state:{designId:'katalog-TRE-V2A-8x2-D1',width:80,height:20,objects:[{id:'name',text:'Rosenberg'}],mOptions:{mounting:'B02S'}}},before=structuredClone(el.state);let resets=0;
+ installDesignReset({el,r:f.r,config:{},dialog:()=>confirmation,button:()=>'',design:()=>({name:'Zwei Zeilen, mittig'}),reset:()=>resets++,say(){}});
+ assert.equal(f.slot.nextSibling,bar,'normal preview has a separate control row');
+ assert.deepEqual(f.stage.children,[f.holder],'reset cannot consume horizontal fitting space');
+ for(let i=0;i<2;i++){
+  f.open();assert.equal(bar.parentNode,f.live);assert.equal(f.stage.nextSibling,bar);assert.equal(bar.nextSibling,f.dock);
+  assert.deepEqual(f.stage.children,[f.holder]);assert.equal(f.preview.contains(bar),false);
+  open.click();assert.equal(confirmation.open,true);cancel.click();assert.equal(resets,0);
+  f.close();assert.equal(f.slot.nextSibling,bar);assert.equal(f.live.contains(bar),false);assert.deepEqual(f.stage.children,[f.holder]);
+ }
+ assert.deepEqual(el.state,before,'moving controls never changes physical size, mounting, design or texts');
+ open.click();confirm.click();assert.equal(resets,1,'the original confirmation listener survives every move');
+});
+
+test('existing mobile sheet keeps ownership of its control row and fullscreen proxy source',t=>{
+ const f=layoutFixture(t),control={addEventListener(){}},bar=Object.assign(f.make(),{querySelector:()=>control}),confirmation={querySelector:()=>control};
+ const prior=globalThis.document;globalThis.document={createElement:()=>bar};t.after(()=>{if(prior===undefined)delete globalThis.document;else globalThis.document=prior;});
+ const el={state:{designId:'D1'},dataset:{}};
+ installDesignReset({el,r:f.r,config:{},dialog:()=>confirmation,button:()=>'',design:()=>({name:'D1'}),reset(){},say(){}});
+ const controls=f.make();el.dataset.mobileDemo='sheet';controls.append(bar);
+ // The existing sheet restores moved nodes to their anchors before invoking
+ // native fullscreen, then restores its own row on the close event.
+ f.full.addEventListener('close',()=>controls.append(bar));
+ for(let i=0;i<2;i++){
+  f.slot.after(bar);f.open();assert.equal(bar.parentNode,f.stage,'existing sheet fullscreen selectors keep matching');
+  f.close();assert.equal(bar.parentNode,controls,'native observer cannot steal the sheet control back');
+ }
+});
+
+test('native separate reset row preserves the fitted mobile stage and its dimension/zoom gutters',()=>{
+ const navigation=readFileSync(new URL('./modern-navigation.css',import.meta.url),'utf8'),zoom=readFileSync(new URL('./view-zoom.css',import.meta.url),'utf8');
+ const selector=':host([data-ux-modern][data-ux-mobile-tabs]:not([data-mobile-demo])) .ux-shell .ux-layout>.ux-preview:has(>.ux-design-reset)';
+ const rule=navigation.split(selector+'{')[1]?.split('}')[0];
+ const added=Number(rule?.match(/^height:calc\(var\(--ux-mobile-preview-h,40dvh\) \+ (\d+)px\)!important$/)?.[1]);
+ assert.equal(added,112,'56px former stage allowance plus the real 56px control row');
+ const bottom=Number(zoom.match(/\.stage\[data-view-zoom\]:not\(\.acryl-scene\)\{padding-bottom:(\d+)px!important\}/)?.[1]);
+ assert.equal(bottom,116,'keep enough room for dimensions and the unchanged zoom control');
+ const resetHeight=44+4+8;
+ // This is a CSS sizing-contract check, not a simulated browser renderer.
+ // Use the actual mobile preview-height function and the live measured gutters.
+ for(const width of [375,390])for(const ratio of [2.5,3,4,1.5]){
+  const preview=mobilePreviewHeight({height:809,width,ratio,galleryOpen:true});
+  const formerStage=preview+56,stage=preview+added-resetHeight;
+  assert.equal(stage,formerStage,'the separate row cannot steal product height');
+  const plateWidth=Math.min(width-60,(stage-18-bottom)*ratio);
+  assert.ok(plateWidth>0&&plateWidth<=width-60,'both 30px dimension gutters remain');
+  if(ratio===4)assert.ok(plateWidth>=312,'S82 must not regress to the measured 88px width');
+  const brokenWidth=Math.min(width-60,(preview+56-resetHeight-18-bottom)*ratio);
+  assert.ok(plateWidth>brokenWidth,'the prior duplicate height reservation is caught');
+ }
+ const photoSelector=':host([data-ux-modern][data-ux-mobile-tabs][data-ux-photo-sizing="true"]:not([data-mobile-demo])) .ux-shell .ux-layout>.ux-preview:has(>.ux-design-reset)';
+ assert.equal(navigation.split(photoSelector+'{')[1]?.split('}')[0],'height:calc(min(calc(var(--ux-mobile-preview-h,40dvh) + 156px),calc(100dvh - 300px)) + 56px)!important','photo cap is evaluated before adding the separate row');
+});

@@ -1,0 +1,750 @@
+{
+  "schema": "issue230-independent-v9-finalization-review/v1",
+  "readOnly": true,
+  "run": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-11-11\\die-vollst-ndige-bergabe-findest-du\\work\\product-plans-run-v9",
+  "prior": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-11-11\\die-vollst-ndige-bergabe-findest-du\\work\\product-plans-run-v8",
+  "codeCommit": "64e026e8fd15b129a16cc97189b28506aa9e8ac2",
+  "decisionHash": "730168634964272693b514e3efd742975bd56af30a96a7ae751a2aed7fe71a64",
+  "counts": {
+    "products": 7,
+    "revisions": 14,
+    "plans": 14,
+    "confirmations": 0,
+    "executions": 0
+  },
+  "removedCount": 15,
+  "checks": {
+    "sevenCurrentValid": true,
+    "countsExact": true,
+    "exactly15QuestionsRemoved": true,
+    "motifPinsUnchanged": true,
+    "motifDbHash": true,
+    "v8ProtectedFilesUnchanged": true,
+    "codeMatchesPinnedCommit": true,
+    "noExecutionDecision": true
+  },
+  "allPassed": true,
+  "results": [
+    {
+      "workbook": "Tuerschild-Acrylglas-3mm_v4.xlsx",
+      "planId": "pgp_80a0c3b9-b599-428f-8626-05e3ace880b6",
+      "planHash": "83cd95dc900fcbc9631086f54c26591e2dbab75d285cc80fa46d64673f63bb33",
+      "checks": {
+        "sourceRevision2": true,
+        "templateRevision2": true,
+        "nativeValidNoIssues": true,
+        "sourceCanonicalUnchanged": true,
+        "compiledDocumentUnchanged": true,
+        "variantReviewUnchanged": true,
+        "sourceMetadataExact": true,
+        "decisionManifestPinned": true,
+        "taxMetadataOnly": true,
+        "unchangedTierPins": true,
+        "tierThresholdsAndRounding": true,
+        "onlySourceRevisionAndQuestionsChangedInTemplate": true,
+        "removedQuestionsRecorded": true,
+        "oldPlanStillStored": true,
+        "effectiveUploads": true,
+        "modulePinsUnchanged": true,
+        "notPublished": true,
+        "originalWorkbookSame": true
+      },
+      "allPassed": true,
+      "tierExamples": [
+        {
+          "quantity": 1,
+          "expected": 3201,
+          "actual": 3201
+        },
+        {
+          "quantity": 2,
+          "expected": 3201,
+          "actual": 3201
+        },
+        {
+          "quantity": 3,
+          "expected": 3041,
+          "actual": 3041
+        },
+        {
+          "quantity": 4,
+          "expected": 3041,
+          "actual": 3041
+        },
+        {
+          "quantity": 5,
+          "expected": 2881,
+          "actual": 2881
+        },
+        {
+          "quantity": 9,
+          "expected": 2881,
+          "actual": 2881
+        },
+        {
+          "quantity": 10,
+          "expected": 2721,
+          "actual": 2721
+        },
+        {
+          "quantity": 11,
+          "expected": 2721,
+          "actual": 2721
+        }
+      ]
+    },
+    {
+      "workbook": "Tuerschild-Acrylglas-3mm-5x2_v2.xlsx",
+      "planId": "pgp_7307b213-09ef-4758-b525-88aea139502d",
+      "planHash": "cd2405c8f0a53544cfaaf87f97d84234ba9c51d58ec6b0e388bb7212ef141392",
+      "checks": {
+        "sourceRevision2": true,
+        "templateRevision2": true,
+        "nativeValidNoIssues": true,
+        "sourceCanonicalUnchanged": true,
+        "compiledDocumentUnchanged": true,
+        "variantReviewUnchanged": true,
+        "sourceMetadataExact": true,
+        "decisionManifestPinned": true,
+        "taxMetadataOnly": true,
+        "unchangedTierPins": true,
+        "tierThresholdsAndRounding": true,
+        "onlySourceRevisionAndQuestionsChangedInTemplate": true,
+        "removedQuestionsRecorded": true,
+        "oldPlanStillStored": true,
+        "effectiveUploads": true,
+        "modulePinsUnchanged": true,
+        "notPublished": true,
+        "originalWorkbookSame": true
+      },
+      "allPassed": true,
+      "tierExamples": [
+        {
+          "quantity": 1,
+          "expected": 3201,
+          "actual": 3201
+        },
+        {
+          "quantity": 2,
+          "expected": 3201,
+          "actual": 3201
+        },
+        {
+          "quantity": 3,
+          "expected": 3041,
+          "actual": 3041
+        },
+        {
+          "quantity": 4,
+          "expected": 3041,
+          "actual": 3041
+        },
+        {
+          "quantity": 5,
+          "expected": 2881,
+          "actual": 2881
+        },
+        {
+          "quantity": 9,
+          "expected": 2881,
+          "actual": 2881
+        },
+        {
+          "quantity": 10,
+          "expected": 2721,
+          "actual": 2721
+        },
+        {
+          "quantity": 11,
+          "expected": 2721,
+          "actual": 2721
+        }
+      ]
+    },
+    {
+      "workbook": "Tuerschild-Acrylglas-3mm-6x2_v2.xlsx",
+      "planId": "pgp_6831ea29-73f3-40c4-abfa-834c8479d93d",
+      "planHash": "df492d24f7da24f765ff62b8b03daf44865d839045191f3b3e449ca8f37cc09f",
+      "checks": {
+        "sourceRevision2": true,
+        "templateRevision2": true,
+        "nativeValidNoIssues": true,
+        "sourceCanonicalUnchanged": true,
+        "compiledDocumentUnchanged": true,
+        "variantReviewUnchanged": true,
+        "sourceMetadataExact": true,
+        "decisionManifestPinned": true,
+        "taxMetadataOnly": true,
+        "unchangedTierPins": true,
+        "tierThresholdsAndRounding": true,
+        "onlySourceRevisionAndQuestionsChangedInTemplate": true,
+        "removedQuestionsRecorded": true,
+        "oldPlanStillStored": true,
+        "effectiveUploads": true,
+        "modulePinsUnchanged": true,
+        "notPublished": true,
+        "originalWorkbookSame": true
+      },
+      "allPassed": true,
+      "tierExamples": [
+        {
+          "quantity": 1,
+          "expected": 3201,
+          "actual": 3201
+        },
+        {
+          "quantity": 2,
+          "expected": 3201,
+          "actual": 3201
+        },
+        {
+          "quantity": 3,
+          "expected": 3041,
+          "actual": 3041
+        },
+        {
+          "quantity": 4,
+          "expected": 3041,
+          "actual": 3041
+        },
+        {
+          "quantity": 5,
+          "expected": 2881,
+          "actual": 2881
+        },
+        {
+          "quantity": 9,
+          "expected": 2881,
+          "actual": 2881
+        },
+        {
+          "quantity": 10,
+          "expected": 2721,
+          "actual": 2721
+        },
+        {
+          "quantity": 11,
+          "expected": 2721,
+          "actual": 2721
+        }
+      ]
+    },
+    {
+      "workbook": "Tuerschild-Acrylglas-3mm-8x2_v2.xlsx",
+      "planId": "pgp_1d526e2a-fe1d-4749-be52-5386cf227afe",
+      "planHash": "8531d241fd230a52a14a4c77bf314bdc49c578a679fc5d0d1d9a6a439f995d53",
+      "checks": {
+        "sourceRevision2": true,
+        "templateRevision2": true,
+        "nativeValidNoIssues": true,
+        "sourceCanonicalUnchanged": true,
+        "compiledDocumentUnchanged": true,
+        "variantReviewUnchanged": true,
+        "sourceMetadataExact": true,
+        "decisionManifestPinned": true,
+        "taxMetadataOnly": true,
+        "unchangedTierPins": true,
+        "tierThresholdsAndRounding": true,
+        "onlySourceRevisionAndQuestionsChangedInTemplate": true,
+        "removedQuestionsRecorded": true,
+        "oldPlanStillStored": true,
+        "effectiveUploads": true,
+        "modulePinsUnchanged": true,
+        "notPublished": true,
+        "originalWorkbookSame": true
+      },
+      "allPassed": true,
+      "tierExamples": [
+        {
+          "quantity": 1,
+          "expected": 3201,
+          "actual": 3201
+        },
+        {
+          "quantity": 2,
+          "expected": 3201,
+          "actual": 3201
+        },
+        {
+          "quantity": 3,
+          "expected": 3041,
+          "actual": 3041
+        },
+        {
+          "quantity": 4,
+          "expected": 3041,
+          "actual": 3041
+        },
+        {
+          "quantity": 5,
+          "expected": 2881,
+          "actual": 2881
+        },
+        {
+          "quantity": 9,
+          "expected": 2881,
+          "actual": 2881
+        },
+        {
+          "quantity": 10,
+          "expected": 2721,
+          "actual": 2721
+        },
+        {
+          "quantity": 11,
+          "expected": 2721,
+          "actual": 2721
+        }
+      ]
+    },
+    {
+      "workbook": "Tuerschild-Edelstahl-5x2_v1.xlsx",
+      "planId": "pgp_7699e1dc-2f19-427d-a983-0fd6610f9bd9",
+      "planHash": "24840f5fe16a074e5f842ae85bb6529285bee334254d5d82d99f98efc9f09117",
+      "checks": {
+        "sourceRevision2": true,
+        "templateRevision2": true,
+        "nativeValidNoIssues": true,
+        "sourceCanonicalUnchanged": true,
+        "compiledDocumentUnchanged": true,
+        "variantReviewUnchanged": true,
+        "sourceMetadataExact": true,
+        "decisionManifestPinned": true,
+        "taxMetadataOnly": true,
+        "unchangedTierPins": true,
+        "tierThresholdsAndRounding": true,
+        "onlySourceRevisionAndQuestionsChangedInTemplate": true,
+        "removedQuestionsRecorded": true,
+        "oldPlanStillStored": true,
+        "effectiveUploads": true,
+        "modulePinsUnchanged": true,
+        "notPublished": true,
+        "originalWorkbookSame": true
+      },
+      "allPassed": true,
+      "tierExamples": [
+        {
+          "quantity": 1,
+          "expected": 3201,
+          "actual": 3201
+        },
+        {
+          "quantity": 2,
+          "expected": 3201,
+          "actual": 3201
+        },
+        {
+          "quantity": 3,
+          "expected": 3041,
+          "actual": 3041
+        },
+        {
+          "quantity": 4,
+          "expected": 3041,
+          "actual": 3041
+        },
+        {
+          "quantity": 5,
+          "expected": 2881,
+          "actual": 2881
+        },
+        {
+          "quantity": 9,
+          "expected": 2881,
+          "actual": 2881
+        },
+        {
+          "quantity": 10,
+          "expected": 2721,
+          "actual": 2721
+        },
+        {
+          "quantity": 11,
+          "expected": 2721,
+          "actual": 2721
+        }
+      ]
+    },
+    {
+      "workbook": "Tuerschild-Edelstahl-6x2_v1.xlsx",
+      "planId": "pgp_b216801b-a754-447b-be24-308e5f47de18",
+      "planHash": "8423f66172c8ff0258d5ca60591f42861457ba9634805d92941431dcfbf0764f",
+      "checks": {
+        "sourceRevision2": true,
+        "templateRevision2": true,
+        "nativeValidNoIssues": true,
+        "sourceCanonicalUnchanged": true,
+        "compiledDocumentUnchanged": true,
+        "variantReviewUnchanged": true,
+        "sourceMetadataExact": true,
+        "decisionManifestPinned": true,
+        "taxMetadataOnly": true,
+        "unchangedTierPins": true,
+        "tierThresholdsAndRounding": true,
+        "onlySourceRevisionAndQuestionsChangedInTemplate": true,
+        "removedQuestionsRecorded": true,
+        "oldPlanStillStored": true,
+        "effectiveUploads": true,
+        "modulePinsUnchanged": true,
+        "notPublished": true,
+        "originalWorkbookSame": true
+      },
+      "allPassed": true,
+      "tierExamples": [
+        {
+          "quantity": 1,
+          "expected": 3201,
+          "actual": 3201
+        },
+        {
+          "quantity": 2,
+          "expected": 3201,
+          "actual": 3201
+        },
+        {
+          "quantity": 3,
+          "expected": 3041,
+          "actual": 3041
+        },
+        {
+          "quantity": 4,
+          "expected": 3041,
+          "actual": 3041
+        },
+        {
+          "quantity": 5,
+          "expected": 2881,
+          "actual": 2881
+        },
+        {
+          "quantity": 9,
+          "expected": 2881,
+          "actual": 2881
+        },
+        {
+          "quantity": 10,
+          "expected": 2721,
+          "actual": 2721
+        },
+        {
+          "quantity": 11,
+          "expected": 2721,
+          "actual": 2721
+        }
+      ]
+    },
+    {
+      "workbook": "Tuerschild-Edelstahl-8x2_v1.xlsx",
+      "planId": "pgp_869d2800-de7c-48d6-96f4-87a5f889186e",
+      "planHash": "634a3d3f45e462a03a4b79add03cc0d323e7587378d8cc402a3495f638652199",
+      "checks": {
+        "sourceRevision2": true,
+        "templateRevision2": true,
+        "nativeValidNoIssues": true,
+        "sourceCanonicalUnchanged": true,
+        "compiledDocumentUnchanged": true,
+        "variantReviewUnchanged": true,
+        "sourceMetadataExact": true,
+        "decisionManifestPinned": true,
+        "taxMetadataOnly": true,
+        "unchangedTierPins": true,
+        "tierThresholdsAndRounding": true,
+        "onlySourceRevisionAndQuestionsChangedInTemplate": true,
+        "removedQuestionsRecorded": true,
+        "oldPlanStillStored": true,
+        "effectiveUploads": true,
+        "modulePinsUnchanged": true,
+        "notPublished": true,
+        "originalWorkbookSame": true
+      },
+      "allPassed": true,
+      "tierExamples": [
+        {
+          "quantity": 1,
+          "expected": 3201,
+          "actual": 3201
+        },
+        {
+          "quantity": 2,
+          "expected": 3201,
+          "actual": 3201
+        },
+        {
+          "quantity": 3,
+          "expected": 3041,
+          "actual": 3041
+        },
+        {
+          "quantity": 4,
+          "expected": 3041,
+          "actual": 3041
+        },
+        {
+          "quantity": 5,
+          "expected": 2881,
+          "actual": 2881
+        },
+        {
+          "quantity": 9,
+          "expected": 2881,
+          "actual": 2881
+        },
+        {
+          "quantity": 10,
+          "expected": 2721,
+          "actual": 2721
+        },
+        {
+          "quantity": 11,
+          "expected": 2721,
+          "actual": 2721
+        }
+      ]
+    }
+  ],
+  "motifPins": [
+    {
+      "id": "prf_0fce513a-0973-45eb-8d03-09728290e17d",
+      "revision": 1,
+      "exact": true,
+      "count": 13
+    }
+  ],
+  "codeChecks": [
+    {
+      "path": "app/configurator/variant-m/quantity-tiers.mjs",
+      "commit": "64e026e8fd15b129a16cc97189b28506aa9e8ac2",
+      "gitSha256": "a2269345654b76b6e81128e1d6d44cfd21c729acf70fc45e59616aa689f9b326",
+      "workingTreeLFMatches": true
+    },
+    {
+      "path": "app/configurator/variant-m/contract.mjs",
+      "commit": "64e026e8fd15b129a16cc97189b28506aa9e8ac2",
+      "gitSha256": "9b024cb6d378bbd95f1671f90aa75bec185a0db4638880be3816c8b60520e4e6",
+      "workingTreeLFMatches": true
+    },
+    {
+      "path": "app/configurator/variant-m/module-profile.mjs",
+      "commit": "64e026e8fd15b129a16cc97189b28506aa9e8ac2",
+      "gitSha256": "cfc54268d73fa3b8c635b318ec182e58de868b335a37975b2106b2b41bc21e6b",
+      "workingTreeLFMatches": true
+    },
+    {
+      "path": "app/workshop/product-model.mjs",
+      "commit": "64e026e8fd15b129a16cc97189b28506aa9e8ac2",
+      "gitSha256": "30749bf2ecf44b0085ccc5d3aebca9fd5e04bd8c3bbd7908776190593fa64f8f",
+      "workingTreeLFMatches": true
+    },
+    {
+      "path": "app/workshop/product-group-templates.mjs",
+      "commit": "64e026e8fd15b129a16cc97189b28506aa9e8ac2",
+      "gitSha256": "b374510ec754cbe799236940a8b0d34f29da5cb2103452b00b0f0ff3c92a9768",
+      "workingTreeLFMatches": true
+    },
+    {
+      "path": "app/workshop/configurator-module-profiles.mjs",
+      "commit": "64e026e8fd15b129a16cc97189b28506aa9e8ac2",
+      "gitSha256": "ccab1695f4ac21bc3819623b8871f641cd503587cbd7aaf6790d57820aff5720",
+      "workingTreeLFMatches": true
+    }
+  ],
+  "v8Files": [
+    {
+      "file": "summary.json",
+      "expected": "12f1df80f8eecbaaf3892836c4df8d7c6b45d6bc67984fb580cb83e2e56bf824",
+      "actual": "12f1df80f8eecbaaf3892836c4df8d7c6b45d6bc67984fb580cb83e2e56bf824",
+      "unchanged": true
+    },
+    {
+      "file": "workshop.sqlite",
+      "expected": "7ede39fe530fe154576a46818935e4e142484c720b3c25183b0f74c8206d9cfa",
+      "actual": "7ede39fe530fe154576a46818935e4e142484c720b3c25183b0f74c8206d9cfa",
+      "unchanged": true
+    },
+    {
+      "file": "profiles.sqlite",
+      "expected": "c89febff61d1072c58cd3c95c1fe04b51317e472c1761e355fe706ecc156284f",
+      "actual": "c89febff61d1072c58cd3c95c1fe04b51317e472c1761e355fe706ecc156284f",
+      "unchanged": true
+    },
+    {
+      "file": "manifest.json",
+      "expected": "8d0df4946bd71fbacb40d50b3727215fb11a495887e651c7faf8a329078b6744",
+      "actual": "8d0df4946bd71fbacb40d50b3727215fb11a495887e651c7faf8a329078b6744",
+      "unchanged": true
+    },
+    {
+      "file": "Tuerschild-Acrylglas-3mm_v4/source-document.json",
+      "expected": "0f766fac0df850f5d65cabfeaa4defb51b82c84867c64ba4003b27d90de1d19a",
+      "actual": "0f766fac0df850f5d65cabfeaa4defb51b82c84867c64ba4003b27d90de1d19a",
+      "unchanged": true
+    },
+    {
+      "file": "Tuerschild-Acrylglas-3mm_v4/plan.json",
+      "expected": "cf747b94de0255e03c5e04f66d2f829e34be8db6c0fbd0b444e8711a212b49c2",
+      "actual": "cf747b94de0255e03c5e04f66d2f829e34be8db6c0fbd0b444e8711a212b49c2",
+      "unchanged": true
+    },
+    {
+      "file": "Tuerschild-Acrylglas-3mm_v4/pair.json",
+      "expected": "5d9ee516af3b0c63c03a5ab601a57bfa85d6f637c6343b2bb40f241342243ce7",
+      "actual": "5d9ee516af3b0c63c03a5ab601a57bfa85d6f637c6343b2bb40f241342243ce7",
+      "unchanged": true
+    },
+    {
+      "file": "excel/Tuerschild-Acrylglas-3mm_v4.xlsx",
+      "expected": "495e7e59d7abf6a46f1fb7098a75e666162e58be3cad99ad75de6db5d3923841",
+      "actual": "495e7e59d7abf6a46f1fb7098a75e666162e58be3cad99ad75de6db5d3923841",
+      "unchanged": true
+    },
+    {
+      "file": "Tuerschild-Acrylglas-3mm-5x2_v2/source-document.json",
+      "expected": "94645c95ba8d27cd51caeaae582503b0f4f57dc71c7ef04d32cd4c15979f2d04",
+      "actual": "94645c95ba8d27cd51caeaae582503b0f4f57dc71c7ef04d32cd4c15979f2d04",
+      "unchanged": true
+    },
+    {
+      "file": "Tuerschild-Acrylglas-3mm-5x2_v2/plan.json",
+      "expected": "356337f47c2cb5bda87a0c5014898aba4d7b288b34c463aa3953bb42fb3434c8",
+      "actual": "356337f47c2cb5bda87a0c5014898aba4d7b288b34c463aa3953bb42fb3434c8",
+      "unchanged": true
+    },
+    {
+      "file": "Tuerschild-Acrylglas-3mm-5x2_v2/pair.json",
+      "expected": "461ecef630852f557da1828e8a6d24fb41693c488061beae26b83570f074966e",
+      "actual": "461ecef630852f557da1828e8a6d24fb41693c488061beae26b83570f074966e",
+      "unchanged": true
+    },
+    {
+      "file": "excel/Tuerschild-Acrylglas-3mm-5x2_v2.xlsx",
+      "expected": "119e2f48ec4d92c91a1463946a95ef0d2f30deb2e07c0c13ce59c73583a339cd",
+      "actual": "119e2f48ec4d92c91a1463946a95ef0d2f30deb2e07c0c13ce59c73583a339cd",
+      "unchanged": true
+    },
+    {
+      "file": "Tuerschild-Acrylglas-3mm-6x2_v2/source-document.json",
+      "expected": "cec58d88841ced32a6762efe73d508e47ded93c8f967970e57f0ae7799a5b77b",
+      "actual": "cec58d88841ced32a6762efe73d508e47ded93c8f967970e57f0ae7799a5b77b",
+      "unchanged": true
+    },
+    {
+      "file": "Tuerschild-Acrylglas-3mm-6x2_v2/plan.json",
+      "expected": "f3097285c26faf4f9e643c06d2c1dd0fd2404d3d0a009c4213ade7fe0690bb47",
+      "actual": "f3097285c26faf4f9e643c06d2c1dd0fd2404d3d0a009c4213ade7fe0690bb47",
+      "unchanged": true
+    },
+    {
+      "file": "Tuerschild-Acrylglas-3mm-6x2_v2/pair.json",
+      "expected": "e2e230347a21bbb0cb25cee7ca061197422498057832b1e756ca8beb7752f418",
+      "actual": "e2e230347a21bbb0cb25cee7ca061197422498057832b1e756ca8beb7752f418",
+      "unchanged": true
+    },
+    {
+      "file": "excel/Tuerschild-Acrylglas-3mm-6x2_v2.xlsx",
+      "expected": "7e588c53b57091cd5870a6bc24b81f5cca7d4ddb55cb722ce5156100d3267673",
+      "actual": "7e588c53b57091cd5870a6bc24b81f5cca7d4ddb55cb722ce5156100d3267673",
+      "unchanged": true
+    },
+    {
+      "file": "Tuerschild-Acrylglas-3mm-8x2_v2/source-document.json",
+      "expected": "1ec018e04ad54cdef84bb223f32d04304b76de89c190f92514ba1837939213ca",
+      "actual": "1ec018e04ad54cdef84bb223f32d04304b76de89c190f92514ba1837939213ca",
+      "unchanged": true
+    },
+    {
+      "file": "Tuerschild-Acrylglas-3mm-8x2_v2/plan.json",
+      "expected": "afbd4228d4618a4dfce791a2d5f3533b848ab02ccf8cae7ca298321335b471ac",
+      "actual": "afbd4228d4618a4dfce791a2d5f3533b848ab02ccf8cae7ca298321335b471ac",
+      "unchanged": true
+    },
+    {
+      "file": "Tuerschild-Acrylglas-3mm-8x2_v2/pair.json",
+      "expected": "8847228d3a3cabba72f2c0da5392b0bb1069371705f72fd4d1c05a52823b35c1",
+      "actual": "8847228d3a3cabba72f2c0da5392b0bb1069371705f72fd4d1c05a52823b35c1",
+      "unchanged": true
+    },
+    {
+      "file": "excel/Tuerschild-Acrylglas-3mm-8x2_v2.xlsx",
+      "expected": "02a4b9749dcbacbd8d13957e5194ad4ae27cc0f2e81922f5a3b95b0151f47cc2",
+      "actual": "02a4b9749dcbacbd8d13957e5194ad4ae27cc0f2e81922f5a3b95b0151f47cc2",
+      "unchanged": true
+    },
+    {
+      "file": "Tuerschild-Edelstahl-5x2_v1/source-document.json",
+      "expected": "9521226a9e91b0b297450eb81647f31e0bbb451eedde1c86101a02a0c574accd",
+      "actual": "9521226a9e91b0b297450eb81647f31e0bbb451eedde1c86101a02a0c574accd",
+      "unchanged": true
+    },
+    {
+      "file": "Tuerschild-Edelstahl-5x2_v1/plan.json",
+      "expected": "6122ec0199223cc4e71ca551acc64845e648608772359a9180afd5c93232ef93",
+      "actual": "6122ec0199223cc4e71ca551acc64845e648608772359a9180afd5c93232ef93",
+      "unchanged": true
+    },
+    {
+      "file": "Tuerschild-Edelstahl-5x2_v1/pair.json",
+      "expected": "092c7bd9c6e7dca9f9c8fbd8685402c12e4fe521c721f1fd81c5abcbc77ef186",
+      "actual": "092c7bd9c6e7dca9f9c8fbd8685402c12e4fe521c721f1fd81c5abcbc77ef186",
+      "unchanged": true
+    },
+    {
+      "file": "excel/Tuerschild-Edelstahl-5x2_v1.xlsx",
+      "expected": "9fe8b60b35e3c9f4de5ab5d738608b49e509041cb584f4e8d6a9242fb09357d0",
+      "actual": "9fe8b60b35e3c9f4de5ab5d738608b49e509041cb584f4e8d6a9242fb09357d0",
+      "unchanged": true
+    },
+    {
+      "file": "Tuerschild-Edelstahl-6x2_v1/source-document.json",
+      "expected": "f3aa10c351d7c0343c747193eb0081842f92055dcfa0f16a072ab457104e0f92",
+      "actual": "f3aa10c351d7c0343c747193eb0081842f92055dcfa0f16a072ab457104e0f92",
+      "unchanged": true
+    },
+    {
+      "file": "Tuerschild-Edelstahl-6x2_v1/plan.json",
+      "expected": "bda9bc026da13c2c787a21dc06bc8c3d57700e59a4b05fe6b4b13adbbf1560fb",
+      "actual": "bda9bc026da13c2c787a21dc06bc8c3d57700e59a4b05fe6b4b13adbbf1560fb",
+      "unchanged": true
+    },
+    {
+      "file": "Tuerschild-Edelstahl-6x2_v1/pair.json",
+      "expected": "f7ea68e5de0a9c55d4d9dd8df5e91602f636829e7e25178d1149943eb5f89b4e",
+      "actual": "f7ea68e5de0a9c55d4d9dd8df5e91602f636829e7e25178d1149943eb5f89b4e",
+      "unchanged": true
+    },
+    {
+      "file": "excel/Tuerschild-Edelstahl-6x2_v1.xlsx",
+      "expected": "de58b14ae5e33146a52a17f7c1b176dd58cebb75479617d10852f5e91623e0f5",
+      "actual": "de58b14ae5e33146a52a17f7c1b176dd58cebb75479617d10852f5e91623e0f5",
+      "unchanged": true
+    },
+    {
+      "file": "Tuerschild-Edelstahl-8x2_v1/source-document.json",
+      "expected": "9fcf89dab365bcc053384d752c1321b66d07d228f8549aa0925c12708af600a6",
+      "actual": "9fcf89dab365bcc053384d752c1321b66d07d228f8549aa0925c12708af600a6",
+      "unchanged": true
+    },
+    {
+      "file": "Tuerschild-Edelstahl-8x2_v1/plan.json",
+      "expected": "357afdc196875de89271ffee6a8766ac0c70f9d2c8fc8c532e391fc542238c97",
+      "actual": "357afdc196875de89271ffee6a8766ac0c70f9d2c8fc8c532e391fc542238c97",
+      "unchanged": true
+    },
+    {
+      "file": "Tuerschild-Edelstahl-8x2_v1/pair.json",
+      "expected": "78af04969226e678a22d10e3b4dac4975ee0a40266e7030684dfb8f1e72dbe42",
+      "actual": "78af04969226e678a22d10e3b4dac4975ee0a40266e7030684dfb8f1e72dbe42",
+      "unchanged": true
+    },
+    {
+      "file": "excel/Tuerschild-Edelstahl-8x2_v1.xlsx",
+      "expected": "440f3a19ad1fac20d446b19b9fe9810a1daee6292d0ab3591a7f21f39dca7317",
+      "actual": "440f3a19ad1fac20d446b19b9fe9810a1daee6292d0ab3591a7f21f39dca7317",
+      "unchanged": true
+    }
+  ],
+  "limits": [
+    "No confirmation, execution, Shopify or server mutation.",
+    "Motif-profile revision remains an external pin to recheck at execution; native template plan does not enforce that separate library revision.",
+    "Tax is explicit metadata, not an invented configurator tax field."
+  ]
+}

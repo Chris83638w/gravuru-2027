@@ -1,0 +1,51 @@
+{
+  "previewOnly": true,
+  "source": {
+    "gzipSha256": "6b2d5989b1dd4859f4a6923faab2cbf9f25102f1f3e95edd77dad48b386c52cc",
+    "productGroupDocumentSha256": "2da2130230341917f7a99d2a12889c1e2f10e408f64d3532e9c5ea6bae65713c",
+    "idBindingDocumentSha256": "deb2ce71bf57d5ff85e5f186378d94f58edeecc1ce4d7c4151bebf6e8072886f"
+  },
+  "target": {
+    "productGroupDocumentSha256": "ae09cbf6b58719b61729c7fab7a5685b464aae1e8d08691a706111e97b58e407",
+    "idBindingDocumentSha256": "f0bb7d95e89e3aae66ab04454d6476132fe197aaae7c1da48ce8209ced62d285",
+    "transportSerializedSha256": "ae09cbf6b58719b61729c7fab7a5685b464aae1e8d08691a706111e97b58e407",
+    "gzipSha256": "2a7b1adf55afbda5728cf062e91208f42c559fa1578b771b0ad4aa5912ffadb1"
+  },
+  "evidence": "https://github.com/Chris83638w/gravuru-2027/issues/168#issuecomment-6807404988",
+  "changes": [
+    {
+      "path": [
+        "categoryIds"
+      ],
+      "before": [],
+      "after": [
+        "extern-shopifyproductid-16190784602492",
+        "linie-acryl-tuerschilder"
+      ]
+    },
+    {
+      "path": [
+        "config",
+        "profile",
+        "name"
+      ],
+      "before": "Türschild Acrylglas 3 mm – Form und Größe selbst wählen (Schwarz / Anthrazit)",
+      "after": "Türschild Acrylglas 3 mm – Form und Größe selbst wählen"
+    },
+    {
+      "path": [
+        "name"
+      ],
+      "before": "Türschild Acrylglas 3 mm – Form und Größe selbst wählen (Schwarz / Anthrazit)",
+      "after": "Türschild Acrylglas 3 mm – Form und Größe selbst wählen"
+    },
+    {
+      "path": [
+        "seo",
+        "title"
+      ],
+      "before": "Türschild Acrylglas 3 mm – Form und Größe selbst wählen (Schwarz / Ant",
+      "after": "Türschild Acrylglas 3 mm – Form und Größe selbst wählen"
+    }
+  ]
+}

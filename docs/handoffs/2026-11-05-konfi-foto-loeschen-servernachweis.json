@@ -1,0 +1,137 @@
+{
+  "sourceBaseline": "1095237b8c5f417c123f118636d5fcc0dc5eb978",
+  "activated": true,
+  "at": "2026-11-05T21:01:55.190Z",
+  "stage": "/var/www/vhosts/gravuru-designwerkstatt.de/private/mika-konfi-hundetest-r6-20261105",
+  "bundle": "/_bundle/editor-3e54d8a6ca1778ba.mjs",
+  "packageSha256": "e8af67e69ac834fe6e4bad798d16330ccc9765b029824f9b1b1770c3a0789f40",
+  "tests": [
+    "ℹ tests 249",
+    "ℹ pass 249",
+    "ℹ fail 0",
+    "ℹ skipped 0"
+  ],
+  "sourceHashes": {
+    "app/configurator/variant-m/contract.mjs": "071690831e3c53f8f40febbff15ed37d82434729fcdb8d7dde51829ece3f257e",
+    "app/configurator/variant-m/contract.test.mjs": "9b108aafeaafee066b70caba092befd7f93f012b282ff966d2ba00823dbb6257",
+    "app/configurator/variant-m/customer-tools.css": "280c4fe50b5c70ff15544d74168ba47a4495e0afa273bfd1638d77bbecbf90ac",
+    "app/configurator/variant-m/customer-tools.mjs": "c74c1ebd0a7043c79a4191185879f61fa2818374effe914f888ec2e01fb5f433",
+    "app/configurator/variant-m/direct-editing.mjs": "b7653746ff8f623d058cce6d81160693d583e3340fb6e4acb5790a741b396576",
+    "app/configurator/variant-m/photo-editor.mjs": "85c3f107726fd35f5369bb110388b333e6ff99c2a7afd8381c87670346025a41",
+    "app/configurator/variant-m/photo-editor.test.mjs": "631ea5fd022279f3541a4bfa8222596b0c5d40b47ceb3eea8907e594e3717d0f",
+    "app/configurator/variant-m/photo-position-model.mjs": "f9e169358de9797d7acf5b1797d86250f8a6ab3c10008d9eb27e85f7a41646f7",
+    "app/configurator/variant-m/photo-position-ui.test.mjs": "f780c9ed16402fbd136adf472415c221f61a28d01280c4e6d6b8e691bea520bf",
+    "app/configurator/variant-m/photo-position.mjs": "0d890538325aba43224c9f83a49bc52bca1b5531c5de466a652cdbfdee918fc7",
+    "app/configurator/variant-m/photo-position.test.mjs": "09b814c6e967ff72830713c6d266d4ca3c653d16bae4f30256f8e2466dd50e6e",
+    "app/configurator/variant-m/refinements.css": "1b425f5f872e7a571b6a77e489d695ed71c058680c7026eac616100e5bbf1ccf",
+    "app/configurator/variant-m/refinements.mjs": "be9bdc7928a6d997a779e154d5406be760a801ae582ea0d4b9f03894a42ede80",
+    "app/configurator/variant-m/template-deletion.mjs": "a32b488fa3dde9a4e4956c1e0aec0abe9fa5fb9bc3961d4a50cada58843b730d",
+    "app/configurator/variant-m/ui-event-regressions.test.mjs": "ab537f52ab0dc9c268bf61fa4bd5b572853aed998543a1b66493bc3f3cbf8c3b",
+    "app/configurator/variant-m/ux.mjs": "dbffcf486f491188787696b0b23228088d22b09f131df40b07887b7089e09991",
+    "app/configurator/variant-m/view-zoom.css": "7336130365733e2ca03e5873a3fbc557cb11d2111ac634a2109685b2926ab723",
+    "app/configurator/variant-m/view-zoom.mjs": "9bab289e11f9fc610ac44b83f161e3fc8f7305002ac14523929d7e95ea270856",
+    "app/workshop/katalog-convert.mjs": "9085bd9943f26e88f47a81006f9eba80dc3ae44c84119479826f0023bca61675",
+    "app/workshop/katalog-convert.test.mjs": "50af902953a99831c226c316adf2a189adba9999edd918a35e6eb81fd2bebff4",
+    "app/configurator/variant-m/overlap-notice.test.mjs": "b680dc1f010ceb947433d440e370e639a3725cf6c5c2b24c2bc6f488d192296f",
+    "app/configurator/variant-m/photo-crop-shapes.mjs": "22771519140d751af49f07bc3de13b0c471d20db5adc31d8dc4fc176ebf5a043",
+    "app/configurator/variant-m/template-deletion.test.mjs": "e984fa9c54ca8f7f5fe5ba597bb772ef43dfdecab414e9d3620eb0e6196dd627"
+  },
+  "changedDeleteRights": {
+    "22x14.json": 43,
+    "30x20.json": 43
+  },
+  "publicFiles": [
+    {
+      "name": "22x14.html",
+      "sha256": "a538334cfb0aa9e3f371c5477171bb369250423fa5e9e3a2b2b858e332a9b03f"
+    },
+    {
+      "name": "30x20.html",
+      "sha256": "851ed4705fc394709ec569a313bc68325b077a99650055342560a64be36ffb09"
+    },
+    {
+      "name": "22x14.json",
+      "sha256": "8222984b2ff7877719c50aa4fcc67f613eb008b11a9543d6eddfafae2158b2c5"
+    },
+    {
+      "name": "30x20.json",
+      "sha256": "637d19fcc6f02859a08d4c3853a51b13c1cfd1003aedff69a81a2de5682ae054"
+    }
+  ],
+  "http": {
+    "at": "2026-11-05T21:05:21.069Z",
+    "pages": [
+      {
+        "size": "22x14",
+        "status": 200,
+        "bundle": "/_acryl-bundle/editor-3e54d8a6ca1778ba.mjs"
+      },
+      {
+        "size": "30x20",
+        "status": 200,
+        "bundle": "/_acryl-bundle/editor-3e54d8a6ca1778ba.mjs"
+      }
+    ],
+    "models": [
+      {
+        "size": "22x14",
+        "status": 200,
+        "designs": 43,
+        "prices": [
+          1999,
+          2499
+        ],
+        "extraMotif": 169,
+        "blockedEditableTexts": []
+      },
+      {
+        "size": "30x20",
+        "status": 200,
+        "designs": 43,
+        "prices": [
+          1999,
+          2499
+        ],
+        "extraMotif": 169,
+        "blockedEditableTexts": []
+      }
+    ],
+    "bundle": {
+      "status": 200,
+      "bytes": 1416818,
+      "sha256": "e28753256dac728155ea4319b71b051822195115c29acc4e13c067a55ecd9ad7",
+      "cropShapes": true,
+      "singleNotice": true
+    }
+  },
+  "browser": {
+    "desktop": true,
+    "mobileViewport": {
+      "width": 390,
+      "height": 844
+    },
+    "singleOverlapNote": true,
+    "noteHeightPx": 18,
+    "requiredNameDeleteButtonEnabled": true,
+    "photoSizeSliderVisible": true,
+    "cropFormats": [
+      "Herz",
+      "Oval hochkant",
+      "Stern",
+      "Wolke"
+    ],
+    "heartPreviewOpenedAndCancelled": true,
+    "userCompositionEdited": false,
+    "physicalPhoneTest": false,
+    "localFunctionalChecks": [
+      "required name delete/undo",
+      "full 400x600 upload",
+      "photo slider and drag",
+      "photo removal/reload without placeholder",
+      "existing photo double-click without chooser",
+      "four crop forms plus original reset",
+      "anchor add/remove with 169-cent price"
+    ]
+  },
+  "cartVerified": false
+}

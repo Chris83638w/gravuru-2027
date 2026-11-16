@@ -1,0 +1,233 @@
+{
+  "schema": "issue230-independent-upload-decision/v1",
+  "readOnly": true,
+  "rows": [
+    {
+      "workbook": "Tuerschild-Acrylglas-3mm_v4.xlsx",
+      "planId": "pgp_aad6d5ae-b255-4d19-8c92-9d91ba09d445",
+      "checks": {
+        "exactModuleDecision": true,
+        "configUploads": true,
+        "vectorLogoAllowed": true,
+        "photoCapability": true,
+        "uiPhoto": true,
+        "uiLogo": true,
+        "defaultPhoto": true,
+        "pricePhoto": true,
+        "priceSvg": true,
+        "uploadDecisionNotOpen": true,
+        "inputUnchanged": true
+      },
+      "allPassed": true,
+      "help": {
+        "title": "Foto / Logo",
+        "text": "Lade ein SVG-Vektorlogo bis 2 MB hoch. Mehrfarbige Flächen werden zu schwarzen Gravurflächen; weiße Aussparungen bleiben frei. Prüfe die Vorschau vor dem Übernehmen. Fotos kannst du separat als JPG, PNG oder WebP bis 15 MB hinzufügen; je Foto 9,99 €. Je Logo 12,99 €."
+      },
+      "capabilities": {
+        "options": true,
+        "designs": true,
+        "text": true,
+        "motifs": true,
+        "photo": true,
+        "logo": true,
+        "colors": false
+      }
+    },
+    {
+      "workbook": "Tuerschild-Acrylglas-3mm-5x2_v2.xlsx",
+      "planId": "pgp_03932c0e-6f8f-4177-8ab5-cf7891b5bcdc",
+      "checks": {
+        "exactModuleDecision": true,
+        "configUploads": true,
+        "vectorLogoAllowed": true,
+        "photoCapability": true,
+        "uiPhoto": true,
+        "uiLogo": true,
+        "defaultPhoto": true,
+        "pricePhoto": true,
+        "priceSvg": true,
+        "uploadDecisionNotOpen": true,
+        "inputUnchanged": true
+      },
+      "allPassed": true,
+      "help": null,
+      "capabilities": {
+        "options": true,
+        "designs": true,
+        "text": true,
+        "motifs": true,
+        "photo": false,
+        "logo": false,
+        "colors": false
+      }
+    },
+    {
+      "workbook": "Tuerschild-Acrylglas-3mm-6x2_v2.xlsx",
+      "planId": "pgp_b6bd6b74-35e6-444e-b2cb-4bf64a49e280",
+      "checks": {
+        "exactModuleDecision": true,
+        "configUploads": true,
+        "vectorLogoAllowed": true,
+        "photoCapability": true,
+        "uiPhoto": true,
+        "uiLogo": true,
+        "defaultPhoto": true,
+        "pricePhoto": true,
+        "priceSvg": true,
+        "uploadDecisionNotOpen": true,
+        "inputUnchanged": true
+      },
+      "allPassed": true,
+      "help": null,
+      "capabilities": {
+        "options": true,
+        "designs": true,
+        "text": true,
+        "motifs": true,
+        "photo": false,
+        "logo": false,
+        "colors": false
+      }
+    },
+    {
+      "workbook": "Tuerschild-Acrylglas-3mm-8x2_v2.xlsx",
+      "planId": "pgp_6126fcb8-d8b7-4b5b-9410-9c09a9198b52",
+      "checks": {
+        "exactModuleDecision": true,
+        "configUploads": true,
+        "vectorLogoAllowed": true,
+        "photoCapability": true,
+        "uiPhoto": true,
+        "uiLogo": true,
+        "defaultPhoto": true,
+        "pricePhoto": true,
+        "priceSvg": true,
+        "uploadDecisionNotOpen": true,
+        "inputUnchanged": true
+      },
+      "allPassed": true,
+      "help": null,
+      "capabilities": {
+        "options": true,
+        "designs": true,
+        "text": true,
+        "motifs": true,
+        "photo": false,
+        "logo": false,
+        "colors": false
+      }
+    },
+    {
+      "workbook": "Tuerschild-Edelstahl-5x2_v1.xlsx",
+      "planId": "pgp_fae5b365-a7c0-4d85-9096-e9f5670b5b21",
+      "checks": {
+        "exactModuleDecision": true,
+        "configUploads": true,
+        "vectorLogoAllowed": true,
+        "photoCapability": true,
+        "uiPhoto": true,
+        "uiLogo": true,
+        "defaultPhoto": true,
+        "pricePhoto": true,
+        "priceSvg": true,
+        "uploadDecisionNotOpen": true,
+        "inputUnchanged": true
+      },
+      "allPassed": true,
+      "help": null,
+      "capabilities": {
+        "options": true,
+        "designs": true,
+        "text": true,
+        "motifs": true,
+        "photo": false,
+        "logo": false,
+        "colors": false
+      }
+    },
+    {
+      "workbook": "Tuerschild-Edelstahl-6x2_v1.xlsx",
+      "planId": "pgp_ea7f2afb-fb41-4e91-90e7-986d8d524cc8",
+      "checks": {
+        "exactModuleDecision": true,
+        "configUploads": true,
+        "vectorLogoAllowed": true,
+        "photoCapability": true,
+        "uiPhoto": true,
+        "uiLogo": true,
+        "defaultPhoto": true,
+        "pricePhoto": true,
+        "priceSvg": true,
+        "uploadDecisionNotOpen": true,
+        "inputUnchanged": true
+      },
+      "allPassed": true,
+      "help": null,
+      "capabilities": {
+        "options": true,
+        "designs": true,
+        "text": true,
+        "motifs": true,
+        "photo": false,
+        "logo": false,
+        "colors": false
+      }
+    },
+    {
+      "workbook": "Tuerschild-Edelstahl-8x2_v1.xlsx",
+      "planId": "pgp_c2098259-36a3-4048-a4e6-e3ffa70c9d68",
+      "checks": {
+        "exactModuleDecision": true,
+        "configUploads": true,
+        "vectorLogoAllowed": true,
+        "photoCapability": true,
+        "uiPhoto": true,
+        "uiLogo": true,
+        "defaultPhoto": true,
+        "pricePhoto": true,
+        "priceSvg": true,
+        "uploadDecisionNotOpen": true,
+        "inputUnchanged": true
+      },
+      "allPassed": true,
+      "help": null,
+      "capabilities": {
+        "options": true,
+        "designs": true,
+        "text": true,
+        "motifs": true,
+        "photo": false,
+        "logo": false,
+        "colors": false
+      }
+    }
+  ],
+  "allPassed": true,
+  "codeFiles": [
+    {
+      "path": "app/configurator/variant-m/contract.mjs",
+      "sha256": "9b024cb6d378bbd95f1671f90aa75bec185a0db4638880be3816c8b60520e4e6"
+    },
+    {
+      "path": "app/configurator/variant-m/module-profile.mjs",
+      "sha256": "88d13494c159da74f5a664e677e4b388064c0e92707f9ed0abfca7f810203806"
+    },
+    {
+      "path": "app/configurator/variant-m/ux-model.mjs",
+      "sha256": "76ec98ba290c82d76457be43b7395be97cdf9d15922bc1357b2f7f3eb292007b"
+    },
+    {
+      "path": "app/configurator/variant-m/ux.mjs",
+      "sha256": "9b4f69d3ed6de6c0365d52aac9f346033dd37c6206b2fadd5c0972095df2b376"
+    },
+    {
+      "path": "app/configurator/variant-m/decision-help.mjs",
+      "sha256": "bb282b81ae49d44df6a720d03b32264f627a4f2c5a4570a1c4e2bf4a4d907b08"
+    },
+    {
+      "path": "app/configurator/variant-m/logo-upload.mjs",
+      "sha256": "b7a1fe96ef42e6167b10d3707d5691930f845aea5107c1e3a536d1a755c0de8f"
+    }
+  ],
+  "limit": "Checks the specified native persisted configurations and actual contract/UI model functions; no browser, checkout, deployment or production acceptance inferred."
+}

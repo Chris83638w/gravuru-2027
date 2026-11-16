@@ -1,0 +1,1 @@
+query GlobalSizeVariants($query:String!,$after:String){productVariants(first:50,after:$after,query:$query){nodes{id sku title product{id}} pageInfo{hasNextPage endCursor}}}

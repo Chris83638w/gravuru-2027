@@ -1,0 +1,47 @@
+{
+  "schema": "gravuru-local-review-handoff/v1",
+  "date": "2026-11-05",
+  "codeCommit": "8b26efdb3d9a4b9d14a5e67070736cce25313939",
+  "purpose": "Archived local visual regression fixture, not catalog or product import",
+  "original": {
+    "localRelativePath": "../../outputs/n36-20261101/full-gallery/steel/review-config.json",
+    "bytes": 32502061,
+    "sha256": "2f7acbf9974c133b1513be4cd7c50b09d4734e8678163630c7ecfeaac3d78787"
+  },
+  "snapshot": {
+    "file": "review-snapshot.json",
+    "bytes": 4551927,
+    "sha256": "ba43347c266f8f73ce2a1e8f28bea38cf4c9b3bbf4e4760a1d06b845f1a45e1e",
+    "designs": 72,
+    "motifs": 74,
+    "embeddedFonts": 0
+  },
+  "excluded": [
+    "All font outline data",
+    "Unused motif resources",
+    "familyFormats (not used by review server)",
+    "Element rights for designs outside this fixture"
+  ],
+  "requiredFonts": {
+    "Michroma": "3201589047768a19ed4506e9b76a18aa1b353b932b9cd599e632bbde1575e0d1",
+    "Great Vibes": "9f6478809b966d1c12c68bda7a89b40a016ec42f310ec59bb4fd06d2b0e79878",
+    "Minimalist": "9dd597769c40316cb0cef67be741b9eda7bc350f30cf3a765b5499bab48bb42f",
+    "Ashley": "62f89cb6e004b5774d40aeb31591d9e8c79ce83da4544bc8ef81fa4db4ed171c",
+    "Cinzel": "77b4abc87ded094d18460011188e82c4db2d76e2b4db8fb0b47010d1c5cf4eae",
+    "Raleway": "9b3e2f8741a92b71d01568deb991538159ce4d849e6d795cc20412259a8199c7",
+    "Homage": "076933c087e2ec9bd6458f673343650e9d0f3959d2b5f47c30e2240182ccdf8f",
+    "Comfortaa": "0c88eafab76705ff60bd9e6af139b42426d58db3d4a95811d29c68d0ed821b0c",
+    "Sweetie": "11ffc6308a4f9eb4504b93cc43ea88b08e6647c74f7dd7fe5f6861ba23d7ef90",
+    "Libre Baskerville": "a2d2d7215ce632b45790814436ffee846addd5539d9ecc230da6eaa5818a79f8",
+    "Italianno": "8d9bd509e61009b3423cef649fd4fe8512a8153230bd85a811ecc5173abe09a0",
+    "Allura": "b1518769e272da6664d99e38250f07d3afd922d6a6ceaf7543692c6b262c4a1c",
+    "Bellefair": "d2862f9498c487c2eb5d28a193cbf4c0f027319ed34587f0249146342311cc4c",
+    "Daniel": "4293a2d774f8696da087cf0296b6af9315cbccb35a2ac7b9c02c61c754917c27",
+    "Comic Neue": "6178515491c2d8f09c57e1f33d85c6d0373be7ecc9f06906028d5f623e04f3dc",
+    "Dancing Script": "fc4895d92164e1053daa957397687d138da97f0eb15cd775d6694064b460e29b",
+    "Rochester": "9b77964fe0978064a740133cbfb8708453be7af2d3c749d24c3a05792a76d73c",
+    "Fineliner Script": "5b0b90907221031f4a6f2edf4d091ae95c8aa19505be24aa02b1647f24caf6cb",
+    "Antic Slab": "a8470abe0f74d765562b1c11eda217b5e82b545ec056140495b7c931c1366192",
+    "Lato": "b6085a7a685f2ed38ef0f88649029cce6068fd3b7edd4d24e07ea64e59e91c4f"
+  }
+}

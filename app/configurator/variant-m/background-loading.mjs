@@ -1,4 +1,4 @@
-// Ladefolge nach dem Start (preload-queue.mjs) für den Kundeneditor: Optionsbilder → Schriften → Motive,
+// Ladefolge nach dem Start (preload-queue.mjs) für den Kundeneditor: Optionsbilder → erste Motive → Schriften,
 // erst wenn die Oberfläche fertig und das Szenenbild da ist. Kunde öffnet vorher einen Bereich → sofort.
 import {createPreloadQueue,idleScheduler} from './preload-queue.mjs';
 import {ACRYLIC_BASES,acrylicBaseImageUrl} from './acrylic-product.mjs';
@@ -12,10 +12,9 @@ export function optionImageUrls(config){
   return [...urls];
 }
 
-// Umfang des Hintergrund-Vorladens (Entscheidung 20.10.2026): Vollständig (alle Schriften + Motivbibliothek,
-// ~9 MB) nur bei unbegrenzter Verbindung (WLAN/Ethernet laut navigator.connection.type) oder am Desktop ohne
-// Angabe. Am Handy/Tablet mit Mobilfunk oder ohne Angabe (iOS liefert keine) nur die empfohlenen Schriften
-// (dieselbe Liste wie „Unsere Empfehlungen“ der Schriftauswahl); alle Schriften und Motive erst auf Anforderung.
+// Connection classification remains diagnostic for existing hosts. Regardless of
+// classification, the customer request (08.11.2026) now limits speculative work
+// to two common fonts and the first six permitted motifs; Save-Data/2g skips it entirely.
 export const RECOMMENDED_FONTS=Object.freeze(['Montserrat','Nunito','Lora','Caveat','Allura','Dancing Script']);
 export function preloadScope(win=globalThis){
   const type=win.navigator?.connection?.type;
@@ -42,18 +41,14 @@ export function installBackgroundLoading({el,r,config,win=window}){
     image.src=url;images.set(url,{image,promise});return promise;
   };
   const urls=optionImageUrls(config);
-  queue.add('images',{background:async()=>{for(const url of urls)await loadImage(url,'low');},now:()=>Promise.all(urls.map(url=>loadImage(url,'high')))});
-  const ensureAllFonts=el.uxEnsureAllFonts,ensureLibrary=el.uxEnsureMotifLibrary;
+  queue.add('images',{background:async()=>{for(const url of urls)await loadImage(url,'low');},now:()=>Promise.all(urls.map(url=>loadImage(url,'high'))),saveData:'skip'});
   const scope=preloadScope(win);el.uxPreloadScope=scope;
-  const light=scope==='light';
-  // Leicht: erst die empfohlenen Schriften im Hintergrund; „alle Schriften“ bleibt offen und lädt bei Bedarf
-  // (Schriftauswahl), damit eine vorgezogene Anforderung nie an einer nur teilweise erledigten Aufgabe endet.
-  if(light)queue.add('fonts-recommended',{background:()=>el.uxPrefetchFonts?.({priority:'low',names:RECOMMENDED_FONTS}),now:()=>el.uxEnsureFonts?.(RECOMMENDED_FONTS)});
-  queue.add('fonts',{background:()=>el.uxPrefetchFonts?.({priority:'low'}),now:()=>ensureAllFonts?.(),saveData:light?'never':'load'});
-  queue.add('motifs',{background:()=>ensureLibrary?.({priority:'low'}),now:()=>ensureLibrary?.(),saveData:light?'never':'skip'});
-  // Bestehende Aufrufer (Reiter „Motive“, Schriftauswahl) laufen über die Warteschlange und ziehen vor.
-  if(ensureAllFonts)el.uxEnsureAllFonts=()=>queue.request('fonts');
-  if(ensureLibrary)el.uxEnsureMotifLibrary=(options={})=>options.priority==='low'?ensureLibrary(options):queue.request('motifs');
+  // Bounded on every connection: six initial motifs and two common fonts.
+  // The legacy explicit all-loader remains available to old controls,
+  // but opening the current text/motif tabs never invokes it.
+  const recommended=RECOMMENDED_FONTS.slice(0,2);
+  queue.add('motifs',{background:()=>config?.moduleProfile?.modules?.motifs===false?undefined:el.uxPrefetchInitialMotifs?.(),now:()=>el.uxEnsureVisibleMotifs?.(),saveData:'skip'});
+  queue.add('fonts',{background:()=>el.uxPrefetchFonts?.({priority:'low',names:recommended}),now:()=>el.uxEnsureFonts?.(recommended),saveData:'skip'});
   // Kundenaktionen: Schritt/Reiter gewechselt, Schriftauswahl oder Optionsfeld angefasst.
   const promoteVisible=()=>{for(const [selector,key] of PANEL_TASKS){const panel=r.querySelector(selector);if(panel&&!panel.hidden&&panel.offsetParent!==null)queue.request(key).catch(()=>{});}};
   r.addEventListener('click',event=>{

@@ -29,6 +29,23 @@ function fixture(material='steel'){
  delete c.familyAcrylic;return prepareConfig(c);
 }
 const state=c=>({designId:c.profile.designs[0].id,objects:clone(c.profile.designs[0].objects),mOptions:resolvedOptions(c),selected:null});
+
+test('shape switch retains an edited multiword first name together with its unchanged surname and edited slogan',()=>{
+ const c=fixture(),sourceSize=c.familyFormats.defaultSize,target=c.familyFormats.formats.find(f=>f.form==='RT2');
+ for(const d of c.familyFormats.designs){
+  const original=d.objects[0];d.objects=[['name-1','Anna'],['name-2','Muster'],['slogan','Originalspruch']].map(([fieldKey,text],i)=>{
+   const o={...original,id:fieldKey,fieldKey,text,y:original.y+(i-1)*5};measureText(o,c.localResources.fonts);return o;
+  });
+ }
+ const source=selectedProfile(c,{size:sourceSize,mounting:'K00'}).designs[0];
+ const s={designId:source.id,objects:clone(source.objects),mOptions:{size:sourceSize,mounting:'K00'},selected:null};
+ s.objects[0].text='Anna Maria';s.objects[2].text='Geänderter Spruch';
+ const moved=familyFormatState(c,s,{size:target.key,mounting:'K00'},{fonts:c.localResources.fonts});
+ assert.equal(moved.objects.find(o=>o.fieldKey==='name-1').text,'Anna Maria');
+ assert.equal(moved.objects.find(o=>o.fieldKey==='name-2').text,'Muster');
+ assert.equal(moved.objects.find(o=>o.fieldKey==='slogan').text,'Geänderter Spruch');
+ assert.equal(s.objects[1].text,'Muster');
+});
 test('shop preparation chooses the default design belonging to every selected size; explicit foreign designs still fail',()=>{
  const c=fixture(),document=makeProductDocument(c),prepared=prepareShopProduct({id:c.profile.id,revision:1,status:'draft',document});
  assert.equal(prepared.sourceReady,true);assert.equal(prepared.variants.length,variantCombinations(c).length);

@@ -1,0 +1,815 @@
+{
+  "scope": "All Git tree blobs under app/, excluding paths containing .test.; direct endpoint tree comparison, not GitHub compare's merge-base file list.",
+  "references": {
+    "live": "8ceb866be1ed7b85fd8b0813babe78a833b60d11",
+    "v8": "f4645189c3dd8e5ba6f2aa2a3c11c16c604f33d5",
+    "mergeBase": "7b8bc287012140cb3aba05f2aadbbe52248c6a55"
+  },
+  "treeEvidence": [
+    {
+      "requestIndex": 0,
+      "returnedSha": "608acc8d4ac6b3a59e4956b5c37d5b11ad13d798",
+      "count": 4319,
+      "truncated": false
+    },
+    {
+      "requestIndex": 1,
+      "returnedSha": "85ed528477cbabc71083ade520ca9db82fe887b1",
+      "count": 4735,
+      "truncated": false
+    },
+    {
+      "requestIndex": 2,
+      "returnedSha": "7b8bc287012140cb3aba05f2aadbbe52248c6a55",
+      "count": 4196,
+      "truncated": false
+    }
+  ],
+  "comparisons": [
+    {
+      "repository_full_name": "Chris83638w/gravuru-2027",
+      "base": "8ceb866",
+      "head": "f464518",
+      "status": "diverged",
+      "ahead_by": 94,
+      "behind_by": 50,
+      "total_commits": 94,
+      "merge_base_commit": {
+        "sha": "7b8bc287012140cb3aba05f2aadbbe52248c6a55",
+        "url": "https://api.github.com/repos/Chris83638w/gravuru-2027/commits/7b8bc287012140cb3aba05f2aadbbe52248c6a55",
+        "html_url": "https://github.com/Chris83638w/gravuru-2027/commit/7b8bc287012140cb3aba05f2aadbbe52248c6a55"
+      }
+    },
+    {
+      "repository_full_name": "Chris83638w/gravuru-2027",
+      "base": "2fb5949",
+      "head": "f464518",
+      "status": "diverged",
+      "ahead_by": 151,
+      "behind_by": 5,
+      "total_commits": 151,
+      "merge_base_commit": {
+        "sha": "207c0c7e5cb628b70c7df051202e16afa4f6c004",
+        "url": "https://api.github.com/repos/Chris83638w/gravuru-2027/commits/207c0c7e5cb628b70c7df051202e16afa4f6c004",
+        "html_url": "https://github.com/Chris83638w/gravuru-2027/commit/207c0c7e5cb628b70c7df051202e16afa4f6c004"
+      }
+    },
+    {
+      "repository_full_name": "Chris83638w/gravuru-2027",
+      "base": "8ceb866",
+      "head": "6298f7af",
+      "status": "diverged",
+      "ahead_by": 97,
+      "behind_by": 50,
+      "total_commits": 97,
+      "merge_base_commit": {
+        "sha": "7b8bc287012140cb3aba05f2aadbbe52248c6a55",
+        "url": "https://api.github.com/repos/Chris83638w/gravuru-2027/commits/7b8bc287012140cb3aba05f2aadbbe52248c6a55",
+        "html_url": "https://github.com/Chris83638w/gravuru-2027/commit/7b8bc287012140cb3aba05f2aadbbe52248c6a55"
+      }
+    },
+    {
+      "repository_full_name": "Chris83638w/gravuru-2027",
+      "base": "f464518",
+      "head": "411188db",
+      "status": "ahead",
+      "ahead_by": 1,
+      "behind_by": 0,
+      "total_commits": 1,
+      "merge_base_commit": {
+        "sha": "f4645189c3dd8e5ba6f2aa2a3c11c16c604f33d5",
+        "url": "https://api.github.com/repos/Chris83638w/gravuru-2027/commits/f4645189c3dd8e5ba6f2aa2a3c11c16c604f33d5",
+        "html_url": "https://github.com/Chris83638w/gravuru-2027/commit/f4645189c3dd8e5ba6f2aa2a3c11c16c604f33d5"
+      }
+    },
+    {
+      "repository_full_name": "Chris83638w/gravuru-2027",
+      "base": "2fb5949",
+      "head": "8ceb866",
+      "status": "diverged",
+      "ahead_by": 107,
+      "behind_by": 5,
+      "total_commits": 107,
+      "merge_base_commit": {
+        "sha": "207c0c7e5cb628b70c7df051202e16afa4f6c004",
+        "url": "https://api.github.com/repos/Chris83638w/gravuru-2027/commits/207c0c7e5cb628b70c7df051202e16afa4f6c004",
+        "html_url": "https://github.com/Chris83638w/gravuru-2027/commit/207c0c7e5cb628b70c7df051202e16afa4f6c004"
+      }
+    }
+  ],
+  "counts": {
+    "both_changed": 15,
+    "only_live": 8,
+    "only_live_changed": 15,
+    "only_v8": 27,
+    "only_v8_changed": 34
+  },
+  "matrix": [
+    {
+      "path": "app/configurator/mobile-demo/assets.mjs",
+      "live": "b1c03186664f2e9ae4f138d703c1d11677114633",
+      "v8": "bbb421041ef6fff63fa3a6d120aafaf7414c22df",
+      "base": "d03c5bcb01337d6625f1624e52bf5718834d0286",
+      "classification": "both_changed"
+    },
+    {
+      "path": "app/configurator/mobile-demo/compact-controls.mjs",
+      "live": "3445063eae78cee993a6aa7b9d072a0538257415",
+      "v8": null,
+      "base": null,
+      "classification": "only_live"
+    },
+    {
+      "path": "app/configurator/mobile-demo/demo.css",
+      "live": "360465a62c689662b603a982efe4141dc2dd9ac9",
+      "v8": "19d8100cd874e6c72a227b7abdf53fd6e2d16f41",
+      "base": "19d8100cd874e6c72a227b7abdf53fd6e2d16f41",
+      "classification": "only_live_changed"
+    },
+    {
+      "path": "app/configurator/mobile-demo/demo.mjs",
+      "live": "5a10624dbbee96a47cb02115f90d8cceea2209f7",
+      "v8": "1443b0af731a94b98acd3962ac2e516003e46144",
+      "base": "48f01a3097a597e459689a3d91b372edc6b16dd8",
+      "classification": "both_changed"
+    },
+    {
+      "path": "app/configurator/mobile-demo/preview-action.mjs",
+      "live": "21cb85c7d2706f2efa30013f73156492b5b6e1fb",
+      "v8": "fd8799a2c35a6c221f55135a6bbb4c7f4e071b94",
+      "base": null,
+      "classification": "both_changed"
+    },
+    {
+      "path": "app/configurator/variant-m/background-loading.mjs",
+      "live": "198dc6b60e3db7518da5b09b72703ddc61df3fe8",
+      "v8": "f9896c1443ce8b14c8da13096196168a203009af",
+      "base": "f9896c1443ce8b14c8da13096196168a203009af",
+      "classification": "only_live_changed"
+    },
+    {
+      "path": "app/configurator/variant-m/build.mjs",
+      "live": "715f284204eed9c75e3d9416b219f8d057dc3d7b",
+      "v8": "8fa844b58248bbf257b3c10fc24df4b2528d39e9",
+      "base": "8fa844b58248bbf257b3c10fc24df4b2528d39e9",
+      "classification": "only_live_changed"
+    },
+    {
+      "path": "app/configurator/variant-m/bundle-build.mjs",
+      "live": "ec0cfac203d1e5cf484bd1802e50d92d97e7692e",
+      "v8": "38507ecfa74d786b1f80d47906b3e372c3141cc7",
+      "base": "38507ecfa74d786b1f80d47906b3e372c3141cc7",
+      "classification": "only_live_changed"
+    },
+    {
+      "path": "app/configurator/variant-m/design-reset.mjs",
+      "live": "72a8f34e935ecf2b832cc71682a248674ffcee57",
+      "v8": "978c0d4e214af1d5e8dad82f99689ebd03c77401",
+      "base": "978c0d4e214af1d5e8dad82f99689ebd03c77401",
+      "classification": "only_live_changed"
+    },
+    {
+      "path": "app/configurator/variant-m/element-rights.mjs",
+      "live": "25b4d643d260757a9233dc2bd60444a5e889d5b9",
+      "v8": "a41cfc2593e8a775ead82415e41f1926a8c98a1f",
+      "base": "6c039c6c2014bd5867950b1f50859909e28f44c0",
+      "classification": "both_changed"
+    },
+    {
+      "path": "app/configurator/variant-m/gallery-workbench.mjs",
+      "live": null,
+      "v8": "d79ecdf68d9c0257502d3a32b6dbfe4a0dea35a1",
+      "base": null,
+      "classification": "only_v8"
+    },
+    {
+      "path": "app/configurator/variant-m/layout.mjs",
+      "live": "82ac00a90d326545e39e9a39f40e6bb512336648",
+      "v8": "1a9a8a273e0759945d127f9c60679703d3675b52",
+      "base": "82ac00a90d326545e39e9a39f40e6bb512336648",
+      "classification": "only_v8_changed"
+    },
+    {
+      "path": "app/configurator/variant-m/lazy-resources.mjs",
+      "live": "c5879f99bcfd3621412ec0cf4b97026510ad0306",
+      "v8": "043e50ad26afc248b64858b795cb14a2bd413e48",
+      "base": "043e50ad26afc248b64858b795cb14a2bd413e48",
+      "classification": "only_live_changed"
+    },
+    {
+      "path": "app/configurator/variant-m/module-profile.mjs",
+      "live": "4f4b4dfdaaaf3bffc6c966404d3c78af380bf4b8",
+      "v8": "b12ed04cdf1ea9d8d7a31e72edb2659cb9d547c5",
+      "base": null,
+      "classification": "both_changed"
+    },
+    {
+      "path": "app/configurator/variant-m/product-design-gallery.mjs",
+      "live": "c6129dbfd37f0527159ce6bf01f39179c655a987",
+      "v8": "f60e15281d3e2be3fff374a210110da76c6f58e5",
+      "base": "f60e15281d3e2be3fff374a210110da76c6f58e5",
+      "classification": "only_live_changed"
+    },
+    {
+      "path": "app/configurator/variant-m/profile-selection.mjs",
+      "live": "38ae62b0c0bdc65ee6ef475084b0f3abd5316b5f",
+      "v8": "3f4fe095d8feefc4a6e16b8c7b14a4c0cdd1ed1c",
+      "base": "3f4fe095d8feefc4a6e16b8c7b14a4c0cdd1ed1c",
+      "classification": "only_live_changed"
+    },
+    {
+      "path": "app/configurator/variant-m/refinements.mjs",
+      "live": "59acf00bbbab2cc5ae799b3d179a277202358430",
+      "v8": "90b02b59708e4acc63ebe60fda9d8d652b832105",
+      "base": "90b02b59708e4acc63ebe60fda9d8d652b832105",
+      "classification": "only_live_changed"
+    },
+    {
+      "path": "app/configurator/variant-m/server.mjs",
+      "live": "ac9d355224b08881614615f5ed179a09457f8b26",
+      "v8": "463668ea236288211b69aa49ff1ed9c952e19d7a",
+      "base": "fec3448b1319b431086344e02254d2798c636822",
+      "classification": "both_changed"
+    },
+    {
+      "path": "app/configurator/variant-m/ux.mjs",
+      "live": "34805adb2467927d48af466847c82a73bc09511c",
+      "v8": "e0f142bd52951e29ff0b207b58af8081a660b7cd",
+      "base": "c3b39d003627a94d187658cf4c4bea09f1b057b9",
+      "classification": "both_changed"
+    },
+    {
+      "path": "app/configurator/variant-m/view-zoom.mjs",
+      "live": "7d41ee8ca8a6ae7067b8078786815ed7a40d6e9d",
+      "v8": "2b06f98c8db0793cf68aeadd265209a6ae4c5af2",
+      "base": "c673037104f9966037639301fdde24814ee8e329",
+      "classification": "both_changed"
+    },
+    {
+      "path": "app/configurator/variant-m/visible-resource-loader.mjs",
+      "live": "4ae7c7f2ec21e676c2d88733fe549d32f6b2348f",
+      "v8": null,
+      "base": null,
+      "classification": "only_live"
+    },
+    {
+      "path": "app/platform/sources/app/shared/models/studio-svg.mjs",
+      "live": "39b0addbb9f023f0641d4ed0ae0f61221f7111df",
+      "v8": "c2d60ec2d52a4cff86cd94b429051b501ae7f84f",
+      "base": "39b0addbb9f023f0641d4ed0ae0f61221f7111df",
+      "classification": "only_v8_changed"
+    },
+    {
+      "path": "app/workshop/acryl-employee-host.mjs",
+      "live": "4236d81290ba7f77d2a8e92bb41a87f990a6b497",
+      "v8": "e070ccd13984b283163a8ac8cf7739afed0fe031",
+      "base": "e070ccd13984b283163a8ac8cf7739afed0fe031",
+      "classification": "only_live_changed"
+    },
+    {
+      "path": "app/workshop/cart-personalization.mjs",
+      "live": "4801bc8ff19b12380d581f052405e63c3647302b",
+      "v8": "3cecad0704d2b06082b57d53c6a89752e32d5673",
+      "base": "3adb984772a49430ccbaa2adfb16cee3071c859f",
+      "classification": "both_changed"
+    },
+    {
+      "path": "app/workshop/catalog-live-orders.mjs",
+      "live": "8362c6d9e968df92fd2ee5b5538746fee58b0004",
+      "v8": "2af923f393d4b4e6de553321a3c56d585de8792a",
+      "base": "8362c6d9e968df92fd2ee5b5538746fee58b0004",
+      "classification": "only_v8_changed"
+    },
+    {
+      "path": "app/workshop/catalog-structure.mjs",
+      "live": "d51bb2a0532ace799b5348dd25058474bcc475ee",
+      "v8": "638bdeb9909d07f42968b117ef7446226567f4c2",
+      "base": "d51bb2a0532ace799b5348dd25058474bcc475ee",
+      "classification": "only_v8_changed"
+    },
+    {
+      "path": "app/workshop/configurator-integration.mjs",
+      "live": "321c4da1f973fe7851a65c7ee23afe82aea86857",
+      "v8": "1bc2ddb36032e7b2e81ce47eac8685c87beed203",
+      "base": "1bc2ddb36032e7b2e81ce47eac8685c87beed203",
+      "classification": "only_live_changed"
+    },
+    {
+      "path": "app/workshop/configurator-module-http.mjs",
+      "live": null,
+      "v8": "1040e65462b29db8b5f7a79ab930b0e711762ac4",
+      "base": null,
+      "classification": "only_v8"
+    },
+    {
+      "path": "app/workshop/configurator-module-profiles.mjs",
+      "live": null,
+      "v8": "27841f399f37e1e124b76803052213c238b32812",
+      "base": null,
+      "classification": "only_v8"
+    },
+    {
+      "path": "app/workshop/customer-photo.mjs",
+      "live": "46c83c8ffdcfaf2ecf090f65fbae1f8e6ad41024",
+      "v8": "4ba9d801aee473ba4893600a157a41b647996ee3",
+      "base": "46c83c8ffdcfaf2ecf090f65fbae1f8e6ad41024",
+      "classification": "only_v8_changed"
+    },
+    {
+      "path": "app/workshop/customer-read-scope.mjs",
+      "live": "028de5a65fe0a50b3f18f2319980c560ffb77ede",
+      "v8": null,
+      "base": null,
+      "classification": "only_live"
+    },
+    {
+      "path": "app/workshop/customer-vector-logo.py",
+      "live": "d2635b99bd50bb7d85671f73d52645574179f933",
+      "v8": "8fb586741100646ce34d9ca2977011ef527f100d",
+      "base": "8fb586741100646ce34d9ca2977011ef527f100d",
+      "classification": "only_live_changed"
+    },
+    {
+      "path": "app/workshop/design-assets.mjs",
+      "live": "0b38bf900bf77b4f5b6d166dd9f067a7fc2805a6",
+      "v8": "fe89efe561565e9076eaddd65ee380304bcf2a81",
+      "base": "0b38bf900bf77b4f5b6d166dd9f067a7fc2805a6",
+      "classification": "only_v8_changed"
+    },
+    {
+      "path": "app/workshop/design-dashboard.mjs",
+      "live": "b3020371917f5e3997d0cb03079340984a70676d",
+      "v8": "5d3f165a2041a9b0d4c82ae9f96a23df1d26737c",
+      "base": "b3020371917f5e3997d0cb03079340984a70676d",
+      "classification": "only_v8_changed"
+    },
+    {
+      "path": "app/workshop/design-target-dashboard.mjs",
+      "live": "409e80f555ccad8c4c5536ef442dd76a76503cab",
+      "v8": "21738234526cc600a797684f9848dc59a83f8d29",
+      "base": "409e80f555ccad8c4c5536ef442dd76a76503cab",
+      "classification": "only_v8_changed"
+    },
+    {
+      "path": "app/workshop/gallery-design-assignments.mjs",
+      "live": null,
+      "v8": "db4625cfc42ebb1c3eb25fe38b8120f08c98a6e7",
+      "base": null,
+      "classification": "only_v8"
+    },
+    {
+      "path": "app/workshop/gallery-editor.mjs",
+      "live": null,
+      "v8": "f3cc529ab39445097f18ae051b5804b43fb7a41f",
+      "base": null,
+      "classification": "only_v8"
+    },
+    {
+      "path": "app/workshop/gallery-module-sync.mjs",
+      "live": null,
+      "v8": "36a831f92ff1824dbacfebc31d6092f93d4c0f02",
+      "base": null,
+      "classification": "only_v8"
+    },
+    {
+      "path": "app/workshop/gallery-photo-media.mjs",
+      "live": null,
+      "v8": "85921be0dfd89be64551ab30e8752dc4b926dbc5",
+      "base": null,
+      "classification": "only_v8"
+    },
+    {
+      "path": "app/workshop/gallery-shop-sync-activation.mjs",
+      "live": null,
+      "v8": "9b12c84891796f68a7881861a929fb4a4164fd5b",
+      "base": null,
+      "classification": "only_v8"
+    },
+    {
+      "path": "app/workshop/gallery-shop-sync-media.mjs",
+      "live": null,
+      "v8": "a065b964422cdaa5c83e090334bd828ff133f18f",
+      "base": null,
+      "classification": "only_v8"
+    },
+    {
+      "path": "app/workshop/gallery-shop-sync-native.mjs",
+      "live": null,
+      "v8": "6a7de3fde7f9c311ff3457cf5f043d72d5a9ebf8",
+      "base": null,
+      "classification": "only_v8"
+    },
+    {
+      "path": "app/workshop/gallery-shop-sync-test-fixture.mjs",
+      "live": null,
+      "v8": "839bac8992ac76c043cdd4e93312ea7179201f27",
+      "base": null,
+      "classification": "only_v8"
+    },
+    {
+      "path": "app/workshop/gallery-shop-sync-transport.mjs",
+      "live": null,
+      "v8": "97ca6d32574ca686783051a985333b883c8bcec0",
+      "base": null,
+      "classification": "only_v8"
+    },
+    {
+      "path": "app/workshop/gallery-shop-sync.mjs",
+      "live": null,
+      "v8": "a2dc6f956f1c8924d315c0a18cc2366307cce9d1",
+      "base": null,
+      "classification": "only_v8"
+    },
+    {
+      "path": "app/workshop/http.mjs",
+      "live": "9b22d8058333328784ef2585e03c37df1b7b6d88",
+      "v8": "37d69129d992bc64509a42884f4ae4ac77cfd259",
+      "base": "ea771bbbf0c84a5d79fed98a10a8669db13713b7",
+      "classification": "both_changed"
+    },
+    {
+      "path": "app/workshop/katalog-convert.mjs",
+      "live": "554ec3bc8c28c0f669cc36e63343864c5964cf88",
+      "v8": "7917ecfc3d4ecb1dac6dae67d16fdbb65411d4bf",
+      "base": "554ec3bc8c28c0f669cc36e63343864c5964cf88",
+      "classification": "only_v8_changed"
+    },
+    {
+      "path": "app/workshop/katalog-family-formats.mjs",
+      "live": "d500efcab5620f037507ec4ba2ff58df5bf55a4a",
+      "v8": "43e9f8b185a0ad1f59a8df7e35ee248e6485b621",
+      "base": "d500efcab5620f037507ec4ba2ff58df5bf55a4a",
+      "classification": "only_v8_changed"
+    },
+    {
+      "path": "app/workshop/katalog-import.mjs",
+      "live": "f69ef0cbbcca81d887b9e5b79ee851eee83606f7",
+      "v8": "eaea1886d7228e97469bc942648c4c0dea09c776",
+      "base": "f69ef0cbbcca81d887b9e5b79ee851eee83606f7",
+      "classification": "only_v8_changed"
+    },
+    {
+      "path": "app/workshop/katalog-linien.mjs",
+      "live": "74db63cc54cb31c960eab7620999cf2ba6b67de7",
+      "v8": "ee7ae2fe1d6a0f52b0eae2d17690d986d304d094",
+      "base": "74db63cc54cb31c960eab7620999cf2ba6b67de7",
+      "classification": "only_v8_changed"
+    },
+    {
+      "path": "app/workshop/katalog-source.mjs",
+      "live": "5959e1eec5c46bba9dfed3a0e16585d2eaba8a92",
+      "v8": "697c4f81a6555a1a4c03884b019392a8ae111ac9",
+      "base": "5959e1eec5c46bba9dfed3a0e16585d2eaba8a92",
+      "classification": "only_v8_changed"
+    },
+    {
+      "path": "app/workshop/order-intake.mjs",
+      "live": "fbfba90a0fb25c73766741a08137e1699f1c7c33",
+      "v8": "376a983ab7b90e91b60fdac366a920d0bcf240ad",
+      "base": "fbfba90a0fb25c73766741a08137e1699f1c7c33",
+      "classification": "only_v8_changed"
+    },
+    {
+      "path": "app/workshop/photo-import.py",
+      "live": "bd2d8b37c34c42503dd66876a659cdf9be3d8446",
+      "v8": "602a58f414426e7515f52fa99cc97898b05ac211",
+      "base": "bd2d8b37c34c42503dd66876a659cdf9be3d8446",
+      "classification": "only_v8_changed"
+    },
+    {
+      "path": "app/workshop/prepared-editor-bundles.mjs",
+      "live": "b965cc181439d52433e69c513043a02299bac111",
+      "v8": null,
+      "base": null,
+      "classification": "only_live"
+    },
+    {
+      "path": "app/workshop/product-group-templates.mjs",
+      "live": null,
+      "v8": "0b45ced27b3409e35393662be1d3a47590b64787",
+      "base": null,
+      "classification": "only_v8"
+    },
+    {
+      "path": "app/workshop/product-model.mjs",
+      "live": "213c7a206b656bc0a1046728277a5517f725af75",
+      "v8": "f105f36fe181a7dc29d2f8584eb2e538d65208c8",
+      "base": "213c7a206b656bc0a1046728277a5517f725af75",
+      "classification": "only_v8_changed"
+    },
+    {
+      "path": "app/workshop/product-preview.mjs",
+      "live": "32c8fb4965dcbc1d7bf3fff92593a6336694252c",
+      "v8": "778e05f96a0673974de5450b53b0d594dc0a6f9b",
+      "base": "32c8fb4965dcbc1d7bf3fff92593a6336694252c",
+      "classification": "only_v8_changed"
+    },
+    {
+      "path": "app/workshop/public-design-preview-cache.mjs",
+      "live": "1b93785ced475f840051c1bd57b1d1ff5437fade",
+      "v8": null,
+      "base": null,
+      "classification": "only_live"
+    },
+    {
+      "path": "app/workshop/public-design-previews.mjs",
+      "live": "814da0f5be52226d10c83f38435eddf6a70774ce",
+      "v8": null,
+      "base": null,
+      "classification": "only_live"
+    },
+    {
+      "path": "app/workshop/repository.mjs",
+      "live": "0a83dad6fc5918af7be2ea4a47fd5225641e2f18",
+      "v8": "d97f56442d7dec2b9397a5e4a9126c5a37c932f0",
+      "base": "b1a890ff43b284290816721ba9693385a74cb1d5",
+      "classification": "both_changed"
+    },
+    {
+      "path": "app/workshop/shop-design-gallery.mjs",
+      "live": "bfb3347a08fc36b046ba2ca9bf48a5ecb3d56b1d",
+      "v8": "6f54b62ef50e855d6bd48dcc1eb75d95f810c1b0",
+      "base": "f87c5b38af681846b2b1147f2d6f1ecdc0b8d9dc",
+      "classification": "both_changed"
+    },
+    {
+      "path": "app/workshop/shop-draft-transfer.mjs",
+      "live": "6fb03cb11db65adf1cd98b7ea48002ed380eac8a",
+      "v8": "6992740cc100c4dea23967a2e5873bee218fb037",
+      "base": "6fb03cb11db65adf1cd98b7ea48002ed380eac8a",
+      "classification": "only_v8_changed"
+    },
+    {
+      "path": "app/workshop/shop-entry.mjs",
+      "live": "6d3418c6ac4d2e4f8b80425cab9764fe42a49a26",
+      "v8": "50639143f2c4e7a8526421ea83da6fe257b634b3",
+      "base": "5c2f6628467ec72887e48b8a3578bb5142f130dd",
+      "classification": "both_changed"
+    },
+    {
+      "path": "app/workshop/shop-preparation.mjs",
+      "live": "96dfdd47b57cec3cd1d8e0850343006a2cea6790",
+      "v8": "c02e4d9a5f159f55291a7ebd7293addaba954c4d",
+      "base": "c669668fec2ed0cc929113eac7d87a31960e7896",
+      "classification": "both_changed"
+    },
+    {
+      "path": "app/workshop/shop-product-binding-adapter.mjs",
+      "live": "494e3a95d51fe3ee167cef282da0f0e348b4a4e6",
+      "v8": "41e04299ab3faf3a0befd7be20c7939d0d32dea2",
+      "base": "494e3a95d51fe3ee167cef282da0f0e348b4a4e6",
+      "classification": "only_v8_changed"
+    },
+    {
+      "path": "app/workshop/shop-product-binding-check.mjs",
+      "live": "7605b403408507847b54276c8a676ed647b35e3f",
+      "v8": "76014266df1753a56fe786b315ba141baaf486e3",
+      "base": "7605b403408507847b54276c8a676ed647b35e3f",
+      "classification": "only_v8_changed"
+    },
+    {
+      "path": "app/workshop/shop-product-binding-plan.mjs",
+      "live": "cd68350b8a6902f3831aba2c119a3afa8d9b1eef",
+      "v8": "264cd2c26675dcf15e5a3db7471906d8aa1e1844",
+      "base": "cd68350b8a6902f3831aba2c119a3afa8d9b1eef",
+      "classification": "only_v8_changed"
+    },
+    {
+      "path": "app/workshop/shop-product-binding-read-snapshot.mjs",
+      "live": "e742aab4f55c4f65c6ef6c2d182d378df6cad95c",
+      "v8": "0461f3dfc80a8f8822e32fdf974370fd6723ed05",
+      "base": "e742aab4f55c4f65c6ef6c2d182d378df6cad95c",
+      "classification": "only_v8_changed"
+    },
+    {
+      "path": "app/workshop/shop-product-binding-store.mjs",
+      "live": "1309b2150593abdbce43ad3414e2e2ce7e644b0c",
+      "v8": "dbd42603a16b578ea98ad306747a3a58ca7c3d8d",
+      "base": "71ab6199219aac9936ee2f907eabaf568952d89b",
+      "classification": "both_changed"
+    },
+    {
+      "path": "app/workshop/shop-warm-manifest.mjs",
+      "live": "6b7bf105bee41564c776208cd17f8365478cccbf",
+      "v8": null,
+      "base": null,
+      "classification": "only_live"
+    },
+    {
+      "path": "app/workshop/slate-product-groups.mjs",
+      "live": "83a148d2a2a073e85e141dce4839c9299d7fb728",
+      "v8": "74634bda98b296cfabe901cfddbaa3f9cf84a9e2",
+      "base": "83a148d2a2a073e85e141dce4839c9299d7fb728",
+      "classification": "only_v8_changed"
+    },
+    {
+      "path": "app/workshop/slate-review-positions.mjs",
+      "live": null,
+      "v8": "ba6d6c85333116e919ca71975c2d99e9e981d9a6",
+      "base": null,
+      "classification": "only_v8"
+    },
+    {
+      "path": "app/workshop/subcategory-materials.mjs",
+      "live": null,
+      "v8": "82bbda719bbaa3d38f08ac2a55a042582a87a5c1",
+      "base": null,
+      "classification": "only_v8"
+    },
+    {
+      "path": "app/workshop/test-fixtures/module-profile-source.mjs",
+      "live": null,
+      "v8": "286b411b3b0f96cda16834b68be9d32685d1aacc",
+      "base": null,
+      "classification": "only_v8"
+    },
+    {
+      "path": "app/workshop/ui/app.mjs",
+      "live": "67249678f788bd707086f332cc536b84b4cd9d5c",
+      "v8": "0836cf2c92c5cbb48f59a92dd7f83779af89fea9",
+      "base": "67249678f788bd707086f332cc536b84b4cd9d5c",
+      "classification": "only_v8_changed"
+    },
+    {
+      "path": "app/workshop/ui/batch-ui.mjs",
+      "live": "3faa3a2be1ce495ca28b581d1afab0ab4b31eade",
+      "v8": "e6d883b026984fd0a56740786bd06d00e410a97a",
+      "base": "3faa3a2be1ce495ca28b581d1afab0ab4b31eade",
+      "classification": "only_v8_changed"
+    },
+    {
+      "path": "app/workshop/ui/catalog-structure-ui.mjs",
+      "live": "6459e0dc49ca1358704d554b0b63e9bd9beb0e1d",
+      "v8": "b086379d8349358a0227b2d20fc27ec94ca76183",
+      "base": "6459e0dc49ca1358704d554b0b63e9bd9beb0e1d",
+      "classification": "only_v8_changed"
+    },
+    {
+      "path": "app/workshop/ui/catalog-structure.css",
+      "live": "f4d7df3da063f09458e645c87c68652a643146ed",
+      "v8": "8a1eec8b359bb3d4bf5d06af4514dddc6a14c155",
+      "base": "f4d7df3da063f09458e645c87c68652a643146ed",
+      "classification": "only_v8_changed"
+    },
+    {
+      "path": "app/workshop/ui/catalog-ui.mjs",
+      "live": "ba3800685bcce26ce5c5e8f72c1c325b7ae8ed18",
+      "v8": "40b909a6244364726690519edc606fb12be23531",
+      "base": "ba3800685bcce26ce5c5e8f72c1c325b7ae8ed18",
+      "classification": "only_v8_changed"
+    },
+    {
+      "path": "app/workshop/ui/customer-preview-link.mjs",
+      "live": "05dd68c005588ad67f6d7297d1eef32dd660f281",
+      "v8": "9f9163b4baf889710e7bf695e78c7a0fc7a25323",
+      "base": "05dd68c005588ad67f6d7297d1eef32dd660f281",
+      "classification": "only_v8_changed"
+    },
+    {
+      "path": "app/workshop/ui/design-dashboard-ui.mjs",
+      "live": "467c745920f40af098b19c335bd76ee1e7a73eb7",
+      "v8": "7e028d4b539a1c7ac8b4538b8d54f4cddf69586f",
+      "base": "467c745920f40af098b19c335bd76ee1e7a73eb7",
+      "classification": "only_v8_changed"
+    },
+    {
+      "path": "app/workshop/ui/editor-design-link.mjs",
+      "live": null,
+      "v8": "bca35a925496e8727d9c318088250a9e2e2faa91",
+      "base": null,
+      "classification": "only_v8"
+    },
+    {
+      "path": "app/workshop/ui/editor.css",
+      "live": "c1e8b0afd897689f0c95dd8b812d67bee77f7d03",
+      "v8": "3ec970c8f20369f812e8717dd6debe62729cdb90",
+      "base": "c1e8b0afd897689f0c95dd8b812d67bee77f7d03",
+      "classification": "only_v8_changed"
+    },
+    {
+      "path": "app/workshop/ui/form-variants-ui.mjs",
+      "live": "f113053c18161fa73b1c92f6b212091190588ec5",
+      "v8": "3d82f991a65991f6a13dc219ed6f31b99d3c3392",
+      "base": "f113053c18161fa73b1c92f6b212091190588ec5",
+      "classification": "only_v8_changed"
+    },
+    {
+      "path": "app/workshop/ui/gallery-editor.css",
+      "live": null,
+      "v8": "c255caefdab39e27e0ec02b3f8e960c7bcc69e4f",
+      "base": null,
+      "classification": "only_v8"
+    },
+    {
+      "path": "app/workshop/ui/gallery-editor.html",
+      "live": null,
+      "v8": "2244f01ad07b91b4dc9ffd1bd7d5d636cd84581e",
+      "base": null,
+      "classification": "only_v8"
+    },
+    {
+      "path": "app/workshop/ui/gallery-editor.mjs",
+      "live": null,
+      "v8": "1472280a8017f8507655a9cac5dd59f656d2cae0",
+      "base": null,
+      "classification": "only_v8"
+    },
+    {
+      "path": "app/workshop/ui/gallery-management.css",
+      "live": null,
+      "v8": "83bb0efd1ef09ff276d6d465408179ab8658b05f",
+      "base": null,
+      "classification": "only_v8"
+    },
+    {
+      "path": "app/workshop/ui/gallery-management.html",
+      "live": null,
+      "v8": "138b072445e292f55d6c288b4154e7cacb4156ac",
+      "base": null,
+      "classification": "only_v8"
+    },
+    {
+      "path": "app/workshop/ui/gallery-management.mjs",
+      "live": null,
+      "v8": "7576ce40b6886659e05df966011f65ca8da7369f",
+      "base": null,
+      "classification": "only_v8"
+    },
+    {
+      "path": "app/workshop/ui/konfis.html",
+      "live": "328e13aadfad4c28cef3976dd5e1b25c6930db82",
+      "v8": "1eaab782935adf7c6736857645d6afaf9cc6dc4e",
+      "base": "328e13aadfad4c28cef3976dd5e1b25c6930db82",
+      "classification": "only_v8_changed"
+    },
+    {
+      "path": "app/workshop/ui/module-profiles.css",
+      "live": null,
+      "v8": "5e2156e230d56fa9c97d1e9b7fc79dde32707302",
+      "base": null,
+      "classification": "only_v8"
+    },
+    {
+      "path": "app/workshop/ui/module-profiles.html",
+      "live": null,
+      "v8": "64a54c5e56a50e736a8bed1ac63a800a5a4e73d4",
+      "base": null,
+      "classification": "only_v8"
+    },
+    {
+      "path": "app/workshop/ui/module-profiles.mjs",
+      "live": null,
+      "v8": "32a2b45ae6c11153c452933c272fcf569f1bce31",
+      "base": null,
+      "classification": "only_v8"
+    },
+    {
+      "path": "app/workshop/ui/product-editor-ui.mjs",
+      "live": "4ba2ecfa25c04a62815c2e2602cf3fef4d934a88",
+      "v8": "a2470ed4da66fee55d9e51508fb0f3b3fcc840ad",
+      "base": "4ba2ecfa25c04a62815c2e2602cf3fef4d934a88",
+      "classification": "only_v8_changed"
+    },
+    {
+      "path": "app/workshop/ui/shop-design-switch.mjs",
+      "live": "9434bf4bf7f971f8118c616cb95112fd9e121c08",
+      "v8": "ee24cb34248b2c646e45d7577864543554eada24",
+      "base": "ee24cb34248b2c646e45d7577864543554eada24",
+      "classification": "only_live_changed"
+    },
+    {
+      "path": "app/workshop/ui/shop-embed.mjs",
+      "live": "d18967afd92bb23120898b1a643b791d40590262",
+      "v8": "fbe7b1e838bf30d23a18b338d64f6388354281d5",
+      "base": "fbe7b1e838bf30d23a18b338d64f6388354281d5",
+      "classification": "only_live_changed"
+    },
+    {
+      "path": "app/workshop/ui/shop-entry-client.mjs",
+      "live": "3e215b951bdf79b7df6e993c230ea6cac31fdcdf",
+      "v8": "1a14322fc899693c179627b1d5a7aa029e78ec4b",
+      "base": "1a14322fc899693c179627b1d5a7aa029e78ec4b",
+      "classification": "only_live_changed"
+    },
+    {
+      "path": "app/workshop/ui/shop-warm.mjs",
+      "live": "118d82c26e87118b81e177c886eaa30b1e253d8e",
+      "v8": null,
+      "base": null,
+      "classification": "only_live"
+    }
+  ],
+  "classificationMeaning": {
+    "only_v8_changed": "live blob equals merge-base blob; v8 blob differs",
+    "only_live_changed": "v8 blob equals merge-base blob; live blob differs",
+    "both_changed": "both endpoint blobs differ from each other and the merge-base blob",
+    "only_v8": "path exists only at v8 endpoint",
+    "only_live": "path exists only at live endpoint"
+  },
+  "limits": [
+    "Git blob OIDs are SHA-1 content identifiers; they are not SHA-256 server-file hashes.",
+    "Branch-specific change does not establish replacement safety or functional supersedence.",
+    "Actual server files include 19 deviations from nearest Git branch; this audit does not replace that server snapshot.",
+    "Claude's 120/11/66 counts were not reproduced by this explicitly declared app non-test filter; obtain his exact path list/filter to reconcile extra paths."
+  ]
+}

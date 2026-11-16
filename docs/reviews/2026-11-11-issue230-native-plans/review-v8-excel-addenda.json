@@ -1,0 +1,226 @@
+{
+  "schema": "issue230-independent-excel-addenda/v1",
+  "readOnly": true,
+  "finalRun": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-11-11\\die-vollst-ndige-bergabe-findest-du\\work\\product-plans-run-v8",
+  "rows": [
+    {
+      "original": "Tuerschild-Acrylglas-3mm_v4.xlsx",
+      "addendum": "Tuerschild-Acrylglas-3mm_v5.xlsx",
+      "originalSha256": "495e7e59d7abf6a46f1fb7098a75e666162e58be3cad99ad75de6db5d3923841",
+      "addendumSha256": "901dc2a5a3e72f92611426cf4fbe5205323a893f18ee95f67431e799c0f8b8a2",
+      "planId": "pgp_aad6d5ae-b255-4d19-8c92-9d91ba09d445",
+      "planHash": "7079dae2814c9c17526ae3c254696ccd2b253318066b38a435f7a9cfb610e197",
+      "originalCells": 14257,
+      "addedSheets": [
+        "BestätigteUploads"
+      ],
+      "checks": {
+        "originalShaMatches": true,
+        "allOriginalCellsIdentical": true,
+        "originalSheetAndTableBytesSame": true,
+        "exactlyOneAddendum": true,
+        "exactFinalPlanId": true,
+        "finalPlanHash": true,
+        "originalShaReferenced": true,
+        "sourcePins": true,
+        "templatePins": true,
+        "modulePins": true,
+        "photoDecision": true,
+        "logoDecision": true,
+        "motifPrice": true,
+        "openItemsPreserved": true,
+        "manifestHash": true
+      },
+      "differences": [],
+      "allPassed": true
+    },
+    {
+      "original": "Tuerschild-Acrylglas-3mm-5x2_v2.xlsx",
+      "addendum": "Tuerschild-Acrylglas-3mm-5x2_v3.xlsx",
+      "originalSha256": "119e2f48ec4d92c91a1463946a95ef0d2f30deb2e07c0c13ce59c73583a339cd",
+      "addendumSha256": "a9cf81dd852fc50e1e7a84978261812c9e3f763ff6af46af7d2b0ee8b9d80a82",
+      "planId": "pgp_03932c0e-6f8f-4177-8ab5-cf7891b5bcdc",
+      "planHash": "01cf26109b3e49708f122fc7fb46e2493faad1be1e07235b0ff33bed3e28bc96",
+      "originalCells": 652,
+      "addedSheets": [
+        "BestätigteUploads"
+      ],
+      "checks": {
+        "originalShaMatches": true,
+        "allOriginalCellsIdentical": true,
+        "originalSheetAndTableBytesSame": true,
+        "exactlyOneAddendum": true,
+        "exactFinalPlanId": true,
+        "finalPlanHash": true,
+        "originalShaReferenced": true,
+        "sourcePins": true,
+        "templatePins": true,
+        "modulePins": true,
+        "photoDecision": true,
+        "logoDecision": true,
+        "motifPrice": true,
+        "openItemsPreserved": true,
+        "manifestHash": true
+      },
+      "differences": [],
+      "allPassed": true
+    },
+    {
+      "original": "Tuerschild-Acrylglas-3mm-6x2_v2.xlsx",
+      "addendum": "Tuerschild-Acrylglas-3mm-6x2_v3.xlsx",
+      "originalSha256": "7e588c53b57091cd5870a6bc24b81f5cca7d4ddb55cb722ce5156100d3267673",
+      "addendumSha256": "dcf5075f426a05b89fdf86a2d122d56f72bd45b73c5555f29658b01076c8ebd8",
+      "planId": "pgp_b6bd6b74-35e6-444e-b2cb-4bf64a49e280",
+      "planHash": "66931afab9bcac13e82b87ffb2b8e47473fad169e1b623353015e69dc7e31bbc",
+      "originalCells": 652,
+      "addedSheets": [
+        "BestätigteUploads"
+      ],
+      "checks": {
+        "originalShaMatches": true,
+        "allOriginalCellsIdentical": true,
+        "originalSheetAndTableBytesSame": true,
+        "exactlyOneAddendum": true,
+        "exactFinalPlanId": true,
+        "finalPlanHash": true,
+        "originalShaReferenced": true,
+        "sourcePins": true,
+        "templatePins": true,
+        "modulePins": true,
+        "photoDecision": true,
+        "logoDecision": true,
+        "motifPrice": true,
+        "openItemsPreserved": true,
+        "manifestHash": true
+      },
+      "differences": [],
+      "allPassed": true
+    },
+    {
+      "original": "Tuerschild-Acrylglas-3mm-8x2_v2.xlsx",
+      "addendum": "Tuerschild-Acrylglas-3mm-8x2_v3.xlsx",
+      "originalSha256": "02a4b9749dcbacbd8d13957e5194ad4ae27cc0f2e81922f5a3b95b0151f47cc2",
+      "addendumSha256": "015f1775e2408455e3c14479ea0074d652099adaa0fc130b6650f5d55fc19386",
+      "planId": "pgp_6126fcb8-d8b7-4b5b-9410-9c09a9198b52",
+      "planHash": "0aa24af4bd611f5a674642a98bb5603d12f23d4a7175cdea3afca55865e0ab95",
+      "originalCells": 652,
+      "addedSheets": [
+        "BestätigteUploads"
+      ],
+      "checks": {
+        "originalShaMatches": true,
+        "allOriginalCellsIdentical": true,
+        "originalSheetAndTableBytesSame": true,
+        "exactlyOneAddendum": true,
+        "exactFinalPlanId": true,
+        "finalPlanHash": true,
+        "originalShaReferenced": true,
+        "sourcePins": true,
+        "templatePins": true,
+        "modulePins": true,
+        "photoDecision": true,
+        "logoDecision": true,
+        "motifPrice": true,
+        "openItemsPreserved": true,
+        "manifestHash": true
+      },
+      "differences": [],
+      "allPassed": true
+    },
+    {
+      "original": "Tuerschild-Edelstahl-5x2_v1.xlsx",
+      "addendum": "Tuerschild-Edelstahl-5x2_v2.xlsx",
+      "originalSha256": "9fe8b60b35e3c9f4de5ab5d738608b49e509041cb584f4e8d6a9242fb09357d0",
+      "addendumSha256": "7374fbcce3a6a316a2def679d4326cd5c8af8f812fc9ddced59bf50a15e1698b",
+      "planId": "pgp_fae5b365-a7c0-4d85-9096-e9f5670b5b21",
+      "planHash": "ac2f8ce469cf862471a6c1c35f7c6a0142bf25b235b00b20e8038d23551a8309",
+      "originalCells": 585,
+      "addedSheets": [
+        "BestätigteUploads"
+      ],
+      "checks": {
+        "originalShaMatches": true,
+        "allOriginalCellsIdentical": true,
+        "originalSheetAndTableBytesSame": true,
+        "exactlyOneAddendum": true,
+        "exactFinalPlanId": true,
+        "finalPlanHash": true,
+        "originalShaReferenced": true,
+        "sourcePins": true,
+        "templatePins": true,
+        "modulePins": true,
+        "photoDecision": true,
+        "logoDecision": true,
+        "motifPrice": true,
+        "openItemsPreserved": true,
+        "manifestHash": true
+      },
+      "differences": [],
+      "allPassed": true
+    },
+    {
+      "original": "Tuerschild-Edelstahl-6x2_v1.xlsx",
+      "addendum": "Tuerschild-Edelstahl-6x2_v2.xlsx",
+      "originalSha256": "de58b14ae5e33146a52a17f7c1b176dd58cebb75479617d10852f5e91623e0f5",
+      "addendumSha256": "b1de85be647705f185e13956f2bb24ccbc18e7c8a6a8c93f5f7b20b90b270eb4",
+      "planId": "pgp_ea7f2afb-fb41-4e91-90e7-986d8d524cc8",
+      "planHash": "f87a05e734982b900f49de674d8748b2870113ad76b5a3e9c39b30ee2cdddf9e",
+      "originalCells": 585,
+      "addedSheets": [
+        "BestätigteUploads"
+      ],
+      "checks": {
+        "originalShaMatches": true,
+        "allOriginalCellsIdentical": true,
+        "originalSheetAndTableBytesSame": true,
+        "exactlyOneAddendum": true,
+        "exactFinalPlanId": true,
+        "finalPlanHash": true,
+        "originalShaReferenced": true,
+        "sourcePins": true,
+        "templatePins": true,
+        "modulePins": true,
+        "photoDecision": true,
+        "logoDecision": true,
+        "motifPrice": true,
+        "openItemsPreserved": true,
+        "manifestHash": true
+      },
+      "differences": [],
+      "allPassed": true
+    },
+    {
+      "original": "Tuerschild-Edelstahl-8x2_v1.xlsx",
+      "addendum": "Tuerschild-Edelstahl-8x2_v2.xlsx",
+      "originalSha256": "440f3a19ad1fac20d446b19b9fe9810a1daee6292d0ab3591a7f21f39dca7317",
+      "addendumSha256": "15026318b29006e0a4d479ec5c52a49b7b75dd89463e5316884e862e867fd890",
+      "planId": "pgp_c2098259-36a3-4048-a4e6-e3ffa70c9d68",
+      "planHash": "5c4b729ea5be27e1ea9b4e4a6c65e94088803618219e5025836ca6e70654ec3e",
+      "originalCells": 585,
+      "addedSheets": [
+        "BestätigteUploads"
+      ],
+      "checks": {
+        "originalShaMatches": true,
+        "allOriginalCellsIdentical": true,
+        "originalSheetAndTableBytesSame": true,
+        "exactlyOneAddendum": true,
+        "exactFinalPlanId": true,
+        "finalPlanHash": true,
+        "originalShaReferenced": true,
+        "sourcePins": true,
+        "templatePins": true,
+        "modulePins": true,
+        "photoDecision": true,
+        "logoDecision": true,
+        "motifPrice": true,
+        "openItemsPreserved": true,
+        "manifestHash": true
+      },
+      "differences": [],
+      "allPassed": true
+    }
+  ],
+  "allPassed": true,
+  "method": "Read-only OOXML values and formulas comparison on every original sheet/cell, independent of workbook authoring library. Shared/inline strings decoded; numeric values normalized. Formatting is not treated as a price change. Additional sheet final plan/source/module pins compared to persisted-batch summary already independently verified."
+}

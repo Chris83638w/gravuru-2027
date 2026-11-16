@@ -74,3 +74,24 @@ test('a variant of another Shopify product bound to the same product revision is
  other.shopifyProductId='gid://shopify/Product/2';
  await assert.rejects(gallery.list(context,{sourceModel:model,options:{size:other.options.size,mounting:'K00'}}),{code:'shop_gallery_variant'});
 });
+
+test('all-sizes warmup stores no global cards and still lists exact current or changed size with real geometry and prices',async()=>{
+ const {model,bindings,context}=setup(['schwarz','anthrazit']),store=context.store;let saved,reads=0;const measures=[];
+ store.registry.galleryRevision=()=> 'all-sizes-r1';store.registry.listActiveForGallery=async()=>store.registry.listActive();
+ store.registry.galleryCache={read:()=>saved,write:(_r,value)=>{saved=value;}};
+ const options={secret:'all-sizes-warm-test',resolve:ids=>{const binding=bindings.get(ids.shopifyVariantId);if(!binding)throw Object.assign(Error('Inactive'),{status:404});return {store,binding:structuredClone(binding)};},modelFor:()=>model,cardFor:()=>{reads++;return model;},allowedAssets:()=>new Set(),onMeasure:m=>measures.push(m)};
+ const gallery=createShopDesignGallery(options);await gallery.warm(context);
+ assert.equal(reads,1);assert.equal(measures.find(m=>m.event==='shop_gallery_build_measure').cards,0);
+ assert.deepEqual(JSON.parse(saved.payload).scopes,[]);
+ const other=[...bindings.values()].find(b=>b.options.size!==context.binding.options.size&&b.options.color==='anthrazit');
+ for(const selected of [context.binding,other]){
+  const result=await gallery.list(context,{sourceModel:model,options:selected.options,q:'D2'});
+  assert.equal(result.total,1);const card=result.items[0],format=model.universal.familyFormats.formats.find(f=>f.key===selected.options.size);
+  assert.equal(card.shopifyVariantId,selected.shopifyVariantId);assert.equal(card.unitCents,selected.unitCents);assert.equal(card.widthMm,format.geometry.width);assert.equal(card.heightMm,format.geometry.height);
+  assert.deepEqual(gallery.target(context,card.target).binding,selected);
+ }
+ const restarted=createShopDesignGallery(options),fallback=await restarted.list(context,{options:other.options,q:'D2'});
+ assert.equal(fallback.total,1);assert.equal(fallback.items[0].shopifyVariantId,other.shopifyVariantId);
+ assert.equal(measures.filter(m=>m.event==='shop_gallery_cache_hit').length,1);
+ other.unitCents++;assert.equal((await restarted.list(context,{sourceModel:model,options:other.options})).total,0);
+});

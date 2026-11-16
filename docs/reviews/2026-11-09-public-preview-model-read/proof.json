@@ -1,0 +1,131 @@
+{
+  "basis": "4afd1a2b27e43efba2e1bd4f03119ff52b9e0bc6",
+  "localOnly": true,
+  "productionFiles": [
+    {
+      "file": "app/workshop/http.mjs",
+      "before": "711711bbea02f02e2333b462741af17389d0a9bbc32a3ad4a2b145a8212d6787",
+      "after": "2a4069c72084e923e544dd6c41fbb624da76a8905f7be808da95e521c78499de"
+    },
+    {
+      "file": "app/workshop/public-design-previews.mjs",
+      "before": "58151ce11021a41592492a3ea62f303074826b810f32db7e69e41d0b8df9b6cf",
+      "after": "7fb810e1b255130290c99fc9c20734809522fe0b60b2c8b3860331331dbc1ed4"
+    },
+    {
+      "file": "app/workshop/shop-entry.mjs",
+      "before": "2d8015b927a1f5e88b641519bd111532c7d2e98a9d7e6fb12b4d27623f4805a3",
+      "after": "8fa170b5bbc4424d7bd551f4bcd4e2c71f53e140ffd201c1545fe19ca7f288a7"
+    }
+  ],
+  "sourceSha256": "2e74548aa7211a2f5546af428e1d27d9f00f12181490356633e3cd109cb179c0",
+  "sourceBytes": 11906263,
+  "tests": {
+    "passed": 20,
+    "failed": 0,
+    "skipped": 0
+  },
+  "measurements": {
+    "fixture": "Real r4 artwork, native createWorkshop+native registry in temporary SQLite; synthetic shop IDs/approval. HTTP loopback, no TLS/network claim.",
+    "before": [
+      {
+        "name": "public-svg-1-0",
+        "ms": 238.95449999999983,
+        "bytes": 140037,
+        "modelCloneMs": 23.83349999999882,
+        "modelDigestMs": 44.90070000000014
+      },
+      {
+        "name": "public-svg-1-1",
+        "ms": 235.7519000000002,
+        "bytes": 139106,
+        "modelCloneMs": 22.244400000000496,
+        "modelDigestMs": 44.719099999999344
+      },
+      {
+        "name": "public-svg-1-2",
+        "ms": 271.3135999999995,
+        "bytes": 139156,
+        "modelCloneMs": 25.14719999999943,
+        "modelDigestMs": 44.71800000000076
+      },
+      {
+        "name": "public-svg-2-0",
+        "ms": 233.72249999999985,
+        "bytes": 140037,
+        "modelCloneMs": 23.037000000000262,
+        "modelDigestMs": 44.16809999999896
+      },
+      {
+        "name": "public-svg-2-1",
+        "ms": 234.49289999999928,
+        "bytes": 139106,
+        "modelCloneMs": 23.92280000000028,
+        "modelDigestMs": 44.572400000000926
+      },
+      {
+        "name": "public-svg-2-2",
+        "ms": 233.36319999999978,
+        "bytes": 139156,
+        "modelCloneMs": 23.261099999997896,
+        "modelDigestMs": 44.28399999999965
+      }
+    ],
+    "after": [
+      {
+        "name": "public-svg-1-0",
+        "ms": 243.7578999999996,
+        "bytes": 140037,
+        "modelCloneMs": 0.03080000000045402,
+        "modelDigestMs": 0
+      },
+      {
+        "name": "public-svg-1-1",
+        "ms": 158.40659999999934,
+        "bytes": 139106,
+        "modelCloneMs": 0.025200000000040745,
+        "modelDigestMs": 0
+      },
+      {
+        "name": "public-svg-1-2",
+        "ms": 158.96129999999994,
+        "bytes": 139156,
+        "modelCloneMs": 0.026000000000749424,
+        "modelDigestMs": 0
+      },
+      {
+        "name": "public-svg-2-0",
+        "ms": 201.23499999999967,
+        "bytes": 140037,
+        "modelCloneMs": 0.024600000000646105,
+        "modelDigestMs": 0
+      },
+      {
+        "name": "public-svg-2-1",
+        "ms": 154.4938000000002,
+        "bytes": 139106,
+        "modelCloneMs": 0.024400000000241562,
+        "modelDigestMs": 0
+      },
+      {
+        "name": "public-svg-2-2",
+        "ms": 156.79110000000037,
+        "bytes": 139156,
+        "modelCloneMs": 0.02410000000054424,
+        "modelDigestMs": 0
+      }
+    ],
+    "renderCalls": "Exactly 3 during explicit preparation; zero on SVG GET",
+    "finalSourceMeasured": true
+  },
+  "limitations": [
+    "The first native digest is computed once; after timings include the first hit.",
+    "No speedup claim for network transfer, private rendering, design switching or the whole configurator.",
+    "Fresh native document reads/digests, price bindings and approvals remain per request."
+  ],
+  "independentReview": {
+    "agent": "module_backend",
+    "result": "No blocker; separate shallow-freeze/mutable-child stale digest probe rejected after fix",
+    "publicDesignPreviewsSha256": "7fb810e1b255130290c99fc9c20734809522fe0b60b2c8b3860331331dbc1ed4"
+  }
+}

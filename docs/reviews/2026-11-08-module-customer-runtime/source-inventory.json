@@ -1,0 +1,71 @@
+{
+  "schema": "gravuru-module-customer-rollout-inventory/v1",
+  "readOnlyReview": true,
+  "deployablePatch": false,
+  "serverRead": false,
+  "integratedReference": "PR213 local tracked sources; hashes authoritative",
+  "activeBundle": "editor-22ba7897da3f65ac.mjs",
+  "files": [
+    {
+      "path": "app/configurator/variant-m/module-profile.mjs",
+      "activeSha256": null,
+      "integratedReferenceSha256": "38e96ed61c4ea5e37c71e7cb06ed87e05fa057ff99521f44b3ef1f4fd59b2844"
+    },
+    {
+      "path": "app/configurator/variant-m/module-runtime.mjs",
+      "activeSha256": null,
+      "integratedReferenceSha256": "2ff141318caa5b2f26e53aca42524c0198b6bac4f63d10146d37d57713a63a97"
+    },
+    {
+      "path": "app/configurator/variant-m/contract.mjs",
+      "activeSha256": "071690831e3c53f8f40febbff15ed37d82434729fcdb8d7dde51829ece3f257e",
+      "integratedReferenceSha256": "f0536de234d7ac9cc79eeb68a372db13c58a1c28424654a83e30333e6ea54cbe"
+    },
+    {
+      "path": "app/configurator/variant-m/customer-rights.mjs",
+      "activeSha256": "2742434efcc4976ce49fbe64ff319a257cb0d58ea9bdb28a6c92d43059d30dcd",
+      "integratedReferenceSha256": "cd57f01e13c2ac3c2cc2f30d6ab31fce71b1bd0db021fdd048d6d69734434fae"
+    },
+    {
+      "path": "app/configurator/variant-m/element-rights.mjs",
+      "activeSha256": "258686c83749c4a835e28f23fd0f96c5c6a7bd9440e317320076a1f6165d392e",
+      "integratedReferenceSha256": "13bc294c26b0b3e9776269e59dc867e16504dfbc3a08b60a5bd433d9f442be6e"
+    },
+    {
+      "path": "app/configurator/variant-m/logo-upload.mjs",
+      "activeSha256": "aa258b240b11934816cca884e0a89d6c1e1922c690fcf0f4b9d758cc61eb96a7",
+      "integratedReferenceSha256": "8447609b2479d31946f0b796d07a47dbe81dc4773c57144ea92a222a49d07210"
+    },
+    {
+      "path": "app/configurator/variant-m/ux-model.mjs",
+      "activeSha256": "c34c3c70895226d992ab02b1c687d59cbdaee332c0a3ce8e2d989adc89c55c65",
+      "integratedReferenceSha256": "fa4351b9b9affaafe1eec2ac552318d4acc3104214bee0ef7fb40a50956ad871"
+    },
+    {
+      "path": "app/configurator/variant-m/ux.mjs",
+      "activeSha256": "b442c735537e40bdec70be4cde55264497529e7fb54a45f1e46efbc3ca6f9cc9",
+      "integratedReferenceSha256": "60fb2d9a8b0180449445176bb63844b14683837f4dfba0636452db6ef69baf82"
+    },
+    {
+      "path": "app/workshop/cart-personalization.mjs",
+      "activeSha256": "72e36b4ae1de450f82931d6d71a4fa97dac6656c06649296f3a5c2a215fd33a8",
+      "integratedReferenceSha256": "3a720e14e24805e4ce2708a15124d90f7ca4a7dc99fe1353749894e213e6088e"
+    },
+    {
+      "path": "app/workshop/shop-entry.mjs",
+      "activeSha256": "c441a01c59cae92eeab796db4fe3acc784aeee0ae3e856826dda2a095b04b3a4",
+      "integratedReferenceSha256": "ba679bc4670a8be2e5eb3f21af2eca378814c7f2b7ebe522effab7f1099f0f81"
+    },
+    {
+      "path": "app/workshop/shop-design-gallery.mjs",
+      "activeSha256": "5e750f516b5e0b5b4234e33fc0d556bc97c546097a6376772a11028f2f2d3f26",
+      "integratedReferenceSha256": "47365dd933cb46fc525708ebb21e53acef29d5ecfbeadd6bf6f2d2889a1b33a3"
+    },
+    {
+      "path": "app/workshop/shop-preparation.mjs",
+      "activeSha256": "e0fbf159653ca9d14fe66581efc627a41f1cba1e4cd16534927f0c8f7cabb6de",
+      "integratedReferenceSha256": "a457d17afd01f0314d923b322b5c0d86aee0afe880c530c64f4bad59356eb3bb"
+    }
+  ],
+  "note": "12 files for module-only hunks. Integrated full shop-preparation also depends on product-model resolution snapshots and must not be copied wholesale as this minimal patch."
+}

@@ -7,7 +7,9 @@ import zlib from 'node:zlib';
 import http from 'node:http';
 import {once} from 'node:events';
 import {pathToFileURL} from 'node:url';
-import {BUNDLE_ENTRIES,BUNDLE_NAME,collectModules,transformModule,buildEditorBundle,buildProductEditorBundles,patchEditorBundle,fileForUrl,DEVICE_ENTRIES} from './bundle-build.mjs';
+import {BUNDLE_ENTRIES,BUNDLE_NAME,collectModules,transformModule,buildEditorBundle,buildProductEditorBundles,patchEditorBundle,fileForUrl,DEVICE_ENTRIES,PRESENTATION_ENTRIES} from './bundle-build.mjs';
+import {acrylAssetText,acrylRoute} from '../../workshop/acryl-employee-host.mjs';
+import {currentEditorBundles} from '../../workshop/ui/shop-warm.mjs';
 import {build,OUTPUT} from './build.mjs';
 import {createPreviewServer} from './server.mjs';
 
@@ -76,7 +78,7 @@ test('Editor-Bündel enthält alle statisch erreichbaren Module unverändert (bi
     const neutral=code=>code.replace(/(['"])(?:gravuru-bundle:\d+|\.{1,2}\/[^'"\n]+|\/[^'"\n]+\.mjs)\1/g,'"§"').replace(/globalThis\.gravuruModules\.fetch\(/g,'fetch(').replace(/globalThis\.gravuruModules\.import\(/g,'import(').replace(/\n\/\/# sourceURL=.*\n$/,'');
     for(const m of modules)assert.equal(neutral(m.code),neutral(sourceOf(m.url).replace(/^﻿/,'')),m.url);
     // Stylesheets: genau die per fetch geladenen, Inhalt identisch.
-    assert.deepEqual(bundle.styles,['acrylic-scene','completion','customer-tools','layout','mobile','motif-tile-fit','neutral-theme','product-design-gallery','refinements','usability','ux-details','ux','view-zoom','workflow'].map(n=>'/configurator/variant-m/'+n+'.css'));
+    assert.deepEqual(bundle.styles,['acrylic-scene','completion','customer-tools','layout','mobile','modern-layout','modern-navigation','motif-tile-fit','neutral-theme','product-design-gallery','refinements','usability','ux-details','ux','view-zoom','workflow'].map(n=>'/configurator/variant-m/'+n+'.css'));
     for(const href of bundle.styles)assert.equal(bundle.style(href),fs.readFileSync(fileForUrl(href),'utf8'));
     assert.equal(bundle.style('/configurator/variant-m/fehlt.css'),null);
     // Name = Inhalts-Hash; gzip daneben mit identischem Inhalt; erneuter Build ändert nichts.
@@ -117,6 +119,58 @@ test('product chunk retains common module identities and contains only the missi
  }finally{fs.rmSync(directory,{recursive:true,force:true});}
 });
 
+test('R15 chunk closes the presentation graph without duplicate native modules or changed presentation code',async()=>{
+ const directory=fs.mkdtempSync(path.join(os.tmpdir(),'gravuru-r15-bundle-'));
+ try{
+  const result=buildProductEditorBundles(directory),common=new Set(result.modules),chunk=result.presentation;
+  const modules=JSON.parse(fs.readFileSync(chunk.file,'utf8').match(/^const MODULES=(.*);$/m)[1]);
+  const native=collectModules(PRESENTATION_ENTRIES),missing=native.order.filter(url=>!common.has(url));
+  assert.deepEqual(chunk.modules,missing);assert.equal(modules.length,15);
+  const normalize=source=>source.replace(/(['"])(?:gravuru-bundle:[^'"\n]+|\.\.?\/[^'"\n]+|\/[^'"\n]+\.mjs)\1/g,'"§"').replace(/new URL\([^;]+?globalThis\.location\.href\)/g,'ASSET').replace(/new URL\([^;]+?import\.meta\.url\)/g,'ASSET').replace(/\n\/\/# sourceURL=.*\n$/,'');
+  for(const m of modules){
+   assert.equal(common.has(m.url),false,m.url);assert.equal(result.chunks[m.url],chunk.url);
+   assert.equal(normalize(m.code),normalize(fs.readFileSync(fileForUrl(m.url),'utf8').replace(/^\uFEFF/,'')),m.url);
+   for(const dependency of m.deps)assert.ok(typeof dependency==='number'?modules[dependency]:common.has(dependency),String(dependency));
+  }
+  const demo=modules.find(m=>m.url.endsWith('/demo.mjs')).code;
+  assert.match(demo,/new URL\('\/configurator\/mobile-demo\/demo\.css',globalThis\.location\.href\)/);
+  assert.match(demo,/new URL\('\/configurator\/mobile-demo\/shopping-cart\.svg',globalThis\.location\.href\)/);
+  assert.doesNotMatch(demo,/import\.meta/);
+  const rewritten=acrylAssetText(demo);
+  assert.match(rewritten,/\/acryl-configurator\/mobile-demo\/demo\.css/);
+  assert.match(rewritten,/\/acryl-configurator\/mobile-demo\/shopping-cart\.svg/);
+  const html=acrylAssetText(patchEditorBundle('<head></head><script>import(\'/configurator/variant-m/ux.mjs\')</script>',result.url,result.chunks));
+  assert.deepEqual(currentEditorBundles(html),[result.url,chunk.url].map(url=>url.replace('/_bundle/','/_acryl-bundle/')));
+  assert.ok(!currentEditorBundles(html).includes(result.device.url));
+  assert.equal(acrylRoute(chunk.url.replace('/_bundle/','/_acryl-bundle/')),chunk.url);
+  assert.ok(chunk.gzipBytes<50*1024,'presentation stays a small separate chunk');
+  const again=buildProductEditorBundles(directory);assert.equal(again.presentation.hash,chunk.hash);
+ }finally{fs.rmSync(directory,{recursive:true,force:true});}
+});
+
+test('bundled R15 executes the same native session and cross-realm guards',async()=>{
+ const directory=fs.mkdtempSync(path.join(os.tmpdir(),'gravuru-r15-link-'));
+ try{
+  const result=buildProductEditorBundles(directory),files=new Map();
+  const chunks=[result,result.presentation].map(b=>JSON.parse(fs.readFileSync(b.file,'utf8').match(/^const MODULES=(.*);$/m)[1]));
+  for(const modules of chunks)for(const m of modules)files.set(m.url,pathToFileURL(path.join(directory,'module-'+files.size+'.mjs')).href);
+  for(const modules of chunks)for(const m of modules){
+   let code=m.code;
+   for(const dep of m.deps){const target=files.get(typeof dep==='number'?modules[dep].url:dep);assert.ok(target);code=code.replaceAll('gravuru-bundle:'+dep+"'",target+"'").replaceAll('gravuru-bundle:'+dep+'"',target+'"');}
+   code=code.replace(/globalThis\.gravuruModules\.import\(['"]([^'"]+)['"]\)/g,(_,url)=>'import('+JSON.stringify(files.get(url)||pathToFileURL(fileForUrl(url)).href)+')');
+   fs.writeFileSync(new URL(files.get(m.url)),code);
+  }
+  const bundled=await import(files.get(PRESENTATION_ENTRIES[0])),direct=await import('../mobile-demo/shop-shell.mjs');
+  const config={profile:{name:'Türschild',material:{kind:'steel'}},photo:{enabled:false},logo:{enabled:true}},binding={productId:'cfg_test',productRevision:4};
+  const host={location:{origin:'https://app.example'},UniversalConfig:config,GravuruWorkshopReview:binding,GravuruShopEntry:{...binding,presentation:'prio-r15',cartMode:'theme',submitCart(){},request(){}}};
+  const context={host,view:{location:{origin:host.location.origin}},config};
+  assert.deepEqual(bundled.shopPresentationContext(context),direct.shopPresentationContext(context));
+  assert.equal(bundled.shopProductSummary(config,{width:80,height:53.3},bundled.shopPresentationContext(context)),'Edelstahl · 8 × 5,33 cm');
+  for(const bad of [{...context,config:structuredClone(config)},{...context,view:{location:{origin:'https://foreign.example'}}},{...context,view:host}])assert.throws(()=>bundled.shopPresentationContext(bad));
+  delete host.GravuruShopEntry.presentation;assert.equal(await bundled.installPrioShopShell(null,config,context),null);
+ }finally{fs.rmSync(directory,{recursive:true,force:true});}
+});
+
 test('Editor lädt das Bündel über den Lader; Einzelmodule bleiben als Entwicklungsmodus erreichbar',()=>{
   const result=build();
   assert.match(result.bundle.url,/^\/_bundle\/editor-[a-f0-9]{16}\.mjs$/);
@@ -145,6 +199,9 @@ test('Server: Bündel mit langem Cache und gzip, unbekannte Namen und Pfadausbru
     // Name trägt den Inhalts-Hash (bundle-build.mjs).
     assert.ok(plain.body.toString('utf8').includes('HASH='+JSON.stringify(result.bundle.url.match(/editor-([a-f0-9]{16})/)[1])));
     for(const route of ['/_bundle/editor-0000000000000000.mjs','/_bundle/editor-'+'a'.repeat(16)+'.mjs.gz','/_bundle/%2e%2e%2fmodels.json','/_bundle/editor-'+'a'.repeat(16)+'.mjs%2f..%2f..%2fmodels.json','/_bundle/stempel.json','/_bundle/'])assert.equal((await request(route)).status,404,route);
-    assert.equal((await request('/editor.html')).status,200);
+    const editor=await request('/editor.html');assert.equal(editor.status,200);
+    const presentation=/<link rel="modulepreload" href="([^\"]+)" data-gravuru-bundle="prio-r15">/.exec(editor.body.toString('utf8'))?.[1];assert.ok(presentation);
+    const r15=await request(presentation,{'Accept-Encoding':'gzip'});assert.equal(r15.status,200);assert.equal(r15.headers['cache-control'],'public, max-age=31536000, immutable');
+    assert.equal(r15.headers['content-encoding'],'gzip');assert.match(zlib.gunzipSync(r15.body).toString('utf8'),/configurator\/mobile-demo\/shop-shell\.mjs/);
   }finally{server.close();await once(server,'close');}
 });

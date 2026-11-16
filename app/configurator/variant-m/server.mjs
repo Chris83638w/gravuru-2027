@@ -10,6 +10,8 @@ import {createWorkshop} from '../../workshop/http.mjs';
 import {readThemeCatalog} from '../../workshop/theme-catalog.mjs';
 import {openKatalog,katalogPath} from '../../workshop/katalog-source.mjs';
 import {doorbellImageResource,isDoorbellImagePath} from '../../workshop/doorbell-image-resource.mjs';
+import {isPrioPresentationAsset} from '../mobile-demo/assets.mjs';
+import {createPreparedEditorBundles} from '../../workshop/prepared-editor-bundles.mjs';
 
 const types={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.mjs':'text/javascript; charset=utf-8','.js':'text/javascript; charset=utf-8','.json':'application/json; charset=utf-8','.txt':'text/plain; charset=utf-8','.png':'image/png','.jpg':'image/jpeg','.webp':'image/webp','.svg':'image/svg+xml','.gz':'application/gzip'};
 // Ladezeit: Textantworten gzip-komprimiert, wenn der Browser es anbietet (Inhalt unverändert).
@@ -80,9 +82,9 @@ export function createPreviewServer({outputDirectory=OUTPUT,workshop,embeddedApp
       };
       if(adminHost){fixed['/_merchant-editor.html']=[outputDirectory,'editor.html'];fixed['/_merchant-form-editor.html']=[path.join(ROOT,'workshop/ui'),'form-customer.html'];}
       if(workshop){fixed['/form-editor.html']=[path.join(ROOT,'workshop/ui'),'form-customer.html'];fixed['/konfigurator/ausfuehrungen/']=[path.join(ROOT,'workshop/ui'),'form-variant-picker.html'];fixed['/konfigurator/form']=[path.join(ROOT,'workshop/ui'),'form-customer.html'];fixed['/konfigurator/form/']=fixed['/konfigurator/form'];fixed['/werkstatt']=[path.join(ROOT,'workshop/ui'),'index.html'];fixed['/werkstatt/']=fixed['/werkstatt'];for(const [route,file] of [['katalog','catalog-structure.html'],['acryl','acryl-gallery.html'],['acryl/formen','acryl-gallery.html'],['kundenansicht','customer-preview.html'],['ausfuehrungen-import','variant-batch.html'],['ausfuehrungen','form-variants.html'],['serien','batch.html'],['profile','profiles.html'],['familien','families.html'],['fertigung','production-profiles.html'],['ausgaben','export-jobs.html'],['shopvorbereitung','shop-preparation.html'],['bestellungen','orders.html'],['warenkorbpruefung','cart-handoff.html'],['konturen','contours.html'],['formprodukt','form-product.html'],['pruefstaende','review-snapshots.html']]){fixed['/werkstatt/'+route]=[path.join(ROOT,'workshop/ui'),file];fixed['/werkstatt/'+route+'/']=fixed['/werkstatt/'+route];}}
-      if(workshop)for(const [route,file] of [['konfis','konfis.html'],['mandanten','tenants.html'],['designs','design-dashboard.html'],['designs/bearbeiten','index.html']]){fixed['/werkstatt/'+route]=[path.join(ROOT,'workshop/ui'),file];fixed['/werkstatt/'+route+'/']=fixed['/werkstatt/'+route];}
+      if(workshop)for(const [route,file] of [['module','module-profiles.html'],['konfis','konfis.html'],['motivsuche','motif-searches.html'],['mandanten','tenants.html'],['designs','design-dashboard.html'],['designs/bearbeiten','index.html']]){fixed['/werkstatt/'+route]=[path.join(ROOT,'workshop/ui'),file];fixed['/werkstatt/'+route+'/']=fixed['/werkstatt/'+route];}
       if(fixed[pathname])[base,relative]=fixed[pathname];
-      else if(workshop&&/^\/workshop-ui\/(konfis-ui\.mjs|tenants-ui\.mjs|konfis\.css|design-dashboard-ui\.mjs|design-dashboard-review\.mjs|design-dashboard-editor\.mjs|design-quick-edit\.mjs|design-target-preview-cache\.mjs|design-dashboard\.css)$/.test(pathname)){base=path.join(ROOT,'workshop/ui');relative=pathname.split('/').pop();}
+      else if(workshop&&/^\/workshop-ui\/(module-profiles\.mjs|module-profiles\.css|motif-searches\.mjs|motif-searches\.css|konfis-ui\.mjs|tenants-ui\.mjs|konfis\.css|design-dashboard-ui\.mjs|design-dashboard-review\.mjs|design-dashboard-editor\.mjs|design-quick-edit\.mjs|design-target-preview-cache\.mjs|design-dashboard\.css)$/.test(pathname)){base=path.join(ROOT,'workshop/ui');relative=pathname.split('/').pop();}
       else if(workshop&&['/workshop-ui/design-source-path.mjs','/workshop-ui/design-zip.mjs'].includes(pathname)){base=path.join(ROOT,'workshop');relative=pathname.split('/').pop();}
       // Der Kundeneditor importiert die Themenlimits aus dem Vertrag (contract.mjs → ../../workshop/theme-limits.mjs).
       else if(pathname==='/workshop/theme-limits.mjs'){base=path.join(ROOT,'workshop');relative='theme-limits.mjs';}
@@ -90,7 +92,7 @@ export function createPreviewServer({outputDirectory=OUTPUT,workshop,embeddedApp
       else if(pathname==='/workshop/process-profiles.mjs'){base=path.join(ROOT,'workshop');relative='process-profiles.mjs';}
       else if(workshop&&['/workshop-ui/material-surfaces/wood-leather-derived-v1.png','/workshop-ui/material-surfaces/steel-reference-v4.png'].includes(pathname)){base=path.join(ROOT,'workshop/ui/material-surfaces');relative=pathname.split('/').pop();}
       else if(workshop&&/^\/workshop-ui\/editor-icons\/[a-z0-9-]+\.svg$/.test(pathname)){base=path.join(ROOT,'workshop/ui/editor-icons');relative=pathname.split('/').pop();}
-      else if(workshop&&/^\/workshop-ui\/(catalog-structure-ui\.mjs|catalog-structure\.css|acryl-shop-ui\.mjs|acryl-gallery-ui\.mjs|acryl-gallery-loader\.mjs|acryl-gallery\.css|families-ui\.mjs|catalog\.css|catalog-ui\.mjs|steel-options-ui\.mjs|editor-guides\.mjs|configurator-test-client\.mjs|customer-preview-link\.mjs|customer-preview\.mjs|customer-preview\.css|profile-impact-ui\.mjs|revision-compare-ui\.mjs|revision-compare\.css|merchant-media\.mjs|merchant-downloads\.mjs|shop-transfer-ui\.mjs|merchant-request\.mjs|merchant-navigation\.mjs|workshop-shell\.mjs|workshop-shell\.css|order-store-context\.mjs|order-file-grants-ui\.mjs|production-release-ui\.mjs|variant-batch-reader\.mjs|variant-batch-ui\.mjs|form-variants-ui\.mjs|form-variant-picker\.mjs|form-variants\.css|app\.mjs|style\.css|dashboard\.css|editor\.css|ai-design-ui\.mjs|ai-batch-ui\.mjs|product-editor-ui\.mjs|katalog-editor-ui\.mjs|design-authoring\.mjs|editor-selection\.mjs|product-overview-ui\.mjs|product-options-ui\.mjs|native-production-ui\.mjs|batch-reader\.mjs|batch-ui\.mjs|profiles-ui\.mjs|production-profiles-ui\.mjs|export-jobs-ui\.mjs|output-checks-ui\.mjs|output-summary\.mjs|output-specification\.mjs|order-output-context\.mjs|shop-preparation-ui\.mjs|orders-ui\.mjs|order-product-ui\.mjs|cart-handoff-ui\.mjs|production-profiles\.css|contours-ui\.mjs|form-product-ui\.mjs|form-design-ui\.mjs|review-snapshots-ui\.mjs|review-snapshots\.css|form-customer-ui\.mjs|form-interaction\.mjs|form-customer\.css|form-product\.css|contours\.css|design-import-ui\.mjs|customer-fields-ui\.mjs)$/.test(pathname)){base=path.join(ROOT,'workshop/ui');relative=pathname.split('/').pop();}
+      else if(workshop&&/^\/workshop-ui\/(catalog-structure-ui\.mjs|catalog-structure\.css|acryl-shop-ui\.mjs|acryl-gallery-ui\.mjs|acryl-gallery-loader\.mjs|acryl-gallery\.css|families-ui\.mjs|catalog\.css|catalog-ui\.mjs|steel-options-ui\.mjs|editor-guides\.mjs|configurator-test-client\.mjs|customer-preview-link\.mjs|customer-preview\.mjs|customer-preview\.css|profile-impact-ui\.mjs|revision-compare-ui\.mjs|revision-compare\.css|merchant-media\.mjs|merchant-downloads\.mjs|shop-transfer-ui\.mjs|merchant-request\.mjs|merchant-navigation\.mjs|workshop-shell\.mjs|workshop-shell\.css|order-store-context\.mjs|order-file-grants-ui\.mjs|production-release-ui\.mjs|variant-batch-reader\.mjs|variant-batch-ui\.mjs|form-variants-ui\.mjs|form-variant-picker\.mjs|form-variants\.css|app\.mjs|style\.css|dashboard\.css|editor\.css|ai-design-ui\.mjs|ai-batch-ui\.mjs|product-editor-ui\.mjs|editor-design-link\.mjs|katalog-editor-ui\.mjs|design-authoring\.mjs|editor-selection\.mjs|product-overview-ui\.mjs|product-options-ui\.mjs|native-production-ui\.mjs|batch-reader\.mjs|batch-ui\.mjs|profiles-ui\.mjs|production-profiles-ui\.mjs|export-jobs-ui\.mjs|output-checks-ui\.mjs|output-summary\.mjs|output-specification\.mjs|order-output-context\.mjs|shop-preparation-ui\.mjs|orders-ui\.mjs|order-product-ui\.mjs|cart-handoff-ui\.mjs|production-profiles\.css|contours-ui\.mjs|form-product-ui\.mjs|form-design-ui\.mjs|review-snapshots-ui\.mjs|review-snapshots\.css|form-customer-ui\.mjs|form-interaction\.mjs|form-customer\.css|form-product\.css|contours\.css|design-import-ui\.mjs|customer-fields-ui\.mjs)$/.test(pathname)){base=path.join(ROOT,'workshop/ui');relative=pathname.split('/').pop();}
       // Gebündelte Editor-Module (bundle-build.mjs): Inhalts-Hash im Namen, daher unveränderlich und lange im Cache.
       else if(/^\/_bundle\/editor-[a-f0-9]{16}\.mjs$/.test(pathname)){
         const file=path.join(outputDirectory,'bundle',pathname.split('/').pop()),zipped=acceptsGzip(req.headers['accept-encoding'])&&fs.existsSync(file+'.gz');
@@ -108,6 +110,8 @@ export function createPreviewServer({outputDirectory=OUTPUT,workshop,embeddedApp
       }
       else if(/^\/acrylic-assets\/[a-z0-9-]+\.(png|webp)$/.test(pathname)){
         base=path.join(ROOT,'designs/acrylic-unser-anfang');relative=pathname.split('/').pop();
+      } else if(isPrioPresentationAsset(pathname)){
+        base=path.join(HERE,'../mobile-demo');relative=pathname.slice('/configurator/mobile-demo/'.length);
       } else {
         // `/_runtime/lazy/`: beim Build abgeleitete Einzelteile (build.mjs LAZY), vor dem allgemeinen Laufzeitordner.
         const mounts=[['/_runtime/lazy/',LAZY],['/_runtime/',path.join(ROOT,'designs/aosu-labrador/runtime')],['/platform/sources/app/shared/',path.join(ROOT,'platform/sources/app/shared')],['/configurator/variant-m/',HERE]];
@@ -133,6 +137,14 @@ export function createPreviewServer({outputDirectory=OUTPUT,workshop,embeddedApp
       res.end(req.method==='HEAD'?undefined:bytes);
     } catch {if(!res.headersSent)fail(404);else res.end();}
   });
+  // Private composition hook, not a URL or a second authorization policy.
+  // Acryl bundles keep the same host check while avoiding the loopback/rewrite per request.
+  server.prepareBundleDelivery=transform=>createPreparedEditorBundles({outputDirectory,transform,
+    authorize:(req,pathname)=>adminHost?adminHost.authorize(req,pathname)&&adminHost.allows(pathname):
+      [`127.0.0.1:${server.address()?.port}`,`localhost:${server.address()?.port}`].includes(req.headers.host)&&
+      (!req.headers.origin||req.headers.origin==='http://'+req.headers.host)&&req.headers['sec-fetch-site']!=='cross-site',
+    headers:pathname=>({'Content-Security-Policy':adminHost?.cspFor(pathname)||csp,
+      ...(adminHost?{'Referrer-Policy':'no-referrer'}:{}),'X-Content-Type-Options':'nosniff','X-Robots-Tag':'noindex, nofollow, noarchive'})});
   return server;
 }
 

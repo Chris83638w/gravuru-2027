@@ -1,0 +1,595 @@
+{
+  "schema": "gravuru-local-plan-package/v3",
+  "run": "v9",
+  "codeCommit": "64e026e8fd15b129a16cc97189b28506aa9e8ac2",
+  "scope": "Complete local persisted plan review, seven new unconfirmed valid v9 plans plus seven historical v8 plans; no confirmation/execution/Shopify/server action",
+  "sqliteMainFilesSelfContained": true,
+  "decisionsCanonicalSha256": "730168634964272693b514e3efd742975bd56af30a96a7ae751a2aed7fe71a64",
+  "files": [
+    {
+      "path": "database-delivery-check.json",
+      "bytes": 927,
+      "sha256": "60eb3df094a2f9db95ee0a1721c02ecbc6098e1c3fbb6c1344eca23481d00328"
+    },
+    {
+      "path": "decisions.json",
+      "bytes": 6332,
+      "sha256": "390de02c2d4bea6ebc6b7fd9f5d72a33bfd1ebf77954f34af8ce4c3b03aa075d"
+    },
+    {
+      "path": "design-exclusions.json",
+      "bytes": 1832,
+      "sha256": "a3825c6292aa7d75f63d43e0c74e1ea0cb69fc57770088b1095b6eca96b124a8"
+    },
+    {
+      "path": "excel/Tuerschild-Acrylglas-3mm-5x2_v2.xlsx",
+      "bytes": 40253,
+      "sha256": "119e2f48ec4d92c91a1463946a95ef0d2f30deb2e07c0c13ce59c73583a339cd"
+    },
+    {
+      "path": "excel/Tuerschild-Acrylglas-3mm-6x2_v2.xlsx",
+      "bytes": 40270,
+      "sha256": "7e588c53b57091cd5870a6bc24b81f5cca7d4ddb55cb722ce5156100d3267673"
+    },
+    {
+      "path": "excel/Tuerschild-Acrylglas-3mm-8x2_v2.xlsx",
+      "bytes": 40261,
+      "sha256": "02a4b9749dcbacbd8d13957e5194ad4ae27cc0f2e81922f5a3b95b0151f47cc2"
+    },
+    {
+      "path": "excel/Tuerschild-Acrylglas-3mm_v4.xlsx",
+      "bytes": 115481,
+      "sha256": "495e7e59d7abf6a46f1fb7098a75e666162e58be3cad99ad75de6db5d3923841"
+    },
+    {
+      "path": "excel/Tuerschild-Edelstahl-5x2_v1.xlsx",
+      "bytes": 35458,
+      "sha256": "9fe8b60b35e3c9f4de5ab5d738608b49e509041cb584f4e8d6a9242fb09357d0"
+    },
+    {
+      "path": "excel/Tuerschild-Edelstahl-6x2_v1.xlsx",
+      "bytes": 35477,
+      "sha256": "de58b14ae5e33146a52a17f7c1b176dd58cebb75479617d10852f5e91623e0f5"
+    },
+    {
+      "path": "excel/Tuerschild-Edelstahl-8x2_v1.xlsx",
+      "bytes": 35473,
+      "sha256": "440f3a19ad1fac20d446b19b9fe9810a1daee6292d0ab3591a7f21f39dca7317"
+    },
+    {
+      "path": "excel-addenda/Inhaltspruefung.json",
+      "bytes": 6008,
+      "sha256": "3575ad1e9f874c8ebe1abf4ecb058ea8bd8a6a70754eef29254ac1be8ebbe946"
+    },
+    {
+      "path": "excel-addenda/Manifest.json",
+      "bytes": 39373,
+      "sha256": "314d57c7a06621bc47391e239437dc6490148bd608b65554474598dbf2ccb69f"
+    },
+    {
+      "path": "excel-addenda/README.md",
+      "bytes": 2314,
+      "sha256": "5e87017fbb002a9f47682e4b8255076157e0f7cbb2f660ebe6486f7b213a1150"
+    },
+    {
+      "path": "excel-addenda/Sichtpruefung.json",
+      "bytes": 3568,
+      "sha256": "ba19716c97b49facb106a9014fc27a467c74d91f06a4ff9c3562bb58904c37dd"
+    },
+    {
+      "path": "excel-addenda/Tuerschild-Acrylglas-3mm-5x2_v4-Nachtrag.png",
+      "bytes": 350581,
+      "sha256": "e615d9f98ba98da3670526a65292f27b6ec863cd15d07501abfaebd90ae177ea"
+    },
+    {
+      "path": "excel-addenda/Tuerschild-Acrylglas-3mm-5x2_v4.xlsx",
+      "bytes": 47144,
+      "sha256": "c982030ca653e292d15175888633f63c6b65bdc28208cd6897411344b46d381a"
+    },
+    {
+      "path": "excel-addenda/Tuerschild-Acrylglas-3mm-6x2_v4-Nachtrag.png",
+      "bytes": 347206,
+      "sha256": "f7d50e78ff3fea6676803220320c7455f278535a172f88ec02167ba4f4920c73"
+    },
+    {
+      "path": "excel-addenda/Tuerschild-Acrylglas-3mm-6x2_v4.xlsx",
+      "bytes": 47158,
+      "sha256": "ae4c911c224ffd5fd129f507667c0273d364460b35d0fc2627bf616cce6fd982"
+    },
+    {
+      "path": "excel-addenda/Tuerschild-Acrylglas-3mm-8x2_v4-Nachtrag.png",
+      "bytes": 348636,
+      "sha256": "e053284039bdfe10114fcf4f1a1bf2db117c30c3b41192a4052adc3b44dba95f"
+    },
+    {
+      "path": "excel-addenda/Tuerschild-Acrylglas-3mm-8x2_v4.xlsx",
+      "bytes": 47141,
+      "sha256": "5bf1bee160f6c237df600b085bba7cc44b17dd1286a905354f3391cde4c6b093"
+    },
+    {
+      "path": "excel-addenda/Tuerschild-Acrylglas-3mm_v6-Nachtrag.png",
+      "bytes": 360122,
+      "sha256": "a514e16bb76db8d7590bebdac515a22af8c31a865499f3191c269beedf492234"
+    },
+    {
+      "path": "excel-addenda/Tuerschild-Acrylglas-3mm_v6.xlsx",
+      "bytes": 122423,
+      "sha256": "37a704d892b0f24fffdd87c7c5090652e5a949f3091dd8117ff83567e49d1429"
+    },
+    {
+      "path": "excel-addenda/Tuerschild-Edelstahl-5x2_v3-Nachtrag.png",
+      "bytes": 345708,
+      "sha256": "50cfd230f9d587d13e7dc7d569733a762192517b42b1a311457c08627d93dbde"
+    },
+    {
+      "path": "excel-addenda/Tuerschild-Edelstahl-5x2_v3.xlsx",
+      "bytes": 42338,
+      "sha256": "c845527e41f0538a541db63a6507ba671e8fdd801bfb9fe6df8ad3a603e7bfd2"
+    },
+    {
+      "path": "excel-addenda/Tuerschild-Edelstahl-6x2_v3-Nachtrag.png",
+      "bytes": 344469,
+      "sha256": "6eb1fa16bfdfab7bf7a5a4edefcf0c6ab5dfe0f25a2301e02e94f06b13c641ce"
+    },
+    {
+      "path": "excel-addenda/Tuerschild-Edelstahl-6x2_v3.xlsx",
+      "bytes": 42357,
+      "sha256": "4321b9c9328b38c95b14b18fa16f98bda14f04407c655dcc602fe8fda51fe9a3"
+    },
+    {
+      "path": "excel-addenda/Tuerschild-Edelstahl-8x2_v3-Nachtrag.png",
+      "bytes": 344900,
+      "sha256": "3c7176e29be57e7e69bf1a4ec42fbe20160f991e4fecee163765f098f3b14e3d"
+    },
+    {
+      "path": "excel-addenda/Tuerschild-Edelstahl-8x2_v3.xlsx",
+      "bytes": 42356,
+      "sha256": "108c214d71612272fcae32ead1c4cb770b9264a61a0be0efdb2ecd506dcd7891"
+    },
+    {
+      "path": "motif-profile-pins.json",
+      "bytes": 1277,
+      "sha256": "13a46b9211a0fd7decd2ac7d98f7a7ac8154cd84144c69729a338da64e09f53c"
+    },
+    {
+      "path": "motifs/catalog-entries.json",
+      "bytes": 5360,
+      "sha256": "a0264e5726a8870c501a46842b00c123fb5edfa87a5f8cd115a4620b16ab2805"
+    },
+    {
+      "path": "motifs/motive-kleine-schilder/anker-3.svg",
+      "bytes": 2271,
+      "sha256": "b1512de9388b226a426719e4aff9fc31ea5d61cd4a4e6971a30a289612a13d64"
+    },
+    {
+      "path": "motifs/motive-kleine-schilder/brief.svg",
+      "bytes": 864,
+      "sha256": "9853762731697c7a4af2362d3335f153b00a52d823373cb2a35cbe8944a91679"
+    },
+    {
+      "path": "motifs/motive-kleine-schilder/feine-trennlinie.svg",
+      "bytes": 280,
+      "sha256": "dd17ece403de8f27762bc9a7d57d7329e3f41b02a8361513c1f43ada4f544c1c"
+    },
+    {
+      "path": "motifs/motive-kleine-schilder/haus.svg",
+      "bytes": 797,
+      "sha256": "7c2ed4f83ce18b00f0d0c8097a2c8deefe7ddd82b6a73c8f00243efa61e3d12a"
+    },
+    {
+      "path": "motifs/motive-kleine-schilder/herz-2.svg",
+      "bytes": 327,
+      "sha256": "963a64ebc8ea54b2dfd37ece1b7c5beabc9e5f81f3922829f6c0d90b2f390147"
+    },
+    {
+      "path": "motifs/motive-kleine-schilder/klingel.svg",
+      "bytes": 668,
+      "sha256": "5ad151a6a9a23c45f9ca4c2370c0814fea80aa6dfc2a3e60b14d2241c06431f6"
+    },
+    {
+      "path": "motifs/motive-kleine-schilder/pfote-1.svg",
+      "bytes": 1804,
+      "sha256": "41b2eb1bdd5f7090b532462a841c65a1592b76b87b49f827db23316affc6d0f8"
+    },
+    {
+      "path": "motifs/motive-kleine-schilder/schmetterling-1.svg",
+      "bytes": 5978,
+      "sha256": "f0fb7dc120e6cf427b044ab03a381a2d87752bff90ad56db6b43e7601405ce75"
+    },
+    {
+      "path": "motifs/motive-kleine-schilder/stern-1.svg",
+      "bytes": 630,
+      "sha256": "3a1856aa9f2f16f1a2f3e4443c60bb00f24f340eb0c44e1cbdb46df62588b047"
+    },
+    {
+      "path": "motifs/motive-kleine-schilder/strich-haus.svg",
+      "bytes": 6273,
+      "sha256": "3651b6922f6b57935892ad4ca0448a4918c18956c165504e8db8a3999a226515"
+    },
+    {
+      "path": "motifs/motive-kleine-schilder/strich-horizontal.svg",
+      "bytes": 210,
+      "sha256": "e98927147448936031c8a54d6123b1994ce92a6c94481f9dfba316644db80dfd"
+    },
+    {
+      "path": "motifs/motive-kleine-schilder/verschlungene-herzen.svg",
+      "bytes": 9303,
+      "sha256": "0008287c9833fb15429791037b61174e522ba27a48ce75dc3cc0422c3ee278f8"
+    },
+    {
+      "path": "motifs/motive-kleine-schilder/vogel-1.svg",
+      "bytes": 2464,
+      "sha256": "2036412532dcc3b6125416397137789f5b2756282d827b80f37088372c794658"
+    },
+    {
+      "path": "profiles.sqlite",
+      "bytes": 49152,
+      "sha256": "a89e25e7f89ba7648c22293133eda9fc37c2f9466abe8adf108ef518f3680c5f"
+    },
+    {
+      "path": "README.md",
+      "bytes": 7257,
+      "sha256": "f8108765eabd99160d4e31b9e1ec6308d638c0467a8daa648793639c5014efff"
+    },
+    {
+      "path": "REPRODUKTION.md",
+      "bytes": 2358,
+      "sha256": "d0a2638c4a4d3860c02d76cfd339d23d72d42eb9347e70da1ede9fdefbf74c28"
+    },
+    {
+      "path": "review/geometrie/Abschlussaudit.json",
+      "bytes": 17833,
+      "sha256": "14491a2dded7dbc2f2a2b3fc6ff5682aa88721a91cf5a8ab5ba12a9707df1d42"
+    },
+    {
+      "path": "review/geometrie/Abschlussaudit.md",
+      "bytes": 8673,
+      "sha256": "97c107673c6aaae5fa73f0297c6c6030efef03c45d787999afbcc051b6f524e4"
+    },
+    {
+      "path": "review/geometrie/audit.mjs",
+      "bytes": 6525,
+      "sha256": "7dce5d0f5494f8951d750018882acda067d0d64a4d4ba74eaa2f47f15e8e2d50"
+    },
+    {
+      "path": "review/geometrie/reproduced.json",
+      "bytes": 61373,
+      "sha256": "8344f37770a71bcc905d4dc6296db884f5f17ebe4517583fb70e73d1ea4d66f4"
+    },
+    {
+      "path": "review/geometry-analysis.json",
+      "bytes": 61373,
+      "sha256": "94706ef04d05fff992ce7f3c416e5dc1f96236e2e6ed40cfe0a5c8cb80b7c9ec"
+    },
+    {
+      "path": "review/geometry-review.md",
+      "bytes": 4998,
+      "sha256": "4c55972599d6ea387082a2154576133d33525e4497080d383449dfc6dc2e20cc"
+    },
+    {
+      "path": "review/review-final-details.mjs",
+      "bytes": 5024,
+      "sha256": "9c8e11f18904993802b7fcebd100cbc542b03c12bd37d0fb4309796c5e40a613"
+    },
+    {
+      "path": "review/review-persisted-plans.mjs",
+      "bytes": 5623,
+      "sha256": "7a0c7b1a151924585f4ce0cf114e7e06133e3273c6047a9c3844f411e251960c"
+    },
+    {
+      "path": "review/review-small-sign-sources.mjs",
+      "bytes": 4782,
+      "sha256": "a872199b697baf2b9f231ecd41621dd58d826a4dd48086fd21b2dc4b208633fe"
+    },
+    {
+      "path": "review/review-upload-decision.mjs",
+      "bytes": 2896,
+      "sha256": "5c0e64e982a37d271e857f95734185ea2c0b0d6a54f45314298ed43f7ced986c"
+    },
+    {
+      "path": "review/review-v9-details.json",
+      "bytes": 4158,
+      "sha256": "bea79936299d4946cbf7f748fbe8ac8f02a81876a221df86e2812640741ecc0a"
+    },
+    {
+      "path": "review/review-v9-final.md",
+      "bytes": 5404,
+      "sha256": "ac5da236de4e4b65a266113ee0529773d7aae1c4a9d14e2fb53d42e71629ecbc"
+    },
+    {
+      "path": "review/review-v9-finalization.json",
+      "bytes": 23938,
+      "sha256": "9a2be464089873f6dbac3a860a07aa7698bea84ec85de4d0e35a5e7f1536fe1f"
+    },
+    {
+      "path": "review/review-v9-finalization.mjs",
+      "bytes": 9694,
+      "sha256": "c6bacf97400089be472224e2a0a75e0771da3dcea8e8d1740f5859f9d610d29b"
+    },
+    {
+      "path": "review/review-v9-persisted.json",
+      "bytes": 6802,
+      "sha256": "f194a6cc00c4d9f1e6e736d7b2ac7d6751cf58323be9ba1d4dbeab0179d8b8d2"
+    },
+    {
+      "path": "review/review-v9-uploads.json",
+      "bytes": 6741,
+      "sha256": "20bfc60021dd25ac8f341ee6116b4bec60550465c3625ca64e5c10ccce9ab66b"
+    },
+    {
+      "path": "scripts/excel/build-appendices.mjs",
+      "bytes": 9337,
+      "sha256": "0367259027ea718e16ea871c033103a0ffd0c158b6b5e55f9086b37907ba8ed8"
+    },
+    {
+      "path": "scripts/excel/graft-appendices.py",
+      "bytes": 8288,
+      "sha256": "3950d8c16862ac477be229ba9af9a48c3ebce479ccbfa6f3c39f710ed3fbf12b"
+    },
+    {
+      "path": "scripts/excel/verify-appendices.mjs",
+      "bytes": 2288,
+      "sha256": "df10f37cec797eb991d0dc5626c36ec962531e16aa31833f846f68e9ce032f88"
+    },
+    {
+      "path": "scripts/excel/verify-preservation.py",
+      "bytes": 7153,
+      "sha256": "69af7ef1a63db974d130422623796bf540e71db0c48d2d20f83bc0204acbd337"
+    },
+    {
+      "path": "scripts/finalize-product-plans-v9.mjs",
+      "bytes": 15332,
+      "sha256": "bca94a4f92cea71756fa637f9df129f2550ca9495191d72e72c2f9caa2004c60"
+    },
+    {
+      "path": "scripts/prepare-v9-report.mjs",
+      "bytes": 11075,
+      "sha256": "7dc0220f512506e77a41f7c19dee948bf787b667c8452afcefbdfd31b1bd410f"
+    },
+    {
+      "path": "scripts/seal-v9-package.py",
+      "bytes": 9440,
+      "sha256": "1339d99aaa564ebd1a9127e86832bd7b06c478be4ec716a322122fbc75dce5f2"
+    },
+    {
+      "path": "sources/normalized-inputs.json.gz",
+      "bytes": 70495,
+      "sha256": "8fc7ffc75c70d56270d24a04f826d761f1df6904c459ee901f2607b01966188e"
+    },
+    {
+      "path": "summary.json",
+      "bytes": 77085,
+      "sha256": "4a9963afc20016524ca66955e7ee2ae22fcc95b938f81b7d89baa76eebff9873"
+    },
+    {
+      "path": "Tuerschild-Acrylglas-3mm-5x2_v2/family-report.json",
+      "bytes": 5328,
+      "sha256": "8d4af6902e6db5ffb69159a1506211a0b775be768b73b1e72a2429d0424ba8bc"
+    },
+    {
+      "path": "Tuerschild-Acrylglas-3mm-5x2_v2/pair.json",
+      "bytes": 10033,
+      "sha256": "bc0a5bf40a44e60d5b576cb355020546c05c98378116af5029890a00bd32ddaf"
+    },
+    {
+      "path": "Tuerschild-Acrylglas-3mm-5x2_v2/plan.json",
+      "bytes": 9707485,
+      "sha256": "2c4a60655e48fa2f3f533d8aef73e1de8c356bdfcc256361cfaea406638018b4"
+    },
+    {
+      "path": "Tuerschild-Acrylglas-3mm-5x2_v2/source-document.json",
+      "bytes": 9367162,
+      "sha256": "94645c95ba8d27cd51caeaae582503b0f4f57dc71c7ef04d32cd4c15979f2d04"
+    },
+    {
+      "path": "Tuerschild-Acrylglas-3mm-5x2_v2/source-metadata.json",
+      "bytes": 2637,
+      "sha256": "0c693db07b8a6466ff04f271caea541badbeba4c9408e8895097b0cb9cb64bf4"
+    },
+    {
+      "path": "Tuerschild-Acrylglas-3mm-5x2_v2/template.json",
+      "bytes": 2892,
+      "sha256": "5c053e6a38a3c9aa34126d9b2ef5bff900155c77ac71e3cf26fa49a87945f2cb"
+    },
+    {
+      "path": "Tuerschild-Acrylglas-3mm-6x2_v2/family-report.json",
+      "bytes": 5334,
+      "sha256": "8c965f87ab748b683f761170ee45785f467f5bd36080b71c5b9fb33da01c14da"
+    },
+    {
+      "path": "Tuerschild-Acrylglas-3mm-6x2_v2/pair.json",
+      "bytes": 10033,
+      "sha256": "0cdac2b7b796dca5635e05848f346d87c48a17c65959e11cd280a22e4e870e87"
+    },
+    {
+      "path": "Tuerschild-Acrylglas-3mm-6x2_v2/plan.json",
+      "bytes": 9707918,
+      "sha256": "37100a4dba335facda14c50c526e6f67b22b1fa239f26d6bafe0b3146d01c344"
+    },
+    {
+      "path": "Tuerschild-Acrylglas-3mm-6x2_v2/source-document.json",
+      "bytes": 9367589,
+      "sha256": "cec58d88841ced32a6762efe73d508e47ded93c8f967970e57f0ae7799a5b77b"
+    },
+    {
+      "path": "Tuerschild-Acrylglas-3mm-6x2_v2/source-metadata.json",
+      "bytes": 2637,
+      "sha256": "0c693db07b8a6466ff04f271caea541badbeba4c9408e8895097b0cb9cb64bf4"
+    },
+    {
+      "path": "Tuerschild-Acrylglas-3mm-6x2_v2/template.json",
+      "bytes": 2892,
+      "sha256": "39c303141e069ac7ae8fbf855c106a980979cc8c61129a478ecdfe2c6ba8043e"
+    },
+    {
+      "path": "Tuerschild-Acrylglas-3mm-8x2_v2/family-report.json",
+      "bytes": 5334,
+      "sha256": "008f1f2cf0be96f9a573a8ec27c78f3fa6641217cf1300ad324d47f747447dfa"
+    },
+    {
+      "path": "Tuerschild-Acrylglas-3mm-8x2_v2/pair.json",
+      "bytes": 10033,
+      "sha256": "3b6b864ecbcb0d1d4f8de40582466370ed32ae4c99d33cfa5d891d210a48a398"
+    },
+    {
+      "path": "Tuerschild-Acrylglas-3mm-8x2_v2/plan.json",
+      "bytes": 9708298,
+      "sha256": "8cfb1ad6e3c101218ef1917372d12aebfe1a8369e4a41816748039fce5eb9d5d"
+    },
+    {
+      "path": "Tuerschild-Acrylglas-3mm-8x2_v2/source-document.json",
+      "bytes": 9367969,
+      "sha256": "1ec018e04ad54cdef84bb223f32d04304b76de89c190f92514ba1837939213ca"
+    },
+    {
+      "path": "Tuerschild-Acrylglas-3mm-8x2_v2/source-metadata.json",
+      "bytes": 2637,
+      "sha256": "0c693db07b8a6466ff04f271caea541badbeba4c9408e8895097b0cb9cb64bf4"
+    },
+    {
+      "path": "Tuerschild-Acrylglas-3mm-8x2_v2/template.json",
+      "bytes": 2892,
+      "sha256": "eeca9b2c18cccffdf90ccec842f0871c532748e2fe70dddac5a277eb8431d3ee"
+    },
+    {
+      "path": "Tuerschild-Acrylglas-3mm_v4/family-report.json",
+      "bytes": 384178,
+      "sha256": "9c35743af109d989a3b304ea2024e7461e9f49e6677e315f27c956ae02a98dbd"
+    },
+    {
+      "path": "Tuerschild-Acrylglas-3mm_v4/pair.json",
+      "bytes": 12172,
+      "sha256": "68175c8b35296e6995da5de4cbcb31f8ae9edb24e3c9225e07b1adb1f9b61a50"
+    },
+    {
+      "path": "Tuerschild-Acrylglas-3mm_v4/plan.json",
+      "bytes": 56991283,
+      "sha256": "c3bb9aa77fdb72a50503d3f3cfc631e43ea3f9465c9e239fa4f9cd3e4e942d33"
+    },
+    {
+      "path": "Tuerschild-Acrylglas-3mm_v4/source-document.json",
+      "bytes": 53883331,
+      "sha256": "0f766fac0df850f5d65cabfeaa4defb51b82c84867c64ba4003b27d90de1d19a"
+    },
+    {
+      "path": "Tuerschild-Acrylglas-3mm_v4/source-metadata.json",
+      "bytes": 2038,
+      "sha256": "4fe8b82f5b648f91e12105c12ad68462884fea50ecd056d697b25e9e788f0b96"
+    },
+    {
+      "path": "Tuerschild-Acrylglas-3mm_v4/template.json",
+      "bytes": 19106,
+      "sha256": "b8dc3ad6fb73f4dfce286cc20c23af6aab6c78db59b269df297b185ccb758cfb"
+    },
+    {
+      "path": "Tuerschild-Edelstahl-5x2_v1/family-report.json",
+      "bytes": 2968,
+      "sha256": "20e1bf6e06765f28e0a9d9061ac2a891aa60e42281a3dcf654d1bd147df8d99f"
+    },
+    {
+      "path": "Tuerschild-Edelstahl-5x2_v1/pair.json",
+      "bytes": 8180,
+      "sha256": "92b22a979990a25a86fdcb0388c922c4f5c20f29a6e3b9bbed10bd54496300cb"
+    },
+    {
+      "path": "Tuerschild-Edelstahl-5x2_v1/plan.json",
+      "bytes": 11616157,
+      "sha256": "ad12d65562bd7990064dd8b20099f4283f54a21ce7812d51c8eb8bddae59c458"
+    },
+    {
+      "path": "Tuerschild-Edelstahl-5x2_v1/source-document.json",
+      "bytes": 11283357,
+      "sha256": "9521226a9e91b0b297450eb81647f31e0bbb451eedde1c86101a02a0c574accd"
+    },
+    {
+      "path": "Tuerschild-Edelstahl-5x2_v1/source-metadata.json",
+      "bytes": 2637,
+      "sha256": "0c693db07b8a6466ff04f271caea541badbeba4c9408e8895097b0cb9cb64bf4"
+    },
+    {
+      "path": "Tuerschild-Edelstahl-5x2_v1/template.json",
+      "bytes": 2290,
+      "sha256": "edaff59e3b74ee9228a1a3349ca450031aa41c17a492973c602834156d0c0d8a"
+    },
+    {
+      "path": "Tuerschild-Edelstahl-6x2_v1/family-report.json",
+      "bytes": 2968,
+      "sha256": "0d58c0a4ada167164c775941756f6abc6ef82ba65b6e05b3a82f5f58524dbb83"
+    },
+    {
+      "path": "Tuerschild-Edelstahl-6x2_v1/pair.json",
+      "bytes": 8180,
+      "sha256": "3dc396ec7e7c966f77e300640c14f8f0fdb9edb0997886941a759f69e1d2b220"
+    },
+    {
+      "path": "Tuerschild-Edelstahl-6x2_v1/plan.json",
+      "bytes": 11616584,
+      "sha256": "8a0f296d0df9633261d7894d55443fcd6ae64bd3a31d95ce942335eafc76a386"
+    },
+    {
+      "path": "Tuerschild-Edelstahl-6x2_v1/source-document.json",
+      "bytes": 11283784,
+      "sha256": "f3aa10c351d7c0343c747193eb0081842f92055dcfa0f16a072ab457104e0f92"
+    },
+    {
+      "path": "Tuerschild-Edelstahl-6x2_v1/source-metadata.json",
+      "bytes": 2637,
+      "sha256": "0c693db07b8a6466ff04f271caea541badbeba4c9408e8895097b0cb9cb64bf4"
+    },
+    {
+      "path": "Tuerschild-Edelstahl-6x2_v1/template.json",
+      "bytes": 2290,
+      "sha256": "0b808daaea62e7c68b6e91954bb4b00d943371eb07195db55ab302998673b769"
+    },
+    {
+      "path": "Tuerschild-Edelstahl-8x2_v1/family-report.json",
+      "bytes": 2968,
+      "sha256": "773698a9f6e651445406615b573dbe741c43a7e254860964ff7d30f0397e06ba"
+    },
+    {
+      "path": "Tuerschild-Edelstahl-8x2_v1/pair.json",
+      "bytes": 8180,
+      "sha256": "becb84ef29f75bab3e3a267be89a189f58d03c3d0145ed2c9aa78845af5f3951"
+    },
+    {
+      "path": "Tuerschild-Edelstahl-8x2_v1/plan.json",
+      "bytes": 11616964,
+      "sha256": "6832fac837f6b85673e37789e49f720d89ded30ecca2358560e12d006aca5275"
+    },
+    {
+      "path": "Tuerschild-Edelstahl-8x2_v1/source-document.json",
+      "bytes": 11284164,
+      "sha256": "9fcf89dab365bcc053384d752c1321b66d07d228f8549aa0925c12708af600a6"
+    },
+    {
+      "path": "Tuerschild-Edelstahl-8x2_v1/source-metadata.json",
+      "bytes": 2637,
+      "sha256": "0c693db07b8a6466ff04f271caea541badbeba4c9408e8895097b0cb9cb64bf4"
+    },
+    {
+      "path": "Tuerschild-Edelstahl-8x2_v1/template.json",
+      "bytes": 2290,
+      "sha256": "72e9caa3bc8e0459b0f516af0771bff9eb322a9df49dbdec478ae36a8a18533b"
+    },
+    {
+      "path": "upload-decision.json",
+      "bytes": 369,
+      "sha256": "486a099e607de50cb3baf6ccde09517deed4bf5e4ea0f8259f122c21a5436c73"
+    },
+    {
+      "path": "v8-preservation.json",
+      "bytes": 3870,
+      "sha256": "ef1209d983bd9dacf486ad48beddf14d8495e0ae0e14987b6ded24c5f764da6c"
+    },
+    {
+      "path": "verification.json",
+      "bytes": 1451,
+      "sha256": "586a34b72c7166103ba652a3a444f6449563267f08958baed0720a9442b461e7"
+    },
+    {
+      "path": "workshop.sqlite",
+      "bytes": 422387712,
+      "sha256": "24f681b15e572ca35607b3b5786e55f56d988ff56ff313d44181b67027be79f2"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+✔ async gallery releases multi-MiB source strings instead of retaining one raw snapshot per product (6066.5106ms)
+ℹ {"schema":"gallery-read-retention-proof/v1","outcome":"pass","products":40,"documentBytes":2097152,"metadataBytes":524288,"retainedLimit":50331648,"childOldSpaceMiB":128,"samples":[{"processed":0,"heapUsed":9308936,"retainedBytes":60560,"rss":76550144},{"processed":8,"heapUsed":9375472,"retainedBytes":127096,"rss":79372288},{"processed":16,"heapUsed":9416896,"retainedBytes":168520,"rss":79204352},{"processed":24,"heapUsed":9424824,"retainedBytes":176448,"rss":79216640},{"processed":32,"heapUsed":9432032,"retainedBytes":183656,"rss":79224832},{"processed":40,"heapUsed":9378768,"retainedBytes":130392,"rss":81551360}],"peakRetainedBytes":183656,"peakSampledRss":81551360,"returnedBindings":40,"sqliteChanges":0}
+✔ legacy gallery still rejects metadata byte changes between bindings of the same product (537.7945ms)
+✔ legacy gallery detects another product changed during a previous product scan (515.8489ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 7552.1228

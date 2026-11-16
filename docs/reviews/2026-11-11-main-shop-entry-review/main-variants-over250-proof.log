@@ -1,0 +1,33 @@
+{
+  "schema": "gravuru-over250-readonly-check/v1",
+  "codeCommit": "af6fd986c735d97bddc974261398ab8c4e88e00b",
+  "checksPassed": 6,
+  "shopVariantCount": 808,
+  "v9VariantCount": 778,
+  "target": {
+    "shopifyVariantId": "gid://shopify/ProductVariant/58104626479484",
+    "shopInventoryPosition": 331,
+    "options": {
+      "size": "TS-Acryl-AB-120X80-T30-SW",
+      "color": "schwarz",
+      "mounting": "K00"
+    },
+    "unitCents": 1499
+  },
+  "observed": {
+    "directPageSelectionReplacedBy": "58104615666044",
+    "selectionAfterThemeChangeReplacedBy": "58104615993724",
+    "actualEntryCartBinding": "gid://shopify/ProductVariant/58104626479484",
+    "actualThemeCartSentId": "58104626479484",
+    "nativeDirectStartBeyond250Accepted": true
+  },
+  "sourceHashes": {
+    "variantMapping": "f5080124aeb84138d7ecab3d106609668f44a0f2fd5a5a81a66351c54e790835",
+    "v9Plan": "c3bb9aa77fdb72a50503d3f3cfc631e43ea3f9465c9e239fa4f9cd3e4e942d33"
+  },
+  "limits": [
+    "808-ID inventory and v9 configuration are real saved read evidence. Registry/head/draft/approval/Shopify transport are synthetic inert adapters; no current DB assignment is claimed.",
+    "The shared server selection path was exercised through /cart; theme-cart payload preparation was source-reviewed, with the actual browser theme-cart transport tested separately.",
+    "No browser rendering, live JS hash, live purchase, DB changes or network calls. Source entry/transport exports were imported unchanged."
+  ]
+}

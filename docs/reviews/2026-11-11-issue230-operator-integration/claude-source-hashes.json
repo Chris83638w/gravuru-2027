@@ -1,0 +1,35 @@
+{
+  "ref": "ac10e6cee00469591514dcb4fa477b0547a54c48",
+  "files": [
+    {
+      "path": "app/workshop/design-dashboard.mjs",
+      "gitBlob": "23911b2c2dc5e7abb7244291986b59ce740fefef",
+      "sha256": "a84d7044cca71ede220c56515eb936822b1be49479b3b5587d145eb5b74854f8",
+      "bytes": 50999
+    },
+    {
+      "path": "app/workshop/http.mjs",
+      "gitBlob": "9b76ff90ee48b0536c0eecb67b56bab7f3f29f19",
+      "sha256": "88f4565d961f4736e5d12c817ddf21782b162756c068766e760fe8a8f31b1ccb",
+      "bytes": 128434
+    },
+    {
+      "path": "app/workshop/katalog-worker.mjs",
+      "gitBlob": "fba3cde8d7227f979686b415359b980d5f8296a9",
+      "sha256": "881afbcfc81f589acd612ceabd7049da568c48a58acefebb7c888497da15c70a",
+      "bytes": 12512
+    },
+    {
+      "path": "app/workshop/katalog-worker-client.mjs",
+      "gitBlob": "b1c84974efcc905dd7f0d0038331c04134d3fab6",
+      "sha256": "3c4107bbebcd373e3a51315520d6f6b11dd2d15743e43d27eed0727f1b465c6d",
+      "bytes": 7987
+    },
+    {
+      "path": "app/workshop/katalog-worker.test.mjs",
+      "gitBlob": "e9612507566bf1a2cf8e39224fa808c7cf369387",
+      "sha256": "61f9db086f6581f53692b4901ddc2e4937cb9b2a04e7a4bfadf6393ac2a35258",
+      "bytes": 32785
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "nativePlansValid": true,
+  "compiledDocumentsUnchanged": true,
+  "sourceDocumentsUnchanged": true,
+  "newSourceRevisionMetadataOnly": true,
+  "prices": {
+    "expected": 823,
+    "matched": 823,
+    "differences": 0
+  },
+  "taxMetadataOnly": true,
+  "designCounts": [
+    {
+      "workbook": "Tuerschild-Acrylglas-3mm_v4.xlsx",
+      "native": 1205,
+      "excluded": 9,
+      "hidden": 2
+    },
+    {
+      "workbook": "Tuerschild-Acrylglas-3mm-5x2_v2.xlsx",
+      "native": 27,
+      "excluded": 0,
+      "hidden": 0
+    },
+    {
+      "workbook": "Tuerschild-Acrylglas-3mm-6x2_v2.xlsx",
+      "native": 27,
+      "excluded": 0,
+      "hidden": 0
+    },
+    {
+      "workbook": "Tuerschild-Acrylglas-3mm-8x2_v2.xlsx",
+      "native": 27,
+      "excluded": 0,
+      "hidden": 0
+    },
+    {
+      "workbook": "Tuerschild-Edelstahl-5x2_v1.xlsx",
+      "native": 27,
+      "excluded": 0,
+      "hidden": 0
+    },
+    {
+      "workbook": "Tuerschild-Edelstahl-6x2_v1.xlsx",
+      "native": 27,
+      "excluded": 0,
+      "hidden": 0
+    },
+    {
+      "workbook": "Tuerschild-Edelstahl-8x2_v1.xlsx",
+      "native": 27,
+      "excluded": 0,
+      "hidden": 0
+    }
+  ],
+  "persistedCounts": {
+    "sourceRecords": 7,
+    "sourceRevisions": 14,
+    "persistedPlans": 14,
+    "confirmations": 0,
+    "executions": 0
+  },
+  "decisionManifestSha256": "730168634964272693b514e3efd742975bd56af30a96a7ae751a2aed7fe71a64",
+  "previousRunUnchanged": true
+}

@@ -1,0 +1,25 @@
+{
+  "id": "TRE-S-10x10-D12",
+  "browser": "Chromium 1234",
+  "actualInkBoundsMm": {
+    "left": 29.839047607034445,
+    "top": 67.12435899674892,
+    "right": 98.77152984961867,
+    "bottom": 78.45634936541319,
+    "plateMm": [
+      100,
+      100
+    ],
+    "inside": true,
+    "glyphPaths": 7
+  },
+  "sourceMeasuredCorelBoxMm": [
+    28.11,
+    67.12,
+    68.69,
+    11.32
+  ],
+  "nativeAdvanceBoxRightMm": 100.182335,
+  "initialRasterLimitation": "Sharp/librsvg omitted embedded WebP surface; fallback solid was inset4mm and falsely suggested large overhang.",
+  "image": "native-comparison-browser.png"
+}

@@ -5,6 +5,6 @@ export function shopGalleryModel(record){
  const document=record.document,config=document?.config;
  if(document?.schema!=='gravuru-product/v1'||!config?.profile)throw Object.assign(Error('Dieses Produkt ist nicht für die Designauswahl verfügbar.'),{status:404,code:'shop_gallery_product'});
  const {materialSurface,sceneBackground,localResources,...universal}=config;
- universal.localResources={motifs:(localResources?.motifs||[]).map(({key,embeddedOnly})=>({key,embeddedOnly}))};
+ universal.localResources={motifs:(localResources?.motifs||[]).map(({key,embeddedOnly,name,label,keywords,tags})=>({key,embeddedOnly,...(name?{name}:{}),...(label?{label}:{}),...(keywords?{keywords}:{}),...(tags?{tags}:{})}))};
  return {key:'acryl',name:document.name,configuration:{id:record.id,revision:record.revision},galleryCategoryIds:[...(document.categoryIds||[])],universal};
 }

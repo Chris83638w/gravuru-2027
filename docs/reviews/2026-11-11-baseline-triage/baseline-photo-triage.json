@@ -1,0 +1,292 @@
+{
+  "schema": "gravuru/baseline-photo-triage/v1",
+  "mainPlanId": "pgp_80a0c3b9-b599-428f-8626-05e3ace880b6",
+  "mainPlanHash": "83cd95dc900fcbc9631086f54c26591e2dbab75d285cc80fa46d64673f63bb33",
+  "mainSource": {
+    "id": "cfg_8d95909c-fcd9-4cf8-87e7-152eb21e7204",
+    "revision": 2,
+    "sha256": "d4aa5e78a870decbecbda937e76feb740c299f8e52bd5c1fd3a8d93a93f715ad",
+    "status": "draft",
+    "publishedRevision": null,
+    "metadataSha256": "8271b263e19ed11543c4c2411390d2cc6cdfbc34bcb6a407ca00b5278b6602d6"
+  },
+  "main": {
+    "schema": "gravuru-product/v1",
+    "material": {
+      "color": "#17191b",
+      "engravingSide": "back",
+      "kind": "acrylic",
+      "thicknessMm": 3,
+      "variant": "schwarz"
+    },
+    "photo": {
+      "enabled": true,
+      "extraPriceCents": 999,
+      "includedCount": 0,
+      "mode": "upload-only"
+    },
+    "logo": {
+      "enabled": true,
+      "extraPriceCents": 1299,
+      "vectorUpload": true
+    },
+    "moduleProfile": {
+      "id": "cmp_8b4e451e-a9c0-400d-a148-094475734fb5",
+      "modules": {
+        "colors": false,
+        "designs": true,
+        "logo": true,
+        "motifs": true,
+        "options": true,
+        "photo": true,
+        "text": true
+      },
+      "revision": 1,
+      "schema": "gravuru-configurator-modules/v1"
+    },
+    "hasLegacyAcrylicScene": false,
+    "defaultDesignId": "katalog-TAE-V2A-8x5-D1",
+    "designs": 124,
+    "photoSlots": 0,
+    "plainPhotoSlots": 0,
+    "defaultDesignPhotoSlots": 0,
+    "familyFormatsContainPhotoSlots": false
+  },
+  "cases": [
+    {
+      "label": "plain square frame",
+      "plain": {
+        "objectId": "photo",
+        "uploadId": "synthetic",
+        "label": "Foto",
+        "source": "original",
+        "path": "synthetic.png",
+        "width": 1200,
+        "height": 600,
+        "placedWidthMm": 50.8,
+        "placedHeightMm": 25.4,
+        "frameCovered": false,
+        "effectiveDpi": 600,
+        "grade": "gruen",
+        "targetDpi": 300,
+        "hint": "",
+        "productionNote": ""
+      },
+      "explicitCrop": {
+        "objectId": "photo",
+        "uploadId": "synthetic",
+        "label": "Foto",
+        "source": "original",
+        "path": "synthetic.png",
+        "width": 1200,
+        "height": 600,
+        "placedWidthMm": 101.6,
+        "placedHeightMm": 50.8,
+        "frameCovered": true,
+        "effectiveDpi": 300,
+        "grade": "gruen",
+        "targetDpi": 300,
+        "hint": "",
+        "productionNote": ""
+      },
+      "shapedMask": {
+        "objectId": "photo",
+        "uploadId": "synthetic",
+        "label": "Foto",
+        "source": "original",
+        "path": "synthetic.png",
+        "width": 1200,
+        "height": 600,
+        "placedWidthMm": 101.6,
+        "placedHeightMm": 50.8,
+        "frameCovered": true,
+        "effectiveDpi": 300,
+        "grade": "gruen",
+        "targetDpi": 300,
+        "hint": "",
+        "productionNote": ""
+      }
+    },
+    {
+      "label": "edited square in landscape frame",
+      "plain": {
+        "objectId": "photo",
+        "uploadId": "synthetic",
+        "label": "Foto",
+        "source": "edited",
+        "path": "edited.png",
+        "width": 200,
+        "height": 200,
+        "placedWidthMm": 50.8,
+        "placedHeightMm": 50.8,
+        "frameCovered": false,
+        "effectiveDpi": 100,
+        "grade": "rot",
+        "targetDpi": 300,
+        "hint": "Das Foto ist klein, wir holen das Beste raus.",
+        "productionNote": "Auflösung niedrig"
+      },
+      "explicitCrop": {
+        "objectId": "photo",
+        "uploadId": "synthetic",
+        "label": "Foto",
+        "source": "edited",
+        "path": "edited.png",
+        "width": 200,
+        "height": 200,
+        "placedWidthMm": 101.6,
+        "placedHeightMm": 101.6,
+        "frameCovered": true,
+        "effectiveDpi": 50,
+        "grade": "rot",
+        "targetDpi": 300,
+        "hint": "Das Foto ist klein, wir holen das Beste raus.",
+        "productionNote": "Auflösung niedrig"
+      },
+      "shapedMask": {
+        "objectId": "photo",
+        "uploadId": "synthetic",
+        "label": "Foto",
+        "source": "edited",
+        "path": "edited.png",
+        "width": 200,
+        "height": 200,
+        "placedWidthMm": 101.6,
+        "placedHeightMm": 101.6,
+        "frameCovered": true,
+        "effectiveDpi": 50,
+        "grade": "rot",
+        "targetDpi": 300,
+        "hint": "Das Foto ist klein, wir holen das Beste raus.",
+        "productionNote": "Auflösung niedrig"
+      }
+    },
+    {
+      "label": "plain large square frame",
+      "plain": {
+        "objectId": "photo",
+        "uploadId": "synthetic",
+        "label": "Foto",
+        "source": "original",
+        "path": "synthetic.png",
+        "width": 1200,
+        "height": 600,
+        "placedWidthMm": 101.6,
+        "placedHeightMm": 50.8,
+        "frameCovered": false,
+        "effectiveDpi": 300,
+        "grade": "gruen",
+        "targetDpi": 300,
+        "hint": "",
+        "productionNote": ""
+      },
+      "explicitCrop": {
+        "objectId": "photo",
+        "uploadId": "synthetic",
+        "label": "Foto",
+        "source": "original",
+        "path": "synthetic.png",
+        "width": 1200,
+        "height": 600,
+        "placedWidthMm": 203.2,
+        "placedHeightMm": 101.6,
+        "frameCovered": true,
+        "effectiveDpi": 150,
+        "grade": "rot",
+        "targetDpi": 300,
+        "hint": "Das Foto ist klein, wir holen das Beste raus.",
+        "productionNote": "Auflösung niedrig"
+      },
+      "shapedMask": {
+        "objectId": "photo",
+        "uploadId": "synthetic",
+        "label": "Foto",
+        "source": "original",
+        "path": "synthetic.png",
+        "width": 1200,
+        "height": 600,
+        "placedWidthMm": 203.2,
+        "placedHeightMm": 101.6,
+        "frameCovered": true,
+        "effectiveDpi": 150,
+        "grade": "rot",
+        "targetDpi": 300,
+        "hint": "Das Foto ist klein, wir holen das Beste raus.",
+        "productionNote": "Auflösung niedrig"
+      }
+    }
+  ],
+  "newUpload120x80": {
+    "bounds": {
+      "id": "synthetic-photo",
+      "type": "photoSlot",
+      "photoShape": "rect",
+      "x": 60,
+      "y": 40,
+      "w": 72,
+      "h": 36
+    },
+    "placement": {
+      "x": -36,
+      "y": -18,
+      "w": 72,
+      "h": 36,
+      "dx": 36,
+      "dy": 18,
+      "cx": 0,
+      "cy": 0,
+      "angle": 0
+    },
+    "measurement": {
+      "objectId": "synthetic-photo",
+      "uploadId": "synthetic",
+      "label": "Foto",
+      "source": "original",
+      "path": "synthetic.png",
+      "width": 1200,
+      "height": 600,
+      "placedWidthMm": 72,
+      "placedHeightMm": 36,
+      "frameCovered": true,
+      "effectiveDpi": 423,
+      "grade": "gruen",
+      "targetDpi": 300,
+      "hint": "",
+      "productionNote": ""
+    }
+  },
+  "otherProducts": [
+    {
+      "workbook": "Tuerschild-Acrylglas-3mm-5x2_v2.xlsx",
+      "photoEnabled": false,
+      "photoModule": false
+    },
+    {
+      "workbook": "Tuerschild-Acrylglas-3mm-6x2_v2.xlsx",
+      "photoEnabled": false,
+      "photoModule": false
+    },
+    {
+      "workbook": "Tuerschild-Acrylglas-3mm-8x2_v2.xlsx",
+      "photoEnabled": false,
+      "photoModule": false
+    },
+    {
+      "workbook": "Tuerschild-Edelstahl-5x2_v1.xlsx",
+      "photoEnabled": false,
+      "photoModule": false
+    },
+    {
+      "workbook": "Tuerschild-Edelstahl-6x2_v1.xlsx",
+      "photoEnabled": false,
+      "photoModule": false
+    },
+    {
+      "workbook": "Tuerschild-Edelstahl-8x2_v1.xlsx",
+      "photoEnabled": false,
+      "photoModule": false
+    }
+  ],
+  "appChanges": false,
+  "testsChanged": false
+}

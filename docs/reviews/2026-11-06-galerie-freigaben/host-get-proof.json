@@ -1,0 +1,302 @@
+{
+  "scope": "private-slate-code-update-get-only",
+  "origin": "https://test-2027.gravuru-designwerkstatt.de",
+  "checkedAt": "2026-11-06T10:58:10.848679+00:00",
+  "passed": true,
+  "checks": [
+    {
+      "name": "anonymous_denied_1",
+      "ok": true,
+      "status": 401,
+      "bodyBytes": 0
+    },
+    {
+      "name": "anonymous_denied_2",
+      "ok": true,
+      "status": 401,
+      "bodyBytes": 0
+    },
+    {
+      "name": "anonymous_denied_3",
+      "ok": true,
+      "status": 401,
+      "bodyBytes": 0
+    },
+    {
+      "name": "anonymous_denied_4",
+      "ok": true,
+      "status": 401,
+      "bodyBytes": 0
+    },
+    {
+      "name": "health",
+      "ok": true,
+      "status": 200,
+      "bodyBytes": 71
+    },
+    {
+      "name": "gallery",
+      "ok": true,
+      "status": 200,
+      "bodyBytes": 1417855
+    },
+    {
+      "name": "gallery_private_cache",
+      "ok": true
+    },
+    {
+      "name": "gallery_counts",
+      "ok": true,
+      "originals": 325,
+      "editableOriginals": 233,
+      "checkboxes": 325,
+      "overviewPresent": true
+    },
+    {
+      "name": "asset_http_1",
+      "ok": true,
+      "status": 200,
+      "bodyBytes": 5287
+    },
+    {
+      "name": "asset_release_hash_1",
+      "ok": true,
+      "sha256": "3de5b189be674c5616007b90722606773eb2059862698455669f992f9ee19830"
+    },
+    {
+      "name": "asset_http_2",
+      "ok": true,
+      "status": 200,
+      "bodyBytes": 6798
+    },
+    {
+      "name": "asset_release_hash_2",
+      "ok": true,
+      "sha256": "22a7d7ecb177ac772e2ca7eeef6ef55d51ca66031211681a0609e9b41d0b8be4"
+    },
+    {
+      "name": "asset_http_3",
+      "ok": true,
+      "status": 200,
+      "bodyBytes": 14420
+    },
+    {
+      "name": "asset_release_hash_3",
+      "ok": true,
+      "sha256": "eaa1403838230bb9b72d6287b65424a21db027dc8f22bdafac07a6c826266a88"
+    },
+    {
+      "name": "asset_http_4",
+      "ok": true,
+      "status": 200,
+      "bodyBytes": 5758
+    },
+    {
+      "name": "asset_release_hash_4",
+      "ok": true,
+      "sha256": "dfdfdf51b0d769b32dbadb4f479e358e375a95cb5e9aedb7aa7ef069d2ee3f8d"
+    },
+    {
+      "name": "approvals_get",
+      "ok": true,
+      "status": 200,
+      "bodyBytes": 428133
+    },
+    {
+      "name": "approval_counts",
+      "ok": true,
+      "targets": 478,
+      "approved": 0,
+      "unreviewed": 377,
+      "changed": 0,
+      "unavailable": 101
+    },
+    {
+      "name": "overview_contract",
+      "ok": true
+    },
+    {
+      "name": "comments_get",
+      "ok": true,
+      "status": 200,
+      "bodyBytes": 19465
+    },
+    {
+      "name": "native_links_1",
+      "ok": true
+    },
+    {
+      "name": "native_preview_1",
+      "ok": true,
+      "status": 200,
+      "bodyBytes": 346325
+    },
+    {
+      "name": "native_svg_1",
+      "ok": true,
+      "sha256": "9269b9efbbc6c8c223526d9f7916b9bcbaa6d3101e725eeb70dbda3052b4ffcc"
+    },
+    {
+      "name": "editor_1",
+      "ok": true,
+      "status": 200,
+      "bodyBytes": 16851
+    },
+    {
+      "name": "inline_get_1",
+      "ok": true,
+      "status": 200,
+      "bodyBytes": 349403
+    },
+    {
+      "name": "inline_contract_1",
+      "ok": true
+    },
+    {
+      "name": "native_links_2",
+      "ok": true
+    },
+    {
+      "name": "native_preview_2",
+      "ok": true,
+      "status": 200,
+      "bodyBytes": 162472
+    },
+    {
+      "name": "native_svg_2",
+      "ok": true,
+      "sha256": "34c39a9ad8d819bbd4e155c7834f72518418fb5c625ffdf576d01ef5d16acb54"
+    },
+    {
+      "name": "editor_2",
+      "ok": true,
+      "status": 200,
+      "bodyBytes": 16851
+    },
+    {
+      "name": "inline_get_2",
+      "ok": true,
+      "status": 200,
+      "bodyBytes": 163478
+    },
+    {
+      "name": "inline_contract_2",
+      "ok": true
+    },
+    {
+      "name": "native_links_3",
+      "ok": true
+    },
+    {
+      "name": "native_preview_3",
+      "ok": true,
+      "status": 200,
+      "bodyBytes": 446817
+    },
+    {
+      "name": "native_svg_3",
+      "ok": true,
+      "sha256": "15765cfc614fe0c516abbf9eaef3387ffbb09ac7edfae753a5000512f978edc5"
+    },
+    {
+      "name": "editor_3",
+      "ok": true,
+      "status": 200,
+      "bodyBytes": 16851
+    },
+    {
+      "name": "inline_get_3",
+      "ok": true,
+      "status": 200,
+      "bodyBytes": 447847
+    },
+    {
+      "name": "inline_contract_3",
+      "ok": true
+    },
+    {
+      "name": "foreign_origin_denied",
+      "ok": true,
+      "status": 403,
+      "bodyBytes": 0
+    },
+    {
+      "name": "private_path_denied_1",
+      "ok": true,
+      "status": 404,
+      "bodyBytes": 0
+    },
+    {
+      "name": "private_path_denied_2",
+      "ok": true,
+      "status": 404,
+      "bodyBytes": 0
+    },
+    {
+      "name": "private_path_denied_3",
+      "ok": true,
+      "status": 404,
+      "bodyBytes": 0
+    },
+    {
+      "name": "private_path_denied_4",
+      "ok": true,
+      "status": 404,
+      "bodyBytes": 0
+    },
+    {
+      "name": "private_path_denied_5",
+      "ok": true,
+      "status": 404,
+      "bodyBytes": 0
+    },
+    {
+      "name": "private_path_denied_6",
+      "ok": true,
+      "status": 404,
+      "bodyBytes": 0
+    },
+    {
+      "name": "private_path_denied_7",
+      "ok": true,
+      "status": 404,
+      "bodyBytes": 0
+    },
+    {
+      "name": "private_path_denied_8",
+      "ok": true,
+      "status": 404,
+      "bodyBytes": 0
+    },
+    {
+      "name": "approvals_reread",
+      "ok": true,
+      "status": 200,
+      "bodyBytes": 428133
+    },
+    {
+      "name": "comments_reread",
+      "ok": true,
+      "status": 200,
+      "bodyBytes": 19465
+    },
+    {
+      "name": "approval_read_window_unchanged",
+      "ok": true,
+      "beforeSha256": "0e43af0811b87494d1f9caa94052a6271310c3cec21cb2c8e5ac5ce75e24f944",
+      "afterSha256": "0e43af0811b87494d1f9caa94052a6271310c3cec21cb2c8e5ac5ce75e24f944"
+    },
+    {
+      "name": "comment_read_window_unchanged",
+      "ok": true,
+      "beforeSha256": "6b4092c0b0c339593b1de11083015ac29f8cf7dab393213c95757b1a557d0ca8",
+      "afterSha256": "6b4092c0b0c339593b1de11083015ac29f8cf7dab393213c95757b1a557d0ca8"
+    }
+  ],
+  "mutationRequests": 0,
+  "redirectsFollowed": 0,
+  "casVerified": false,
+  "csrfWriteVerified": false,
+  "browserVerified": false,
+  "stateComparisonNote": "A concurrent user edit can change a read-window hash; this probe submits GET requests only."
+}

@@ -1,0 +1,79 @@
+{
+  "profiles": {
+    "selections": {
+      "fonts": null,
+      "motifs": null,
+      "colors": null,
+      "bestsellers": null
+    },
+    "sources": {
+      "fonts": {
+        "level": "unbound",
+        "categoryId": null,
+        "mode": "inherit",
+        "profileId": null,
+        "profileRevision": null
+      },
+      "motifs": {
+        "level": "unbound",
+        "categoryId": null,
+        "mode": "inherit",
+        "profileId": null,
+        "profileRevision": null
+      },
+      "colors": {
+        "level": "unbound",
+        "categoryId": null,
+        "mode": "inherit",
+        "profileId": null,
+        "profileRevision": null
+      },
+      "bestsellers": {
+        "level": "unbound",
+        "categoryId": null,
+        "mode": "inherit",
+        "profileId": null,
+        "profileRevision": null
+      }
+    },
+    "settingsRevision": 1,
+    "categoryPriority": "last-non-inherit-wins",
+    "warnings": []
+  },
+  "businessDecisions": {
+    "schema": "gravuru-issue230-business-decisions/v1",
+    "manifestSha256": "730168634964272693b514e3efd742975bd56af30a96a7ae751a2aed7fe71a64",
+    "tax": {
+      "pricePresentation": "gross",
+      "vatPercent": 19,
+      "country": "DE",
+      "confirmed": true,
+      "date": "2026-11-11",
+      "quote": "Ja, inklusive 19 % MwSt.",
+      "source": "Explicit user reply in the current Codex chat, relayed by coordinator to product_plans; all seven base prices and surcharges.",
+      "storage": "Revision metadata and external decision manifest only; no unsupported product-config tax field."
+    },
+    "quantityDiscount": {
+      "confirmed": true,
+      "decisionDate": "2026-10-20",
+      "scope": "complete-unit",
+      "tiers": [
+        {
+          "minQuantity": 3,
+          "percentOff": 5
+        },
+        {
+          "minQuantity": 5,
+          "percentOff": 10
+        },
+        {
+          "minQuantity": 10,
+          "percentOff": 15
+        }
+      ]
+    },
+    "startsKept": true,
+    "uploadsConfirmed": true,
+    "station3Confirmed": false
+  }
+}

@@ -1,0 +1,30 @@
+import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs';import os from 'node:os';import path from 'node:path';import {Readable} from 'node:stream';import {createHmac} from 'node:crypto';
+import {build} from '../configurator/variant-m/build.mjs';import {createWorkshop} from './http.mjs';import {makeProductDocument} from './product-model.mjs';
+async function request(w,route,method='GET',input,authorization){const req=Readable.from(input===undefined?[]:[Buffer.from(JSON.stringify(input))]);req.method=method;req.headers={'content-type':'application/json',authorization};const res={writeHead(status){this.status=status;return this;},end(bytes){this.body=JSON.parse(bytes);}};await w.handle(req,res,new URL(route,'https://test.example'));return res;}
+test('search events accept only known products; only an authenticated merchant can read the report',async t=>{
+ const dir=fs.mkdtempSync(path.join(os.tmpdir(),'motif-search-http-'));let w;t.after(()=>{w?.close();fs.rmSync(dir,{recursive:true,force:true});});build({outputDirectory:dir});const model=JSON.parse(fs.readFileSync(path.join(dir,'models.json')))[0];
+ const shop='synthetic.myshopify.com',secret='synthetic-search-secret-no-real-credential',clientId='synthetic-client';
+ w=createWorkshop({filename:path.join(dir,'workshop.sqlite'),seedConfig:model.universal,legacy:model.legacy,shopifySessions:{mode:'test-only',shopDomain:shop,clientId,secret}});
+ const product=w.repository.create(makeProductDocument(model.universal,{name:'Schiefer-Gedenktafeln · 22 × 14 cm',kind:'product'}));
+ assert.equal((await request(w,'/api/workshop/motif-search-stats')).status,401);
+ assert.equal((await request(w,'/api/workshop/motif-search-events','POST',{productId:product.id,query:'kreuz',resultCount:18})).status,200);
+ assert.equal((await request(w,'/api/workshop/motif-search-events','POST',{productId:product.id,query:'drache',resultCount:0})).status,200);
+ assert.notEqual((await request(w,'/api/workshop/motif-search-events','POST',{productId:'cfg_00000000-0000-0000-0000-000000000000',query:'hund',resultCount:4})).status,200);
+ assert.equal((await request(w,'/api/workshop/motif-search-events','POST',{productId:product.id,query:'hund',resultCount:4,customerId:'forbidden'})).status,422);
+ assert.equal((await request(w,'/api/workshop/motif-search-events')).status,405);
+ const now=Math.floor(Date.now()/1000),header=Buffer.from(JSON.stringify({alg:'HS256',typ:'JWT'})).toString('base64url'),payload=Buffer.from(JSON.stringify({aud:clientId,iat:now,nbf:now,exp:now+60,jti:'search-test',dest:'https://'+shop,iss:'https://'+shop+'/admin',sub:'123'})).toString('base64url'),signed=header+'.'+payload,token='Bearer '+signed+'.'+createHmac('sha256',secret).update(signed).digest('base64url');
+ const report=await request(w,'/api/workshop/motif-search-stats?source=preview','GET',undefined,token);assert.equal(report.status,200);assert.equal(report.body.totals.searches,2);assert.equal(report.body.totals.withoutResults,1);assert.deepEqual(report.body.groups,['Schiefer-Gedenktafeln']);
+ assert.equal((await request(w,'/api/workshop/motif-search-stats?source=shop','GET',undefined,token)).body.totals.searches,0);
+ assert.equal((await request(w,'/api/workshop/motif-search-events','POST',{productId:product.id,query:'D23',resultCount:2,searchKind:'design'})).body.accepted,true);
+ assert.equal((await request(w,'/api/workshop/motif-search-stats?source=preview&searchKind=design','GET',undefined,token)).body.totals.searches,1);
+ assert.equal((await request(w,'/api/workshop/motif-search-stats?source=preview','GET',undefined,token)).body.totals.searches,2,'old callers retain motif report');
+ assert.equal((await request(w,'/api/workshop/motif-search-events','POST',{productId:product.id,query:'Haus',resultCount:2,searchKind:'all'})).status,422);
+ assert.equal((await request(w,'/api/workshop/motif-search-events','POST',{productId:product.id,query:'name@example.com',resultCount:0,searchKind:'design'})).body.accepted,false);
+ assert.equal((await request(w,'/api/workshop/motif-search-stats?searchKind=design')).status,401);
+ const previewId='cfg_00000000-0000-0000-0000-000000000001';
+ fs.writeFileSync(path.join(dir,'motif-search-previews.json'),JSON.stringify({schema:'gravuru-motif-search-previews/v1',tenants:{gravuru:{[previewId]:'Prüfvorschau'},'anderer-shop':{'cfg_00000000-0000-0000-0000-000000000002':'Fremd'}}}));
+ assert.equal((await request(w,'/api/workshop/motif-search-events','POST',{productId:previewId,query:'Hund',resultCount:1})).status,200);
+ assert.equal((await request(w,'/api/workshop/motif-search-stats?source=preview&group=Pr%C3%BCfvorschau','GET',undefined,token)).body.totals.searches,1);
+ assert.equal((await request(w,'/api/workshop/motif-search-stats?source=shop','GET',undefined,token)).body.totals.searches,0);
+ assert.equal((await request(w,'/api/workshop/motif-search-events','POST',{productId:'cfg_00000000-0000-0000-0000-000000000002',query:'Hund',resultCount:1})).status,404);
+});

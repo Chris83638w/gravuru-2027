@@ -1,0 +1,166 @@
+[
+  {
+    "mode": "old",
+    "cards": 80000,
+    "exit": 0,
+    "watchdogStopped": false,
+    "watchLimitMiB": 1024,
+    "observedRssMiB": 683.296875,
+    "elapsedSeconds": 0.7809999999881256,
+    "result": {
+      "mode": "old",
+      "cards": 80000,
+      "bindings": 6667,
+      "payloadBytes": 98528156,
+      "payloadSHA256": "0aca7268e58eae87eb23ca003a456b2d23cee2871e32456d7a8bd360867f0710",
+      "mac": "3dbb114ceff07e17ea269845d372aa15b932b350011f715ef35dae08ca108f55",
+      "encodeMs": 375.73,
+      "before": {
+        "rss": 177131520,
+        "heapTotal": 211415040,
+        "heapUsed": 75092968,
+        "external": 2102994,
+        "arrayBuffers": 143611
+      },
+      "afterEncode": {
+        "rss": 436559872,
+        "heapTotal": 369831936,
+        "heapUsed": 290671936,
+        "external": 2166274,
+        "arrayBuffers": 143611
+      },
+      "encodeMaxRssMiB": 510.3359375,
+      "afterWrite": {
+        "rss": 436609024,
+        "heapTotal": 369831936,
+        "heapUsed": 290711072,
+        "external": 2166274,
+        "arrayBuffers": 143611
+      },
+      "maxRssMiB": 711.62109375
+    }
+  },
+  {
+    "mode": "new",
+    "cards": 80000,
+    "exit": 0,
+    "watchdogStopped": false,
+    "watchLimitMiB": 1024,
+    "observedRssMiB": 708.37890625,
+    "elapsedSeconds": 0.9219999999913853,
+    "result": {
+      "mode": "new",
+      "cards": 80000,
+      "bindings": 6667,
+      "payloadBytes": 98528156,
+      "payloadSHA256": "0aca7268e58eae87eb23ca003a456b2d23cee2871e32456d7a8bd360867f0710",
+      "mac": "3dbb114ceff07e17ea269845d372aa15b932b350011f715ef35dae08ca108f55",
+      "encodeMs": 509.76,
+      "before": {
+        "rss": 176930816,
+        "heapTotal": 211152896,
+        "heapUsed": 75092896,
+        "external": 2102994,
+        "arrayBuffers": 143611
+      },
+      "afterEncode": {
+        "rss": 439578624,
+        "heapTotal": 372072448,
+        "heapUsed": 291940168,
+        "external": 2166274,
+        "arrayBuffers": 143611
+      },
+      "encodeMaxRssMiB": 513.19140625,
+      "afterWrite": {
+        "rss": 439480320,
+        "heapTotal": 372072448,
+        "heapUsed": 291979304,
+        "external": 2166274,
+        "arrayBuffers": 143611
+      },
+      "maxRssMiB": 714.171875
+    }
+  },
+  {
+    "mode": "old",
+    "cards": 100000,
+    "exit": 0,
+    "watchdogStopped": false,
+    "watchLimitMiB": 1024,
+    "observedRssMiB": 804.9765625,
+    "elapsedSeconds": 0.9370000000053551,
+    "result": {
+      "mode": "old",
+      "cards": 100000,
+      "bindings": 8334,
+      "payloadBytes": 123208208,
+      "payloadSHA256": "63484f54f58cf2eee25c277b32abcd162915450958af71845655f2574dee23ea",
+      "mac": "e355f937806fed442b1376c53d1ea74527f8d3b0053d93d05ce34b16ffb9f92e",
+      "encodeMs": 463.21,
+      "before": {
+        "rss": 213716992,
+        "heapTotal": 231043072,
+        "heapUsed": 92888184,
+        "external": 2102994,
+        "arrayBuffers": 143611
+      },
+      "afterEncode": {
+        "rss": 505012224,
+        "heapTotal": 437370880,
+        "heapUsed": 309638600,
+        "external": 2166274,
+        "arrayBuffers": 143611
+      },
+      "encodeMaxRssMiB": 599.1484375,
+      "afterWrite": {
+        "rss": 506122240,
+        "heapTotal": 437370880,
+        "heapUsed": 309677736,
+        "external": 2166274,
+        "arrayBuffers": 143611
+      },
+      "maxRssMiB": 851.171875
+    }
+  },
+  {
+    "mode": "new",
+    "cards": 100000,
+    "exit": 0,
+    "watchdogStopped": false,
+    "watchLimitMiB": 1024,
+    "observedRssMiB": 806.8515625,
+    "elapsedSeconds": 1.062999999994645,
+    "result": {
+      "mode": "new",
+      "cards": 100000,
+      "bindings": 8334,
+      "payloadBytes": 123208208,
+      "payloadSHA256": "63484f54f58cf2eee25c277b32abcd162915450958af71845655f2574dee23ea",
+      "mac": "e355f937806fed442b1376c53d1ea74527f8d3b0053d93d05ce34b16ffb9f92e",
+      "encodeMs": 614.96,
+      "before": {
+        "rss": 214867968,
+        "heapTotal": 230518784,
+        "heapUsed": 92885912,
+        "external": 2102994,
+        "arrayBuffers": 143611
+      },
+      "afterEncode": {
+        "rss": 508039168,
+        "heapTotal": 440238080,
+        "heapUsed": 310056216,
+        "external": 2166274,
+        "arrayBuffers": 143611
+      },
+      "encodeMaxRssMiB": 602.03125,
+      "afterWrite": {
+        "rss": 508780544,
+        "heapTotal": 440238080,
+        "heapUsed": 310095352,
+        "external": 2166274,
+        "arrayBuffers": 143611
+      },
+      "maxRssMiB": 853.7109375
+    }
+  }
+]

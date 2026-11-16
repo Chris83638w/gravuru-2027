@@ -1,0 +1,10 @@
+{
+  "schema": "gravuru-runtime-patch-artifact/v1",
+  "archive": "module-activation-store-patch.tar.gz",
+  "bytes": 9878,
+  "sha256": "a15683617c15c50348925d9e2ac647da7ada1a6bf13ab2474e962a972df429ba",
+  "manifestSha256": "10dd8a41810f6cc4dfcbd6d7a5ed7df82fa2c8d7f194978e9945bdde13d1f214",
+  "productionFiles": 1,
+  "changesCustomerUi": false,
+  "opensGates": false
+}

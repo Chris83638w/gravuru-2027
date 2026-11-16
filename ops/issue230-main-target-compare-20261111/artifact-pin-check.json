@@ -1,0 +1,14 @@
+{
+  "fileOnly": true,
+  "realDatabaseOpened": false,
+  "targetProductGroupSha256": "ae09cbf6b58719b61729c7fab7a5685b464aae1e8d08691a706111e97b58e407",
+  "targetBindingSha256": "f0bb7d95e89e3aae66ab04454d6476132fe197aaae7c1da48ce8209ced62d285",
+  "intentSerializedSha256": "fcfddddeae4a188ef980a67912e247d85bb42b46c1d4836de669207b01b2282b",
+  "mappingSerializedSha256": "3d476d9d964158c1f96a9e55b5de5a2cfa36afd8b5d3bcd86313c12be2c77591",
+  "targetCategoryIds": [
+    "extern-shopifyproductid-16190784602492",
+    "linie-acryl-tuerschilder"
+  ],
+  "assignmentsAllInherit": true,
+  "passed": true
+}

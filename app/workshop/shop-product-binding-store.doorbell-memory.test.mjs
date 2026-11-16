@@ -25,10 +25,21 @@ test('100 exact native bindings share one large checked record, while changed la
  const expectedHeads=selections.map(s=>({shopifyVariantId:s.shopifyVariantId,revision:null}));
  // Change an adapter record only at the second explicit DB equality check.
  // This must not be hidden by reuse of the first record.
- let reads=0;
- const changed={...ws.adapter,getCurrentProduct(id){const r=ws.adapter.getCurrentProduct(id);if(++reads===4)r.metadata.syntheticPayload='changed';return r;}};
+ let reads=0,changedEvidence=false;
+ const changed={...ws.adapter,getCurrentProduct(id){
+  const r=ws.adapter.getCurrentProduct(id);
+  if(++reads===4){
+   // The guarded adapter snapshot is intentionally immutable. Supply a distinct
+   // inconsistent record to exercise the writer's equality check, not a TypeError.
+   assert.equal(Object.isFrozen(r.metadata),true);
+   const different=structuredClone(r);different.metadata.syntheticPayload='changed';changedEvidence=true;
+   assert.equal(r.metadata.syntheticPayload.length,512*1024);return different;
+  }
+  return r;
+ }};
  const bad=ws.orderIntake.idBindings({storeId:'acryl',shopDomain:SHOP,adapter:changed});
  assert.throws(()=>bad.persist({plan:block.result.plan,expectedHeads}),{code:'shop_binding_cfg_changed'});
+ assert.equal(changedEvidence,true,'the deliberately different record reached the native guard');
  assert.equal(ws.db.prepare('SELECT count(*) AS n FROM shop_product_binding_revisions').get().n,0);
  assert.equal(ws.orderIntake.bindings().length,0);
  // Observe the records passed to the real existing order-intake writer.

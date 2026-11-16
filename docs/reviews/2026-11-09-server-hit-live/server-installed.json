@@ -1,0 +1,138 @@
+{
+  "schema": "gravuru-server-hit-followup-release/v1",
+  "at": "2026-11-09T15:10:27.198Z",
+  "runtime": "/var/www/vhosts/gravuru-designwerkstatt.de/private/mika-r15-resume-20261108-v1",
+  "backup": "/var/www/vhosts/gravuru-designwerkstatt.de/private/mika-r15-resume-20261108-v1/pre-switch-backup/server-hit-followup-20261109-v1",
+  "commit": "767701ee59c14ef550b6b1c1468013869b8fe188",
+  "baseline": "4afd1a2b27e43efba2e1bd4f03119ff52b9e0bc6",
+  "wrapperSha": "e679ca2dd1285c7925126bec3ef67bf1b775e080f6306e3210a996874b90d53c",
+  "files": [
+    {
+      "relative": "app/workshop/http.mjs",
+      "before": "711711bbea02f02e2333b462741af17389d0a9bbc32a3ad4a2b145a8212d6787",
+      "after": "2a4069c72084e923e544dd6c41fbb624da76a8905f7be808da95e521c78499de"
+    },
+    {
+      "relative": "app/workshop/public-design-previews.mjs",
+      "before": "58151ce11021a41592492a3ea62f303074826b810f32db7e69e41d0b8df9b6cf",
+      "after": "7fb810e1b255130290c99fc9c20734809522fe0b60b2c8b3860331331dbc1ed4"
+    },
+    {
+      "relative": "app/workshop/shop-entry.mjs",
+      "before": "2d8015b927a1f5e88b641519bd111532c7d2e98a9d7e6fb12b4d27623f4805a3",
+      "after": "8fa170b5bbc4424d7bd551f4bcd4e2c71f53e140ffd201c1545fe19ca7f288a7"
+    },
+    {
+      "relative": "app/configurator/variant-m/refinements.mjs",
+      "before": "4added85a3e4e9065915b24a0cd2e26a478db58ed3ad84934bce1d21df2b9539",
+      "after": "795300b87cb2895e143e9a70535c239867afb03b6e55bea93934523952a3803b"
+    }
+  ],
+  "expected": {
+    "html": "c2cff8848d89b0a2260ed5a7f5d824e08b1837482241445d310606d4ee2545d4",
+    "htmlBytes": 374704,
+    "bundles": [
+      {
+        "name": "editor-2e3da3b988eb0da4.mjs",
+        "sha256": "b227638c16aebd6cd7c685c44d3ace5b75205e3e1774b5ddd39c34c9d32e1ccf",
+        "bytes": 37895,
+        "gzipSha256": "def2dc087e7060dd1fbccd82e7b3fe8a4fc1029526927a55f9b1ca4abb2a6169",
+        "gzipBytes": 12418
+      },
+      {
+        "name": "editor-69eb9880b804359a.mjs",
+        "sha256": "7601bdd524c58ddacbd0edf5e4067139002f220c67763e7eb7dafd8dbb8331a3",
+        "bytes": 3342,
+        "gzipSha256": "dccea5df39be2913d38d9bd0a5115d3d8dea97ace54af1ce9ba157b6c9a4b348",
+        "gzipBytes": 1614
+      },
+      {
+        "name": "editor-bf7d088b9bdf015e.mjs",
+        "sha256": "85980521d93b13147e844a0bf7986f128ff92fdd078fecead57f2494f0db513c",
+        "bytes": 134324,
+        "gzipSha256": "f0363d6be516e4df83012046a1e599a0beca8e555b0361dc746dce64d8bfd4f8",
+        "gzipBytes": 38138
+      },
+      {
+        "name": "editor-c419119a6ef437c6.mjs",
+        "sha256": "d6230c6059e2b8b5e4334ea0d3a401aa41f362b6fa3fe8035b8784b74d7ef78c",
+        "bytes": 7915,
+        "gzipSha256": "4b412bd07d5838b1cd4b9e60f88ae6e5b1c2f09e210f77d7800f778c739e5a25",
+        "gzipBytes": 3037
+      },
+      {
+        "name": "editor-e1e24f0ee6b66daf.mjs",
+        "sha256": "d4fc652911bec1326419762462fb206660c26d5d97e9823e16501c179262a58c",
+        "bytes": 10914,
+        "gzipSha256": "8731a573ad56981184aeb0407a9cfa17920818e0e67c4f31a691ed37004911e8",
+        "gzipBytes": 3880
+      },
+      {
+        "name": "editor-e49b3da45a697a36.mjs",
+        "sha256": "f3dbf79b06a3c5c9ff617fd2aef8e972df44a4d0cfe8bf38d4b04260b07ab133",
+        "bytes": 1452543,
+        "gzipSha256": "d02c17506bb53265de39204b81d3c8a781fb001eb9f6ea0acb8f6d40079a47e9",
+        "gzipBytes": 484634
+      }
+    ]
+  },
+  "publishedArtifacts": [
+    {
+      "name": "editor-2e3da3b988eb0da4.mjs",
+      "sha256": "b227638c16aebd6cd7c685c44d3ace5b75205e3e1774b5ddd39c34c9d32e1ccf"
+    },
+    {
+      "name": "editor-2e3da3b988eb0da4.mjs.gz",
+      "sha256": "8398ed7b9deda02c3403e05a9ddb3c428c95c267196af55a61484d27bb7b253a"
+    },
+    {
+      "name": "editor-69eb9880b804359a.mjs",
+      "sha256": "7601bdd524c58ddacbd0edf5e4067139002f220c67763e7eb7dafd8dbb8331a3"
+    },
+    {
+      "name": "editor-69eb9880b804359a.mjs.gz",
+      "sha256": "af047d9c5f828445c40c99ea2fe39fb1ae8c03f9f97e62221d659e86c38999dd"
+    },
+    {
+      "name": "editor-bf7d088b9bdf015e.mjs",
+      "sha256": "85980521d93b13147e844a0bf7986f128ff92fdd078fecead57f2494f0db513c"
+    },
+    {
+      "name": "editor-bf7d088b9bdf015e.mjs.gz",
+      "sha256": "f376821833dba6af7ea7e6a876fe4b29a8399aeb3389f5751f9b4a0a927f13ca"
+    },
+    {
+      "name": "editor-c419119a6ef437c6.mjs",
+      "sha256": "d6230c6059e2b8b5e4334ea0d3a401aa41f362b6fa3fe8035b8784b74d7ef78c"
+    },
+    {
+      "name": "editor-c419119a6ef437c6.mjs.gz",
+      "sha256": "6f0ec23e2aee13caa411a556e36b177ffc82025be56965e6a2b5fe281f228bf2"
+    },
+    {
+      "name": "editor-e1e24f0ee6b66daf.mjs",
+      "sha256": "d4fc652911bec1326419762462fb206660c26d5d97e9823e16501c179262a58c"
+    },
+    {
+      "name": "editor-e1e24f0ee6b66daf.mjs.gz",
+      "sha256": "25d2c171d2206e912b10b7d522ba30a060271c35004238b99617c53e6b621f6a"
+    },
+    {
+      "name": "editor-e49b3da45a697a36.mjs",
+      "sha256": "f3dbf79b06a3c5c9ff617fd2aef8e972df44a4d0cfe8bf38d4b04260b07ab133"
+    },
+    {
+      "name": "editor-e49b3da45a697a36.mjs.gz",
+      "sha256": "aa64115b25ad6a0a3f5c57212a8af00ca8f28bacacae7ff91850f10b044a64ae"
+    }
+  ],
+  "gzipValidation": "Decoded bytes equal pinned raw JS; an existing valid gzip is preserved",
+  "previousBundlesRetained": 12,
+  "applicationFiles": 1069,
+  "stylesRetained": 36,
+  "stagedBuildOnly": true,
+  "databaseWritten": false,
+  "shopifyWritten": false,
+  "wrapperWritten": false,
+  "restartPending": true
+}

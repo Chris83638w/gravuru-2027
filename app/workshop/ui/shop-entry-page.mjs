@@ -34,7 +34,7 @@ try{
     const surface=model.universal?.materialSurface||null,small=surfaceThumbnail(surface);
     const image=()=>previewJpeg(entry.frame?.contentDocument?.querySelector('gravuru-configurator'),{surface,small});
     const submitCart=embedded?embeddedCart(client.submitThemeCart,shopOrigin,{image}):client.submitThemeCart;
-    window.GravuruShopEntry=Object.freeze({productId:model.configuration.id,productRevision:model.configuration.revision,shopDomain:data.shopDomain,shopifyProductId:data.binding?.shopifyProductId||null,shopifyVariantId:data.binding?.shopifyVariantId||null,expiresAt:data.expiresAt,csrfToken:'shop-entry',request:client.request,submitCart,cartMode:'theme',themeCartPath:data.themeCartPath,backUrl,embedded,designGallery});
+    window.GravuruShopEntry=Object.freeze({productId:model.configuration.id,productRevision:model.configuration.revision,shopDomain:data.shopDomain,shopifyProductId:data.binding?.shopifyProductId||null,shopifyVariantId:data.binding?.shopifyVariantId||null,expiresAt:data.expiresAt,csrfToken:'shop-entry',request:client.request,submitCart,cartMode:'theme',themeCartPath:data.themeCartPath,backUrl,embedded,designGallery,productName:model.name,...(fragment.getAll('ui').length===1&&fragment.get('ui')==='prio-r15'?{presentation:'prio-r15'}:{})});
     title.textContent=model.name;document.title=model.name+' · Jetzt personalisieren';back.href=backUrl;
     if(embedded&&surface)setTimeout(small,4000);
   }
@@ -45,13 +45,15 @@ try{
   createDesignSwitch({initial:{client,data,resources,frame},fragment,container:document.querySelector('#editor'),activate,toDataUrl});header.hidden=false;
   // Fenster-Modus: der Produktseite melden, dass die Seite da ist (sonst zeigt sie nach einer Weile einen Hinweis mit Ausweg).
   if(embedded)frame.addEventListener('load',()=>window.parent.postMessage({type:'gravuru-shop-ready'},shopOrigin),{once:true});
-  editor.append(frame);
   window.addEventListener('message',event=>{
     if(event.origin!==location.origin||event.source!==frame.contentWindow)return;
     if(event.data?.type==='gravuru-fk-close')leave();
-    if(event.data?.type==='gravuru-ux-ready'){progress.value=3;header.hidden=true;loading.hidden=true;status.hidden=true;editor.hidden=false;frame.contentWindow.dispatchEvent(new Event('resize'));if(embedded)window.parent.postMessage({type:'gravuru-shop-editor-ready'},shopOrigin);}
+    if(event.data?.type==='gravuru-ux-ready'){progress.value=3;header.hidden=true;loading.hidden=true;status.hidden=true;editor.inert=false;frame.contentWindow.dispatchEvent(new Event('resize'));if(embedded)window.parent.postMessage({type:'gravuru-shop-editor-ready'},shopOrigin);}
     if(event.data?.type==='gravuru-ux-failed'){progress.hidden=true;status.textContent=event.data.message||'Die Gestaltung konnte nicht geladen werden. Bitte erneut öffnen.';if(embedded)window.parent.postMessage({type:'gravuru-shop-failed',message:status.textContent},shopOrigin);}
   });
+  // Das iframe braucht beim Start seine echte Größe. Die Ladekarte deckt es ab;
+  // bis zur Fertigmeldung bleibt es unbedienbar, aber nicht per display:none verborgen.
+  editor.hidden=false;editor.inert=true;editor.append(frame);
 }catch(error){status.hidden=false;progress.hidden=true;status.textContent=error.message;
   // Fenster-Modus: Fehler auch der Produktseite melden (nur Typ und Text, keine Sitzungsdaten); sie bietet den Ausweg an.
   if(fragment.get('embed')==='1'&&window.parent!==window)window.parent.postMessage({type:'gravuru-shop-failed',message:String(error?.message||'').slice(0,300)},'*');

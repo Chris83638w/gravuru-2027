@@ -1,0 +1,82 @@
+{
+  "schema": "gravuru-main-shop-entry-theme-read/v1",
+  "readAt": "2026-11-11T20:38:23.330Z",
+  "readOnly": true,
+  "theme": {
+    "id": "gid://shopify/OnlineStoreTheme/190984126844",
+    "name": "Gravuru Edelstahl-Konfi Prüfvorschau 08.11.2026",
+    "role": "MAIN"
+  },
+  "shopProductId": "gid://shopify/Product/16190784602492",
+  "product": {
+    "templateSuffix": "konfi",
+    "customizationId": {
+      "value": "katalog-formate-acryl-tuerschilder-familienschilder-eb5fe26624befe4a"
+    },
+    "productCut": {
+      "value": "{\"sizeKey\":\"TS-Acryl-AB-120X80-T30-SW\",\"themeId\":\"familienschilder\",\"defaultDesignId\":\"LEER-AB-120X80-D0\",\"groessenWahl\":\"alle\",\"vorlagen\":\"leer\"}"
+    }
+  },
+  "files": [
+    {
+      "filename": "layout/theme.liquid",
+      "checksumMd5": "7319c1e110921b00f2b1483e643d8ed9",
+      "relevant": [
+        {
+          "line": 95,
+          "source": "    {{ content_for_header }}"
+        },
+        {
+          "line": 148,
+          "source": "      {% sections 'footer-group' %}"
+        }
+      ]
+    },
+    {
+      "filename": "sections/footer-group.json",
+      "checksumMd5": "b77cf71573dbcebf8d66d0c6d609cf08",
+      "relevant": [
+        {
+          "path": "sections.custom_liquid_xCyNJV.settings.custom_liquid",
+          "sectionDisabled": false,
+          "sectionOrdered": true,
+          "source": "{%- if request.page_type == 'product' and product.metafields.custom.customization_id.value != blank -%}<script type=\"application/json\" id=\"gravuru-konfi\">{\"productId\":{{ product.id | json }},\"variantId\":{{ product.selected_or_first_available_variant.id | json }},\"variants\":{{ product.variants | map: 'id' | json }},\"back\":{{ product.url | split: '?' | first | json }}}</script><script type=\"module\" src=\"/apps/konfigurator/shop-embed.mjs\"></script>{%- endif -%}"
+        }
+      ]
+    },
+    {
+      "filename": "templates/product.konfi.json",
+      "checksumMd5": "f361e868957722b161142e284dbb7ee5",
+      "relevant": [
+        {
+          "path": "sections.main.blocks.custom_liquid_mTPWzc.settings.custom_liquid",
+          "sectionType": "main-product",
+          "sectionDisabled": false,
+          "sectionOrdered": true,
+          "blockDisabled": false,
+          "blockOrdered": true,
+          "source": "{%- assign gv_konfi_id = product.metafields.custom.customization_id.value -%}{%- assign gv_variant = product.selected_or_first_available_variant -%}{%- assign gv_back = product.url | split: '?' | first -%}{%- assign gv_start_variant_id = gv_variant.id -%}{%- assign gv_prio_ui = '' -%}{%- if product.id == 16190784438652 and gv_konfi_id == 'katalog-formate-edelstahl-tuerschilder-familienschilder-eb5fe26624befe4a' -%}{%- assign gv_prio_ui = 'prio-r15' -%}{%- assign gv_start_variant_id = product.selected_variant.id | default: 58104606556540 -%}<style id=\"gravuru-steel-config-required-{{ section.id }}\">[id=\"MainProduct-{{ section.id }}\"][data-product-id=\"16190784438652\"] .product__block--buy_buttons button[name=\"add\"],\n[id=\"MainProduct-{{ section.id }}\"][data-product-id=\"16190784438652\"] .product__block--buy_buttons .shopify-payment-button,\nsticky-atc-bar-minimalist[data-product-id=\"16190784438652\"][data-section=\"{{ section.id }}\"] button[name=\"add\"],\nsticky-atc-bar-minimalist[data-product-id=\"16190784438652\"][data-section=\"{{ section.id }}\"] .shopify-payment-button,\nsticky-atc-bar[data-product-id=\"16190784438652\"][data-section=\"{{ section.id }}\"] button[name=\"add\"],\nsticky-atc-bar[data-product-id=\"16190784438652\"][data-section=\"{{ section.id }}\"] .shopify-payment-button{display:none!important}</style><script type=\"application/json\" id=\"gravuru-konfi-presentation\">{\"schema\":\"gravuru-shop-presentation/v1\",\"productId\":\"16190784438652\",\"ui\":\"prio-r15\",\"variantId\":\"{{ gv_start_variant_id }}\",\"themeVariantId\":\"{{ gv_variant.id }}\",\"back\":{{ gv_back | json }},\"variants\":[/* 404 Edelstahl-IDs ausgelassen */]}</script>{%- endif -%}{%- if gv_konfi_id != blank and gv_variant != blank -%}<div class=\"gravuru-personalisieren\" data-gravuru-personalisieren data-start=\"/apps/konfigurator/start\" data-product-id=\"{{ product.id }}\" data-variant-id=\"{{ gv_start_variant_id }}\" data-back=\"{{ gv_back }}\" style=\"margin:12px 0 16px\"><a class=\"btn btn--primary btn--gravuru-primary\" data-gravuru-start rel=\"nofollow\" href=\"/apps/konfigurator/start?product={{ product.id }}&amp;variant={{ gv_start_variant_id }}&amp;back={{ gv_back | url_encode }}{% if gv_prio_ui == 'prio-r15' %}&amp;ui=prio-r15{% endif %}\">Jetzt personalisieren</a><p style=\"margin:8px 0 0;font-size:.9em;opacity:.8;text-align:center\">Design wählen und persönlich gestalten.</p></div>{%- endif -%}{%- if gv_konfi_id != blank -%}<style>.product__personalisation-card{display:none!important}</style>{%- endif -%}{%- if gv_konfi_id != blank -%}<script>{% if gv_prio_ui == 'prio-r15' %}import('/apps/konfigurator/shop-embed.mjs');{% else %}if(/[?&]fenster=1(&|$)/.test(location.search))import('/apps/konfigurator/shop-embed.mjs');{% endif %}</script>{%- endif -%}"
+        }
+      ]
+    }
+  ],
+  "limits": [
+    "Relevant configuration excerpts only; 404 stainless variant IDs intentionally omitted from the presentation JSON source excerpt.",
+    "Direct anonymous HTTPS GET to the exact shop-domain app-proxy JS returned 403 Forbidden; web.open also could not read it. No served JS hash is available.",
+    "No Shopify mutations, no private host requests and no database access."
+  ],
+  "queries": [
+    "query ActiveThemeReadOnly { themes(first: 5, roles: [MAIN]) { nodes { id name role } } }",
+    "query MainEntryAudit { product(id:\"gid://shopify/Product/16190784602492\"){templateSuffix customizationId:metafield(namespace:\"custom\",key:\"customization_id\"){value} productCut:metafield(namespace:\"custom\",key:\"gravuru_product_cut\"){value}} theme(id:\"gid://shopify/OnlineStoreTheme/190984126844\"){files(first:10,filenames:[\"templates/product.konfi.json\",\"layout/theme.liquid\",\"sections/footer-group.json\"]){nodes{filename checksumMd5 body{... on OnlineStoreThemeFileBodyText{content}}} userErrors{filename code}}}}"
+  ],
+  "shopDomain": "gravuru-design.myshopify.com",
+  "publicJavascriptRead": {
+    "url": "https://gravuru-design.myshopify.com/apps/konfigurator/shop-embed.mjs",
+    "authentication": false,
+    "status": 403,
+    "bodySaved": false,
+    "domainVariantsTried": false,
+    "versionedImmediateImport": "./theme-cart-client.mjs",
+    "versionedSeparatePageImport": "shop-entry-page.mjs -> shop-entry-client.mjs"
+  }
+}

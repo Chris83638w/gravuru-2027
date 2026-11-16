@@ -1,0 +1,189 @@
+{
+  "ours": "0e200d8",
+  "theirs": "ac10e6cee00469591514dcb4fa477b0547a54c48",
+  "serverSnapshot": "0d6d23d94d088d17b61397237537fdf42260117c",
+  "scope": "Editor ownership; no staging, commit, push or server action",
+  "owned": [
+    {
+      "path": "app/configurator/variant-m/contract.mjs",
+      "bytes": 39925,
+      "sha256": "2a5bd4e1e755b84dd96cdff9af30a47c8cc372ba47ccc7215b8fdeca486e78cc",
+      "serverSnapshotEqual": false
+    },
+    {
+      "path": "app/configurator/variant-m/contract.test.mjs",
+      "bytes": 29221,
+      "sha256": "693aeec7da00a3d368eb5c5eceddcf06eefa724ad3c2e4675a7e052bb31ff0ce",
+      "serverSnapshotEqual": null
+    },
+    {
+      "path": "app/configurator/variant-m/element-rights.mjs",
+      "bytes": 11957,
+      "sha256": "13bc294c26b0b3e9776269e59dc867e16504dfbc3a08b60a5bd433d9f442be6e",
+      "serverSnapshotEqual": null
+    },
+    {
+      "path": "app/configurator/variant-m/logo-upload.mjs",
+      "bytes": 7722,
+      "sha256": "b7a1fe96ef42e6167b10d3707d5691930f845aea5107c1e3a536d1a755c0de8f",
+      "serverSnapshotEqual": null
+    },
+    {
+      "path": "app/configurator/variant-m/module-profile.mjs",
+      "bytes": 7127,
+      "sha256": "cfc54268d73fa3b8c635b318ec182e58de868b335a37975b2106b2b41bc21e6b",
+      "serverSnapshotEqual": null
+    },
+    {
+      "path": "app/configurator/variant-m/module-profile.test.mjs",
+      "bytes": 11758,
+      "sha256": "c2d3aa0e5e7276faeb2a0d1f5995509ecc9c4a493ef0defa1cf9890d01ce81fa",
+      "serverSnapshotEqual": null
+    },
+    {
+      "path": "app/configurator/variant-m/product-design-gallery.mjs",
+      "bytes": 11549,
+      "sha256": "ab55e803ec5c20b798c5cd12aec6a46d92e1d06204a19b82660f9c2f74dc0aac",
+      "serverSnapshotEqual": null
+    },
+    {
+      "path": "app/configurator/variant-m/first-panel-preload.test.mjs",
+      "bytes": 12810,
+      "sha256": "8f25438a556652ea615dc694184115d7a333890897d89069ca364426bb3e11fe",
+      "serverSnapshotEqual": null
+    },
+    {
+      "path": "app/configurator/variant-m/ui-event-regressions.test.mjs",
+      "bytes": 48606,
+      "sha256": "b0adb755d1b8356f2f3a7879065816e13031cd90ed6aa4e7855a2d84555f293c",
+      "serverSnapshotEqual": null
+    },
+    {
+      "path": "app/configurator/variant-m/ux-model.mjs",
+      "bytes": 6204,
+      "sha256": "76ec98ba290c82d76457be43b7395be97cdf9d15922bc1357b2f7f3eb292007b",
+      "serverSnapshotEqual": null
+    },
+    {
+      "path": "app/configurator/variant-m/ux.mjs",
+      "bytes": 81378,
+      "sha256": "edac5b269432c58b3f18ac166aa9e1e43ccbfaca03f823ed1728607bfa569905",
+      "serverSnapshotEqual": false
+    },
+    {
+      "path": "app/configurator/variant-m/view-zoom.test.mjs",
+      "bytes": 23983,
+      "sha256": "875c19729effb4f273b6ea4f861606817be40a52bef0d767252c21b339150923",
+      "serverSnapshotEqual": null
+    },
+    {
+      "path": "app/configurator/variant-m/acrylic-scene.css",
+      "bytes": 5009,
+      "sha256": "372bf868189a5b07bde21905035a06ea30c6f283aa567ea16b9701f4264b5e6e",
+      "serverSnapshotEqual": true
+    },
+    {
+      "path": "app/configurator/variant-m/acrylic-scene.mjs",
+      "bytes": 17125,
+      "sha256": "9dc52c5e3023da9aa3674a8a09442cff87fbab278efe56f1f89b8f0b086e0586",
+      "serverSnapshotEqual": true
+    },
+    {
+      "path": "app/configurator/variant-m/scalable-acrylic-scene.mjs",
+      "bytes": 3724,
+      "sha256": "e83864e3dc1bb5881ce368c7244820c0b1eeb5c2d0e1661786289f85b02f73c4",
+      "serverSnapshotEqual": true
+    },
+    {
+      "path": "app/configurator/variant-m/scalable-acrylic-scene.test.mjs",
+      "bytes": 6042,
+      "sha256": "dff32af5a3f8ddb912ee042f7bdb9937674a7f338ceee7308b09e53af68950e8",
+      "serverSnapshotEqual": null
+    },
+    {
+      "path": "app/configurator/variant-m/scalable-size-state.mjs",
+      "bytes": 4178,
+      "sha256": "149e44ad34fa4f07d25f4e2b7c078b43297163ffcb1607da875d5e364f707257",
+      "serverSnapshotEqual": true
+    },
+    {
+      "path": "app/configurator/variant-m/scalable-sizes.test.mjs",
+      "bytes": 5483,
+      "sha256": "1652dba13ac4c0d9d9df368af5fea5d6db4d61244ff3cd2080b7b70a1adce8e7",
+      "serverSnapshotEqual": null
+    },
+    {
+      "path": "app/configurator/variant-m/workshop-review.mjs",
+      "bytes": 9400,
+      "sha256": "4248d5521f9d943f95f32647bdedc5a913437dc0260c97f0a9d924dcdeed5a1e",
+      "serverSnapshotEqual": true
+    },
+    {
+      "path": "app/configurator/variant-m/option-media.mjs",
+      "bytes": 8289,
+      "sha256": "bec4b93107842b2fdffe7d2c5241f8adb5586f06df8a8b96e5c52ef6e4a63ab7",
+      "serverSnapshotEqual": false
+    },
+    {
+      "path": "app/configurator/variant-m/family-formats.mjs",
+      "bytes": 15710,
+      "sha256": "183d00d611042e2c2d9f6097787859656388adcc6ef92ae52c3c6498e4deb210",
+      "serverSnapshotEqual": true
+    },
+    {
+      "path": "app/configurator/variant-m/family-formats.test.mjs",
+      "bytes": 19173,
+      "sha256": "4fbaa48ac123d15af336061235d3bf29e04a20c4c345ec043edc65e8f117d1e1",
+      "serverSnapshotEqual": null
+    },
+    {
+      "path": "app/configurator/variant-m/modern-navigation.css",
+      "bytes": 15615,
+      "sha256": "6b8457738d8054d62962f40f564a8487325079454a2fdd208bdceed7ee75690f",
+      "serverSnapshotEqual": false
+    },
+    {
+      "path": "app/configurator/variant-m/view-zoom.css",
+      "bytes": 2307,
+      "sha256": "7336130365733e2ca03e5873a3fbc557cb11d2111ac634a2109685b2926ab723",
+      "serverSnapshotEqual": false
+    }
+  ],
+  "cleanMergeReviewed": [
+    {
+      "path": "app/configurator/variant-m/server.mjs",
+      "sha256": "368746c6b3eb88af086a763d8bc4396c02ed0db23181d4c8356f8f7437dccbdb",
+      "changedByThisAgent": false
+    },
+    {
+      "path": "app/configurator/variant-m/view-zoom.mjs",
+      "sha256": "a0642c7dda1b876d655b64ae225b3f1afc6317410c2007084b31581adfcbf25e",
+      "changedByThisAgent": false
+    }
+  ],
+  "syntax": "all owned mjs passed node --check",
+  "tests": {
+    "uniquePassing": 180,
+    "preload": 10,
+    "modulesAndZoom": 33,
+    "combined": 106,
+    "familyAndReset": 31
+  },
+  "notes": [
+    "option-media keeps ac10/B approved separate KGL/KRA icons; live snapshot aliases both (root notified)",
+    "server snapshot identity claimed only for equal byte rows; combined contract/ux deliberately contain B/C changes",
+    "Historical follow-up: two unsubstantiated CSS snapshots restored to ac10. Name-group fix retained based on exact 586a7541 patch, explicit documented authorization and failing ac10 negative control."
+  ],
+  "historicalReview": {
+    "operatorComment": "https://github.com/Chris83638w/gravuru-2027/issues/168#issuecomment-6805603018",
+    "retainedNameFixCommit": "586a7541dfa5b973e9a790d0954f964f62057d3e",
+    "ac10FileLastCommit": "3d763b2",
+    "restoredToAc10": [
+      "app/configurator/variant-m/modern-navigation.css",
+      "app/configurator/variant-m/view-zoom.css"
+    ],
+    "negativeControl": "agent-editor-name-negative-control.json",
+    "repeatedZoomResetTests": 23,
+    "uniquePassingTestsUnchanged": 180
+  }
+}

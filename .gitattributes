@@ -22,3 +22,5 @@ app/references/** -text
 legacy-patches/** -text
 ops/legacy-host-overlay/** -text
 scripts/gt22x14-serienimport/** -text
+ops/issue230-main-update-review-20261111/** -text
+ops/issue230-main-resource-pins-20261111/** -text

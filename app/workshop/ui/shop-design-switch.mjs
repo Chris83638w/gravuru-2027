@@ -20,21 +20,39 @@ export function switchedModel(data,result){
 // Old frames remain alive (including the customer's selected photo File).
 // A failed load restores the previous frame and its original private gateway.
 // Only an explicit successful switch updates the fragment/session.
-export function createDesignSwitch({initial,fragment,container,activate,toDataUrl,win=window,doc=document,clientFactory=createShopEntryClient,timeoutMs=60000}){
+export function createDesignSwitch({initial,fragment,container,activate,toDataUrl,win=window,doc=document,clientFactory=createShopEntryClient,timeoutMs=60000,readyFallbackMs=20000}){
  let current={...initial,fragment:new URLSearchParams(fragment),pending:null},busy=false;
  const history=[];
+ // Startzeit (Chris 13.11.2026, „Schnellerer Start“): Die Designauswahl rechnet auf dem Server alle Designs.
+ // Läuft das parallel zum Start, warten die Dateien des Editors darauf. Deshalb fordert ein Editor seine
+ // Designliste erst an, wenn er seine Fertigmeldung geschickt hat. Die Ladebild-Vorschau ist davon nicht betroffen.
+ // Sicherheitsnetz: Bleibt die Fertigmeldung aus, lädt die Liste nach readyFallbackMs trotzdem.
+ const known=new Set(),readiness=new WeakMap();
+ const readyState=entry=>{let state=readiness.get(entry);if(!state){let resolve;const promise=new Promise(r=>{resolve=r;});state={ready:false,promise,resolve};readiness.set(entry,state);}return state;};
+ const markReady=entry=>{const state=readyState(entry);if(!state.ready){state.ready=true;state.resolve();}};
+ const whenReady=entry=>{const state=readyState(entry);if(state.ready)return state.promise;
+  if(!state.fallback)state.fallback=win.setTimeout(()=>markReady(entry),readyFallbackMs);return state.promise;};
+ win.addEventListener('message',event=>{
+  const origin=win.location?.origin;if(!origin||event.origin!==origin||event.data?.type!=='gravuru-ux-ready')return;
+  for(const entry of known)if(entry.frame?.contentWindow&&entry.frame.contentWindow===event.source)markReady(entry);
+ });
+ known.add(current);
+ const previewListeners=new WeakMap(),previewActive=entry=>current===entry&&!busy;
+ const notifyPreviews=entry=>{for(const listener of previewListeners.get(entry)||[])try{listener(previewActive(entry));}catch{/* Optional preloading cannot break the design transfer. */}};
+ const checkRead=entry=>{if(current!==entry)throw Error('Diese Gestaltung ist nicht mehr aktiv.');};
  const check=entry=>{if(current!==entry||busy)throw Error('Bitte warten, bis das Design vollständig geladen ist.');};
  const show=entry=>{entry.frame.hidden=false;entry.frame.inert=false;entry.frame.style.display='';entry.frame.style.visibility='';entry.frame.style.position='';entry.frame.style.inset='';};
  const setFragment=entry=>win.history.replaceState(win.history.state,'','#'+entry.fragment);
  function api(entry){return Object.freeze({
-  load:(page,theme,options)=>{check(entry);return entry.client.loadDesignGallery(page,theme,options);},
-  preview:(target,url)=>{check(entry);return entry.client.loadDesignPreview(target,url);},
+  load:(page,theme,options,q)=>{checkRead(entry);return whenReady(entry).then(()=>{checkRead(entry);return entry.client.loadDesignGallery(page,theme,options,q);});},
+  preview:(target,url,signal)=>{checkRead(entry);if(!previewActive(entry))throw Object.assign(Error('Vorschauen warten auf den Designwechsel.'),{name:'AbortError'});return entry.client.loadDesignPreview(target,url,signal);},
+  onPreviewActivity:listener=>{let listeners=previewListeners.get(entry);if(!listeners){listeners=new Set();previewListeners.set(entry,listeners);}listeners.add(listener);listener(previewActive(entry));return ()=>listeners.delete(listener);},
   hasPendingTransfer:()=>!!entry.pending,
   takeTransfer:()=>{const value=entry.pending;entry.pending=null;return value;},
   canGoBack:()=>history.length>0||!!entry.previous,
-  back:()=>{check(entry);const previous=history.pop();if(!previous)return false;entry.frame.remove();current=previous;activate(previous,api(previous));show(previous);setFragment(previous);return true;},
+  back:()=>{check(entry);const previous=history.pop();if(!previous)return false;current=previous;notifyPreviews(entry);entry.frame.remove();activate(previous,api(previous));show(previous);setFragment(previous);notifyPreviews(previous);return true;},
   choose:async(target,transfer)=>{
-   check(entry);busy=true;let candidate=null,removeListener=()=>{};
+   check(entry);busy=true;notifyPreviews(entry);let candidate=null,removeListener=()=>{};
    try{
     const result=await entry.client.switchDesign(target),client=clientFactory({token:result.token});
     const data=switchedModel(await client.loadModel(result.designId),result);
@@ -42,7 +60,7 @@ export function createDesignSwitch({initial,fragment,container,activate,toDataUr
     const resources=await client.loadResources(data.model.universal,toDataUrl);
     const nextFragment=new URLSearchParams(entry.fragment);for(const key of ['config','rev','line'])nextFragment.delete(key);nextFragment.set('s',result.token);nextFragment.set('design',result.designId);
     const frame=doc.createElement('iframe');frame.title=data.model.name+' personalisieren';frame.style.visibility='hidden';frame.style.position='absolute';frame.style.inset='0';
-    candidate={client,data,resources,frame,fragment:nextFragment,pending:structuredClone({...transfer||{texts:[]},...(selection?{selection}:{})}),previous:entry};
+    candidate={client,data,resources,frame,fragment:nextFragment,pending:structuredClone({...transfer||{texts:[]},...(selection?{selection}:{})}),previous:entry};known.add(candidate);
     const ready=new Promise((resolve,reject)=>{
      const timer=win.setTimeout(()=>{removeListener();reject(Error('Das neue Design konnte nicht vollständig geladen werden. Deine vorherige Gestaltung bleibt erhalten.'));},timeoutMs);
      const listener=event=>{if(event.origin===win.location.origin&&event.source===frame.contentWindow&&['gravuru-ux-ready','gravuru-design-transfer-failed'].includes(event.data?.type)){removeListener();if(event.data.type==='gravuru-design-transfer-failed')reject(Error(event.data.message||'Die Gestaltung konnte nicht übernommen werden.'));else resolve();}};
@@ -51,7 +69,7 @@ export function createDesignSwitch({initial,fragment,container,activate,toDataUr
     entry.frame.inert=true;current=candidate;activate(candidate,api(candidate));frame.src=switchedEditorPath(data,nextFragment);container.append(frame);
     await ready;entry.frame.hidden=true;entry.frame.style.display='none';history.push(entry);show(candidate);setFragment(candidate);return true;
    }catch(error){removeListener();candidate?.frame.remove();current=entry;activate(entry,api(entry));show(entry);throw error;}
-   finally{busy=false;}
+   finally{busy=false;notifyPreviews(current);}
   }
  });}
  activate(current,api(current));return {current:()=>current};

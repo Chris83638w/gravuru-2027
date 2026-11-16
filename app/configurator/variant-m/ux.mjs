@@ -1,15 +1,28 @@
+import {decisionHelp} from './decision-help.mjs';
+import {moduleEnabled,photoWithVectorLogoAllowed} from './module-profile.mjs';
+import {moduleTabs} from './module-runtime.mjs';
+import {canDeleteTemplateElement} from './element-rights.mjs';
+import {installGalleryWorkbench} from './gallery-workbench.mjs';
+import {observeVisibleResources} from './visible-resource-loader.mjs';
+import {embedPreviewUploads} from './preview-uploads.mjs';
+import {installDialogDismissal} from './dialog-dismiss.mjs';
 import {installCustomerHelp} from './customer-help.mjs';
 import {executionHeading} from './execution-registry.mjs';
 import {installReviewLayout} from './review-layout.mjs';
 import {installProductDesignGallery} from './product-design-gallery.mjs';
+import {installQuantityGuard} from './quantity-guard.mjs';
+import {missingNameField} from './workflow-model.mjs';
 import {installViewZoom} from './view-zoom.mjs';
 import {installMotifTileFit} from './motif-tile-fit.mjs';
 import {installUxDetails} from './ux-details.mjs';
 import {installDecisionHelp} from './decision-help.mjs';
+import {installModernMotifBrowser} from './modern-motif-browser.mjs';
 import {customerFieldLabel,installTextFields} from './text-fields.mjs';
+import {installDesignReset,resetOriginalDesign} from './design-reset.mjs';
 import {installLayout} from './layout.mjs';
 import {alignmentContent,alignmentLabel} from './ui-icons.mjs';
 import {installLegacyCartRestore} from './legacy-cart-restore.mjs';
+import {cartEditParams} from './cart-edit.mjs';
 import {photoColorMode,photoColorFilter,photoEngravingPreviewFilter} from '../../platform/sources/app/shared/models/photo-color.mjs';
 import {commercePrice} from './commerce-model.mjs';
 import {previewResourceURL} from './preview-resource.mjs';
@@ -22,7 +35,7 @@ import {photoShape,photoClip,photoMaskURL} from '../../platform/sources/app/shar
 import {roundEdit,roundDesign,editorTextSize} from './design-edit.mjs';
 import {textPaths,measureText,setTextSize} from '../../platform/sources/app/shared/models/text-paths.mjs';
 import {familyDesignReviewNote} from './family-formats.mjs';
-import {quote,money,productProcess,quantityTierLabels,visibleGroups} from './contract.mjs';
+import {quote,money,productProcess,quantityTierLabels,visibleGroups,photoPolicyForDesign} from './contract.mjs';
 // Hilfetext „Fotos & Logos“ aus der Fotopreisregel des Produkts (vorher fest 9,99 €).
 const uploadPriceSentence=p=>p?.includedCount===undefined?'Jede sichtbare Datei kostet 9,99 Euro extra.':!p.extraPriceCents?'Fotos und Logos kosten nichts extra.':(p.includedCount===1?'Ein Foto ist im Preis enthalten, jede weitere Datei kostet ':p.includedCount>1?p.includedCount+' Fotos sind im Preis enthalten, jede weitere Datei kostet ':'Jede sichtbare Datei kostet ')+money(p.extraPriceCents)+' extra.';
 import {processFreeColor} from '../../workshop/process-profiles.mjs';
@@ -32,7 +45,7 @@ import {installRefinements} from './refinements.mjs';
 import {installCommerce} from './commerce.mjs';
 import {decorateEmptyPhotoSlots} from './photo-placeholder.mjs';
 import {emptyPhotoSlotAt,replaceablePhotoSlot,tapTracker,normalizePhotoFile,PHOTO_ACCEPT} from './photo-upload.mjs';
-import {VECTOR_LOGO_ACCEPT,vectorLogoEnabled,validateVectorLogoFile,requestVectorLogoPreview,confirmVectorLogo,logoPlacement} from './logo-upload.mjs';
+import {VECTOR_LOGO_ACCEPT,vectorLogoEnabled,vectorLogoPreviewFilter,validateVectorLogoFile,requestVectorLogoPreview,confirmVectorLogo,logoPlacement} from './logo-upload.mjs';
 import {placeNewMotif,MOTIF_MIN_MM} from './motif-placement.mjs';
 import {physicalTextSize,designTextSize,applyPrintColor} from './usability-model.mjs';
 import {installAcrylicScene} from './acrylic-scene.mjs';
@@ -42,7 +55,9 @@ import {rightForProperty,canEditElement,customerAdditionPolicy} from './element-
 import {beginCustomerRights} from './customer-rights.mjs';
 import {textLimits,textLimitIssue,textLength,textLimitCount,sameSampleText,requiredTextMissing,clampText} from '../../workshop/theme-limits.mjs';
 import {parseDirectLink,applyLinkText,withoutDirectLinkParams} from './design-gallery-model.mjs';
-import {createSessionGuard,uploadReferences} from './session-guard.mjs';
+import {createSessionGuard,uploadReferences,freshPreviewRequested} from './session-guard.mjs';
+import {createSessionUploads} from './session-uploads.mjs';
+import {fitUploadedPhoto,newPhotoBounds} from './photo-upload-geometry.mjs';
 import {installAccountDrafts} from './account-drafts.mjs';
 import {installSurfaceTabs} from './surface-tabs.mjs';
 import {installBackgroundLoading} from './background-loading.mjs';
@@ -69,12 +84,12 @@ export async function installUX(el,config,legacy,{attach}={}){
   const isPrint=config?.profile.processing?.profileId==='color-print';
   // K10 / Ü1: Das Verfahrensprofil steuert Werkzeuge (Farbe, Foto), Palette und Mindestschriftgröße.
   // Ohne Produktkonfiguration (Klingelschild-Altpfad) bleibt das bisherige Verhalten.
-  const process=config?productProcess(config):null,colorTool=!!process?.tools.textColor;
+  const process=config?productProcess(config):null,colorTool=!!process?.tools.textColor&&moduleEnabled(config,'colors');
   // Freie Farbe (Farbwähler) zusätzlich zur Palette: processFreeColor – Farbdruck ja (Chris 22./23.10.2026), Gravur nein.
   // Die Palette selbst zeichnen usability.mjs (Swatches) und direct-editing.mjs (Schnellfarbpunkte).
   const freeColor=colorTool&&processFreeColor(process,config?.workshopProfiles?.selections?.colors??null);
   const minTextMm=process?.minTextMm??4;
-  el.uxProcess=process;el.uxMinTextMm=minTextMm;
+  el.uxProcess=process&&!moduleEnabled(config,'colors')?{...process,tools:{...process.tools,textColor:false,motifColor:false}}:process;el.uxMinTextMm=minTextMm;
   const profileChoices=config?.workshopProfiles?.selections;
   const availableFonts=()=>selectionIds(Object.keys(el.fontData).sort((a,b)=>a.localeCompare(b,'de')),profileChoices?.fonts);
   const fontFits=(object,font)=>{try{measureText({...object,font},el.fontData);return true;}catch{return false;}};
@@ -83,12 +98,18 @@ export async function installUX(el,config,legacy,{attach}={}){
   const displayTextSize=o=>physicalTextSize(o,textScale());
   el.uxTextScale=textScale;
   el.uxDisplayTextSize=displayTextSize;
-  const photoEnabled=config?config.logo?.vectorUpload!==true&&config.photo.enabled&&process.tools.photo!==false:true, logoEnabled=config?.logo?.enabled!==false;
+  const photoEnabled=moduleEnabled(config,'photo')&&(config?photoWithVectorLogoAllowed(config)&&config.photo.enabled&&process.tools.photo!==false:true), logoEnabled=moduleEnabled(config,'logo')&&config?.logo?.enabled!==false;
   // Reiter „Foto / Logo“ wird gar nicht erst angelegt, wenn weder Foto noch Logo möglich ist oder wenn das
   // Produkt kein Foto vorsieht und kein Design eine Foto-/Logo-Ebene hat (Chris 22./23.10.2026, ux-model.mjs).
   const vectorLogos=vectorLogoEnabled(config);
   const uploadOffered=(photoEnabled||logoEnabled)&&(photoEnabled||designsHaveUploadLayer(config)||vectorLogos);
+  const allowedTabs=moduleTabs(config,{upload:uploadOffered});
   const files=new Map(), icons={};
+  el.uxEmbedPreviewUploads=svg=>embedPreviewUploads(svg,files);
+  const freshPreview=freshPreviewRequested(config,location.search);
+  const sessionUploads=config&&!config.workbench&&!freshPreview?createSessionUploads({key:profile.binding.productId+':'+profile.revision,files}):null;
+  let uploadStorageWarning=false;
+  async function persistUpload(id){try{await sessionUploads?.persist(id);}catch{if(!uploadStorageWarning){uploadStorageWarning=true;say('Dein Browser konnte das Foto nicht auf diesem Gerät sichern. Bitte den Entwurf im Kundenkonto speichern.');}}}
   for(const key of ['templates','text','motif','image'])icons[key]=$(`[data-tab="${key}"] svg`)?.outerHTML||'';
   for(const key of ['undo','redo','delete','duplicate'])icons[key]=$(`[data-do="${key}"] svg`)?.outerHTML||'';
   const style=document.createElement('style');style.textContent=await fetch('/configurator/variant-m/ux.css').then(resp=>{if(!resp.ok)throw Error('Oberfläche nicht verfügbar.');return resp.text();});r.append(style);
@@ -99,7 +120,7 @@ export async function installUX(el,config,legacy,{attach}={}){
       <div class="ux-preview-caption"><span>${config?esc(profile.name):'AOSU Pro V8P1AX11 · Lieferung ohne Klingel'}</span>${button('enlarge','Vollbild ↗')}</div>
       <div class="ux-preview-tools">${button('undo',icons.undo||'↶','aria-label="Rückgängig"')}${button('redo',icons.redo||'↷','aria-label="Wiederholen"')}<label><input type="checkbox" data-ux-guides> Hilfslinien</label><label><input type="checkbox" data-ux-dimensions> Maße</label>${button('contents','Ebenenverwaltung <span data-ux-count></span>')}</div>
       <p class="ux-preview-help">Text oder Motiv antippen. Zum Verschieben auf dem Handy die Vollbildansicht öffnen.</p></section>
-    <section class="ux-editor" aria-label="Gestaltungswerkzeuge"><nav class="ux-tabs" role="tablist" aria-label="Gestaltung">${[['options','Optionen',''],['design','Designs','templates'],['text','Text','text'],['motif','Motive','motif'],['upload',photoEnabled&&logoEnabled?'Foto / Logo':photoEnabled?'Foto':'Logo','image']].filter(([id])=>id!=='upload'||uploadOffered).map(([id,title,icon])=>`<button type="button" role="tab" id="ux-tab-${id}" aria-controls="ux-panel-${id}" aria-selected="${id==='options'}" tabindex="${id==='options'?0:-1}" data-ux-tab="${id}"><span class="ux-tab-icon" aria-hidden="true">${icons[icon]||(id==='options'?'⚙':'')}</span>${title}</button>`).join('')}</nav>
+    <section class="ux-editor" aria-label="Gestaltungswerkzeuge"><nav class="ux-tabs" role="tablist" aria-label="Gestaltung">${[['options','Optionen',''],['design','Designs','templates'],['text','Text','text'],['motif','Motive','motif'],['upload',photoEnabled&&logoEnabled?'Foto / Logo':photoEnabled?'Foto':'Logo','image']].filter(([id])=>id!=='upload'||uploadOffered).map(([id,title,icon])=>`<button type="button" role="tab" id="ux-tab-${id}" aria-controls="ux-panel-${id}" aria-selected="${id==='options'}" tabindex="${id==='options'?0:-1}" data-ux-tab="${id}" ${allowedTabs.includes(id)?'':'hidden disabled'}><span class="ux-tab-icon" aria-hidden="true">${icons[icon]||(id==='options'?'⚙':'')}</span>${title}</button>`).join('')}</nav>
     ${['options','design','text','motif','upload'].map(id=>`<section class="ux-panel" role="tabpanel" id="ux-panel-${id}" aria-labelledby="ux-tab-${id}" ${id==='options'?'':'hidden'}></section>`).join('')}
     <p class="ux-status" role="status" aria-live="polite" data-ux-status></p></section></div>${button('help','? Hilfe','class="ux-help-button"')}</div>`;
   r.append(shell);
@@ -109,8 +130,8 @@ export async function installUX(el,config,legacy,{attach}={}){
   $('.fk-options h2').textContent=executionHeading(config);
   $('#ux-panel-design').append($('.c-design-section'));
   $('#ux-panel-motif').append($('#panel-motif'));
-  // Ladezeit: Motivbibliothek laden, sobald der Motivbereich sichtbar wird (Reiter oder mobiler Schritt „Foto / Motiv“).
-  {const panel=$('#ux-panel-motif');if(panel&&el.uxEnsureMotifLibrary)new MutationObserver(()=>{if(!panel.hidden)el.uxEnsureMotifLibrary().catch(()=>{});}).observe(panel,{attributes:true,attributeFilter:['hidden']});}
+  // Metadata is already complete; opening a panel must not download 703 contours.
+  {const panel=$('#ux-panel-motif');if(panel&&el.uxEnsureVisibleMotifs)new MutationObserver(()=>{if(!panel.hidden)el.uxEnsureVisibleMotifs();}).observe(panel,{attributes:true,attributeFilter:['hidden']});}
   if($('[data-m-invalid]'))$('.ux-editor').append($('[data-m-invalid]'));
   for(const s of all('#panel-motif summary'))if(s.textContent.includes('Motivideen'))s.textContent='Bestseller Motive';
   $('[data-bestsellers]').open=false;
@@ -124,10 +145,11 @@ export async function installUX(el,config,legacy,{attach}={}){
   const additions=customerAdditionPolicy(config);
   if(!additions.text)$('[data-ux=add-text]').hidden=true;
   if(!additions.motifs){const library=$('#panel-motif');if(library)library.hidden=true;}
-  $('#ux-panel-upload').innerHTML=`<h2>${photoEnabled&&logoEnabled?'Deine Fotos & Logos':photoEnabled?'Dein Foto':'Deine Logos'}</h2><p>${vectorLogos?`Vektorlogo als SVG · je Logo <strong>+${money(config.logo.extraPriceCents)}</strong>`:(config?.reviewOnly&&config.basePriceCents===null)?'Preise noch offen · maximal vier Dateien insgesamt.':!photoEnabled?`Je Logo ${money(config?.photo?.extraPriceCents??999)} · maximal vier Dateien insgesamt.`:config?.photo?.includedCount!==undefined?`${config.photo.includedCount} ${config.photo.includedCount===1?'Foto':'Fotos'} inklusive · weitere Fotos je ${money(config.photo.extraPriceCents)}`:'Je Datei <strong>+9,99 €</strong> · maximal vier insgesamt.'}<br><small>${vectorLogos?'Keine Fotos oder eingebetteten Bilder. SVG-Schriften vorher in Pfade umwandeln.':'JPG, PNG oder WebP'} · bis ${vectorLogos?2:15} MB · höchstens vier</small></p><div class="ux-upload-buttons">${photoEnabled?button('photo-upload','+ Foto hochladen','class="ux-primary"'):''}${logoEnabled?button('logo-upload','+ Logo hochladen'):''}</div><div class="ux-uploads"></div><input type="file" accept="${vectorLogos?VECTOR_LOGO_ACCEPT:PHOTO_ACCEPT}" data-ux-file hidden>`;
+  $('#ux-panel-upload').innerHTML=`<h2>${photoEnabled&&logoEnabled?'Deine Fotos & Logos':photoEnabled?'Dein Foto':'Deine Logos'}</h2><p><span data-upload-price>${vectorLogos?`${photoEnabled?`Foto je ${money(config.photo.extraPriceCents)} · `:''}Vektorlogo als SVG · je Logo <strong>+${money(config.logo.extraPriceCents)}</strong>`:(config?.reviewOnly&&config.basePriceCents===null)?'Preise noch offen · maximal vier Dateien insgesamt.':!photoEnabled?`Je Logo ${money(config?.photo?.extraPriceCents??999)} · maximal vier Dateien insgesamt.`:config?.photo?.includedCount!==undefined?`${config.photo.includedCount} ${config.photo.includedCount===1?'Foto':'Fotos'} inklusive · weitere Fotos je ${money(config.photo.extraPriceCents)}`:'Je Datei <strong>+9,99 €</strong> · maximal vier insgesamt.'}</span><br><small>${vectorLogos?`${photoEnabled?'Fotos: JPG, PNG oder WebP bis 15 MB. ':''}Logos: SVG bis 2 MB, ohne eingebettete Bilder; Schriften in Pfade umwandeln.`:'JPG, PNG oder WebP · bis 15 MB'} · höchstens vier Dateien insgesamt</small></p><div class="ux-upload-buttons">${photoEnabled?button('photo-upload','+ Foto hochladen','class="ux-primary"'):''}${logoEnabled?button('logo-upload','+ Logo hochladen'):''}</div><div class="ux-uploads"></div><input type="file" accept="${vectorLogos&&!photoEnabled?VECTOR_LOGO_ACCEPT:PHOTO_ACCEPT}" data-ux-file hidden>`;
   const dialogs={};
+  installDialogDismissal(r);
   function dialog(key,title,body){const d=document.createElement('dialog');d.className='ux-dialog ux-'+key+'-dialog';d.setAttribute('aria-label',title);d.innerHTML=`<header><h2>${title}</h2>${button('close','✕','aria-label="Fenster schließen"')}</header>${body}`;d.addEventListener('click',e=>{if(e.target.closest('[data-ux=close]'))d.close();});const show=d.showModal.bind(d);d.showModal=()=>{window.GravuruChat?.close?.();for(const other of all('dialog[open]'))if(other!==d&&!other.matches('.c-large-preview'))other.close();show();};r.append(d);dialogs[key]=d;return d;}
-  dialog('font','Schrift auswählen','<p>Dein Text als Schriftprobe. Bei eingeschränkten PDF-Schriften zeigen wir ein Beispiel aus dem Design.</p><div class="ux-font-columns" aria-hidden="true"><span>Dein Text</span><span>Schriftname</span></div><div class="ux-font-grid" tabindex="0" aria-label="Schriftproben"></div>'+button('font-apply','Schrift übernehmen','class="ux-primary"'));
+  dialog('font','Schrift auswählen','<p>Dein Text als Schriftprobe. Bei eingeschränkten PDF-Schriften zeigen wir ein Beispiel aus dem Design.</p><div class="ux-font-columns" aria-hidden="true"><span>Dein Text</span><span>Schriftname</span></div><div class="ux-font-grid" tabindex="0" aria-label="Schriftproben"></div>');
   dialog('contents','Ebenenverwaltung','<p>Alle Bestandteile deines Designs. Sichtbarkeit und Sperre lassen sich einzeln ändern.</p><div data-ux-contents-list></div><div data-ux-object-tools></div>');
   dialog('account','Deine Entwürfe','<div data-ux-account><div class="ux-account-note"><strong>Im Kundenkonto speichern</strong><p>Für dauerhaft gespeicherte Entwürfe meldest du dich in deinem Kundenkonto an.</p></div><p>Dein aktueller Stand bleibt auf diesem Gerät erhalten, auch nach einem Neuladen.</p></div><p class="ux-small">Downloads sind erst nach bezahltem Kauf im zugehörigen Kundenkonto vorgesehen.</p>');
   dialog('price','Dein Preis','<div data-ux-price-lines></div>');
@@ -136,15 +158,15 @@ export async function installUX(el,config,legacy,{attach}={}){
   const tierNote=document.createElement('small');tierNote.className='ux-quantity-tiers';tierNote.dataset.uxTiers='';tierNote.hidden=true;
   {const tierLabels=config?quantityTierLabels(config):[];tierNote.textContent=tierLabels.join(' · ');tierNote.hidden=!tierLabels.length;const qtyLabel=$('label.fk-quantity')||$('[data-fk-quantity]')?.parentElement;if(qtyLabel)qtyLabel.after(tierNote);else $('[data-fk-total]').parentElement.append(tierNote);}
   const detailsButton=document.createElement('button');detailsButton.type='button';detailsButton.className='ux-price-details';detailsButton.dataset.ux='price';detailsButton.textContent='Preisdetails';$('[data-fk-total]').parentElement.append(detailsButton);
-  let activeTab='options',fontChoice='',fontObject='',fieldSignature='',uploadKind=photoEnabled?'photo':'logo',replacing=null,dirty=false;
+  let activeTab='options',fontChoice='',fontObject='',fieldSignature='',uploadKind=photoEnabled?'photo':'logo',replacing=null,dirty=false,fontRows=null;
   const selected=()=>el.state.objects.find(o=>o.id===el.state.selected);
   const design=()=>chosenProfile().designs.find(d=>d.id===el.state.designId);
   const say=message=>{$('[data-ux-status]').textContent=message;};
   const finishCustomerRights=beginCustomerRights({el,r,config,selected,select,say});
   const finishTemplateDeletion=installTemplateDeletion({el,r,config,selected,mutate,say});
   const selectable=()=>selected()&&!selected().uxLocked&&!selected().uxHidden;
-  function showTab(key,focus=false){if(!$('#ux-tab-'+key)||$('#ux-tab-'+key).hidden)key='text';activeTab=key;for(const b of all('[data-ux-tab]')){const is=b.dataset.uxTab===key;b.setAttribute('aria-selected',is);b.tabIndex=is?0:-1;}for(const p of all('.ux-panel'))p.hidden=p.id!=='ux-panel-'+key;if(focus)$('#ux-tab-'+key).focus();}
-  $('.ux-tabs').addEventListener('keydown',e=>{if(!['ArrowLeft','ArrowRight','Home','End'].includes(e.key))return;e.preventDefault();const tabs=all('[data-ux-tab]').filter(b=>!b.hidden&&!b.disabled),i=tabs.indexOf(e.target);const next=e.key==='Home'?0:e.key==='End'?tabs.length-1:(i+(e.key==='ArrowRight'?1:-1)+tabs.length)%tabs.length;showTab(tabs[next].dataset.uxTab,true);});
+  function showTab(key,focus=false){if(!$('#ux-tab-'+key)||$('#ux-tab-'+key).hidden||$('#ux-tab-'+key).disabled)key=config?.moduleProfile===undefined?'text':all('[data-ux-tab]').find(b=>!b.hidden&&!b.disabled)?.dataset.uxTab;activeTab=key;for(const b of all('[data-ux-tab]')){const is=b.dataset.uxTab===key;b.setAttribute('aria-selected',is);b.tabIndex=is?0:-1;}for(const p of all('.ux-panel'))p.hidden=p.id!=='ux-panel-'+key;if(key==='text')el.uxUpdateTextUI?.();if(focus)$('#ux-tab-'+key)?.focus();}
+  $('.ux-tabs').addEventListener('keydown',e=>{if(!['ArrowLeft','ArrowRight','Home','End'].includes(e.key))return;e.preventDefault();const tabs=all('[data-ux-tab]').filter(b=>!b.hidden&&!b.disabled),i=tabs.indexOf(e.target);if(!tabs.length)return;const next=e.key==='Home'?0:e.key==='End'?tabs.length-1:(i+(e.key==='ArrowRight'?1:-1)+tabs.length)%tabs.length;showTab(tabs[next].dataset.uxTab,true);});
   el.uxShowSection=section=>showTab(({font:'text',arrangement:'text',form:'options',start:'design',logo:'upload'})[section]||section);
   el.revealEditor=function(o){if(o?.type==='text')showTab('text');else if(o?.type==='photoSlot'||o?.uxUploadId)showTab('upload');};
   el.guidedGo=function(step){showTab(({1:'design',2:'text',3:'motif',4:'options'})[step]||'text');};
@@ -164,10 +186,12 @@ export async function installUX(el,config,legacy,{attach}={}){
     const file=files.get(o.uxUploadId),label=o.uxUploadKind==='logo'?'Dein Logo':'Dein Foto';
     const ink=isPrint?(o.color||'#202824'):config?getProcessingProfile(profile).ink:'#ffffff',rgb=ink.slice(1).match(/../g).map(h=>parseInt(h,16)/255),filterId='ux-logo-'+o.id;
     const tint=o.uxUploadKind==='logo'&&!o.uxVectorLogo&&(!isPrint||o.uxLogoTint===true);
-    const photoColor=photoColorMode(profile,o),photoFilter=o.uxUploadKind==='photo'&&!file?.edited?photoColorFilter(photoColor):'',light=o.uxUploadKind==='photo'?photoEngravingPreviewFilter(profile,photoColor):'';
-    const filter=photoFilter?`<defs><filter id="${esc(filterId)}" color-interpolation-filters="sRGB">${photoFilter}</filter></defs>`:tint?`<defs><filter id="${esc(filterId)}" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="${rgb.map(n=>'0 0 0 0 '+n).join(' ')} -0.2126 -0.7152 -0.0722 0 1"/><feComposite in2="SourceAlpha" operator="in"/></filter></defs>`:'';
+    const vectorFilter=o.uxVectorLogo?vectorLogoPreviewFilter(profile):'';
+    const gallerySlatePhoto=config?.workbench?.gallery&&profile.material.kind==='slate'&&o.uxUploadKind==='photo';
+    const photoColor=photoColorMode(profile,o),photoFilter=o.uxUploadKind==='photo'&&!file?.edited?photoColorFilter(photoColor):'',light=o.uxUploadKind==='photo'&&!gallerySlatePhoto?photoEngravingPreviewFilter(profile,photoColor):'';
+    const filter=vectorFilter?`<defs><filter id="${esc(filterId)}" color-interpolation-filters="sRGB">${vectorFilter}</filter></defs>`:photoFilter?`<defs><filter id="${esc(filterId)}" color-interpolation-filters="sRGB">${photoFilter}</filter></defs>`:tint?`<defs><filter id="${esc(filterId)}" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="${rgb.map(n=>'0 0 0 0 '+n).join(' ')} -0.2126 -0.7152 -0.0722 0 1"/><feComposite in2="SourceAlpha" operator="in"/></filter></defs>`:'';
     const placement=photoPlacement(o,file);
-    const body=file?.url?`${filter}<image data-ux-photo="${o.uxUploadKind}" href="${esc(file.url)}" x="${o.type==='photoSlot'?placement.x:-o.w/2}" y="${o.type==='photoSlot'?placement.y:-o.h/2}" width="${o.type==='photoSlot'?placement.w:o.w}" height="${o.type==='photoSlot'?placement.h:o.h}" preserveAspectRatio="xMidYMid meet" ${o.type==='photoSlot'?`transform="rotate(${placement.angle} ${placement.cx} ${placement.cy})"`:''} ${tint||photoFilter?`filter="url(#${esc(filterId)})"`:''}/>`:`<rect x="${-o.w/2}" y="${-o.h/2}" width="${o.w}" height="${o.h}" rx="2" fill="#dce8df" stroke="#5a8c70" stroke-width=".5"/><text text-anchor="middle" dominant-baseline="central" font-family="Arial" fill="#294e3c" font-size="${Math.min(5,o.w/8)}">${label}</text>`;
+    const body=file?.url?`${filter}<image data-ux-photo="${o.uxUploadKind}" href="${esc(file.url)}" x="${o.type==='photoSlot'?placement.x:-o.w/2}" y="${o.type==='photoSlot'?placement.y:-o.h/2}" width="${o.type==='photoSlot'?placement.w:o.w}" height="${o.type==='photoSlot'?placement.h:o.h}" preserveAspectRatio="xMidYMid meet" ${o.type==='photoSlot'?`transform="rotate(${placement.angle} ${placement.cx} ${placement.cy})"`:''} ${vectorFilter||tint||photoFilter?`filter="url(#${esc(filterId)})"`:''}/>`:`<rect x="${-o.w/2}" y="${-o.h/2}" width="${o.w}" height="${o.h}" rx="2" fill="#dce8df" stroke="#5a8c70" stroke-width=".5"/><text text-anchor="middle" dominant-baseline="central" font-family="Arial" fill="#294e3c" font-size="${Math.min(5,o.w/8)}">${label}</text>`;
     const maskId='ux-mask-'+o.id,masked=o.type==='photoSlot';
     const mask=masked?photoClip(o,esc(maskId),previewResourceURL(photoMaskURL(o))):null;
     const illuminated=light?`<defs><filter id="${esc(filterId)}-light" color-interpolation-filters="sRGB">${light}</filter></defs><g data-photo-preview-treatment="engraving" filter="url(#${esc(filterId)}-light)">${body}</g>`:body;
@@ -176,7 +200,7 @@ export async function installUX(el,config,legacy,{attach}={}){
   };
   el.objectSVG=function(o,...args){const custom=this.uxObjectSVG(o);if(custom!==undefined)return custom;let markup=originalObjectSVG.call(this,o,...args);if(!config&&o.type==='motif')markup=markup.replace(/(fill|stroke)="(?:#000000|#000|black|currentColor)"/gi,'$1="#ffffff"');return markup;};
   // Promote trusted template lines to editable design objects, without touching the source profile.
-  function addDecoration(){const d=design();if(!d)return;for(const [i,mark] of (d.marks||[]).entries()){
+  function addDecoration(){if(config?.workbench?.gallery)return;const d=design();if(!d)return;for(const [i,mark] of (d.marks||[]).entries()){
     const key='ux-line-'+d.id+'-'+i,id=key;if(el.state.objects.some(o=>o.id===id))continue;
     if(el.state.uxDecorationsFor===d.id)continue;
     const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');svg.setAttribute('style','position:absolute;visibility:hidden;width:1px;height:1px');svg.innerHTML='<path d="'+esc(mark.d)+'"/>';r.append(svg);const b=svg.firstElementChild.getBBox();svg.remove();const pad=(Number(mark.width)||.4)/2;
@@ -184,7 +208,7 @@ export async function installUX(el,config,legacy,{attach}={}){
     el.motifs[key]=`<path d="${esc(mark.d)}" fill="none" stroke="currentColor" stroke-width="${Number(mark.width)||.4}"/>`;el.catalog.motif_bounds[key]=bounds;
     el.state.objects.push({id,type:'motif',motif:key,x:b.x+b.width/2,y:b.y+b.height/2,w:bounds[2],h:bounds[3],rotation:0,color:'#ffffff',uxDecoration:true,customerEditable:true,templateOrigin:true});
   }el.state.uxDecorationsFor=d.id;}
-  const originalBody=el.svgBody;el.svgBody=function(...args){const markup=originalBody.apply(this,args);const doc=svgDoc('<svg xmlns="http://www.w3.org/2000/svg">'+markup+'</svg>');doc.querySelectorAll('[data-design-lines]').forEach(n=>n.remove());const paths=new Set((design()?.marks||[]).map(m=>m.d));for(const p of doc.querySelectorAll('path'))if(paths.has(p.getAttribute('d'))&&!p.closest('[data-object]'))p.remove();return doc.documentElement.innerHTML;};
+  const originalBody=el.svgBody;el.svgBody=function(...args){const markup=originalBody.apply(this,args);if(config?.workbench?.gallery)return markup;const doc=svgDoc('<svg xmlns="http://www.w3.org/2000/svg">'+markup+'</svg>');doc.querySelectorAll('[data-design-lines]').forEach(n=>n.remove());const paths=new Set((design()?.marks||[]).map(m=>m.d));for(const p of doc.querySelectorAll('path'))if(paths.has(p.getAttribute('d'))&&!p.closest('[data-object]'))p.remove();return doc.documentElement.innerHTML;};
   if(!config){
     const originalRender=el.render;
     el.render=function(...args){
@@ -193,7 +217,7 @@ export async function installUX(el,config,legacy,{attach}={}){
       return result;
     };
   }
-  const oldChoose=el.chooseDesign;el.chooseDesign=function(id,...rest){const keep=this.state.objects.map(clone);oldChoose.call(this,id,...rest);this.state.uxDecorationsFor=null;const transfer=mapPersonalObjects(keep,this.state.objects);this.state.objects=transfer.objects;addDecoration();this.state.selected=null;this.normalize();this.sync();dirty=true;if(transfer.unmappedUploads.length)say('Dein Foto konnte im neuen Design nicht eindeutig zugeordnet werden. Bitte den gewünschten Fotobereich wählen und das Foto dort ersetzen.');};
+  const oldChoose=el.chooseDesign;el.chooseDesign=function(id,...rest){if(!moduleEnabled(config,'designs')&&id!==chosenProfile().defaultDesignId)return;const keep=this.state.objects.map(clone);oldChoose.call(this,id,...rest);this.state.uxDecorationsFor=null;const transfer=mapPersonalObjects(keep,this.state.objects);this.state.objects=transfer.objects;addDecoration();this.state.selected=null;this.normalize();this.sync();dirty=true;if(transfer.unmappedUploads.length)say('Dein Foto konnte im neuen Design nicht eindeutig zugeordnet werden. Bitte den gewünschten Fotobereich wählen und das Foto dort ersetzen.');};
   const oldAdd=el.add;el.add=function(object,...args){
     if(object?.type==='motif'&&Array.isArray(this.uxMotifChoiceIds)&&!this.uxMotifChoiceIds.includes(object.motif))return say('Dieses Motiv steht für dieses Produkt nicht zur Auswahl.');
     if(object?.type==='text'){
@@ -215,18 +239,12 @@ export async function installUX(el,config,legacy,{attach}={}){
   }
   function uploadFromEmptySlot(event,slot){
     event.preventDefault();event.stopImmediatePropagation();
-    replacing=slot.id;uploadKind='photo';say('Wähle jetzt ein Foto für diesen Platzhalter aus.');$('[data-ux-file]').click();
+    replacing=slot.id;uploadKind='photo';say('');$('[data-ux-file]').accept=PHOTO_ACCEPT;$('[data-ux-file]').click();
   }
-  // Tipp (ohne Ziehen) auf ein schon hochgeladenes Foto öffnet ebenfalls die Dateiauswahl zum Wechseln
-  // (Chris 20.10.2026: „Wenn ich auf das Foto klicke passiert nichts“); Ziehen verschiebt es weiter.
-  function uploadedSlotFromEvent(event){
-    if(!photoEnabled||event.button!==0)return null;
-    const node=event.target?.closest?.('.scene [data-object]'),slot=node&&el.state.objects.find(o=>o.id===node.dataset.object);
-    return slot?.type==='photoSlot'&&slot.uxUploadId&&!slot.uxHidden&&!slot.uxLocked&&el.uxCanEdit?.(slot,'replace')!==false?{slot,through:false}:null;
-  }
+  // Only an empty placeholder opens upload. An existing photo is selected/moved.
   const photoTap=tapTracker();el.uxCancelPhotoTap=()=>photoTap.cancel();
   r.addEventListener('pointerdown',event=>{
-    const hit=event.button===0?(emptySlotFromEvent(event)||uploadedSlotFromEvent(event)):null;
+    const hit=event.button===0?emptySlotFromEvent(event):null;
     photoTap.down(event,hit);
     // Tipp durch den festen Rahmen: Rahmen weder wählen noch ziehen, der Tipp gilt dem Foto.
     if(hit?.through){event.preventDefault();event.stopImmediatePropagation();}
@@ -235,7 +253,6 @@ export async function installUX(el,config,legacy,{attach}={}){
     const id=photoTap.up(event);if(!id)return;
     const slot=el.state.objects.find(o=>o.id===id);
     if(replaceablePhotoSlot(slot,o=>el.uxCanEdit?.(o,'replace')))uploadFromEmptySlot(event,slot);
-    else if(slot?.type==='photoSlot'&&slot.uxUploadId&&el.uxCanEdit?.(slot,'replace')!==false){replacing=slot.id;uploadKind=slot.uxUploadKind||'photo';say('Wähle ein neues Foto für diesen Bereich aus.');$('[data-ux-file]').click();}
   },true);
   r.addEventListener('pointercancel',()=>photoTap.cancel(),true);
   r.addEventListener('keydown',event=>{
@@ -254,14 +271,16 @@ export async function installUX(el,config,legacy,{attach}={}){
   function textFieldIssue(o,{required=true}={}){
     const t=templateText(o);
     if(required&&t?.required===true&&requiredTextMissing(o.text,t.text))return 'Pflichtfeld: Bitte deinen eigenen Text eingeben.';
+    if(required&&missingNameField(el.state.objects,design())?.id===o.id)return 'Pflichtfeld: Bitte deinen Namen eingeben.';
     const issue=textLimitIssue(o.text,limitsFor(o));if(issue)return issue;
     if(o.uxTextOverflow==='length')return 'Text zu lang: Passt auch in der Mindestgröße nicht auf die Fläche. Bitte kürzen.';
     return '';
   }
   function textIssues(){
     const issues=[];
-    for(const t of (design()?.objects||[]).filter(t=>t.type==='text'&&t.required===true)){const o=el.state.objects.find(o=>o.id===t.id);if(!o||o.uxHidden)issues.push({id:t.id,message:'Pflichtfeld „'+fieldLabel(t,0)+'“ fehlt. Bitte einblenden und ausfüllen.'});}
+    for(const t of (design()?.objects||[]).filter(t=>t.type==='text'&&t.required===true)){const o=el.state.objects.find(o=>o.id===t.id);if((!o||o.uxHidden)&&!canDeleteTemplateElement(config,el.state.designId,t))issues.push({id:t.id,message:'Pflichtfeld „'+fieldLabel(t,0)+'“ fehlt. Bitte einblenden und ausfüllen.'});}
     for(const o of el.state.objects.filter(o=>o.type==='text'&&!o.uxHidden&&o.customerEditable!==false)){const message=textFieldIssue(o);if(message)issues.push({id:o.id,message:fieldLabel(o,textIndex(o))+': '+message});}
+    const name=missingNameField(el.state.objects,design());if(name&&!issues.some(i=>i.id===name.id))issues.push({id:name.id,message:'Pflichtfeld „'+fieldLabel(name,0)+'“: Bitte deinen Namen eingeben.'});
     return issues;
   }
   el.uxTextLimits=limitsFor;el.uxTextIssues=textIssues;
@@ -269,20 +288,21 @@ export async function installUX(el,config,legacy,{attach}={}){
   el.uxAttemptTextValidation=()=>{textValidationAttempted=true;};
   el.uxRevealTextIssue=id=>{showTab('text');select(id);const field=all('[data-ux-text]').find(f=>f.dataset.uxText===id);field?.scrollIntoView?.({block:'center',behavior:'smooth'});field?.focus({preventScroll:true});};
   // Abschluss und Warenkorb bleiben gesperrt, solange ein Textfeld einen Hinweis trägt; das Feld wird gezeigt.
-  r.addEventListener('click',e=>{if(!e.target.closest('.completion-finish,.fk-buy-button'))return;textValidationAttempted=true;el.sync();const issue=textIssues()[0];if(!issue)return;e.preventDefault();e.stopImmediatePropagation();say(issue.message);el.uxRevealTextIssue(issue.id);},true);
+  r.addEventListener('click',e=>{if(!e.target.closest('.completion-finish,.fk-buy-button'))return;textValidationAttempted=true;el.sync();const issue=textIssues()[0],quantity=el.uxQuantityIssue?.();if(!issue&&!quantity)return;e.preventDefault();e.stopImmediatePropagation();if(issue){say(issue.message);el.uxRevealTextIssue(issue.id);}else{say(quantity);el.uxRevealQuantity?.();}},true);
   r.addEventListener('focusout',event=>{const id=event.target.dataset.uxText;if(id){touchedText.add(id);el.sync();}});
   const textControls=$('.ux-controls');
   function updateFields(){const texts=el.state.objects.filter(o=>o.type==='text');const signature=el.state.designId+'|'+texts.map((o,i)=>o.id+':'+fieldLabel(o,i)).join('|');if(signature!==fieldSignature){if(textControls.closest('.ux-fields'))$('#ux-panel-text').append(textControls);fieldSignature=signature;$('.ux-fields').innerHTML=texts.map((o,i)=>{const required=templateText(o)?.required===true,limits=limitsFor(o);return `<div class="ux-text-row" data-ux-row="${esc(o.id)}"><label for="ux-text-${i}">${esc(fieldLabel(o,i))}${required?' <span class="ux-text-required" title="Pflichtfeld">*</span>':''}</label><textarea id="ux-text-${i}" rows="1" autocorrect="off" spellcheck="false" autocapitalize="${/adresse|spruch/i.test(fieldLabel(o,i))?'sentences':'words'}" data-ux-text="${esc(o.id)}" aria-label="${esc(fieldLabel(o,i))}" ${limits.perLine||limits.wholeField?'':'maxlength="'+limits.maxLength+'"'} ${required?'aria-required="true"':''} aria-describedby="ux-text-count-${i} ux-text-issue-${i}"></textarea><small class="ux-text-meta"><span id="ux-text-count-${i}" data-ux-text-count="${esc(o.id)}" aria-live="polite"></span><span id="ux-text-issue-${i}" class="ux-text-issue" data-ux-text-issue="${esc(o.id)}" role="alert"></span></small></div>`;}).join('');}
     for(const field of all('[data-ux-text]')){const o=texts.find(o=>o.id===field.dataset.uxText),limits=limitsFor(o),row=field.closest('.ux-text-row');if(limits.perLine||limits.wholeField)field.removeAttribute('maxlength');else field.maxLength=limits.maxLength;if(r.activeElement!==field)field.value=o.text;field.disabled=!!o.uxLocked||!!o.uxHidden;row.classList.toggle('is-selected',el.state.selected===o.id);
-      const issue=o.uxHidden||o.customerEditable===false||!textValidationAttempted&&!touchedText.has(o.id)?'':textFieldIssue(o,{required:textValidationAttempted}),used=textLimitCount(o.text,limits),count=used>=limits.maxLength*.8?used+'/'+limits.maxLength+(limits.perLine?' je Zeile':''):'';row.classList.toggle('is-invalid',!!issue);field.setAttribute('aria-invalid',String(!!issue));
+      // Tester 13.11.2026: ein geleertes Pflichtfeld zeigt den Hinweis sofort nach dem Verlassen des Feldes (nicht beim Öffnen, Entscheidung 3.1).
+      const issue=o.uxHidden||o.customerEditable===false||!textValidationAttempted&&!touchedText.has(o.id)?'':textFieldIssue(o,{required:textValidationAttempted||!String(o.text??'').trim()}),used=textLimitCount(o.text,limits),count=used>=limits.maxLength*.8?used+'/'+limits.maxLength+(limits.perLine?' je Zeile':''):'';row.classList.toggle('is-invalid',!!issue);field.setAttribute('aria-invalid',String(!!issue));
       const countNode=row.querySelector('[data-ux-text-count]'),issueNode=row.querySelector('[data-ux-text-issue]');if(countNode&&countNode.textContent!==count)countNode.textContent=count;if(issueNode&&issueNode.textContent!==issue)issueNode.textContent=issue;}
     const o=selected(),isText=o?.type==='text';$('.ux-controls').hidden=!isText;
     if(isText){$('[data-ux-font-name]').textContent=fontDisplayName(o.font);if(r.activeElement!==$('#ux-size'))$('#ux-size').value=(config?.workbench?.embedded?roundEdit(o.size):displayTextSize(o));$('[data-ux=bold]').setAttribute('aria-pressed',!!o.bold);$('[data-ux=italic]')?.setAttribute('aria-pressed',!!o.italic);if($('[data-ux-color]'))$('[data-ux-color]').value=o.color||'#202824';for(const f of all('[data-ux-prop]'))if(r.activeElement!==f)f.value=(config?.workbench?.embedded?roundEdit(o[f.dataset.uxProp]||0):Math.round((o[f.dataset.uxProp]||0)*10)/10);}
     el.uxUpdateTextUI?.();
   }
-  function renderFontPage(){const o=el.state.objects.find(o=>o.id===fontObject);if(!o)return;const fonts=availableFonts();
-    $('[data-ux=font-apply]').disabled=!fonts.includes(fontChoice)||!fontFits({...o,bold:false},fontChoice);
+  function renderFontPage(){const o=el.state.objects.find(o=>o.id===fontObject);if(!o)return;const fonts=selectionIds((el.uxKnownFonts?.()||Object.keys(el.fontData)).sort((a,b)=>a.localeCompare(b,'de')),profileChoices?.fonts),grid=$('.ux-font-grid'),scrollTop=grid.scrollTop,focusedFont=r.activeElement?.dataset?.uxFont;
     $('.ux-font-grid').innerHTML=fonts.length?fonts.map(name=>{
+      if(!el.fontData[name])return `<button type="button" data-ux-font="${esc(name)}" disabled aria-busy="true" aria-label="Schrift ${esc(fontDisplayName(name))} wird geladen"><svg viewBox="0 0 100 20" aria-hidden="true"></svg><span>${esc(fontDisplayName(name))}<small>Schriftprobe wird geladen …</small></span></button>`;
       const text={...o,text:o.text.trim()?o.text:'Dein Text',font:name,size:12,bold:false};let unavailable=false;
       try{measureText(text,el.fontData);}catch{
         unavailable=true;
@@ -294,9 +314,13 @@ export async function installUX(el,config,legacy,{attach}={}){
     }).join(''):'<p>Für dieses Produkt sind keine weiteren Schriften freigegeben. Die Schrift aus deinem Design bleibt erhalten.</p>';
     // Letter advances omit calligraphic overhangs. Fit the actual ink once the
     // dialog is visible, so Safari and Chromium measure a rendered SVG.
-    for(const svg of all('.ux-font-grid svg')){const b=svg.querySelector('[data-font-ink]').getBBox();if(b.width>0&&b.height>0){const pad=Math.max(1,b.height*.12);svg.setAttribute('viewBox',`${b.x-pad} ${b.y-pad} ${b.width+2*pad} ${b.height+2*pad}`);}}
+    for(const svg of all('.ux-font-grid svg')){const b=svg.querySelector('[data-font-ink]')?.getBBox();if(b?.width>0&&b.height>0){const pad=Math.max(1,b.height*.12);svg.setAttribute('viewBox',`${b.x-pad} ${b.y-pad} ${b.width+2*pad} ${b.height+2*pad}`);}}
+    grid.scrollTop=scrollTop;
+    if(focusedFont)all('[data-ux-font]').find(row=>row.dataset.uxFont===focusedFont)?.focus({preventScroll:true});
+    fontRows??=observeVisibleResources({root:grid,selector:'[data-ux-font]',key:row=>row.dataset.uxFont,ready:name=>!!el.fontData[name],load:name=>el.uxEnsureFonts([name]),changed:()=>{if(dialogs.font.open)renderFontPage();}});
+    fontRows.refresh();
   }
-  function updateGallery(){const tab=$('#ux-tab-design'),hasChoice=el.uxHasProductDesignGallery===true||profile.designs.length>0;tab.hidden=!hasChoice;tab.disabled=!hasChoice;tab.tabIndex=hasChoice&&activeTab==='design'?0:-1;$('.ux-tabs').style.setProperty('--ux-tab-count',all('[data-ux-tab]').filter(b=>!b.hidden).length);if(!hasChoice&&activeTab==='design')showTab('text');const cards=all('[data-c-design]');const filters=Object.fromEntries(all('[data-m-filter]').map(f=>[f.dataset.mFilter,f.value]));let shown=0;for(const card of cards){const d=designFor(card.dataset.cDesign);card.hidden=!d||!!((filters.category&&d?.category!==filters.category)||(filters.collection&&!d?.collections?.includes(filters.collection)));if(!card.hidden)shown++;const note=card.querySelector('small');if(note){const review=familyDesignReviewNote(config,el.state.mOptions,card.dataset.cDesign);note.textContent=review;note.hidden=!review;note.toggleAttribute('data-family-review',!!review);}}const count=$('[data-c-count]');if(count)count.textContent=shown+' Designs';}
+  function updateGallery(){const tab=$('#ux-tab-design'),hasChoice=moduleEnabled(config,'designs')&&(el.uxHasProductDesignGallery===true||profile.designs.length>0);tab.hidden=!hasChoice;tab.disabled=!hasChoice;tab.tabIndex=hasChoice&&activeTab==='design'?0:-1;$('.ux-tabs').style.setProperty('--ux-tab-count',all('[data-ux-tab]').filter(b=>!b.hidden).length);if(!hasChoice&&activeTab==='design')showTab('text');const cards=all('[data-c-design]');const filters=Object.fromEntries(all('[data-m-filter]').map(f=>[f.dataset.mFilter,f.value]));let shown=0;for(const card of cards){const d=designFor(card.dataset.cDesign);card.hidden=!d||!!((filters.category&&d?.category!==filters.category)||(filters.collection&&!d?.collections?.includes(filters.collection)));if(!card.hidden)shown++;const note=card.querySelector('small');if(note){const review=familyDesignReviewNote(config,el.state.mOptions,card.dataset.cDesign);note.textContent=review;note.hidden=!review;note.toggleAttribute('data-family-review',!!review);}}const count=$('[data-c-count]');if(count)count.textContent=shown+' Designs';}
   const designFor=id=>chosenProfile().designs.find(d=>d.id===id);
   function label(o){return o.uxDecoration?'Gestaltungslinie':o.uxUploadId?(o.uxUploadKind==='logo'?'Dein Logo':'Dein Foto'):o.type==='text'?(o.text||'Leerer Text'):o.type==='motif'?(el.catalog.motif_labels?.[o.motif]||'Motiv'):names[o.type]||'Element';}
   function renderContents(){if(!dialogs.contents.open||r.activeElement?.matches('[data-ux-content-prop]'))return;$('[data-ux-contents-list]').innerHTML=el.state.objects.map(o=>`<div class="ux-content-row">${button('select-content',`${esc(label(o))}<small>${o.uxHidden?'Ausgeblendet':'Auf deinem Produkt'}${o.uxLocked?' · gesperrt':''}</small>`,`data-id="${esc(o.id)}" aria-pressed="${o.id===el.state.selected}"`)}<label title="Anzeigen oder ausblenden"><input type="checkbox" data-ux-visible="${esc(o.id)}" aria-label="${esc(label(o))} anzeigen" ${o.uxHidden?'':'checked'}></label>${button('lock',o.uxLocked?'🔒':'🔓',`data-id="${esc(o.id)}" aria-label="${esc(label(o))} ${o.uxLocked?'entsperren':'sperren'}" aria-pressed="${!!o.uxLocked}"`)}${button('remove-content',icons.delete||'×',`data-id="${esc(o.id)}" aria-label="${esc(label(o))} löschen" ${o.uxLocked?'disabled':''}`)}</div>`).join('');
@@ -309,8 +333,8 @@ export async function installUX(el,config,legacy,{attach}={}){
   }
   // Sichtbarkeit des Reiters: uploadTabVisible (ux-model.mjs) – ohne Foto im Produkt/Verfahren und ohne
   // Foto-/Logo-Ebene in einem Design bleibt er weg, auch wenn Logos erlaubt wären; der Hilfe-Knopf folgt.
-  function updateUploads(){const available=photoAvailableForDesign(config,el.state.designId),tab=$('#ux-tab-upload');if(tab){tab.hidden=!uploadTabVisible(config,el.state.designId,{photoEnabled,logoEnabled});tab.disabled=tab.hidden;if(tab.hidden&&activeTab==='upload')showTab('options');const guideUpload=$('[data-ux=guide-upload]');if(guideUpload)guideUpload.hidden=tab.hidden;$('.ux-tabs').style.setProperty('--ux-tab-count',all('[data-ux-tab]').filter(b=>!b.hidden).length);}for(const b of all('[data-ux=photo-upload]'))b.hidden=!available;$('.ux-uploads').innerHTML=el.state.objects.filter(o=>o.uxUploadId).map((o,i)=>`<div class="ux-upload-row">${files.get(o.uxUploadId)?.url?`<button type="button" class="ux-upload-select" data-ux="select-upload" data-id="${esc(o.id)}" aria-label="${esc(label(o))} auswählen"><img class="ux-upload-thumb" src="${esc(files.get(o.uxUploadId).url)}" alt="${esc(label(o))} – Vorschau"></button>`:''}<strong>${esc(label(o))}</strong><span>${esc(files.get(o.uxUploadId)?.file.name||'Datei erneut auswählen')} · ${o.uxHidden?'ausgeblendet':o.uxVectorLogo?money(config.logo.extraPriceCents):(config?.reviewOnly&&config.basePriceCents===null)?'Preis offen':config?.acrylic?'inklusive':config?.photo?.includedCount!==undefined?(i<config.photo.includedCount?'inklusive':money(config.photo.extraPriceCents)):'9,99 €'}</span><div class="ux-upload-actions">${button('replace-upload','Ersetzen',`data-id="${esc(o.id)}"`)}${button('remove-content','Entfernen',`data-id="${esc(o.id)}" class="ux-remove-upload"`)}</div></div>`).join('');for(const b of all('[data-ux=photo-upload],[data-ux=logo-upload]'))b.disabled=new Set(el.state.objects.filter(o=>o.uxUploadId).map(o=>o.uxUploadId)).size>=4;}
-  function updatePrice(){if(config?.reviewOnly&&config.basePriceCents===null){$('[data-fk-total]').textContent='Preis noch offen';$('[data-ux-price-lines]').innerHTML='<p>Grundpreis und Fotozuschläge sind für dieses Produkt noch offen. Die Optionen zeigen die übernommenen Referenzaufschläge.</p>';return;}try{const quantity=Number($('[data-fk-quantity]').value||1),extra=uploadQuote(el.state.objects,quantity,false,config?.photo?.includedCount!==undefined?config.photo:undefined,config?.logo);let total,base,options=0,motifs=0;
+  function updateUploads(){const policy=(config?.photoDesignPricing?photoPolicyForDesign(config,el.state.designId,el.state.mOptions):config?.photo);if(config.photoDesignPricing)$('[data-upload-price]').textContent=uploadPriceSentence(policy);const available=photoAvailableForDesign(config,el.state.designId),tab=$('#ux-tab-upload');if(tab){tab.hidden=!uploadTabVisible(config,el.state.designId,{photoEnabled,logoEnabled});tab.disabled=tab.hidden;if(tab.hidden&&activeTab==='upload')showTab('options');const guideUpload=$('[data-ux=guide-upload]');if(guideUpload)guideUpload.hidden=tab.hidden;$('.ux-tabs').style.setProperty('--ux-tab-count',all('[data-ux-tab]').filter(b=>!b.hidden).length);}for(const b of all('[data-ux=photo-upload]'))b.hidden=!available;$('.ux-uploads').innerHTML=el.state.objects.filter(o=>o.uxUploadId).map((o,i)=>`<div class="ux-upload-row">${files.get(o.uxUploadId)?.url?`<button type="button" class="ux-upload-select" data-ux="select-upload" data-id="${esc(o.id)}" aria-label="${esc(label(o))} auswählen"><img class="ux-upload-thumb" src="${esc(files.get(o.uxUploadId).url)}" alt="${esc(label(o))} – Vorschau"></button>`:''}<strong>${esc(label(o))}</strong><span>${esc(files.get(o.uxUploadId)?.file.name||'Datei erneut auswählen')} · ${o.uxHidden?'ausgeblendet':o.uxVectorLogo?money(config.logo.extraPriceCents):(config?.reviewOnly&&config.basePriceCents===null)?'Preis offen':config?.acrylic?'inklusive':config?.photo?.includedCount!==undefined?(i<(policy?.includedCount??0)?'inklusive':money(config.photo.extraPriceCents)):'9,99 €'}</span><div class="ux-upload-actions">${button('replace-upload','Ersetzen',`data-id="${esc(o.id)}"`)}${button('remove-content','Entfernen',`data-id="${esc(o.id)}" class="ux-remove-upload"`)}</div></div>`).join('');for(const b of all('[data-ux=photo-upload],[data-ux=logo-upload]'))b.disabled=new Set(el.state.objects.filter(o=>o.uxUploadId).map(o=>o.uxUploadId)).size>=4;}
+  function updatePrice(){if(config?.reviewOnly&&config.basePriceCents===null){$('[data-fk-total]').textContent='Preis noch offen';$('[data-ux-price-lines]').innerHTML='<p>Grundpreis und Fotozuschläge sind für dieses Produkt noch offen. Die Optionen zeigen die übernommenen Referenzaufschläge.</p>';return;}try{const quantity=Number($('[data-fk-quantity]').value||1),extra=uploadQuote(el.state.objects,quantity,false,(config?.photoDesignPricing?photoPolicyForDesign(config,el.state.designId,el.state.mOptions):config?.photo),config?.logo);let total,base,options=0,motifs=0;
     let tierLine='';
     if(config){const q=commercePrice(config,el.state,quantity);total=q.totalCents;base=q.selectedBasePriceCents??config.basePriceCents;motifs=(q.chargedMotifs??q.additionalMotifs)*config.extraMotifCents;options=(q.listUnitCents??q.unitCents)-extra.unitCents-base-motifs;
       if(q.selectedTierLabels){tierNote.textContent=q.selectedTierLabels.join(' · ');tierNote.hidden=!q.selectedTierLabels.length;}
@@ -321,8 +345,9 @@ export async function installUX(el,config,legacy,{attach}={}){
   }catch(error){say(error.message);}}
   function update(){updateFields();updateGallery();updateUploads();updatePrice();$('[data-ux-guides]').checked=$('[data-setting=guides]').checked;$('[data-ux-count]').textContent=`(${el.state.objects.length})`;$('[data-ux=undo]').disabled=!el.history.length;$('[data-ux=redo]').disabled=!el.future.length;$('.fk-buy-button').disabled=true;$('.fk-order-status').textContent=config?.productPreview?'Produktvorschau · Bestellung noch nicht verbunden':'Lokaler Prüfstand · Bestellung noch nicht verbunden';renderContents();if(dialogs.contents.open&&freeColor&&selected()&&!$('[data-ux-content-color]'))$('[data-ux-object-tools]').insertAdjacentHTML('beforeend','<label class="ux-print-color">Druckfarbe <input type="color" data-ux-content-color aria-label="Druckfarbe des ausgewählten Elements" value="'+esc(selected().color||'#202824')+'"></label>');}
   let previousCorrection='',correctionReady=false;
+  let galleryWorkbench=null;
   function notifyCorrection(){if(!config?.workbench?.embedded||!correctionReady)return;const design=roundDesign({id:el.state.designId,objects:el.state.objects}),value=JSON.stringify(design);if(value!==previousCorrection){previousCorrection=value;window.parent.postMessage({type:'gravuru-workbench-change',...design},location.origin);}}
-  const oldSync=el.sync;el.sync=function(...args){const result=oldSync.apply(this,args);update();notifyCorrection();sessionGuard?.touch();return result;};
+  const oldSync=el.sync;el.sync=function(...args){const result=oldSync.apply(this,args);update();notifyCorrection();sessionGuard?.touch();for(const o of el.state.objects)if(o.uxUploadId)persistUpload(o.uxUploadId);return result;};
   // K7: Entwurf im Vertragsformat in den Editor übernehmen. Ein anderes Design wird zuerst gewählt, damit seine Gestaltungslinien registriert sind.
   function restoreDraft(draft){
     const target=chosenProfile().designs.find(d=>d.id===draft?.design?.id);if(!target)throw Error('Der Entwurf gehört zu keinem Design dieses Produkts.');
@@ -330,25 +355,26 @@ export async function installUX(el,config,legacy,{attach}={}){
     try{el.restoreDraft(draft,{draft:true});}catch(error){if(target.id!==before)el.chooseDesign(before);throw error;}
   }
   let sessionGuard=null,initialDraft=null,accountDrafts=null;
-  if(config&&profile.binding?.productId&&typeof profile.revision==='string'&&typeof el.draftPayload==='function'){
+  if(config&&!freshPreview&&profile.binding?.productId&&typeof profile.revision==='string'&&typeof el.draftPayload==='function'){
     let storage=null;try{storage=window.localStorage;}catch{}
     if(storage)sessionGuard=createSessionGuard({storage,productId:profile.binding.productId,profileRevision:profile.revision,
-      payload:()=>({draft:el.draftPayload({draft:true}),uploads:uploadReferences(el.state.objects,files)}),restore:restoreDraft});
+      payload:()=>({draft:el.draftPayload({draft:true}),quantity:Number($('[data-fk-quantity]')?.value??1),uploads:uploadReferences(el.state.objects,files)}),restore:restoreDraft});
   }
-  // Ladezeit: die Schriftproben brauchen die Konturen aller angebotenen Schriften (lazy-resources.mjs).
+  // Show usable, already loaded fonts immediately. Other visible rows load
+  // independently; a failed/slow font never holds the entire menu hostage.
   async function openFonts(){const o=selected();if(o?.type!=='text')return say('Bitte zuerst eine Textzeile auswählen.');fontObject=o.id;fontChoice=o.font;dialogs.font.showModal();
-    if(el.uxEnsureFonts){$('.ux-font-grid').innerHTML='<p role="status">Schriften werden geladen …</p>';$('[data-ux=font-apply]').disabled=true;try{await el.uxEnsureFonts(selectionIds(el.uxKnownFonts(),profileChoices?.fonts));}catch{$('.ux-font-grid').innerHTML='<p role="status">Die Schriften konnten nicht geladen werden. Bitte erneut öffnen.</p>';return;}if(!dialogs.font.open||fontObject!==o.id)return;}
-    renderFontPage();}
+    renderFontPage();fontRows?.refresh({retry:true});}
   const questionHelp=installCustomerHelp({dialog:dialogs.help,context:()=>({photo:photoEnabled&&photoAvailableForDesign(config,el.state.designId),logo:logoEnabled&&uploadTabVisible(config,el.state.designId,{photoEnabled,logoEnabled}),vectorLogo:vectorLogos,logoCents:config?.logo?.extraPriceCents,minTextMm}),navigate:tab=>{showTab(tab);el.uxMobileSteps?.show(tab,{scroll:false});}});
-  function guide(key){const content={text:['Text ändern','Tippe auf eine Textzeile und ersetze den Beispieltext. Alle Änderungen siehst du sofort auf deinem Produkt.'],font:['Schrift & Größe','Wähle eine Textzeile und danach „Schrift ändern“. Du siehst deinen eigenen Text in jeder Schrift. Mit Plus und Minus änderst du die Größe. Der Schriftgrößenwert beträgt mindestens '+String(minTextMm).replace('.',',')+' mm.'],guides:['Mittig ausrichten','Aktiviere „Hilfslinien“ unten links im Produktbild. Wähle deinen Text und tippe auf „Mitte“. Beim Ziehen rastet er auch an der Mitte und den Kanten anderer Texte ein. Ankerpunkte zeigen dir die Textmitten, damit du Texte untereinander setzen kannst. Gestrichelte Linie = Gestaltungsrand: Elemente bleiben innerhalb dieser Linie. Bohrungen und Beschläge zeigen das fertige Schild; sie sperren keine Gestaltung.'],motif:['Deine Motive',config?.acrylic?'Vorlagenmotive bleiben fest platziert; ihre Farbe kannst du ändern. Eigene zusätzliche Motive kannst du in der Motivbibliothek hinzufügen und bearbeiten.':'Wähle Motive aus Bestsellern oder Kategorien. In „Ebenenverwaltung“ kannst du ein freigegebenes Motiv bearbeiten.'],upload:['Fotos & Logos',vectorLogos?'Lade dein Logo als SVG hoch. Wir zeigen die Originalfarben neben der schwarzen Gravur auf deinem Schild. Prüfe die Aussparungen und bestätige erst dann. Je Logo '+money(config.logo.extraPriceCents)+'. Fotos sind auf Edelstahl nicht möglich.':config?.acrylic?'Ein Foto ist enthalten. Tippe auf das Beispielfoto, um dein eigenes Foto an derselben Position einzusetzen. Ein weiterer Upload ersetzt dieses Foto. Der Hintergrund bleibt erhalten.':(config?.reviewOnly&&config.basePriceCents===null)?'Du kannst bis zu vier Fotos und Logos testen. Die Preise für dieses Produkt sind noch offen. Dein Bild erscheint direkt in der Vorschau. Zuschneiden öffnet die Bildbearbeitung.':'Du kannst bis zu vier Fotos und Logos zusammen hinzufügen. '+uploadPriceSentence(config?.photo)+' Dein Bild erscheint direkt in der Vorschau. Über „Bild bearbeiten“ kannst du dein Foto zuschneiden, drehen oder spiegeln.'],save:['Entwurf speichern',config?.workbench?'Mit „Entwurf speichern“ sicherst du Text, Schrift und Positionen dauerhaft in der Produktanlage. Testfotos werden nicht als Vorlage gespeichert.':'Dein aktueller Stand bleibt auf diesem Gerät erhalten – auch wenn du die Seite neu lädst. Mit „Entwurf speichern“ legst du ihn mit Fotos für 90 Tage in deinem Kundenkonto ab und kannst ihn auf jedem Gerät wieder öffnen. Dafür meldest du dich kurz an oder registrierst dich. Nach dem bezahlten Kauf ist ein PNG-Download vorgesehen.']}[key];if(!content)return;
+  function guide(key){const content={text:['Text ändern','Tippe auf eine Textzeile und ersetze den Beispieltext. Alle Änderungen siehst du sofort auf deinem Produkt.'],font:['Schrift & Größe','Wähle eine Textzeile und danach „Schrift ändern“. Du siehst deinen eigenen Text in jeder Schrift. Mit Plus und Minus änderst du die Größe. Der Schriftgrößenwert beträgt mindestens '+String(minTextMm).replace('.',',')+' mm.'],guides:['Mittig ausrichten','Aktiviere „Hilfslinien“ unten links im Produktbild. Wähle deinen Text und tippe auf „Mitte“. Beim Ziehen rastet er auch an der Mitte und den Kanten anderer Texte ein. Ankerpunkte zeigen dir die Textmitten, damit du Texte untereinander setzen kannst. Gestrichelte Linie = Gestaltungsrand: Elemente bleiben innerhalb dieser Linie. Bohrungen und Beschläge zeigen das fertige Schild; sie sperren keine Gestaltung.'],motif:['Deine Motive',config?.acrylic?'Vorlagenmotive bleiben fest platziert; ihre Farbe kannst du ändern. Eigene zusätzliche Motive kannst du in der Motivbibliothek hinzufügen und bearbeiten.':'Wähle Motive aus Bestsellern oder Kategorien. In „Ebenenverwaltung“ kannst du ein freigegebenes Motiv bearbeiten.'],upload:['Fotos & Logos',vectorLogos?decisionHelp('photo',config).text:config?.acrylic?'Ein Foto ist enthalten. Tippe auf das Beispielfoto, um dein eigenes Foto an derselben Position einzusetzen. Ein weiterer Upload ersetzt dieses Foto. Der Hintergrund bleibt erhalten.':(config?.reviewOnly&&config.basePriceCents===null)?'Du kannst bis zu vier Fotos und Logos testen. Die Preise für dieses Produkt sind noch offen. Dein Bild erscheint direkt in der Vorschau. Zuschneiden öffnet die Bildbearbeitung.':'Du kannst bis zu vier Fotos und Logos zusammen hinzufügen. '+uploadPriceSentence((config?.photoDesignPricing?photoPolicyForDesign(config,el.state.designId,el.state.mOptions):config?.photo))+' Dein Bild erscheint direkt in der Vorschau. Über „Bild bearbeiten“ kannst du dein Foto zuschneiden, drehen oder spiegeln.'],save:['Entwurf speichern',config?.workbench?'Mit „Entwurf speichern“ sicherst du Text, Schrift und Positionen dauerhaft in der Produktanlage. Testfotos werden nicht als Vorlage gespeichert.':'Dein aktueller Stand bleibt auf diesem Gerät erhalten – auch wenn du die Seite neu lädst. Mit „Entwurf speichern“ legst du ihn mit Fotos für 90 Tage in deinem Kundenkonto ab und kannst ihn auf jedem Gerät wieder öffnen. Dafür meldest du dich kurz an oder registrierst dich. Nach dem bezahlten Kauf ist ein PNG-Download vorgesehen.']}[key];if(!content)return;
     if(['text','font','guides'].includes(key))showTab('text');else if(key==='motif')showTab('motif');else if(key==='upload')showTab('upload');
     $('[data-ux-help-content]').innerHTML=`<h3>${content[0]}</h3><p data-ux-guide-copy>${content[1]}</p>${button('speak','Erklärung anhören')}${button('stop-speaking','Stopp')}<p class="ux-small">Vorlesen mit der verfügbaren Gerätestimme.</p>`;
   }
   r.addEventListener('click',async e=>{
     const tab=e.target.closest('[data-ux-tab]');if(tab){showTab(tab.dataset.uxTab);return;}
-    const font=e.target.closest('[data-ux-font]');if(font){if(font.disabled||!availableFonts().includes(font.dataset.uxFont))return;fontChoice=font.dataset.uxFont;for(const b of all('[data-ux-font]'))b.setAttribute('aria-pressed',String(b===font));$('[data-ux=font-apply]').disabled=false;return;}
+    const font=e.target.closest('[data-ux-font]');if(font){const object=el.state.objects.find(o=>o.id===fontObject);if(font.disabled||!object||!availableFonts().includes(font.dataset.uxFont)||!fontFits({...object,bold:false},font.dataset.uxFont))return;fontChoice=font.dataset.uxFont;select(fontObject);changeObject('font',fontChoice);dialogs.font.close();return;}
     const b=e.target.closest('[data-ux]');if(!b||b.disabled)return;const action=b.dataset.ux;
     if(action==='back'){window.parent.postMessage({type:'gravuru-fk-close'},location.origin);return;}
+    if(action==='account'&&galleryWorkbench){galleryWorkbench.save();return;}
     if(action==='account'&&window.parent.GravuruWorkshopReview){$('.completion-finish')?.click();return;}
     if(action==='account'&&config?.workbench){
       if(el.state.objects.some(o=>o.uxUploadId))return say('Testfotos zuerst entfernen. Die Vorlage speichert Fotofelder; Kundenfotos gehören zur Bestellung.');
@@ -369,19 +395,19 @@ export async function installUX(el,config,legacy,{attach}={}){
     if(action==='select-content'){select(b.dataset.id);return;}
     if(action==='lock'){mutate(()=>{const o=el.state.objects.find(o=>o.id===b.dataset.id);if(o?.type==='motif-raster')return;o.uxLocked=!o.uxLocked;});return;}
     if(action==='remove-content'){const o=el.state.objects.find(o=>o.id===b.dataset.id);if(!o||o.uxLocked||o.locked||o.acrylicFixed)return;mutate(()=>{el.state.objects=el.state.objects.filter(v=>v.id!==o.id);if(el.state.selected===o.id)el.state.selected=null;});return;}
-    if(['photo-upload','logo-upload','replace-upload','fill-photo-slot'].includes(action)){replacing=['replace-upload','fill-photo-slot'].includes(action)?b.dataset.id:null;uploadKind=replacing?(el.state.objects.find(o=>o.id===replacing)?.uxUploadKind||'photo'):action==='logo-upload'?'logo':'photo';$('[data-ux-file]').accept=uploadKind==='logo'&&vectorLogos?VECTOR_LOGO_ACCEPT:PHOTO_ACCEPT;$('[data-ux-file]').click();return;}
-    if(action==='add-text'){const font=config?'Montserrat':'Nunito';try{await el.uxEnsureFonts?.(profileChoices?.fonts?selectionIds(el.uxKnownFonts(),profileChoices.fonts):[font]);}catch{return say('Die Schrift konnte nicht geladen werden. Bitte erneut versuchen.');}el.add({type:'text',text:'Dein Text',font,size:10,bold:false});showTab('text');return;}
+    if(['photo-upload','logo-upload','replace-upload','fill-photo-slot'].includes(action)){replacing=['replace-upload','fill-photo-slot'].includes(action)?b.dataset.id:null;uploadKind=replacing?(el.state.objects.find(o=>o.id===replacing)?.uxUploadKind||'photo'):action==='logo-upload'?'logo':'photo';if(!uploadAllowed(config,uploadKind))return say('Dieser Upload ist bei diesem Produkt nicht vorgesehen.');$('[data-ux-file]').accept=uploadKind==='logo'&&vectorLogos?VECTOR_LOGO_ACCEPT:PHOTO_ACCEPT;$('[data-ux-file]').click();return;}
+    if(action==='add-text'){if(!additions.text)return say('Eigener Text ist bei diesem Produkt nicht vorgesehen.');const font=config?'Montserrat':'Nunito';try{await el.uxEnsureFonts?.(profileChoices?.fonts?selectionIds(el.uxKnownFonts(),profileChoices.fonts):[font]);}catch{return say('Die Schrift konnte nicht geladen werden. Bitte erneut versuchen.');}el.add({type:'text',text:'Dein Text',font,size:10,bold:false});showTab('text');return;}
     if(action==='smaller'||action==='bigger'){changeObject('size',(selected()?displayTextSize(selected()):minTextMm)+(action==='bigger'?1:-1));return;}
     if(action==='bold'||action==='italic'){changeObject(action,!selected()?.[action]);return;}
     if(['left','center','right'].includes(action)){if(el.uxAlign){el.uxAlign(action);return;}const o=selected();if(o)changeObject('x',action==='center'?currentSize().width/2:action==='left'?o.w/2+8:currentSize().width-o.w/2-8);return;}
     if(['layer-front','layer-back'].includes(action)){if(!selectable())return;const o=selected();if(!canEditElement(config,el.state.designId,o,'order'))return say('Die Reihenfolge der Vorlagenelemente ist fest. Eigene Elemente liegen immer darüber.');mutate(()=>{const templateIds=new Set((design()?.objects||[]).map(v=>v.id)),rest=el.state.objects.filter(v=>v.id!==o.id);if(action==='layer-front')rest.push(o);else rest.splice(rest.findLastIndex(v=>templateIds.has(v.id))+1,0,o);el.state.objects=rest;});return;}
-    if(['undo','redo','delete','duplicate'].includes(action)){if(['delete','duplicate'].includes(action)&&selected()?.locked)return say('Das feste Rastermotiv kann verschoben und skaliert werden.');if(action==='duplicate'&&selected()?.uxUploadId)return say('Bitte Fotos und Logos über den Upload hinzufügen, damit Anzahl und Aufpreis eindeutig bleiben.');await el.action(action);return;}
+    if(['undo','redo','delete','duplicate'].includes(action)){if(action==='duplicate'&&(selected()?.type==='text'&&!additions.text||selected()?.type==='motif'&&!additions.motifs))return say('Dieses Element wird bei diesem Produkt nicht zusätzlich angeboten.');if(['delete','duplicate'].includes(action)&&selected()?.locked)return say('Das feste Rastermotiv kann verschoben und skaliert werden.');if(action==='duplicate'&&selected()?.uxUploadId)return say('Bitte Fotos und Logos über den Upload hinzufügen, damit Anzahl und Aufpreis eindeutig bleiben.');await el.action(action);return;}
   });
   r.addEventListener('focusin',e=>{const f=e.target.closest('[data-ux-text]');if(f&&el.state.selected!==f.dataset.uxText){el.state.selected=f.dataset.uxText;el.sync();}});
   r.addEventListener('input',e=>{const t=e.target;if(t.dataset.uxText){if(!t.dataset.editStarted){el.record();t.dataset.editStarted='true';}const o=el.state.objects.find(o=>o.id===t.dataset.uxText);
     const limits=limitsFor(o),next=clampText(t.value,limits,o.text);
     if(next!==t.value){const tooManyLines=t.value.split('\n').length>limits.maxLines,at=Math.min(t.selectionStart??next.length,next.length);t.value=next;try{t.setSelectionRange(at,at);}catch{}say(tooManyLines?'Höchstens '+limits.maxLines+' Zeilen.':'Höchstens '+limits.maxLength+' Zeichen.');}
-    o.text=next;dirty=true;el.normalize();el.sync();}if(t.matches('[data-fk-quantity]'))updatePrice();});
+    o.text=next;dirty=true;el.normalize();el.sync();}if(t.matches('[data-fk-quantity]')){updatePrice();sessionGuard?.touch();}});
   r.addEventListener('keydown',e=>{const t=e.target;if(!t.dataset?.uxText||e.key!=='Enter')return;const o=el.state.objects.find(o=>o.id===t.dataset.uxText);if(!o)return;const limits=limitsFor(o);if(t.value.split('\n').length>=limits.maxLines){e.preventDefault();say('Höchstens '+limits.maxLines+' Zeilen.');}});
   r.addEventListener('input',e=>{const t=e.target,key=t.id==='ux-size'?'size':t.dataset.uxProp||t.dataset.uxContentProp;if(key&&t.value!==''&&Number.isFinite(Number(t.value))){e.stopImmediatePropagation();const value=Number(t.value);if(!['w','h','size'].includes(key)||value>0)changeObject(key,value);}},true);
   r.addEventListener('focusout',e=>{if(e.target.dataset.uxText)delete e.target.dataset.editStarted;if(e.target.id==='ux-size'&&selected()?.type==='text')e.target.value=displayTextSize(selected());});
@@ -403,12 +429,12 @@ export async function installUX(el,config,legacy,{attach}={}){
       const size=currentSize(),placement=logoPlacement(size.width,size.height,asset,prior);
       if(!prior){const facade={state:structuredClone(el.state),fontData:el.fontData,objectSVG:o=>el.objectSVG(o),uxObjectSVG:o=>el.uxObjectSVG(o),sync(){}};await placeNewMotif({el:facade,config,files,say:()=>{}},placement,{minScale:Math.min(1,MOTIF_MIN_MM/Math.max(placement.w,placement.h))});}
       if(fingerprint!==JSON.stringify(el.state))throw Error('Die Gestaltung wurde geändert. Bitte das Logo erneut auswählen.');
-      const accepted=await confirmVectorLogo({dialog,asset,scene:$('.ux-preview .scene'),placement,priorId:prior?.id,priceCents:config.logo.extraPriceCents,esc});
+      const accepted=await confirmVectorLogo({dialog,asset,scene:$('.ux-preview .scene'),placement,priorId:prior?.id,priceCents:config.logo.extraPriceCents,profile:chosenProfile(),esc});
       if(!accepted){say('Logo nicht übernommen. Deine Gestaltung bleibt erhalten.');continue;}
       if(fingerprint!==JSON.stringify(el.state))throw Error('Die Gestaltung wurde geändert. Bitte das Logo erneut prüfen.');
       validateVectorLogoFile(file,el.state.objects,prior?.uxUploadId);
       const id=crypto.randomUUID(),url=URL.createObjectURL(asset.blob);
-      files.set(id,{file,blob:asset.blob,url,width:asset.width,height:asset.height,vectorLogo:asset.vectorLogo});
+      files.set(id,{file,blob:asset.blob,url,width:asset.width,height:asset.height,vectorLogo:asset.vectorLogo});await persistUpload(id);
       mutate(()=>{const o=prior||{id:el.id(),type:'image',customerEditable:true,uxPersonal:true};if(!prior)el.state.objects.push(o);Object.assign(o,placement,{type:'image',uxUploadId:id,uxUploadKind:'logo',uxVectorLogo:asset.vectorLogo,uxHidden:false});for(const key of ['uxLogoTint','uxPhotoCrop','uxPhotoColor','uxPhotoBackground','preserveColors'])delete o[key];el.state.selected=o.id;});
       showTab('upload');say('Geprüfte Gravurfassung übernommen · '+money(config.logo.extraPriceCents)+' je Logo.');
     }}catch(error){say(error.message);}finally{uploadPending=false;replacing=null;}
@@ -422,8 +448,8 @@ export async function installUX(el,config,legacy,{attach}={}){
         if(prior&&!el.state.objects.includes(prior))throw Error('Das Design wurde gewechselt. Bitte das Foto erneut auswählen.');
         if(prior?.uxLocked)throw Error('Bitte den Fotobereich zuerst entsperren.');
         validateUpload(file,el.state.objects,prior?.uxUploadId);
-        const id=crypto.randomUUID();files.set(id,{file,url,width:image.naturalWidth,height:image.naturalHeight});url=null;
-        mutate(()=>{let o=prior;if(!o&&kind==='photo')o=el.state.objects.find(o=>o.type==='photoSlot'&&!o.uxUploadId);if(!o){const {width,height}=currentSize();o={id:el.id(),type:kind==='logo'?'image':'photoSlot',x:width/2,y:height*.35,w:Math.min(width*.3,50),h:Math.min(height*.25,50),rotation:0,customerEditable:true,uxPersonal:true};if(kind==='photo')Object.assign(o,{photoShape:'rect',fieldKey:'photo-'+crypto.randomUUID(),required:false});el.state.objects.push(o);}o.uxUploadId=id;delete o.uxPhotoCrop;delete o.uxPhotoColor;o.uxUploadKind=kind;if(kind==='photo')o.uxPhotoBackground=o.uxPhotoBackground==='keep'?'keep':'remove';else delete o.uxPhotoBackground;o.uxHidden=false;delete o.preserveColors;el.state.selected=o.id;revealedId=o.id;});say('Bild übernommen.');
+        const id=crypto.randomUUID();files.set(id,{file,url,width:image.naturalWidth,height:image.naturalHeight});url=null;await persistUpload(id);
+        mutate(()=>{let o=prior;if(!o&&kind==='photo')o=el.state.objects.find(o=>o.type==='photoSlot'&&!o.uxUploadId);if(!o){const {width,height}=currentSize();o={id:el.id(),type:kind==='logo'?'image':'photoSlot',x:width/2,y:height*.35,w:Math.min(width*.3,50),h:Math.min(height*.25,50),rotation:0,customerEditable:true,uxPersonal:true};if(kind==='photo')Object.assign(o,newPhotoBounds(width,height),{photoShape:'rect',fieldKey:'photo-'+crypto.randomUUID(),required:false});el.state.objects.push(o);}if(kind==='photo')fitUploadedPhoto(o,files.get(id));o.uxUploadId=id;delete o.uxPhotoCrop;delete o.uxPhotoColor;o.uxUploadKind=kind;if(kind==='photo')o.uxPhotoBackground=o.uxPhotoBackground==='keep'?'keep':'remove';else delete o.uxPhotoBackground;o.uxHidden=false;delete o.preserveColors;el.state.selected=o.id;revealedId=o.id;});say('');
       }catch(error){if(url)URL.revokeObjectURL(url);say(error.message);break;}
     }}finally{uploadPending=false;replacing=null;
       if(revealedId){showTab('upload');requestAnimationFrame(()=>{const target=all('[data-ux=select-upload]').find(b=>b.dataset.id===revealedId);if(!target)return;target.focus({preventScroll:true});});}
@@ -443,7 +469,7 @@ export async function installUX(el,config,legacy,{attach}={}){
   // A portable draft payload is provided to the future authenticated server adapter, not downloaded.
   el.uxDraft=()=>customerDraft(el.state,profile);
   installEdgeClamp(el,{profile,motifs:config?.localResources?.motifs||[]});
-  await installRefinements({el,r,profile,config,files,pending:()=>uploadPending,selected,select,mutate,showTab,say,dialog,dialogs,button,esc,acceptFiles:acceptCustomerFiles,changeObject});
+  await installRefinements({el,r,profile,config,files,persistUpload,pending:()=>uploadPending,selected,select,mutate,showTab,say,dialog,dialogs,button,esc,acceptFiles:acceptCustomerFiles,changeObject});
   if(el.uxMotifChoiceIds?.length===0){
     const entry=$('.workflow-motif-entry');
     if(entry){const note=document.createElement('p');note.textContent='Für dieses Produkt sind keine zusätzlichen Motive freigegeben. Die Motive im Design bleiben erhalten.';entry.append(note);entry.querySelector('[data-ux=discover-motifs]').hidden=true;entry.querySelector('.completion-motif-nav')?.setAttribute('hidden','');}
@@ -453,27 +479,33 @@ export async function installUX(el,config,legacy,{attach}={}){
   // K14 / Ü15.1: Reiter Vorderseite/Rückseite über der Platte (nur Produkte mit Rückseite).
   if(config)installSurfaceTabs({el,r,config,button,say});
   if(config)installCommerce({el,config,files,pending:()=>uploadPending||el.uxDesignResourcePending===true});
-  if(config?.acrylic)await installAcrylicScene({el,r,config,files,select,selected,say,acceptFiles:acceptCustomerFiles});
+  if(config)await installAcrylicScene({el,r,config,files,select,selected,say,acceptFiles:acceptCustomerFiles});
   finishCustomerRights();
   finishTemplateDeletion();
   installFirstTextFocus({el,r});
-  function startUnselected(){r.activeElement?.blur();el.multiSelecting=false;el.state.selected=null;el.centerSuggestion=null;showTab(config?.productPreview?'design':'options');el.sync();}
+  function startUnselected(){r.activeElement?.blur();el.multiSelecting=false;el.state.selected=null;el.centerSuggestion=null;showTab(profile.designs.length?'design':'options');el.uxMobileSteps?.show(profile.designs.length?'design':'options',{scroll:false});el.sync();}
   window.addEventListener('message',e=>{if(e.origin===location.origin&&e.source===window.parent&&e.data?.type==='gravuru-ux-open')startUnselected();});
   addDecoration();el.normalize();startUnselected();
   // Ladezeit: Schriften/Motive des gesicherten Stands vor dem (synchronen) Wiederherstellen laden.
   const pendingDesignTransfer=!!window.parent.GravuruShopEntry?.designGallery?.hasPendingTransfer();
-  if(sessionGuard&&!config?.workbench&&!pendingDesignTransfer&&el.uxEnsureDraftResources){const stored=sessionGuard.read();if(stored)try{await el.uxEnsureDraftResources(stored.draft);}catch{}}
+  // An explicit cart revision owns restoration, whether its private read finishes before or after these steps.
+  const recoverLocalSession=!pendingDesignTransfer&&!cartEditParams(location.search);
+  if(sessionGuard&&!config?.workbench&&recoverLocalSession&&el.uxEnsureDraftResources){const stored=sessionGuard.read();if(stored)try{await el.uxEnsureDraftResources(stored.draft);}catch{}}
+  const savedSession=sessionGuard&&!config?.workbench&&recoverLocalSession?sessionGuard.read():null;
+  const missingUploads=savedSession?await sessionUploads?.restore(savedSession.uploads||[]):[];
   if(sessionGuard&&!config?.workbench){
     try{initialDraft=el.draftPayload({draft:true});}catch{initialDraft=null;}
-    const recovered=initialDraft&&!pendingDesignTransfer?sessionGuard.recover():null;
+    const recovered=initialDraft&&recoverLocalSession?sessionGuard.recover():null;
     if(recovered){
+      const quantity=$('[data-fk-quantity]');if(quantity){quantity.value=String(recovered.quantity);quantity.dispatchEvent(new Event('input',{bubbles:true}));}
       $('[data-ux-session]').hidden=false;el.state.selected=null;el.sync();
-      if(recovered.uploads.length)say('Dein letzter Stand wurde wiederhergestellt. Bitte fehlende Dateien erneut auswählen oder deinen gespeicherten Entwurf laden.');
+      if(missingUploads?.length)say('Dein letzter Stand wurde wiederhergestellt. '+missingUploads.length+' ältere Bilddatei(en) bitte erneut auswählen. Neue Fotos bleiben künftig auf diesem Gerät erhalten.');
     }
-    sessionGuard.arm();
+    sessionGuard.arm();sessionUploads?.prune();
     window.addEventListener('pagehide',()=>sessionGuard.flush(),{once:true});
   }else sessionGuard=null;
   if(config&&!config.workbench&&typeof el.draftPayload==='function')accountDrafts=installAccountDrafts({el,config,files,dialog:dialogs.account,button,esc,say,restoreDraft,pending:()=>uploadPending});
+  galleryWorkbench=await installGalleryWorkbench({el,config,files,say,pending:()=>uploadPending||el.uxDesignResourcePending===true});
   if(config?.workbench?.embedded){showTab('text');for(const field of all('input[type=number]'))field.step='.01';if($('#ux-size'))$('#ux-size').min='1';r.addEventListener('focusout',e=>{if(e.target.type==='number'&&e.target.value!==''&&Number.isFinite(e.target.valueAsNumber))e.target.value=roundEdit(e.target.valueAsNumber);});previousCorrection=JSON.stringify(roundDesign({id:el.state.designId,objects:el.state.objects}));correctionReady=true;const s=document.createElement('style');s.textContent='.ux-cart-bar,.ux-bottom-bar,.ux-price-bar,.fk-buy-row{display:none!important}';r.append(s);}
   // K9/Ü10.2: Direktlink `?design=<id>&size=<sku-oder-größen-id>&text=<Name>` von der Host-Seite
   // (gleiche Herkunft, z. B. index.html) oder der eigenen URL. Ungültiges wird ignoriert und gemeldet;
@@ -488,8 +520,8 @@ export async function installUX(el,config,legacy,{attach}={}){
       const link=parseDirectLink(new URL(href).searchParams,profile);
       if(!link.present)continue;
       if(link.designId&&link.designId!==el.state.designId)el.chooseDesign(link.designId);
-      if(link.sizeId&&config){try{el.record?.();el.state.mOptions={...(el.state.mOptions||{}),size:link.sizeId};el.sync();}catch{link.notes.push('Die verlinkte Größe konnte nicht übernommen werden.');}}
-      if(link.text){const result=applyLinkText(el.state.objects,design(),profile,link.text,config);if(result){dirty=true;el.normalize();el.sync();if(result.truncated)link.notes.push('Der verlinkte Text wurde auf das Limit des Feldes gekürzt.');}else link.notes.push('Der verlinkte Text konnte keinem Textfeld zugeordnet werden.');}
+      if(link.sizeId&&config&&moduleEnabled(config,'options')){try{el.record?.();el.state.mOptions={...(el.state.mOptions||{}),size:link.sizeId};el.sync();}catch{link.notes.push('Die verlinkte Größe konnte nicht übernommen werden.');}}
+      if(link.text&&moduleEnabled(config,'text')){const result=applyLinkText(el.state.objects,design(),profile,link.text,config);if(result){dirty=true;el.normalize();el.sync();if(result.truncated)link.notes.push('Der verlinkte Text wurde auf das Limit des Feldes gekürzt.');}else link.notes.push('Der verlinkte Text konnte keinem Textfeld zugeordnet werden.');}
       applied=link;break;
     }
     if(applied){for(const host of directLinkWindows()){try{const clean=withoutDirectLinkParams(host.location.href);if(clean)host.history.replaceState(host.history.state,'',clean);}catch{}}if(applied.notes.length)say(applied.notes.join(' '));}
@@ -508,17 +540,34 @@ export async function installUX(el,config,legacy,{attach}={}){
   await installMotifTileFit(el);
   await installViewZoom({el,r,selected});
   installTextFields({el,r,selected,select});
+  installDesignReset({el,r,config,dialog,button,design,say,reset:()=>{resetOriginalDesign({el,choose:oldChoose,decorate:addDecoration});dirty=true;}});
   installDecisionHelp({el,r,config});
   // Vor der fertigen Oberfläche auf der Platte gewähltes Foto (photo-upload.mjs installEarlyPhotoTap) übernehmen.
   const takeEarlyPhoto=()=>{const early=el.uxEarlyPhoto;if(!early)return;el.uxEarlyPhoto=null;acceptCustomerFiles(early.files,'photo',early.slotId).catch(error=>say(error.message));};
   el.addEventListener('gravuru-early-photo',takeEarlyPhoto);takeEarlyPhoto();
   if(config)installLegacyCartRestore({el,config,files});
   await installProductDesignGallery({el,r,config,files,say,dialog,esc});
+  installQuantityGuard({el,r,say});
   installReviewLayout({el,r});
+  // Astra 1, #48 / #161 db4f4a4: adopt the reviewed visual shell around the
+  // existing editor, preserving real artwork, controls and commerce handlers.
+  const modern=document.createElement('style');
+  const modernResponse=await fetch('/configurator/variant-m/modern-layout.css');
+  if(!modernResponse.ok)throw Error('Aktuelles Konfigurator-Layout fehlt.');
+  modern.textContent=await modernResponse.text();r.append(modern);el.dataset.uxModern='true';
+  installModernMotifBrowser({r,el});
+  const navigation=document.createElement('style');const navigationResponse=await fetch('/configurator/variant-m/modern-navigation.css');
+  if(!navigationResponse.ok)throw Error('Aktuelle Konfigurator-Navigation fehlt.');navigation.textContent=await navigationResponse.text();r.append(navigation);
   // All customer UI and its styles are ready before the first DOM insertion.
   // A connectedCallback replay is harmless: the reference component has a ready guard.
   attach?.();
   el.sync();
+  if(window.parent.GravuruShopEntry?.presentation==='prio-r15'){
+    // R15 uses real module-relative asset URLs. Keep this optional presentation
+    // module outside the legacy blob bundle; the native session owns checkout.
+    const presentation=await import('/configurator/mobile-demo/shop-shell.mjs');
+    await presentation.installPrioShopShell(el,config);
+  }
   window.dispatchEvent(new Event('resize'));
   window.parent.postMessage({type:'gravuru-ux-ready'},location.origin);
   // Ladefolge nach dem Start: Optionsbilder → Schriften → Motive im Leerlauf (background-loading.mjs).

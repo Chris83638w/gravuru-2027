@@ -1,0 +1,37 @@
+{
+  "schema": "gravuru-photo-preview-proof/v1",
+  "date": "2026-11-07",
+  "sourcePackage": "slate-original-package-v4-drucksterne",
+  "catalogueCommit": "dc0a0f6c2d59a93cbe2727709e0657e5d1697b06",
+  "productSha256": "8258137755ba76d8323c6d24fa0f6628a17be11781e9a80e1f11ddeeed29ea67",
+  "renderChecks": [
+    {
+      "id": "GT-S-30x20-D217",
+      "beforeSha256": "9c078087fa2cc7bb5d091544648437df2d82d063ad4ccb2b14029bedcccc2aff",
+      "afterSha256": "8b766d8f4f1a7e2992ec9e21587cfa3c3c0dfc495ddb6202d91a4a4fdb0bcd6b",
+      "onlyRemovedPreviewBlendAndGrayscale": true,
+      "allImageAndMaskUrlsByteEqual": true,
+      "originalSourceProductUnchanged": true
+    },
+    {
+      "id": "GT-S-30x20-D230",
+      "beforeSha256": "c3f9ad04afd8f20511e7848c0d0908e0eaa5fc32833756f8ef3b4c88671383b6",
+      "afterSha256": "7fd66b4c528a9f3659910bc32a0bfad4fa4a142ce7236754e8703e2fa3dd4eea",
+      "onlyRemovedPreviewBlendAndGrayscale": true,
+      "allImageAndMaskUrlsByteEqual": true,
+      "originalSourceProductUnchanged": true
+    },
+    {
+      "id": "GT-S-30x20-D232",
+      "beforeSha256": "ba279abdd04b8721d330db5087bb0484c265a3b9f17bba2533179d7652704638",
+      "afterSha256": "3b31a13647fecd699fa2c92f05a0c13f60e225b0ca7fbf4fc684a77d224247e4",
+      "onlyRemovedPreviewBlendAndGrayscale": true,
+      "allImageAndMaskUrlsByteEqual": true,
+      "originalSourceProductUnchanged": true
+    }
+  ],
+  "visualInspection": "Original photographs inspected locally; actual browser after-view performed separately by root.",
+  "previewFilesDirectory": "C:/Users/Christopher Koch/Documents/ChatGPT/Shopify Import/work/gallery-photo-proof-20261107",
+  "sourceImagesUnchanged": true,
+  "selectionOriginalsVerified": 16
+}

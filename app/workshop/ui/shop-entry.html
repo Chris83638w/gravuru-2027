@@ -9,11 +9,11 @@
   <style>
     html,body{margin:0;height:100%;font-family:system-ui,sans-serif;color:#292d32;background:#f5f6f7}
     body{display:flex;flex-direction:column;min-height:100dvh}
-    header{display:flex;align-items:center;gap:16px;padding:16px;background:#292d32;color:#fff}
+    header{display:flex;align-items:center;gap:16px;padding:16px;background:#292d32;color:#fff;position:relative;z-index:3}
     header[hidden]{display:none}
     h1{font-size:16px;margin:0;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
     #back{color:#fff;text-decoration:none;font-size:14px;white-space:nowrap}
-    #loading-screen{flex:1;display:grid;align-content:center;justify-items:center;gap:16px;padding:24px;text-align:center}
+    #loading-screen{position:fixed;inset:0;z-index:2;background:#f5f6f7;display:grid;align-content:center;justify-items:center;gap:16px;padding:24px;text-align:center}
     #loading-screen[hidden]{display:none}
     #start-preview{width:min(100%,440px);height:260px;object-fit:contain}
     #start-preview[hidden]{display:none}

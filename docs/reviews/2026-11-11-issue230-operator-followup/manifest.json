@@ -1,0 +1,70 @@
+{
+  "files": [
+    {
+      "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da",
+      "file": ".gitattributes",
+      "bytes": 8
+    },
+    {
+      "sha256": "fcfb466db4cd50dc5492bc9311296a1117c2b44294fc92611cf985320e2fdb07",
+      "file": "operator-binding-before.txt",
+      "bytes": 3420
+    },
+    {
+      "sha256": "0b9903717e3e73bb030f0f27d635bb30feb891f4cf006f1ed0762b4cabc06196",
+      "file": "operator-followup-backend-after.txt",
+      "bytes": 1056
+    },
+    {
+      "sha256": "2b8125e26d24b46a9f3d8c92bd6739a1473803f43a54aa707e4ed7939f6965e4",
+      "file": "operator-followup-backend.md",
+      "bytes": 4837
+    },
+    {
+      "sha256": "8cd4c5be41daaf147c4ba190313e63ae3561ab4c9545fd7bff592f62cef91660",
+      "file": "operator-followup-build.json",
+      "bytes": 422
+    },
+    {
+      "sha256": "3ec484f009e5f40b6613b29191a4c2b9b2de005165f7f9ff923c6efab2902d69",
+      "file": "operator-followup-frontend-tests.log",
+      "bytes": 1809
+    },
+    {
+      "sha256": "dc4e280626e29523928048a939d8a9184b5cc5eef12bbc153dd6b31d452960a3",
+      "file": "operator-followup-frontend.json",
+      "bytes": 1250
+    },
+    {
+      "sha256": "15d51a6d409ce8c24cf192708f371c840a92e3a069f5c53db07d7bb38376f50f",
+      "file": "operator-followup-frontend.md",
+      "bytes": 3211
+    },
+    {
+      "sha256": "c54d1c7418d6954620b1f4d2f18a6536cfe633c8232aea1acaf000da8edbee0a",
+      "file": "operator-followup-ops-baseline.txt",
+      "bytes": 6387
+    },
+    {
+      "sha256": "ac3f3d0e2f6f4fe7f88bc1a9fe068c5b4d83a2e2594ee5cd10fc2f18ccc2503b",
+      "file": "operator-followup-ops-final.txt",
+      "bytes": 3853
+    },
+    {
+      "sha256": "8a88d1214753776e77d2648fa48cf96a3ae80a56d39e0e8da7f5178da5f9c3e8",
+      "file": "operator-followup-ops.md",
+      "bytes": 6171
+    },
+    {
+      "sha256": "a42a7e785e0b1cf570167dad2ac8f6cafcc87b0b28bb99636f854fffdebd383f",
+      "file": "operator-gallery-slate-before-loopback.txt",
+      "bytes": 2691
+    },
+    {
+      "sha256": "d717415aa1455f45b41ef1689c39d315f440b56fb7863d9bb37319c18a9b0f7a",
+      "file": "operator-gallery-slate-before.txt",
+      "bytes": 1781
+    }
+  ],
+  "schema": "issue230-operator-followup/v1"
+}

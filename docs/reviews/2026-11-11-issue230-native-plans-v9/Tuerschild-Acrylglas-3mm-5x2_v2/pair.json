@@ -1,0 +1,329 @@
+{
+  "workbook": "Tuerschild-Acrylglas-3mm-5x2_v2.xlsx",
+  "excelSha256": "119e2f48ec4d92c91a1463946a95ef0d2f30deb2e07c0c13ce59c73583a339cd",
+  "catalogCommit": "8236b8bfab7322447ec46661c116fa526331af3d",
+  "source": {
+    "id": "cfg_a185d396-3f2d-40cc-8199-b802743da334",
+    "revision": 2,
+    "sha256": "7d951cec1d47abc13b1c2c6d6e0552c0616e4843fc941e4c75943ad89aeb53f8",
+    "status": "draft",
+    "publishedRevision": null,
+    "metadataSha256": "b1beebfe5c01834e02d1a7299ffee8c4ed19e0dd93b541718a9157a44fb090ec"
+  },
+  "registry": {
+    "key": "cfg_a185d396-3f2d-40cc-8199-b802743da334",
+    "productId": "cfg_a185d396-3f2d-40cc-8199-b802743da334",
+    "familyId": "cfg_a185d396-3f2d-40cc-8199-b802743da334",
+    "sizeKey": "cfg_a185d396-3f2d-40cc-8199-b802743da334",
+    "name": "Türschild Acrylglas 3 mm 5 × 2 cm (Schwarz/Anthrazit)",
+    "label": "Türschild Acrylglas 3 mm 5 × 2 cm (Schwarz/Anthrazit)",
+    "detailsLoaded": false
+  },
+  "template": {
+    "id": "pgt_31a79772-234a-485c-beec-c7565a7157c6",
+    "revision": 2,
+    "sha256": "bdc0ff479668e535903ad6cb17cd6e6ae04039437a8e3fbeaebc02a563d48a8e"
+  },
+  "planId": "pgp_7307b213-09ef-4758-b525-88aea139502d",
+  "planHash": "cd2405c8f0a53544cfaaf87f97d84234ba9c51d58ec6b0e388bb7212ef141392",
+  "valid": true,
+  "approvalReady": true,
+  "proposedStart": {
+    "sizeKey": "TS-Acryl-RE-50X20-T30-SW",
+    "themeId": "familienschilder",
+    "defaultDesignId": "TRE-V2A-5x2-D1"
+  },
+  "priceOverrides": [
+    {
+      "familyId": "acryl-3mm-tuerschilder-schwarz",
+      "rule": "B02S-E4-D4",
+      "skuSuffix": "B02S",
+      "before": 299,
+      "after": 269,
+      "source": "Confirmed Excel and Issue 230 comment 6766806272"
+    },
+    {
+      "familyId": "acryl-3mm-tuerschilder-schwarz",
+      "rule": "B02S-E6-D4",
+      "skuSuffix": "B02S",
+      "before": 299,
+      "after": 269,
+      "source": "Confirmed Excel and Issue 230 comment 6766806272"
+    },
+    {
+      "familyId": "acryl-3mm-tuerschilder-schwarz",
+      "rule": "B02S-E8-D4",
+      "skuSuffix": "B02S",
+      "before": 299,
+      "after": 269,
+      "source": "Confirmed Excel and Issue 230 comment 6766806272"
+    },
+    {
+      "familyId": "acryl-3mm-tuerschilder-schwarz",
+      "rule": "B02S-KONTUR",
+      "skuSuffix": "B02S",
+      "before": 299,
+      "after": 269,
+      "source": "Confirmed Excel and Issue 230 comment 6766806272"
+    },
+    {
+      "familyId": "acryl-3mm-tuerschilder-anthrazit",
+      "rule": "B02S-E4-D4",
+      "skuSuffix": "B02S",
+      "before": 299,
+      "after": 269,
+      "source": "Confirmed Excel and Issue 230 comment 6766806272"
+    },
+    {
+      "familyId": "acryl-3mm-tuerschilder-anthrazit",
+      "rule": "B02S-E6-D4",
+      "skuSuffix": "B02S",
+      "before": 299,
+      "after": 269,
+      "source": "Confirmed Excel and Issue 230 comment 6766806272"
+    },
+    {
+      "familyId": "acryl-3mm-tuerschilder-anthrazit",
+      "rule": "B02S-E8-D4",
+      "skuSuffix": "B02S",
+      "before": 299,
+      "after": 269,
+      "source": "Confirmed Excel and Issue 230 comment 6766806272"
+    },
+    {
+      "familyId": "acryl-3mm-tuerschilder-anthrazit",
+      "rule": "B02S-KONTUR",
+      "skuSuffix": "B02S",
+      "before": 299,
+      "after": 269,
+      "source": "Confirmed Excel and Issue 230 comment 6766806272"
+    }
+  ],
+  "comparison": {
+    "compared": 10,
+    "actual": 10,
+    "differences": []
+  },
+  "designs": {
+    "requested": 27,
+    "native": 27,
+    "missing": [],
+    "requestedUnique": 27,
+    "hiddenIds": [],
+    "fitExcludedIds": [],
+    "duplicatePolicy": "first occurrence after rank ascending; rank 0 retained"
+  },
+  "nativeModules": {
+    "options": true,
+    "designs": true,
+    "text": true,
+    "motifs": true,
+    "photo": false,
+    "logo": false,
+    "colors": false
+  },
+  "requestedModules": [
+    {
+      "key": "options",
+      "requested": "an",
+      "confirmation": "offen"
+    },
+    {
+      "key": "designs",
+      "requested": "an",
+      "confirmation": "offen"
+    },
+    {
+      "key": "text",
+      "requested": "an",
+      "confirmation": "offen"
+    },
+    {
+      "key": "motifs",
+      "requested": "an",
+      "confirmation": "offen"
+    },
+    {
+      "key": "photo",
+      "requested": "offen",
+      "confirmation": "offen"
+    },
+    {
+      "key": "logo",
+      "requested": "offen",
+      "confirmation": "offen"
+    },
+    {
+      "key": "colors",
+      "requested": "an",
+      "confirmation": "offen"
+    }
+  ],
+  "openQuestions": [],
+  "confirmations": 0,
+  "executions": 0,
+  "shopifyWrites": 0,
+  "profileSelections": {
+    "selections": {
+      "fonts": null,
+      "motifs": [
+        "import-6abda909c44bc599330856dd",
+        "import-0073ea6aa7103bb1e8ec9088",
+        "import-9373218480c87a6ad167f3cb",
+        "import-41fb65efd1d8996ac305f6ab",
+        "import-1abd6f06096e47c66b0b4e00",
+        "import-286db893566ced2e6bd75bad",
+        "import-d94f1406fde432cf9dd70389",
+        "import-9c76c3476a406eaac7f05e42",
+        "import-10edf8a5dd07bd1035ba508d",
+        "import-4269dbda54a15a99e178f00a",
+        "import-0f3193fd49e254bb5975e74d",
+        "import-54b3b489bbebe12119deda9a",
+        "import-8239d6c658366716f578c984"
+      ],
+      "colors": null,
+      "bestsellers": null
+    },
+    "sources": {
+      "fonts": {
+        "level": "unbound",
+        "categoryId": null,
+        "mode": "inherit",
+        "profileId": null,
+        "profileRevision": null
+      },
+      "motifs": {
+        "level": "product",
+        "categoryId": null,
+        "mode": "override",
+        "profileId": "prf_0fce513a-0973-45eb-8d03-09728290e17d",
+        "profileRevision": 1
+      },
+      "colors": {
+        "level": "unbound",
+        "categoryId": null,
+        "mode": "inherit",
+        "profileId": null,
+        "profileRevision": null
+      },
+      "bestsellers": {
+        "level": "unbound",
+        "categoryId": null,
+        "mode": "inherit",
+        "profileId": null,
+        "profileRevision": null
+      }
+    },
+    "settingsRevision": 1,
+    "categoryPriority": "last-non-inherit-wins",
+    "warnings": []
+  },
+  "smallMotifProfile": {
+    "id": "prf_0fce513a-0973-45eb-8d03-09728290e17d",
+    "revision": 1,
+    "count": 13
+  },
+  "previousPreparation": {
+    "run": "v8",
+    "sourceRevision": 1,
+    "sourceHash": "7d951cec1d47abc13b1c2c6d6e0552c0616e4843fc941e4c75943ad89aeb53f8",
+    "templateRevision": 1,
+    "templateHash": "20bc106ba6543daec811722fbd333c0d769c01ac7ada702822b4e9a06d49b83d",
+    "planId": "pgp_03932c0e-6f8f-4177-8ab5-cf7891b5bcdc",
+    "planHash": "01cf26109b3e49708f122fc7fb46e2493faad1be1e07235b0ff33bed3e28bc96"
+  },
+  "moduleProfilePins": [
+    {
+      "id": "cmp_049bdd37-97bd-456e-8237-9856a00809da",
+      "revision": 1,
+      "sha256": "1becdb8eecb674692efc51e031516f695f5c26e2ed40111f417f87817aef4dc3"
+    }
+  ],
+  "effectiveModules": {
+    "colors": false,
+    "designs": true,
+    "logo": false,
+    "motifs": true,
+    "options": true,
+    "photo": false,
+    "text": true
+  },
+  "uploadDecision": {
+    "date": "2026-11-11",
+    "source": "Explicit user response in current Codex chat, relayed by root to product_plans",
+    "mainAcrylic": {
+      "photo": true,
+      "svgLogo": true,
+      "photoCents": 999,
+      "logoCents": 1299
+    },
+    "sixSmallProducts": {
+      "photo": false,
+      "logo": false
+    },
+    "scope": "Upload modules only; no product confirmation or execution"
+  },
+  "approvalScope": "Ready for explicit review only; not confirmed, executed or published",
+  "removedOpenQuestions": [
+    {
+      "question": "Startdesign TRE-V2A-5x2-D1 / 5 × 2 cm / Schwarz ist ein technisch geprüfter Vorschlag, keine neue Nutzerentscheidung.",
+      "evidence": "decisions.starts: explicit user instruction to retain existing designs/start templates"
+    },
+    {
+      "question": "Steuerkontext/Mengenstaffeln und Start-/Designreferenzen der unveränderten Excel bleiben zu prüfen. Foto-/Logo-Auswahl wurde am 11.11.2026 ausdrücklich bestätigt und ist keine offene Nutzerentscheidung.",
+      "evidence": "decisions.tax + quantityDiscount + starts + uploads: all substantiated, no new prices"
+    }
+  ],
+  "decisions": {
+    "manifestSha256": "730168634964272693b514e3efd742975bd56af30a96a7ae751a2aed7fe71a64",
+    "tax": {
+      "pricePresentation": "gross",
+      "vatPercent": 19,
+      "country": "DE",
+      "confirmed": true,
+      "date": "2026-11-11",
+      "quote": "Ja, inklusive 19 % MwSt.",
+      "source": "Explicit user reply in the current Codex chat, relayed by coordinator to product_plans; all seven base prices and surcharges.",
+      "storage": "Revision metadata and external decision manifest only; no unsupported product-config tax field."
+    },
+    "quantityDiscount": {
+      "confirmed": true,
+      "decisionDate": "2026-10-20",
+      "tiers": [
+        {
+          "minQuantity": 3,
+          "percentOff": 5
+        },
+        {
+          "minQuantity": 5,
+          "percentOff": 10
+        },
+        {
+          "minQuantity": 10,
+          "percentOff": 15
+        }
+      ],
+      "scope": "complete-unit",
+      "basis": "Full unit price including mounting, additional/changed motifs, photo and SVG logo; existing line-item quantity contract, highest attained tier, one half-up rounding to integer cents.",
+      "sources": [
+        {
+          "commit": "64e026e8fd15b129a16cc97189b28506aa9e8ac2",
+          "path": "ENTSCHEIDUNGEN.md",
+          "section": "4.16"
+        },
+        {
+          "commit": "64e026e8fd15b129a16cc97189b28506aa9e8ac2",
+          "path": "docs/plans/STAFFEL-SHOP-BESTAND-20261019.md",
+          "section": "Entscheidung 20.10.2026 (Chris)"
+        },
+        {
+          "commit": "64e026e8fd15b129a16cc97189b28506aa9e8ac2",
+          "path": "docs/handoffs/2026-10-22-entscheidungen-und-funktionserhalt.md",
+          "section": "Abschluss, Warenkorb und Preise"
+        }
+      ],
+      "supersedes": "Historical Excel wording treating the already confirmed tier as a new operator proposal."
+    },
+    "startsKept": true
+  }
+}

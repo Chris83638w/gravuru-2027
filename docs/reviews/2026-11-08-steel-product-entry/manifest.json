@@ -1,0 +1,31 @@
+{
+  "schema": "gravuru-steel-presentation-candidate/v1",
+  "productId": "16190784438652",
+  "startVariantId": "58104606556540",
+  "variantCount": 404,
+  "variantIdsSha256": "f37e416e7f7f562bec98b34c00792ce37941c3b3118fd3d26d3b9a3aba420b59",
+  "sourceThemeSha256": "68c1a442ad7f268df5da9ee04d2a66d86f9ed8aa6edab0abd4f5e37e626ba046",
+  "sourcePlanStart": {
+    "familyId": "steel-door-signs",
+    "sizeKey": "GR-ES-AB-120X80-T15",
+    "mounting": "K00",
+    "originalId": "TAE-V2A-8x5-D1",
+    "nativeDesignId": "katalog-TAE-V2A-8x5-D1",
+    "sourcePlateMm": [
+      80,
+      53.3
+    ],
+    "targetPlateMm": [
+      120,
+      80
+    ],
+    "rule": "Native scaleTemplate contain=true / selectedFamilyProfile; no manual redraw, new layout, text replacement or independent geometry"
+  },
+  "changedJsonPaths": [
+    "/sections/main/blocks/custom_liquid_mTPWzc/settings/custom_liquid"
+  ],
+  "shopWrites": false,
+  "serverWrites": false,
+  "sourcePlanSha256": "8f994b378cbb4b7b1fcf833b4907af1317ded452838c6509ef284b75300ee95f",
+  "candidateThemeSha256": "42ab2208695ba263e687cc80cd5a38e06f9241e4eb5bb3a533c833fbbd8f85d0"
+}

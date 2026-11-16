@@ -1,3 +1,4 @@
+import {createTextBounds} from './text-bounds.mjs';
 import {executionTabLabel} from './execution-registry.mjs';
 import {installInlineMotifBrowser} from './inline-motif-browser.mjs';
 import {installEditorOutsidePointer} from './editor-document-listener.mjs';
@@ -7,6 +8,9 @@ import {canEditElement,legacyElementRights} from './element-rights.mjs';
 import {layoutReviewIssues} from './layout-review.mjs';
 import {objectSurface} from './surfaces.mjs';
 import {captureDesignContent,carryDesignContent} from './design-content-transfer.mjs';
+import {isPhotoUnsupported,createPhotoDropConfirm} from './photo-drop-confirm.mjs';
+import {insetTextSurface} from './text-edge-margin.mjs';
+import {mountingPlacementState} from './mounting-placement.mjs';
 import {alignmentContent,uiIcon} from './ui-icons.mjs';
 import {maskContourGuides} from './contour-guides.mjs';
 import {placeNewMotif,MOTIF_MIN_MM} from './motif-placement.mjs';
@@ -18,7 +22,7 @@ import {clampToAcrylic} from './edge-clamp.mjs';
 import {createDragSnap,alignmentLabel} from './drag-assistance-model.mjs';
 import {fitText,freePlacement,transferTexts,changedCustomerTexts,alignGroup,NO_FREE_SPACE_MESSAGE} from './workflow-model.mjs';
 import {galleryOrder,productTheme,customerTexts,thumbnailSignature,thumbnailDesign,designLink} from './design-gallery-model.mjs';
-import {textPaths,measureText,setTextSize} from '../../platform/sources/app/shared/models/text-paths.mjs';
+import {measureText,setTextSize} from '../../platform/sources/app/shared/models/text-paths.mjs';
 
 export async function installWorkflow(api){
  const {el,r,profile,config,button,esc,mutate,selected,showTab,say,dialog}=api;
@@ -28,8 +32,10 @@ export async function installWorkflow(api){
  const chosenProfile=()=>el.uxSelectedProfile?.()||profile;
  // Existing layouts also put house numbers beside the device. The largest
  // free rectangle is an initial-placement aid, not the text resizing boundary.
+ // Chris 13.11.2026: Text hält beim automatischen Einpassen mindestens 2 mm Abstand zum Schildrand
+ // (auch rund/oval und nach Formwechsel). Motive und Linien dürfen weiter bis an den Rand (3.21, 5.9).
  const textSurface=()=>config?.doorbell?.schema==='gravuru-doorbell/v1'
-  ? doorbellTextSurface(chosenProfile()) : surface();
+  ? doorbellTextSurface(chosenProfile()) : config?insetTextSurface(surface()):surface();
  const surface=()=>{const geometry=el.uxProfileGeometry?.()||profile.geometry;if(config?.doorbell?.schema==='gravuru-doorbell/v1'&&geometry.designArea){const a=geometry.designArea;return {...geometry,x:a.left,y:a.top,width:a.right-a.left,height:a.bottom-a.top};}return config?{x:0,y:0,...geometry}:profile.frames.find(f=>f.key===el.state.fkFrame).acrylic;};
  const obstacles=()=>{const bell=(el.uxProfileGeometry?.()||profile.geometry).bell;return (!config||config.doorbell)&&bell?[{x:bell.x+bell.width/2,y:bell.y+bell.height/2,w:bell.width,h:bell.height}]:[];};
  function rename(){const tab=$('#ux-tab-options');if(tab)tab.lastChild.textContent=executionTabLabel(config);const contents=$('[data-ux=contents]');if(contents)contents.innerHTML=uiIcon('layers')+'<span class="ux-tool-label">Ebenen</span> <span data-ux-count>('+el.state.objects.length+')</span>';if(contents){contents.setAttribute('aria-label','Ebenen ('+el.state.objects.length+')');contents.title='Ebenen ('+el.state.objects.length+')';}const d=$('.ux-contents-dialog');d?.setAttribute('aria-label','Ebenenverwaltung');if(d)d.querySelector('h2').textContent='Ebenenverwaltung';}
@@ -70,15 +76,16 @@ export async function installWorkflow(api){
  $('[data-ux=multi-center]').insertAdjacentHTML('beforebegin',button('multi-left',alignmentContent('left'),'aria-label="Ausgewählte Texte links bündig ausrichten" disabled'));
  $('[data-ux=multi-center]').insertAdjacentHTML('afterend',button('multi-right',alignmentContent('right'),'aria-label="Ausgewählte Texte rechts bündig ausrichten" disabled'));
  r.addEventListener('click',e=>{const key=e.target.closest('[data-ux]')?.dataset.ux;if(!['multi-left','multi-right'].includes(key))return;const ids=all('[data-align-id]:checked').map(n=>n.dataset.alignId);if(ids.length<2)return;mutate(()=>alignGroup(el.state.objects,ids,key==='multi-left'?'left':'right',surface()));});
- const boundsCache=new Map();
- function bounds(o){const key=JSON.stringify([o.text,o.font,o.size,o.bold,o.italic,o.letterSpacing,o.textAnchor,o.lineHeight,o.w]);if(boundsCache.has(key))return boundsCache.get(key);const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');svg.style.cssText='position:absolute;visibility:hidden;width:1px;height:1px';svg.innerHTML='<g>'+textPaths(o,el.fontData)+'</g>';r.append(svg);const b=svg.firstElementChild.getBBox(),value={x:b.x,y:b.y,width:b.width,height:b.height};svg.remove();if(boundsCache.size>100)boundsCache.clear();boundsCache.set(key,value);return value;}
+ const bounds=createTextBounds(el);
  el.uxAlign=mode=>{const o=selected();if(!o||o.uxLocked)return;mutate(()=>{const xs=transformedCorners(o,bounds(o)).map(p=>p.x),a=surface();o.x+=(mode==='left'?a.x-Math.min(...xs):mode==='right'?a.x+a.width-Math.max(...xs):a.x+a.width/2-(Math.min(...xs)+Math.max(...xs))/2);});};
  const fitted=new Map(),signature=o=>JSON.stringify([o.text,o.font,o.bold,o.italic,o.size,o.letterSpacing,o.textAnchor,o.lineHeight,o.w,el.state.fkFrame,el.state.mOptions,el.uxTextScale?.()||1]);
+ const pendingTextFits=new Set(),fitRetryMessage='Text konnte noch nicht automatisch eingepasst werden. Bitte Position prüfen.';
+ let ownsFitRetryNotice=false;
  const normalize=el.normalize;
  // Ü3.2: Autofit verkleinert bis zur Mindestgröße (K10: minTextMm des Verfahrensprofils, sonst 4 mm;
  // im Werkstatt-Editor 1 mm). Reicht das nicht, bleibt die Mindestgröße stehen und das Feld meldet
  // „Text zu lang“ (uxTextOverflow='length').
- el.normalize=function(...args){const result=normalize.apply(this,args);for(const o of this.state.objects.filter(o=>o.type==='text'&&el.uxCanEdit?.(o,'scale')!==false&&!o.uxLocked&&!o.technicalLocked&&!o.uxHidden&&o.text.trim())){try{if(config?.doorbell?.schema==='gravuru-doorbell/v1')clampToAcrylic(o,chosenProfile(),bounds(o));if(fitted.get(o.id)===signature(o))continue;const min=config?.workbench?.embedded?1:(el.uxMinTextMm||4)/(el.uxTextScale?.()||1),size=fitText(o,bounds(o),textSurface(),min,this.fontData);if(size!==null&&size<o.size){setTextSize(o,size);measureText(o,this.fontData);say('Text automatisch auf '+(size*(el.uxTextScale?.()||1)).toLocaleString('de-DE',{maximumFractionDigits:2})+' mm eingepasst.');}else if(size===null){if(o.size>min){setTextSize(o,min);measureText(o,this.fontData);}say('Text zu lang: Passt auch in der Mindestgröße von '+(min*(el.uxTextScale?.()||1)).toLocaleString('de-DE',{maximumFractionDigits:2})+' mm nicht auf die Fläche. Bitte kürzen.');}if(size===null)o.uxTextOverflow='length';else delete o.uxTextOverflow;}catch{say('Text konnte noch nicht automatisch eingepasst werden. Bitte Position prüfen.');}fitted.set(o.id,signature(o));}return result;};
+ el.normalize=function(...args){const result=normalize.apply(this,args),texts=this.state.objects.filter(o=>o.type==='text'&&el.uxCanEdit?.(o,'scale')!==false&&!o.uxLocked&&!o.technicalLocked&&!o.uxHidden&&o.text.trim());for(const id of pendingTextFits)if(!texts.some(o=>o.id===id))pendingTextFits.delete(id);for(const o of texts){try{if(config?.doorbell?.schema==='gravuru-doorbell/v1')clampToAcrylic(o,chosenProfile(),bounds(o));const face=this.fontData?.[o.font]?.[o.bold?'bold':'regular']||this.fontData?.[o.font]?.regular;if(fitted.get(o.id)?.signature===signature(o)&&fitted.get(o.id)?.face===face){pendingTextFits.delete(o.id);continue;}const min=config?.workbench?.embedded?1:(el.uxMinTextMm||4)/(el.uxTextScale?.()||1),size=fitText(o,bounds(o),textSurface(),min,this.fontData);if(size!==null&&size<o.size){setTextSize(o,size);measureText(o,this.fontData);say('Text automatisch auf '+(size*(el.uxTextScale?.()||1)).toLocaleString('de-DE',{maximumFractionDigits:2})+' mm eingepasst.');}else if(size===null){if(o.size>min){setTextSize(o,min);measureText(o,this.fontData);}say('Text zu lang: Passt auch in der Mindestgröße von '+(min*(el.uxTextScale?.()||1)).toLocaleString('de-DE',{maximumFractionDigits:2})+' mm nicht auf die Fläche. Bitte kürzen.');}if(size===null)o.uxTextOverflow='length';else delete o.uxTextOverflow;}catch{pendingTextFits.add(o.id);ownsFitRetryNotice=true;say(fitRetryMessage);continue;}pendingTextFits.delete(o.id);fitted.set(o.id,{signature:signature(o),face:this.fontData?.[o.font]?.[o.bold?'bold':'regular']||this.fontData?.[o.font]?.regular});}if(ownsFitRetryNotice&&!pendingTextFits.size&&!texts.some(o=>o.uxTextOverflow)){if($('[data-ux-status]')?.textContent===fitRetryMessage)say('');ownsFitRetryNotice=false;}return result;};
  r.addEventListener('input',e=>{if(e.target.dataset.uxText){const o=el.state.objects.find(o=>o.id===e.target.dataset.uxText);if(o)o.uxCustomerText=true;}},true);
  let placementJob=Promise.resolve();
  // Chris 22./23.10.2026: Ein neues Element bekommt immer einen freien Platz – Suche über die ganze
@@ -94,6 +101,8 @@ export async function installWorkflow(api){
  // Gestaltungsfläche innerhalb des Randes (design-area.mjs); Klingelschild-Altpfad: Acrylfläche des Rahmens.
  function placementSurface(){if(!config)return surface();const current=el.uxProfileGeometry?.()||surface(),geometry={...current,holes:[],shape:current.shape??profile.geometry.shape},a=designArea(config,{geometry});return {x:a.left,y:a.top,width:a.right-a.left,height:a.bottom-a.top,shape:geometry.shape,...(geometry.shape==='contour'||geometry.cornerRadiusMm>0?{geometry}:{})};}
  function shrinkTo(o,scale){if(o.type==='text')setTextSize(o,o.size*scale);o.w*=scale;o.h*=scale;}
+ // Auch für den Designwechsel über die Produktgalerie (product-design-gallery.mjs).
+ el.uxPlaceObject=o=>place(o);
  function place(o){
   if(o.type==='motif'&&config){say('Freie Fläche für das Motiv wird gesucht …');placementJob=placementJob.then(()=>placeNewMotif({...api},o,{minScale:placementMinScale(o)})).catch(()=>say('Freie Fläche konnte nicht geprüft werden. Bitte die Motivposition prüfen.'));return;}
   const hit=freePlacement(o,placementSurface(),el.state.objects,obstacles(),{minScale:placementMinScale(o)});
@@ -109,8 +118,13 @@ export async function installWorkflow(api){
  // Gate progression on the completed placement and the current geometry.
  const layoutDialog=dialog('layout-check','Bitte Gestaltung prüfen','<div data-layout-problems></div>'+button('layout-fit','Automatisch einpassen')+button('close','Weiter bearbeiten'));
  const reviewIssues=()=>layoutReviewIssues({config,profile:chosenProfile(),objects:el.state.objects,design:chosenProfile().designs.find(d=>d.id===el.state.designId),resources:{motifs:config?.localResources?.motifs||[],fonts:el.fontData}});
- el.uxCheckLayout=async()=>{await placementJob;const issues=config?reviewIssues():[];if(!issues.length)return true;$('[data-layout-problems]').innerHTML=issues.map(i=>'<p>'+esc(i.message)+'</p>').join('');if(!layoutDialog.open)layoutDialog.showModal();return false;};
- r.addEventListener('click',event=>{if(event.target.closest('[data-ux=layout-fit]')){
+ // Optional presentation adapter; the existing progression/other validators
+ // still await this gate. Without an adapter the original policy is unchanged.
+ const layoutContext=()=>({dialog:layoutDialog,inspect:async()=>{await placementJob;return config?reviewIssues():[];},mutate,say,
+  canMove:o=>may(o,'move'),boundaryIssue:o=>customerLayoutIssue(o,chosenProfile(),{motifs:config?.localResources?.motifs||[],fonts:el.fontData}),
+  fitOriginal:fitLayout});
+ el.uxCheckLayout=async()=>{await placementJob;if(el.uxResolveLayoutReview)return el.uxResolveLayoutReview(layoutContext());const issues=config?reviewIssues():[];if(!issues.length)return true;$('[data-layout-problems]').innerHTML=issues.map(i=>'<p>'+esc(i.message)+'</p>').join('');if(!layoutDialog.open)layoutDialog.showModal();return false;};
+ function fitLayout(){
   const issues=reviewIssues(),copies=el.state.objects.map(o=>({...o})),changed=new Set();
   // Keep motifs in place where possible: move text first; never rewrite the master.
   const ids=[...new Set(issues.flatMap(i=>i.code==='overlap'?[i.ids.find(id=>copies.find(o=>o.id===id)?.type==='text')||i.ids.at(-1)]:i.ids))];
@@ -122,19 +136,36 @@ export async function installWorkflow(api){
   if(failed)return say('Nicht alles passt automatisch. Bitte den Text kürzen oder einzelne Elemente verschieben.');
   mutate(()=>{for(const o of el.state.objects)if(changed.has(o.id))Object.assign(o,copies.find(c=>c.id===o.id));});
   if(!reviewIssues().length){layoutDialog.close();say('Gestaltung eingepasst. Bitte noch einmal prüfen.');}else say('Bitte die übrigen markierten Elemente prüfen.');
- }});
- // New uploads use the same free-space search; replacements keep their position.
+ }
+ r.addEventListener('click',event=>{if(event.target.closest('[data-ux=layout-fit]')){if(el.uxFitLayoutReview)void el.uxFitLayoutReview(layoutContext());else fitLayout();}});
+ // New free photos retain their larger, centered upload bounds (Mika 05.11.2026).
+ // Other new uploads still use free-space search; replacements keep their position.
  let known=new Set(el.state.objects.map(o=>o.id));
  let changing=false;
+ // Restored photos already have the customer's placement. They are not new uploads.
+ const restore=el.restoreDraft;
+ if(restore)el.restoreDraft=function(...args){const previous=changing;changing=true;try{return restore.apply(this,args);}finally{known=new Set(this.state.objects.map(o=>o.id));changing=previous;}};
  const choose=el.chooseDesign;
- el.chooseDesign=function(id){
+ const confirmPhotoDrop=createPhotoDropConfirm(dialog);
+ el.chooseDesign=function(id,{dropPhotos=false}={}){
   if(id===this.state.designId)return;
   const template=chosenProfile().designs.find(d=>d.id===id);if(!template)return;
   let next;
-  try{next=carryDesignContent(captureDesignContent(this.state.objects,chosenProfile().designs.find(d=>d.id===this.state.designId)),template,config,{id:()=>this.id()});}
-  catch(error){say(error.message);return false;}
+  try{next=carryDesignContent(captureDesignContent(this.state.objects,chosenProfile().designs.find(d=>d.id===this.state.designId)),template,config,{id:()=>this.id(),dropPhotos,geometry:this.uxProfileGeometry?.()||chosenProfile().geometry});}
+  catch(error){
+   if(isPhotoUnsupported(error)&&!dropPhotos){void confirmPhotoDrop().then(ok=>{if(ok)this.chooseDesign(id,{dropPhotos:true});});return false;}
+   say(error.message);return false;}
   changing=true;
-  try{choose.call(this,id,{carry:false});this.state.objects=next.objects;for(const key of next.added)place(this.state.objects.find(o=>o.id===key));known=new Set(this.state.objects.map(o=>o.id));this.normalize();this.sync();return true;}
+  try{
+   choose.call(this,id,{carry:false});this.state.objects=next.objects;
+   // Content transfer replaces the adapter's fitted objects. Fit this final
+   // layout with a fresh cache, so removing holes restores this design exactly.
+   this.state.uxHolePlacement=null;
+   for(const key of next.added)place(this.state.objects.find(o=>o.id===key));
+   known=new Set(this.state.objects.map(o=>o.id));this.normalize();
+   if(config){const current=chosenProfile();Object.assign(this.state,mountingPlacementState(config,this.state,current,current,{fonts:this.fontData,motifs:config.localResources?.motifs||[]}));}
+   this.sync();return true;
+  }
   finally{changing=false;}
  };
  // The existing library replaces the Bestseller grid in the same panel.
@@ -146,23 +177,12 @@ export async function installWorkflow(api){
  const grid=$('[data-library-grid]');grid.classList.remove('ux-scroll-list');grid.classList.add('workflow-motif-grid');grid.removeAttribute('tabindex');
  panel.querySelector('.ux-list-edge')?.remove();const more=$('[data-library-more]');if(more)more.parentElement.hidden=false;
  const search=$('[data-library-search]'),searchHint=document.createElement('p');searchHint.id='ux-motif-search-hint';searchHint.className='ux-motif-search-hint';searchHint.textContent='Beschreibe einfach, was du suchst – du musst den genauen Motivnamen nicht kennen.';search.after(searchHint);search.setAttribute('aria-describedby',searchHint.id);
- // Previews use existing rendered vectors, never newly generated design artwork.
- const designPreview=dialog('design-preview','Designvorschau','<div data-design-preview-art></div>'+button('preview-use','Dieses Design verwenden','class="ux-primary"'));
- let previewId=null,hoverTimer;const hover=document.createElement('div');hover.className='workflow-hover-preview';hover.hidden=true;r.append(hover);
- function previewCard(card){previewId=card.dataset.cDesign;$('[data-design-preview-art]').innerHTML=card.querySelector('svg')?.outerHTML||'';designPreview.showModal();}
- function decorate(){for(const card of all('[data-c-design]'))if(!card.querySelector('[data-design-enlarge]')){const span=document.createElement('span');span.dataset.designEnlarge='';span.setAttribute('role','button');span.tabIndex=0;span.setAttribute('aria-label','Design vergrößern: '+(card.querySelector('span')?.textContent||''));span.textContent='↗ Vorschau';card.append(span);}}
- r.addEventListener('click',e=>{const trigger=e.target.closest('[data-design-enlarge]');if(trigger){e.preventDefault();e.stopImmediatePropagation();previewCard(trigger.closest('[data-c-design]'));}},true);
- r.addEventListener('keydown',e=>{if(e.target.matches('[data-design-enlarge]')&&['Enter',' '].includes(e.key)){e.preventDefault();e.stopImmediatePropagation();previewCard(e.target.closest('[data-c-design]'));}},true);
- r.addEventListener('pointerover',e=>{const card=e.target.closest('[data-c-design]');if(!card||!matchMedia('(hover:hover)').matches)return;clearTimeout(hoverTimer);hoverTimer=setTimeout(()=>{hover.innerHTML=card.querySelector('svg')?.outerHTML||'';hover.hidden=false;const b=card.getBoundingClientRect();hover.style.left=Math.max(8,Math.min(innerWidth-260,b.left-270))+'px';hover.style.top=Math.max(8,Math.min(innerHeight-330,b.top))+'px';},400);});
- r.addEventListener('pointerout',e=>{const card=e.target.closest('[data-c-design]');if(card&&!card.contains(e.relatedTarget)){clearTimeout(hoverTimer);hover.hidden=true;}});
- r.addEventListener('click',e=>{hover.hidden=true;if(e.target.closest('[data-ux=preview-use]')){designPreview.close();el.chooseDesign(previewId);}});
- new MutationObserver(decorate).observe($('.c-gallery'),{childList:true});decorate();
  // K9/Ü10.1: Designs des Produktthemas zuerst (Bestseller vorn, sonst Reihenfolge im Profil),
  // Designs anderer Themen eingeklappt unter „Weitere Designs“; Designs ohne Thema bleiben sichtbar.
  const gallery=$('.c-gallery');let moreExpanded=false,arranging=false;
  const moreToggle=document.createElement('button');moreToggle.type='button';moreToggle.className='workflow-more-designs';moreToggle.dataset.ux='more-designs';moreToggle.hidden=true;moreToggle.setAttribute('aria-expanded','false');
  ($('.ux-design-reveal')||gallery).after(moreToggle);
- function arrangeGallery(){if(arranging||!gallery)return;arranging=true;try{
+ function arrangeGallery(){if(arranging||!gallery)return;if(el.uxApplyDesignSearch?.())return;arranging=true;try{
   const order=galleryOrder(profile.designs,config?.designSelection==='all-approved'?null:productTheme(profile)),cards=new Map(all('.c-gallery [data-c-design]').map(c=>[c.dataset.cDesign,c]));
   const ordered=[...order.primary,...order.more].map(id=>cards.get(id)).filter(Boolean);
   if(ordered.some((card,i)=>gallery.children[i]!==card))for(const card of ordered)gallery.append(card);
@@ -205,8 +225,7 @@ export async function installWorkflow(api){
   if(key==='copy-design-link'){const field=$('[data-design-link]');try{await navigator.clipboard.writeText(field.value);$('[data-design-link-status]').textContent='Link kopiert.';}catch{field.select();$('[data-design-link-status]').textContent='Bitte den Link markieren und kopieren.';}}
  });
  const render=el.render;el.render=function(...args){const v=render.apply(this,args);guides();return v;};
- const sync=el.sync;el.sync=function(...args){if(!changing)for(const o of this.state.objects)if(!known.has(o.id)&&o.uxUploadId)place(o);known=new Set(this.state.objects.map(o=>o.id));const v=sync.apply(this,args);rename();arrangeGallery();if($('#ux-size')){$('#ux-size').step=config?.workbench?.embedded?'.01':'1';if(r.activeElement!==$('#ux-size')&&selected()?.type==='text')$('#ux-size').value=el.uxDisplayTextSize(selected());}guides();return v;};
- for(const d of [designPreview])d.addEventListener('click',e=>{if(e.target!==d)return;const b=d.getBoundingClientRect();if(e.clientX<b.left||e.clientX>b.right||e.clientY<b.top||e.clientY>b.bottom)d.close();});
+ const sync=el.sync;el.sync=function(...args){if(!changing)for(const o of this.state.objects)if(!known.has(o.id)&&o.uxUploadId&&!(o.uxUploadKind==='photo'&&o.uxPersonal))place(o);known=new Set(this.state.objects.map(o=>o.id));const v=sync.apply(this,args);rename();arrangeGallery();if($('#ux-size')){$('#ux-size').step=config?.workbench?.embedded?'.01':'1';if(r.activeElement!==$('#ux-size')&&selected()?.type==='text')$('#ux-size').value=el.uxDisplayTextSize(selected());}guides();return v;};
  await installCompletion(api);
  installInlineMotifBrowser({root:r,panel,bestsellers});
  el.sync();

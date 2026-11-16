@@ -1,8 +1,11 @@
+import {isScalableSizes,sizeConfiguration,validateScalableSizes} from './scalable-sizes.mjs';
 import {isLayeredDoorbell,DOORBELL_SCHEMA,validateDoorbellDefinition,selectedDoorbellProfile,selectedDoorbellDesign,doorbellPriceBase,doorbellLayoutIssue} from './product-model-module.mjs';
 import {isFamilyFormats,validateFamilyFormats,familyFormatOptions,familyFormatSelection,familyFormatCombinations,familyFormatPrice,selectedFamilyProfile,selectedFamilyDesign} from './family-formats.mjs';
 import {QUANTITY_TIER_MAX,quantityTiersIssue,quantityTiersOpen,activeQuantityTiers,quantityTierFor,applyQuantityTier,quantityTierLabels} from './quantity-tiers.mjs';
 export {QUANTITY_TIER_MAX,quantityTiersIssue,quantityTiersOpen,activeQuantityTiers,quantityTierFor,applyQuantityTier,quantityTierLabels} from './quantity-tiers.mjs';
 import {canDeleteTemplateElement,templateRightsIssue,customerAdditionPolicy,validateCustomerAdditions,designElementRights} from './element-rights.mjs';
+import {moduleEnabled,applyModuleProfile} from './module-profile.mjs';
+import {moduleDesignIssue} from './module-runtime.mjs';
 import {processProfile,processColorIssue} from '../../workshop/process-profiles.mjs';
 import {validateOptionPresentation} from './option-media.mjs';
 import {validateStudio} from '../../platform/sources/app/shared/models/studio-validation.mjs';
@@ -19,6 +22,7 @@ import {optionFields,visibleBy,validateOptionConditions,fieldValue,fieldPrice,fi
 import {validateSurfaces,objectSurface,hasBack,backSurcharge,surfaceProcess} from './surfaces.mjs';
 import {editorUi,validateToolbarConfig} from './toolbar-placement-model.mjs';
 import {validateExecution} from './execution-registry.mjs';
+import {templatePhotoPrice} from './photo-design-pricing.mjs';
 
 const clone = value => structuredClone(value);
 const fail = message => { throw Error(message); };
@@ -38,7 +42,9 @@ export const MAX_PHOTO_BYTES = 15 * 1024 * 1024;
 // K10 / Ü1: Verfahrensprofil des Produkts (Werkzeuge, Palette, Mindestschriftgröße, Soll-DPI).
 export const productProcess=config=>processProfile(config.profile);
 // New product revisions opt in explicitly. Existing logo/photo pricing remains unchanged.
-export const vectorLogoAllowed=config=>config?.logo?.enabled===true&&config.logo.vectorUpload===true&&config.logo.extraPriceCents===1299&&config?.photo?.enabled===false&&config?.profile?.material?.kind==='steel'&&productProcess(config).method==='engraving';
+export const vectorLogoAllowed=config=>moduleEnabled(config,'logo')&&config?.logo?.enabled===true&&config.logo.vectorUpload===true&&config.logo.extraPriceCents===1299&&
+ ((config?.profile?.material?.kind==='steel'&&config?.photo?.enabled===false)||
+ (config?.profile?.material?.kind==='acrylic'&&config?.profile?.processing?.profileId==='acrylic-engraving'))&&productProcess(config).method==='engraving';
 // Physischer Maßstab der Gestaltung (Acryl: gewählte Größe / Designbreite, sonst 1).
 export function physicalScale(config, options={}) {
   return config.acrylic ? acrylicSelection(acrylicOptions(resolvedOptions(config, options)), config.acrylic.pricing).size.width / config.acrylic.designWidth : 1;
@@ -48,7 +54,15 @@ export const money = cents => euroFormat.format(cents / 100);
 
 // This adapter consumes the existing native profile. It never grants a runtime release.
 export function prepareConfig(input) {
-  const config = clone(input);
+  const config = input.moduleProfile===undefined?clone(input):applyModuleProfile(input,input.moduleProfile);
+  if(config.customerUI?.presentation!==undefined&&config.customerUI.presentation!=='prio-r15')fail('Ungültige Konfiguratoransicht.');
+  if(config.scalableSizes){
+    validateScalableSizes(config);
+    for(const size of config.scalableSizes.sizes)prepareConfig(sizeConfiguration(config,{size:size.id}));
+    Object.assign(config,sizeConfiguration(config));
+  }
+  if(config.photoDesignPricing!==undefined&&(config.photoDesignPricing!==true||config.profile?.material?.kind!=='slate'))fail('Ungültige Fotodesign-Preisregel.');
+  if(config.photoDesignCents!==undefined&&(!Number.isSafeInteger(config.photoDesignCents)||config.photoDesignCents<0||config.photoDesignCents>100000000))fail('Ungültiger Fotodesignpreis.');
   validateExecution(config);
   validateToolbarConfig(config);
   if(isLayeredDoorbell(config)){validateDoorbellDefinition(config);config.profile=selectedDoorbellProfile(config);}
@@ -65,7 +79,8 @@ export function prepareConfig(input) {
   const extraFontIds=localFontIds(config);
   const review=config.reviewOnly===true&&p.binding?.kind==='local-review'&&p.features?.orderEnabled===false;
   if(config.reviewOnly&&!review)fail('Prüfprodukt darf keine Shop-Bestellung freigeben.');
-  validateStudio(p, p, {extraFontIds,motifs:config.localResources?.motifs||[],fonts:config.localResources?.fonts,catalogSizes:isFamilyFormats(config)});
+  const catalogDesigns=config.photoDesignPricing===true&&config.designSelection==='all-approved'&&p.designs.every(d=>d.id===p.defaultDesignId||d.katalog?.target?.released===true);
+  validateStudio(p, p, {extraFontIds,motifs:config.localResources?.motifs||[],fonts:config.localResources?.fonts,catalogSizes:isFamilyFormats(config),catalogDesigns});
   // Themenlimits und Pflichtkennzeichen der Vorlage sind Produktregeln: ungültige Werte laden nicht.
   for(const d of p.designs||[])for(const o of d.objects||[])if(o.type==='text'){
     if(o.required!==undefined&&typeof o.required!=='boolean')fail('Pflichtfeld für Text ausdrücklich festlegen.');
@@ -74,6 +89,7 @@ export function prepareConfig(input) {
   }
   for(const group of p.optionGroups||[])for(const value of group.values)validateOptionPresentation(value);
   validateOptionConditions(p); // K14 / Ü12.1: bedingte Gruppen und Zusatzfelder
+  if(!moduleEnabled(config,'options')&&missingRequiredFields(config,resolvedOptions(config)).length)fail('Ausführungen können nicht abgeschaltet werden: Ein sichtbares Pflicht-Zusatzfeld benötigt eine Kundeneingabe.');
   // K14 / Ü15.1: Flächen (Vorder-/Rückseite). Die Rückseite darf ein eigenes Verfahrensprofil
   // tragen, aber dasselbe Verfahren (Gravur/Druck): die Fertigungsausgabe erzeugt beide Dateien
   // im selben Lauf; ein Verfahrenswechsel je Seite ist noch nicht an die Ausgabe angeschlossen.
@@ -85,7 +101,7 @@ export function prepareConfig(input) {
   if (typeof config.photo?.enabled !== 'boolean' || config.photo.mode !== 'upload-only') fail('Fotofunktion ausdrücklich festlegen.');
   if(config.logo!==undefined&&typeof config.logo.enabled!=='boolean')fail('Logofunktion ausdrücklich festlegen.');
   if(config.logo?.vectorUpload!==undefined&&typeof config.logo.vectorUpload!=='boolean')fail('Vektorlogo-Funktion ausdrücklich festlegen.');
-  if(config.logo?.vectorUpload===true&&!vectorLogoAllowed(config))fail('Vektorlogos benötigen Edelstahlgravur ohne Fotoupload und einen ausdrücklichen Aufpreis von 12,99 € je Logo.');
+  if(config.logo?.vectorUpload===true&&!vectorLogoAllowed(config))fail('Vektorlogos benötigen Acrylglasgravur oder Edelstahlgravur ohne Fotoupload und einen ausdrücklichen Aufpreis von 12,99 € je Logo.');
   validateCustomerAdditions(config);
   if (!config.photo.enabled){p.designs = p.designs.filter(d => !d.objects.some(o => o.type === 'photoSlot'));if(config.localResources){config.localResources.photoPlaceholders=[];config.localResources.photoExamples=[];}}
   if (!p.designs.length) fail('Für dieses Produkt gibt es keine passende Vorlage ohne Fotobereich.');
@@ -125,6 +141,7 @@ export function prepareConfig(input) {
 // und Felder werden verworfen (auch wenn ein Wert mitkommt); leere Felder fehlen.
 // Pflichtfelder prüft `validateDesign` (nur sichtbare, nicht im Entwurf).
 export function resolvedOptions(config, values = {}) {
+  config=sizeConfiguration(config,values);
   if(isFamilyFormats(config))return familyFormatOptions(config,values);
   const groups = config.profile.optionGroups || [], fields = optionFields(config.profile), result = {};
   if (!values || typeof values !== 'object' || Array.isArray(values)) fail('Ungültige Optionen.');
@@ -147,18 +164,25 @@ export const choiceOptions = (config, options) => Object.fromEntries(Object.entr
 export const fieldOptions = (config, options) => Object.fromEntries(Object.entries(options).filter(([key]) => optionFields(config.profile).some(f => f.id === key)));
 export const visibleGroups = (config, values = {}) => { const options = resolvedOptions(config, values); return (config.profile.optionGroups || []).filter(g => options[g.id] !== undefined); };
 export function missingRequiredFields(config, values = {}) {
+  config=sizeConfiguration(config,values);
   const options = resolvedOptions(config, values);
   return visibleFields(config, options).filter(f => f.required === true && options[f.id] === undefined);
 }
 export const optionFieldCents = (config, options) => visibleFields(config, options).reduce((sum, f) => sum + fieldPrice(f, options[f.id]), 0);
 // Sichtbare, ausgefüllte Zusatzfelder für Warenkorb, Bestellung und Fertigungszusammenfassung.
 export function optionFieldEntries(config, values = {}) {
+  config=sizeConfiguration(config,values);
   const options = resolvedOptions(config, values);
   return visibleFields(config, options).filter(f => options[f.id] !== undefined).map(f => ({id:f.id, kind:f.kind, label:f.label, value:options[f.id], display:fieldDisplay(f, options[f.id]), priceCents:fieldPrice(f, options[f.id])}));
 }
 // Ausführungen für Shop-Varianten: alle Kombinationen der Gruppen, unsichtbare Gruppen
 // verworfen und doppelte Ausführungen zusammengefasst; Zusatzfelder sind keine Varianten.
 export function variantCombinations(config) {
+  if(isScalableSizes(config))return config.scalableSizes.sizes.flatMap(size=>{
+    const selected=sizeConfiguration(config,{size:size.id});
+    selected.profile.optionGroups[0].values=selected.profile.optionGroups[0].values.filter(v=>v.id===size.id);
+    return variantCombinations(selected);
+  });
   if(isFamilyFormats(config))return familyFormatCombinations(config);
   let combinations = [{}];
   for (const g of config.profile.optionGroups || []) combinations = combinations.flatMap(o => g.values.map(v => ({...o, [g.id]:v.id})));
@@ -168,6 +192,7 @@ export function variantCombinations(config) {
 }
 
 export function selectedProfile(config, values = {}) {
+  config=sizeConfiguration(config,values);
   if(isFamilyFormats(config))return selectedFamilyProfile(config,values);
   if(isLayeredDoorbell(config))return selectedDoorbellProfile(config,resolvedOptions(config,values));
   const profile = clone(config.profile), options = resolvedOptions(config, values);
@@ -186,15 +211,54 @@ export function selectedProfile(config, values = {}) {
     }
   }
   if (finish !== undefined && profile.mountingPreview?.spacers) profile.mountingPreview.finish = finish;
+  if(profile.mountingPreview?.spacers&&config.slateAccessories){
+    const selected=config.slateAccessories.choices.filter(c=>c.groupId==='mounting'||options[c.groupId]!==undefined).find(c=>c.groupId!=='mounting'&&c.valueId===options[c.groupId]&&c.images?.length===1)
+      ??config.slateAccessories.choices.find(c=>c.groupId==='mounting'&&c.valueId===options.mounting);
+    if(selected?.images?.[0])profile.mountingPreview.image=selected.images[0].src;
+  }
   return profile;
 }
 
+export function photoPolicyForDesign(config,designId,options={}){
+ config=sizeConfiguration(config,options);
+ if(!config?.photoDesignPricing)return config?.photo;
+ const variant=isFamilyFormats(config)?familyFormatSelection(config,options).variant:undefined;
+ const design=isFamilyFormats(config)?selectedFamilyDesign(config,designId,options):config.profile.designs.find(d=>d.id===designId);
+ if(!design)fail('Unbekanntes Design.');
+ return templatePhotoPrice(config,design,variant).policy;
+}
+// Main R2 (12.11.2026): the module check only needs the default design and the ink
+// of the selected execution. Building the full selected profile projects every
+// template of the family variant, so a gallery that quotes each template became
+// quadratic (127 templates: about 6 s on the host). Both values depend only on the
+// unchanged product configuration and the resolved options; the first call per
+// configuration and option set still runs selectedProfile with all of its checks.
+const moduleQuoteContexts=new WeakMap();
+function moduleQuoteContext(config,options){
+  // The stored default design is part of the key: a few editors set it on an existing
+  // model (e.g. the shop design switch); the next quote must then see the new value.
+  const key=JSON.stringify([config.profile?.defaultDesignId??null,options]);let byOptions=moduleQuoteContexts.get(config);
+  if(!byOptions){byOptions=new Map();moduleQuoteContexts.set(config,byOptions);}
+  let context=byOptions.get(key);
+  if(!context){
+    const profile=selectedProfile(config,options);
+    context=Object.freeze({defaultDesignId:profile.defaultDesignId,ink:getProcessingProfile(profile).ink});
+    if(byOptions.size>=512)byOptions.clear();
+    byOptions.set(key,context);
+  }
+  return context;
+}
 export function quote(config, objects, designId, values = {}, quantity = 1) {
+  config=sizeConfiguration(config,values);
   if(config.reviewOnly&&config.basePriceCents===null)fail('Preis noch offen.');
   if (!Number.isInteger(quantity) || quantity < 1 || quantity > 99) fail('Menge: 1 bis 99.');
   const options = resolvedOptions(config, values);
   const design = isFamilyFormats(config)?selectedFamilyDesign(config,designId,options):isLayeredDoorbell(config)?selectedDoorbellDesign(config,designId,options):config.profile.designs.find(d => d.id === designId);
   if (!design) fail('Unbekanntes Design.');
+  let moduleIssue=null;
+  if(config.moduleProfile){const shared=moduleQuoteContext(config,options);moduleIssue=moduleDesignIssue(config,{source:design,objects,designId,defaultDesignId:shared.defaultDesignId,options,defaultOptions:resolvedOptions(config),ink:shared.ink,template:objects.length===0});}
+  if(moduleIssue)fail(moduleIssue);
+  const selectedBase=templatePhotoPrice(config,design,isFamilyFormats(config)?familyFormatSelection(config,options).variant:undefined).baseCents;
   // Original template motifs are included once. A duplicate must not inherit this credit.
   const included = new Map(design.objects.filter(o => o.type === 'motif').map(o => [o.id, o.motif]));
   const embeddedOnly=new Set((config.localResources?.motifs||[]).filter(m=>m.embeddedOnly===true).map(m=>m.key));
@@ -207,7 +271,7 @@ export function quote(config, objects, designId, values = {}, quantity = 1) {
     if (included.get(o.id) === o.motif && !seen.has(o.id)) seen.add(o.id);
     else additionalMotifs++;
   }
-  let unitCents = isFamilyFormats(config)?familyFormatPrice(config,options):isLayeredDoorbell(config)?doorbellPriceBase(config,options):config.acrylic ? acrylicSelection(acrylicOptions(options),config.acrylic.pricing).totalCents : config.steelFormats ? 0 : config.basePriceCents;
+  let unitCents = isFamilyFormats(config)?familyFormatPrice(config,options)+selectedBase-familyFormatSelection(config,options).variant.basePriceCents:isLayeredDoorbell(config)?doorbellPriceBase(config,options):config.acrylic ? acrylicSelection(acrylicOptions(options),config.acrylic.pricing).totalCents : config.steelFormats ? 0 : selectedBase;
   if(!config.acrylic&&!isFamilyFormats(config))for (const group of config.profile.optionGroups || []) if (options[group.id] !== undefined&&!(isLayeredDoorbell(config)&&group.id==='format')) unitCents += group.values.find(v => v.id === options[group.id]).priceCents;
   // Zusatzfelder (Ü12.1): Aufpreis nur sichtbarer, ausgefüllter Felder.
   const fieldCents = optionFieldCents(config, options);
@@ -218,12 +282,12 @@ export function quote(config, objects, designId, values = {}, quantity = 1) {
   if (!Number.isSafeInteger(unitCents)) fail('Ungültiger Gesamtpreis.');
   // Staffel (Ü11.1) serverseitig auf den Stückpreis; nur Produkte mit Staffelangabe
   // tragen die Zusatzfelder, damit bestehende Preisstände unverändert bleiben.
-  const priceConfig=isFamilyFormats(config)?{...config,basePriceCents:familyFormatSelection(config,options).variant.basePriceCents,quantityTiers:familyFormatSelection(config,options).variant.quantityTiers}:config;
+  const priceConfig=isFamilyFormats(config)?{...config,basePriceCents:selectedBase,quantityTiers:familyFormatSelection(config,options).variant.quantityTiers}:config.photoDesignPricing?{...config,basePriceCents:selectedBase}:config;
   const listUnitCents = unitCents, tier = quantityTierFor(priceConfig, quantity);
   unitCents = applyQuantityTier(listUnitCents, tier, priceConfig.basePriceCents);
   if (!Number.isSafeInteger(unitCents * quantity)) fail('Ungültiger Gesamtpreis.');
   const tiers = priceConfig.quantityTiers === undefined ? {} : {listUnitCents, quantityTier:tier ? {...tier} : null, quantityTierDiscountCents:listUnitCents - unitCents,...(priceConfig.quantityTierScope===undefined?{}:{quantityTierScope:priceConfig.quantityTierScope})};
-  return {currency:'EUR', unitCents, totalCents:unitCents * quantity, quantity, additionalMotifs, ...(config.motifCharge==='all'?{chargedMotifs}:{}), options, ...tiers, ...(config.profile.optionFields === undefined ? {} : {fieldCents}), ...(hasBack(config.profile) ? {backCents} : {})};
+  return {currency:'EUR', unitCents, totalCents:unitCents * quantity, quantity, additionalMotifs, ...(config.photoDesignPricing?{selectedBasePriceCents:selectedBase}:{}), ...(config.motifCharge==='all'?{chargedMotifs}:{}), options, ...tiers, ...(config.profile.optionFields === undefined ? {} : {fieldCents}), ...(hasBack(config.profile) ? {backCents} : {})};
 }
 
 // `template:true` prüft eine Vorlage gegen sich selbst (Händler-Werkstatt):
@@ -234,6 +298,7 @@ export function quote(config, objects, designId, values = {}, quantity = 1) {
 export function validateDesign(config, design, options, fonts, motifs, {template=false,draft=false}={}) {
   const source = selectedProfile(config,options).designs.find(d => d.id === design?.id);
   if (!source) fail('Die Vorlage gehört nicht zu diesem Produkt.');
+  const moduleIssue=config.moduleProfile&&moduleDesignIssue(config,{source,objects:design.objects,designId:design.id,defaultDesignId:selectedProfile(config,options).defaultDesignId,options:resolvedOptions(config,options),defaultOptions:resolvedOptions(config),ink:getProcessingProfile(selectedProfile(config,options)).ink,template});if(moduleIssue)fail(moduleIssue);
   if(design.textOnTop!==undefined&&typeof design.textOnTop!=='boolean')fail('Ungültige Textebenen-Regel.');
   if(source.importedSource&&!source.objects.some(o=>o.type==='photoSlot')&&design.objects.some(o=>o.type==='photoSlot'))fail('Diese importierte Vorlage hat noch keinen freigegebenen Fotobereich.');
   validateDesignContent(design, {universal:true,extraFontIds:localFontIds(config)});
@@ -280,6 +345,7 @@ export function validateDesign(config, design, options, fonts, motifs, {template
   if(!template&&!draft){const missing=missingRequiredFields(config,options);if(missing.length)fail(fieldRequiredMessage(missing[0]));}
   if(!template&&!draft)for(const raw of source.objects.filter(o=>o.type==='text'&&o.required===true)){
     const o=design.objects.find(o=>o.id===raw.id);
+    if((!o||o.uxHidden===true)&&canDeleteTemplateElement(config,source.id,raw))continue;
     if(!o||o.type!=='text'||o.uxHidden===true||requiredTextMissing(o.text,raw.text))fail(requiredFieldMessage(raw));
   }
   for (const o of design.objects) {

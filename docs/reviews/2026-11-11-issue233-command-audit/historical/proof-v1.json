@@ -1,0 +1,34 @@
+{
+  "createdAt": "2026-11-11T10:28:44.973Z",
+  "localOnly": true,
+  "bundleVerify": {
+    "passed": true,
+    "prerequisite": "b5d8f28bc1b634412e628c2967fde587a92ff2fb",
+    "head": "8236b8bfab7322447ec46661c116fa526331af3d",
+    "ref": "refs/heads/mika-catalog-ff-20261111"
+  },
+  "testRun": {
+    "passed": 7,
+    "failed": 0,
+    "skipped": 0,
+    "durationMs": 8540.5057,
+    "note": "Actual node --test output observed; this JSON is a summary, not raw stdout"
+  },
+  "files": [
+    {
+      "file": "catalog-8236b8bfa.bundle",
+      "bytes": 19969680,
+      "sha256": "f8c43ef7977be31b6d50f6800c8f3f89a23b0762c5430dc67fafe6097d207a5a"
+    },
+    {
+      "file": "manifest.json",
+      "bytes": 552885,
+      "sha256": "5cca0332016c40d99ecbf2aaf93e9897c81d4e4fbaa39df83dc2635b5b414b3f"
+    },
+    {
+      "file": "catalog-ff.cjs",
+      "bytes": 15887,
+      "sha256": "5a2a5e9893eb0bf4870c2541062a1a6f8bfdc21df265dc8fe2b213442ab569ff"
+    }
+  ]
+}

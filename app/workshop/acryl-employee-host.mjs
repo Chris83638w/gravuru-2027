@@ -2,14 +2,17 @@ import http from 'node:http';import net from 'node:net';import path from 'node:p
 import {createConfiguratorIntegration} from './configurator-integration.mjs';
 import {ORDER_WEBHOOK_PATH} from './shopify-order-webhook.mjs';
 import {DOORBELL_STATUS_WEBHOOK_PATH} from './doorbell-status-webhook.mjs';
+import {DOORBELL_STEEL_SURFACE} from '../platform/sources/app/shared/models/doorbell-material-preview.mjs';
 const rewrites=[['/api/workshop/','/api/workshop/acryl/'],['/workshop-ui/','/workshop-acryl-ui/'],['/configurator/','/acryl-configurator/'],['/platform/','/acryl-platform/'],['/workshop/','/acryl-workshop/'],['/_merchant-form-editor.html','/_merchant-acryl-form-editor.html'],['/werkstatt/kundenansicht','/werkstatt/acryl/kundenansicht'],['/acryl-galerie/Designgalerie.html','/werkstatt/acryl/'],['/acryl-galerie/Formvorlagen.html','/werkstatt/acryl/formen/']];
 const nativeAssets=[['/_bundle/','/_acryl-bundle/'],['/_runtime/','/_acryl-runtime/'],['/acrylic-assets/','/acryl-assets/']];
+const steelSurfacePath=acrylAssetText(DOORBELL_STEEL_SURFACE);
 // Ladezeit (Chris 27.10.2026, „prüfe alles“): statische Editor-Dateien durfte der Browser bisher nie behalten
 // (jedes Öffnen lud Editor-Seite und Nachlade-Schriften neu). Gehashte Pakete dauerhaft, Katalog/Schriften/Motive 1 h,
 // Editor-Seite 5 min (nur Browser). Alles andere bleibt „private, no-store“.
 export function acrylCacheControl(pathname,status){
  if(status!==200)return null;
  if(/^\/_acryl-bundle\/[A-Za-z0-9_.-]+-[a-f0-9]{16}\.m?js$/.test(pathname))return 'public, max-age=31536000, immutable';
+ if(pathname===steelSurfacePath)return 'public, max-age=31536000, immutable';
  if(/^\/_acryl-runtime\/lazy\/(?:katalog-kern\.json|motive-alle\.json|schriften\/[a-z0-9-]{1,80}\.json|motive\/[A-Za-z0-9_-]{1,80}\.json)$/.test(pathname))return 'public, max-age=3600';
  if(pathname==='/_merchant-acryl-editor.html')return 'private, max-age=300';
  return null;

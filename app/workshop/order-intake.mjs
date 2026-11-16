@@ -388,12 +388,12 @@ export function createOrderIntake({database:db,snapshot,clock=Date.now,autoRelea
     if(db.prepare('SELECT 1 FROM form_order_lines WHERE offer_id=? AND tenant_id=?').get(o.id,tenant))fail(409,'Dieser Entwurf wurde bereits einer anderen Bestellposition zugeordnet.');
     if(o.expires_at<clock())fail(422,'Die Checkout-Zuordnung ist abgelaufen; vor Übernahme prüfen.');const m=snapshot(o.snapshot_id);if(m.packageSha256!==o.package_sha256)fail(409,'Der gesicherte Prüfstand wurde verändert.');
     if(quantityChanged){
-     // Check the original quote against its immutable contract before repricing its complete unit for the paid quantity.
+     // The original quote must pass the same percentage-tier contract as checkout before repricing.
      const contract=pricing(b.id),quotedPrice=m.selection?.price;
      if(!extra||!contract?.quantityTiers?.length||quotedPrice?.quantity!==o.quantity||
         JSON.stringify(extra)!==JSON.stringify(personalizationForSnapshot(contract,m)))fail(422,OFFER_MISMATCH);
      const tier=quantityTierFor(contract,quantity);
-     if(unitCents!==applyQuantityTier(quotedPrice.listUnitCents,tier))fail(422,OFFER_MISMATCH);
+     if(unitCents!==applyQuantityTier(quotedPrice.listUnitCents,tier,contract.baseCents))fail(422,OFFER_MISMATCH);
     }
     const id='orderline_'+randomUUID(),document={id,shopDomain:shop,orderId,lineId,variantId:b.variant_id,bindingId:b.id,snapshotId:o.snapshot_id,...(configuration?{configuration}:{}),sourcePackageSha256:o.package_sha256,product:{...m.product},sourceSchema:m.schema||'gravuru-form-review/v1',...(m.selection?{selection:structuredClone(m.selection)}:{}),productionProfile:m.productionProfile?{id:m.productionProfile.id,revision:m.productionProfile.revision,sha256:m.productionProfile.sha256}:null,quantity,unitCents,totalCents:unitCents*quantity,currency:'EUR',status:payload.test===true?'test-paid-event-recorded':'paid-event-recorded',test:payload.test===true,...(approved?{liveApproval:approved,shopifyProductId:'gid://shopify/Product/'+identifier(line.product_id)}:{}),receivedAt:at(),productionReady:false,customerDownloadAllowed:false};
     db.prepare('INSERT INTO form_order_lines(id,shop,order_id,line_id,offer_id,document,created_at,tenant_id) VALUES(?,?,?,?,?,?,?,?)').run(id,shop,orderId,lineId,o.id,JSON.stringify(document),at(),tenant);result.push(document);

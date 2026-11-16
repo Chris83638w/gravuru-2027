@@ -1,3 +1,10 @@
+## 16.11.2026 – Vorschlag Warenkorb-Ladezeit (Claude als Operator, nur lesend)
+
+- Messung am Live-Stand `1c5f8062` (Byte-Vergleich der 7 Shop-Einstiegsdateien identisch): Klick „Warenkorb“ → Position im Warenkorb Handy ≈ 113 s, Desktop ≈ 39 s.
+- Ursache: Vorschau-PNG läuft zusätzlich zum serverseitigen Shopify-Upload (`_gravuru_checkout_image`) als 2,4-MB-Base64 über `cart/data` zum Kunden und als `_Entwurf`-Datei per `cart/add.js` zurück (Handy 17,5 s + 45,7 s); `acrylic-drafts` Handy 36,6 s.
+- Vorschlag V1–V4: [docs/handoffs/2026-11-16-warenkorb-ladezeit-vorschlag.md](docs/handoffs/2026-11-16-warenkorb-ladezeit-vorschlag.md). Keine Runtime-/Live-Änderung.
+- Nächster Schritt: Entscheidung Chris/Mikail, wer V1 umsetzt (Prio-Konfi-Regel: Mika).
+
 ## 16.11.2026 – Go-live: Gesamtstand `1c5f8062` live (Claude als Operator, #239)
 
 - Freigabe: Chris „live“ (18:40).

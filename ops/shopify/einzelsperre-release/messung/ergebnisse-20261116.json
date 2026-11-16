@@ -1,0 +1,188 @@
+{
+ "erstellt": "2026-11-16T07:43:19.601Z",
+ "grenze": 11000000,
+ "wasm": {
+  "aktivNachbau": {
+   "bytes": 20945,
+   "sha256": "3c82b825873c7d8f2b31b82d49fafc9b85ff670744c0d00011f141d792eb1cd6"
+  },
+  "preisB": {
+   "bytes": 22036,
+   "sha256": "8b33937d43aba7c8e86b1c4c3341e3e9224f1ab43d043608f7cbdee4d8f8bf4e"
+  },
+  "guard": {
+   "bytes": 23127,
+   "sha256": "93b5f15cee38d7f87a5d50dacc7b7324a302d754fbece1fb81e820f22f563a6a"
+  }
+ },
+ "faelle": {
+  "echt_3": {
+   "zeilen": 3,
+   "aktivNachbau": {
+    "ok": false,
+    "fehler": "<claude-code-hint v=\"1\" type=\"plugin\" value=\"shopify-ai-toolkit@claude-plugins-official\" />\nError: The Function execution failed. Review the logs for more information.\n\nStack backtrace:\n   0: anyhow::"
+   },
+   "preisB": {
+    "ok": true,
+    "anweisungen": 3187438,
+    "ausgabeSha": "735038c3cf1a20e0"
+   },
+   "guard": {
+    "ok": true,
+    "anweisungen": 3327814,
+    "ausgabeSha": "6d35503734ec9c89"
+   },
+   "gleicheAusgabeAktivB": null
+  },
+  "gueltig_1": {
+   "zeilen": 1,
+   "aktivNachbau": {
+    "ok": true,
+    "anweisungen": 1758488,
+    "ausgabeSha": "735038c3cf1a20e0"
+   },
+   "preisB": {
+    "ok": true,
+    "anweisungen": 1823963,
+    "ausgabeSha": "735038c3cf1a20e0"
+   },
+   "guard": {
+    "ok": true,
+    "anweisungen": 1860201,
+    "ausgabeSha": "ba008b3ff2e64fd0"
+   },
+   "gleicheAusgabeAktivB": true
+  },
+  "gueltig_10": {
+   "zeilen": 10,
+   "aktivNachbau": {
+    "ok": true,
+    "anweisungen": 7680755,
+    "ausgabeSha": "a947788892fda541"
+   },
+   "preisB": {
+    "ok": true,
+    "anweisungen": 7797877,
+    "ausgabeSha": "a947788892fda541"
+   },
+   "guard": {
+    "ok": true,
+    "anweisungen": 7586003,
+    "ausgabeSha": "ba008b3ff2e64fd0"
+   },
+   "gleicheAusgabeAktivB": true
+  },
+  "gemischt_10": {
+   "zeilen": 10,
+   "aktivNachbau": {
+    "ok": false,
+    "fehler": "<claude-code-hint v=\"1\" type=\"plugin\" value=\"shopify-ai-toolkit@claude-plugins-official\" />\nError: The Function execution failed. Review the logs for more information.\n\nStack backtrace:\n   0: anyhow::"
+   },
+   "preisB": {
+    "ok": true,
+    "anweisungen": 7138432,
+    "ausgabeSha": "be78034618cf5b17"
+   },
+   "guard": {
+    "ok": true,
+    "anweisungen": 7268330,
+    "ausgabeSha": "af924b5b105d055c"
+   },
+   "gleicheAusgabeAktivB": null
+  },
+  "gueltig_13": {
+   "zeilen": 13,
+   "aktivNachbau": {
+    "ok": true,
+    "anweisungen": 9653489,
+    "ausgabeSha": "31f38cc408bb1cc2"
+   },
+   "preisB": {
+    "ok": true,
+    "anweisungen": 9783534,
+    "ausgabeSha": "31f38cc408bb1cc2"
+   },
+   "guard": {
+    "ok": true,
+    "anweisungen": 9489665,
+    "ausgabeSha": "ba008b3ff2e64fd0"
+   },
+   "gleicheAusgabeAktivB": true
+  },
+  "gueltig_14": {
+   "zeilen": 14,
+   "aktivNachbau": {
+    "ok": true,
+    "anweisungen": 10312718,
+    "ausgabeSha": "267efa8718de80d7"
+   },
+   "preisB": {
+    "ok": true,
+    "anweisungen": 10450124,
+    "ausgabeSha": "267efa8718de80d7"
+   },
+   "guard": {
+    "ok": true,
+    "anweisungen": 10127740,
+    "ausgabeSha": "ba008b3ff2e64fd0"
+   },
+   "gleicheAusgabeAktivB": true
+  },
+  "gueltig_15": {
+   "zeilen": 15,
+   "aktivNachbau": {
+    "ok": true,
+    "anweisungen": 10967957,
+    "ausgabeSha": "5413c48430a34359"
+   },
+   "preisB": {
+    "ok": true,
+    "anweisungen": 11112840,
+    "ausgabeSha": "5413c48430a34359"
+   },
+   "guard": {
+    "ok": true,
+    "anweisungen": 10762308,
+    "ausgabeSha": "ba008b3ff2e64fd0"
+   },
+   "gleicheAusgabeAktivB": true
+  },
+  "gueltig_16": {
+   "zeilen": 16,
+   "aktivNachbau": {
+    "ok": true,
+    "anweisungen": 11625763,
+    "ausgabeSha": "a8c7bc4afe018037"
+   },
+   "preisB": {
+    "ok": true,
+    "anweisungen": 11778952,
+    "ausgabeSha": "a8c7bc4afe018037"
+   },
+   "guard": {
+    "ok": true,
+    "anweisungen": 11397115,
+    "ausgabeSha": "ba008b3ff2e64fd0"
+   },
+   "gleicheAusgabeAktivB": true
+  },
+  "gemischt_20": {
+   "zeilen": 20,
+   "aktivNachbau": {
+    "ok": false,
+    "fehler": "<claude-code-hint v=\"1\" type=\"plugin\" value=\"shopify-ai-toolkit@claude-plugins-official\" />\nError: The Function execution failed. Review the logs for more information.\n\nStack backtrace:\n   0: anyhow::"
+   },
+   "preisB": {
+    "ok": true,
+    "anweisungen": 12548386,
+    "ausgabeSha": "cc95cfeb60b348df"
+   },
+   "guard": {
+    "ok": true,
+    "anweisungen": 12724562,
+    "ausgabeSha": "f39f657613000743"
+   },
+   "gleicheAusgabeAktivB": null
+  }
+ }
+}

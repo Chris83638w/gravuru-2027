@@ -39,6 +39,21 @@ export function createShopProductBindingStore({database:db,orderIntake,tenantId,
     typeof readOnly!=='boolean'||typeof legacySingleStore!=='boolean'||(legacySingleStore&&tenantId!=='gravuru'))
     fail('shop_binding_store_configuration','Die private ID-Speicherung ist nicht eingerichtet.',503);
   const scope={tenantId,storeId,shopDomain};
+  // Pure raw JSON -> canonical SHA-256 memo, never a cached database decision.
+  // Every phase still reads/parses the current bytes and checks its binding.
+  // Only two short hashes per entry survive; no product tree, raw JSON or stamp.
+  const documentDigests=new Map();
+  function readDigest(raw,document){
+    const key='json-canonical-v1:'+cartTimingDetail('registry_raw_digest',()=>createHash('sha256').update(raw).digest('hex'));
+    if(documentDigests.has(key)){
+      const value=documentDigests.get(key);documentDigests.delete(key);documentDigests.set(key,value);
+      cartTimingCount('registry_digest_hits');return value;
+    }
+    const value=digest(document);cartTimingCount('registry_digest_misses');
+    documentDigests.set(key,value);
+    if(documentDigests.size>64)documentDigests.delete(documentDigests.keys().next().value);
+    return value;
+  }
   function ensureScope(){if(orderIntake.tenantId!==tenantId||Object.keys(scope).some(k=>adapter[k]!==scope[k]))fail('shop_binding_store_scope','Store, Shop und Mandant stimmen nicht überein.',503);}
   let revisionReadScope;
   function transaction(work){
@@ -210,7 +225,7 @@ export function createShopProductBindingStore({database:db,orderIntake,tenantId,
       const read=()=>customerDatabaseRead(db,'binding-document:'+tenantId+':'+key,()=>{
       let at=performance.now();const source=productRow(row.cfg_id,row.cfg_revision,{withMetadata:false});if(timings)timings.documentReadMs+=performance.now()-at;
       at=performance.now();const document=cartTimingDetail('registry_document_json',()=>parseDocument(source.document));if(timings)timings.documentParseMs+=performance.now()-at;
-      at=performance.now();record={digest:cartTimingDetail('registry_document_digest',()=>digest(document)),productionStatus:document.productionProfile==null?'profile-assignment-pending':'not-released',status:source.status};if(timings){timings.documentHashMs+=performance.now()-at;timings.products++;}
+      at=performance.now();record={digest:cartTimingDetail('registry_document_digest',()=>readDigest(source.document,document)),productionStatus:document.productionProfile==null?'profile-assignment-pending':'not-released',status:source.status};if(timings){timings.documentHashMs+=performance.now()-at;timings.products++;}
       return record;
       });
       // Nur Kundenweg mit Antwortspeicher (memo): Ableitung (Prüfsumme) der unveränderlichen Revision wiederverwenden, wenn der

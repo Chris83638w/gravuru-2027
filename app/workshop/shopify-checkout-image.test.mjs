@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
 import {createShopifyCheckoutImages} from './shopify-checkout-image.mjs';
+import {withCartTiming,cartTimingStep,cartTimingHeaders} from './shop-cart-timing.mjs';
 const origin='https://app.example',shopDomain='gravuru-design.myshopify.com';
 const source=origin+'/gestaltung/acryl/offer_aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa/'+'b'.repeat(64)+'.png';
 const filename='gravuru-gestaltung-'+createHash('sha256').update(source).digest('hex')+'.png';
@@ -39,4 +40,20 @@ test('processing is bounded and a later retry can complete the same media',async
  const processing={id:ready.id,fileStatus:'PROCESSING'};
  const f=fixture([{data:{files:{nodes:[processing]}}},...Array.from({length:12},()=>({data:{node:processing}})),{data:{files:{nodes:[ready]}}}]);
  await assert.rejects(f.service(source),/Gestaltungsvorschau/);assert.equal(f.waits(),12);assert.equal(await f.service(source),url);
+});
+
+test('image timings separate lookup, create, polling, pending reuse and ready cache without private URLs',async()=>{
+ const events=[],logger=e=>events.push(e);
+ const f=fixture([{data:{files:{nodes:[]}}},{data:{fileCreate:{files:[{id:ready.id,fileStatus:'PROCESSING'}],userErrors:[]}}},{data:{node:ready}}]);
+ let pending;
+ await withCartTiming('theme-cart',logger,()=>{pending=f.service(source);cartTimingHeaders(200);});
+ await withCartTiming('cart/data',logger,async()=>{assert.equal(await cartTimingStep('checkout_image_wait',()=>f.service(source)),url);cartTimingHeaders(200);});
+ await pending;
+ await withCartTiming('cart/data',logger,async()=>{assert.equal(await f.service(source),url);cartTimingHeaders(200);});
+ const start=events.find(e=>e.route==='theme-cart'),job=events.find(e=>e.route==='checkout-image');
+ assert.equal(job.parentTraceId,start.traceId);assert.equal(start.counts.checkout_image_started,1);
+ for(const stage of ['access_token','shopify_lookup','shopify_create','shopify_poll_wait','shopify_poll'])assert.ok(job.steps[stage],stage);
+ assert.equal(job.steps.access_token.calls,3);
+ assert.ok(events.some(e=>e.counts.checkout_image_pending===1));assert.ok(events.some(e=>e.counts.checkout_image_cached===1));
+ const log=JSON.stringify(events);for(const value of [source,url,filename,'synthetic-token',ready.id])assert.ok(!log.includes(value));
 });

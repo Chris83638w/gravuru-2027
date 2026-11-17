@@ -1,0 +1,93 @@
+// Local, synthetic four-request benchmark. No Shopify traffic or real orders.
+// node scripts/measure-shop-cart-timing.mjs [repository-root] [measured-runs]
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import http from 'node:http';
+import {once} from 'node:events';
+import {pathToFileURL} from 'node:url';
+import {performance} from 'node:perf_hooks';
+import {setTimeout as delay} from 'node:timers/promises';
+import {execFileSync} from 'node:child_process';
+
+const root=path.resolve(process.argv[2]||'.'),runs=Number(process.argv[3]||7);
+assert.ok(Number.isSafeInteger(runs)&&runs>=1&&runs<=100);
+const load=file=>import(pathToFileURL(path.join(root,file)).href);
+const {build}=await load('app/configurator/variant-m/build.mjs');
+const {createWorkshop}=await load('app/workshop/http.mjs');
+const {createShopEntry}=await load('app/workshop/shop-entry.mjs');
+const {prepareShopProduct}=await load('app/workshop/shop-preparation.mjs');
+const {appProxySignature}=await load('app/workshop/shopify-app-proxy.mjs');
+const {createShopifyCheckoutImages}=await load('app/workshop/shopify-checkout-image.mjs');
+const origin='https://app.example',shopDomain='gravuru-design.myshopify.com',secret='synthetic-timing-secret-only',proxyPath='/apps/konfigurator';
+const png='iVBORw0KGgoAAAANSUhEUgAAACgAAAA8CAIAAACb22+3AAAAOklEQVR4nO3NIQEAMAgAsPOEaDT9M9ABg9kKLLL6Xfgnq1gsFovFYrFYLBaLxWKxWCwWi8VisVgsXhqq4AGG9djEFQAAAABJRU5ErkJggg==';
+const webp='UklGRmoAAABXRUJQVlA4WAoAAAAQAAAAJwAAOwAAQUxQSBMAAAABDzD/ERFCLJj4Sy+Fzoj+p04BAFZQOCAwAAAAMAMAnQEqKAA8AD4xGItEIiGhEVQAIAMEtIAACtIj6x5ssAD+9vnv6tJpEgAAAAAA';
+const dir=fs.mkdtempSync(path.join(os.tmpdir(),'gravuru-cart-timing-'));
+let workshop,server,log;
+try{
+ build({outputDirectory:dir});
+ const seed=JSON.parse(fs.readFileSync(path.join(dir,'models.json')))[0];
+ workshop=createWorkshop({filename:':memory:',seedConfig:seed.universal,legacy:seed.legacy,shopifySessions:{mode:'test-only',shopDomain,clientId:'synthetic-client',secret}});
+ const record=workshop.repository.copy(workshop.defaultId,{expectedRevision:1,name:'Synthetic timing fixture',kind:'product'});
+ const variant=prepareShopProduct(record).variants[0],shopifyProductId='gid://shopify/Product/90001',variantId='90002';
+ const bound=workshop.orderIntake.bindVariants({record,shopDomain,mappings:[{key:variant.key,variantId}]});
+ const registry={resolve(identity){
+  assert.equal(identity.shopifyProductId,shopifyProductId);assert.equal(identity.shopifyVariantId,'gid://shopify/ProductVariant/'+variantId);
+  const b=bound.bindings[0];return {storeId:'acryl',tenantId:workshop.tenantId,shopDomain,...identity,bindingId:b.id,productId:b.productId,productRevision:b.productRevision,options:structuredClone(b.options),unitCents:b.unitCents,assignmentRevision:1};
+ }};
+ const store={storeId:'acryl',registry,workshop,nativeEditorPath:'/_merchant-editor.html',cart:()=>assert.fail('unexpected Storefront cart')};
+ let imageIndex=0;const images=new Map(),events=[];
+ const checkoutImage=createShopifyCheckoutImages({origin,shopDomain,getAccessToken:async()=>'synthetic-token'},{
+  wait:()=>delay(25),fetchImpl:async(endpoint,options)=>{
+   assert.equal(endpoint,'https://'+shopDomain+'/admin/api/2026-07/graphql.json');
+   const {query,variables}=JSON.parse(options.body);
+   if(query.includes('query CheckoutImage(')){await delay(60);return Response.json({data:{files:{nodes:[]}}});}
+   if(query.includes('mutation CheckoutImageCreate')){
+    await delay(100);const id='gid://shopify/MediaImage/'+(++imageIndex);
+    images.set(id,{id,fileStatus:'READY',image:{url:'https://cdn.shopify.com/s/files/1/0920/5550/3228/files/'+variables.files[0].filename}});
+    return Response.json({data:{fileCreate:{files:[{id,fileStatus:'PROCESSING'}],userErrors:[]}}});
+   }
+   assert.ok(query.includes('query CheckoutImageReady'));await delay(40);return Response.json({data:{node:images.get(variables.id)}});
+  }
+ });
+ log=fs.openSync(path.join(dir,'timings.jsonl'),'w');
+ const entry=createShopEntry({origin,shopDomain,secret,stores:[store],proxyPath,modelSlimmer:null,checkoutImage,limits:{startPerMinute:10000,requestsPerMinute:10000},logger:event=>{events.push(event);fs.writeSync(log,JSON.stringify(event)+'\n');}});
+ server=http.createServer((req,res)=>entry.handle(req,res,new URL(req.url,origin)));
+ server.listen(0,'127.0.0.1');await once(server,'listening');
+ async function request(route,method='GET',data,extra={}){
+  const bytes=data===undefined?null:Buffer.from(JSON.stringify(data)),start=performance.now();
+  return new Promise((resolve,reject)=>{
+   const req=http.request({host:'127.0.0.1',port:server.address().port,path:route,method,headers:{Host:'app.example','X-Forwarded-Proto':'https',...(bytes?{'Content-Type':'application/json','Content-Length':bytes.length}:{}),...(method==='POST'?{Origin:origin}:{}),...extra}},res=>{
+    const chunks=[];res.on('data',c=>chunks.push(c));res.on('end',()=>{
+     const body=Buffer.concat(chunks);let data;try{data=JSON.parse(body);}catch{}
+     resolve({status:res.statusCode,data,headers:res.headers,elapsedMs:performance.now()-start,requestBytes:bytes?.length||0,responseBytes:body.length});
+    });
+   });req.on('error',reject);req.end(bytes);
+  });
+ }
+ function signed(extra={}){const q=new URLSearchParams({shop:shopDomain,path_prefix:proxyPath,timestamp:String(Math.floor(Date.now()/1000)),logged_in_customer_id:'',...extra});q.set('signature',appProxySignature(q,secret));return q;}
+ const samples=[];
+ for(let run=0;run<=runs;run++){
+  const start=await request(proxyPath+'/start?'+signed({product:'90001',variant:variantId}));assert.equal(start.status,302);
+  const token=new URLSearchParams(new URL(start.headers.location).hash.slice(1)).get('s'),session={'X-Gravuru-Shop-Session':token};
+  const model=await request('/api/shop-entry/model','GET',undefined,session);assert.equal(model.status,200);
+  const config=model.data.model.universal,source=config.profile.designs[0];
+  const input={productId:record.id,productRevision:record.revision,designId:source.id,objects:structuredClone(source.objects),options:structuredClone(variant.options),quantity:2,media:[{id:'synthetic-photo',original:png}],preview:png,customerPreview:webp};
+  Object.assign(input.objects.find(o=>o.type==='photoSlot'),{uxUploadId:'synthetic-photo',uxUploadKind:'photo'});
+  const saved=await request('/api/shop-entry/acrylic-drafts','POST',{input},session);assert.equal(saved.status,201,JSON.stringify(saved.data));
+  const cart=await request('/api/shop-entry/theme-cart','POST',{draftId:saved.data.id,expectedRevision:1,quantity:2},{...session,'X-Gravuru-Draft':saved.data.token});assert.equal(cart.status,200,JSON.stringify(cart.data));
+  const handoff=new URLSearchParams(new URL(cart.data.handoffUrl).hash.slice(1)).get('handoff');
+  const proxyHeaders={'X-Gravuru-Cart-Handoff':handoff,'X-Gravuru-Cart-Preview':'hosted',Origin:'https://'+shopDomain};
+  const data=await request(proxyPath+'/cart/data?'+signed(),'GET',undefined,proxyHeaders);assert.equal(data.status,200,JSON.stringify(data.data));
+  assert.equal(data.data.totalCents,variant.priceCents*2);assert.equal(data.data.productionReady,false);assert.equal(data.data.preview,undefined);
+  const claim=await request(proxyPath+'/cart/claim?'+signed(),'POST',undefined,proxyHeaders);assert.equal(claim.status,200,JSON.stringify(claim.data));
+  if(run>0)samples.push(Object.fromEntries([['acrylic-drafts',saved],['theme-cart',cart],['cart/data',data],['cart/claim',claim]].map(([route,r])=>[route,{elapsedMs:Math.round(r.elapsedMs*100)/100,requestBytes:r.requestBytes,responseBytes:r.responseBytes,timing:events.find(e=>e.traceId===r.headers['x-gravuru-timing-id'])||null}])));
+ }
+ const median=values=>[...values].sort((a,b)=>a-b)[Math.floor(values.length/2)];
+ const summary=Object.fromEntries(Object.keys(samples[0]).map(route=>[route,{medianMs:median(samples.map(s=>s[route].elapsedMs)),minMs:Math.min(...samples.map(s=>s[route].elapsedMs)),maxMs:Math.max(...samples.map(s=>s[route].elapsedMs))}]));
+ console.log(JSON.stringify({schema:'gravuru-shop-cart-timing-benchmark/v1',commit:execFileSync('git',['-C',root,'rev-parse','HEAD'],{encoding:'utf8'}).trim(),profile:{kind:'local-synthetic-http',platform:os.platform(),cpu:os.cpus()[0].model,node:process.version,runs,warmupRuns:1,parallelSessions:1,network:'loopback, no throttling',shopifyMockMs:{lookup:60,create:100,pollWait:25,poll:40},data:'bundled native acrylic sample, 40x60 PNG photo and WebP customer preview, in-memory database'},summary,samples,backgroundEvents:events.filter(e=>e.route==='checkout-image')},null,2));
+}finally{
+ if(server){server.closeAllConnections();await new Promise(resolve=>server.close(resolve));}
+ workshop?.close();if(log!==undefined)fs.closeSync(log);fs.rmSync(dir,{recursive:true,force:true});
+}

@@ -3,6 +3,7 @@ import {isDeepStrictEqual} from 'node:util';
 import {createDraftCartHandoff} from './draft-cart-handoff.mjs';
 import {isNativeReviewSchema} from './native-review-schema.mjs';
 import {isLayeredDoorbell} from '../configurator/variant-m/doorbell-selection.mjs';
+import {cartTimingStep} from './shop-cart-timing.mjs';
 
 const fail=(status,code,message)=>{throw Object.assign(Error(message),{status,code,retryable:false,paymentConfirmed:false});};
 const positive=n=>Number.isSafeInteger(n)&&n>0;
@@ -50,10 +51,10 @@ export function prepareBoundCartOffer({workshop,registry,shopDomain},binding,inp
    if(native&&manifest.selection.price.quantity!==fixed.quantity)fail(409,'bound_test_quantity','Bitte den Prüfstand mit der gewählten Menge erneut sichern.');
    return {draft,manifest,record,snapshotId:proof.id};
   }
-  const current=resolve();
+  const current=cartTimingStep('offer_resolve',()=>resolve());
   const reviewPolicy=m=>assertBoundTestReview(m,current.record,binding);
   const stableToken=createHmac('sha256',draftToken).update(JSON.stringify(['gravuru-bound-test-cart/v1',binding.storeId,binding.tenantId,binding.bindingId,binding.assignmentRevision,current.draft.id,current.draft.revision,current.snapshotId,fixed.quantity])).digest('hex');
-  const offer=drafts.orderIntake.offer({bindingId:binding.bindingId,snapshotId:current.snapshotId,quantity:fixed.quantity},{stableToken});
+  const offer=cartTimingStep('offer_create',()=>drafts.orderIntake.offer({bindingId:binding.bindingId,snapshotId:current.snapshotId,quantity:fixed.quantity},{stableToken}));
  return {...current,offer,reviewPolicy,resolve,fixed};
 }
 

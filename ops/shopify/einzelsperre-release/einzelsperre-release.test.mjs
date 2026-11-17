@@ -7,10 +7,15 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {cartTransformRun,cartTransformStrict,rejectedPricingLines} from './preis/src/master-release/cart_transform_run.mjs';
 import {cartValidationsGenerateRun} from './pruefung/src/cart_validation_run.mjs';
+import {proofKey,proofTag,proofWords,needsProof} from './pruefung/src/checkout-proof.mjs';
+import {randomBytes} from 'node:crypto';
 
 const real=()=>JSON.parse(fs.readFileSync(new URL('../master-release/fixtures/shopify-log-20261115-0941.json',import.meta.url),'utf8'));
 const price=(result,lineId)=>result.operations.find(o=>o.lineUpdate?.cartLineId===lineId&&o.lineUpdate.price)?.lineUpdate.price.adjustment.fixedPricePerUnit.amount;
-const validate=(input,step,titles=[])=>cartValidationsGenerateRun({buyerJourney:{step},cart:{lines:input.cart.lines.map((l,i)=>({...l,merchandise:{...l.merchandise,product:{...l.merchandise.product,title:titles[i]}}}))}}).operations[0]?.validationAdd.errors??[];
+// F02: Wie der Server hängt der Test an jede Position mit Aufpreis-Angaben einen Nachweis (Testschlüssel je Lauf).
+const KEY=randomBytes(16).toString('hex');
+const sign=line=>needsProof(line)?{...line,proof:{value:proofTag(proofKey(KEY),proofWords({offer:line.offer?.value,designFile:line.designFile?.value,variantId:line.merchandise?.id,revision:line.revision?.value,motifs:line.motifs?.value,uploads:line.uploads?.value,logos:line.logos?.value})||[])}}:line;
+const validate=(input,step,titles=[])=>cartValidationsGenerateRun({buyerJourney:{step},validation:{metafield:{value:KEY}},cart:{lines:input.cart.lines.map((l,i)=>sign({...l,merchandise:l.merchandise.__typename==='ProductVariant'?{...l.merchandise,product:{...l.merchandise.product,title:titles[i]}}:l.merchandise}))}}).operations[0]?.validationAdd.errors??[];
 
 test('echte Eingabe 15.11.: bisher ganzer Warenkorb gesperrt, jetzt nur die alten Positionen',()=>{
  const input=real(),[fresh,old1,old2]=input.cart.lines;

@@ -6,7 +6,7 @@ import {readReviewPackage} from './review-package.mjs';
 import {NATIVE_REVIEW_SCHEMAS} from './native-review-schema.mjs';
 import {cartLineInput} from './storefront-cart.mjs';
 const fail=(status,code,message)=>{throw Object.assign(Error(message),{status,code});};
-export function prepareThemeCart({workshop,registry,shopDomain,proxyPath,customerImageUrl,presentation},binding,input,{draftToken}={}){
+export function prepareThemeCart({workshop,registry,shopDomain,proxyPath,customerImageUrl,presentation,checkoutProof},binding,input,{draftToken}={}){
  const {cartRevision,...offerInput}=input;
  const prepared=prepareBoundCartOffer({workshop,registry,shopDomain},binding,offerInput,{draftToken});
  const {draft,manifest,offer,resolve}=prepared,ledger=workshop.customerDrafts.cartConfigurations;
@@ -22,6 +22,13 @@ export function prepareThemeCart({workshop,registry,shopDomain,proxyPath,custome
  const assigned=ledger.assign({draftId:draft.id,draftRevision:draft.revision,snapshotId:manifest.id,offerId:offer.id,productId:draft.productId});
  const configuration={id:assigned.id,rev:assigned.rev};
  const properties=Object.fromEntries(cartLineInput({...offer,configuration}).attributes.map(a=>[a.key,a.value]));
+ // F02 (#239): Nachweis über alle preisbestimmenden Angaben; die Kassen-Prüfung rechnet ihn nach.
+ if(checkoutProof&&offer.personalization){
+  const proof=checkoutProof({offer:properties._gravuru_offer,designFile:properties['Bearbeitbarer Entwurf'],variantId:'gid://shopify/ProductVariant/'+offer.variantId,
+   revision:properties._gravuru_revision,motifs:properties._gravuru_motifs,uploads:properties._gravuru_uploads,logos:properties._gravuru_logos});
+  if(!proof)fail(422,'theme_cart_proof','Die Preisangaben dieser Gestaltung lassen sich nicht sichern.');
+  properties._gravuru_proof=proof;
+ }
  properties.Design=String(design.name||design.id).slice(0,240);
  properties.Format=manifest.product.widthMm+' × '+manifest.product.heightMm+' mm';
  const text=customerTextLine(design.objects,template);

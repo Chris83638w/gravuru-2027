@@ -1,0 +1,23 @@
+{%- comment -%}
+  gravuru-Konfigurator: Darstellung einer Warenkorbzeile.
+  Einbinden in der Schleife über cart.items:  {% render 'gravuru-konfi-warenkorbzeile', item: item %}
+
+  Zeigt das Bild der Gestaltung statt des Produktbilds und einen Link „Bearbeiten“.
+  Der Link trägt Kennung und Zugang der Gestaltung aus der Zeile selbst. Er funktioniert deshalb
+  in jedem Tab und auf jedem Gerät, auf dem dieser Warenkorb sichtbar ist.
+  Eigenschaften mit Unterstrich sind technisch und werden dem Kunden nicht als Text gezeigt.
+{%- endcomment -%}
+{%- if item.properties._gravuru != blank -%}
+  {%- if item.properties._gravuru_bild != blank -%}
+    <img src="{{ item.properties._gravuru_bild }}" alt="Deine Gestaltung" width="240" loading="lazy" class="gravuru-konfi-bild">
+  {%- endif -%}
+  {%- for eigenschaft in item.properties -%}
+    {%- assign erstes = eigenschaft.first | slice: 0 -%}
+    {%- unless erstes == '_' or eigenschaft.last == blank -%}
+      <div class="gravuru-konfi-angabe"><span>{{ eigenschaft.first }}:</span> {{ eigenschaft.last }}</div>
+    {%- endunless -%}
+  {%- endfor -%}
+  {%- if item.properties._gravuru_bearbeiten != blank -%}
+    <a class="gravuru-konfi-bearbeiten" href="{{ item.product.url }}?{{ item.properties._gravuru_bearbeiten }}&zeile={{ item.key | url_encode }}">Bearbeiten</a>
+  {%- endif -%}
+{%- endif -%}

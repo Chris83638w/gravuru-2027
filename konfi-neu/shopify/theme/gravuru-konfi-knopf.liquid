@@ -1,0 +1,22 @@
+{%- comment -%}
+  gravuru-Konfigurator: Knopf auf der Produktseite. Ein Baustein für alle Produkte.
+  Einbinden in der Produktvorlage `product.konfi`:  {% render 'gravuru-konfi-knopf', product: product %}
+
+  Der Knopf erscheint nur, wenn das Produkt eine Konfigurator-Kennung trägt (Metafeld custom.customization_id).
+  Geladen wird hier nur der kleine Einstieg (rund 1 KB). Editor und Produktdaten folgen bei Zeigerkontakt bzw. Klick.
+
+  `basis` = Adresse der veröffentlichten Dateien (Ordner mit konfi.js, editor.js, daten/).
+  Empfehlung: über den Webserver oder ein CDN ausliefern, nicht über den Node-Prozess.
+  `api`   = Speicher-Schnittstelle. Über den Shopify-App-Proxy bleibt alles in der Shop-Domain.
+{%- endcomment -%}
+{%- assign konfi_key = product.metafields.custom.customization_id.value -%}
+{%- if konfi_key != blank -%}
+  {%- assign gk_basis = shop.metafields.gravuru.konfi_basis.value | default: 'https://app-2027.gravuru-designwerkstatt.de/konfi/' -%}
+  <button type="button" class="button button--full-width gravuru-konfi-knopf"
+          data-gravuru-konfi data-produkt="{{ konfi_key | handleize }}">
+    Jetzt personalisieren
+  </button>
+  <link rel="preconnect" href="{{ gk_basis | split: '/konfi/' | first }}" crossorigin>
+  <script type="module" src="{{ gk_basis }}app/konfi.js" data-gravuru-konfi-start
+          data-basis="{{ gk_basis }}daten/" data-api="/apps/konfigurator/api"></script>
+{%- endif -%}

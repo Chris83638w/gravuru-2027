@@ -48,8 +48,9 @@ function writeHashed(dir, name, ext, content) {
   return `${dir}/${file}`;
 }
 
-fs.rmSync(out, {recursive: true, force: true});
+// Alles neu schreiben – außer den Vorschaubildern (v/), die an den Design-Hash gebunden und teuer zu erzeugen sind.
 fs.mkdirSync(out, {recursive: true});
+for (const name of fs.readdirSync(out)) if (name !== 'v') fs.rmSync(path.join(out, name), {recursive: true, force: true});
 const katalog = katalogAdapter.katalogOeffnen(root);
 
 // ---------------------------------------------------------------- Schriften
@@ -89,7 +90,7 @@ const motivIndex = writeHashed('m', 'index', 'json', {motive});
 
 // ---------------------------------------------------------------- Designs
 const designCache = new Map();
-function designVeroeffentlichen(design) {
+function designVeroeffentlichen(design, beispiel = null) {
   if (designCache.has(design.id)) return designCache.get(design.id);
   let entry = null;
   try {
@@ -139,6 +140,8 @@ function designVeroeffentlichen(design) {
     const doc = {
       v: 1, id: design.id, name: design.name || design.id, nr: design.json?.designNo ?? null,
       platte: [parsed.widthMm, parsed.heightMm], schriften: [...fonts], els,
+      // Beispielziel für das Vorschaubild: Familie und Größe, für die das Design freigegeben ist.
+      ...(beispiel ? {bsp: beispiel} : {}),
       ...(design.json?.wholePrintDesign ? {einheit: true} : {}),
     };
     entry = {id: design.id, name: doc.name, nr: doc.nr, platte: doc.platte, u: writeHashed('d', slug(design.id), 'json', doc), foto: els.some(e => e.t === 'foto')};
@@ -191,7 +194,7 @@ for (const family of katalog.families.values()) {
   let designCount = 0;
   for (const row of katalogAdapter.groessenZuordnung(katalog, family, designs)) {
     if (row.alteGroesse || !row.sizes.length) continue;
-    const entry = designVeroeffentlichen(row.design);
+    const entry = designVeroeffentlichen(row.design, {f: family.id, g: row.sizes[0], ...(row.einpassen ? {ein: 1} : {})});
     if (!entry) continue;
     designCount++;
     for (const key of row.sizes) {
@@ -249,7 +252,7 @@ for (const line of katalog.lines.values()) {
         schriften: Object.fromEntries(Object.entries(schriften).map(([name, font]) => [name, {u: font.u}])),
         motive: motivIndex,
         regeln: {motiv: regelQuelle.motiv.cents, ...(regelQuelle.logo.aktiv ? {logo: regelQuelle.logo.cents} : {}), staffel: regelQuelle.staffel.stufen},
-        stand: standKennung,
+        stand: standKennung, vorschau: 1,
         ids: product.externalIds || {},
       };
       fs.mkdirSync(path.join(out, 'p'), {recursive: true});
@@ -278,7 +281,7 @@ if (args.produkte) {
       v: 1, key, name: product.name, linie: product.linie || null, thema: product.thema || null, familie: doc, groessen: sizes, start: startDoc,
       schriften: Object.fromEntries(Object.entries(schriften).map(([name, font]) => [name, {u: font.u}])), motive: motivIndex,
       regeln: {motiv: regelQuelle.motiv.cents, ...(regelQuelle.logo.aktiv ? {logo: regelQuelle.logo.cents} : {}), staffel: regelQuelle.staffel.stufen},
-      stand: standKennung, ids: product.ids || {},
+      stand: standKennung, vorschau: 1, ids: product.ids || {},
     }));
     produkte[key] = {name: product.name, familie: product.familie, start: startDoc?.id || null, shopify: product.ids?.shopifyProductId || null};
   }

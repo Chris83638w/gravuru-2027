@@ -1,0 +1,20 @@
+{
+  "hinweis": "Teilabzug, am 17.11.2026 lesend über die Shopify-Verbindung geholt (drei Produkte, je die ersten drei Varianten). Ein vollständiger Abzug entsteht mit abgleich/shop-lesen.mjs. Der Shop hatte an diesem Tag 87 aktive Produkte: 84 Funkklingelschilder (Kennung cfg_…, je 120 Varianten), 2 Acryl-Türschilder, 1 Edelstahl-Türschild.",
+  "shop": "gravuru-design.myshopify.com",
+  "gelesen": "2026-11-17",
+  "produkte": [
+    {"id": "16190784438652", "handle": "tuerschild-edelstahl-form-und-groesse-selbst-waehlen", "titel": "Türschild Edelstahl – Form und Größe selbst wählen", "status": "ACTIVE",
+     "konfi": "katalog-formate-edelstahl-tuerschilder-familienschilder-eb5fe26624befe4a", "schnitt": {"sizeKey": "GR-ES-AB-120X80-T15", "themeId": "familienschilder", "defaultDesignId": "LEER-AB-120X80-D0", "groessenWahl": "alle", "vorlagen": "leer"},
+     "variantenGesamt": 404, "varianten": [
+       {"id": "58104606556540", "sku": "156-GR-ES-AB-120X80-T15-K00", "preis": "19.99"},
+       {"id": "58104601149820", "sku": "156-GR-ES-RE-80X20-T15-K00", "preis": "9.49"},
+       {"id": "58104601182588", "sku": "156-GR-ES-RE-80X20-T15-KGL", "preis": "12.48"}]},
+    {"id": "16189690118524", "handle": "familienschild-acryl-baum-12x8-personalisiert", "titel": "Familien-Namensschild mit Baum – Acrylglas 12 × 8 cm", "status": "ACTIVE",
+     "konfi": "TS-Acryl-AB-120X80-T30-D10", "schnitt": {"sizeKey": "TS-Acryl-AB-120X80-T30-SW", "themeId": "familienschilder", "defaultDesignId": "TAE-V2A-8x5-D10"},
+     "variantenGesamt": 10, "varianten": [
+       {"id": "58100337213820", "sku": "TS-Acryl-AB-120X80-T30-D10-SW-K00", "preis": "14.99"},
+       {"id": "58100337246588", "sku": "TS-Acryl-AB-120X80-T30-D10-SW-KGL", "preis": "17.98"},
+       {"id": "58100337279356", "sku": "TS-Acryl-AB-120X80-T30-D10-SW-KRA", "preis": "18.98"}]},
+    {"id": "16182875193724", "handle": null, "titel": "Klingelschild für WP Cardea 2 · Querformat 24 × 20 cm", "status": "ACTIVE", "konfi": "cfg_7e8b31c1-b95f-49bb-8a3d-fd44a158db98", "schnitt": null, "variantenGesamt": 120, "varianten": []}
+  ]
+}

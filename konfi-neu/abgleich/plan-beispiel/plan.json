@@ -1,0 +1,554 @@
+{
+ "erzeugt": "2026-11-17T01:47:34.257Z",
+ "shop": "gravuru-design.myshopify.com",
+ "gelesen": "2026-11-17",
+ "stand": "bb59f536d18d",
+ "zaehler": {
+  "produkteImShop": 3,
+  "mitKonfi": 3,
+  "veroeffentlicht": 2,
+  "variantenGebunden": 6,
+  "variantenFehlen": 0,
+  "preisAbweichungen": 0,
+  "unbekannteVarianten": 0,
+  "nichtImShop": 105,
+  "unvollstaendigGelesen": 2
+ },
+ "massnahmen": [
+  {
+   "art": "hinweis",
+   "produkt": "katalog-formate-edelstahl-tuerschilder-familienschilder-eb5fe26624befe4a",
+   "grund": "Abzug enthält 3 von 404 Varianten – Variantenabgleich für dieses Produkt unvollständig"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "ts-acryl-ab-120x80-t30-d10",
+   "grund": "Abzug enthält 3 von 10 Varianten – Variantenabgleich für dieses Produkt unvollständig"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "1600000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "2500000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "2600000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "2700000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "2800000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "2900000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "3000000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "3100000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "3200000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "3300000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "3400000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "3500000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "3600000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "3700000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "3800000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "3900000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "4000000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "4100000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "4200000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "4300000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "4400000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "4500000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "4600000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "4700000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "4800000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "4900000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "5000000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "5100000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "5200000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "5300000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "5400000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "5500000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "5600000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "5700000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "5800000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "5900000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "6000000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "6100000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "6200000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "6300000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "6400000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "6500000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "6600000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "6700000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "6800000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "6900000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "7000000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "7100000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "7200000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "7300000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "7400000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "7500000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "7600000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "7700000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "7800000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "7900000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "8000000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "8100000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "8200000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "8300000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "8400000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "8500000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "8600000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "8700000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "8800000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "8900000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "9000000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "9100000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "9200000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "9300000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "9400000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "9500000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "9600000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "9700000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "9800000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "9900000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "10000000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "10100000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "10200000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "10300000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "10400000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "10500000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "10600000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "10700000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "10800000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "10900000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "11000000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "11100000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "11200000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "11300000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "11400000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "11500000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "11600000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "11700000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "11800000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "11900000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "12000000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "12100000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "12200000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "12300000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "12400000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "12500000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "12600000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "12700000",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  },
+  {
+   "art": "hinweis",
+   "produkt": "ts-acryl-ab-120x80-t30-d8",
+   "grund": "Im Katalog veröffentlicht, im Shop-Abzug kein Produkt mit dieser Konfigurator-Kennung"
+  }
+ ]
+}

@@ -1,3 +1,13 @@
+## 17.11.2026 · Claude · Konfigurator-Neuaufbau `konfi-neu` (Auftrag Chris im Chat)
+
+- Chris: Ladezeit, Warenkorb und Produktanlage neu denken und neu aufbauen, nichts löschen.
+- Neuer Ordner `konfi-neu/` auf Branch `dev/konfi-neu-20261117-claude`. `app/`, Live-Stand und Shop unverändert. Nichts live, kein Merge.
+- Enthält: Veröffentlichung Katalog → Dateien, Editor direkt in der Shop-Seite, Server mit vier Tabellen, unterschriebene Preisangabe, Preisfunktion und Kassenprüfung (Rust), Shop-Abgleich, Test-Shop.
+- Prüfungen: 14/14 automatische Tests. Kundenweg Desktop und Handy-Emulation bestanden. Rust-Funktion in 200 Zufalls-Warenkörben gleich der Referenz.
+- Messung lokal, Handy-Profil (150 ms, 200 KB/s), 5 Läufe: bedienbar nach 0,84 s mit 140 KB; „In den Warenkorb“ 1,8 s. Vergleichswerte alt nur aus der Dokumentation (7,5–10,9 s, 1,9 MB), kein direkter Vergleichslauf.
+- Offene Grenzen: Funkklingelschilder (84 von 87 aktiven Produkten) nicht abgedeckt; Fertigungsdatei fehlt; Oberfläche ist nicht R15; Shopify-Funktion nicht in Shopify gelaufen; kein echtes Handy.
+- Nächster Schritt: Richtungsentscheidung Chris. [Übergabe](docs/handoffs/2026-11-17-konfi-neu.md) · [Beschreibung](konfi-neu/README.md)
+
 ## 16.11.2026 – Go-live: Gesamtstand `1c5f8062` live (Claude als Operator, #239)
 
 - Freigabe: Chris „live“ (18:40).

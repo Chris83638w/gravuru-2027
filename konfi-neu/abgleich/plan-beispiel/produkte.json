@@ -1,0 +1,14 @@
+{
+ "hinweis": "Im Shop mit Konfigurator-Kennung, aber noch nicht veröffentlicht. Familie und Startdesign ergänzen, dann publish.mjs --produkte.",
+ "produkte": [
+  {
+   "key": "cfg_7e8b31c1-b95f-49bb-8a3d-fd44a158db98",
+   "name": "Klingelschild für WP Cardea 2 · Querformat 24 × 20 cm",
+   "ids": {
+    "shopifyProductId": "16182875193724"
+   },
+   "status": "ACTIVE",
+   "schnitt": null
+  }
+ ]
+}

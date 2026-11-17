@@ -1,0 +1,23 @@
+# Eingabe der Preisfunktion (Cart Transform). Vor dem Release mit dem aktuellen Funktionsschema prüfen.
+query PreisEingabe {
+  shop {
+    schluessel: metafield(namespace: "$app", key: "konfi_schluessel") { value }
+    localTime { date }
+  }
+  cart {
+    lines {
+      id
+      quantity
+      cost { amountPerQuantity { amount } }
+      gestaltung: attribute(key: "_gravuru") { value }
+      preis: attribute(key: "_gravuru_preis") { value }
+      merchandise {
+        __typename
+        ... on ProductVariant {
+          id
+          product { title konfi: metafield(namespace: "custom", key: "customization_id") { value } }
+        }
+      }
+    }
+  }
+}

@@ -68,7 +68,8 @@ export function klingelnVeroeffentlichen({katalogRoot, appRoot, schriften, write
           const profil = selectedDoorbellProfile(config, {format: format.key, color: 'schwarz', frame: 'FK-RUNDUM', mounting: 'K00', position});
           if (position === 'standard') profilStandard = profil;
           const g = profil.geometry;
-          pos[position] = {bell: rechteck(g.bell), bild: rechteck(g.bellImageBounds || g.bell)};
+          // `schnitte`: Aussparungen und Montagelöcher des Geräts, durch Edelstahl und Acryl (nur Fertigung, 0,001 mm genau).
+          pos[position] = {bell: rechteck(g.bell), bild: rechteck(g.bellImageBounds || g.bell), schnitte: (g.cutPaths || []).map(d => kompaktPfad(d, 3))};
           const liste = [];
           profil.designs.forEach((design, index) => {
             const els = design.objects.map(o => {
@@ -132,7 +133,7 @@ export function klingelnVeroeffentlichen({katalogRoot, appRoot, schriften, write
           v: 1, key, name: zeile.title || `${familie.name} · ${FORMAT_NAMEN[d.format]}`, linie: 'funkklingelschilder', thema: null,
           familie, groessen: null, start,
           wahl: {groesse: d.format, bef: d.mounting, opt: {position: d.position, rahmen: d.frame, farbe: d.color}},
-          schriften: Object.fromEntries(Object.entries(schriften).map(([name, font]) => [name, {u: font.u}])), motive: motivIndex,
+          schriften: Object.fromEntries(Object.entries(schriften).map(([name, font]) => [name, {u: font.u, ...(font.f ? {f: font.f} : {}), ...(font.k === 0 ? {k: 0} : {})}])), motive: motivIndex,
           // Zusatzmotive: Chris, 17.11.2026 (1,69 € je Motiv, auch bei Funkklingeln). Logos bleiben aus.
           // Eine Mengenstaffel ist für Funkklingeln nicht belegt.
           regeln: {motiv: regelQuelle.motiv.cents, staffel: []},

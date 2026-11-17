@@ -108,6 +108,7 @@ export function kern(k) {
       if (!el || !text(el.id, 80) || ids.has(el.id) || !zahl(el.x, -2000, 4000) || !zahl(el.y, -2000, 4000) || !zahl(el.rot ?? 0, -360, 360)) throw new Fehler(422, 'element');
       ids.add(el.id);
       if (el.t === 'text') {
+        if (el.mw != null && !zahl(el.mw, 0, 5000)) throw new Fehler(422, 'element_text');
         if (!text(el.text, 500) || !text(el.font, 80) || !zahl(el.size, 0.5, 300) || !['s', 'm', 'e'].includes(el.anker) || !zahl(el.ls ?? 0, -50, 200) || !zahl(el.lh ?? 0, 0, 600)) throw new Fehler(422, 'element_text');
       } else if (el.t === 'motiv') {
         if (!zahl(el.w, 0.1, 3000) || !zahl(el.h, 0.1, 3000) || !zahl(el.s, 0.0001, 1000) || !el.quelle || !['design', 'bibliothek'].includes(el.quelle.art)) throw new Fehler(422, 'element_motiv');
@@ -163,7 +164,14 @@ export function kern(k) {
       const liste = gestaltung.preis.grund + gestaltung.preis.befestigung + signatur.aufpreisCents;
       const soll = staffelPreis(liste, zeile.quantity, signatur.staffel);
       if (soll !== position.stueckCents) { melden('klaeren', `preis_${position.stueckCents}_statt_${soll}`, zusatz); continue; }
-      melden('bereit', null, zusatz);
+      // Fertigungsdateien erzeugen. Ein Fehler dabei darf den Bestelleingang nicht verlieren:
+      // Die Position bleibt gespeichert und bekommt den Grund, damit die Werkstatt es sieht.
+      let grund = null;
+      if (k.nachBereit) {
+        try { k.nachBereit({position, gestaltung, eintrag: produkt(gestaltung.produkt)}); }
+        catch (error) { grund = 'fertigung_fehler: ' + String(error.message).slice(0, 160); console.error('[konfi] Fertigung', error); }
+      }
+      melden(grund ? 'klaeren' : 'bereit', grund, zusatz);
     }
     return {positionen: ergebnis};
   }

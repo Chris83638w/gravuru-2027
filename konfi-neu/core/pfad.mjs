@@ -4,8 +4,8 @@ const TOKEN = /[a-zA-Z]|[-+]?(?:\d+\.?\d*|\.\d+)(?:[eE][-+]?\d+)?/g;
 
 /**
  * Pfad für die Vorschau verkleinern: Zahlen auf 0,01 mm runden, überflüssige Zeichen entfernen.
- * 0,01 mm liegt weit unter jeder Fertigungstoleranz; die Fertigungsdatei nutzt trotzdem die
- * Originalpfade aus dem Katalog.
+ * 0,01 mm liegt weit unter jeder Fertigungstoleranz. Die Fertigungsdatei benutzt dieselben Pfade;
+ * Schnittpfade (Geräteaussparungen) werden mit 0,001 mm veröffentlicht.
  */
 export function kompaktPfad(d, digits = 2) {
   const tokens = String(d).match(TOKEN) || [];

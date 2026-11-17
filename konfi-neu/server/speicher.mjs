@@ -96,6 +96,8 @@ export function speicherOeffnen(ordner) {
       return {id};
     },
     upload: id => q.uploadLesen.get(id) || null,
+    uploadsOrdner: path.join(ordner, 'uploads'),
+    fertigungOrdner: path.join(ordner, 'fertigung'),
 
     /** true, wenn das Ereignis neu ist; false bei Wiederholung; wirft bei gleicher Kennung mit anderem Inhalt. */
     ereignisMerken(id, art, inhalt) {

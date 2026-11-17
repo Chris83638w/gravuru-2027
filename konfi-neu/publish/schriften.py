@@ -30,6 +30,15 @@ UNICODES = (
 )
 
 
+# Zeichen, die in deutschen Namen und Adressen vorkommen. Fehlt eines in einer Schrift, zeigt der Browser dafür
+# still eine Ersatzschrift. Die Liste der fehlenden Zeichen wird veröffentlicht, damit der Editor warnen kann.
+REFERENZ = [chr(c) for c in list(range(0x21, 0x7F)) + list(range(0xA1, 0x100)) if c != 0xAD] + list('„“‚‘’–—…€')
+
+
+def fehlende(cmap):
+    return ''.join(c for c in REFERENZ if ord(c) not in cmap)
+
+
 def slug(name):
     out = ''.join(c.lower() if c.isalnum() else '-' for c in name)
     while '--' in out:
@@ -37,8 +46,22 @@ def slug(name):
     return out.strip('-')
 
 
+def alte_unterschneidung(font):
+    """Unterschneidung nur in der alten Tabelle „kern“, nicht in GPOS.
+
+    Browser gehen damit uneinheitlich um (Chrome verwirft die Tabelle bei manchen Schriften ganz). Für solche
+    Schriften wird die Unterschneidung deshalb in Vorschau UND Fertigung abgeschaltet: gleiche Darstellung überall.
+    """
+    if 'kern' not in font:
+        return False
+    gpos = font['GPOS'].table if 'GPOS' in font else None
+    features = gpos.FeatureList.FeatureRecord if gpos is not None and gpos.FeatureList else []
+    return not any(record.FeatureTag == 'kern' for record in features)
+
+
 def convert(entry, out_dir):
     font = TTFont(entry['file'], lazy=False)
+    altkern = alte_unterschneidung(font)
     reduced = False
     if entry.get('ofl'):
         options = subset.Options()
@@ -60,6 +83,11 @@ def convert(entry, out_dir):
     file_name = f"{slug(entry['name'])}.{digest}.woff2"
     with open(os.path.join(out_dir, file_name), 'wb') as handle:
         handle.write(data)
+    # Für die Fertigung: die unveränderte Originaldatei (nicht öffentlich, nicht reduziert).
+    original = slug(entry['name']) + os.path.splitext(entry['file'])[1].lower()
+    if entry.get('original_dir'):
+        import shutil
+        shutil.copyfile(entry['file'], os.path.join(entry['original_dir'], original))
     head, hhea, os2 = font['head'], font['hhea'], font['OS/2'] if 'OS/2' in font else None
     cmap = font.getBestCmap() or {}
     return {
@@ -73,6 +101,9 @@ def convert(entry, out_dir):
         'descender': hhea.descent,
         'capHeight': getattr(os2, 'sCapHeight', None) if os2 else None,
         'glyphs': len(cmap),
+        'original': original,
+        'fehlt': fehlende(TTFont(entry['file'], lazy=True).getBestCmap() or {}),
+        'altkern': altkern,
     }
 
 
@@ -114,6 +145,9 @@ def convert_glyphs(entry, out_dir):
     builder.setupOS2(sTypoAscender=source.get('ascent', units), sTypoDescender=source.get('descent', -units // 4), usWinAscent=source.get('ascent', units), usWinDescent=-source.get('descent', -units // 4))
     builder.setupPost()
     font = builder.font
+    original = slug(entry['name']) + '.otf'
+    if entry.get('original_dir'):
+        font.save(os.path.join(entry['original_dir'], original))
     font.flavor = 'woff2'
     buffer = io.BytesIO()
     font.save(buffer)
@@ -122,12 +156,16 @@ def convert_glyphs(entry, out_dir):
     with open(os.path.join(out_dir, file_name), 'wb') as handle:
         handle.write(data)
     return {'name': entry['name'], 'file': file_name, 'bytes': len(data), 'sourceBytes': os.path.getsize(entry['glyphs']), 'reduced': False,
-            'unitsPerEm': units, 'ascender': source.get('ascent', units), 'descender': source.get('descent', -units // 4), 'capHeight': None, 'glyphs': len(cmap), 'ausGlyphen': True}
+            'unitsPerEm': units, 'ascender': source.get('ascent', units), 'descender': source.get('descent', -units // 4), 'capHeight': None, 'glyphs': len(cmap), 'ausGlyphen': True, 'original': original, 'fehlt': fehlende(cmap)}
 
 
 def main():
     job = json.load(sys.stdin)
     os.makedirs(job['out'], exist_ok=True)
+    if job.get('original'):
+        os.makedirs(job['original'], exist_ok=True)
+        for entry in job['fonts']:
+            entry['original_dir'] = job['original']
     result, errors = [], []
     for entry in job['fonts']:
         try:

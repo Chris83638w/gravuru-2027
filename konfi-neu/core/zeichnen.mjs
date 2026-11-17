@@ -11,6 +11,16 @@ export const schriftFamilie = name => 'gk-' + String(name).toLowerCase().replace
  * So setzt jeder Browser und die Fertigungsstrecke jeden Buchstaben gleich.
  */
 const TEXT_STIL = 'font-kerning:normal;font-variant-ligatures:none;font-feature-settings:"liga" 0,"clig" 0,"calt" 0;white-space:pre';
+const TEXT_STIL_OHNE = TEXT_STIL.replace('font-kerning:normal', 'font-kerning:none');
+
+/**
+ * Schriften, die ohne Unterschneidung gesetzt werden (im Schriftenverzeichnis mit `k: 0` veröffentlicht).
+ * Wer zeichnet (Editor, Vorschaubilder), meldet sie hier einmal an.
+ */
+const ohneUnterschneidung = new Set();
+export function schriftenAnmelden(verzeichnis) {
+  for (const [name, schrift] of Object.entries(verzeichnis || {})) if (schrift.k === 0) ohneUnterschneidung.add(name);
+}
 
 export function textMarkup(el, farbe) {
   const anker = el.anker === 'm' ? 'middle' : el.anker === 'e' ? 'end' : 'start';
@@ -22,7 +32,7 @@ export function textMarkup(el, farbe) {
   return `<text x="${el.x}" y="${el.y}" font-family="${schriftFamilie(el.font)}" font-size="${el.size}" text-anchor="${anker}"` +
     (el.ls ? ` letter-spacing="${el.ls}"` : '') +
     (el.rot ? ` transform="rotate(${el.rot} ${el.x} ${el.y})"` : '') +
-    ` fill="${farbe}" style='${TEXT_STIL}'>${inhalt}</text>`;
+    ` fill="${farbe}" style='${ohneUnterschneidung.has(el.font) ? TEXT_STIL_OHNE : TEXT_STIL}'>${inhalt}</text>`;
 }
 
 export function motivTransform(el) {

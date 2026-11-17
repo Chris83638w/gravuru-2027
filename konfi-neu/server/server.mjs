@@ -18,6 +18,7 @@ import {randomBytes} from 'node:crypto';
 import {fileURLToPath} from 'node:url';
 import {kern} from './kern.mjs';
 import {speicherOeffnen} from './speicher.mjs';
+import {fertigung, fertigungSchreiben} from './fertigung.mjs';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const argumente = process.argv.slice(2);
@@ -37,10 +38,22 @@ const speicher = speicherOeffnen(path.resolve(process.env.GRAVURU_ABLAGE || path
 let zusatz = null;
 if (dev) zusatz = (await import('../dev/testshop.mjs')).testshop({wurzel, schluessel: () => schluessel});
 
+// Fertigungsdateien entstehen, sobald eine bezahlte Position geprüft und „bereit“ ist.
+// Testbestellungen bekommen einen eigenen Ordner mit dem Vermerk „nicht fertigen“ (Entscheidung 6.11).
+const schriftOrdner = path.join(wurzel, 'dist', 'fertigung', 'schriften');
+const erzeugen = fs.existsSync(schriftOrdner) ? fertigung({schriftOrdner}) : null;
+if (!erzeugen) console.error('Hinweis: dist/fertigung fehlt – es werden keine Fertigungsdateien erzeugt (erst veröffentlichen).');
+const nachBereit = erzeugen && (({position, gestaltung, eintrag}) => {
+  const ergebnis = erzeugen(gestaltung, eintrag, id => speicher.upload(id));
+  const name = `${position.test ? 'TEST-' : ''}${String(position.bestellnummer || position.bestellung).replace(/[^\w-]+/g, '')}-${position.position}`;
+  fertigungSchreiben({ziel: path.join(speicher.fertigungOrdner, name), ergebnis, uploadsOrdner: speicher.uploadsOrdner,
+    position: {bestellung: position.bestellnummer, menge: position.menge, test: position.test, ...(position.test ? {nichtFertigen: 'Testbestellung – nicht fertigen'} : {})}});
+});
+
 const anfrage = kern({
   daten: path.join(wurzel, 'dist', 'daten'),
   app: path.join(wurzel, 'dist', 'app'),
-  speicher, schluessel,
+  speicher, schluessel, nachBereit,
   webhookSchluessel: process.env.SHOPIFY_WEBHOOK_SCHLUESSEL,
   shop: process.env.GRAVURU_SHOP,
   oeffentlich: process.env.GRAVURU_OEFFENTLICH || '',

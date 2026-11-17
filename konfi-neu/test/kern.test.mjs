@@ -309,3 +309,79 @@ test('Bindung: Server nimmt die Shopify-Variante aus der Abgleich-Datei und weis
     assert.equal((await ohne.json()).code, 'nicht_gebunden');
   }, {bindung});
 });
+
+// ---------------------------------------------------------------- Fertigung
+import {fertigung} from '../server/fertigung.mjs';
+const erzeugen = fertigung({schriftOrdner: path.join(wurzel, 'dist', 'fertigung', 'schriften')});
+
+test('Fertigung Edelstahl: Text als Pfade, Kontur blau, Bohrungen rot, maßhaltig', () => {
+  const e = eintrag(FREI);
+  const g = modell.groesseVon(e.familie, 'GR-ES-RE-120X80-T15');
+  const z = {...modell.startZustand(e, {groesse: g.k, bef: 'B02'}), els: [{...modell.neuerText(g, 'Montserrat', 'Familie Özdemir'), mw: 1}]};
+  const {dateien, auftrag} = erzeugen({id: 'gtest', rev: 1, sku: 'x', zustand: z}, e);
+  const svg = dateien['fertigung.svg'];
+  assert.match(svg, /width="120mm" height="80mm" viewBox="0 0 120 80"/);
+  assert.ok(!svg.includes('<text') && !svg.includes('font-family') && !svg.includes('currentColor'), 'kein Text, keine Schriftangabe');
+  assert.match(svg, /<g id="kontur" fill="none" stroke="#0000ff" stroke-width="0.0762">/);
+  assert.equal((svg.match(/<circle /g) || []).length, 2, 'zwei Bohrungen');
+  assert.match(svg, /<g id="bohrungen" fill="none" stroke="#ff0000"/);
+  assert.match(svg, /<g id="gravur" fill="#000000" stroke="none"><path d="M/);
+  assert.equal(Object.keys(dateien).length, 1, 'Edelstahl wird nicht gespiegelt');
+  assert.ok(auftrag.pruefhinweise.some(h => /Breite hier/.test(h)), 'abweichende Breite aus dem Editor wird gemeldet');
+  assert.deepEqual(auftrag.texte, ['Familie Özdemir']);
+});
+
+test('Fertigung Acryl: zusätzlich gespiegelte Laserdatei', () => {
+  const e = eintrag('ts-acryl-ab-120x80-t30-d10');
+  const {dateien, auftrag} = erzeugen({id: 'gtest', rev: 1, sku: 'x', zustand: modell.startZustand(e)}, e);
+  assert.deepEqual(Object.keys(dateien), ['fertigung.svg', 'laser-gespiegelt.svg']);
+  assert.match(dateien['laser-gespiegelt.svg'], /<g transform="translate\(120 0\) scale\(-1 1\)">/);
+  assert.match(dateien['fertigung.svg'], /stroke="#ffff00"/, 'Acrylkontur gelb');
+  assert.equal(auftrag.material, 'Acrylglas schwarz');
+});
+
+test('Fertigung Funkklingel: Edelstahl und Acryl getrennt, Gravur nur im Acryl, kein Gerätebild', () => {
+  const e = eintrag(KLINGEL);
+  const z = {...modell.startZustand(e), bef: 'B04S', opt: {position: 'standard', rahmen: 'FK-RUNDUM', farbe: 'anthrazit'}};
+  const {dateien, auftrag} = erzeugen({id: 'gtest', rev: 2, sku: 'x', zustand: z}, e);
+  assert.deepEqual(Object.keys(dateien), ['edelstahl.svg', 'acryl.svg']);
+  const stahl = dateien['edelstahl.svg'], acryl = dateien['acryl.svg'];
+  assert.match(stahl, /width="240mm" height="200mm"/);
+  assert.ok(!stahl.includes('id="gravur"'), 'keine Gravur auf Edelstahl');
+  assert.equal((stahl.match(/<circle /g) || []).length, 4, 'vier Eckbohrungen bei Schraubbefestigung');
+  assert.match(acryl, /width="220mm" height="180mm" viewBox="10 10 220 180"/, 'Acrylfläche des ganzen Rahmens');
+  assert.equal((acryl.match(/<circle /g) || []).length, 0, 'Eckbohrungen liegen im Edelstahlrand, nicht im Acryl');
+  assert.match(acryl, /id="gravur"/);
+  for (const svg of [stahl, acryl]) {
+    assert.ok(!svg.includes('<image'), 'kein Gerätebild in den Schneiddaten');
+    assert.equal((svg.match(/id="schnitte"/g) || []).length, 1);
+    assert.ok(svg.split('id="schnitte"')[1].includes('<path d="M'), 'Geräteaussparungen vorhanden');
+  }
+  assert.equal(auftrag.klingelposition, 'Klingel rechts');
+  assert.equal(auftrag.acrylfarbe, 'anthrazit');
+  // Ohne sichtbaren Rahmen deckt das Acryl die ganze Platte: Dann gehören die Eckbohrungen auch ins Acryl.
+  const voll = erzeugen({id: 'gtest', rev: 3, sku: 'x', zustand: {...z, opt: {...z.opt, rahmen: 'FK-VERDECKT'}}}, e).dateien['acryl.svg'];
+  assert.equal((voll.match(/<circle /g) || []).length, 4);
+});
+
+test('Bestelleingang erzeugt Fertigungsordner; Testbestellung ist gekennzeichnet', async () => {
+  const ordner = fs.mkdtempSync(path.join(os.tmpdir(), 'konfi-fertigung-'));
+  const {fertigungSchreiben} = await import('../server/fertigung.mjs');
+  let speicherRef;
+  const nachBereit = ({position, gestaltung, eintrag: e}) => fertigungSchreiben({ziel: path.join(ordner, `${position.test ? 'TEST-' : ''}${position.bestellnummer.replace(/\W/g, '')}-${position.position}`), ergebnis: erzeugen(gestaltung, e, id => speicherRef.upload(id)), uploadsOrdner: speicherRef.uploadsOrdner, position: {bestellung: position.bestellnummer, menge: position.menge, test: position.test}});
+  await mitServer(async (basis, speicher) => {
+    speicherRef = speicher;
+    const e = eintrag(KLINGEL);
+    const d = await (await post(basis + '/api/gestaltungen', {zustand: modell.startZustand(e)})).json();
+    const body = JSON.stringify({id: 77, name: '#1077', test: true, line_items: [{id: 5, variant_id: d.position.variante, sku: d.position.sku, quantity: 1, price: '59.99', properties: Object.entries(d.position.eigenschaften).map(([name, value]) => ({name, value}))}]});
+    const antwort = await fetch(basis + '/webhooks/shopify/orders-paid', {method: 'POST', body, headers: {'x-shopify-hmac-sha256': createHmac('sha256', 'hook').update(body).digest('base64'), 'x-shopify-shop-domain': 'test.myshopify.com', 'x-shopify-webhook-id': 'f1'}});
+    assert.deepEqual((await antwort.json()).positionen, [{position: '5', status: 'bereit', grund: null}]);
+    const ziel = path.join(ordner, 'TEST-1077-5');
+    assert.deepEqual(fs.readdirSync(ziel).sort(), ['acryl.svg', 'auftrag.json', 'edelstahl.svg']);
+    const auftrag = JSON.parse(fs.readFileSync(path.join(ziel, 'auftrag.json'), 'utf8'));
+    assert.equal(auftrag.test, true);
+    assert.equal(auftrag.bestellung, '#1077');
+    assert.deepEqual(auftrag.texte, ['Familie', 'Mustermann', '12a']);
+  }, {nachBereit});
+  fs.rmSync(ordner, {recursive: true, force: true});
+});

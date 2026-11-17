@@ -3,7 +3,7 @@ import css from './stil.css';
 import {h, s, icon, euro} from './dom.mjs';
 import {buehne as buehneErzeugen} from './buehne.mjs';
 import {schriftLader} from './schriften.mjs';
-import {schriftFamilie} from '../core/zeichnen.mjs';
+import {schriftFamilie, schriftenAnmelden} from '../core/zeichnen.mjs';
 import * as modell from '../core/modell.mjs';
 import {motivAusSvg} from './motiv.mjs';
 import {fotoVorbereiten} from './foto.mjs';
@@ -557,6 +557,11 @@ export async function oeffnen(o) {
   async function zumWarenkorb() {
     if (beschaeftigt || !zustand) return;
     const fehler = modell.pruefen(zustand, familie, {foto: fotoErlaubt()});
+    // Zeichen, die die gewählte Schrift nicht enthält: Der Browser zeigt dafür eine Ersatzschrift, graviert würde etwas anderes.
+    for (const el of zustand.els) {
+      const fehlt = el.t === 'text' ? [...new Set(el.text)].filter(z => eintrag.schriften[el.font]?.f?.includes(z)) : [];
+      if (fehlt.length) fehler.push({code: 'zeichen', id: el.id, text: `Die Schrift „${el.font}“ enthält ${fehlt.map(z => '„' + z + '“').join(', ')} nicht. Bitte wähle für diesen Text eine andere Schrift.`});
+    }
     // Texte auf dem Gerät: mit der im Browser gemessenen Textbreite prüfen.
     const gesperrt = buehne.gesperrt();
     if (gesperrt) for (const el of zustand.els) {
@@ -572,7 +577,9 @@ export async function oeffnen(o) {
     beschaeftigt = true;
     const zu = dialog('Deine Gestaltung wird gespeichert …', h('div', {style: 'display:grid;place-items:center;padding:12px'}, h('div', {class: 'gk-dreher'})), []);
     try {
-      await abschliessen({o, zustand, familie, eintrag, schriften, uploads});
+      // Gemessene Textbreiten mitschicken: Die Fertigung vergleicht sie mit ihrer eigenen Berechnung.
+      const gemessen = {...zustand, els: zustand.els.map(el => { const mw = el.t === 'text' ? buehne.textBreite(el.id) : null; return mw ? {...el, mw: Number(mw.toFixed(3))} : el; })};
+      await abschliessen({o, zustand: gemessen, familie, eintrag, schriften, uploads});
       try { localStorage.removeItem(entwurfKey()); } catch {}
       o.shop.zumWarenkorb();
     } catch (error) {
@@ -598,6 +605,7 @@ export async function oeffnen(o) {
     if (geschlossen) return null;
     familie = eintrag.familie;
     schriften = schriftLader(o.basis, eintrag.schriften);
+    schriftenAnmelden(eintrag.schriften);
     buehne = buehneErzeugen({
       familie, basis: o.basis,
       onAuswahl: id => {

@@ -356,6 +356,15 @@ export function buehne({familie, basis, onAuswahl, onAendern, onFertig, onDoppel
     onAnsicht(fn) { ansichtHoerer = fn; },
     rahmenVon: id => { const el = zustand.els.find(e => e.id === id); return el ? rahmen(el) : null; },
     freieBreite,
+    /** Laufweite eines Textes in mm, so wie der Browser ihn setzt (breiteste Zeile). */
+    textBreite(id) {
+      const text = knoten.get(id)?.g.querySelector('text');
+      if (!text) return null;
+      try {
+        const zeilen = text.querySelectorAll('tspan');
+        return zeilen.length ? Math.max(...[...zeilen].map(z => z.getComputedTextLength())) : text.getComputedTextLength();
+      } catch { return null; }
+    },
     gesperrt: () => aktuelleSzene?.gesperrt || null,
   };
 }

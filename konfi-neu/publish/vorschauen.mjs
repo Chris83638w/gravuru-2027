@@ -65,12 +65,13 @@ const browser = await chromium.launch();
 const page = await browser.newPage();
 await page.goto(basis + '/');
 await page.addScriptTag({type: 'module', content: `
-  import {gestaltungSvg, schriftFamilie} from '/core/zeichnen.mjs';
+  import {gestaltungSvg, schriftFamilie, schriftenAnmelden} from '/core/zeichnen.mjs';
   import {elementeAusDesign} from '/core/modell.mjs';
   const schriftCss = new Map();
   const bilder = new Map();
   const dataUrl = async adresse => { if (!bilder.has(adresse)) bilder.set(adresse, fetch(adresse).then(r => r.blob()).then(b => new Promise(ok => { const fr = new FileReader(); fr.onload = () => ok(fr.result); fr.readAsDataURL(b); }))); return bilder.get(adresse); };
   window.zeichne = async ({design, familie, schriften, breite}) => {
+    schriftenAnmelden(schriften);
     const [groesseKey, position] = String(design.bsp?.g || '').split('|');
     const groesse = familie.groessen.find(g => g.k === groesseKey) || familie.groessen.find(g => Math.abs(g.w / g.h - design.platte[0] / design.platte[1]) < 0.02) || familie.groessen[0];
     const css = [];

@@ -56,7 +56,10 @@ const katalog = katalogAdapter.katalogOeffnen(root);
 
 // ---------------------------------------------------------------- Schriften
 const fontList = JSON.parse(fs.readFileSync(path.join(root, 'schriften', 'schriften.json'), 'utf8')).fonts;
-const fontJob = {out: path.join(out, 's'), fonts: []};
+// Originalschriften für die Fertigung liegen NEBEN den öffentlichen Daten (dist/fertigung), nie darin.
+const fertigungOrdner = path.join(out, '..', 'fertigung');
+fs.rmSync(fertigungOrdner, {recursive: true, force: true});
+const fontJob = {out: path.join(out, 's'), original: path.join(fertigungOrdner, 'schriften'), fonts: []};
 for (const font of fontList) {
   const file = font.file && path.join(root, font.file);
   if (!file || !fs.existsSync(file)) {
@@ -79,6 +82,7 @@ const fontRun = spawnSync('python3', [path.join(here, 'schriften.py')], {input: 
 if (fontRun.status !== 0) throw new Error('Schriften: ' + fontRun.stderr);
 const fontResult = JSON.parse(fontRun.stdout);
 for (const error of fontResult.errors) hinweise.push({art: 'schrift', name: error.name, grund: error.error});
+fs.writeFileSync(path.join(fertigungOrdner, 'schriften.json'), JSON.stringify(Object.fromEntries(fontResult.fonts.map(f => [f.name, {datei: f.original, ...(f.altkern ? {ohneUnterschneidung: true} : {})}]))));
 /** Name der Schrift → {u: Adresse, a/d/c: Ober-, Unterlänge, Versalhöhe als Anteil der Schriftgröße} */
 const schriften = {};
 for (const font of fontResult.fonts) {
@@ -87,6 +91,10 @@ for (const font of fontResult.fonts) {
     a: round(font.ascender / font.unitsPerEm, 4),
     d: round(font.descender / font.unitsPerEm, 4),
     c: font.capHeight ? round(font.capHeight / font.unitsPerEm, 4) : null,
+    // Zeichen, die dieser Schrift fehlen (aus einer festen Liste gängiger Zeichen): Der Editor warnt davor.
+    ...(font.fehlt ? {f: font.fehlt} : {}),
+    // k: 0 = ohne Unterschneidung setzen (Schrift hat sie nur in der alten Tabelle „kern“, siehe schriften.py).
+    ...(font.altkern ? {k: 0} : {}),
   };
 }
 
@@ -277,7 +285,7 @@ for (const line of katalog.lines.values()) {
         groessen: angebot,
         start: startDoc,
         // Alle Schriften stehen als Adresse bereit; geladen wird nur, was die Gestaltung benutzt.
-        schriften: Object.fromEntries(Object.entries(schriften).map(([name, font]) => [name, {u: font.u}])),
+        schriften: Object.fromEntries(Object.entries(schriften).map(([name, font]) => [name, {u: font.u, ...(font.f ? {f: font.f} : {}), ...(font.k === 0 ? {k: 0} : {})}])),
         motive: motivIndex,
         regeln: {motiv: regelQuelle.motiv.cents, ...(regelQuelle.logo.aktiv ? {logo: regelQuelle.logo.cents} : {}), staffel: regelQuelle.staffel.stufen},
         stand: standKennung, vorschau: 1,
@@ -307,7 +315,7 @@ if (args.produkte) {
     fs.mkdirSync(path.join(out, 'p'), {recursive: true});
     fs.writeFileSync(path.join(out, 'p', key + '.json'), JSON.stringify({
       v: 1, key, name: product.name, linie: product.linie || null, thema: product.thema || null, familie: doc, groessen: sizes, start: startDoc,
-      schriften: Object.fromEntries(Object.entries(schriften).map(([name, font]) => [name, {u: font.u}])), motive: motivIndex,
+      schriften: Object.fromEntries(Object.entries(schriften).map(([name, font]) => [name, {u: font.u, ...(font.f ? {f: font.f} : {}), ...(font.k === 0 ? {k: 0} : {})}])), motive: motivIndex,
       regeln: {motiv: regelQuelle.motiv.cents, ...(regelQuelle.logo.aktiv ? {logo: regelQuelle.logo.cents} : {}), staffel: regelQuelle.staffel.stufen},
       stand: standKennung, vorschau: 1, ids: product.ids || {},
     }));

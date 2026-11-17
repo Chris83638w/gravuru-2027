@@ -75,7 +75,7 @@ Webhook orders/paid  →  bestellpositionen (jede Zeile mit Status „bereit“ 
 | `shopify/` | Theme-Bausteine, Preisfunktion und Kassenprüfung (Rust), Referenzlogik |
 | `abgleich/` | Shop lesen und Plan gegen den Katalog erzeugen; schreibt die Bindungsdatei |
 | `dev/` | Test-Shop, Durchlauf- und Messskripte |
-| `test/` | 19 automatische Tests |
+| `test/` | 23 automatische Tests |
 
 ### Entscheidungen im Aufbau und ihr Grund
 
@@ -152,8 +152,7 @@ Schriften brauchen beim Veröffentlichen Python mit `fonttools` und `brotli`.
 Ehrlich und nach Gewicht. Nichts hiervon ist versteckt eingebaut oder vorgetäuscht.
 
 1. **Funkklingelschilder sind drin, aber noch nicht an Shopify gebunden.** Siehe Abschnitt 5a.
-2. **Fertigungsdatei.** Der Bestelleingang speichert die Gestaltung, erzeugt aber noch kein PDF/SVG mit Text als
-   Pfaden. Die bestehende Exportstrecke ist nicht angeschlossen.
+2. **Fertigungsdatei ist da, aber nur als SVG und noch nicht von der Werkstatt abgenommen.** Siehe Abschnitt 5c.
 3. **Oberfläche ist nicht R15.** Aufbau und Reiter sind angelehnt, aber neu gebaut. Es fehlen u. a.: Ausweichen
    bei Bohrung und Schraube (Entscheidung 3.40), Hilfetexte (ⓘ), Vollbild, Logo-Upload, Freistellen,
    Mengenstaffel-Anzeige, mehrsprachige Texte, „Oval“ statt „Ellipse“ als Kundenname (3.27).
@@ -212,7 +211,7 @@ lesen): `abgleich/shop-lesen-oeffentlich.mjs`. Ergebnis von `abgleich/abgleich.m
 |---|---:|
 | aktive Produkte im Shop | 87 |
 | davon einem veröffentlichten Konfigurator-Produkt zugeordnet | 87 |
-| gebundene Varianten | 10.340 |
+| gebundene Varianten | 10.350 |
 | Preisabweichungen Shop gegen Katalog | 0 |
 | fehlende Varianten | 0 |
 
@@ -221,12 +220,52 @@ lesen): `abgleich/shop-lesen-oeffentlich.mjs`. Ergebnis von `abgleich/abgleich.m
 - **Edelstahl-Türschild „Form und Größe selbst wählen“:** 250 von 404 Varianten gebunden. Die öffentlichen Daten
   liefern höchstens 250 Varianten je Produkt; für die übrigen 154 ist ein Abzug mit Admin-Leserecht nötig
   (`abgleich/shop-lesen.mjs`).
-- **Acryl-Türschilder (2 Produkte):** je 5 Varianten in Schwarz gebunden. Die je 5 Varianten in Anthrazit kennt
-  der Neuaufbau noch nicht: Im Katalog sind Schwarz und Anthrazit zwei Familien, im Shop eine Farbauswahl in
-  einem Produkt. Das fehlt noch.
+- **Acryl-Türschilder (2 Produkte):** alle 20 Varianten gebunden, Schwarz und Anthrazit. Die Farbe ist im
+  Neuaufbau eine Auswahl im Produkt (im Katalog zwei Familien, `colorIsOption`).
 - Der Server liest die Datei über `GRAVURU_BINDUNG`. Eine Auswahl ohne gebundene Variante wird als „nicht
   bestellbar“ abgewiesen, nie mit einem geratenen Preis verkauft.
 - Geschrieben wurde nichts. Der Plan enthält keine einzige schreibende Maßnahme.
+
+## 5c. Fertigungsdateien (Stand 17.11.2026)
+
+Sobald eine bezahlte Position geprüft und „bereit“ ist, schreibt der Server einen Ordner
+`ablage/fertigung/<Bestellnummer>-<Position>/` mit maßhaltigen SVG-Dateien in mm und einer `auftrag.json`
+(Texte, Material, Maße, Befestigung, Prüfhinweise). Quelle der Regeln: ENTSCHEIDUNGEN.md Abschnitt 6.
+
+| Produkt | Dateien |
+|---|---|
+| Edelstahl-Schild | `fertigung.svg`: Kontur blau, Gravur schwarz, Bohrungen rot |
+| Acryl-Schild (von hinten graviert) | `fertigung.svg` lesbar, dazu `laser-gespiegelt.svg` (Entscheidung 6.6); Kontur gelb |
+| Funkklingelschild | `edelstahl.svg` (Kontur blau, Geräteaussparungen und Eckbohrungen rot) und `acryl.svg` (Kontur gelb, Gravur, Aussparungen); kein Gerätebild |
+
+- Text ist immer in Pfade umgewandelt (6.3). Schnittlinien sind rote Haarlinien, 0,0762 mm (6.8). Bohrlöcher
+  sparen die Gravur nicht aus (6.4).
+- Testbestellungen landen in einem Ordner `TEST-…` mit dem Vermerk „nicht fertigen“ (6.11).
+- **Vorschau = Fertigung, gemessen:** `dev/vergleich-textbreite.mjs` vergleicht für alle 89 Schriften die
+  Textbreite im Browser mit der Fertigung. Ergebnis: 89 von 89 gleich, größte Abweichung 0,017 mm bei 10 mm
+  Schriftgröße. Dafür waren drei Dinge nötig:
+  - Die Fertigung setzt mit HarfBuzz, derselben Bibliothek wie Chrome und Firefox.
+  - 12 Schriften tragen ihre Unterschneidung nur in einer alten Tabelle, die Browser uneinheitlich behandeln
+    (Chrome verwirft sie bei Caviar Dreams ganz). Diese Schriften werden in Vorschau und Fertigung einheitlich
+    ohne Unterschneidung gesetzt – wie im bisherigen Konfi.
+  - Der Editor misst jede Textbreite und schickt sie mit. Weicht die Fertigung um mehr als 0,3 mm ab, steht
+    das als Prüfhinweis im Auftrag.
+- **Fehlende Zeichen:** 5 Schriften fehlt das ß, zweien davon auch das € (Minimalist, Ashley, Sweetie, Homage,
+  Sunflower). Der Browser zeigt dafür still eine Ersatzschrift. Der Warenkorb weist solche Texte jetzt ab und
+  nennt Zeichen und Schrift; die Fertigung meldet es zusätzlich.
+- Durchgespielt: Warenkorb mit Edelstahl-Schild und Funkklingel → simulierte Testbestellung → zwei Ordner mit
+  Dateien. Bild: `docs/handoffs/2026-11-17-konfi-neu/fertigungsdateien.png`.
+
+Offen bei der Fertigung:
+
+1. **Nur SVG.** PDF und DXF (Anforderung M-023) entstehen noch nicht.
+2. **Nicht von der Werkstatt abgenommen** und nicht mit dem bestehenden Export verglichen. Farben und
+   Linienstärken folgen den Entscheidungen, sind aber an keiner Maschine geprüft.
+3. **Fotos** sind als Bild mit Ausschnitt eingebettet, nicht für die Gravur gerastert.
+4. **Funkklingel-Acryl:** Ob von vorn oder von hinten graviert wird, ist nicht festgelegt; die Datei ist lesbar.
+5. **Nur mit Chrome verglichen.** Safari und Firefox können Text minimal anders setzen; der Breitenvergleich
+   im Auftrag fängt das ab.
+6. Der Server braucht dafür das Paket `harfbuzzjs` (einzige Laufzeit-Abhängigkeit).
 
 ## 6. Offene Punkte für Chris
 
@@ -234,9 +273,10 @@ lesen): `abgleich/shop-lesen-oeffentlich.mjs`. Ergebnis von `abgleich/abgleich.m
   liegt deshalb getrennt und ersetzt nichts. Ob er R15 ablösen, ergänzen oder nur als Vorlage für einzelne
   Teile dienen soll (z. B. zuerst nur Veröffentlichung und WOFF2-Schriften im bestehenden Konfi), ist deine
   Entscheidung.
-- **Funkklingel: Zusatzmotive.** Foto mit 9,99 € je Foto ist von dir am 17.11. bestätigt. Offen ist, ob Kunden
-  bei Funkklingeln auch Motive aus der Bibliothek hinzufügen dürfen (bei Türschildern 1,69 € je Motiv). Bis
-  dahin ist der Reiter „Motive“ bei Funkklingeln aus, wie im bestehenden Konfi. Logo bleibt ebenfalls aus.
+- **Funkklingel-Acryl: von vorn oder von hinten graviert?** Davon hängt ab, ob die Laserdatei gespiegelt wird.
+- **Welche Dateiformate braucht die Werkstatt?** Bisher entsteht SVG. Reicht das, oder PDF/DXF?
+- **Schriften ohne ß:** Minimalist, Ashley, Sweetie, Homage und Sunflower können kein ß. Der Editor lässt solche
+  Texte nicht in den Warenkorb. Wenn du das anders willst (z. B. diese Schriften nicht anbieten), sag es.
 - **Fotopreis:** Im Katalog steht für Schiefer 22 × 14 „jedes weitere Foto 8,99 €“; das Entscheidungsregister
   nennt 9,99 € als neueren Wert (1.20). Der Neuaufbau nimmt den Katalogwert.
 - **Schriften kürzen:** OFL-Schriften werden auf lateinische Zeichen reduziert. Vier Schriften fehlen als Datei

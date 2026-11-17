@@ -1,3 +1,14 @@
+## 17.11.2026 · Claude · `konfi-neu`: Motive Funkklingel, Farbauswahl Acryl, Fertigungsdateien (Chris im Chat: „ja motive mit 1,69 €, mach weiter“)
+
+- Motive aus der Bibliothek bei Funkklingeln freigeschaltet, 1,69 € je Motiv (Chris 17.11.).
+- Acryl-Türschilder: Schwarz/Anthrazit als Farbauswahl in einem Produkt. Abgleich jetzt 10.350 gebundene Varianten, 0 unbekannte, 0 Preisabweichungen.
+- Fertigungsdateien: maßhaltige SVG mit Text als Pfaden beim Bestelleingang (Edelstahl, Acryl mit gespiegelter Laserdatei, Funkklingel getrennt Edelstahl/Acryl). Regeln nach ENTSCHEIDUNGEN Abschnitt 6.
+- Messung Vorschau gegen Fertigung, alle 89 Schriften: 89 gleich, größte Abweichung 0,017 mm bei 10 mm Schrift. Dafür: Textsatz mit HarfBuzz; 12 Schriften mit alter Unterschneidungstabelle einheitlich ohne Unterschneidung.
+- Neu im Editor: Texte mit Zeichen, die der Schrift fehlen (5 Schriften ohne ß), gehen nicht in den Warenkorb.
+- Prüfungen: 23/23 Tests; Kundenweg Desktop bestanden; simulierte Testbestellung erzeugt zwei Fertigungsordner.
+- Offene Grenzen: nur SVG (kein PDF/DXF); nicht von der Werkstatt abgenommen; Fotos nicht gerastert; 154 Edelstahl-Varianten ungebunden; nichts live.
+- Nächster Schritt: Abnahme der Fertigungsdateien durch Chris/Werkstatt; dann Shopify-Erweiterung verpacken.
+
 ## 17.11.2026 · Claude · `konfi-neu`: Bindung an den Shop (Auftrag Chris: „mach weiter mit der bindung“)
 
 - Chris bestätigt 9,99 € je Foto bei Funkklingeln.

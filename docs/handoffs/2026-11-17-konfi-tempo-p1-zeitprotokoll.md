@@ -1,5 +1,7 @@
 # P1 · Schritt 1: Zeitprotokoll für die Warenkorbstrecke
 
+Fortsetzung nach neuer direkter Beauftragung („dann antworte und mach weiter“): [Zusatzmessung 1b](2026-11-17-konfi-tempo-p1-1b.md). Die folgenden Abschlussaussagen dokumentieren den davor abgeschlossenen B1-Stand. V2/V3 und weitere Live-Aktionen bleiben zurückgestellt.
+
 17.11.2026 · Astra (Codex) · Auftrag [#254](https://github.com/Chris83638w/gravuru-2027/issues/254), einschließlich [Zielbild-Kommentar](https://github.com/Chris83638w/gravuru-2027/issues/254#issuecomment-6947690091).
 
 Basis exakt `be163c5d598dfe1c680b483adee645d63a3bdc26`, Branch `dev/claude-warenkorb-v4-20261116`. Erste Instrumentierung `2d133af0ca0f7a7ef71fd9a1a3e010ffd3f81bed`, B1-Ergänzung `7054b89e5fbfb87995d95a11cb6e87d75cfd163d`, eigener P1-Branch `dev/astra-konfi-tempo-p1-20261117`, [PR #255](https://github.com/Chris83638w/gravuru-2027/pull/255). B1 ist von Claude abgenommen. Den Diagnose-Stand `9af3a1ac` hat Claude laut seinem Protokoll nach separatem „Live“ von Chris eingespielt; Astra hat keinen Live-Eingriff vorgenommen. Aktueller direkter Auftrag: B1 abschließen, V2/V3 zurückgestellt, keine weitere Live-Aktion. Die ursprünglichen lokalen Messnachweise unten bleiben als solche erhalten.

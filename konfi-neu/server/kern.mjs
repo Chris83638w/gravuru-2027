@@ -82,7 +82,7 @@ export function kern(k) {
     const staffel = staffelText(familie.staffel || eintrag.regeln?.staffel);
     const ablauf = Math.floor(jetzt() / 1000) + ANGEBOT_TAGE * 86400;
     const eigenschaften = {
-      Format: `${familie.art === 'klingel' ? familie.name : familie.material.name} · ${groesse.n}`,
+      Format: `${modell.materialName(familie, zustand)} · ${groesse.n}`,
     };
     // Die Klingelposition ist keine Shop-Variante und muss deshalb in der Zeile stehen.
     if (familie.art === 'klingel') eigenschaften.Klingelposition = groesse.kl.posNamen[zustand.opt.position];

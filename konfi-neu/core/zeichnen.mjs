@@ -91,7 +91,8 @@ const rechteckPfad = ([x, y, w, h]) => `M${x} ${y}H${x + w}V${y + h}H${x}Z`;
 export function szene(familie, groesse, zustand) {
   const material = familie.material;
   if (familie.art !== 'klingel') {
-    return {lagen: [{d: groesse.d, farbe: material.farbe, textur: material.textur || null}], flaeche: groesse.d, geraet: null, gesperrt: null};
+    const gewaehlt = familie.optionen?.find(o => o.k === 'farbe')?.werte.find(w => w.k === zustand.opt?.farbe)?.farbe;
+    return {lagen: [{d: groesse.d, farbe: gewaehlt || material.farbe, textur: material.textur || null}], flaeche: groesse.d, geraet: null, gesperrt: null};
   }
   const opt = zustand.opt || {};
   const acryl = groesse.kl.rahmen[opt.rahmen] || Object.values(groesse.kl.rahmen)[0];

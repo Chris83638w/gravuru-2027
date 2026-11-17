@@ -1,16 +1,16 @@
 {
- "erzeugt": "2026-11-17T07:32:28.437Z",
+ "erzeugt": "2026-11-17T07:38:14.904Z",
  "shop": "gravuru-design.myshopify.com",
  "gelesen": "2026-11-17T07:32:28.273Z",
- "stand": "2db334aab4cd",
+ "stand": "86e2898648ee",
  "zaehler": {
   "produkteImShop": 87,
   "mitKonfi": 87,
   "veroeffentlicht": 87,
-  "variantenGebunden": 10340,
+  "variantenGebunden": 10350,
   "variantenFehlen": 0,
   "preisAbweichungen": 0,
-  "unbekannteVarianten": 10,
+  "unbekannteVarianten": 0,
   "nichtImShop": 146,
   "unvollstaendigGelesen": 1
  },
@@ -19,76 +19,6 @@
    "art": "hinweis",
    "produkt": "katalog-formate-edelstahl-tuerschilder-familienschilder-eb5fe26624befe4a",
    "grund": "Abzug enthält 250 von mehr als 250 Varianten – Variantenabgleich für dieses Produkt unvollständig"
-  },
-  {
-   "art": "hinweis",
-   "produkt": "ts-acryl-ab-120x80-t30-d10",
-   "variante": "58100337377660",
-   "sku": "TS-Acryl-AB-120X80-T30-D10-AN-K00",
-   "grund": "Variante im Shop, die der Katalog nicht kennt – bleibt unberührt"
-  },
-  {
-   "art": "hinweis",
-   "produkt": "ts-acryl-ab-120x80-t30-d10",
-   "variante": "58100337410428",
-   "sku": "TS-Acryl-AB-120X80-T30-D10-AN-KGL",
-   "grund": "Variante im Shop, die der Katalog nicht kennt – bleibt unberührt"
-  },
-  {
-   "art": "hinweis",
-   "produkt": "ts-acryl-ab-120x80-t30-d10",
-   "variante": "58100337443196",
-   "sku": "TS-Acryl-AB-120X80-T30-D10-AN-KRA",
-   "grund": "Variante im Shop, die der Katalog nicht kennt – bleibt unberührt"
-  },
-  {
-   "art": "hinweis",
-   "produkt": "ts-acryl-ab-120x80-t30-d10",
-   "variante": "58100337475964",
-   "sku": "TS-Acryl-AB-120X80-T30-D10-AN-B02",
-   "grund": "Variante im Shop, die der Katalog nicht kennt – bleibt unberührt"
-  },
-  {
-   "art": "hinweis",
-   "produkt": "ts-acryl-ab-120x80-t30-d10",
-   "variante": "58100337508732",
-   "sku": "TS-Acryl-AB-120X80-T30-D10-AN-B02S",
-   "grund": "Variante im Shop, die der Katalog nicht kennt – bleibt unberührt"
-  },
-  {
-   "art": "hinweis",
-   "produkt": "ts-acryl-ab-120x80-t30-d8",
-   "variante": "58100336918908",
-   "sku": "TS-Acryl-AB-120X80-T30-D8-AN-K00",
-   "grund": "Variante im Shop, die der Katalog nicht kennt – bleibt unberührt"
-  },
-  {
-   "art": "hinweis",
-   "produkt": "ts-acryl-ab-120x80-t30-d8",
-   "variante": "58100336951676",
-   "sku": "TS-Acryl-AB-120X80-T30-D8-AN-KGL",
-   "grund": "Variante im Shop, die der Katalog nicht kennt – bleibt unberührt"
-  },
-  {
-   "art": "hinweis",
-   "produkt": "ts-acryl-ab-120x80-t30-d8",
-   "variante": "58100336984444",
-   "sku": "TS-Acryl-AB-120X80-T30-D8-AN-KRA",
-   "grund": "Variante im Shop, die der Katalog nicht kennt – bleibt unberührt"
-  },
-  {
-   "art": "hinweis",
-   "produkt": "ts-acryl-ab-120x80-t30-d8",
-   "variante": "58100337017212",
-   "sku": "TS-Acryl-AB-120X80-T30-D8-AN-B02",
-   "grund": "Variante im Shop, die der Katalog nicht kennt – bleibt unberührt"
-  },
-  {
-   "art": "hinweis",
-   "produkt": "ts-acryl-ab-120x80-t30-d8",
-   "variante": "58100337049980",
-   "sku": "TS-Acryl-AB-120X80-T30-D8-AN-B02S",
-   "grund": "Variante im Shop, die der Katalog nicht kennt – bleibt unberührt"
   },
   {
    "art": "hinweis",

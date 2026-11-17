@@ -142,7 +142,7 @@ export async function oeffnen(o) {
     const p = modell.preis(zustand, familie, regeln());
     preisAnzeige.textContent = euro(p.summe);
     mengeAnzeige.textContent = String(p.menge);
-    info.replaceChildren(h('span', null, `${familie.art === 'klingel' ? familie.name : familie.material.name} · ${g.n}`), h('b', {class: 'gk-nur-mobil-preis'}, euro(p.summe)));
+    info.replaceChildren(h('span', null, `${modell.materialName(familie, zustand)} · ${g.n}`), h('b', {class: 'gk-nur-mobil-preis'}, euro(p.summe)));
   }
   function menge(delta) {
     setze({...zustand, menge: Math.max(1, Math.min(99, (zustand.menge || 1) + delta))});
@@ -209,7 +209,7 @@ export async function oeffnen(o) {
   function reiterAusfuehrung() {
     const g = groesse();
     const erlaubt = erlaubteGroessen();
-    if (familie.optionen) {
+    if (familie.art === 'klingel') {
       // Viele Möglichkeiten (Funkklingel): Auswahllisten; die Befestigung bleibt als Bildkacheln (Entscheidung 3.37).
       const teile = [auswahlListe('Format', erlaubt.map(x => ({k: x.k, n: `${x.n} · ${euro(x.p)}`})), g.k, key => groesseWaehlen(erlaubt.find(x => x.k === key)))];
       for (const option of familie.optionen) {
@@ -233,6 +233,12 @@ export async function oeffnen(o) {
     if (inForm.length > 1) {
       teile.push(h('h3', null, 'Größe'), h('div', {class: 'gk-kacheln'}, inForm.map(x =>
         h('button', {class: 'gk-kachel', 'aria-pressed': String(x.k === g.k), onclick: () => groesseWaehlen(x)}, x.n, h('small', null, euro(x.p))))));
+    }
+    const farben = familie.optionen?.find(o => o.k === 'farbe');
+    if (farben) {
+      teile.push(h('h3', null, farben.n), h('div', {class: 'gk-kacheln'}, farben.werte.map(w =>
+        h('button', {class: 'gk-kachel', 'aria-pressed': String(w.k === zustand.opt.farbe), onclick: () => optionWaehlen('farbe', w.k)},
+          h('span', {style: `display:block;width:44px;height:44px;border-radius:50%;background:${w.farbe};border:1px solid #6b7b7f`}), w.n))));
     }
     if (g.bef.length > 1) {
       teile.push(h('h3', null, 'Befestigung'), h('div', {class: 'gk-kacheln gk-zwei'}, g.bef.map(b =>
@@ -307,7 +313,7 @@ export async function oeffnen(o) {
       const treffer = q ? liste.filter(d => (d.n + ' ' + d.id + ' d' + d.nr).toLowerCase().includes(q)) : liste;
       raster.replaceChildren(...treffer.slice(0, 120).map(d => {
         const kachel = h('button', {class: 'gk-kachel gk-design', 'aria-pressed': String(d.id === zustand.design), title: d.n, onclick: () => designWaehlen(d, kachel)},
-          eintrag.vorschau ? h('img', {src: o.basis + d.u.replace(/^d\//, 'v/' + familie.material.k + '/').replace(/\.json$/, '.webp'), loading: 'lazy', alt: '', onerror: event => event.target.remove()}) : null, h('span', null, d.n));
+          eintrag.vorschau ? h('img', {src: o.basis + d.u.replace(/^d\//, 'v/' + (familie.optionen?.find(x => x.k === 'farbe')?.werte.find(w => w.k === zustand.opt?.farbe)?.mk || familie.material.k) + '/').replace(/\.json$/, '.webp'), loading: 'lazy', alt: '', onerror: event => event.target.remove()}) : null, h('span', null, d.n));
         return kachel;
       }));
       if (!treffer.length) raster.replaceChildren(h('p', {class: 'gk-hinweis'}, 'Keine Designs für diese Größe gefunden.'));
@@ -538,7 +544,7 @@ export async function oeffnen(o) {
     const g = groesse();
     const bef = modell.befestigungVon(g, zustand.bef);
     const namen = {motiv: 'Zusätzliche Motive', foto: 'Fotos', logo: 'Logos'};
-    const zeilen = [[`${familie.material.name} · ${g.n}`, euro(p.grund)]];
+    const zeilen = [[`${modell.materialName(familie, zustand)} · ${g.n}`, euro(p.grund)]];
     if (p.befestigung) zeilen.push([bef.n, euro(p.befestigung)]);
     for (const z of p.zusatz) zeilen.push([`${namen[z.art]} (${z.n} × ${euro(z.je)})`, euro(z.cents)]);
     if (p.rabatt) zeilen.push([`Mengenrabatt ${p.rabatt} %`, '− ' + euro(p.liste - p.stueck)]);

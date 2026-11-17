@@ -89,7 +89,28 @@ export function galerieSchluessel(familie, groesseKey, opt) {
 
 /** Schlüssel der Shop-Variante innerhalb eines Produkts. Die Klingelposition ist keine Variante. */
 export function variantenSchluessel(familie, zustand) {
-  return familie.art === 'klingel' ? `${zustand.groesse}-${zustand.opt.farbe}-${zustand.opt.rahmen}-${zustand.bef}` : `${zustand.groesse}-${zustand.bef}`;
+  if (familie.art === 'klingel') return `${zustand.groesse}-${zustand.opt.farbe}-${zustand.opt.rahmen}-${zustand.bef}`;
+  // Platten mit Farbauswahl: Jede Farbe hat im Katalog eigene Größenschlüssel (…-SW, …-AN).
+  const groesse = familie.farbGroessen?.[zustand.opt?.farbe]?.[zustand.groesse] || zustand.groesse;
+  return `${groesse}-${zustand.bef}`;
+}
+
+/** Alle Shop-Varianten eines Produkts mit Schlüssel und Preis in Cent (Grundpreis + Befestigung). */
+export function alleVarianten(familie, erlaubt = null) {
+  const groessen = erlaubt ? familie.groessen.filter(g => erlaubt.includes(g.k)) : familie.groessen;
+  const achsen = (familie.optionen || []).filter(o => o.k !== 'position');
+  const auswahlen = achsen.reduce((liste, o) => liste.flatMap(opt => o.werte.map(w => ({...opt, [o.k]: w.k}))), [{}]);
+  const liste = [];
+  for (const g of groessen) for (const opt of auswahlen) for (const b of g.bef) {
+    liste.push({sku: variantenSchluessel(familie, {groesse: g.k, bef: b.id, opt}), cents: g.p + b.p, groesse: g, bef: b, opt});
+  }
+  return liste;
+}
+
+/** Name des Materials in der gewählten Farbe, z. B. „Acrylglas anthrazit“. */
+export function materialName(familie, zustand) {
+  if (familie.art === 'klingel') return familie.name;
+  return familie.optionen?.find(o => o.k === 'farbe')?.werte.find(w => w.k === zustand.opt?.farbe)?.n || familie.material.name;
 }
 
 /**

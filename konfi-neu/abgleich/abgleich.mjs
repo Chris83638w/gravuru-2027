@@ -21,6 +21,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
+import {alleVarianten} from '../core/modell.mjs';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const arg = name => { const i = process.argv.indexOf('--' + name); return i >= 0 ? process.argv[i + 1] : undefined; };
@@ -115,13 +116,12 @@ for (const [key, produktShop] of imShop) {
   }
   const nachSku = new Map(produktShop.varianten.map(v => [skuNormal(v.sku), v]));
   const erwartet = new Set();
-  const groessen = eintrag.groessen ? eintrag.familie.groessen.filter(g => eintrag.groessen.includes(g.k)) : eintrag.familie.groessen;
-  for (const g of groessen) {
-    for (const b of g.bef) {
-      const sku = `${g.k}-${b.id}`;
+  for (const v of alleVarianten(eintrag.familie, eintrag.groessen)) {
+    {
+      const {sku, groesse: g, bef: b} = v;
       erwartet.add(sku);
       const variante = nachSku.get(sku);
-      const soll = g.p + b.p;
+      const soll = v.cents;
       if (!variante) {
         if (abgeschnitten) continue; // nicht beurteilbar
         zaehler.variantenFehlen++;

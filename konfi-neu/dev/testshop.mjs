@@ -8,6 +8,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {randomBytes} from 'node:crypto';
 import {preisLauf, pruefLauf} from '../shopify/funktion/logik.mjs';
+import {alleVarianten} from '../core/modell.mjs';
 
 const esc = value => String(value).replace(/[&<>"]/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}[c]));
 const euro = cents => (cents / 100).toFixed(2).replace('.', ',') + ' €';
@@ -48,8 +49,8 @@ button.k{background:#18794e;color:#fff;border:0;border-radius:10px;padding:14px 
   function variantenPreis(sku, bevorzugt) {
     for (const key of [bevorzugt, ...Object.keys(stand().produkte)].filter(Boolean)) {
       const eintrag = produkt(key);
-      const zusatz = eintrag.familie.art === 'klingel' ? eintrag.familie.optionen.find(o => o.k === 'farbe').werte.flatMap(f => eintrag.familie.optionen.find(o => o.k === 'rahmen').werte.map(r => `-${f.k}-${r.k}`)) : [''];
-      for (const g of eintrag.familie.groessen) for (const b of g.bef) for (const z of zusatz) if (`${g.k}${z}-${b.id}` === sku) return {cents: g.p + b.p, titel: eintrag.name, produkt: key};
+      const treffer = alleVarianten(eintrag.familie).find(v => v.sku === sku);
+      if (treffer) return {cents: treffer.cents, titel: eintrag.name, produkt: key};
     }
     return null;
   }

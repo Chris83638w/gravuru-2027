@@ -1,6 +1,6 @@
 # Abgleichplan gravuru-design.myshopify.com
 
-Shop gelesen: 2026-11-17T07:32:28.273Z · Katalogstand: 2db334aab4cd · erzeugt: 2026-11-17T07:32:28.450Z
+Shop gelesen: 2026-11-17T07:32:28.273Z · Katalogstand: 86e2898648ee · erzeugt: 2026-11-17T07:38:14.917Z
 
 **Dieser Plan ändert nichts.** Er listet, was sich zwischen Katalog und Shop unterscheidet.
 
@@ -9,10 +9,10 @@ Shop gelesen: 2026-11-17T07:32:28.273Z · Katalogstand: 2db334aab4cd · erzeugt:
 | produkteImShop | 87 |
 | mitKonfi | 87 |
 | veroeffentlicht | 87 |
-| variantenGebunden | 10340 |
+| variantenGebunden | 10350 |
 | variantenFehlen | 0 |
 | preisAbweichungen | 0 |
-| unbekannteVarianten | 10 |
+| unbekannteVarianten | 0 |
 | nichtImShop | 146 |
 | unvollstaendigGelesen | 1 |
 

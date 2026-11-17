@@ -133,9 +133,9 @@ export function klingelnVeroeffentlichen({katalogRoot, appRoot, schriften, write
           familie, groessen: null, start,
           wahl: {groesse: d.format, bef: d.mounting, opt: {position: d.position, rahmen: d.frame, farbe: d.color}},
           schriften: Object.fromEntries(Object.entries(schriften).map(([name, font]) => [name, {u: font.u}])), motive: motivIndex,
-          // Zusatzmotive und Logos sind bei Funkklingeln im Bestand abgeschaltet (import-doorbell-catalog.mjs) und
-          // bleiben aus, bis Chris sie freigibt. Eine Mengenstaffel ist für Funkklingeln nicht belegt.
-          regeln: {staffel: []}, ohne: {motive: 1},
+          // Zusatzmotive: Chris, 17.11.2026 (1,69 € je Motiv, auch bei Funkklingeln). Logos bleiben aus.
+          // Eine Mengenstaffel ist für Funkklingeln nicht belegt.
+          regeln: {motiv: regelQuelle.motiv.cents, staffel: []},
           stand: standKennung, vorschau: 1, ids: {shopifyProductId: String(zeile.productId || '').split('/').pop(), customizationId: kennung},
         }));
         produkte[key] = {name: zeile.title || familie.name, familie: familie.id, start: start?.id || null, shopify: String(zeile.productId || '').split('/').pop() || null};

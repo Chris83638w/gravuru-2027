@@ -253,11 +253,28 @@ for (const line of katalog.lines.values()) {
       if (product.startDesign && !startEntry) { hinweise.push({art: 'produkt', id: product.id, grund: 'Startdesign nicht veröffentlichbar: ' + product.startDesign}); continue; }
       const startDoc = startEntry ? JSON.parse(fs.readFileSync(path.join(out, startEntry.u), 'utf8')) : null;
       const key = slug(product.id);
+      // Farbe als Auswahl: Führt die Linie mehrere Familien, die sich nur in der Materialfarbe unterscheiden
+      // (Acryl schwarz / anthrazit, `colorIsOption` im Katalog), bekommt das Produkt eine Farbauswahl.
+      // Die Größenschlüssel der anderen Farbe werden über Form und Maß zugeordnet.
+      let familieDoc = family.doc;
+      let angebot = product.sizesOffered || null;
+      const farbFamilien = line.mainProductPolicy?.colorIsOption ? line.families.filter(id => familien[id]?.doc.material.variante) : [];
+      if (farbFamilien.length > 1) {
+        if (angebot) angebot = angebot.filter(k => family.doc.groessen.some(g => g.k === k));
+        const basisGroessen = angebot ? family.doc.groessen.filter(g => angebot.includes(g.k)) : family.doc.groessen;
+        const werte = [], farbGroessen = {};
+        for (const id of [familyId, ...farbFamilien.filter(x => x !== familyId)]) {
+          const doc = familien[id].doc;
+          werte.push({k: doc.material.variante, n: doc.material.name, farbe: doc.material.farbe, mk: doc.material.k});
+          if (id !== familyId) farbGroessen[doc.material.variante] = Object.fromEntries(basisGroessen.map(g => [g.k, doc.groessen.find(x => x.g === g.g && x.w === g.w && x.h === g.h && x.p === g.p)?.k]).filter(([, k]) => k));
+        }
+        familieDoc = {...family.doc, optionen: [{k: 'farbe', n: 'Farbe', werte}], farbGroessen};
+      }
       const entry = {
         v: 1, key, name: product.name, linie: line.id, thema: sub.themeId,
         // Familie und Startdesign stehen direkt in dieser Datei: ein Abruf genügt für den ersten Bildaufbau.
-        familie: family.doc,
-        groessen: product.sizesOffered || null,
+        familie: familieDoc,
+        groessen: angebot,
         start: startDoc,
         // Alle Schriften stehen als Adresse bereit; geladen wird nur, was die Gestaltung benutzt.
         schriften: Object.fromEntries(Object.entries(schriften).map(([name, font]) => [name, {u: font.u}])),

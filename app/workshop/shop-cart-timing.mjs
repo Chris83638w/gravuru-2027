@@ -1,6 +1,7 @@
 import {AsyncLocalStorage} from 'node:async_hooks';
 import {performance} from 'node:perf_hooks';
 import {randomUUID} from 'node:crypto';
+import {startCartEventLoopTiming} from './shop-cart-event-loop.mjs';
 
 // Only server-owned labels and numeric measurements. Never record request URLs,
 // tokens, bodies, product/customer IDs or exception messages.
@@ -13,14 +14,14 @@ function finish(trace,status){
  trace.done=true;
  const totalMs=round(performance.now()-trace.started);
  const steps=Object.fromEntries([...trace.steps].map(([name,value])=>[name,{...value,durationMs:round(value.durationMs)}]));
- const event={event:'shop_cart_timing',version:1,startedAt:trace.startedAt,traceId:trace.id,route:trace.route,status,totalMs,steps,counts:{...trace.counts},...(trace.parentId?{parentTraceId:trace.parentId}:{})};
+ const event={event:'shop_cart_timing',version:1,startedAt:trace.startedAt,traceId:trace.id,route:trace.route,status,totalMs,steps,counts:{...trace.counts},eventLoop:trace.finishEventLoop(),...(trace.parentId?{parentTraceId:trace.parentId}:{})};
  // A broken log destination must not change the customer's response.
  try{const result=trace.logger(event);if(result&&typeof result.catch==='function')result.catch(()=>{});}catch{}
  return {'X-Gravuru-Timing-Id':trace.id,'Server-Timing':['total;dur='+totalMs,...Object.entries(steps).map(([name,v])=>name+';dur='+v.durationMs)].join(', ')};
 }
 export async function withCartTiming(route,logger,work,{parentId}={}){
  if(!routes.has(route))return work();
- const trace={id:randomUUID(),route,logger,started:performance.now(),startedAt:new Date().toISOString(),steps:new Map(),counts:{},done:false,parentId};
+ const trace={id:randomUUID(),route,logger,started:performance.now(),startedAt:new Date().toISOString(),steps:new Map(),counts:{},done:false,parentId,finishEventLoop:startCartEventLoopTiming()};
  return scope.run(trace,async()=>{
   try{return await work();}
   finally{if(!trace.done)finish(trace,0);}// No JSON response: connection closed/aborted.

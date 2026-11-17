@@ -40,6 +40,13 @@ test('overlapping requests and background work have separate totals and counts',
  assert.deepEqual(request.counts,{request_bytes:10});assert.deepEqual(data.counts,{response_bytes:20});
  assert.ok(!request.steps.shopify_poll_wait);assert.ok(background.steps.shopify_poll_wait.durationMs>=10);
  assert.ok(background.totalMs>request.totalMs);
+ for(const event of events){
+  assert.equal(event.eventLoop.resolutionMs,20);
+  for(const window of [event.eventLoop.beforeHandler,event.eventLoop.duringHandler]){
+   assert.ok(Object.values(window).every(value=>Number.isFinite(value)&&value>=0));
+   assert.ok(window.maxMs>=window.p99Ms);
+  }
+ }
 });
 
 test('logging failures cannot change results, and aborted requests are recorded once',async()=>{
@@ -49,5 +56,6 @@ test('logging failures cannot change results, and aborted requests are recorded 
  const events=[];
  await assert.rejects(withCartTiming('acrylic-drafts',e=>events.push(e),async()=>{throw Error('aborted');}),/aborted/);
  assert.equal(events.length,1);assert.equal(events[0].status,0);
+ assert.ok(events[0].eventLoop,'aborted requests also close their event-loop measurement');
  await withCartTiming('model',()=>assert.fail('unrelated route was logged'),()=>42);
 });

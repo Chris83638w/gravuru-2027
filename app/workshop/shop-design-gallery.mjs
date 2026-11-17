@@ -125,7 +125,7 @@ export function createShopDesignGallery({secret,resolve,modelFor,cardFor=modelFo
   const storage=context.store.registry.galleryCache,started=performance.now();
   if(storage){
    try{
-    const saved=await storage.read(revision),restored=snapshots.decode(context,revision,saved);
+    const saved=await storage.read(revision),restored=snapshots.decodeLazy(context,revision,saved);
     if(restored){measure(context,'shop_gallery_cache_hit',{ms:performance.now()-started});return restored;}
     measure(context,saved?'shop_gallery_cache_invalid':'shop_gallery_cache_miss');
    }catch{measure(context,'shop_gallery_cache_read_failed');}
@@ -134,7 +134,14 @@ export function createShopDesignGallery({secret,resolve,modelFor,cardFor=modelFo
   // Never label an in-flight mixed build with a revision that has moved on.
   if(storage&&context.store.registry.galleryRevision()===revision){
    const at=performance.now();
-   try{if(await storage.write(revision,snapshots.encode(context,revision,result))!==false)measure(context,'shop_gallery_cache_saved',{ms:performance.now()-at});}
+   try{
+    const encoded=snapshots.encode(context,revision,result);
+    if(await storage.write(revision,encoded)!==false){
+     measure(context,'shop_gallery_cache_saved',{ms:performance.now()-at});
+     // Audit 17.11.2026: dieselbe schlanke Fassung wie beim Treffer behalten statt aller gebauten Karten im Speicher.
+     const slim=snapshots.decodeLazy(context,revision,encoded);if(slim)return slim;
+    }
+   }
    catch{measure(context,'shop_gallery_cache_write_failed');}
   }
   return result;

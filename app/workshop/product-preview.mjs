@@ -12,6 +12,7 @@ import {surfacePreview,scenePreview,plateDepthPreview} from '../configurator/var
 import {examplePhotoMarkup,emptyMaskedPhotoMarkup} from '../configurator/variant-m/photo-placeholder.mjs';
 import {isLayeredDoorbell} from '../configurator/variant-m/doorbell-selection.mjs';
 import {workshopResources} from './catalog.mjs';
+import {cardSurface} from './card-surface.mjs';
 
 // Resolve shared fonts only for the new model family, never persist the merged map.
 export function previewFonts(config,load=workshopResources){
@@ -69,7 +70,7 @@ export function productPreview(model,{options={},examples=[],designId,layout='po
  // artwork is generated separately and never receives this guide layer.
  if(c.familyFormats)svg=plateDepthPreview(svg,p.geometry,'product-card');
  if(c.familyAcrylic)svg=spacerPreview(svg,p);
- if(!c.acrylic)return scenePreview(designAreaPreview(keepoutPreview(screwPreview(surfacePreview(svg,c.materialSurface,p.geometry),p),p,{show:keepout}),c,p,{show:designArea}),c.sceneBackground);
+ if(!c.acrylic)return scenePreview(designAreaPreview(keepoutPreview(screwPreview(surfacePreview(svg,layout==='card'?cardSurface(c.materialSurface):c.materialSurface,p.geometry),p),p,{show:keepout}),c,p,{show:designArea}),c.sceneBackground);
  backdrop??=image('scene-empty-v2.jpg');
  svg=svg.replace(/viewBox="[^"]+"/,'x="85.794" y="49.956" width="915.498" height="1196.048" viewBox="0 0 150 200"').replace('fill="url(#studio-product-card-surface)"','fill="transparent"');
  const choice=acrylicSelection(acrylicOptions(options),c.acrylic.pricing),b=choice.base;

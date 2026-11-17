@@ -60,18 +60,8 @@ function* unpack(blocks){
 
 export function gallerySnapshotCodec(secret){
  const mac=payload=>createHmac('sha256',secret).update(schema+'\0').update(payload).digest('hex');
- return {
-  encode(context,revision,snapshot){
-   // Each temporary projection/JSON buffer is bounded. Never construct the
-   // complete uncompressed payload or a second complete projected card graph.
-   const totals={bytes:0,rows:0,packed:0},scopes=[];
-   for(const [key,rows] of snapshot.scopes)scopes.push([key,pack(rowsOf(rows),totals)]);
-   const cards=totals.rows,sources=pack(sourcesOf(snapshot.sources),totals);
-   const payload=JSON.stringify({schema,scope:contextScope(context),revision,cards,sourceCount:totals.rows-cards,bytes:totals.bytes,scopes,sources});
-   if(Buffer.byteLength(payload)>envelopeBytes)cacheLimit();
-   return {payload,mac:mac(payload)};
-  },
-  decode(context,revision,saved){
+  // Gemeinsame Prüfung für decode/decodeLazy: Signatur, Umschlag, alle Blockangaben und die Quellen.
+  function open(context,revision,saved){
    // v2/v3 are intentionally misses: parsing their full plaintext snapshot
    // would reintroduce the peak this derived v4 cache is intended to avoid.
    if(!saved||typeof saved.payload!=='string'||saved.payload.length>envelopeBytes||Buffer.byteLength(saved.payload)>envelopeBytes||!/^[a-f0-9]{64}$/.test(saved.mac||'')||!timingSafeEqual(Buffer.from(mac(saved.payload)),Buffer.from(saved.mac)))return null;
@@ -87,15 +77,47 @@ export function gallerySnapshotCodec(secret){
     if(totals.rows!==data.cards)return null;
     inspectBlocks(data.sources,totals);
     if(totals.rows!==data.cards+data.sourceCount||totals.bytes!==data.bytes)return null;
-    const scopes=new Map();for(const [key,blocks] of data.scopes)scopes.set(key,Array.from(unpack(blocks)));
     const sources=new Map();
     for(const pair of unpack(data.sources)){
      if(!Array.isArray(pair)||pair.length!==2||typeof pair[0]!=='string'||sources.has(pair[0])||!pair[1]||typeof pair[1]!=='object'||Array.isArray(pair[1]))return null;
      sources.set(pair[0],pair[1]);
     }
-    if(scopes.size!==data.scopes.length||sources.size!==data.sourceCount)return null;
-    return {scopes,sources};
+    if(sources.size!==data.sourceCount)return null;
+    return {data,sources};
    }catch{return null;}
+  }
+ return {
+  encode(context,revision,snapshot){
+   // Each temporary projection/JSON buffer is bounded. Never construct the
+   // complete uncompressed payload or a second complete projected card graph.
+   const totals={bytes:0,rows:0,packed:0},scopes=[];
+   for(const [key,rows] of snapshot.scopes)scopes.push([key,pack(rowsOf(rows),totals)]);
+   const cards=totals.rows,sources=pack(sourcesOf(snapshot.sources),totals);
+   const payload=JSON.stringify({schema,scope:contextScope(context),revision,cards,sourceCount:totals.rows-cards,bytes:totals.bytes,scopes,sources});
+   if(Buffer.byteLength(payload)>envelopeBytes)cacheLimit();
+   return {payload,mac:mac(payload)};
+  },
+  decode(context,revision,saved){
+   const opened=open(context,revision,saved);if(!opened)return null;
+   try{
+    const scopes=new Map();for(const [key,blocks] of opened.data.scopes)scopes.set(key,Array.from(unpack(blocks)));
+    return scopes.size===opened.data.scopes.length?{scopes,sources:opened.sources}:null;
+   }catch{return null;}
+  },
+  // Audit 17.11.2026: Live-Cache 245.830 Karten in 44 Bereichen (339 MB JSON). decode() entpackte bei jedem
+  // Treffer alles (~3 s Hauptthread, ~1 GB Heap), eine Anfrage braucht aber nur den Bereich ihres Produkts.
+  // decodeLazy prüft Signatur, Umschlag und alle Blockangaben sofort wie decode(), entpackt einen Bereich
+  // aber erst beim ersten get() und merkt ihn sich. Ein (nach gültiger Signatur praktisch unmöglicher)
+  // Fehler beim späteren Entpacken wirft, statt still eine leere Galerie zu liefern.
+  decodeLazy(context,revision,saved){
+   const opened=open(context,revision,saved);if(!opened)return null;
+   const blocks=new Map(opened.data.scopes),inflated=new Map();
+   const scopes=Object.freeze({
+    get(key){if(!blocks.has(key))return undefined;if(!inflated.has(key))inflated.set(key,Array.from(unpack(blocks.get(key))));return inflated.get(key);},
+    has:key=>blocks.has(key),keys:()=>blocks.keys(),get size(){return blocks.size;},
+    get inflated(){return inflated.size;}
+   });
+   return {scopes,sources:opened.sources};
   }
  };
 }

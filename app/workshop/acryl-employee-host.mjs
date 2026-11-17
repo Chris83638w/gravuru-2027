@@ -17,6 +17,9 @@ export function acrylCacheControl(pathname,status){
  if(pathname===steelSurfacePath)return 'public, max-age=31536000, immutable';
  if(isAcrylPublicEditorJson(pathname))return 'public, max-age=3600';
  if(pathname==='/_merchant-acryl-editor.html')return 'private, max-age=300';
+ // Audit 17.11.2026: Assistent, Stildatei und Warenkorb-Symbol des Editors kamen bei jedem Öffnen neu (je ~100×/Tag, no-store).
+ // Gleiche Lebensdauer wie die Editor-Seite, die sie lädt; dadurch entsteht kein neues Versionsfenster.
+ if(['/acryl-assistant.js','/acryl-configurator/mobile-demo/demo.css','/acryl-configurator/mobile-demo/shopping-cart.svg'].includes(pathname))return 'private, max-age=300';
  if(pathname.startsWith('/_acryl-runtime/images/option-')&&isStandardOptionImage(acrylRoute(pathname)))return 'public, max-age=31536000, immutable';
  return null;
 }

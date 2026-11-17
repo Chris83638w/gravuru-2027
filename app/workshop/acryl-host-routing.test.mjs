@@ -47,6 +47,8 @@ test('static editor files may be cached by the browser; everything else stays pr
  assert.equal(acrylCacheControl('/_acryl-runtime/lazy/schriften/lora-italic.json',200),'public, max-age=3600');
  assert.equal(acrylCacheControl('/_merchant-acryl-editor.html',200),'private, max-age=300');
  assert.equal(acrylCacheControl('/_acryl-runtime/lazy/motive-alle.json',200),'public, max-age=3600');assert.equal(acrylCacheControl('/_acryl-runtime/lazy/motive/leuchtturm_1.json',200),'public, max-age=3600');
+ for(const p of ['/acryl-assistant.js','/acryl-configurator/mobile-demo/demo.css','/acryl-configurator/mobile-demo/shopping-cart.svg'])assert.equal(acrylCacheControl(p,200),'private, max-age=300',p);
+ assert.equal(acrylCacheControl('/acryl-assistant.js',404),null);assert.equal(acrylCacheControl('/acryl-configurator/mobile-demo/other.css',200),null);
  for(const [p,s] of [['/_acryl-bundle/editor.mjs',200],['/_acryl-runtime/lazy/schriften/../x.json',200],['/_acryl-runtime/lazy/motive/../a.json',200],['/api/workshop/acryl/acrylic-drafts',200],['/_merchant-acryl-editor.html',404],['/werkstatt/',200]])assert.equal(acrylCacheControl(p,s),null,p);
 });
 test('only known option images have immutable URLs and only public lazy JSON can pass through encoded',()=>{

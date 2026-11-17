@@ -90,3 +90,34 @@ test('signed malformed blocks, byte/count totals and decompression overflow fail
  });
  const oversized={payload:' '.repeat(64*1024*1024+1),mac:'0'.repeat(64)};assert.equal(codec.decode(context,'r',oversized),null);
 });
+
+// Audit 17.11.2026: Treffer entpacken nur den angefragten Bereich (Live: 44 Bereiche, 245.830 Karten, ~3 s je Treffer).
+function manyScopes(scopeCount,rowsPerScope){
+ const scopes=new Map();
+ for(let s=0;s<scopeCount;s++)scopes.set('line:'+s,Array.from({length:rowsPerScope},(_,i)=>{const r=row(s*rowsPerScope+i);r.scope={...r.scope,key:'line:'+s,lineId:String(s)};return r;}));
+ return {scopes,sources:new Map([['binding_0',{scope:{key:'line:0',lineId:'0',familyId:null},process:'steel',theme:null}]])};
+}
+test('decodeLazy yields exactly the eager rows per scope, but inflates only requested scopes',()=>{
+ const codec=gallerySnapshotCodec(secret),data=manyScopes(5,300),saved=codec.encode(context,'r',data);
+ const eager=codec.decode(context,'r',saved),lazy=codec.decodeLazy(context,'r',saved);
+ assert.deepEqual(lazy.sources,eager.sources);assert.equal(lazy.scopes.size,5);assert.equal(lazy.scopes.inflated,0);
+ assert.deepEqual(lazy.scopes.get('line:3'),eager.scopes.get('line:3'));assert.equal(lazy.scopes.inflated,1);
+ assert.equal(lazy.scopes.get('line:3'),lazy.scopes.get('line:3'),'Bereich wird nur einmal entpackt');
+ assert.equal(lazy.scopes.get('fehlt'),undefined);assert.equal(lazy.scopes.has('line:4'),true);assert.equal(lazy.scopes.has('fehlt'),false);
+ for(const key of eager.scopes.keys())assert.deepEqual(lazy.scopes.get(key),eager.scopes.get(key));
+ assert.deepEqual([...lazy.scopes.keys()],[...eager.scopes.keys()]);
+});
+test('decodeLazy rejects exactly what decode rejects before inflating anything',()=>{
+ const codec=gallerySnapshotCodec(secret),saved=codec.encode(context,'r',manyScopes(2,10));
+ for(const bad of [null,{...saved,payload:saved.payload+' '},{...saved,mac:'0'.repeat(64)}])assert.equal(codec.decodeLazy(context,'r',bad),null);
+ assert.equal(codec.decodeLazy(context,'other',saved),null);assert.equal(gallerySnapshotCodec('other-synthetic-secret').decodeLazy(context,'r',saved),null);
+ const data=JSON.parse(saved.payload);data.cards++;const payload=JSON.stringify(data);
+ assert.equal(codec.decodeLazy(context,'r',{payload,mac:createHmac('sha256',secret).update('gravuru-shop-gallery-cache/v4\0').update(payload).digest('hex')}),null);
+});
+test('a lazy cache hit for one scope is much cheaper than eager decoding of all scopes',()=>{
+ const codec=gallerySnapshotCodec(secret),saved=codec.encode(context,'r',manyScopes(20,600));
+ const time=fn=>{const at=performance.now();fn();return performance.now()-at;};
+ const eager=Math.min(...[0,1,2].map(()=>time(()=>codec.decode(context,'r',saved))));
+ const lazy=Math.min(...[0,1,2].map(()=>time(()=>codec.decodeLazy(context,'r',saved).scopes.get('line:7'))));
+ assert(lazy*4<eager,`lazy ${lazy.toFixed(1)} ms vs eager ${eager.toFixed(1)} ms`);
+});

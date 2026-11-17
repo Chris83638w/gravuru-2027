@@ -75,8 +75,8 @@ test('entries of one product state share one held model; the number of distinct 
 });
 
 test('databaseEpoch changes on own writes, rolled-back writes, schema changes, foreign commits and TEMP schema; reads leave it alone',t=>{
- const dir=mkdtempSync(join(tmpdir(),'gravuru-epoch-'));t.after(()=>rmSync(dir,{recursive:true,force:true}));
- const file=join(dir,'p.sqlite'),db=new DatabaseSync(file),other=new DatabaseSync(file);t.after(()=>{db.close();other.close();});
+ const dir=mkdtempSync(join(tmpdir(),'gravuru-epoch-'));
+ const file=join(dir,'p.sqlite'),db=new DatabaseSync(file),other=new DatabaseSync(file);t.after(()=>{db.close();other.close();rmSync(dir,{recursive:true,force:true});});
  db.exec('CREATE TABLE value(n); INSERT INTO value VALUES(1)');
  const seen=new Set([databaseEpoch(db)]);
  const changed=(label,work)=>{const before=databaseEpoch(db);work();const after=databaseEpoch(db);assert.notEqual(after,before,label);assert.ok(!seen.has(after)||label.startsWith('Rückkehr'),label);seen.add(after);};
@@ -93,11 +93,11 @@ test('databaseEpoch changes on own writes, rolled-back writes, schema changes, f
 });
 
 test('repository.readEpoch follows every repository write, including a rolled-back save',t=>{
- const dir=mkdtempSync(join(tmpdir(),'gravuru-repo-epoch-'));t.after(()=>rmSync(dir,{recursive:true,force:true}));
+ const dir=mkdtempSync(join(tmpdir(),'gravuru-repo-epoch-'));
  const file=join(dir,'products.sqlite');let failNext=false;
  const repository=createProductRepository({filename:file,snapshotMetadata:()=>{if(failNext)throw new Error('Metadaten fehlgeschlagen');return {};}});
  const foreign=createProductRepository({filename:file,snapshotMetadata:()=>({})});
- t.after(()=>{repository.close();foreign.close();});
+ t.after(()=>{repository.close();foreign.close();rmSync(dir,{recursive:true,force:true});});
  assert.equal(typeof repository.readEpoch(),'string');
  const step=(label,work)=>{const before=repository.readEpoch();work();assert.notEqual(repository.readEpoch(),before,label);};
  let created;
@@ -115,11 +115,11 @@ test('repository.readEpoch follows every repository write, including a rolled-ba
 });
 
 test('repository.revisionState: product state without the document column, same errors as get, blind to writes elsewhere in the file',t=>{
- const dir=mkdtempSync(join(tmpdir(),'gravuru-repo-state-'));t.after(()=>rmSync(dir,{recursive:true,force:true}));
+ const dir=mkdtempSync(join(tmpdir(),'gravuru-repo-state-'));
  const file=join(dir,'products.sqlite');
  const repository=createProductRepository({filename:file}),other=createProductRepository({filename:file,tenantId:'fremder-mandant'});
  const side=new DatabaseSync(file);
- t.after(()=>{repository.close();other.close();side.close();});
+ t.after(()=>{repository.close();other.close();side.close();rmSync(dir,{recursive:true,force:true});});
  const a=repository.create(doc('A')),b=repository.create(doc('B'));
  const state=(id,options)=>JSON.stringify(repository.revisionState(id,options));
  const snap=repository.revisionState(a.id,{revision:1});

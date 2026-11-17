@@ -37,9 +37,12 @@ export function prepareThemeCart({workshop,registry,shopDomain,proxyPath,custome
  if(customerImageUrl)properties._gravuru_bild=cartTimingStep('customer_image_url',()=>customerImageUrl(offer.id));
  // The edit link identifies the actual cart revision, not the last prepared offer.
  const previousRevision=input.configId?cartRevision:null;
+ // Optional acceleration must not invalidate an otherwise valid old offer.
+ // Its existing image capability remains the fallback in /data and warmup.
+ let imageSource;try{imageSource=checkoutImageSource?.(manifest.id,manifest.packageSha256);}catch{}
  return {
   // Internal upload source only; cart/order properties retain the offer URL.
-  checkoutImageSource:checkoutImageSource?.(manifest.id,manifest.packageSha256),
+  checkoutImageSource:imageSource,
   offerId:offer.id,resolve,claim:nonce=>{cartTimingDetail('claim_revalidate',()=>resolve());return cartTimingDetail('claim_ledger',()=>ledger.claimThemeTransfer(offer.id,nonce));},
   payload:{schema:'gravuru-theme-cart/v1',shopDomain,variantId:offer.variantId,productId:binding.shopifyProductId.split('/').at(-1),quantity:offer.quantity,unitCents:offer.unitCents,totalCents:offer.unitCents*offer.quantity,currency:offer.currency,
    configuration,mode:input.configId?'update':'create',previousRevision,properties,preview:{name:'gravuru-gestaltung.png',type:'image/png',base64:preview.toString('base64')},paymentConfirmed:false,productionReady:false}

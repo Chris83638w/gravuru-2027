@@ -111,7 +111,7 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
   // Opportunistic work must never change a successful draft response. Only a
   // signed immutable image URL crosses into the job, never the request/session.
   if(!checkoutImage||!source)return;
-  try{Promise.resolve(checkoutImage(source)).catch(()=>{});}catch{}
+  try{const url=typeof source==='function'?source():source;if(url)Promise.resolve(checkoutImage(url)).catch(()=>{});}catch{}
  }
  const cartEditAccess=createCartEditAccess({secret,clock});
  const themeFiles=new Map(['theme-cart-ui.mjs','theme-cart-client.mjs','shop-embed.mjs'].map(name=>[proxyPath+'/'+name,name==='shop-embed.mjs'?Buffer.from(fs.readFileSync(ui(name),'utf8').replaceAll('__EDITOR_ORIGIN__',origin).replaceAll('__PROXY_PATH__',proxyPath)):fs.readFileSync(ui(name))]));
@@ -440,7 +440,7 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
    const config=cartTimingStep('model_build',()=>modelFor(store,context.binding)).universal;
    let bundle;try{bundle=await cartTimingStep('review_prepare',()=>prepareAcrylicReview({record,config,input,assets:store.workshop.assets}));}catch(error){if(error.status===422&&!error.code)error.code='shop_entry_draft';throw error;}
    const saved=cartTimingStep('draft_persist',()=>draft?drafts.acrylicDrafts.save(draft.id,token,data.expectedRevision,bundle):drafts.acrylicDrafts.create(bundle));
-   if(checkoutImage&&typeof store.workshop.orderIntake.imageSnapshot==='function')warmCheckoutImage(customerImages.snapshotUrl(store.storeId,saved.snapshotId,bundle.manifest.packageSha256));
+   if(checkoutImage&&typeof store.workshop.orderIntake.imageSnapshot==='function')warmCheckoutImage(()=>customerImages.snapshotUrl(store.storeId,saved.snapshotId,bundle.manifest.packageSha256));
    return json(res,draft?200:201,{...saved,photoHints:bundle.manifest.photoHints||[],photoResolution:(bundle.manifest.photoResolution||[]).map(p=>({objectId:p.objectId,grade:p.grade,effectiveDpi:p.effectiveDpi,targetDpi:p.targetDpi}))});
    });
   }finally{reviewJobs.delete(job);}

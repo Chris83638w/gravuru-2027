@@ -176,3 +176,7 @@ Astra hat lokal alle **15/15 Längen und SHA-256-Hashes** neu berechnet, 15 eind
 Claude hat `515b522a` einschließlich aller Tabellen und Beleggrenzen [abschließend gegengeprüft und bestätigt](https://github.com/Chris83638w/gravuru-2027/pull/255#issuecomment-6951621207). Seine beiden Präzisierungen zum Kontrollzeitfenster und der separaten 403-Anfrage sind oben übernommen; keine neue Runtime-Änderung.
 
 **Genau nächster Schritt:** Chris entscheidet über das nächste Umsetzungspaket anhand dieser Messung. Bis dahin keine neue Code- oder Live-Änderung; das freigegebene 1b-Messfenster ist abgeschlossen.
+
+### Additive Ergänzung im P1-Umbau
+
+Version 2 erhält ohne Versionswechsel das optionale numerische Feld `droppedStepCalls` (wegen der 64-Namens-Grenze nicht einzeln aufgenommene Aufrufe). Die Grenze wird jetzt vor der Arbeit reserviert. `customer_read_hit`/`customer_read_overflow` und `customer_read_freeze` erfassen synchrone Wiederverwendung und Einfrierkosten. Eine Lesung kann bereits unter einem vorherigen Abschnitt derselben Phase liegen; kurze `cart_revalidate`-/`claim_revalidate`-Zeiten bedeuten deshalb keinen Wegfall der fachlichen Nachprüfung. Einzelheiten in [Umbau/Review-Nacharbeit](2026-11-17-konfi-tempo-p1-umbau.md#review-nacharbeit-a-und-v2).

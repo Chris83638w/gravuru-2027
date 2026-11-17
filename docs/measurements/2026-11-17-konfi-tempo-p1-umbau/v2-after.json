@@ -8363,5 +8363,11 @@
         "isolate": "current"
       }
     }
-  ]
+  ],
+  "measuredSource": {
+    "implementationCommit": "97fe62d",
+    "captureHead": "cdd63ea05d9bf39c96fc39824cde8fa1e0994e60",
+    "capturedUncommittedRuntime": true,
+    "note": "Recorded before implementation commit; commit above is the unchanged HEAD at capture, implementationCommit identifies measured runtime diff."
+  }
 }

@@ -54175,5 +54175,11 @@
         "isolate": "current"
       }
     }
-  ]
+  ],
+  "measuredSource": {
+    "implementationCommit": "cdd63ea",
+    "captureHead": "cdd63ea05d9bf39c96fc39824cde8fa1e0994e60",
+    "capturedUncommittedRuntime": false,
+    "note": "Measured fixed checkout. Provenance annotated after review; observed samples unchanged."
+  }
 }

@@ -16630,5 +16630,17 @@
         "isolate": "current"
       }
     }
-  ]
+  ],
+  "measuredSource": {
+    "implementationCommit": "cdd63ea",
+    "captureHead": "cdd63ea05d9bf39c96fc39824cde8fa1e0994e60",
+    "capturedUncommittedRuntime": false,
+    "note": "Measured fixed checkout. Provenance annotated after review; observed samples unchanged."
+  },
+  "arithmeticMedianMs": {
+    "acrylic-drafts": 5773.610000000001,
+    "theme-cart": 1210.68,
+    "cart/data": 3307.05,
+    "cart/claim": 823.29
+  }
 }

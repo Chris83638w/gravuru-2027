@@ -18,7 +18,7 @@ function finish(trace,status){
  const steps=Object.fromEntries([...trace.steps].map(([name,value])=>[name,{...value,durationMs:round(value.durationMs)}]));
  const identity={version:2,startedAt:trace.startedAt,traceId:trace.id,route:trace.route,...(trace.parentId?{parentTraceId:trace.parentId}:{})};
  const resources=trace.finishResources(gc=>write(trace.logger,{event:'shop_cart_gc',...identity,gc}));
- const event={event:'shop_cart_timing',...identity,status,totalMs,steps,counts:{...trace.counts},storageReads:{coverage:'instrumented-sync-db-reads',...trace.reads,durationMs:round(trace.reads.durationMs)},eventLoop:trace.finishEventLoop(),...resources};
+ const event={event:'shop_cart_timing',...identity,status,totalMs,steps,droppedStepCalls:trace.droppedStepCalls,counts:{...trace.counts},storageReads:{coverage:'instrumented-sync-db-reads',...trace.reads,durationMs:round(trace.reads.durationMs)},eventLoop:trace.finishEventLoop(),...resources};
  // A broken log destination must not change the customer's response.
  write(trace.logger,event);
  return {'X-Gravuru-Timing-Id':trace.id,'Server-Timing':['total;dur='+totalMs,...Object.entries(steps).filter(([name])=>trace.headerNames.has(name)).map(([name,v])=>name+';dur='+v.durationMs)].join(', ')};
@@ -26,7 +26,7 @@ function finish(trace,status){
 export async function withCartTiming(route,logger,work,{parentId}={}){
  if(!routes.has(route))return work();
  const started=performance.now();
- const trace={id:randomUUID(),route,logger,started,startedAt:new Date().toISOString(),steps:new Map(),headerNames:new Set(),counts:{},reads:{calls:0,failures:0,rows:0,durationMs:0},done:false,parentId,finishEventLoop:startCartEventLoopTiming(),finishResources:startCartResources(started)};
+ const trace={id:randomUUID(),route,logger,started,startedAt:new Date().toISOString(),steps:new Map(),droppedStepCalls:0,headerNames:new Set(),counts:{},reads:{calls:0,failures:0,rows:0,durationMs:0},done:false,parentId,finishEventLoop:startCartEventLoopTiming(),finishResources:startCartResources(started)};
  return scope.run(trace,async()=>{
   try{return await work();}
   finally{if(!trace.done)finish(trace,0);}// No JSON response: connection closed/aborted.
@@ -34,7 +34,10 @@ export async function withCartTiming(route,logger,work,{parentId}={}){
 }
 export function cartTimingStep(name,work,{logOnly=false}={}){
  const trace=scope.getStore();
- if(!trace||trace.done||!label(name)||(!trace.steps.has(name)&&trace.steps.size>=64))return work();
+ if(!trace||trace.done||!label(name))return work();
+ if(!trace.steps.has(name)&&trace.steps.size>=64){trace.droppedStepCalls++;return work();}
+ // Reserve the label before nested/async work so the bound also holds for overlap.
+ if(!trace.steps.has(name))trace.steps.set(name,{durationMs:0,calls:0,failures:0,syncCalls:0,asyncCalls:0,processCpu:{available:1,userMs:0,systemMs:0}});
  if(!logOnly)trace.headerNames.add(name);
  const started=performance.now(),cpu=cartCpuSnapshot();
  const record=(failed,async=false)=>{

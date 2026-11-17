@@ -3,6 +3,21 @@ import assert from 'node:assert/strict';
 import {setTimeout as delay} from 'node:timers/promises';
 import {withCartTiming,cartTimingStep,cartTimingCount,cartTimingHeaders,cartTimingBackground} from './shop-cart-timing.mjs';
 
+test('overlapping and nested labels respect the cap and count every dropped call',async()=>{
+ const events=[];
+ await withCartTiming('theme-cart',e=>events.push(e),async()=>{
+  const jobs=[];
+  for(let i=0;i<66;i++)jobs.push(cartTimingStep('label_'+i,async()=>{await Promise.resolve();return i;}));
+  assert.equal(cartTimingStep('overflow',()=>42),42);
+  assert.equal(cartTimingStep('label_0',()=>cartTimingStep('overflow',()=>17)),17);
+  assert.deepEqual(await Promise.all(jobs),Array.from({length:66},(_,i)=>i));
+  cartTimingHeaders(200);
+ });
+ assert.equal(Object.keys(events[0].steps).length,64);
+ assert.equal(events[0].droppedStepCalls,4);
+ assert.equal(events[0].steps.label_0.calls,2);
+});
+
 test('timing preserves synchronous values and exceptions; records rejected async steps',async()=>{
  const events=[],error=Error('private customer text');
  assert.equal(cartTimingStep('outside',()=>42),42);

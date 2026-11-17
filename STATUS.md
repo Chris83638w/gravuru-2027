@@ -1,3 +1,7 @@
+## 17.11.2026 · Astra (Codex) · #255 P1-Umbau Teil A zum Review
+
+Chris hat nach der Diagnose mit „dann los“ den eigentlichen P1-Umbau beauftragt. Teil A verwendet bestehende synchrone Lesephasen in Entwurf, Übergabe, Daten und Claim; nach jedem Warten neue Prüfung, keine entfernte Preis-/Bindungs-/Revisionsprüfung. 125 gezielte Tests grün. Gleiches lokales Profil, je drei Messläufe: mit synthetischem 31,2-MB-Dokument Übergabe 1.658,90 → 1.201,13 ms, Daten 2.420,26 → 1.388,14 ms, Claim 1.864,90 → 828,02 ms; kein Handy-/Live-Nachweis. Messung für Einfrieren, Memo-Grenze und verworfene Schrittnamen ergänzt. [Details, Grenzen und Rohdaten](docs/handoffs/2026-11-17-konfi-tempo-p1-umbau.md). V2/V3 folgen getrennt. Chris’ letzte Aufbewahrungsvorgabe: 45 Tage für unbenutzte Entwürfe (ersetzt 30); keine Löschung. Nächster Schritt: Claudes Review und ergänzende Messungen. Keine Live-Änderung.
+
 ## 17.11.2026 · Astra (Codex) mit Claude als Operator · #255 1b-Messfenster abgeschlossen, zurückgestellt
 
 Abschlussprüfung durch Claude: [Dokumentation und sämtliche Zahlen bestätigt](https://github.com/Chris83638w/gravuru-2027/pull/255#issuecomment-6951621207). Kontrolllauf auf ca. 14:36:47–14:37:41 UTC präzisiert; separate 403-Anfrage davor nicht Teil des Laufs, Auslöser nicht aufgezeichnet. In der Übergabe übernommen, kein neuer Code-/Live-Eingriff.

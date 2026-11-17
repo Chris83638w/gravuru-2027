@@ -360,6 +360,8 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
   let usedExisting=null;
   try{
    const data=await body(req,limit.cartBytes),draftToken=req.headers['x-gravuru-draft'];
+   // A fresh synchronous phase after body I/O; never retain cached reads across await.
+   return await withCustomerReadScope(async()=>{
    const fields=['draftId','expectedRevision','quantity','configId','cartLineId',...(theme?['cartRevision','presentation']:[])];
    if(Object.keys(data).some(k=>!fields.includes(k))||!/^adraft_[a-f0-9-]{36}$/.test(data.draftId||'')||!Number.isSafeInteger(data.expectedRevision)||data.expectedRevision<1||!Number.isSafeInteger(data.quantity)||data.quantity<1||data.quantity>99||
      (data.presentation!==undefined&&data.presentation!=='prio-r15')||
@@ -400,11 +402,12 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
    if(!operation){if(cartContext.operations.size>=256)fail(429,'shop_entry_busy','Bitte den vorhandenen Warenkorb abschließen.');operation={existingCart:!data.cartLineId&&cartContext.cartId?Object.freeze({cartId:cartContext.cartId}):undefined,completed:false};cartContext.operations.set(key,operation);}
    usedExisting=operation.existingCart||null;
    const result=await store.cart(binding,{draftId:data.draftId,expectedRevision:data.expectedRevision,quantity:data.quantity,...(data.configId===undefined?{}:{configId:data.configId}),...(data.cartLineId===undefined?{}:{cartLineId:data.cartLineId})},{draftToken,signal:controller.signal,...(operation.existingCart?{existingCart:operation.existingCart}:{})});
-   active(req);
+   withCustomerReadScope(()=>active(req));
    let checkout;try{checkout=new URL(result.checkoutUrl);}catch{}
    if(typeof result.cartId!=='string'||!result.cartId.startsWith('gid://shopify/Cart/')||result.cartId.length>2048||/[\x00-\x20\x7f]/.test(result.cartId)||!checkout||checkout.protocol!=='https:'||checkout.hostname!==shopDomain||checkout.username||checkout.password||result.paymentConfirmed!==false)fail(503,'shop_entry_cart_result','Der Warenkorb konnte nicht bestätigt werden.');
    if(!operation.completed){cartContext.cartId=result.cartId;operation.completed=true;cartContext.expiresAt=clock()+limit.contextTtlMs;}
    return json(res,200,{cartId:result.cartId,checkoutUrl:checkout.href,lineId:result.lineId,...(result.previousLineId?{previousLineId:result.previousLineId}:{}),configuration:result.configuration,quantity:result.quantity,unitCents:result.unitCents,totalCents:result.totalCents,currency:result.currency,mode:result.mode,duplicate:result.duplicate===true,shopifyVariantId:binding.shopifyVariantId,shopDomain,paymentConfirmed:false,productionReady:false});
+   });
   }catch(error){
    // Ein nicht mehr gültiger gemerkter Warenkorb (z. B. bereits bestellt) darf den nächsten Versuch nicht blockieren.
    if(usedExisting&&cartContext.cartId===usedExisting.cartId)cartContext.cartId=null;
@@ -418,7 +421,9 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
   if(reviewJobs.size>=limit.concurrentReviews)fail(409,'review_busy','Eine Gestaltung wird gerade gesichert. Bitte kurz warten.');
   const job=Symbol('review');reviewJobs.add(job);
   try{
-   const data=await body(req,limit.draftBytes),draft=draftId?drafts.acrylicDrafts.get(draftId,token):null,allowed=draft?['input','expectedRevision']:['input'];
+   const data=await body(req,limit.draftBytes);
+   return await withCustomerReadScope(async()=>{
+   const draft=draftId?drafts.acrylicDrafts.get(draftId,token):null,allowed=draft?['input','expectedRevision']:['input'];
    if(Object.keys(data).some(k=>!allowed.includes(k))||!data.input||typeof data.input!=='object'||Array.isArray(data.input))fail(422,'acrylic_draft_fields','Bitte die vollständige Gestaltung übergeben.');
    if(draft&&data.expectedRevision!==draft.revision)fail(409,'stale_customer_draft','Die Gestaltung wurde inzwischen geändert. Bitte erneut sichern.');
    const input=data.input;
@@ -430,6 +435,7 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
    let bundle;try{bundle=await cartTimingStep('review_prepare',()=>prepareAcrylicReview({record,config,input,assets:store.workshop.assets}));}catch(error){if(error.status===422&&!error.code)error.code='shop_entry_draft';throw error;}
    const saved=cartTimingStep('draft_persist',()=>draft?drafts.acrylicDrafts.save(draft.id,token,data.expectedRevision,bundle):drafts.acrylicDrafts.create(bundle));
    return json(res,draft?200:201,{...saved,photoHints:bundle.manifest.photoHints||[],photoResolution:(bundle.manifest.photoResolution||[]).map(p=>({objectId:p.objectId,grade:p.grade,effectiveDpi:p.effectiveDpi,targetDpi:p.targetDpi}))});
+   });
   }finally{reviewJobs.delete(job);}
  }
 
@@ -457,7 +463,7 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
   if(url.pathname===themePath+'/data'&&req.method==='GET'){
    if(checkoutImage){
     prepared.payload.properties._gravuru_checkout_image=await cartTimingStep('checkout_image_wait',()=>checkoutImage(prepared.payload.properties._gravuru_bild));
-    active({headers:{'x-gravuru-shop-session':transfer.sessionToken}});cartTimingStep('cart_revalidate',()=>prepared.resolve());
+    withCustomerReadScope(()=>{active({headers:{'x-gravuru-shop-session':transfer.sessionToken}});cartTimingStep('cart_revalidate',()=>prepared.resolve());});
     // The READY Shopify file becomes _Entwurf as text; no PNG round trip through the customer's device.
     // #252: only for clients that announce it. Tabs still running an older cached client keep the PNG path.
     if(req.headers['x-gravuru-cart-preview']==='hosted')delete prepared.payload.preview;
@@ -480,7 +486,7 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
   matches:pathname=>customerImages.matches(pathname)||fontRoute.test(pathname)||previewRoute.test(pathname)||pathname===themePath||pathname===themePath+'/data'||pathname===themePath+'/claim'||themeFiles.has(pathname)||pathname===startPath||pathname===pagePath||pathname===warmPath||pageFiles.has(pathname)||pathname.startsWith(API),
   handle(req,res,url){
    const timedRoute=/^\/api\/shop-entry\/acrylic-drafts(?:\/adraft_[a-f0-9-]{36})?$/.test(url.pathname)?'acrylic-drafts':url.pathname===API+'theme-cart'?'theme-cart':url.pathname===themePath+'/data'?'cart/data':url.pathname===themePath+'/claim'?'cart/claim':null;
-   if(timedRoute)return withCartTiming(timedRoute,logger,()=>handle(req,res,url));
+   if(timedRoute)return withCartTiming(timedRoute,logger,()=>withCustomerReadScope(()=>handle(req,res,url)));
    const read=url.pathname===startPath||previewRoute.test(url.pathname)||['model','design-gallery','design-gallery-preview'].some(action=>url.pathname===API+action);
    return read?withCustomerReadScope(()=>handle(req,res,url)):handle(req,res,url);
   }

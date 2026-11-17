@@ -2,7 +2,7 @@
 
 17.11.2026 · Astra (Codex) · Auftrag [#254](https://github.com/Chris83638w/gravuru-2027/issues/254), einschließlich [Zielbild-Kommentar](https://github.com/Chris83638w/gravuru-2027/issues/254#issuecomment-6947690091).
 
-Basis exakt `be163c5d598dfe1c680b483adee645d63a3bdc26`, Branch `dev/claude-warenkorb-v4-20261116`. Implementierung `2d133af0ca0f7a7ef71fd9a1a3e010ffd3f81bed`, eigener P1-Branch `dev/astra-konfi-tempo-p1-20261117`. Kein Merge und kein Deployment. Der P1-PR bleibt Entwurf für die weitere Arbeit an V2/V3; Schritt 1 ist lokal geprüft.
+Basis exakt `be163c5d598dfe1c680b483adee645d63a3bdc26`, Branch `dev/claude-warenkorb-v4-20261116`. Erste Instrumentierung `2d133af0ca0f7a7ef71fd9a1a3e010ffd3f81bed`, B1-Ergänzung `7054b89e5fbfb87995d95a11cb6e87d75cfd163d`, eigener P1-Branch `dev/astra-konfi-tempo-p1-20261117`, [PR #255](https://github.com/Chris83638w/gravuru-2027/pull/255). Kein Merge und kein Deployment. Schritt 1 einschließlich B1 ist lokal geprüft; V2/V3 bleiben zurückgestellt.
 
 ## Umfang und fachliche Quellen
 
@@ -36,6 +36,37 @@ Die Hintergrundarbeit hat eine eigene `traceId` und `parentTraceId` zur auslöse
 Keine URLs, Querystrings, Sitzungs-/Entwurfstoken, Kunden-/Produkt-/Entwurfs-IDs, Texte, Bildinhalte oder Fehlermeldungen im Diagnoseereignis. Die zufällige Diagnose-ID gewährt keinen Zugriff auf den Entwurf. Bestehende private Antwort-/Cache-Regeln bleiben erhalten. Es wird kein `Timing-Allow-Origin` ergänzt. Falls Shopify Proxy-Diagnoseköpfe nicht durchreicht, bleibt das Serverlog die Quelle; die Weitergabe wurde noch nicht live geprüft.
 
 Die Messung beginnt am Eintritt in den Node-Handler. Vorgelagerte Hosting-/Proxy-Warteschlangen, Netzwerk, Browser-Rendering, `/cart/add.js` und die anschließende Warenkorbprüfung sind nicht Teil von `totalMs`. Große TTFB bei kleiner Handlerzeit ist deshalb ein Befund zur weiteren Untersuchung, kein Beleg für einen benötigten größeren Server. Implementiert mit den [Node-Performance-APIs](https://nodejs.org/docs/latest-v24.x/api/perf_hooks.html).
+
+## B1: Blockade des Server-Prozesses mitmessen
+
+Quelle: [Claudes Review, B1](https://github.com/Chris83638w/gravuru-2027/pull/255#pullrequestreview-5938495438), anschließend Chris' Auftrag „B1 ergänzen … V2/V3 noch nicht beginnen“. Ergänzt in `app/workshop/shop-cart-event-loop.mjs`, über `shop-cart-timing.mjs` für alle vier Anfragen sowie den zugeordneten Hintergrundlauf eingebunden. Keine weitere Änderung an deren Ablauf.
+
+Jeder Logdatensatz enthält zusätzlich `eventLoop` mit ausschließlich Zahlen:
+
+| Feld | Bedeutung |
+| --- | --- |
+| `resolutionMs` | 20 ms Takt des gemeinsamen Prozess-Timers; reine Messauflösung, keine Kapazitäts- oder Geschäftsregel |
+| `beforeHandler` | Kürzlich beobachtete Verzögerungen vor Eintritt in diesen Handler: Timerbeobachtungen der letzten maximal 1.000 ms, zusätzlich ein bereits überfälliger Timer |
+| `duringHandler` | Verzögerungen während dieser Anfrage, einschließlich eines noch ausstehenden Timeraufrufs unmittelbar vor Log/Antwort |
+| `windowMs` | Beobachtungsfenster vor dem Handler bzw. tatsächliche Dauer seiner Beobachtung, in ms |
+| `samples`, `maxMs`, `p99Ms` | Anzahl, Maximum und 99. Perzentil der Verzögerungswerte, in ms; bei `samples: 0` sind die beiden Nullen Platzhalter, **kein Nachweis einer blockierungsfreien Anfrage** |
+
+Ein einzelner `unref()`-Timer läuft ab Modulimport unabhängig von Anfragen. Gemessen wird mit monotoner Uhr die Verspätung gegenüber dem nächsten erwarteten Timeraufruf; ein natives `createHistogram()` berechnet Maximum und p99. Die im Review beispielhaft genannte neue `monitorEventLoopDelay()`-Instanz je Handler allein kann eine Blockade vor der ersten bzw. nach der letzten Timerprobe verpassen, wenn der Handler sofort danach antwortet. Deshalb verwendet diese Implementierung den gemeinsamen Herzschlag und berücksichtigt auch das noch nicht abgeschlossene Intervall direkt beim Start/Ende, ohne für die Messung zu warten. Historie auf 64 Einträge begrenzt, laufende Anfragen mit getrennten Histogrammen; Abschluss entfernt die Anfrage auch bei Fehler/Abbruch. Der Timer hält den Prozess nicht offen.
+
+**Auswertung:** Es ist ein Prozesssignal, keine exklusiv dieser Anfrage zuzuordnende CPU-Zeit und keine Rekonstruktion ihrer Wartezeit vor dem Handler. Parallel laufende Arbeit oder die Betriebssystemplanung können dieselbe Verzögerung in mehreren Anfragen sichtbar machen. Das Vorher-Fenster sammelt Beobachtungszeitpunkte; ein darin beobachteter langer Stillstand kann schon vor diesem Fenster begonnen haben. Der erste Messpunkt folgt der Taktauflösung, kurze Blockaden können darin aufgehen. Maximum und p99 nicht zu `totalMs` oder untereinander addieren. Die neuen Werte stehen ausschließlich im Serverlog; vorhandene HTTP-Diagnoseköpfe bleiben unverändert. B2 (dauerhafte Header) und B4 (Logrotation) bleiben wie im Review offen, ohne neue Regeln daraus abzuleiten.
+
+Gezielte B1-Prüfung: sechs neue Tests für fehlende Proben, Blockade vor Handlerbeginn, erste/letzte synchrone Blockade, überlappende Anfragen, abgelaufene Historie und echtes Perzentil. Ein Test erzeugt zusätzlich 90 ms echte synchrone Prozessblockade und verlangt deren Erfassung im selben Antwortlog. Bestehende Fehler-/Abbruch- und Hintergrundtests prüfen ebenfalls die neuen numerischen Felder. Insgesamt **90/90 gezielte Tests bestanden**; Build unverändert `editor-53e0cbea74e77305.mjs` (76 Ressourcen, 1 Modell, 162 Module, 16 Styles).
+
+Zusätzlicher B1-Vergleich: unveränderter Runner und exakt das unten beschriebene lokale Profil, nacheinander `c8043835` (vor B1) und `7054b89e` (mit B1), je 1 Aufwärm- und 7 Messläufe. Beide Seiten schreiben die Diagnosezeilen synchron in eine temporäre Datei; dieser Aufwand liegt im gemessenen HTTP-Weg. Rohdaten: [vor B1](../measurements/2026-11-17-konfi-tempo-p1-b1/before.json), [mit B1](../measurements/2026-11-17-konfi-tempo-p1-b1/after.json).
+
+| Anfrage | Vor B1 Median (Min–Max), ms | Mit B1 Median (Min–Max), ms |
+| --- | ---: | ---: |
+| `acrylic-drafts` | 853,33 (848,70–870,99) | 858,57 (835,50–878,01) |
+| `theme-cart` | 6,95 (6,65–7,64) | 7,29 (6,66–8,47) |
+| `cart/data` | 258,58 (245,26–274,48) | 259,08 (248,10–264,22) |
+| `cart/claim` | 7,12 (6,67–7,49) | 7,40 (6,94–7,63) |
+
+Median-Differenzen +5,24 / +0,34 / +0,50 / +0,28 ms, innerhalb der beobachteten Streuung; keine präzise Abschätzung des Live-Aufwands. Im ersten gemessenen B1-Entwurf beträgt das Maximum während des Handlers 17,37 ms bei 29 Proben. Das ist ein lokaler Beispielwert, keine Aussage zur Ursache der Live-TTFB. Server-/Browsermessung weiterhin ausstehend, unter 5 s am Handy weiterhin nicht belegt.
 
 ## Vorher/Nachher im gleichen lokalen Profil
 
@@ -76,4 +107,4 @@ Claude prüft diesen P1-Zwischenstand. Für die Ursachendiagnose braucht es ansc
 
 Für Vorher/Nachher dasselbe Produkt, dieselbe Gestaltung/Menge, gleicher Browser, kalte/warme Zustände und exakt gleiche Netz-/CPU-Einstellungen verwenden. Die zwei bisherigen Profile auseinanderhalten: Issue #254 verwendete 390×844, CPU ×4, **keine** Netzdrosselung; der Vorschlag vom 16.11. verwendete zusätzlich 150 ms/1,6 Mbit/s Down/750 kbit/s Up. Desktop separat. Je Profil den ganzen Weg Produktseite → Konfi → Galerie → Designwechsel → Warenkorb erfassen und ab „Jetzt in den Warenkorb“ bis zur bestätigten Position messen, nicht nur bis zur HTTP-200-Antwort.
 
-Erst anhand dieser Daten folgt auf demselben P1-Branch V2/V3. Unter 5 s am Handy ist noch nicht belegt. Servergröße, neue Kapazitätswerte und WebP-Qualität werden hier nicht festgelegt. P2/P3 haben weiterhin eigene spätere Branches/PRs; P4 ist nicht beauftragt.
+Nächster Schritt ist Claudes erneuter Review von B1 und anschließend die abgestimmte Messung. V2/V3 werden gemäß aktuellem Auftrag noch nicht begonnen. Unter 5 s am Handy ist noch nicht belegt. Servergröße, neue Kapazitätswerte und WebP-Qualität werden hier nicht festgelegt. P2/P3 haben weiterhin eigene spätere Branches/PRs; P4 ist nicht beauftragt.

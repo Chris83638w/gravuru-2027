@@ -17,7 +17,7 @@ export function createShopifyCheckoutImages({origin,shopDomain,getAccessToken},{
  }
  return async function checkoutImage(source){
   let parsed;try{parsed=new URL(source);}catch{fail();}
-  if(parsed.origin!==origin||parsed.search||parsed.hash||!/^\/gestaltung\/[-A-Za-z0-9_]{1,100}\/offer_[a-f0-9-]{36}\/[a-f0-9]{64}\.png$/.test(parsed.pathname))fail();
+  if(parsed.origin!==origin||parsed.search||parsed.hash||!/^\/gestaltung\/[-A-Za-z0-9_]{1,100}\/(?:offer_[a-f0-9-]{36}\/|proof_[a-f0-9-]{36}\/[a-f0-9]{64}\/)[a-f0-9]{64}\.png$/.test(parsed.pathname))fail();
   const filename='gravuru-gestaltung-'+createHash('sha256').update(source).digest('hex')+'.png';
   if(cache.has(filename)){cartTimingCount('checkout_image_cached');return cache.get(filename);}
   if(pending.has(filename)){cartTimingCount('checkout_image_pending');return pending.get(filename);}
@@ -28,7 +28,12 @@ export function createShopifyCheckoutImages({origin,shopDomain,getAccessToken},{
    if(found.files.nodes.length>1)fail();let file=found.files.nodes[0];
    if(!file){
     const created=await request('shopify_create','mutation CheckoutImageCreate($files:[FileCreateInput!]!){fileCreate(files:$files){files{'+fields+'}userErrors{field message}}}',{files:[{originalSource:source,filename,contentType:'IMAGE',duplicateResolutionMode:'RAISE_ERROR',alt:'Deine Gestaltung'}]});
-    if(created.fileCreate.userErrors?.length||created.fileCreate.files.length!==1)fail();file=created.fileCreate.files[0];
+    if(created.fileCreate.userErrors?.length||created.fileCreate.files.length!==1){
+     // Another process may have created this exact deterministic filename after
+     // our lookup. Never create a renamed duplicate; recover that same file.
+     const raced=await request('shopify_lookup','query CheckoutImage($query:String!){files(first:2,query:$query){nodes{'+fields+'}}}',{query:'filename:'+filename});
+     if(raced.files.nodes.length!==1)fail();file=raced.files.nodes[0];
+    }else file=created.fileCreate.files[0];
    }
    for(let n=0;n<12;n++){
     if(!/^gid:\/\/shopify\/MediaImage\/[0-9]+$/.test(file?.id||'')||file.fileStatus==='FAILED')fail();

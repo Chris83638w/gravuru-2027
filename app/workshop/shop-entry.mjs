@@ -107,6 +107,12 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
  const PAGE_CSP=pageCsp(shopDomain);
  // Shop-seitige Module über den App-Proxy; shop-embed.mjs kennt Konfigurator-Host und Proxy-Pfad fest.
  const customerImages=createCustomerDesignImages({origin,shopDomain,secret,stores:fixed});
+ function warmCheckoutImage(source){
+  // Opportunistic work must never change a successful draft response. Only a
+  // signed immutable image URL crosses into the job, never the request/session.
+  if(!checkoutImage||!source)return;
+  try{Promise.resolve(checkoutImage(source)).catch(()=>{});}catch{}
+ }
  const cartEditAccess=createCartEditAccess({secret,clock});
  const themeFiles=new Map(['theme-cart-ui.mjs','theme-cart-client.mjs','shop-embed.mjs'].map(name=>[proxyPath+'/'+name,name==='shop-embed.mjs'?Buffer.from(fs.readFileSync(ui(name),'utf8').replaceAll('__EDITOR_ORIGIN__',origin).replaceAll('__PROXY_PATH__',proxyPath)):fs.readFileSync(ui(name))]));
  const themeTransfers=new Map(),themePath=proxyPath+'/cart';
@@ -388,11 +394,11 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
     if(themeTransfers.size>=limit.maxContexts)fail(429,'shop_entry_busy','Bitte kurz warten und erneut versuchen.');
     // Nur Darstellungswahl für den Bearbeiten-Link; kein Teil des Preis-/Gestaltungsstands.
     const {presentation,...themeInput}=data;
-    const args={workshop:store.workshop,registry:store.registry,shopDomain,proxyPath,...(presentation?{presentation}:{}),...(typeof store.workshop.orderIntake.imageSnapshot==='function'?{customerImageUrl:id=>customerImages.url(store.storeId,id)}:{})};
+    const args={workshop:store.workshop,registry:store.registry,shopDomain,proxyPath,...(presentation?{presentation}:{}),...(typeof store.workshop.orderIntake.imageSnapshot==='function'?{customerImageUrl:id=>customerImages.url(store.storeId,id),checkoutImageSource:(id,hash)=>customerImages.snapshotUrl(store.storeId,id,hash)}:{})};
     const prepared=cartTimingStep('cart_prepare',()=>prepareThemeCart(args,binding,themeInput,{draftToken})),token=randomBytes(32).toString('hex');
     themeTransfers.set(token,{args,binding:structuredClone(binding),input:structuredClone(themeInput),draftToken,sessionToken:req.headers['x-gravuru-shop-session'],customerId:session.customerId,expiresAt:clock()+limit.contextTtlMs});
     // Shopify fileCreate + polling runs while the browser opens the cart handoff; /cart/data reuses the pending task.
-    if(checkoutImage&&prepared.payload.properties._gravuru_bild)checkoutImage(prepared.payload.properties._gravuru_bild).catch(()=>{});
+    warmCheckoutImage(prepared.checkoutImageSource||prepared.payload.properties._gravuru_bild);
     const {id:configId,rev}=prepared.payload.configuration;
     const editAccess=cartEditAccess.issue(draftToken,{configId,rev,binding,customerId:session.customerId});
     return json(res,200,{handoffUrl:'https://'+shopDomain+themePath+'#handoff='+token,shopDomain,configuration:prepared.payload.configuration,editAccess,quantity:prepared.payload.quantity,totalCents:prepared.payload.totalCents,mode:'theme',paymentConfirmed:false,productionReady:false});
@@ -434,6 +440,7 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
    const config=cartTimingStep('model_build',()=>modelFor(store,context.binding)).universal;
    let bundle;try{bundle=await cartTimingStep('review_prepare',()=>prepareAcrylicReview({record,config,input,assets:store.workshop.assets}));}catch(error){if(error.status===422&&!error.code)error.code='shop_entry_draft';throw error;}
    const saved=cartTimingStep('draft_persist',()=>draft?drafts.acrylicDrafts.save(draft.id,token,data.expectedRevision,bundle):drafts.acrylicDrafts.create(bundle));
+   if(checkoutImage&&typeof store.workshop.orderIntake.imageSnapshot==='function')warmCheckoutImage(customerImages.snapshotUrl(store.storeId,saved.snapshotId,bundle.manifest.packageSha256));
    return json(res,draft?200:201,{...saved,photoHints:bundle.manifest.photoHints||[],photoResolution:(bundle.manifest.photoResolution||[]).map(p=>({objectId:p.objectId,grade:p.grade,effectiveDpi:p.effectiveDpi,targetDpi:p.targetDpi}))});
    });
   }finally{reviewJobs.delete(job);}
@@ -462,7 +469,7 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
   const prepared=cartTimingStep('cart_prepare',()=>prepareThemeCart(transfer.args,transfer.binding,transfer.input,{draftToken:transfer.draftToken}));
   if(url.pathname===themePath+'/data'&&req.method==='GET'){
    if(checkoutImage){
-    prepared.payload.properties._gravuru_checkout_image=await cartTimingStep('checkout_image_wait',()=>checkoutImage(prepared.payload.properties._gravuru_bild));
+    prepared.payload.properties._gravuru_checkout_image=await cartTimingStep('checkout_image_wait',()=>checkoutImage(prepared.checkoutImageSource||prepared.payload.properties._gravuru_bild));
     withCustomerReadScope(()=>{active({headers:{'x-gravuru-shop-session':transfer.sessionToken}});cartTimingStep('cart_revalidate',()=>prepared.resolve());});
     // The READY Shopify file becomes _Entwurf as text; no PNG round trip through the customer's device.
     // #252: only for clients that announce it. Tabs still running an older cached client keep the PNG path.

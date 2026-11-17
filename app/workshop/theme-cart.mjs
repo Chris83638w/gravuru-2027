@@ -7,7 +7,7 @@ import {NATIVE_REVIEW_SCHEMAS} from './native-review-schema.mjs';
 import {cartLineInput} from './storefront-cart.mjs';
 import {cartTimingStep,cartTimingDetail} from './shop-cart-timing.mjs';
 const fail=(status,code,message)=>{throw Object.assign(Error(message),{status,code});};
-export function prepareThemeCart({workshop,registry,shopDomain,proxyPath,customerImageUrl,presentation},binding,input,{draftToken}={}){
+export function prepareThemeCart({workshop,registry,shopDomain,proxyPath,customerImageUrl,checkoutImageSource,presentation},binding,input,{draftToken}={}){
  const {cartRevision,...offerInput}=input;
  const prepared=cartTimingStep('bound_offer',()=>prepareBoundCartOffer({workshop,registry,shopDomain},binding,offerInput,{draftToken}));
  const {draft,manifest,offer,resolve}=prepared,ledger=workshop.customerDrafts.cartConfigurations;
@@ -38,6 +38,8 @@ export function prepareThemeCart({workshop,registry,shopDomain,proxyPath,custome
  // The edit link identifies the actual cart revision, not the last prepared offer.
  const previousRevision=input.configId?cartRevision:null;
  return {
+  // Internal upload source only; cart/order properties retain the offer URL.
+  checkoutImageSource:checkoutImageSource?.(manifest.id,manifest.packageSha256),
   offerId:offer.id,resolve,claim:nonce=>{cartTimingDetail('claim_revalidate',()=>resolve());return cartTimingDetail('claim_ledger',()=>ledger.claimThemeTransfer(offer.id,nonce));},
   payload:{schema:'gravuru-theme-cart/v1',shopDomain,variantId:offer.variantId,productId:binding.shopifyProductId.split('/').at(-1),quantity:offer.quantity,unitCents:offer.unitCents,totalCents:offer.unitCents*offer.quantity,currency:offer.currency,
    configuration,mode:input.configId?'update':'create',previousRevision,properties,preview:{name:'gravuru-gestaltung.png',type:'image/png',base64:preview.toString('base64')},paymentConfirmed:false,productionReady:false}

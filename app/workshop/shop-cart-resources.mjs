@@ -6,7 +6,9 @@ export const cartCpuSnapshot=()=>safe(()=>process.cpuUsage());
 export function cartCpuDelta(before,after=cartCpuSnapshot()){
  return before&&after?{available:1,userMs:round((after.user-before.user)/1000),systemMs:round((after.system-before.system)/1000)}:{available:0};
 }
-const memory=()=>safe(()=>{const m=process.memoryUsage();return {rss:m.rss,heapUsed:m.heapUsed};});
+// All values are bytes from the same already-existing process snapshot. External
+// includes ArrayBuffers; they must not be added together. RSS is not live heap.
+const memory=()=>safe(()=>{const m=process.memoryUsage();return {rss:m.rss,heapUsed:m.heapUsed,heapTotal:m.heapTotal,external:m.external,arrayBuffers:m.arrayBuffers};});
 const osKeys=['involuntaryContextSwitches','voluntaryContextSwitches','fsRead','fsWrite','majorPageFault'];
 export function cartResourceDelta(before,after,platform=process.platform){
  if(!before||!after)return {available:0};

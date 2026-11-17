@@ -31,6 +31,11 @@ test('version 2 distinguishes sync, rejected async, and detailed reads without e
  assert.equal(e.storageReads.calls,2);assert.equal(e.storageReads.rows,1);assert.equal(e.storageReads.failures,1);assert.equal(e.counts.sample_bytes,2);
  for(const cpu of [e.processCpu,...Object.values(e.steps).map(s=>s.processCpu)]){assert.equal(cpu.available,1);assert.ok(cpu.userMs>=0&&cpu.systemMs>=0);}
  assert.ok(e.memory.before.rss>0&&e.memory.after.heapUsed>0);
+ for(const sample of [e.memory.before,e.memory.after]){
+  assert.ok(sample.heapTotal>=sample.heapUsed);assert.ok(sample.external>=sample.arrayBuffers);
+  assert.deepEqual(Object.keys(sample).sort(),['arrayBuffers','external','heapTotal','heapUsed','rss']);
+  assert.ok(Object.values(sample).every(n=>Number.isSafeInteger(n)&&n>=0));
+ }
  assert.match(headers['Server-Timing'],/offer_resolve;dur=/);assert.doesNotMatch(headers['Server-Timing'],/detail_|cpu|memory|storage|gc/i);
  assert.ok(!JSON.stringify(events).includes(privateRow.secret));assert.ok(!JSON.stringify(events).includes(error.message));
 });

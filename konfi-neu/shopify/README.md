@@ -43,6 +43,14 @@ Bekannte Bedingungen von Shopify (Quelle: shopify.dev, Cart Transform Function A
   `gravuru-personalization-price`. Die neue kann also nicht daneben in derselben App laufen: Test nur in einem
   Entwicklungs-Shop oder mit einer eigenen Test-App; im echten Shop wäre es ein Austausch, kein Zusatz.
 
+**Entscheidung Chris, 17.11.2026: Test im Entwicklungs-Shop.** Dafür nötig, alles bei Chris bzw. dem Operator:
+
+1. Im Shopify-Partnerbereich einen Entwicklungs-Shop anlegen und dort eine App für den Test installieren
+   (eigene Test-App, nicht die App des echten Shops).
+2. Die beiden Ordner aus `erweiterung/` samt `funktion/rust` in diese App legen, `shopify app dev` starten.
+3. Einen Testschlüssel als App-Metafeld `konfi_schluessel` setzen und denselben Wert dem Test-Server geben.
+4. Ein Testprodukt mit `custom.customization_id` anlegen und den Warenkorb mit dem Test-Server füllen.
+
 ## Vor einem Release zu erledigen
 
 1. In `erweiterung/gravuru-konfi-pruefung/` das Schema durch das echte ersetzen: `shopify app function schema`.

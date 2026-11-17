@@ -277,11 +277,11 @@ Offen bei der Fertigung:
   Teile dienen soll (z. B. zuerst nur Veröffentlichung und WOFF2-Schriften im bestehenden Konfi), ist deine
   Entscheidung.
 - Beantwortet am 17.11.2026: Funkklingel-Acryl wird **von hinten graviert**; als Dateiformat **reicht SVG**.
-- **Shopify-Funktionen testen:** Je App und Shop läuft nur eine Preisfunktion. Die neue kann deshalb nicht neben
-  der bestehenden in derselben App laufen. Für den Test braucht es einen Entwicklungs-Shop oder eine eigene
-  Test-App – das entscheidest und startest du (siehe `shopify/README.md`).
-- **Schriften ohne ß:** Minimalist, Ashley, Sweetie, Homage und Sunflower können kein ß. Der Editor lässt solche
-  Texte nicht in den Warenkorb. Wenn du das anders willst (z. B. diese Schriften nicht anbieten), sag es.
+- Entschieden am 17.11.2026: Die Shopify-Funktionen werden in einem **Entwicklungs-Shop** getestet, nicht im
+  echten Shop. Den Entwicklungs-Shop legst du im Shopify-Partnerbereich an; das kann ich von hier nicht
+  (siehe `shopify/README.md`).
+- Entschieden am 17.11.2026: Die fünf **Schriften ohne ß** (Minimalist, Ashley, Sweetie, Homage, Sunflower)
+  bleiben im Angebot; Texte mit einem fehlenden Zeichen gehen weiterhin nicht in den Warenkorb.
 - **Fotopreis:** Im Katalog steht für Schiefer 22 × 14 „jedes weitere Foto 8,99 €“; das Entscheidungsregister
   nennt 9,99 € als neueren Wert (1.20). Der Neuaufbau nimmt den Katalogwert.
 - **Schriften kürzen:** OFL-Schriften werden auf lateinische Zeichen reduziert. Vier Schriften fehlen als Datei

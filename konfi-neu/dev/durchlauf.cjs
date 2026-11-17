@@ -1,9 +1,11 @@
 // Vollständiger Kundenweg im Test-Shop: gestalten → Warenkorb → bearbeiten → Warenkorb.
-// node dev/durchlauf.cjs [desktop|handy] [Ordner für Bildschirmfotos]
+// node dev/durchlauf.cjs [desktop|handy] [Ordner für Bildschirmfotos, sonst dist/durchlauf]
 const {chromium, devices} = require('playwright');
 const assert = require('node:assert');
 (async () => {
-  const [profil = 'desktop', ordner = '.'] = process.argv.slice(2);
+  // Bildschirmfotos nie in den Arbeitsordner: dist/ ist vom Repository ausgenommen.
+  const [profil = 'desktop', ordner = require('node:path').join(__dirname, '..', 'dist', 'durchlauf')] = process.argv.slice(2);
+  require('node:fs').mkdirSync(ordner, {recursive: true});
   const handy = profil === 'handy';
   const browser = await chromium.launch();
   const ctx = await browser.newContext(handy ? {...devices['iPhone 13']} : {viewport: {width: 1360, height: 900}});

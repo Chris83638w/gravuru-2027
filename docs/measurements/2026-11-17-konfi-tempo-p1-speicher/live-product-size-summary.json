@@ -1,0 +1,43 @@
+{
+  "schema": "gravuru-product-size-summary/v1",
+  "observedDate": "2026-11-17",
+  "observer": "Astra (Codex)",
+  "method": "Existing Plesk Node console; separate Node process with max-old-space-size=256; SQLite DatabaseSync readOnly:true; current binding selected by public Shopify product ID, shop, store and tenant; exactly one fixed product revision; exact measured document byte length checked; SELECT only; no document content exported, no application code imported or restarted.",
+  "product": "familienschild-acryl-baum-12x8-personalisiert",
+  "publicShopifyProductId": "16189690118524",
+  "boundRevisions": 1,
+  "documentBytes": 31205183,
+  "normalizedDocumentBytes": 31205183,
+  "configBytes": 31114140,
+  "configSections": {
+    "localResources": 30370569,
+    "materialSurface": 0,
+    "sceneBackground": 0,
+    "profile": 331398,
+    "familyFormats": 320352,
+    "familyAcrylic": 0,
+    "acrylic": 0,
+    "doorbell": 0,
+    "workshopProfiles": 0
+  },
+  "localResourceSections": {
+    "fonts": 24047954,
+    "motifs": 6322525,
+    "photoExamples": 2,
+    "photoPlaceholders": 2
+  },
+  "profileSections": {"designs": 329776, "material": 95, "fonts": 0, "motifs": 0},
+  "counts": {"fonts": 57, "motifs": 265, "designs": 208},
+  "otherConfigValueBytes": 91615,
+  "shape": {
+    "document": {"objects": 37585, "arrays": 2168, "strings": 46464, "stringCodeUnits": 29770843, "numbers": 47365, "booleans": 17410, "nulls": 5},
+    "fonts": {"objects": 32444, "arrays": 0, "strings": 32272, "stringCodeUnits": 23326531, "numbers": 32329, "booleans": 0, "nulls": 0},
+    "motifs": {"objects": 265, "arrays": 266, "strings": 530, "stringCodeUnits": 6298313, "numbers": 1060, "booleans": 265, "nulls": 0}
+  },
+  "limits": [
+    "Section bytes are the UTF-8 length of JSON.stringify(value); nested sections overlap and must not be added to their parent totals. Missing fields return zero; empty arrays serialize as two bytes.",
+    "Object/string counts describe serialized source structure, not live heap size or retained cache entries. stringCodeUnits is JavaScript string length, not UTF-8 bytes.",
+    "This read-only probe was separate from the serving application and does not attribute its RSS to these objects. No heap dump, tokens, image contents or customer text exported.",
+    "The synthetic large-blobs fixture has eight large strings and one design; it does not reproduce these 208 designs and 32,444 font objects. Its absolute times and memory cannot be projected onto live."
+  ]
+}

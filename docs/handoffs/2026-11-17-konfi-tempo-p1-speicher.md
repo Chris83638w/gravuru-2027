@@ -58,10 +58,33 @@ Auf finalem `1c6b6df`, natürliche Bereinigung: größte RSS-Stichprobe **816,80
 
 Der alte Prozess erreicht also bereits eine höhere echte Spitze als die größte A/V2-Stichprobe (2.611 MiB). **Kein Beleg für Mehrverbrauch durch A/V2**, aber auch kein Beweis, dass der Umbau niemals eine höhere Spitze verursacht: Der Höchstwert des inzwischen beendeten A/V2-Prozesses fehlt. Ein Vergleich Spitze gegen Spitze ist nicht möglich. Die Formulierung „kommt nicht vom Umbau“ wäre stärker als die Daten. Aus dem Code sind begrenzte Modell-/Antwortcaches bekannt; deren tatsächliche Füllstände und der Anteil am Ruhespeicher sind nicht gemessen. Die Fixture bildet auch den jetzt belegten Live-Ruhewert von 925 MiB nicht nach.
 
-**Weiter offen:** technische Größenverteilung des 31,2-MB-Dokuments, tatsächliche Heap-/Pufferanteile und Cachefüllstände des alten laufenden Prozesses sowie Kontolimit. Für künftige ausdrücklich freigegebene Messungen sind die fehlenden Pufferfelder lokal vorbereitet; noch keine neuen Live-Werte. Nicht als „Speicher vollständig geklärt“ bezeichnen.
+**Weiter offen:** tatsächliche Heap-/Pufferanteile und Cachefüllstände des alten laufenden Prozesses sowie Kontolimit. Für künftige ausdrücklich freigegebene Messungen sind die fehlenden Pufferfelder lokal vorbereitet; noch keine neuen Live-Werte. Nicht als „Speicher vollständig geklärt“ bezeichnen. Die technische Größenverteilung ist inzwischen durch die folgende lesende Prüfung geklärt.
+
+## Tatsächliche Größenverteilung des Live-Produktdokuments
+
+Astra zählte am 17.11.2026 ungefähr 20:02 UTC selbst über die vorhandene Plesk-Node-Konsole. Separater Prozess, Heapgrenze 256 MiB, `DatabaseSync(...,{readOnly:true})`, ausschließlich SELECT; keine App importiert/gestartet, keine Dateien oder Datenbankinhalte geändert, kein Neustart/Deploy und keine Testentwürfe. Die öffentliche Shopify-ID des Messprodukts stammt aus `2026-11-02-issue139-acryl.md`. Auswahl über die aktuelle feste Bindung mit Mandant/Shop/Store, genau eine Revision, anschließend Prüfung auf exakt **31.205.183 Bytes** wie im Live-Zeitbeleg. Zwei Abfragen desselben Dokuments lieferten Größen und Strukturzahlen; keine Inhalte/Kundentexte/Tokens ausgegeben. [Vollständiger aggregierter Beleg](../measurements/2026-11-17-konfi-tempo-p1-speicher/live-product-size-summary.json).
+
+| Bestandteil | Serialisierte Bytes | Anzahl |
+|---|---:|---:|
+| Gesamtes Produktdokument | 31.205.183 | 1 |
+| `config.localResources` | 30.370.569 | – |
+| darin Schriften | **24.047.954** | **57** |
+| darin Motive | **6.322.525** | **265** |
+| `config.profile` | 331.398 | 208 Designs |
+| `config.familyFormats` | 320.352 | – |
+
+Schriften und Motive zusammen machen **97,3 %** der Dokumentbytes aus. Auf dieser Ebene fehlen `materialSurface` und `sceneBackground`; ein großes Materialbild erklärt dieses konkrete Dokument nicht. Eltern-/Kindgrößen in der Tabelle überlappen und sind nicht zusammenzuaddieren.
+
+Das Dokument enthält **37.585 Objekte, 2.168 Arrays und 46.464 Strings**; davon entfallen allein **32.444 Objekte und 32.272 Strings auf die Schriften**. Die acht großen Zeichenketten der lokalen Fixture bilden das nicht ab. Damit sind die große Datenmenge und eine konkrete Quelle des Kopier-/Parse-Aufwands belegt. Daraus folgt keine exakte Zuordnung des 925-MiB-Ruheverbrauchs zu den Schriften: Quellstruktur ist kein Heap-Abbild, tatsächliche Cachefüllstände bleiben unbekannt.
+
+Die lesende Bytezählung war von Chris’ Auftrag zur Speicherklärung gedeckt. Claude hatte allein wegen seiner zuvor selbst gestellten Frage gewartet und bestätigte im Review, dass keine entgegenstehende Nutzeranweisung vorliegt. Astra führte deshalb die notwendige lesende Prüfung selbst durch; keine zusätzliche Genehmigung oder Ausweitung auf Änderungen abgeleitet. Ergebnis direkt an Claude übermittelt.
+
+## Reviewabschluss
+
+[Claude prüfte alle drei Optimierungen und die zusätzliche Diagnose](https://github.com/Chris83638w/gravuru-2027/pull/255#pullrequestreview-5945564378): **keine Blocker, keine Code-Nacharbeit nötig**. Eigene bytegleiche Gegenprobe mit 36.006.307-Byte-ZIP, einschließlich Zufallsbytes/Unicode/Leerdatei; bei ihm 60/63 Tests, drei auf dem unveränderten Stand bestehende fehlende Druck-/Vektorwerkzeuge. Bei Astra die oben genannten Prüfungen grün. Claude bestätigt den isolierten endgültigen Stand `1c6b6df` und die unveränderten Browserquellen. Sein Hinweis zu `registry_raw_digest` ist berücksichtigt: das Label summiert Stempelhash und Memo-Schlüsselhash; verschachtelte Zeiten nicht addieren. Nach Prozessstart ist der erste Digest je Dokument noch ungecached.
 
 ## Reproduzieren und nächster Schritt
 
 Beispiel pro Stand: `node --expose-gc scripts/measure-shop-cart-timing.mjs <worktree> 6 real-registry large-blobs memory-probe`; natürliche Reihe ohne `--expose-gc`. Auswertung: `node scripts/summarize-shop-cart-memory.mjs docs/measurements/2026-11-17-konfi-tempo-p1-speicher`. Reihenfolge in Dateinamen: `before-ab-1`, `av2-ab-1`, `av2-ba-2`, `before-ba-2`, `candidate-gc`, `av2-natural`, `candidate-natural`, `server-final-natural`. `null` für nicht vorhandene Messfelder bedeutet nicht gemessen, nicht null Aufwand. Keine Secrets oder echten Kundendaten im Beleg.
 
-Claude prüft jetzt die vier Runtime-Commits und den Vergleich. Danach offene Reviewpunkte direkt nacharbeiten. Diese sichere Zwischenstufe allein weist **unter fünf Sekunden bis zum geladenen Warenkorb nicht nach**: letzter Live-Median weiter 18,403 s, davon 4,2–5,0 s außerhalb der vier eigenen Anfragen. Für weitere Arbeit sind frühere Vorbereitung und/oder eine kürzere Anfragekette zu prüfen; fehlende Kapazitäts-/Prioritätsregeln nicht erfinden. V3 aus, keine Änderung des selbstständigen Fertigungspakets, keine Löschung (45 Tage sind nur die bestätigte Vorgabe), keine neuen P3-Limits. Keine Live-Änderung oder Merge ohne Chris’ neue ausdrückliche Freigabe; P2/P3 bleiben getrennte Pakete.
+Die Code-Nachprüfung ist abgeschlossen; Claude prüft zusätzlich die abschließenden Messbelege und ordnet die jetzt ermittelte Ressourcenstruktur ein. Diese sichere Zwischenstufe allein weist **unter fünf Sekunden bis zum geladenen Warenkorb nicht nach**: letzter Live-Median weiter 18,403 s, davon 4,2–5,0 s außerhalb der vier eigenen Anfragen. Für weitere Arbeit sind frühere Vorbereitung und/oder eine kürzere Anfragekette zu prüfen; fehlende Kapazitäts-/Prioritätsregeln nicht erfinden. V3 aus, keine Änderung des selbstständigen Fertigungspakets, keine Löschung (45 Tage sind nur die bestätigte Vorgabe), keine neuen P3-Limits. Keine Live-Änderung oder Merge ohne Chris’ neue ausdrückliche Freigabe; P2/P3 bleiben getrennte Pakete.

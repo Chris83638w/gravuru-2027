@@ -1,4 +1,4 @@
-import {cartTimingStep} from './shop-cart-timing.mjs';
+import {cartTimingStep,cartTimingDetail} from './shop-cart-timing.mjs';
 import {isFamilyFormats} from '../configurator/variant-m/family-formats.mjs';
 import {doorbellSeparations} from './doorbell-artwork.mjs';
 import {isLayeredDoorbell} from '../configurator/variant-m/doorbell-selection.mjs';
@@ -16,16 +16,16 @@ import {cleanObject,isGuideObject,choiceOptions,optionFieldEntries} from '../con
 import {commercePrice} from '../configurator/variant-m/commerce-model.mjs';
 import {prepareCustomerPhoto} from './customer-photo.mjs';
 import {verifyCustomerVectorLogoMedia,vectorLogoMetadata} from './customer-vector-logo-media.mjs';
-import {zipFiles} from '../configurator/variant-m/print-export-model.mjs';
+import {reviewZip} from './review-zip.mjs';
 import {textsNearHoles} from '../platform/sources/app/shared/models/hole-proximity.mjs';
 import {selectedProfile} from '../configurator/variant-m/contract.mjs';
 import {editorUi} from '../configurator/variant-m/toolbar-placement-model.mjs';
 
 export const ACRYLIC_REVIEW='gravuru-acrylic-review/v1';
 const fail=message=>{throw Object.assign(Error(message),{status:422});};
-const sha=bytes=>createHash('sha256').update(bytes).digest('hex');
-const json=value=>Buffer.from(JSON.stringify(value,null,2)+'\n');
-const zip=async files=>Buffer.from(await (await zipFiles(files.map(f=>({name:f.path,blob:new Blob([f.bytes])})))).arrayBuffer());
+const sha=bytes=>cartTimingDetail('review_sha256',()=>createHash('sha256').update(bytes).digest('hex'));
+const json=value=>cartTimingDetail('review_json',()=>Buffer.from(JSON.stringify(value,null,2)+'\n'));
+const zip=reviewZip;
 const keys=(o,allowed)=>{if(!o||typeof o!=='object'||Array.isArray(o)||Object.keys(o).some(k=>!allowed.includes(k)))fail('Unbekannte Felder in der Acryl-Übergabe.');};
 
 // Native Konfi state, not a conversion into a form product. All prices and rights
@@ -41,9 +41,9 @@ export function validateAcrylicReview(record,config,input){
  // Schriften, die nativeReviewConfig für dieses Produkt freigegeben und mit Pfaden geladen hat (z. B. importierte
  // Profilschriften „Lato Regular · …“), gelten bei der Inhaltsprüfung als vorhanden – nur in diesem Prüfpfad.
  const document={...record.document,config:{...record.document.config,localResources:{...record.document.config.localResources,fonts:{...record.document.config.localResources?.fonts,...config.localResources.fonts}}}};
- const design=validateProductDesign(document,{...structuredClone(source),...(input.textOnTop!==undefined?{textOnTop:input.textOnTop}:{}),objects:input.objects.map(cleanObject)},{options:input.options,fonts:config.localResources.fonts,motifs:config.localResources.motifs});
- const resolved=resolveProduct(record.document,{options:input.options,designId:source.id});
- const price=commercePrice(config,{objects:design.objects,designId:design.id,mOptions:resolved.resolvedOptions},input.quantity);
+ const design=cartTimingDetail('review_design_validate',()=>validateProductDesign(document,{...structuredClone(source),...(input.textOnTop!==undefined?{textOnTop:input.textOnTop}:{}),objects:input.objects.map(cleanObject)},{options:input.options,fonts:config.localResources.fonts,motifs:config.localResources.motifs}));
+ const resolved=cartTimingDetail('review_product_resolve',()=>resolveProduct(record.document,{options:input.options,designId:source.id}));
+ const price=cartTimingDetail('review_price',()=>commercePrice(config,{objects:design.objects,designId:design.id,mOptions:resolved.resolvedOptions},input.quantity));
  // Hidden layers remain editable; their originals belong to this immutable revision.
  const used=new Set(design.objects.filter(o=>!isGuideObject(o)&&o.uxUploadId).map(o=>o.uxUploadId));
  if(!Array.isArray(input.media)||input.media.length!==used.size||used.size>4)fail('Alle verwendeten Originalbilder müssen mitgesichert werden.');

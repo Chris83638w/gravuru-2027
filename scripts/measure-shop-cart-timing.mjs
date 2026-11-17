@@ -1,5 +1,5 @@
 // Local, synthetic four-request benchmark. No Shopify traffic or real orders.
-// node scripts/measure-shop-cart-timing.mjs [repository-root] [measured-runs]
+// node scripts/measure-shop-cart-timing.mjs [repository-root] [measured-runs] [real-registry]
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
@@ -12,6 +12,7 @@ import {setTimeout as delay} from 'node:timers/promises';
 import {execFileSync} from 'node:child_process';
 
 const root=path.resolve(process.argv[2]||'.'),runs=Number(process.argv[3]||7);
+const realRegistry=process.argv[4]==='real-registry';
 assert.ok(Number.isSafeInteger(runs)&&runs>=1&&runs<=100);
 const load=file=>import(pathToFileURL(path.join(root,file)).href);
 const {build}=await load('app/configurator/variant-m/build.mjs');
@@ -28,14 +29,25 @@ let workshop,server,log;
 try{
  build({outputDirectory:dir});
  const seed=JSON.parse(fs.readFileSync(path.join(dir,'models.json')))[0];
- workshop=createWorkshop({filename:':memory:',seedConfig:seed.universal,legacy:seed.legacy,shopifySessions:{mode:'test-only',shopDomain,clientId:'synthetic-client',secret}});
+ workshop=createWorkshop({filename:realRegistry?path.join(dir,'workshop.sqlite'):':memory:',seedConfig:seed.universal,legacy:seed.legacy,shopifySessions:{mode:'test-only',shopDomain,clientId:'synthetic-client',secret}});
  const record=workshop.repository.copy(workshop.defaultId,{expectedRevision:1,name:'Synthetic timing fixture',kind:'product'});
  const variant=prepareShopProduct(record).variants[0],shopifyProductId='gid://shopify/Product/90001',variantId='90002';
  const bound=workshop.orderIntake.bindVariants({record,shopDomain,mappings:[{key:variant.key,variantId}]});
- const registry={resolve(identity){
+ let registry={resolve(identity){
   assert.equal(identity.shopifyProductId,shopifyProductId);assert.equal(identity.shopifyVariantId,'gid://shopify/ProductVariant/'+variantId);
   const b=bound.bindings[0];return {storeId:'acryl',tenantId:workshop.tenantId,shopDomain,...identity,bindingId:b.id,productId:b.productId,productRevision:b.productRevision,options:structuredClone(b.options),unitCents:b.unitCents,assignmentRevision:1};
  }};
+ if(realRegistry){
+  const {createShopBindingReadAdapter}=await load('app/workshop/shop-product-binding-adapter.mjs');
+  const {planShopProductBindings}=await load('app/workshop/shop-product-binding-plan.mjs');
+  const tenantId=workshop.tenantId,storeId='acryl',now=Date.now(),shopifyVariantId='gid://shopify/ProductVariant/'+variantId;
+  const adapter=createShopBindingReadAdapter({storeId,tenantId,shopDomain,workshop,productionProfileScope:{storeId,tenantId}});
+  registry=workshop.orderIntake.idBindings({storeId,shopDomain,adapter});
+  const plan=planShopProductBindings({tenantId,shopDomain,adapter,purpose:'id-binding',now,maxEvidenceAgeMs:60000,
+   shopifyEvidence:{tenantId,shopDomain,complete:true,readAt:new Date(now).toISOString(),products:[{id:shopifyProductId,variants:[{id:shopifyVariantId,productId:shopifyProductId,priceCents:variant.priceCents}]}]},
+   selections:[{shopifyProductId,shopifyVariantId,productId:record.id,productRevision:record.revision,options:variant.options}]});
+  registry.persist({plan,expectedHeads:[{shopifyVariantId,revision:null}]});
+ }
  const store={storeId:'acryl',registry,workshop,nativeEditorPath:'/_merchant-editor.html',cart:()=>assert.fail('unexpected Storefront cart')};
  let imageIndex=0;const images=new Map(),events=[];
  const checkoutImage=createShopifyCheckoutImages({origin,shopDomain,getAccessToken:async()=>'synthetic-token'},{
@@ -89,7 +101,7 @@ try{
  // the same grace to both checkouts; it is not part of a request duration.
  await delay(60);
  const summary=Object.fromEntries(Object.keys(samples[0]).map(route=>[route,{medianMs:median(samples.map(s=>s[route].elapsedMs)),minMs:Math.min(...samples.map(s=>s[route].elapsedMs)),maxMs:Math.max(...samples.map(s=>s[route].elapsedMs))}]));
- console.log(JSON.stringify({schema:'gravuru-shop-cart-timing-benchmark/v2',commit:execFileSync('git',['-C',root,'rev-parse','HEAD'],{encoding:'utf8'}).trim(),profile:{kind:'local-synthetic-http',platform:os.platform(),cpu:os.cpus()[0].model,node:process.version,runs,warmupRuns:1,parallelSessions:1,network:'loopback, no throttling',shopifyMockMs:{lookup:60,create:100,pollWait:25,poll:40},data:'bundled native acrylic sample, 40x60 PNG photo and WebP customer preview, in-memory database'},summary,samples,backgroundEvents:events.filter(e=>e.event==='shop_cart_timing'&&e.route==='checkout-image'),gcEvents:events.filter(e=>e.event==='shop_cart_gc')},null,2));
+ console.log(JSON.stringify({schema:'gravuru-shop-cart-timing-benchmark/v2',commit:execFileSync('git',['-C',root,'rev-parse','HEAD'],{encoding:'utf8'}).trim(),profile:{kind:'local-synthetic-http',platform:os.platform(),cpu:os.cpus()[0].model,node:process.version,runs,warmupRuns:1,parallelSessions:1,network:'loopback, no throttling',shopifyMockMs:{lookup:60,create:100,pollWait:25,poll:40},data:'bundled native acrylic sample, 40x60 PNG photo and WebP customer preview, '+(realRegistry?'temporary file-backed database':'in-memory database'),registry:realRegistry?'actual SQLite registry':'synthetic binding provider'},summary,samples,backgroundEvents:events.filter(e=>e.event==='shop_cart_timing'&&e.route==='checkout-image'),gcEvents:events.filter(e=>e.event==='shop_cart_gc')},null,2));
 }finally{
  if(server){server.closeAllConnections();await new Promise(resolve=>server.close(resolve));}
  workshop?.close();if(log!==undefined)fs.closeSync(log);fs.rmSync(dir,{recursive:true,force:true});

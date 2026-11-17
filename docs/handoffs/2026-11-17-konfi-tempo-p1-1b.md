@@ -123,9 +123,11 @@ Zeiten UTC, vom Operator gemeldet; kein eigener zweiter Serverzugriff durch Astr
 - Ca. 14:31: Umschaltung, Startdatei `59cfa21b…`, Sicherung `app.cjs.bak-20261117-1b`, Neustart. Editor-Paket unverändert.
 - 14:31:41–14:35:04: drei vollständige Durchläufe. Danach Log 208.592 Bytes.
 - Ca. 14:36: Rückstellung, Startdatei wieder `d02d874a…`, Rücklesen gleich, Neustart.
-- 14:36:45–14:37:59: Kontrolllauf auf `9af3a1ac`, wieder Logformat Version 1 und korrekter Warenkorb. Danach Log 215.141 Bytes.
+- Ca. 14:36:47–14:37:41: Kontrolllauf auf `9af3a1ac`, wieder Logformat Version 1 und korrekter Warenkorb. Anschließender Log-Auszug 14:37:59: 215.141 Bytes. Dieses Fenster hat Claude in seiner [Abschlussprüfung](https://github.com/Chris83638w/gravuru-2027/pull/255#issuecomment-6951621207) präzisiert.
 
-Claude bestätigt abschließend: **live wieder `9af3a1ac`, keine weitere Live-Aktion läuft**. Anschließend wurde nur das vorhandene Log lesend für den Beleg ausgewertet. Keine Änderung an Rotation, Kapazitätsgrenzen oder Konfi-Oberfläche. Paket/Rückweg liegen laut Claude privat unter `private/claude-1b-20261117/`.
+Die gerundete Kontrollnotiz enthält zusätzlich `theme-cart` 403 um 14:36:45, **außerhalb des Kundenlaufs**. Der Kontrolllauf selbst enthält genau eine `theme-cart`-Anfrage mit 200 und keine 401/403. Der Auslöser der zuvor abgewiesenen Anfrage ist nicht aufgezeichnet; nicht als erwartete Probe oder Kundenfehler einordnen.
+
+Claude bestätigt abschließend: **live wieder `9af3a1ac`, keine weitere Live-Aktion läuft**. Anschließend wurde das vorhandene Log lesend für den Beleg ausgewertet; bei der letzten Prüfung außerdem einmal die öffentliche App-Startadresse anonym abgerufen (200, keine Änderung). Keine Änderung an Rotation, Kapazitätsgrenzen oder Konfi-Oberfläche. Paket/Rückweg liegen laut Claude privat unter `private/claude-1b-20261117/`.
 
 ### Messwerte im gleichen Handy-Profil
 
@@ -170,5 +172,7 @@ Astra hat lokal alle **15/15 Längen und SHA-256-Hashes** neu berechnet, 15 eind
 - **H1 offen:** Zähler verworfener Diagnoseabschnitte bleibt spätere Verbesserung; gemessen höchstens 48, bestehende Grenze 64 nicht erreicht.
 - Claude meldet sechs eigene Test-Entwürfe über den heutigen Tag (zwei frühere, drei im Fenster, ein Kontrolllauf), ungefähr 224 MB Pakete. **Nicht gelöscht**, keine Datenbanken oder Entwurfsinhalte ins Repo aufgenommen.
 - Claudes Vorschläge (Dokument innerhalb einer Anfrage wiederverwenden, Bild/Sichern früher starten, große Dokumente/Pakete untersuchen und verkleinern) sind **nicht beauftragt**. V2/V3, P2/P3 bleiben unbegonnen; P4 nicht beauftragt.
+
+Claude hat `515b522a` einschließlich aller Tabellen und Beleggrenzen [abschließend gegengeprüft und bestätigt](https://github.com/Chris83638w/gravuru-2027/pull/255#issuecomment-6951621207). Seine beiden Präzisierungen zum Kontrollzeitfenster und der separaten 403-Anfrage sind oben übernommen; keine neue Runtime-Änderung.
 
 **Genau nächster Schritt:** Chris entscheidet über das nächste Umsetzungspaket anhand dieser Messung. Bis dahin keine neue Code- oder Live-Änderung; das freigegebene 1b-Messfenster ist abgeschlossen.

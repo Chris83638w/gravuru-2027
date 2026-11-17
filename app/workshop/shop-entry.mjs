@@ -1,4 +1,5 @@
 import {createCustomerDesignImages} from './customer-design-image.mjs';
+import {createCheckoutProofSigner} from './checkout-proof-signer.mjs';
 import {shopStartModel,isAllSizesFamily} from './shop-start-model.mjs';
 import {shopWarmManifest} from './shop-warm-manifest.mjs';
 import {createPublicDesignPreviewCache} from './public-design-preview-cache.mjs';
@@ -80,6 +81,8 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
    typeof proxyPath!=='string'||!/^\/[A-Za-z0-9_-]+(?:\/[A-Za-z0-9_-]+)*$/.test(proxyPath)||typeof pagePath!=='string'||!/^\/[A-Za-z0-9_-]+(?:\/[A-Za-z0-9_-]+)*\/$/.test(pagePath)||pagePath.startsWith('/api/')||proxyPath.startsWith('/api/')||proxyPath+'/'===pagePath)
   fail(503,'shop_entry_config','Der Konfigurator-Einstieg ist nicht eingerichtet.');
  // Starts zählen jetzt auch das Vorladen beim Ansehen einer Produktseite (Konfigurator-Fenster).
+ // F02 (#239): Kassen-Nachweis für personalisierte Positionen (Schlüssel aus App-Geheimnis + Shop).
+ const checkoutProof=createCheckoutProofSigner({secret,shopDomain});
  const limit={startPerMinute:600,requestsPerMinute:240,draftBytes:100*1024*1024,cartBytes:16*1024,concurrentReviews:2,maxContexts:1024,contextTtlMs:30*60*1000,...limits};
  for(const [key,value] of Object.entries(limit))if(!Number.isSafeInteger(value)||value<1)fail(503,'shop_entry_config','Der Konfigurator-Einstieg ist nicht eingerichtet.');
  // Antwortspeicher des Modells (Paket 1a): standardmäßig aus. `true` = Standardgrenzen, Objekt = eigene Grenzen (Tests).
@@ -383,7 +386,7 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
     if(themeTransfers.size>=limit.maxContexts)fail(429,'shop_entry_busy','Bitte kurz warten und erneut versuchen.');
     // Nur Darstellungswahl für den Bearbeiten-Link; kein Teil des Preis-/Gestaltungsstands.
     const {presentation,...themeInput}=data;
-    const args={workshop:store.workshop,registry:store.registry,shopDomain,proxyPath,...(presentation?{presentation}:{}),...(typeof store.workshop.orderIntake.imageSnapshot==='function'?{customerImageUrl:id=>customerImages.url(store.storeId,id)}:{})};
+    const args={workshop:store.workshop,registry:store.registry,shopDomain,proxyPath,checkoutProof,...(presentation?{presentation}:{}),...(typeof store.workshop.orderIntake.imageSnapshot==='function'?{customerImageUrl:id=>customerImages.url(store.storeId,id)}:{})};
     const prepared=prepareThemeCart(args,binding,themeInput,{draftToken}),token=randomBytes(32).toString('hex');
     themeTransfers.set(token,{args,binding:structuredClone(binding),input:structuredClone(themeInput),draftToken,sessionToken:req.headers['x-gravuru-shop-session'],customerId:session.customerId,expiresAt:clock()+limit.contextTtlMs});
     const {id:configId,rev}=prepared.payload.configuration;

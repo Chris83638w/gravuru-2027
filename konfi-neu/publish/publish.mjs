@@ -213,7 +213,7 @@ for (const family of katalog.families.values()) {
   const schraube = bildVeroeffentlichen(darstellung.schraube);
   const doc = {
     v: 1, id: family.id, name: family.name,
-    material: {art: family.material.kind, name: family.material.label, farbe: darstellung.farbe, ...(textur ? {textur} : {}), schraube, staerke: family.material.thicknessMm, ...(family.material.variant ? {variante: family.material.variant} : {}), ...(family.material.engravingSide === 'back' ? {rueckseite: 1} : {})},
+    material: {art: family.material.kind, k: slug(family.material.kind + (family.material.variant ? '-' + family.material.variant : '')), name: family.material.label, farbe: darstellung.farbe, ...(textur ? {textur} : {}), schraube, staerke: family.material.thicknessMm, ...(family.material.variant ? {variante: family.material.variant} : {}), ...(family.material.engravingSide === 'back' ? {rueckseite: 1} : {})},
     verfahren: prozess,
     formen: family.groups.map(g => ({k: g.key, n: g.name})),
     groessen,

@@ -26,12 +26,27 @@ const started = Date.now();
 const stand = JSON.parse(fs.readFileSync(path.join(out, 'stand.json'), 'utf8'));
 const familien = {};
 for (const [id, f] of Object.entries(stand.familien)) familien[id] = JSON.parse(fs.readFileSync(path.join(out, f.u), 'utf8'));
+// Ein Bild je Design UND Material: Dasselbe Design sieht auf Edelstahl anders aus als auf schwarzem Acryl.
+// Aufträge kommen aus der Designauswahl der Familien (g/<familie>/<größe>.json).
+const auftraege = new Map(); // "<material>/<datei>.webp" → {file, familie, groesse, ein}
+for (const familie of Object.values(familien)) {
+  for (const [groesse, adresse] of Object.entries(familie.galerie || {})) {
+    for (const d of JSON.parse(fs.readFileSync(path.join(out, adresse), 'utf8')).designs) {
+      const file = path.basename(d.u);
+      const ziel = `${familie.material.k}/${file.replace(/\.json$/, '.webp')}`;
+      if (!auftraege.has(ziel)) auftraege.set(ziel, {file, familie: familie.id, groesse, ein: d.ein ? 1 : 0});
+    }
+  }
+}
 fs.mkdirSync(path.join(out, 'v'), {recursive: true});
-const designs = fs.readdirSync(path.join(out, 'd')).filter(f => f.endsWith('.json'));
-const soll = new Set(designs.map(f => f.replace(/\.json$/, '.webp')));
 let entfernt = 0;
-for (const file of fs.readdirSync(path.join(out, 'v'))) if (!soll.has(file)) { fs.rmSync(path.join(out, 'v', file)); entfernt++; }
-const offen = designs.filter(f => !fs.existsSync(path.join(out, 'v', f.replace(/\.json$/, '.webp')))).slice(0, grenze);
+for (const eintrag of fs.readdirSync(path.join(out, 'v'), {recursive: true, withFileTypes: true})) {
+  if (!eintrag.isFile()) continue;
+  const relativ = path.relative(path.join(out, 'v'), path.join(eintrag.parentPath, eintrag.name)).split(path.sep).join('/');
+  if (!auftraege.has(relativ)) { fs.rmSync(path.join(eintrag.parentPath, eintrag.name)); entfernt++; }
+}
+const designs = [...auftraege.keys()];
+const offen = designs.filter(ziel => !fs.existsSync(path.join(out, 'v', ziel))).slice(0, grenze);
 
 // Kleiner Dateiserver nur für diesen Lauf: liefert core/ und die veröffentlichten Daten an den Browser.
 const typen = {'.mjs': 'text/javascript', '.json': 'application/json', '.woff2': 'font/woff2', '.webp': 'image/webp', '.html': 'text/html'};
@@ -82,19 +97,21 @@ await page.waitForFunction('window.bereit === true');
 
 let fertig = 0, fehler = 0, bytes = 0;
 const meldungen = [];
-for (const file of offen) {
-  const design = JSON.parse(fs.readFileSync(path.join(out, 'd', file), 'utf8'));
-  const familie = familien[design.bsp?.f] || Object.values(familien)[0];
+for (const ziel of offen) {
+  const auftrag = auftraege.get(ziel);
+  const design = {...JSON.parse(fs.readFileSync(path.join(out, 'd', auftrag.file), 'utf8')), bsp: {g: auftrag.groesse, ein: auftrag.ein}};
+  const familie = familien[auftrag.familie];
   try {
     const base64 = await page.evaluate(job => window.zeichne(job), {design, familie: {...familie, galerie: undefined}, schriften: stand.schriften, breite});
     const data = Buffer.from(base64, 'base64');
-    fs.writeFileSync(path.join(out, 'v', file.replace(/\.json$/, '.webp')), data);
+    fs.mkdirSync(path.dirname(path.join(out, 'v', ziel)), {recursive: true});
+    fs.writeFileSync(path.join(out, 'v', ziel), data);
     bytes += data.length; fertig++;
   } catch (error) {
     fehler++;
     if (meldungen.length < 10) meldungen.push(design.id + ': ' + String(error.message).slice(0, 120));
   }
-  if ((fertig + fehler) % 500 === 0) console.log(`… ${fertig + fehler}/${offen.length}`);
+  if ((fertig + fehler) % 1000 === 0) console.log(`… ${fertig + fehler}/${offen.length}`);
 }
 await browser.close();
 server.close();

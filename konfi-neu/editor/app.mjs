@@ -274,7 +274,7 @@ export async function oeffnen(o) {
       const treffer = q ? liste.filter(d => (d.n + ' ' + d.id + ' d' + d.nr).toLowerCase().includes(q)) : liste;
       raster.replaceChildren(...treffer.slice(0, 120).map(d => {
         const kachel = h('button', {class: 'gk-kachel gk-design', 'aria-pressed': String(d.id === zustand.design), title: d.n, onclick: () => designWaehlen(d, kachel)},
-          eintrag.vorschau ? h('img', {src: o.basis + d.u.replace(/^d\//, 'v/').replace(/\.json$/, '.webp'), loading: 'lazy', alt: '', onerror: event => event.target.remove()}) : null, h('span', null, d.n));
+          eintrag.vorschau ? h('img', {src: o.basis + d.u.replace(/^d\//, 'v/' + familie.material.k + '/').replace(/\.json$/, '.webp'), loading: 'lazy', alt: '', onerror: event => event.target.remove()}) : null, h('span', null, d.n));
         return kachel;
       }));
       if (!treffer.length) raster.replaceChildren(h('p', {class: 'gk-hinweis'}, 'Keine Designs für diese Größe gefunden.'));

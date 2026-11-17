@@ -1,0 +1,126 @@
+// Zeichnen: Gestaltung → SVG-Markup in mm. Reine Textfunktionen ohne DOM, damit
+// Editor, Warenkorbbild, Katalogvorschau und Server exakt denselben Code benutzen.
+
+const esc = value => String(value).replace(/[&<>"]/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}[c]));
+
+/** CSS-Name einer veröffentlichten Schrift. Jede Schriftdatei bekommt einen eigenen Namen. */
+export const schriftFamilie = name => 'gk-' + String(name).toLowerCase().replace(/[^a-z0-9]+/g, '-');
+
+/**
+ * Ligaturen und kontextabhängige Buchstabenvarianten sind aus, Unterschneidung ist an.
+ * So setzt jeder Browser und die Fertigungsstrecke jeden Buchstaben gleich.
+ */
+const TEXT_STIL = 'font-kerning:normal;font-variant-ligatures:none;font-feature-settings:"liga" 0,"clig" 0,"calt" 0;white-space:pre';
+
+export function textMarkup(el, farbe) {
+  const anker = el.anker === 'm' ? 'middle' : el.anker === 'e' ? 'end' : 'start';
+  const zeilen = String(el.text).split('\n');
+  const abstand = el.lh || el.size * 1.2;
+  const inhalt = zeilen.length === 1
+    ? esc(zeilen[0])
+    : zeilen.map((zeile, index) => `<tspan x="${el.x}" y="${el.y + index * abstand}">${esc(zeile) || ' '}</tspan>`).join('');
+  return `<text x="${el.x}" y="${el.y}" font-family="${schriftFamilie(el.font)}" font-size="${el.size}" text-anchor="${anker}"` +
+    (el.ls ? ` letter-spacing="${el.ls}"` : '') +
+    (el.rot ? ` transform="rotate(${el.rot} ${el.x} ${el.y})"` : '') +
+    ` fill="${farbe}" style='${TEXT_STIL}'>${inhalt}</text>`;
+}
+
+export function motivTransform(el) {
+  const q = el.quelle;
+  const cx = q.box[0] - q.tr[0] + q.box[2] / 2;
+  const cy = q.box[1] - q.tr[1] + q.box[3] / 2;
+  return `translate(${el.x} ${el.y})${el.rot ? ` rotate(${el.rot})` : ''} scale(${el.s}) translate(${-cx} ${-cy})`;
+}
+
+export function motivInhalt(el) {
+  const q = el.quelle;
+  if (q.svg) return q.svg; // Bibliotheksmotiv: geprüfter Inhalt der SVG-Datei
+  return q.p.map(p =>
+    `<path d="${p.d}" fill="${p.f === 0 ? 'none' : 'currentColor'}"` +
+    (p.eo ? ' fill-rule="evenodd"' : '') +
+    (p.sw ? ` stroke="currentColor" stroke-width="${p.sw}" stroke-linecap="${p.lc || 'butt'}" stroke-linejoin="${p.lj || 'miter'}"` : '') +
+    (p.o != null ? ` opacity="${p.o}"` : '') + '/>').join('');
+}
+
+export function motivMarkup(el, farbe) {
+  return `<g transform="${motivTransform(el)}" color="${farbe}" fill="${farbe}">${motivInhalt(el)}</g>`;
+}
+
+export function fotoMarkup(el, farbe, uid = '') {
+  const x = el.x - el.w / 2;
+  const y = el.y - el.h / 2;
+  const clipId = `gk-clip-${uid}${el.id}`;
+  const form = el.maske
+    ? `<path d="${el.maske}" transform="translate(${el.x} ${el.y}) scale(${el.mk}) translate(${-(el.mbox[0] - el.mt[0] + el.mbox[2] / 2)} ${-(el.mbox[1] - el.mt[1] + el.mbox[3] / 2)})"/>`
+    : el.form === 'circle' || el.form === 'ellipse'
+      ? `<ellipse cx="${el.x}" cy="${el.y}" rx="${el.w / 2}" ry="${el.h / 2}"/>`
+      : `<rect x="${x}" y="${y}" width="${el.w}" height="${el.h}"/>`;
+  const dreh = el.rot ? ` transform="rotate(${el.rot} ${el.x} ${el.y})"` : '';
+  if (!el.bild) {
+    const groesse = Math.min(el.w, el.h) * 0.11;
+    return `<g${dreh}><g fill="${farbe}" fill-opacity=".12" stroke="${farbe}" stroke-opacity=".55" stroke-width="${Math.max(0.15, groesse * 0.06)}" stroke-dasharray="${groesse * 0.5} ${groesse * 0.35}">${form}</g>` +
+      `<text x="${el.x}" y="${el.y + groesse * 0.35}" font-family="system-ui,sans-serif" font-size="${groesse}" text-anchor="middle" fill="${farbe}" fill-opacity=".8">Dein Foto</text></g>`;
+  }
+  // Ausschnitt: zoom ≥ 1, ox/oy verschieben das Bild im Feld (Anteil der Feldgröße).
+  const b = el.bild;
+  const zoom = b.zoom || 1;
+  const feld = el.w / el.h;
+  const seite = b.w / b.h;
+  const bw = (seite > feld ? el.h * seite : el.w) * zoom;
+  const bh = (seite > feld ? el.h : el.w / seite) * zoom;
+  const bx = el.x - bw / 2 + (b.ox || 0) * el.w;
+  const by = el.y - bh / 2 + (b.oy || 0) * el.h;
+  return `<g${dreh}><clipPath id="${clipId}">${form}</clipPath>` +
+    `<image href="${esc(b.url)}" x="${bx}" y="${by}" width="${bw}" height="${bh}" preserveAspectRatio="none" clip-path="url(#${clipId})"${b.grau ? ' style="filter:grayscale(1)"' : ''}/></g>`;
+}
+
+export function elementMarkup(el, farbe, uid = '') {
+  if (el.t === 'text') return textMarkup(el, farbe);
+  if (el.t === 'motiv') return motivMarkup(el, farbe);
+  return fotoMarkup(el, farbe, uid);
+}
+
+/** Platte mit Material, Kante und Befestigung. Löcher und Schrauben liegen über der Gestaltung (nur Vorschau). */
+export function plattenMarkup(groesse, material, basis = '', uid = '') {
+  const clip = `gk-platte-${uid}`;
+  const kante = Math.max(0.12, Math.min(groesse.w, groesse.h) * 0.004);
+  return `<defs><clipPath id="${clip}"><path d="${groesse.d}"/></clipPath>` +
+    `<linearGradient id="gk-glanz-${uid}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".16"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".12"/></linearGradient></defs>` +
+    `<path d="${groesse.d}" fill="${material.farbe}"/>` +
+    (material.textur ? `<image href="${esc(basis + material.textur)}" x="0" y="0" width="${groesse.w}" height="${groesse.h}" preserveAspectRatio="xMidYMid slice" clip-path="url(#${clip})"/>` : '') +
+    `<path d="${groesse.d}" fill="url(#gk-glanz-${uid})"/>` +
+    `<path d="${groesse.d}" fill="none" stroke="#000" stroke-opacity=".28" stroke-width="${kante}"/>`;
+}
+
+export function befestigungMarkup(bef, material, basis = '') {
+  if (!bef?.l?.length) return '';
+  return bef.l.map(([x, y, d]) => {
+    if (bef.schraube) {
+      const kopf = 5; // Schraubenkopf 5 mm (Entscheidung 3.39)
+      return material.schraube
+        ? `<image href="${esc(basis + material.schraube)}" x="${x - kopf / 2}" y="${y - kopf / 2}" width="${kopf}" height="${kopf}"/>`
+        : `<circle cx="${x}" cy="${y}" r="${kopf / 2}" fill="#9aa0a4" stroke="#555" stroke-width=".15"/>`;
+    }
+    return `<circle cx="${x}" cy="${y}" r="${d / 2}" fill="#f4f4f2" stroke="#000" stroke-opacity=".45" stroke-width=".15"/>`;
+  }).join('');
+}
+
+/**
+ * Vollständiges Bild einer Gestaltung, z. B. für Warenkorb und Katalogvorschau.
+ * `schriftCss` enthält die @font-face-Regeln (im Browser als data:-Adressen), damit das Bild
+ * auch außerhalb der Seite gleich aussieht.
+ */
+export function gestaltungSvg(zustand, familie, {basis = '', schriftCss = '', rand = 0.06, breite = null, hintergrund = null} = {}) {
+  const groesse = familie.groessen.find(g => g.k === zustand.groesse);
+  const bef = groesse.bef.find(b => b.id === zustand.bef);
+  const farbe = familie.verfahren.farbe;
+  const pad = Math.max(groesse.w, groesse.h) * rand;
+  const vb = `${-pad} ${-pad} ${groesse.w + 2 * pad} ${groesse.h + 2 * pad}`;
+  const masse = breite ? ` width="${breite}" height="${Math.round(breite * (groesse.h + 2 * pad) / (groesse.w + 2 * pad))}"` : '';
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vb}"${masse}>` +
+    (schriftCss ? `<style>${schriftCss}</style>` : '') +
+    (hintergrund ? `<rect x="${-pad}" y="${-pad}" width="${groesse.w + 2 * pad}" height="${groesse.h + 2 * pad}" fill="${hintergrund}"/>` : '') +
+    plattenMarkup(groesse, familie.material, basis, 'b') +
+    `<g clip-path="url(#gk-platte-b)">${zustand.els.map(el => elementMarkup(el, farbe, 'b')).join('')}</g>` +
+    befestigungMarkup(bef, familie.material, basis) + '</svg>';
+}

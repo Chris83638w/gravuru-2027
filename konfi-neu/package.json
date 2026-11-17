@@ -1,0 +1,17 @@
+{
+  "name": "gravuru-konfi-neu",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Neuaufbau des gravuru-Konfigurators: veröffentlichte statische Daten, kleiner Editor, einfacher Warenkorb.",
+  "engines": {"node": ">=22"},
+  "scripts": {
+    "publish:data": "node publish/publish.mjs",
+    "build": "node build.mjs",
+    "start": "node server/server.mjs",
+    "test": "node --test test/"
+  },
+  "devDependencies": {
+    "esbuild": "0.28.2"
+  }
+}

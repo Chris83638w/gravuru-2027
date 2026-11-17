@@ -1,0 +1,17 @@
+{
+  "hinweis": "Preisregeln, die NICHT in der Katalogfamilie stehen. Jede Regel nennt ihre Quelle. Ändern nur nach Entscheidung von Chris; langfristig gehören diese Werte in den Katalog bzw. die Preis-Excel.",
+  "motiv": {
+    "cents": 169,
+    "quelle": "ENTSCHEIDUNGEN.md 3.14 (29.10.2026): Hinweis 1,69 € für weitere/geänderte Motive, Originalmotiv inklusive; Gesamtstand 16.11.2026 Zeile 142."
+  },
+  "logo": {
+    "cents": 1299,
+    "quelle": "ENTSCHEIDUNGEN.md 1.16 (29.10.2026): Kundenlogo als SVG-Vektor, 12,99 € je Logo.",
+    "aktiv": false,
+    "grund": "Logo-Upload ist im Neuaufbau noch nicht gebaut; je Produkt ist außerdem eine ausdrückliche Zuordnung nötig (PRIO-KONFI.md Abschnitt 2)."
+  },
+  "staffel": {
+    "stufen": [{"ab": 3, "prozent": 5}, {"ab": 5, "prozent": 10}, {"ab": 10, "prozent": 15}],
+    "quelle": "docs/sicherung/2026-11-16-gesamtstand.md Zeile 141: ab 3 Stück 5 %, ab 5 Stück 10 %, ab 10 Stück 15 %. Hat eine Katalogfamilie eigene quantityTiers, gelten diese."
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "hinweis": "Beispiel für die Produktliste, die der Shop-Abgleich aus Shopify-Metafeldern erzeugt. Dieses Produkt ist real: gelesen am 17.11.2026 aus gravuru-design.myshopify.com (custom.customization_id, custom.gravuru_product_cut).",
+  "produkte": [
+    {
+      "key": "katalog-formate-edelstahl-tuerschilder-familienschilder-eb5fe26624befe4a",
+      "name": "Türschild Edelstahl – Form und Größe selbst wählen",
+      "familie": "steel-door-signs",
+      "groessen": "alle",
+      "startGroesse": "GR-ES-AB-120X80-T15",
+      "start": "LEER-AB-120X80-D0",
+      "thema": "familienschilder",
+      "ids": {"shopifyProductId": "16190784438652"}
+    }
+  ]
+}

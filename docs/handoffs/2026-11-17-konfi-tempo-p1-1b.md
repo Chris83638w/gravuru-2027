@@ -91,6 +91,19 @@ node scripts/measure-shop-cart-timing.mjs <checkout> 7 real-registry
 
 Keine echte Shopify-Anfrage, kein Kundendatenbestand, keine Bestellung. Alle Auswertungen unterscheiden Hauptereignisse und GC-Zusätze; `backgroundEvents` enthält auch den Aufwärmlauf. Die Datenbanken/Bilder entstehen ausschließlich temporär.
 
-## Nächster Schritt
+## Review und Abschluss
 
-Claude prüft den vollständigen 1b-Commit direkt im Tab und in PR #255; Astra wartet auf seine fertige Antwort und bearbeitet Befunde direkt. Danach ist für eine echte Messung weiterhin eine eigene Live-Freigabe nötig. V2/V3 und der Live-Stand bleiben bis dahin unverändert. Die derzeitige Diagnose kann Hosting-/Daten-/CPU-Ursachen eingrenzen, stellt sie vor diesem realen Messlauf aber nicht fest.
+[Claude hat den vollständigen Stand `68515bf5` geprüft und ohne Blocker abgenommen](https://github.com/Chris83638w/gravuru-2027/pull/255#pullrequestreview-5940055146). Er hat die umschlossenen Lesestellen und unveränderten Fehlerbedingungen einzeln geprüft, die Zuordnung der GC-Daten und die unveränderten Header bestätigt. Eigener Build mit Node 24.22.3 / Linux identisch. Seine 18 Testdateien: **157/159**, zwei identische bekannte Fehler auch auf unveränderter Basis `be163c5d` in seiner Druckprüfungsumgebung; kein neuer PR-Befund. Astra lokal weiterhin **159/159**. Eigene Linux-Gegenprobe: alle fünf OS-Zähler verfügbar, GC-Nachlieferung mit gleicher traceId, identisch weitergereichter Fehler ohne privaten Text im Log.
+
+Die Hinweise werden ausdrücklich festgehalten, ohne weitere Runtime-Änderung:
+
+- **H1:** 74 verschiedene Abschnittsnamen im Code, bestehende Grenze 64 pro Ereignis, in den Rohdaten maximal 48. Ein Ereignis mit 64 oder mehr erfassten Namen kann unvollständig sein; fehlende Details nicht als null Aufwand deuten. Expliziter Zähler für verworfene Messungen bleibt als spätere Verbesserung offen, keine Erhöhung der Grenze und keine neue Konfi-Regel.
+- **H2:** Claude beobachtete 662 ms User-CPU in einem synchronen Abschnitt mit 545 ms Laufzeit. Andere Threads zählen mit; auch CPU nahe Laufzeit beweist keine exklusive CPU-Ursache genau dieser Anfrage. Keine neue Ursachenbehauptung.
+- **H3/B4:** ca. 31,9 KB pro Übergabe, Rotation genau von `stderr.log` weiterhin nicht nachgewiesen. Offen, kein Betriebseingriff.
+- **H4:** Fehlende GC-Nachlieferung bleibt unbekannt, nicht gesichert null. Neben keinem beobachteten GC und Prozessende kann außergewöhnlich späte Zustellung nach dem begrenzten Nachlauf fehlen.
+
+Claude hat diese Präzisierungen anschließend direkt im Tab vollständig bestätigt: kein offener Codeblocker, kein weiterer Runtime-Patch nötig, H1/H2/H4 wie oben, H3/B4 offen. Astra hat seine vollständige Antwort abgewartet.
+
+Claudes Vorschlag, 1b später für drei echte Läufe in einem begrenzten Messfenster einzuspielen und anschließend auf `9af3a1ac` zurückzuschalten, ist **keine Freigabe und kein beschlossener Betriebsablauf**. Der aktuelle Nutzerauftrag verbietet Live-Eingriffe. Kein Merge, Restart oder Deployment; V2/V3 nicht begonnen. Die Runtime bleibt nach dem Review unverändert. Dieser Abschluss aktualisiert nur Dokumentation; Tests und Vergleich nicht ohne Codeänderung wiederholt, `git diff --check` erneut grün.
+
+Der nächste mögliche Schritt außerhalb dieses abgeschlossenen Code-/Reviewauftrags ist eine Entscheidung von Chris über eine echte 1b-Messung und deren Umgang mit dem offenen Logbetrieb. Bis dahin keine Live-Aktion. Die Diagnose kann Hosting-/Daten-/CPU-Ursachen eingrenzen, stellt sie vor diesem realen Messlauf aber nicht fest.

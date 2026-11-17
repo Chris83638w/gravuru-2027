@@ -1,3 +1,12 @@
+## 17.11.2026 · Claude · `konfi-neu`: Bindung an den Shop (Auftrag Chris: „mach weiter mit der bindung“)
+
+- Chris bestätigt 9,99 € je Foto bei Funkklingeln.
+- Öffentliche Produktdaten von gravuru-design.myshopify.com gelesen (nur lesen, kein Schlüssel). Neue Cloud-Umgebung „gravuru“ erlaubt dafür genau diesen Host.
+- Abgleich `konfi-neu/abgleich/stand-20261117/`: 87 von 87 aktiven Produkten zugeordnet, 10.340 Varianten gebunden, 0 Preisabweichungen, 0 fehlende Varianten, 0 schreibende Maßnahmen.
+- Funkklingeln vollständig (84 × 120). Offen: 154 von 404 Varianten des Edelstahl-Türschilds (öffentliche Daten enden bei 250) und die Anthrazit-Varianten der zwei Acryl-Türschilder (Farbauswahl fehlt im Neuaufbau).
+- Prüfungen: 19/19 Tests, darunter Bindung (jede Shopify-Variante höchstens einmal; Ungebundenes wird abgewiesen).
+- Nichts im Shop geändert, nichts live. Nächster Schritt: Fertigungsdatei; Farbauswahl Acryl.
+
 ## 17.11.2026 · Claude · `konfi-neu`: Foto bei Funkklingeln (Entscheidung Chris im Chat)
 
 - Chris: „Funkklingel kann Foto haben. bei Funkklingel sind es 5mm“ (Schraubenkopf).

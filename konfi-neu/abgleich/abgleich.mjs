@@ -47,11 +47,38 @@ const bindung = {};
 const unveroeffentlicht = [];
 const zaehler = {produkteImShop: shop.produkte.length, mitKonfi: 0, veroeffentlicht: 0, variantenGebunden: 0, variantenFehlen: 0, preisAbweichungen: 0, unbekannteVarianten: 0, nichtImShop: 0, unvollstaendigGelesen: 0};
 
+// Zuordnung Shop-Produkt → veröffentlichtes Produkt: über die Konfigurator-Kennung (Metafeld) oder,
+// wenn der Abzug keine Metafelder enthält (öffentliche Daten), über die Shopify-Produkt-ID.
+const nachShopifyId = new Map(Object.entries(stand.produkte).filter(([, p]) => p.shopify).map(([key, p]) => [String(p.shopify), key]));
 const imShop = new Map();
 for (const produkt of shop.produkte) {
-  if (!produkt.konfi) continue;
+  const key = produkt.konfi ? slug(produkt.konfi) : nachShopifyId.get(String(produkt.id));
+  if (!key) continue;
   zaehler.mitKonfi++;
-  imShop.set(slug(produkt.konfi), produkt);
+  imShop.set(key, produkt);
+}
+
+/**
+ * Funkklingel: Variante über ihre Optionswerte zuordnen. Im Shop gibt es drei Optionen; die Werte heißen
+ * z. B. „Schwarz“, „24 × 20 cm · Ganzer Rahmen“ (ohne Maß = Hochformat 16 × 28), „Bohrlöcher mit Schrauben“.
+ * Erkannt wird am Wert, nicht an der Reihenfolge der Optionen. Das Format steht zusätzlich in der SKU.
+ */
+function klingelSchluessel(familie, variante) {
+  const werte = (variante.o || []).filter(Boolean);
+  const farbe = familie.optionen.find(o => o.k === 'farbe').werte.find(w => werte.includes(w.n));
+  let format = null, rahmen = null, bef = null;
+  for (const wert of werte) {
+    const teile = /^(\d+) × (\d+) cm · (.+)$/.exec(wert);
+    const name = teile ? teile[3] : wert;
+    const treffer = familie.optionen.find(o => o.k === 'rahmen').werte.find(w => w.n === name);
+    if (treffer) { rahmen = treffer; format = teile ? `${teile[1]}x${teile[2]}` : '16x28'; }
+  }
+  const ausSku = /^FK-AV2A-(\d+x\d+)-/.exec(variante.sku || '')?.[1];
+  if (ausSku && format && ausSku !== format) return {fehler: `SKU nennt ${ausSku}, Option nennt ${format}`};
+  const groesse = familie.groessen.find(g => g.k === (format || ausSku));
+  if (groesse) bef = groesse.bef.find(b => werte.includes(b.n));
+  if (!farbe || !rahmen || !groesse || !bef) return {fehler: 'Optionswerte nicht erkannt: ' + werte.join(' | ')};
+  return {sku: `${groesse.k}-${farbe.k}-${rahmen.k}-${bef.id}`, soll: groesse.p + bef.p};
 }
 
 for (const [key, produktShop] of imShop) {
@@ -62,9 +89,29 @@ for (const [key, produktShop] of imShop) {
   }
   zaehler.veroeffentlicht++;
   const eintrag = JSON.parse(fs.readFileSync(datei, 'utf8'));
-  if (produktShop.variantenGesamt > produktShop.varianten.length) {
+  const abgeschnitten = produktShop.variantenGesamt === null || produktShop.variantenGesamt > produktShop.varianten.length;
+  if (abgeschnitten) {
     zaehler.unvollstaendigGelesen++;
-    massnahmen.push({art: 'hinweis', produkt: key, grund: `Abzug enthält ${produktShop.varianten.length} von ${produktShop.variantenGesamt} Varianten – Variantenabgleich für dieses Produkt unvollständig`});
+    massnahmen.push({art: 'hinweis', produkt: key, grund: `Abzug enthält ${produktShop.varianten.length} von ${produktShop.variantenGesamt ?? 'mehr als 250'} Varianten – Variantenabgleich für dieses Produkt unvollständig`});
+  }
+  if (eintrag.familie.art === 'klingel') {
+    const gefunden = new Set();
+    for (const variante of produktShop.varianten) {
+      const z = klingelSchluessel(eintrag.familie, variante);
+      if (z.fehler) { zaehler.unbekannteVarianten++; massnahmen.push({art: 'hinweis', produkt: key, variante: variante.id, sku: variante.sku, grund: z.fehler}); continue; }
+      if (gefunden.has(z.sku)) { massnahmen.push({art: 'hinweis', produkt: key, variante: variante.id, sku: variante.sku, grund: 'zweite Shop-Variante für dieselbe Auswahl ' + z.sku}); continue; }
+      gefunden.add(z.sku);
+      zaehler.variantenGebunden++;
+      bindung[`${key}|${z.sku}`] = {variante: variante.id};
+      const ist = Math.round(Number(variante.preis) * 100);
+      if (ist !== z.soll) { zaehler.preisAbweichungen++; massnahmen.push({art: 'preis-setzen', produkt: key, variante: variante.id, sku: variante.sku, von: ist, auf: z.soll, grund: 'Katalog: Format-Grundpreis + Befestigung'}); }
+    }
+    const f = eintrag.familie;
+    for (const g of f.groessen) for (const farbe of f.optionen.find(o => o.k === 'farbe').werte) for (const rahmen of f.optionen.find(o => o.k === 'rahmen').werte) for (const b of g.bef) {
+      const sku = `${g.k}-${farbe.k}-${rahmen.k}-${b.id}`;
+      if (!gefunden.has(sku)) { zaehler.variantenFehlen++; massnahmen.push({art: 'variante-anlegen', produkt: key, shopifyProdukt: produktShop.id, sku, preisCents: g.p + b.p, grund: `Im Shop fehlt ${g.n} / ${farbe.n} / ${rahmen.n} / ${b.n}`}); }
+    }
+    continue;
   }
   const nachSku = new Map(produktShop.varianten.map(v => [skuNormal(v.sku), v]));
   const erwartet = new Set();
@@ -76,7 +123,7 @@ for (const [key, produktShop] of imShop) {
       const variante = nachSku.get(sku);
       const soll = g.p + b.p;
       if (!variante) {
-        if (produktShop.variantenGesamt > produktShop.varianten.length) continue; // nicht beurteilbar
+        if (abgeschnitten) continue; // nicht beurteilbar
         zaehler.variantenFehlen++;
         massnahmen.push({art: 'variante-anlegen', produkt: key, shopifyProdukt: produktShop.id, sku, preisCents: soll, grund: `Katalog sieht ${g.n} / ${b.n} vor, im Shop fehlt die Variante`});
         continue;

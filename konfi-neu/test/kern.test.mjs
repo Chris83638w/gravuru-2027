@@ -292,3 +292,20 @@ test('Funkklingel: Foto ist erlaubt, kostet je Foto und darf nicht auf der Kling
     assert.equal((await aufKlingel.json()).code, 'pruefung:geraet');
   });
 });
+
+test('Bindung: Server nimmt die Shopify-Variante aus der Abgleich-Datei und weist Ungebundenes ab', async () => {
+  const datei = path.join(wurzel, 'abgleich', 'stand-20261117', 'bindung.json');
+  const bindung = JSON.parse(fs.readFileSync(datei, 'utf8'));
+  assert.equal(Object.keys(bindung).filter(k => k.startsWith(KLINGEL + '|')).length, 120, '3 Formate × 2 Farben × 4 Rahmen × 5 Befestigungen');
+  assert.equal(new Set(Object.values(bindung).map(b => b.variante)).size, Object.keys(bindung).length, 'jede Shopify-Variante höchstens einmal');
+  await mitServer(async basis => {
+    const e = eintrag(KLINGEL);
+    const d = await (await post(basis + '/api/gestaltungen', {zustand: modell.startZustand(e)})).json();
+    assert.equal(d.position.variante, '58047682838908'); // im Shop: Schwarz / 24 × 20 cm · Ganzer Rahmen / Keine Befestigung, 59,99 €
+    assert.equal(pruefen('test-schluessel', d.position.eigenschaften._gravuru_preis, {gestaltung: d.position.eigenschaften._gravuru, variante: '58047682838908'}).ok, true);
+    // Katalogprodukt ohne Shop-Variante in dieser Bindung: nicht bestellbar statt falsch bepreist.
+    const ohne = await post(basis + '/api/gestaltungen', {zustand: modell.startZustand(eintrag(FEST))});
+    assert.equal(ohne.status, 409);
+    assert.equal((await ohne.json()).code, 'nicht_gebunden');
+  }, {bindung});
+});

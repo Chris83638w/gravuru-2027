@@ -75,7 +75,7 @@ Webhook orders/paid  →  bestellpositionen (jede Zeile mit Status „bereit“ 
 | `shopify/` | Theme-Bausteine, Preisfunktion und Kassenprüfung (Rust), Referenzlogik |
 | `abgleich/` | Shop lesen und Plan gegen den Katalog erzeugen; schreibt die Bindungsdatei |
 | `dev/` | Test-Shop, Durchlauf- und Messskripte |
-| `test/` | 18 automatische Tests |
+| `test/` | 19 automatische Tests |
 
 ### Entscheidungen im Aufbau und ihr Grund
 
@@ -192,9 +192,7 @@ Gegenposition und Designs rechnet beim Veröffentlichen die bestehende Logik (`p
 
 Offen bei den Funkklingeln:
 
-1. **Bindung an Shopify fehlt.** Die Varianten-IDs der 84 Produkte und die Namen der drei Shopify-Optionen
-   stehen nicht im Repo. Der Abgleich ordnet bisher nur über die SKU zu; für Funkklingeln muss er über die
-   Optionswerte zuordnen. Dafür ist ein vollständiger Shop-Abzug nötig.
+1. **Bindung an Shopify steht** (Abschnitt 5b): alle 84 aktiven Funkklingel-Produkte mit je 120 Varianten.
 2. **Designs der Querformate** entstehen mit demselben Erzeuger wie der Live-Stand (Revision 2), sind aber nicht
    mit der Server-Datenbank verglichen.
 3. **Mindestgrößen** (Hausnummer ≥ 20 mm, Zusatzzeilen ≥ 6 mm, Entscheidung 3.33) werden nicht geprüft – im
@@ -205,15 +203,40 @@ Offen bei den Funkklingeln:
    WOFF2-Dateien mit denselben Buchstabenformen. Der Lizenznachweis ist laut Katalog offen.
 7. **Darstellung nicht mit dem Bestand verglichen**, auch nicht Bild für Bild.
 
+## 5b. Bindung an den Shop (Stand 17.11.2026)
+
+Gelesen wurden die öffentlichen Produktdaten von `gravuru-design.myshopify.com` (kein Zugangsschlüssel, nur
+lesen): `abgleich/shop-lesen-oeffentlich.mjs`. Ergebnis von `abgleich/abgleich.mjs` in `abgleich/stand-20261117/`:
+
+| | |
+|---|---:|
+| aktive Produkte im Shop | 87 |
+| davon einem veröffentlichten Konfigurator-Produkt zugeordnet | 87 |
+| gebundene Varianten | 10.340 |
+| Preisabweichungen Shop gegen Katalog | 0 |
+| fehlende Varianten | 0 |
+
+- **Funkklingeln:** 84 Produkte × 120 Varianten = 10.080, zugeordnet über die Optionswerte (Farbe, Format und
+  Rahmen, Befestigung) und gegen das Format in der SKU geprüft.
+- **Edelstahl-Türschild „Form und Größe selbst wählen“:** 250 von 404 Varianten gebunden. Die öffentlichen Daten
+  liefern höchstens 250 Varianten je Produkt; für die übrigen 154 ist ein Abzug mit Admin-Leserecht nötig
+  (`abgleich/shop-lesen.mjs`).
+- **Acryl-Türschilder (2 Produkte):** je 5 Varianten in Schwarz gebunden. Die je 5 Varianten in Anthrazit kennt
+  der Neuaufbau noch nicht: Im Katalog sind Schwarz und Anthrazit zwei Familien, im Shop eine Farbauswahl in
+  einem Produkt. Das fehlt noch.
+- Der Server liest die Datei über `GRAVURU_BINDUNG`. Eine Auswahl ohne gebundene Variante wird als „nicht
+  bestellbar“ abgewiesen, nie mit einem geratenen Preis verkauft.
+- Geschrieben wurde nichts. Der Plan enthält keine einzige schreibende Maßnahme.
+
 ## 6. Offene Punkte für Chris
 
 - **Zuständigkeit:** `PRIO-KONFI.md` legt fest, dass nur Mika den gemeinsamen Konfi ändert. Dieser Neuaufbau
   liegt deshalb getrennt und ersetzt nichts. Ob er R15 ablösen, ergänzen oder nur als Vorlage für einzelne
   Teile dienen soll (z. B. zuerst nur Veröffentlichung und WOFF2-Schriften im bestehenden Konfi), ist deine
   Entscheidung.
-- **Funkklingel: Preis je Foto.** Du hast am 17.11. entschieden, dass Funkklingeln ein Foto haben können. Als
-  Preis nehme ich 9,99 € je Foto (Entscheidungen 1.17/1.18); für Funkklingeln ist dieser Betrag nicht eigens
-  bestätigt. Zusatzmotive und Logo bleiben bei Funkklingeln aus, bis du sie freigibst.
+- **Funkklingel: Zusatzmotive.** Foto mit 9,99 € je Foto ist von dir am 17.11. bestätigt. Offen ist, ob Kunden
+  bei Funkklingeln auch Motive aus der Bibliothek hinzufügen dürfen (bei Türschildern 1,69 € je Motiv). Bis
+  dahin ist der Reiter „Motive“ bei Funkklingeln aus, wie im bestehenden Konfi. Logo bleibt ebenfalls aus.
 - **Fotopreis:** Im Katalog steht für Schiefer 22 × 14 „jedes weitere Foto 8,99 €“; das Entscheidungsregister
   nennt 9,99 € als neueren Wert (1.20). Der Neuaufbau nimmt den Katalogwert.
 - **Schriften kürzen:** OFL-Schriften werden auf lateinische Zeichen reduziert. Vier Schriften fehlen als Datei

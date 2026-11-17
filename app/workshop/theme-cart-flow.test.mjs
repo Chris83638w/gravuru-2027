@@ -22,6 +22,7 @@ import {shopCartRequest} from '../configurator/variant-m/shop-cart.mjs';
 import {createOrderWebhookHandler,ORDER_WEBHOOK_PATH} from './shopify-order-webhook.mjs';
 import {cartTransformRun} from '../../ops/shopify/einzelsperre-release/preis/src/master-release/cart_transform_run.mjs';
 import {cartValidationsGenerateRun} from '../../ops/shopify/einzelsperre-release/pruefung/src/cart_validation_run.mjs';
+import {checkoutProofKeyHex} from './checkout-proof-signer.mjs';
 
 // Durchlauf des öffentlichen Einstiegs mit echter Werkstatt: Start über App-Proxy-Signatur → Modell →
 // Gestaltung als privater Prüfstand → normaler Theme-Warenkorb (synthetischer Ajax-Shop)
@@ -210,7 +211,8 @@ test('theme cart: signed entry, immutable design, edit, quantity 1 to 4 and sign
    product:{id:product.shopifyProductId,pricing:{jsonValue:pricing}}},
    configuration:{value:properties._gravuru_config},configRevision:{value:properties._gravuru_rev},offer:{value:properties._gravuru_offer},
    motifs:{value:properties._gravuru_motifs},uploads:{value:properties._gravuru_uploads},
-   revision:{value:properties._gravuru_revision},designFile:{value:properties['Bearbeitbarer Entwurf']}};
+   ...(properties._gravuru_logos===undefined?{}:{logos:{value:properties._gravuru_logos}}),
+   revision:{value:properties._gravuru_revision},designFile:{value:properties['Bearbeitbarer Entwurf']},proof:properties._gravuru_proof===undefined?null:{value:properties._gravuru_proof}};
  };
  const priceThemeLine=(item,quantity)=>{
   const cartLine=shopifyFunctionLine(item,quantity);
@@ -238,8 +240,15 @@ test('theme cart: signed entry, immutable design, edit, quantity 1 to 4 and sign
   }
   if(url==='/checkout'){
    const items=themeCart.items.slice(1);
-   const {operations}=cartValidationsGenerateRun({buyerJourney:{step:'CHECKOUT_COMPLETION'},cart:{lines:items.map(item=>shopifyFunctionLine(item))}});
+   // F02: Die Kassen-Prüfung rechnet den vom Server ausgestellten Nachweis mit dem Schlüssel der Prüfregel nach.
+   const checkoutKey={metafield:{value:checkoutProofKeyHex({secret,shopDomain})}};
+   assert.ok(items.every(item=>/^[a-f0-9]{16}$/.test(item.properties._gravuru_proof)),'server-issued lines carry the proof');
+   const {operations}=cartValidationsGenerateRun({buyerJourney:{step:'CHECKOUT_COMPLETION'},validation:checkoutKey,cart:{lines:items.map(item=>shopifyFunctionLine(item))}});
    assert.deepEqual(operations,[]);
+   // Gegenprobe: Motivzähler im Browser erhöht/gesenkt → Kasse gesperrt; ohne Schlüssel ebenfalls.
+   const tampered=items.map(item=>({...item,properties:{...item.properties,_gravuru_motifs:String(Number(item.properties._gravuru_motifs)+1)}}));
+   assert.equal(cartValidationsGenerateRun({buyerJourney:{step:'CHECKOUT_COMPLETION'},validation:checkoutKey,cart:{lines:tampered.map(item=>shopifyFunctionLine(item))}}).operations[0].validationAdd.errors.length,items.length);
+   assert.equal(cartValidationsGenerateRun({buyerJourney:{step:'CHECKOUT_COMPLETION'},validation:{metafield:null},cart:{lines:items.map(item=>shopifyFunctionLine(item))}}).operations[0].validationAdd.errors.length,items.length);
    return Response.json({items:items.map(item=>priceThemeLine(item,item.quantity))});
   }
   assert.fail(url);

@@ -1,5 +1,6 @@
 query CartValidationsGenerateRunInput {
   buyerJourney { step }
+  validation { metafield(namespace: "$app", key: "checkout-proof-key") { value } }
   cart {
     lines {
       id
@@ -12,6 +13,7 @@ query CartValidationsGenerateRunInput {
       logos: attribute(key: "_gravuru_logos") { value }
       revision: attribute(key: "_gravuru_revision") { value }
       designFile: attribute(key: "Bearbeitbarer Entwurf") { value }
+      proof: attribute(key: "_gravuru_proof") { value }
       merchandise { __typename ... on ProductVariant { id product { id title pricing: metafield(namespace: "$app", key: "personalization") { value } } } }
     }
   }

@@ -274,3 +274,21 @@ test('Funkklingel: Server speichert mit Optionen und nennt die Klingelposition i
     assert.equal((await post(basis + '/api/gestaltungen', {zustand: {...z, opt: undefined}})).status, 422);
   });
 });
+
+test('Funkklingel: Foto ist erlaubt, kostet je Foto und darf nicht auf der Klingel liegen', async () => {
+  await mitServer(async basis => {
+    const e = eintrag(KLINGEL);
+    assert.deepEqual(e.familie.foto, {inklusive: 0, preis: 999});
+    const jpeg = Buffer.concat([Buffer.from([0xff, 0xd8, 0xff, 0xe0]), Buffer.alloc(64)]);
+    const upload = await (await fetch(basis + '/api/uploads', {method: 'POST', headers: {'content-type': 'image/jpeg'}, body: jpeg})).json();
+    const z = modell.startZustand(e);
+    const foto = (x, y) => ({t: 'foto', id: 'foto-1', x, y, w: 40, h: 30, rot: 0, form: 'rect', original: false, bild: {upload: upload.id, zoom: 1, w: 400, h: 300}});
+    const d = await (await post(basis + '/api/gestaltungen', {zustand: {...z, els: [...z.els, foto(60, 150)]}})).json();
+    assert.equal(d.preis.summe, 5999 + 999);
+    assert.deepEqual(d.preis.zusatz, [{art: 'foto', n: 1, je: 999, cents: 999}]);
+    const bell = e.familie.groessen.find(g => g.k === '24x20').kl.pos.standard.bell;
+    const aufKlingel = await post(basis + '/api/gestaltungen', {zustand: {...z, els: [...z.els, foto(bell[0] + bell[2] / 2, bell[1] + bell[3] / 2)]}});
+    assert.equal(aufKlingel.status, 422);
+    assert.equal((await aufKlingel.json()).code, 'pruefung:geraet');
+  });
+});

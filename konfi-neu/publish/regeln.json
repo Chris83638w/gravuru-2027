@@ -11,7 +11,29 @@
     "grund": "Logo-Upload ist im Neuaufbau noch nicht gebaut; je Produkt ist außerdem eine ausdrückliche Zuordnung nötig (PRIO-KONFI.md Abschnitt 2)."
   },
   "staffel": {
-    "stufen": [{"ab": 3, "prozent": 5}, {"ab": 5, "prozent": 10}, {"ab": 10, "prozent": 15}],
+    "stufen": [
+      {
+        "ab": 3,
+        "prozent": 5
+      },
+      {
+        "ab": 5,
+        "prozent": 10
+      },
+      {
+        "ab": 10,
+        "prozent": 15
+      }
+    ],
     "quelle": "docs/sicherung/2026-11-16-gesamtstand.md Zeile 141: ab 3 Stück 5 %, ab 5 Stück 10 %, ab 10 Stück 15 %. Hat eine Katalogfamilie eigene quantityTiers, gelten diese."
+  },
+  "fotoFunkklingel": {
+    "cents": 999,
+    "inklusive": 0,
+    "quelle": "Chris im Chat 17.11.2026: „Funkklingel kann Foto haben“. Preis je Foto 9,99 € nach ENTSCHEIDUNGEN.md 1.17/1.18 (ohne Fotofeld jedes Foto 9,99 €). Der Preis ist für Funkklingeln nicht eigens bestätigt."
+  },
+  "schraubenkopf": {
+    "mm": 5,
+    "quelle": "ENTSCHEIDUNGEN.md 3.39 (03.11.2026) und Chris im Chat 17.11.2026: „bei Funkklingel sind es 5mm“."
   }
 }

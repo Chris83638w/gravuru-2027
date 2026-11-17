@@ -75,7 +75,7 @@ Webhook orders/paid  →  bestellpositionen (jede Zeile mit Status „bereit“ 
 | `shopify/` | Theme-Bausteine, Preisfunktion und Kassenprüfung (Rust), Referenzlogik |
 | `abgleich/` | Shop lesen und Plan gegen den Katalog erzeugen; schreibt die Bindungsdatei |
 | `dev/` | Test-Shop, Durchlauf- und Messskripte |
-| `test/` | 17 automatische Tests |
+| `test/` | 18 automatische Tests |
 
 ### Entscheidungen im Aufbau und ihr Grund
 
@@ -157,8 +157,8 @@ Ehrlich und nach Gewicht. Nichts hiervon ist versteckt eingebaut oder vorgetäus
 3. **Oberfläche ist nicht R15.** Aufbau und Reiter sind angelehnt, aber neu gebaut. Es fehlen u. a.: Ausweichen
    bei Bohrung und Schraube (Entscheidung 3.40), Hilfetexte (ⓘ), Vollbild, Logo-Upload, Freistellen,
    Mengenstaffel-Anzeige, mehrsprachige Texte, „Oval“ statt „Ellipse“ als Kundenname (3.27).
-4. **Fotos** sind gebaut (Hochladen, Ausschnitt, Graustufen bei Gravur), aber nur am Code geprüft, nicht mit
-   einer Foto-Familie im Browser durchgespielt.
+4. **Fotos** sind mit einer Funkklingel im Browser bis in den Warenkorb durchgespielt (synthetisches Testbild).
+   Nicht geprüft: Designs mit festem Fotofeld (Gedenktafeln), echte Handyfotos, HEIC, Freistellen.
 5. **Shopify-Funktion** ist als Programm gebaut und gegen die Referenz geprüft, aber nicht als Erweiterung
    verpackt und nicht in Shopify gelaufen. Rechenschritte sind nicht gemessen. Siehe `shopify/README.md`.
 6. **Abgleich** erzeugt den Plan und die Bindung, schreibt aber noch nichts nach Shopify. Das Anwenden ist
@@ -184,6 +184,9 @@ Gegenposition und Designs rechnet beim Veröffentlichen die bestehende Logik (`p
   24 × 20 mit Schrauben = 63,68 €.
 - **Hinter der Klingel wird nie graviert** (Entscheidung 3.33): Texte werden neben der Klingel eingepasst, und
   der Warenkorb weist Elemente ab, die auf der Klingel liegen.
+- **Foto** (Chris, 17.11.2026): Hochladen, Ausschnitt, Verschieben; Darstellung in Graustufen, weil graviert wird.
+  9,99 € je Foto. Im Browser bis in den Warenkorb durchgespielt (59,99 € + 9,99 € = 69,98 €).
+- **Schraubenkopf 5 mm** (Entscheidung 3.39, von Chris am 17.11. für Funkklingeln bestätigt).
 - **Gemessen** (Handy-Profil, kalt, 5 Läufe, WP Cardea 2): bedienbar nach **1,36 s** mit 194 KB. Für dasselbe
   Gerät sind beim bestehenden Konfi 7,5 s dokumentiert.
 
@@ -208,10 +211,9 @@ Offen bei den Funkklingeln:
   liegt deshalb getrennt und ersetzt nichts. Ob er R15 ablösen, ergänzen oder nur als Vorlage für einzelne
   Teile dienen soll (z. B. zuerst nur Veröffentlichung und WOFF2-Schriften im bestehenden Konfi), ist deine
   Entscheidung.
-- **Funkklingel: Motive, Foto, Logo.** Im Bestandsimport sind sie abgeschaltet; Entscheidung 1.17 sagt, es soll
-  einen Foto-/Logo-Upload geben. Im Neuaufbau sind sie aus, bis du es festlegst.
-- **Schraubenkopf:** Die Funkklingel-Daten nennen 7 mm in der Vorschau, deine Entscheidung 3.39 sagt 5 mm für
-  alle Produkte. Der Neuaufbau zeigt 5 mm.
+- **Funkklingel: Preis je Foto.** Du hast am 17.11. entschieden, dass Funkklingeln ein Foto haben können. Als
+  Preis nehme ich 9,99 € je Foto (Entscheidungen 1.17/1.18); für Funkklingeln ist dieser Betrag nicht eigens
+  bestätigt. Zusatzmotive und Logo bleiben bei Funkklingeln aus, bis du sie freigibst.
 - **Fotopreis:** Im Katalog steht für Schiefer 22 × 14 „jedes weitere Foto 8,99 €“; das Entscheidungsregister
   nennt 9,99 € als neueren Wert (1.20). Der Neuaufbau nimmt den Katalogwert.
 - **Schriften kürzen:** OFL-Schriften werden auf lateinische Zeichen reduziert. Vier Schriften fehlen als Datei

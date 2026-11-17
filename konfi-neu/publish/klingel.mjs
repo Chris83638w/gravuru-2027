@@ -114,6 +114,8 @@ export function klingelnVeroeffentlichen({katalogRoot, appRoot, schriften, write
         ],
         geraet: {name: eintraege[0].modelLabel, bild: geraetBild},
         schriften: [...fonts],
+        // Foto-Upload: Chris, 17.11.2026 („Funkklingel kann Foto haben“). Preis siehe regeln.json.
+        foto: {inklusive: regelQuelle.fotoFunkklingel.inklusive, preis: regelQuelle.fotoFunkklingel.cents},
         galerie,
       };
       const familieUrl = writeHashed('f', slug(familie.id), 'json', familie);
@@ -131,9 +133,9 @@ export function klingelnVeroeffentlichen({katalogRoot, appRoot, schriften, write
           familie, groessen: null, start,
           wahl: {groesse: d.format, bef: d.mounting, opt: {position: d.position, rahmen: d.frame, farbe: d.color}},
           schriften: Object.fromEntries(Object.entries(schriften).map(([name, font]) => [name, {u: font.u}])), motive: motivIndex,
-          // Zusatzmotive, Fotos und Logos sind bei Funkklingeln im Bestand abgeschaltet (import-doorbell-catalog.mjs);
-          // eine Mengenstaffel ist für Funkklingeln nicht belegt.
-          regeln: {staffel: []}, ohne: {motive: 1, foto: 1},
+          // Zusatzmotive und Logos sind bei Funkklingeln im Bestand abgeschaltet (import-doorbell-catalog.mjs) und
+          // bleiben aus, bis Chris sie freigibt. Eine Mengenstaffel ist für Funkklingeln nicht belegt.
+          regeln: {staffel: []}, ohne: {motive: 1},
           stand: standKennung, vorschau: 1, ids: {shopifyProductId: String(zeile.productId || '').split('/').pop(), customizationId: kennung},
         }));
         produkte[key] = {name: zeile.title || familie.name, familie: familie.id, start: start?.id || null, shopify: String(zeile.productId || '').split('/').pop() || null};

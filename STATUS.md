@@ -1,3 +1,10 @@
+## 17.11.2026 · Claude · `konfi-neu`: Foto bei Funkklingeln (Entscheidung Chris im Chat)
+
+- Chris: „Funkklingel kann Foto haben. bei Funkklingel sind es 5mm“ (Schraubenkopf).
+- Foto-Upload für alle 126 Funkklingel-Produkte freigeschaltet, 9,99 € je Foto (Betrag aus Entscheidungen 1.17/1.18, für Funkklingeln nicht eigens bestätigt). Regel mit Quelle in `konfi-neu/publish/regeln.json`.
+- Prüfungen: 18/18 Tests; Foto-Upload im Browser bis in den Warenkorb (69,98 €); Foto auf der Klingel wird abgewiesen.
+- Nichts live. Nächster Schritt unverändert: Shop-Abzug und Bindung der Funkklingeln.
+
 ## 17.11.2026 · Claude · `konfi-neu`: Funkklingelschilder (Auftrag Chris im Chat: „führe den Neuaufbau weiter und mach die Funkklingeln“)
 
 - Branch `dev/konfi-neu-20261117-claude`. `app/`, Live-Stand und Shop unverändert. Nichts live.

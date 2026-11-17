@@ -40,7 +40,7 @@ try{
     const surface=model.universal?.materialSurface||null,small=surfaceThumbnail(surface);
     const image=()=>previewJpeg(entry.frame?.contentDocument?.querySelector('gravuru-configurator'),{surface,small});
     const submitCart=embedded?embeddedCart(client.submitThemeCart,shopOrigin,{image}):client.submitThemeCart;
-    window.GravuruShopEntry=Object.freeze({productId:model.configuration.id,productRevision:model.configuration.revision,shopDomain:data.shopDomain,shopifyProductId:data.binding?.shopifyProductId||null,shopifyVariantId:data.binding?.shopifyVariantId||null,expiresAt:data.expiresAt,csrfToken:'shop-entry',request:client.request,cartRevision:client.cartRevision,submitCart,cartMode:'theme',themeCartPath:data.themeCartPath,backUrl,embedded,designGallery,productName:model.name,...(fragment.getAll('ui').length===1&&fragment.get('ui')==='prio-r15'?{presentation:'prio-r15'}:{})});
+    window.GravuruShopEntry=Object.freeze({productId:model.configuration.id,productRevision:model.configuration.revision,shopDomain:data.shopDomain,shopifyProductId:data.binding?.shopifyProductId||null,shopifyVariantId:data.binding?.shopifyVariantId||null,expiresAt:data.expiresAt,csrfToken:'shop-entry',request:client.request,cartRevision:client.cartRevision,submitCart,cartMode:'theme',themeCartPath:data.themeCartPath,backUrl,embedded,designGallery,productName:model.name,preSaveOnReview:data.preSaveOnReview===true,...(fragment.getAll('ui').length===1&&fragment.get('ui')==='prio-r15'?{presentation:'prio-r15'}:{})});
     title.textContent=model.name;document.title=model.name+' · Jetzt personalisieren';back.href=backUrl;
     if(embedded&&surface)setTimeout(small,4000);
   }

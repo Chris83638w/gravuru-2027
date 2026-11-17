@@ -57,6 +57,14 @@ async function run(fn,mutate=()=>{}){
 }
 const session=t=>({'X-Gravuru-Shop-Session':t});
 
+test('pre-save capability is absent by default and appears only with the explicit host switch',async()=>{
+ for(const enabled of [undefined,false,true])await run(async(f,request,{token})=>{
+  const issued=await token();const response=await request('/api/shop-entry/model','GET',undefined,session(issued.token));
+  assert.equal(response.status,200);assert.equal(response.data.preSaveOnReview,enabled===true?true:undefined);
+ },f=>{if(enabled!==undefined)f.options.preSaveOnReview=enabled;});
+ for(const bad of ['true','enabled',1,null,{}])assert.throws(()=>createShopEntry({...fixture().options,preSaveOnReview:bad}),{code:'shop_entry_config'});
+});
+
 test('a disabled design module keeps the pinned default and refuses explicit customer design overrides',()=>run(async(f,request,{token})=>{
  const issued=await token(),headers=session(issued.token);
  for(const route of ['/api/shop-entry/model','/api/shop-entry/model?design=d1']){

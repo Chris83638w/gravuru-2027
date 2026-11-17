@@ -22,6 +22,23 @@ test('native cart checks required text only on completion and before any image o
 });
 
 const konfig='konfig_'+'1'.repeat(8)+'-1111-1111-1111-'+'1'.repeat(12),line='gid://shopify/CartLine/1?cart=x';
+
+test('overview preparation is opt-in for Prio only and remains invisible for invalid or expired state',()=>{
+ const previous={window:globalThis.window,document:globalThis.document};
+ const binding={productId:'product',productRevision:1};let requests=0;
+ const create=()=>({dataset:{},textContent:'',hidden:false,setAttribute(){},addEventListener(){}});
+ try{
+  globalThis.window={parent:{GravuruWorkshopReview:binding}};globalThis.document={createElement:create};
+  for(const [flag,presentation,installed] of [[undefined,'prio-r15',false],[false,'prio-r15',false],[true,undefined,false],['true','prio-r15',false],[true,'prio-r15',true]]){
+   const el={sync(){},state:{objects:[],mOptions:{}},uxTextIssues:()=>[{id:'required',message:'Missing'}]};
+   const gate={...binding,preSaveOnReview:flag,presentation,expiresAt:1,submitCart(){requests++;},request(){requests++;}};
+   const result=installShopCart({el,files:new Map(),r:{querySelector:()=>null}},{querySelectorAll:()=>[],append(){}},gate);
+   assert.equal(typeof el.uxPrepareShopCart==='function',installed);
+   el.uxPrepareShopCart?.();assert.equal(result.status.hidden,true);assert.equal(result.button.disabled,false);assert.equal(result.button.textContent,'Jetzt in den Warenkorb');
+  }
+  assert.equal(requests,0);
+ }finally{for(const key of ['window','document'])if(previous[key]===undefined)delete globalThis[key];else globalThis[key]=previous[key];}
+});
 const saved={draftId:'adraft_a',revision:3,draftToken:'t'.repeat(64)};
 
 test('K8: only the cart line of the same draft is replaced; other drafts are added fresh',()=>{

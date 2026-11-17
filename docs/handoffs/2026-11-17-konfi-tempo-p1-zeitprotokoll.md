@@ -2,17 +2,29 @@
 
 17.11.2026 · Astra (Codex) · Auftrag [#254](https://github.com/Chris83638w/gravuru-2027/issues/254), einschließlich [Zielbild-Kommentar](https://github.com/Chris83638w/gravuru-2027/issues/254#issuecomment-6947690091).
 
-Basis exakt `be163c5d598dfe1c680b483adee645d63a3bdc26`, Branch `dev/claude-warenkorb-v4-20261116`. Erste Instrumentierung `2d133af0ca0f7a7ef71fd9a1a3e010ffd3f81bed`, B1-Ergänzung `7054b89e5fbfb87995d95a11cb6e87d75cfd163d`, eigener P1-Branch `dev/astra-konfi-tempo-p1-20261117`, [PR #255](https://github.com/Chris83638w/gravuru-2027/pull/255). Kein Merge und kein Deployment. Schritt 1 einschließlich B1 ist lokal geprüft; V2/V3 bleiben zurückgestellt.
+Basis exakt `be163c5d598dfe1c680b483adee645d63a3bdc26`, Branch `dev/claude-warenkorb-v4-20261116`. Erste Instrumentierung `2d133af0ca0f7a7ef71fd9a1a3e010ffd3f81bed`, B1-Ergänzung `7054b89e5fbfb87995d95a11cb6e87d75cfd163d`, eigener P1-Branch `dev/astra-konfi-tempo-p1-20261117`, [PR #255](https://github.com/Chris83638w/gravuru-2027/pull/255). B1 ist von Claude abgenommen. Den Diagnose-Stand `9af3a1ac` hat Claude laut seinem Protokoll nach separatem „Live“ von Chris eingespielt; Astra hat keinen Live-Eingriff vorgenommen. Aktueller direkter Auftrag: B1 abschließen, V2/V3 zurückgestellt, keine weitere Live-Aktion. Die ursprünglichen lokalen Messnachweise unten bleiben als solche erhalten.
+
+## Abschluss nach direkter Abstimmung mit Claude
+
+Quellen: [B1-Nachprüfung](https://github.com/Chris83638w/gravuru-2027/pull/255#pullrequestreview-5938822210), [Claudes Live-Protokoll](https://github.com/Chris83638w/gravuru-2027/pull/255#issuecomment-6949439224) und [abschließende Klärungen](https://github.com/Chris83638w/gravuru-2027/pull/255#issuecomment-6949834349). Letzteres präzisiert und korrigiert die erste Live-Auswertung.
+
+- **B1 abgeschlossen, kein Codefehler offen:** Claude bestätigt plausible Werte für alle vier Anfragen und den Hintergrundlauf, passende `parentTraceId` und Diagnoseköpfe auch über den Shopify-App-Proxy. Sein unabhängiger Lauf ergab 88/90 Tests; die beiden Fehler der Druckprüfung treten in seiner Umgebung identisch auf der unveränderten Basis auf. Lokal waren 90/90 grün. Diese Abschlussrunde ändert ausschließlich Dokumentation; keine Tests erneut ausgeführt.
+- **B3 erledigt:** Die ursprüngliche Spalte „Browser“ bezeichnet gesamte Anfragedauer, nicht TTFB. Korrigierte TTFB: 5.410 / 2.860 / 6.315 / 2.826 ms für Entwurf / Übergabe / Daten / Claim; Differenz zu `totalMs`: 711 / 144 / 538 / 319 ms. Ein Handy-Lauf bei 390×844, CPU ×4, ohne Netzdrosselung; 22,3 s bis zur geladenen Warenkorbseite mit Position. Keine neue Vergleichsmessung durch Astra und kein Nachweis des Unter-5-s-Ziels.
+- **Auswertung begrenzt:** Verstrichene Handlerzeit und Timer-Verspätung belegen keine reine CPU-Rechenzeit. Synchrone Speicherzugriffe und Betriebssystem-/Hosting-Planung sind damit nicht voneinander getrennt. Claude hat die Aussage „Ein größerer Server allein löst es nicht“ zurückgenommen. Lokales synthetisches Profil und Live-Lauf haben unterschiedliche Hardware, Datenbestände und Shopify-Anbindung; ihr Abstand ist ein Diagnosehinweis, kein kontrollierter Vergleich zur Ursache.
+- **B4 bleibt ausdrücklich offen:** Claude hat ausschließlich lesend geprüft: `/gravuru-2027-merchant/stderr.log`, am 17.11. ca. 15:45 Zypern 106.937 Bytes / 703 Zeilen, keine rotierten Kopien im Anwendungsstamm. Die Plesk-Domainrotation ist eingeschaltet, schließt laut Dialog jedoch benutzerdefinierte Protokolle aus; `stderr.log` fehlt in der Plesk-Protokollliste. Eine Rotation genau dieser Datei ist somit nicht nachgewiesen. Der Momentwert belegt weder ein dauerhaft begrenztes Wachstum noch ein gesichertes Aufbewahrungsverhalten. Keine Rotation eingerichtet, keine Datei gelöscht, keine Betriebsregel erfunden.
+- **B2/Takt sind Empfehlungen, keine beschlossene Runtime-Änderung:** Claude empfiehlt, die Diagnose für spätere Vergleichsmessungen zunächst zu behalten; danach `Server-Timing` mit Abschnittsnamen und den 20-ms-Takt zu entfernen oder standardmäßig abzuschalten. Diagnose-ID könnte bleiben. Jetzt keine Änderung. Der zusätzliche Vorschlag „Schritt 1b“ (CPU-Zeiten und feinere Teilzeiten) ist nicht beauftragt und wurde nicht begonnen.
+
+Die frühere Liste a–d ist laut Claude ein Vorschlag. Der aktuelle direkte Nutzerauftrag hält V2/V3 und weitere Live-Aktionen ausdrücklich zurück. B1 braucht keinen weiteren Code-Patch. Offene Betriebs-/Diagnoseentscheidungen werden im PR und Issue #254 festgehalten; sie werden nicht stillschweigend als neue Regeln eingebaut. Abstimmung mit Claude erfolgt direkt im Tab, ohne Chris als Nachrichtenübermittler.
 
 ## Umfang und fachliche Quellen
 
 - Messung vor Umbau: #254, P1.1. Dieser Stand fügt ausschließlich Diagnose hinzu; kein Vorziehen oder Zusammenlegen der Warenkorbschritte.
 - Oberfläche und Bedienung unverändert: #254, Chris 10.11. und Zielbild vom 17.11. Keine Dateien unter `app/workshop/ui/` oder `app/configurator/variant-m/` geändert.
 - Preise, Prüfungen, Bindungen, unveränderliche Bestellstände bleiben: #254 und `AGENTS.md`. Kein neuer Preis, Grenzwert, Pflichtfeld, Freigabe- oder Sperrvertrag.
-- Kein Live-Gang ohne Chris' „live“: #254. Eine echte Servermessung dieses Codes ist noch offen.
+- Kein Live-Gang ohne Chris' „live“: #254. Claudes inzwischen erfolgte Freigabe-/Messdokumentation ist oben verlinkt; der aktuelle Auftrag erlaubt keinen weiteren Live-Eingriff.
 - Der [Design-Master](https://github.com/Chris83638w/gravuru-katalog./blob/main/designs/DESIGN-MASTER.md) bleibt maßgeblich; dieses Paket bearbeitet keine Designs.
 
-Der abgeglichene Ausgangsstand enthält bereits den WebP-Upload sowie den Checkout-Bildstart beim `theme-cart`-POST (siehe STATUS 16.11., V2/V3). Das ersetzt nicht die neuen Ziele „direkt nach der Entwurfssicherung“ und „vor dem letzten Klick“. Diese weiteren Änderungen folgen erst nach Auswertung der Messung.
+Der abgeglichene Ausgangsstand enthält bereits den WebP-Upload sowie den Checkout-Bildstart beim `theme-cart`-POST (siehe STATUS 16.11., V2/V3). Das ersetzt nicht die neuen Ziele „direkt nach der Entwurfssicherung“ und „vor dem letzten Klick“. Diese weiteren Änderungen bleiben gemäß aktuellem Auftrag zurückgestellt.
 
 ## Messpunkte und Auswertung
 
@@ -33,7 +45,7 @@ Die Hintergrundarbeit hat eine eigene `traceId` und `parentTraceId` zur auslöse
 
 `request_bytes` zählt tatsächlich gelesene Bodybytes, nicht HTTP-/TLS-Overhead. `response_bytes` zählt die JSON-Antwort ohne Kopfzeilen. Bei Ablehnung vor dem Einlesen gibt es keinen Bodyzähler. Fehlerantworten werden ebenfalls gemessen. Ausnahmen oder abgewiesene Promises des Loggers ändern die Warenkorbfunktion nicht.
 
-Keine URLs, Querystrings, Sitzungs-/Entwurfstoken, Kunden-/Produkt-/Entwurfs-IDs, Texte, Bildinhalte oder Fehlermeldungen im Diagnoseereignis. Die zufällige Diagnose-ID gewährt keinen Zugriff auf den Entwurf. Bestehende private Antwort-/Cache-Regeln bleiben erhalten. Es wird kein `Timing-Allow-Origin` ergänzt. Falls Shopify Proxy-Diagnoseköpfe nicht durchreicht, bleibt das Serverlog die Quelle; die Weitergabe wurde noch nicht live geprüft.
+Keine URLs, Querystrings, Sitzungs-/Entwurfstoken, Kunden-/Produkt-/Entwurfs-IDs, Texte, Bildinhalte oder Fehlermeldungen im Diagnoseereignis. Die zufällige Diagnose-ID gewährt keinen Zugriff auf den Entwurf. Bestehende private Antwort-/Cache-Regeln bleiben erhalten. Es wird kein `Timing-Allow-Origin` ergänzt. Claude hat die Weitergabe der Diagnoseköpfe über den Shopify-App-Proxy inzwischen bestätigt; das Serverlog enthält zusätzlich die Prozesswerte.
 
 Die Messung beginnt am Eintritt in den Node-Handler. Vorgelagerte Hosting-/Proxy-Warteschlangen, Netzwerk, Browser-Rendering, `/cart/add.js` und die anschließende Warenkorbprüfung sind nicht Teil von `totalMs`. Große TTFB bei kleiner Handlerzeit ist deshalb ein Befund zur weiteren Untersuchung, kein Beleg für einen benötigten größeren Server. Implementiert mit den [Node-Performance-APIs](https://nodejs.org/docs/latest-v24.x/api/perf_hooks.html).
 
@@ -66,7 +78,7 @@ Zusätzlicher B1-Vergleich: unveränderter Runner und exakt das unten beschriebe
 | `cart/data` | 258,58 (245,26–274,48) | 259,08 (248,10–264,22) |
 | `cart/claim` | 7,12 (6,67–7,49) | 7,40 (6,94–7,63) |
 
-Median-Differenzen +5,24 / +0,34 / +0,50 / +0,28 ms, innerhalb der beobachteten Streuung; keine präzise Abschätzung des Live-Aufwands. Im ersten gemessenen B1-Entwurf beträgt das Maximum während des Handlers 17,37 ms bei 29 Proben. Das ist ein lokaler Beispielwert, keine Aussage zur Ursache der Live-TTFB. Server-/Browsermessung weiterhin ausstehend, unter 5 s am Handy weiterhin nicht belegt.
+Median-Differenzen +5,24 / +0,34 / +0,50 / +0,28 ms, innerhalb der beobachteten Streuung; keine präzise Abschätzung des Live-Aufwands. Im ersten gemessenen B1-Entwurf beträgt das Maximum während des Handlers 17,37 ms bei 29 Proben. Das ist ein lokaler Beispielwert, keine Aussage zur Ursache der Live-TTFB. Claudes spätere Server-/Browsermessung steht im Abschlussabschnitt; unter 5 s am Handy weiterhin nicht belegt.
 
 ## Vorher/Nachher im gleichen lokalen Profil
 
@@ -103,8 +115,8 @@ Die Ausgaben enthalten ausschließlich synthetische Messdaten. Der Runner benutz
 
 ## Genau nächster Schritt / offene Grenzen
 
-Claude prüft diesen P1-Zwischenstand. Für die Ursachendiagnose braucht es anschließend ein Zeitprotokoll mit realistischem Produkt/Datenbestand und echtem Shopify-Bildtransport auf einer abgestimmten Prüfumgebung; auf dem Live-System erst nach Chris' „live“. Serverlog/Diagnoseköpfe zusammen mit Browser-Zeiten erfassen. Roh-HARs mit Sitzungstoken oder Kundendaten nicht ins Repository übernehmen.
+Claude hat B1 einschließlich der Daten aus seinem echten Messlauf abgeschlossen; aktueller Stand und offene Diagnose-/Betriebspunkte stehen im Abschlussabschnitt oben. Die bestehende Live-Laufzeit bleibt unangetastet. Keine zusätzliche Instrumentierung oder Optimierung in diesem Auftrag. Roh-HARs mit Sitzungstoken oder Kundendaten nicht ins Repository übernehmen.
 
 Für Vorher/Nachher dasselbe Produkt, dieselbe Gestaltung/Menge, gleicher Browser, kalte/warme Zustände und exakt gleiche Netz-/CPU-Einstellungen verwenden. Die zwei bisherigen Profile auseinanderhalten: Issue #254 verwendete 390×844, CPU ×4, **keine** Netzdrosselung; der Vorschlag vom 16.11. verwendete zusätzlich 150 ms/1,6 Mbit/s Down/750 kbit/s Up. Desktop separat. Je Profil den ganzen Weg Produktseite → Konfi → Galerie → Designwechsel → Warenkorb erfassen und ab „Jetzt in den Warenkorb“ bis zur bestätigten Position messen, nicht nur bis zur HTTP-200-Antwort.
 
-Nächster Schritt ist Claudes erneuter Review von B1 und anschließend die abgestimmte Messung. V2/V3 werden gemäß aktuellem Auftrag noch nicht begonnen. Unter 5 s am Handy ist noch nicht belegt. Servergröße, neue Kapazitätswerte und WebP-Qualität werden hier nicht festgelegt. P2/P3 haben weiterhin eigene spätere Branches/PRs; P4 ist nicht beauftragt.
+Nächster Schritt außerhalb des abgeschlossenen B1-Auftrags: Entscheidung über den vorgeschlagenen weiteren Diagnoseschritt sowie über dauerhaften Diagnosebetrieb und Logrotation. V2/V3 werden gemäß aktuellem Auftrag noch nicht begonnen. Unter 5 s am Handy ist noch nicht belegt. Servergröße, neue Kapazitätswerte und WebP-Qualität werden hier nicht festgelegt. P2/P3 haben weiterhin eigene spätere Branches/PRs; P4 ist nicht beauftragt.

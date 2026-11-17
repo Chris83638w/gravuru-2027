@@ -164,9 +164,9 @@ Ehrlich und nach Gewicht. Nichts hiervon ist versteckt eingebaut oder vorgetäus
    Siehe `shopify/README.md`.
 6. **Abgleich** erzeugt den Plan und die Bindung, schreibt aber noch nichts nach Shopify. Das Anwenden ist
    bewusst ein eigener, freizugebender Schritt.
-7. **Vorschau gegen Bestand.** Verglichen wurde ein einziges Design (TRE-V2A-7x2-D5) mit dem bestehenden
-   Renderer `scripts/render-vorlagen.mjs`: Lage und Größe von Text und Linien stimmen. Ein Vergleich aller
-   Designs fehlt und gehört vor jede Freigabe (Kontaktbogen nach Design-Master).
+7. **Vorschau gegen Bestand** ist für alle Designs gemessen (Abschnitt 5d): 57.405 von 57.421 Paaren liegen
+   deckungsgleich oder weichen nur an Haarlinien-Enden ab. Das ersetzt nicht die Abnahme nach Design-Master
+   (Bildschirmfotos aus dem echten Konfi, Vorlage daneben); verglichen wurde der Zeichencode, nicht der Live-Konfi.
 8. **82 Vorschaubilder fehlen** für Schiefer-Größen, die im Katalog noch keinen Preis haben und deshalb nicht
    veröffentlicht sind. Die übrigen 16.235 Bilder entstehen je Material.
 9. **Nur am Bildschirm geprüft:** kein echtes iPhone, kein Safari, kein Lauf über Plesk.
@@ -247,9 +247,9 @@ Sobald eine bezahlte Position geprüft und „bereit“ ist, schreibt der Server
   Textbreite im Browser mit der Fertigung. Ergebnis: 89 von 89 gleich, größte Abweichung 0,017 mm bei 10 mm
   Schriftgröße. Dafür waren drei Dinge nötig:
   - Die Fertigung setzt mit HarfBuzz, derselben Bibliothek wie Chrome und Firefox.
-  - 12 Schriften tragen ihre Unterschneidung nur in einer alten Tabelle, die Browser uneinheitlich behandeln
-    (Chrome verwirft sie bei Caviar Dreams ganz). Diese Schriften werden in Vorschau und Fertigung einheitlich
-    ohne Unterschneidung gesetzt – wie im bisherigen Konfi.
+  - Alle Schriften werden ohne Unterschneidung gesetzt, in Vorschau und Fertigung – wie im bisherigen Konfi
+    (Abschnitt 5d). Damit entfällt auch das Problem der 12 Schriften, deren Unterschneidung nur in einer alten
+    Tabelle steht, die Browser uneinheitlich behandeln.
   - Der Editor misst jede Textbreite und schickt sie mit. Weicht die Fertigung um mehr als 0,3 mm ab, steht
     das als Prüfhinweis im Auftrag.
 - **Fehlende Zeichen:** 5 Schriften fehlt das ß, zweien davon auch das € (Minimalist, Ashley, Sweetie, Homage,
@@ -269,6 +269,56 @@ Offen bei der Fertigung:
 5. **Nur mit Chrome verglichen.** Safari und Firefox können Text minimal anders setzen; der Breitenvergleich
    im Auftrag fängt das ab.
 6. Der Server braucht dafür das Paket `harfbuzzjs` (einzige Laufzeit-Abhängigkeit).
+
+## 5d. Kontaktbogen „neu neben alt“ (Stand 17.11.2026)
+
+`dev/kontaktbogen.mjs` zeichnet jedes veröffentlichte Design in jeder Größe zweimal – mit dem bestehenden
+Zeichencode (`app/workshop`, derselbe wie Konfi und Werkstatt) und mit dem Neuaufbau – und vermisst die Gestaltung
+ohne Platte und Befestigung. Zwei Messwerte: die größte Abweichung der Außenkanten in mm und der Anteil der
+Gravurfläche, der mehr als 0,5 mm neben der anderen Fassung liegt.
+
+| | Paare | gleich | klein | Abweichung | Bestand lehnt ab |
+|---|---|---|---|---|---|
+| Platten (Türschilder, Gedenktafeln, Grabstecker) | 53.389 | 53.224 | 115 | 34 | 16 |
+| Funkklingeln (42 Geräte × 3 Formate × 2 Positionen × 16 Designs) | 4.032 | 4.032 | 0 | 0 | 0 |
+
+gleich = Kante ≤ 0,5 mm und daneben ≤ 1 %; klein = Kante ≤ 1,5 mm und daneben ≤ 8 %.
+
+- **Die 149 nicht gleichen Paare sind Messgrenzen, keine Lagefehler:** Sie betreffen die Enden sehr dünner,
+  auslaufender Linien und Haarstriche (z. B. `HSHF-S-8x5.33-D17`, `HSH-S-8x5.33-D7`, alle Größen von Stern M).
+  Der Flächenanteil, der daneben liegt, ist in allen diesen Paaren höchstens 1,9 %; nur 3 Paare liegen über 0,4 %.
+  Das Paar mit 1,9 % (`BS-V2A-15x8-D6`) ist nicht einzeln angesehen.
+- **Fotofelder** (22 Paare): Lage und Größe gleich. Der Bestand zeigt ein Beispielfoto, der Neuaufbau einen leeren Rahmen.
+- **Eingepasste Designs** (4.170 Paare, Design-Proportion ≠ Platte): alle gleich.
+
+Was der Vergleich am Neuaufbau gefunden hat (alles behoben, Quelle jeweils der Bestand):
+
+| Fund | Wirkung vorher | Jetzt |
+|---|---|---|
+| Bestand setzt Text ohne Unterschneidung (`design-preview-glyphs.mjs`, `text-paths.mjs`) | Text lief schmaler, bis 10 mm auf 300 mm | Unterschneidung aus, in Vorschau und Fertigung |
+| Zeichenabstand: Bestand richtet ohne den Abstand hinter dem letzten Buchstaben aus | gesperrter Text saß um den halben Abstand versetzt | wie Bestand |
+| Acrylfarben: anthrazit selbst gewählt, satiniert als Schwarz gezeigt | falsche Plattenfarbe in der Vorschau | Werte aus `product-families.mjs` und `doorbell-selection.mjs` |
+| Schriftgröße: Bestand erlaubt 1 bis 100 mm (`text-paths.mjs`), Neuaufbau 0,5 bis 300 mm | 16 Paare wurden angeboten, die der Bestand ablehnt | gleiche Grenze; die 16 Paare werden nicht mehr angeboten |
+
+Was der Vergleich am **Bestand** gezeigt hat (nichts geändert, nur gemeldet):
+
+- Der Farbfilter der bestehenden Vorschau blendet im Browser rein waagerechte oder senkrechte Zierlinien aus
+  (Filterfläche ohne Höhe). Betroffen: 1.260 von 4.032 Funkklingel-Paaren (Designs FK-D05, FK-D11, FK-D12, FK-D16,
+  FK-OBENUNTEN) und 59 Platten-Paare (u. a. die Designs D65). Nachgestellt mit dem Zeichencode in Chrome; im
+  Live-Konfi nicht nachgesehen. Der Neuaufbau zeigt die Linien.
+
+Grenzen des Vergleichs: ohne Befestigung gemessen (das Ausweichen des Textes bei Bohrungen fehlt im Neuaufbau
+ohnehin); nur Chrome; Fotos selbst nicht verglichen; Vergleich gegen den Zeichencode, nicht gegen Bildschirmfotos
+des Live-Konfis. Bögen zum Ansehen entstehen unter `dist/kontaktbogen/` und `dist/kontaktbogen-klingel/` (nicht im
+Repository); Zahlen und vier Beispielbilder liegen in `docs/handoffs/2026-11-17-konfi-neu/kontaktbogen-*`.
+
+```bash
+node dev/kontaktbogen.mjs --katalog <Katalogordner>
+```
+
+```bash
+node dev/kontaktbogen.mjs --katalog <Katalogordner> --art klingel
+```
 
 ## 6. Offene Punkte für Chris
 

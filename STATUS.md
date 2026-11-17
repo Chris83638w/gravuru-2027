@@ -1,3 +1,14 @@
+## 17.11.2026 · Claude · `konfi-neu`: Kontaktbogen „neu neben alt“, Textsatz wie im Bestand (Chris im Chat: „entwicklungs-shop, schriften mit sperre lassen, mach weiter“)
+
+- Entscheidungen Chris 17.11.: Shopify-Funktionen werden im Entwicklungs-Shop getestet; die fünf Schriften ohne ß bleiben mit Sperre im Angebot.
+- Neues Werkzeug `konfi-neu/dev/kontaktbogen.mjs`: jedes Design in jeder Größe mit bestehendem Zeichencode und Neuaufbau gezeichnet und vermessen.
+- Ergebnis Platten: 53.389 Paare, 53.224 gleich, 115 klein, 34 Abweichung (alle an Enden von Haarlinien, Flächenanteil höchstens 1,9 %), 16 lehnt der Bestand ab. Funkklingeln: 4.032 Paare, 4.032 gleich.
+- Am Neuaufbau behoben (Quelle Bestand): Text ohne Unterschneidung; Ausrichtung gesperrter Schrift; Acrylfarben anthrazit/satiniert; Schriftgröße 1 bis 100 mm (16 Paare nicht mehr angeboten).
+- Am Bestand gefunden, nicht geändert: Die Vorschau blendet rein waagerechte Zierlinien aus (1.260 Funkklingel-Paare, 59 Platten-Paare); im Live-Konfi nicht nachgesehen.
+- Prüfungen: 24/24 Tests; Breitenvergleich Browser gegen Fertigung 89/89 Schriften gleich, auch gesperrt; Kundenweg Desktop bestanden; 16.235 Vorschaubilder neu gezeichnet.
+- Offene Grenzen: Vergleich gegen Zeichencode, nicht gegen Bildschirmfotos des Live-Konfis (Design-Master-Abnahme steht aus); ohne Befestigung; nur Chrome; Beispielfoto im Fotofeld fehlt im Neuaufbau; Shopify-Funktionen weiter nicht in Shopify gelaufen.
+- Nächster Schritt: Chris legt den Entwicklungs-Shop an; dort Schema ziehen und Funktionen testen. Im Neuaufbau als Nächstes: Ausweichen des Textes bei Bohrungen (Entscheidung 3.40), Beispielfoto im Fotofeld. [Übergabe](docs/handoffs/2026-11-17-konfi-neu.md)
+
 ## 17.11.2026 · Claude · `konfi-neu`: Funkklingel-Acryl gespiegelt, Shopify-Erweiterungen verpackt (Chris im Chat: „von hinten graviert, svg reicht, mach weiter“)
 
 - Funkklingel-Acryl wird von hinten graviert (Chris 17.11.): zusätzliche Laserdatei `acryl-laser-gespiegelt.svg`. SVG reicht als Fertigungsformat (Chris 17.11.), PDF/DXF entfallen.

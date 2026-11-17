@@ -1,0 +1,780 @@
+{
+ "erzeugt": "2026-11-17T11:25:11.871Z",
+ "stand": "e3684074ef47",
+ "katalog": "gravuru-katalog.",
+ "grenzen": {
+  "gleich": {
+   "kante": 0.5,
+   "daneben": 0.01
+  },
+  "klein": {
+   "kante": 1.5,
+   "daneben": 0.08
+  }
+ },
+ "toleranzMm": 0.5,
+ "gesamt": {
+  "paare": 53389,
+  "stufen": {
+   "gleich": 53224,
+   "klein": 115,
+   "abweichung": 34,
+   "fehler": 16
+  },
+  "kanteMm": {
+   "median": 0,
+   "p95": 0.24,
+   "max": 4.2
+  },
+  "daneben": {
+   "median": 0,
+   "p95": 0,
+   "max": 0.0187
+  }
+ },
+ "jeFamilie": {
+  "acryl-3mm-tuerschilder-anthrazit": {
+   "paare": 14842,
+   "stufen": {
+    "gleich": 14809,
+    "klein": 17,
+    "abweichung": 11,
+    "fehler": 5
+   },
+   "kanteMm": {
+    "median": 0,
+    "p95": 0.2,
+    "max": 4.2
+   },
+   "daneben": {
+    "median": 0,
+    "p95": 0,
+    "max": 0.0187
+   }
+  },
+  "acryl-3mm-tuerschilder-schwarz": {
+   "paare": 14842,
+   "stufen": {
+    "gleich": 14809,
+    "klein": 17,
+    "abweichung": 11,
+    "fehler": 5
+   },
+   "kanteMm": {
+    "median": 0,
+    "p95": 0.2,
+    "max": 4.2
+   },
+   "daneben": {
+    "median": 0,
+    "p95": 0,
+    "max": 0.0187
+   }
+  },
+  "acryl-aa-abstandshalter": {
+   "paare": 1394,
+   "stufen": {
+    "gleich": 1394
+   },
+   "kanteMm": {
+    "median": 0,
+    "p95": 0.28,
+    "max": 0.28
+   },
+   "daneben": {
+    "median": 0,
+    "p95": 0,
+    "max": 0.0002
+   }
+  },
+  "acryl-as-abstandshalter": {
+   "paare": 1394,
+   "stufen": {
+    "gleich": 1394
+   },
+   "kanteMm": {
+    "median": 0,
+    "p95": 0.28,
+    "max": 0.28
+   },
+   "daneben": {
+    "median": 0,
+    "p95": 0,
+    "max": 0.0002
+   }
+  },
+  "acryl-ss-abstandshalter": {
+   "paare": 1394,
+   "stufen": {
+    "gleich": 1394
+   },
+   "kanteMm": {
+    "median": 0,
+    "p95": 0.28,
+    "max": 0.28
+   },
+   "daneben": {
+    "median": 0,
+    "p95": 0,
+    "max": 0.0002
+   }
+  },
+  "gedenktafel-30x20-acryl-anthrazit": {
+   "paare": 0,
+   "stufen": {},
+   "kanteMm": {
+    "median": null,
+    "p95": null,
+    "max": null
+   },
+   "daneben": {
+    "median": null,
+    "p95": null,
+    "max": null
+   }
+  },
+  "gedenktafel-30x20-acryl-schwarz": {
+   "paare": 0,
+   "stufen": {},
+   "kanteMm": {
+    "median": null,
+    "p95": null,
+    "max": null
+   },
+   "daneben": {
+    "median": null,
+    "p95": null,
+    "max": null
+   }
+  },
+  "gedenktafel-ae-acryl-anthrazit": {
+   "paare": 427,
+   "stufen": {
+    "gleich": 427
+   },
+   "kanteMm": {
+    "median": 0,
+    "p95": 0.28,
+    "max": 0.38
+   },
+   "daneben": {
+    "median": 0,
+    "p95": 0,
+    "max": 0.0005
+   }
+  },
+  "gedenktafel-ae-acryl-schwarz": {
+   "paare": 428,
+   "stufen": {
+    "gleich": 427,
+    "fehler": 1
+   },
+   "kanteMm": {
+    "median": 0,
+    "p95": 0.28,
+    "max": 0.38
+   },
+   "daneben": {
+    "median": 0,
+    "p95": 0,
+    "max": 0.0005
+   }
+  },
+  "gedenktafel-30x20-edelstahl": {
+   "paare": 0,
+   "stufen": {},
+   "kanteMm": {
+    "median": null,
+    "p95": null,
+    "max": null
+   },
+   "daneben": {
+    "median": null,
+    "p95": null,
+    "max": null
+   }
+  },
+  "grabstecker-edelstahl": {
+   "paare": 2680,
+   "stufen": {
+    "gleich": 2615,
+    "abweichung": 1,
+    "klein": 64
+   },
+   "kanteMm": {
+    "median": 0,
+    "p95": 0.29,
+    "max": 2.12
+   },
+   "daneben": {
+    "median": 0,
+    "p95": 0.0001,
+    "max": 0.0052
+   }
+  },
+  "steel-door-signs": {
+   "paare": 15802,
+   "stufen": {
+    "gleich": 15769,
+    "klein": 17,
+    "abweichung": 11,
+    "fehler": 5
+   },
+   "kanteMm": {
+    "median": 0,
+    "p95": 0.2,
+    "max": 4.2
+   },
+   "daneben": {
+    "median": 0,
+    "p95": 0,
+    "max": 0.0027
+   }
+  },
+  "gedenktafel-22x14-schiefer-hunde-2027": {
+   "paare": 0,
+   "stufen": {},
+   "kanteMm": {
+    "median": null,
+    "p95": null,
+    "max": null
+   },
+   "daneben": {
+    "median": null,
+    "p95": null,
+    "max": null
+   }
+  },
+  "gedenktafel-22x14-schiefer-natur": {
+   "paare": 104,
+   "stufen": {
+    "gleich": 104
+   },
+   "kanteMm": {
+    "median": 0,
+    "p95": 0.14,
+    "max": 0.14
+   },
+   "daneben": {
+    "median": 0,
+    "p95": 0,
+    "max": 0.0001
+   }
+  },
+  "gedenktafel-30x20-schiefer-natur": {
+   "paare": 82,
+   "stufen": {
+    "gleich": 82
+   },
+   "kanteMm": {
+    "median": 0.2,
+    "p95": 0.2,
+    "max": 0.2
+   },
+   "daneben": {
+    "median": 0,
+    "p95": 0,
+    "max": 0
+   }
+  },
+  "gedenktafel-30x20-schiefer-premium": {
+   "paare": 0,
+   "stufen": {},
+   "kanteMm": {
+    "median": null,
+    "p95": null,
+    "max": null
+   },
+   "daneben": {
+    "median": null,
+    "p95": null,
+    "max": null
+   }
+  }
+ },
+ "jeSchrift": {
+  "Bernardo Moda Contrast": {
+   "paare": 262,
+   "gleich": 241,
+   "klein": 0,
+   "abweichung": 21,
+   "groessteKante": 4.2
+  },
+  "Cookie": {
+   "paare": 300,
+   "gleich": 288,
+   "klein": 0,
+   "abweichung": 12,
+   "groessteKante": 3.6
+  },
+  "Cinzel": {
+   "paare": 7954,
+   "gleich": 7934,
+   "klein": 8,
+   "abweichung": 12,
+   "groessteKante": 3.6
+  },
+  "Lato": {
+   "paare": 2923,
+   "gleich": 2917,
+   "klein": 5,
+   "abweichung": 1,
+   "groessteKante": 2.12
+  },
+  "Great Vibes": {
+   "paare": 6889,
+   "gleich": 6883,
+   "klein": 5,
+   "abweichung": 1,
+   "groessteKante": 2.12
+  },
+  "Caviar Dreams": {
+   "paare": 498,
+   "gleich": 498,
+   "klein": 0,
+   "abweichung": 0,
+   "groessteKante": 0.3
+  },
+  "Bellefair": {
+   "paare": 1951,
+   "gleich": 1929,
+   "klein": 22,
+   "abweichung": 0,
+   "groessteKante": 0.8
+  },
+  "Comfortaa": {
+   "paare": 4738,
+   "gleich": 4738,
+   "klein": 0,
+   "abweichung": 0,
+   "groessteKante": 0.3
+  },
+  "Montserrat Light": {
+   "paare": 5297,
+   "gleich": 5295,
+   "klein": 2,
+   "abweichung": 0,
+   "groessteKante": 0.38
+  },
+  "Lora": {
+   "paare": 1605,
+   "gleich": 1599,
+   "klein": 6,
+   "abweichung": 0,
+   "groessteKante": 0.7
+  },
+  "Playfair Display": {
+   "paare": 2761,
+   "gleich": 2756,
+   "klein": 5,
+   "abweichung": 0,
+   "groessteKante": 0.7
+  },
+  "Josefin Sans": {
+   "paare": 3773,
+   "gleich": 3762,
+   "klein": 11,
+   "abweichung": 0,
+   "groessteKante": 0.7
+  },
+  "Kaushan Script": {
+   "paare": 903,
+   "gleich": 903,
+   "klein": 0,
+   "abweichung": 0,
+   "groessteKante": 0.3
+  },
+  "Roboto Slab": {
+   "paare": 727,
+   "gleich": 727,
+   "klein": 0,
+   "abweichung": 0,
+   "groessteKante": 0.24
+  },
+  "Roboto Condensed": {
+   "paare": 768,
+   "gleich": 768,
+   "klein": 0,
+   "abweichung": 0,
+   "groessteKante": 0.3
+  },
+  "Bebas Neue": {
+   "paare": 1058,
+   "gleich": 1058,
+   "klein": 0,
+   "abweichung": 0,
+   "groessteKante": 0.3
+  },
+  "Alex Brush": {
+   "paare": 1782,
+   "gleich": 1771,
+   "klein": 11,
+   "abweichung": 0,
+   "groessteKante": 0.7
+  },
+  "Raleway": {
+   "paare": 6778,
+   "gleich": 6755,
+   "klein": 23,
+   "abweichung": 0,
+   "groessteKante": 1.14
+  },
+  "Rye": {
+   "paare": 240,
+   "gleich": 240,
+   "klein": 0,
+   "abweichung": 0,
+   "groessteKante": 0.3
+  },
+  "Special Elite": {
+   "paare": 240,
+   "gleich": 240,
+   "klein": 0,
+   "abweichung": 0,
+   "groessteKante": 0.3
+  },
+  "Parisienne": {
+   "paare": 2460,
+   "gleich": 2448,
+   "klein": 12,
+   "abweichung": 0,
+   "groessteKante": 1.19
+  },
+  "Cormorant Garamond": {
+   "paare": 2727,
+   "gleich": 2720,
+   "klein": 7,
+   "abweichung": 0,
+   "groessteKante": 0.72
+  },
+  "Italianno": {
+   "paare": 1840,
+   "gleich": 1821,
+   "klein": 19,
+   "abweichung": 0,
+   "groessteKante": 0.8
+  },
+  "Libre Baskerville": {
+   "paare": 3712,
+   "gleich": 3702,
+   "klein": 10,
+   "abweichung": 0,
+   "groessteKante": 1.37
+  },
+  "Allura": {
+   "paare": 3928,
+   "gleich": 3913,
+   "klein": 15,
+   "abweichung": 0,
+   "groessteKante": 1.5
+  },
+  "Betsy Bailey": {
+   "paare": 143,
+   "gleich": 143,
+   "klein": 0,
+   "abweichung": 0,
+   "groessteKante": 0.3
+  },
+  "Poiret One": {
+   "paare": 245,
+   "gleich": 245,
+   "klein": 0,
+   "abweichung": 0,
+   "groessteKante": 0.24
+  },
+  "Patrick Hand": {
+   "paare": 508,
+   "gleich": 508,
+   "klein": 0,
+   "abweichung": 0,
+   "groessteKante": 0.5
+  },
+  "Antic Slab": {
+   "paare": 465,
+   "gleich": 465,
+   "klein": 0,
+   "abweichung": 0,
+   "groessteKante": 0.5
+  },
+  "Bad Script": {
+   "paare": 231,
+   "gleich": 231,
+   "klein": 0,
+   "abweichung": 0,
+   "groessteKante": 0.3
+  },
+  "Dream Orphans": {
+   "paare": 514,
+   "gleich": 514,
+   "klein": 0,
+   "abweichung": 0,
+   "groessteKante": 0.3
+  },
+  "Montserrat": {
+   "paare": 2750,
+   "gleich": 2737,
+   "klein": 13,
+   "abweichung": 0,
+   "groessteKante": 1.19
+  },
+  "Michroma": {
+   "paare": 4227,
+   "gleich": 4227,
+   "klein": 0,
+   "abweichung": 0,
+   "groessteKante": 0.3
+  },
+  "Comic Neue": {
+   "paare": 354,
+   "gleich": 354,
+   "klein": 0,
+   "abweichung": 0,
+   "groessteKante": 0.3
+  },
+  "Homage": {
+   "paare": 2134,
+   "gleich": 2134,
+   "klein": 0,
+   "abweichung": 0,
+   "groessteKante": 0.3
+  },
+  "Sweetie": {
+   "paare": 841,
+   "gleich": 841,
+   "klein": 0,
+   "abweichung": 0,
+   "groessteKante": 0.3
+  },
+  "Caveat": {
+   "paare": 388,
+   "gleich": 388,
+   "klein": 0,
+   "abweichung": 0,
+   "groessteKante": 0.3
+  },
+  "Pacifico": {
+   "paare": 475,
+   "gleich": 475,
+   "klein": 0,
+   "abweichung": 0,
+   "groessteKante": 0.3
+  },
+  "Sacramento": {
+   "paare": 705,
+   "gleich": 705,
+   "klein": 0,
+   "abweichung": 0,
+   "groessteKante": 0.3
+  },
+  "Ashley": {
+   "paare": 2268,
+   "gleich": 2268,
+   "klein": 0,
+   "abweichung": 0,
+   "groessteKante": 0.3
+  },
+  "Lobster": {
+   "paare": 399,
+   "gleich": 399,
+   "klein": 0,
+   "abweichung": 0,
+   "groessteKante": 0.3
+  },
+  "Daniel": {
+   "paare": 510,
+   "gleich": 510,
+   "klein": 0,
+   "abweichung": 0,
+   "groessteKante": 0.3
+  },
+  "Dancing Script": {
+   "paare": 1286,
+   "gleich": 1278,
+   "klein": 8,
+   "abweichung": 0,
+   "groessteKante": 1.14
+  },
+  "Rochester": {
+   "paare": 1084,
+   "gleich": 1084,
+   "klein": 0,
+   "abweichung": 0,
+   "groessteKante": 0.3
+  },
+  "Tangerine": {
+   "paare": 258,
+   "gleich": 258,
+   "klein": 0,
+   "abweichung": 0,
+   "groessteKante": 0.3
+  },
+  "Magnolia Script": {
+   "paare": 690,
+   "gleich": 683,
+   "klein": 7,
+   "abweichung": 0,
+   "groessteKante": 1.37
+  },
+  "Cinzel Decorative": {
+   "paare": 209,
+   "gleich": 209,
+   "klein": 0,
+   "abweichung": 0,
+   "groessteKante": 0.24
+  },
+  "Minimalist": {
+   "paare": 991,
+   "gleich": 991,
+   "klein": 0,
+   "abweichung": 0,
+   "groessteKante": 0.3
+  },
+  "Fineliner Script": {
+   "paare": 435,
+   "gleich": 435,
+   "klein": 0,
+   "abweichung": 0,
+   "groessteKante": 0.3
+  },
+  "Poppins ExtraLight": {
+   "paare": 302,
+   "gleich": 302,
+   "klein": 0,
+   "abweichung": 0,
+   "groessteKante": 0.28
+  },
+  "Stylish": {
+   "paare": 195,
+   "gleich": 195,
+   "klein": 0,
+   "abweichung": 0,
+   "groessteKante": 0.3
+  },
+  "Oswald": {
+   "paare": 159,
+   "gleich": 159,
+   "klein": 0,
+   "abweichung": 0,
+   "groessteKante": 0.3
+  },
+  "Satisfy": {
+   "paare": 696,
+   "gleich": 696,
+   "klein": 0,
+   "abweichung": 0,
+   "groessteKante": 0.3
+  },
+  "Courier Prime": {
+   "paare": 159,
+   "gleich": 159,
+   "klein": 0,
+   "abweichung": 0,
+   "groessteKante": 0.24
+  },
+  "Kalam": {
+   "paare": 216,
+   "gleich": 216,
+   "klein": 0,
+   "abweichung": 0,
+   "groessteKante": 0.3
+  },
+  "Courgette": {
+   "paare": 786,
+   "gleich": 786,
+   "klein": 0,
+   "abweichung": 0,
+   "groessteKante": 0.3
+  },
+  "Fredoka": {
+   "paare": 159,
+   "gleich": 159,
+   "klein": 0,
+   "abweichung": 0,
+   "groessteKante": 0.3
+  },
+  "Baloo 2": {
+   "paare": 159,
+   "gleich": 159,
+   "klein": 0,
+   "abweichung": 0,
+   "groessteKante": 0.3
+  },
+  "Baby Boho Script": {
+   "paare": 1,
+   "gleich": 1,
+   "klein": 0,
+   "abweichung": 0,
+   "groessteKante": 0
+  },
+  "Sunflower": {
+   "paare": 1,
+   "gleich": 1,
+   "klein": 0,
+   "abweichung": 0,
+   "groessteKante": 0.14
+  },
+  "Hello Georgia": {
+   "paare": 25,
+   "gleich": 25,
+   "klein": 0,
+   "abweichung": 0,
+   "groessteKante": 0.28
+  },
+  "Arvo": {
+   "paare": 50,
+   "gleich": 50,
+   "klein": 0,
+   "abweichung": 0,
+   "groessteKante": 0.28
+  },
+  "Desyrel": {
+   "paare": 9,
+   "gleich": 9,
+   "klein": 0,
+   "abweichung": 0,
+   "groessteKante": 0
+  },
+  "Amatic SC": {
+   "paare": 32,
+   "gleich": 32,
+   "klein": 0,
+   "abweichung": 0,
+   "groessteKante": 0.28
+  },
+  "Rounded Elegance": {
+   "paare": 48,
+   "gleich": 48,
+   "klein": 0,
+   "abweichung": 0,
+   "groessteKante": 0.28
+  },
+  "Chewy": {
+   "paare": 88,
+   "gleich": 88,
+   "klein": 0,
+   "abweichung": 0,
+   "groessteKante": 0.28
+  }
+ },
+ "fehler": {
+  "alt: Schriftgröße: 1 bis 100 mm.": 16
+ },
+ "altZeigtNicht": {
+  "paare": 59,
+  "designs": [
+   "BS-V2A-15x8-D6",
+   "TAE-V2A-8x5-D65",
+   "TO-V2A-12x4-D65",
+   "TO-V2A-15x8-D65",
+   "TO-V2A-9x6-D65",
+   "TQ-V2A-8x8-D65",
+   "TR-V2A-6.5x6.5-D65",
+   "TR1-V2A-9x6-D65",
+   "TR2-V2A-9x6-D65",
+   "TRE-V2A-8x3,5-D65",
+   "TRE-V2A-8x5-D65",
+   "TRE-V2A-9x3-D65"
+  ]
+ },
+ "sekunden": 1912
+}

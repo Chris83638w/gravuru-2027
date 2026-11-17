@@ -1,0 +1,807 @@
+{
+ "erzeugt": "2026-11-17T10:12:56.247Z",
+ "stand": "e3684074ef47",
+ "katalog": "gravuru-katalog.",
+ "grenzen": {
+  "gleich": {
+   "kante": 0.5,
+   "daneben": 0.01
+  },
+  "klein": {
+   "kante": 1.5,
+   "daneben": 0.08
+  }
+ },
+ "toleranzMm": 0.5,
+ "gesamt": {
+  "paare": 4032,
+  "stufen": {
+   "gleich": 4032
+  },
+  "kanteMm": {
+   "median": 0.17,
+   "p95": 0.22,
+   "max": 0.22
+  },
+  "daneben": {
+   "median": 0,
+   "p95": 0,
+   "max": 0.0001
+  }
+ },
+ "jeFamilie": {
+  "fk-aosu-pro-v8p1ax11-16x28": {
+   "paare": 96,
+   "stufen": {
+    "gleich": 96
+   },
+   "kanteMm": {
+    "median": 0.17,
+    "p95": 0.22,
+    "max": 0.22
+   },
+   "daneben": {
+    "median": 0,
+    "p95": 0,
+    "max": 0
+   }
+  },
+  "fk-aosu-ultra-v8s1ax15-16x28": {
+   "paare": 96,
+   "stufen": {
+    "gleich": 96
+   },
+   "kanteMm": {
+    "median": 0.17,
+    "p95": 0.22,
+    "max": 0.22
+   },
+   "daneben": {
+    "median": 0,
+    "p95": 0,
+    "max": 0
+   }
+  },
+  "fk-aqara-g4-svd-c03-16x28": {
+   "paare": 96,
+   "stufen": {
+    "gleich": 96
+   },
+   "kanteMm": {
+    "median": 0.18,
+    "p95": 0.22,
+    "max": 0.22
+   },
+   "daneben": {
+    "median": 0,
+    "p95": 0,
+    "max": 0
+   }
+  },
+  "fk-arlo-akku-1-gen-avd2001-16x28": {
+   "paare": 96,
+   "stufen": {
+    "gleich": 96
+   },
+   "kanteMm": {
+    "median": 0.17,
+    "p95": 0.22,
+    "max": 0.22
+   },
+   "daneben": {
+    "median": 0,
+    "p95": 0,
+    "max": 0
+   }
+  },
+  "fk-arlo-akku-2-gen-avd4001-16x28": {
+   "paare": 96,
+   "stufen": {
+    "gleich": 96
+   },
+   "kanteMm": {
+    "median": 0,
+    "p95": 0.22,
+    "max": 0.22
+   },
+   "daneben": {
+    "median": 0,
+    "p95": 0,
+    "max": 0
+   }
+  },
+  "fk-arlo-kabel-avd1001-16x28": {
+   "paare": 96,
+   "stufen": {
+    "gleich": 96
+   },
+   "kanteMm": {
+    "median": 0,
+    "p95": 0.22,
+    "max": 0.22
+   },
+   "daneben": {
+    "median": 0,
+    "p95": 0,
+    "max": 0
+   }
+  },
+  "fk-blink-1-gen-bdm01200u-16x28": {
+   "paare": 96,
+   "stufen": {
+    "gleich": 96
+   },
+   "kanteMm": {
+    "median": 0.17,
+    "p95": 0.22,
+    "max": 0.22
+   },
+   "daneben": {
+    "median": 0,
+    "p95": 0,
+    "max": 0
+   }
+  },
+  "fk-blink-2-gen-bdm01300u-16x28": {
+   "paare": 96,
+   "stufen": {
+    "gleich": 96
+   },
+   "kanteMm": {
+    "median": 0.17,
+    "p95": 0.22,
+    "max": 0.22
+   },
+   "daneben": {
+    "median": 0,
+    "p95": 0,
+    "max": 0
+   }
+  },
+  "fk-blink-kabel-2k-bdm01500u-16x28": {
+   "paare": 96,
+   "stufen": {
+    "gleich": 96
+   },
+   "kanteMm": {
+    "median": 0.18,
+    "p95": 0.22,
+    "max": 0.22
+   },
+   "daneben": {
+    "median": 0,
+    "p95": 0,
+    "max": 0.0001
+   }
+  },
+  "fk-boifun-bell-j1-16x28": {
+   "paare": 96,
+   "stufen": {
+    "gleich": 96
+   },
+   "kanteMm": {
+    "median": 0.17,
+    "p95": 0.22,
+    "max": 0.22
+   },
+   "daneben": {
+    "median": 0,
+    "p95": 0,
+    "max": 0
+   }
+  },
+  "fk-cococam-doorbell-16x28": {
+   "paare": 96,
+   "stufen": {
+    "gleich": 96
+   },
+   "kanteMm": {
+    "median": 0.17,
+    "p95": 0.22,
+    "max": 0.22
+   },
+   "daneben": {
+    "median": 0,
+    "p95": 0,
+    "max": 0
+   }
+  },
+  "fk-ctronics-ctsc-j6-16x28": {
+   "paare": 96,
+   "stufen": {
+    "gleich": 96
+   },
+   "kanteMm": {
+    "median": 0.17,
+    "p95": 0.22,
+    "max": 0.22
+   },
+   "daneben": {
+    "median": 0,
+    "p95": 0,
+    "max": 0
+   }
+  },
+  "fk-eufy-1080p-t8220-16x28": {
+   "paare": 96,
+   "stufen": {
+    "gleich": 96
+   },
+   "kanteMm": {
+    "median": 0.17,
+    "p95": 0.22,
+    "max": 0.22
+   },
+   "daneben": {
+    "median": 0,
+    "p95": 0,
+    "max": 0
+   }
+  },
+  "fk-eufy-1080p-t8222-16x28": {
+   "paare": 96,
+   "stufen": {
+    "gleich": 96
+   },
+   "kanteMm": {
+    "median": 0.17,
+    "p95": 0.22,
+    "max": 0.22
+   },
+   "daneben": {
+    "median": 0,
+    "p95": 0,
+    "max": 0
+   }
+  },
+  "fk-eufy-2k-hd-t8210-16x28": {
+   "paare": 96,
+   "stufen": {
+    "gleich": 96
+   },
+   "kanteMm": {
+    "median": 0.17,
+    "p95": 0.22,
+    "max": 0.22
+   },
+   "daneben": {
+    "median": 0,
+    "p95": 0,
+    "max": 0
+   }
+  },
+  "fk-eufy-c30-t8224-16x28": {
+   "paare": 96,
+   "stufen": {
+    "gleich": 96
+   },
+   "kanteMm": {
+    "median": 0.17,
+    "p95": 0.22,
+    "max": 0.22
+   },
+   "daneben": {
+    "median": 0,
+    "p95": 0,
+    "max": 0
+   }
+  },
+  "fk-eufy-c31-t8223-16x28": {
+   "paare": 96,
+   "stufen": {
+    "gleich": 96
+   },
+   "kanteMm": {
+    "median": 0.17,
+    "p95": 0.22,
+    "max": 0.22
+   },
+   "daneben": {
+    "median": 0,
+    "p95": 0,
+    "max": 0
+   }
+  },
+  "fk-eufy-dual-e340-t8214-16x28": {
+   "paare": 96,
+   "stufen": {
+    "gleich": 96
+   },
+   "kanteMm": {
+    "median": 0.17,
+    "p95": 0.22,
+    "max": 0.22
+   },
+   "daneben": {
+    "median": 0,
+    "p95": 0,
+    "max": 0
+   }
+  },
+  "fk-eufy-hdr-2k-t8200-16x28": {
+   "paare": 96,
+   "stufen": {
+    "gleich": 96
+   },
+   "kanteMm": {
+    "median": 0.17,
+    "p95": 0.22,
+    "max": 0.22
+   },
+   "daneben": {
+    "median": 0,
+    "p95": 0,
+    "max": 0.0001
+   }
+  },
+  "fk-ezviz-db1-cs-db1c-16x28": {
+   "paare": 96,
+   "stufen": {
+    "gleich": 96
+   },
+   "kanteMm": {
+    "median": 0.17,
+    "p95": 0.22,
+    "max": 0.22
+   },
+   "daneben": {
+    "median": 0,
+    "p95": 0,
+    "max": 0.0001
+   }
+  },
+  "fk-ezviz-ep8-ultra-cs-ep8-16x28": {
+   "paare": 96,
+   "stufen": {
+    "gleich": 96
+   },
+   "kanteMm": {
+    "median": 0.17,
+    "p95": 0.22,
+    "max": 0.22
+   },
+   "daneben": {
+    "median": 0,
+    "p95": 0,
+    "max": 0.0001
+   }
+  },
+  "fk-google-nest-a0077-16x28": {
+   "paare": 96,
+   "stufen": {
+    "gleich": 96
+   },
+   "kanteMm": {
+    "median": 0.17,
+    "p95": 0.22,
+    "max": 0.22
+   },
+   "daneben": {
+    "median": 0,
+    "p95": 0,
+    "max": 0
+   }
+  },
+  "fk-google-nest-akku-22lcur-16x28": {
+   "paare": 96,
+   "stufen": {
+    "gleich": 96
+   },
+   "kanteMm": {
+    "median": 0,
+    "p95": 0.22,
+    "max": 0.22
+   },
+   "daneben": {
+    "median": 0,
+    "p95": 0,
+    "max": 0
+   }
+  },
+  "fk-hombli-smart-doorbell-2-hbdb-0200-16x28": {
+   "paare": 96,
+   "stufen": {
+    "gleich": 96
+   },
+   "kanteMm": {
+    "median": 0.17,
+    "p95": 0.22,
+    "max": 0.22
+   },
+   "daneben": {
+    "median": 0,
+    "p95": 0,
+    "max": 0
+   }
+  },
+  "fk-philips-welcome-eye-531034-16x28": {
+   "paare": 96,
+   "stufen": {
+    "gleich": 96
+   },
+   "kanteMm": {
+    "median": 0,
+    "p95": 0.22,
+    "max": 0.22
+   },
+   "daneben": {
+    "median": 0,
+    "p95": 0,
+    "max": 0.0001
+   }
+  },
+  "fk-reolink-akku-2ayhe-2205b-16x28": {
+   "paare": 96,
+   "stufen": {
+    "gleich": 96
+   },
+   "kanteMm": {
+    "median": 0,
+    "p95": 0.22,
+    "max": 0.22
+   },
+   "daneben": {
+    "median": 0,
+    "p95": 0,
+    "max": 0
+   }
+  },
+  "fk-reolink-poe-d340b-16x28": {
+   "paare": 96,
+   "stufen": {
+    "gleich": 96
+   },
+   "kanteMm": {
+    "median": 0.17,
+    "p95": 0.22,
+    "max": 0.22
+   },
+   "daneben": {
+    "median": 0,
+    "p95": 0,
+    "max": 0.0001
+   }
+  },
+  "fk-ring-1-5um5e5-16x28": {
+   "paare": 96,
+   "stufen": {
+    "gleich": 96
+   },
+   "kanteMm": {
+    "median": 0.17,
+    "p95": 0.22,
+    "max": 0.22
+   },
+   "daneben": {
+    "median": 0,
+    "p95": 0,
+    "max": 0
+   }
+  },
+  "fk-ring-2-8vr1s7-0eu0-16x28": {
+   "paare": 96,
+   "stufen": {
+    "gleich": 96
+   },
+   "kanteMm": {
+    "median": 0,
+    "p95": 0.22,
+    "max": 0.22
+   },
+   "daneben": {
+    "median": 0,
+    "p95": 0,
+    "max": 0.0001
+   }
+  },
+  "fk-ring-3-5at3s9-16x28": {
+   "paare": 96,
+   "stufen": {
+    "gleich": 96
+   },
+   "kanteMm": {
+    "median": 0,
+    "p95": 0.22,
+    "max": 0.22
+   },
+   "daneben": {
+    "median": 0,
+    "p95": 0,
+    "max": 0
+   }
+  },
+  "fk-ring-akku-pro-5f79e9-16x28": {
+   "paare": 96,
+   "stufen": {
+    "gleich": 96
+   },
+   "kanteMm": {
+    "median": 0.17,
+    "p95": 0.22,
+    "max": 0.22
+   },
+   "daneben": {
+    "median": 0,
+    "p95": 0,
+    "max": 0
+   }
+  },
+  "fk-ring-battery-5f97f2-16x28": {
+   "paare": 96,
+   "stufen": {
+    "gleich": 96
+   },
+   "kanteMm": {
+    "median": 0.17,
+    "p95": 0.22,
+    "max": 0.22
+   },
+   "daneben": {
+    "median": 0,
+    "p95": 0,
+    "max": 0
+   }
+  },
+  "fk-ring-plus-1-gen-5f77e9-16x28": {
+   "paare": 96,
+   "stufen": {
+    "gleich": 96
+   },
+   "kanteMm": {
+    "median": 0.17,
+    "p95": 0.22,
+    "max": 0.22
+   },
+   "daneben": {
+    "median": 0,
+    "p95": 0,
+    "max": 0
+   }
+  },
+  "fk-ring-plus-2-gen-5dfya3-16x28": {
+   "paare": 96,
+   "stufen": {
+    "gleich": 96
+   },
+   "kanteMm": {
+    "median": 0.17,
+    "p95": 0.22,
+    "max": 0.22
+   },
+   "daneben": {
+    "median": 0,
+    "p95": 0,
+    "max": 0
+   }
+  },
+  "fk-ring-pro2-5at2s2-16x28": {
+   "paare": 96,
+   "stufen": {
+    "gleich": 96
+   },
+   "kanteMm": {
+    "median": 0.17,
+    "p95": 0.22,
+    "max": 0.22
+   },
+   "daneben": {
+    "median": 0,
+    "p95": 0,
+    "max": 0.0001
+   }
+  },
+  "fk-ring-wired-5at3t5-16x28": {
+   "paare": 96,
+   "stufen": {
+    "gleich": 96
+   },
+   "kanteMm": {
+    "median": 0.17,
+    "p95": 0.22,
+    "max": 0.22
+   },
+   "daneben": {
+    "median": 0,
+    "p95": 0,
+    "max": 0.0001
+   }
+  },
+  "fk-ring-wired-pro-3-gen-5dfya2-16x28": {
+   "paare": 96,
+   "stufen": {
+    "gleich": 96
+   },
+   "kanteMm": {
+    "median": 0.17,
+    "p95": 0.22,
+    "max": 0.22
+   },
+   "daneben": {
+    "median": 0,
+    "p95": 0,
+    "max": 0.0001
+   }
+  },
+  "fk-tapo-d235-16x28": {
+   "paare": 96,
+   "stufen": {
+    "gleich": 96
+   },
+   "kanteMm": {
+    "median": 0.17,
+    "p95": 0.22,
+    "max": 0.22
+   },
+   "daneben": {
+    "median": 0,
+    "p95": 0,
+    "max": 0
+   }
+  },
+  "fk-tmezon-intercom-mz-vdp-ne120-16x28": {
+   "paare": 96,
+   "stufen": {
+    "gleich": 96
+   },
+   "kanteMm": {
+    "median": 0.17,
+    "p95": 0.22,
+    "max": 0.22
+   },
+   "daneben": {
+    "median": 0,
+    "p95": 0,
+    "max": 0
+   }
+  },
+  "fk-tmezon-smart-home-bell-j7-plus-16x28": {
+   "paare": 96,
+   "stufen": {
+    "gleich": 96
+   },
+   "kanteMm": {
+    "median": 0.17,
+    "p95": 0.22,
+    "max": 0.22
+   },
+   "daneben": {
+    "median": 0,
+    "p95": 0,
+    "max": 0
+   }
+  },
+  "fk-winees-m6p20ac-16x28": {
+   "paare": 96,
+   "stufen": {
+    "gleich": 96
+   },
+   "kanteMm": {
+    "median": 0.17,
+    "p95": 0.22,
+    "max": 0.22
+   },
+   "daneben": {
+    "median": 0,
+    "p95": 0,
+    "max": 0.0001
+   }
+  },
+  "fk-wp-cardea-2-16x28": {
+   "paare": 96,
+   "stufen": {
+    "gleich": 96
+   },
+   "kanteMm": {
+    "median": 0,
+    "p95": 0.22,
+    "max": 0.22
+   },
+   "daneben": {
+    "median": 0,
+    "p95": 0,
+    "max": 0
+   }
+  }
+ },
+ "jeSchrift": {
+  "Raleway": {
+   "paare": 252,
+   "gleich": 252,
+   "klein": 0,
+   "abweichung": 0,
+   "groessteKante": 0.22
+  },
+  "Montserrat": {
+   "paare": 2772,
+   "gleich": 2772,
+   "klein": 0,
+   "abweichung": 0,
+   "groessteKante": 0.22
+  },
+  "Poppins": {
+   "paare": 252,
+   "gleich": 252,
+   "klein": 0,
+   "abweichung": 0,
+   "groessteKante": 0.22
+  },
+  "Libre Baskerville": {
+   "paare": 252,
+   "gleich": 252,
+   "klein": 0,
+   "abweichung": 0,
+   "groessteKante": 0.22
+  },
+  "Caveat": {
+   "paare": 252,
+   "gleich": 252,
+   "klein": 0,
+   "abweichung": 0,
+   "groessteKante": 0.22
+  },
+  "Josefin Sans": {
+   "paare": 756,
+   "gleich": 756,
+   "klein": 0,
+   "abweichung": 0,
+   "groessteKante": 0.22
+  },
+  "Sacramento": {
+   "paare": 252,
+   "gleich": 252,
+   "klein": 0,
+   "abweichung": 0,
+   "groessteKante": 0.22
+  },
+  "Nunito": {
+   "paare": 252,
+   "gleich": 252,
+   "klein": 0,
+   "abweichung": 0,
+   "groessteKante": 0.22
+  },
+  "Cormorant Garamond": {
+   "paare": 252,
+   "gleich": 252,
+   "klein": 0,
+   "abweichung": 0,
+   "groessteKante": 0.22
+  },
+  "Allura": {
+   "paare": 252,
+   "gleich": 252,
+   "klein": 0,
+   "abweichung": 0,
+   "groessteKante": 0.22
+  },
+  "Playfair Display": {
+   "paare": 252,
+   "gleich": 252,
+   "klein": 0,
+   "abweichung": 0,
+   "groessteKante": 0.22
+  }
+ },
+ "fehler": {},
+ "altZeigtNicht": {
+  "paare": 1260,
+  "designs": [
+   "FK-D05 16x28",
+   "FK-D05 24x20",
+   "FK-D05 35x18",
+   "FK-D11 16x28",
+   "FK-D11 24x20",
+   "FK-D11 35x18",
+   "FK-D12 16x28",
+   "FK-D12 24x20",
+   "FK-D12 35x18",
+   "FK-D16 16x28",
+   "FK-D16 24x20",
+   "FK-D16 35x18",
+   "FK-OBENUNTEN 16x28",
+   "FK-OBENUNTEN 24x20",
+   "FK-OBENUNTEN 35x18"
+  ]
+ },
+ "sekunden": 255
+}

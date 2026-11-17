@@ -1,11 +1,12 @@
 #!/usr/bin/env node
 // Vorschaubilder der Designs für die Designauswahl (kleine WebP-Dateien).
 //
-//   node publish/vorschauen.mjs [--out dist/daten] [--breite 360] [--grenze n]
+//   node publish/vorschauen.mjs [--out dist/daten] [--breite 360] [--grenze n] [--neu]
 //
 // Gezeichnet wird mit demselben Code wie im Editor (core/zeichnen.mjs), in einem unsichtbaren
 // Browser. Der Dateiname hängt am Inhalts-Hash des Designs: d/<name>.<hash>.json → v/<name>.<hash>.webp.
-// Schon vorhandene Bilder werden übersprungen, verwaiste entfernt. Läuft nur beim Veröffentlichen,
+// Schon vorhandene Bilder werden übersprungen, verwaiste entfernt. Nach einer Änderung am Zeichencode (der Hash
+// des Designs bleibt dann gleich) zeichnet --neu alle Bilder neu und überschreibt sie. Läuft nur beim Veröffentlichen,
 // nie auf dem Kundenweg.
 import fs from 'node:fs';
 import path from 'node:path';
@@ -21,6 +22,7 @@ const arg = name => { const i = process.argv.indexOf('--' + name); return i >= 0
 const out = path.resolve(arg('out') || path.join(wurzel, 'dist', 'daten'));
 const breite = Number(arg('breite') || 360);
 const grenze = Number(arg('grenze') || Infinity);
+const allesNeu = process.argv.includes('--neu');
 const started = Date.now();
 
 const stand = JSON.parse(fs.readFileSync(path.join(out, 'stand.json'), 'utf8'));
@@ -47,7 +49,7 @@ for (const eintrag of fs.readdirSync(path.join(out, 'v'), {recursive: true, with
   if (!auftraege.has(relativ)) { fs.rmSync(path.join(eintrag.parentPath, eintrag.name)); entfernt++; }
 }
 const designs = [...auftraege.keys()];
-const offen = designs.filter(ziel => !fs.existsSync(path.join(out, 'v', ziel))).slice(0, grenze);
+const offen = designs.filter(ziel => allesNeu || !fs.existsSync(path.join(out, 'v', ziel))).slice(0, grenze);
 
 // Kleiner Dateiserver nur für diesen Lauf: liefert core/ und die veröffentlichten Daten an den Browser.
 const typen = {'.mjs': 'text/javascript', '.json': 'application/json', '.woff2': 'font/woff2', '.webp': 'image/webp', '.html': 'text/html'};
@@ -65,13 +67,12 @@ const browser = await chromium.launch();
 const page = await browser.newPage();
 await page.goto(basis + '/');
 await page.addScriptTag({type: 'module', content: `
-  import {gestaltungSvg, schriftFamilie, schriftenAnmelden} from '/core/zeichnen.mjs';
+  import {gestaltungSvg, schriftFamilie} from '/core/zeichnen.mjs';
   import {elementeAusDesign} from '/core/modell.mjs';
   const schriftCss = new Map();
   const bilder = new Map();
   const dataUrl = async adresse => { if (!bilder.has(adresse)) bilder.set(adresse, fetch(adresse).then(r => r.blob()).then(b => new Promise(ok => { const fr = new FileReader(); fr.onload = () => ok(fr.result); fr.readAsDataURL(b); }))); return bilder.get(adresse); };
   window.zeichne = async ({design, familie, schriften, breite}) => {
-    schriftenAnmelden(schriften);
     const [groesseKey, position] = String(design.bsp?.g || '').split('|');
     const groesse = familie.groessen.find(g => g.k === groesseKey) || familie.groessen.find(g => Math.abs(g.w / g.h - design.platte[0] / design.platte[1]) < 0.02) || familie.groessen[0];
     const css = [];

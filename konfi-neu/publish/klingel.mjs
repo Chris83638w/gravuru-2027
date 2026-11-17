@@ -19,8 +19,8 @@ const rechteck = b => [round(b.x), round(b.y), round(b.width), round(b.height)];
 const FORMAT_NAMEN = {'16x28': 'Hochformat 16 × 28 cm', '24x20': 'Querformat 24 × 20 cm', '35x18': 'Länglich 35 × 18 cm'};
 // Anzeige wie im bestehenden Konfi (doorbell-ui.mjs): rechts/links bei Querformaten, unten/oben im Hochformat.
 const POSITION_NAMEN = {quer: {standard: 'Klingel rechts', opposite: 'Klingel links'}, hoch: {standard: 'Klingel unten', opposite: 'Klingel oben'}};
-// Nur Anzeige. Schwarz wie MATERIAL_COLORS.acrylic; Anthrazit ist ein gewählter Anzeigewert ohne Quelle.
-const ACRYL_FARBEN = {schwarz: '#17191b', anthrazit: '#3a3d40'};
+// Nur Anzeige. Werte wie im bestehenden Konfi (app/configurator/variant-m/doorbell-selection.mjs).
+const ACRYL_FARBEN = {schwarz: '#111214', anthrazit: '#33383e'};
 
 /** Farben eines Zierelements auf die Gravurfarbe umstellen; nur bekannte, harmlose SVG-Formen zulassen. */
 function zierInhalt(fragment, id) {

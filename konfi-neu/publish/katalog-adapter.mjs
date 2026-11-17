@@ -7,7 +7,7 @@
 import {openKatalog} from '../../app/workshop/katalog-source.mjs';
 import {designTargets, assignTargetSeries} from '../../app/workshop/design-targets.mjs';
 import {parseDesignSvg} from '../../app/workshop/katalog-convert.mjs';
-import {geometryOf} from '../../app/workshop/product-families.mjs';
+import {geometryOf, FAMILY_MATERIALS} from '../../app/workshop/product-families.mjs';
 import {holesFor} from '../../app/platform/sources/app/shared/models/mounting-rules.mjs';
 import {nativeContour} from '../../app/workshop/acrylic-artwork.mjs';
 import {PROCESSING_PROFILES, MATERIAL_COLORS} from '../../app/platform/sources/app/shared/models/processing-profiles.mjs';
@@ -61,13 +61,17 @@ export function verfahren(family) {
   return {id: profile.id, art: profile.method === 'print' ? 'druck' : 'gravur', farbe: profile.ink};
 }
 
+/** Anzeigefarbe von Acrylglas je Variante, aus der Tabelle der bestehenden Vorschau. */
+export const acrylFarbe = variante => FAMILY_MATERIALS.acrylic.color(variante);
+
 /**
  * Darstellung des Materials in der Vorschau. Nur Anzeige, keine Fertigungsangabe.
  * Texturen gibt es bisher nur für Edelstahl; andere Materialien zeigen ihre Grundfarbe.
  */
 export function materialDarstellung(family, appRoot) {
   const kind = family.material.kind;
-  const farbe = kind === 'acrylic' && family.material.variant === 'anthrazit' ? '#3a3d40' : MATERIAL_COLORS[kind] || MATERIAL_COLORS.other;
+  // Grundfarbe aus derselben Tabelle wie die bestehende Vorschau (Acryl: schwarz, anthrazit, satiniert).
+  const farbe = FAMILY_MATERIALS[kind]?.color(family.material.variant) || MATERIAL_COLORS[kind] || MATERIAL_COLORS.other;
   const images = appRoot + '/designs/aosu-labrador/runtime/images/';
   return {
     farbe,

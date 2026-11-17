@@ -286,7 +286,5 @@ Offen bei der Fertigung:
   nennt 9,99 € als neueren Wert (1.20). Der Neuaufbau nimmt den Katalogwert.
 - **Schriften kürzen:** OFL-Schriften werden auf lateinische Zeichen reduziert. Vier Schriften fehlen als Datei
   im Katalog (Ashley Marie, Soulmate, Standlist, Daniel Black).
-- **Anthrazit:** Die Anzeigefarbe für Acryl anthrazit (`#3a3d40`) habe ich gewählt; sie ist nicht aus einer
-  Quelle.
 - **Offene Katalogwerte**, die das Veröffentlichen meldet: 3 Größen ohne Grundpreis, 16 Befestigungen ohne
   Preis oder Bohrbild (`dist/daten/stand.json`, Abschnitt `hinweise`).

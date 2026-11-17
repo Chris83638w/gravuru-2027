@@ -3,7 +3,7 @@ import css from './stil.css';
 import {h, s, icon, euro} from './dom.mjs';
 import {buehne as buehneErzeugen} from './buehne.mjs';
 import {schriftLader} from './schriften.mjs';
-import {schriftFamilie, schriftenAnmelden} from '../core/zeichnen.mjs';
+import {schriftFamilie} from '../core/zeichnen.mjs';
 import * as modell from '../core/modell.mjs';
 import {motivAusSvg} from './motiv.mjs';
 import {fotoVorbereiten} from './foto.mjs';
@@ -198,7 +198,7 @@ export async function oeffnen(o) {
   function miniPlatte(g, bef) {
     const pad = Math.max(g.w, g.h) * 0.06;
     const svg = s('svg', {viewBox: `${-pad} ${-pad} ${g.w + 2 * pad} ${g.h + 2 * pad}`});
-    svg.append(s('path', {d: g.d, fill: familie.material.farbe === '#17191b' ? '#2b2f33' : '#c9d0d2', stroke: '#6b7b7f', 'stroke-width': pad * 0.25}));
+    svg.append(s('path', {d: g.d, fill: familie.material.art === 'steel' ? '#c9d0d2' : '#2b2f33', stroke: '#6b7b7f', 'stroke-width': pad * 0.25}));
     for (const [x, y, d] of bef?.l || []) svg.append(s('circle', {cx: x, cy: y, r: Math.max(d / 2, Math.max(g.w, g.h) * 0.035), fill: bef.schraube ? '#4b575a' : '#fff', stroke: '#4b575a', 'stroke-width': pad * 0.2}));
     return svg;
   }
@@ -605,7 +605,6 @@ export async function oeffnen(o) {
     if (geschlossen) return null;
     familie = eintrag.familie;
     schriften = schriftLader(o.basis, eintrag.schriften);
-    schriftenAnmelden(eintrag.schriften);
     buehne = buehneErzeugen({
       familie, basis: o.basis,
       onAuswahl: id => {

@@ -7,32 +7,28 @@ const esc = value => String(value).replace(/[&<>"]/g, c => ({'&': '&amp;', '<': 
 export const schriftFamilie = name => 'gk-' + String(name).toLowerCase().replace(/[^a-z0-9]+/g, '-');
 
 /**
- * Ligaturen und kontextabhängige Buchstabenvarianten sind aus, Unterschneidung ist an.
- * So setzt jeder Browser und die Fertigungsstrecke jeden Buchstaben gleich.
+ * Jeder Buchstabe steht für sich: keine Unterschneidung, keine Ligaturen, keine kontextabhängigen Varianten.
+ * So setzen der bestehende Konfi und die Werkstatt seit jeher (app/workshop/design-preview-glyphs.mjs:
+ * „glyph.a + letterSpacing, no pair kerning“), und so sind alle Designs freigegeben. Mit Unterschneidung
+ * würde Text schmaler laufen – gemessen bis 10 mm auf 300 mm Breite (dev/kontaktbogen.mjs).
+ * Gleiche Regel in der Fertigung (server/fertigung.mjs).
  */
-const TEXT_STIL = 'font-kerning:normal;font-variant-ligatures:none;font-feature-settings:"liga" 0,"clig" 0,"calt" 0;white-space:pre';
-const TEXT_STIL_OHNE = TEXT_STIL.replace('font-kerning:normal', 'font-kerning:none');
-
-/**
- * Schriften, die ohne Unterschneidung gesetzt werden (im Schriftenverzeichnis mit `k: 0` veröffentlicht).
- * Wer zeichnet (Editor, Vorschaubilder), meldet sie hier einmal an.
- */
-const ohneUnterschneidung = new Set();
-export function schriftenAnmelden(verzeichnis) {
-  for (const [name, schrift] of Object.entries(verzeichnis || {})) if (schrift.k === 0) ohneUnterschneidung.add(name);
-}
+const TEXT_STIL = 'font-kerning:none;font-variant-ligatures:none;font-feature-settings:"kern" 0,"liga" 0,"clig" 0,"calt" 0;white-space:pre';
 
 export function textMarkup(el, farbe) {
   const anker = el.anker === 'm' ? 'middle' : el.anker === 'e' ? 'end' : 'start';
   const zeilen = String(el.text).split('\n');
   const abstand = el.lh || el.size * 1.2;
+  // Zeichenabstand: Der Browser hängt ihn auch hinter den letzten Buchstaben und richtet die Zeile samt diesem
+  // Rest aus. Ausgerichtet wird aber – wie im bestehenden Konfi – das Sichtbare, also ohne den Rest.
+  const x = el.x + (el.ls ? el.anker === 'm' ? el.ls / 2 : el.anker === 'e' ? el.ls : 0 : 0);
   const inhalt = zeilen.length === 1
     ? esc(zeilen[0])
-    : zeilen.map((zeile, index) => `<tspan x="${el.x}" y="${el.y + index * abstand}">${esc(zeile) || ' '}</tspan>`).join('');
-  return `<text x="${el.x}" y="${el.y}" font-family="${schriftFamilie(el.font)}" font-size="${el.size}" text-anchor="${anker}"` +
+    : zeilen.map((zeile, index) => `<tspan x="${x}" y="${el.y + index * abstand}">${esc(zeile) || ' '}</tspan>`).join('');
+  return `<text x="${x}" y="${el.y}" font-family="${schriftFamilie(el.font)}" font-size="${el.size}" text-anchor="${anker}"` +
     (el.ls ? ` letter-spacing="${el.ls}"` : '') +
     (el.rot ? ` transform="rotate(${el.rot} ${el.x} ${el.y})"` : '') +
-    ` fill="${farbe}" style='${ohneUnterschneidung.has(el.font) ? TEXT_STIL_OHNE : TEXT_STIL}'>${inhalt}</text>`;
+    ` fill="${farbe}" style='${TEXT_STIL}'>${inhalt}</text>`;
 }
 
 export function motivTransform(el) {

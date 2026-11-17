@@ -15,11 +15,13 @@ const stand = JSON.parse(fs.readFileSync(path.join(wurzel, 'dist/daten/stand.jso
 const satz = schriftSatz(path.join(wurzel, 'dist/fertigung/schriften'));
 const TEXTE = ['Familie Müller', 'Thorsten & Marion', 'Özdemir-Schäfer', 'Hausnummer 12a', 'Weg zum Wald 7', 'Törtchen AVATAR Yvonne'];
 const GROESSE = 10;
+// Jeder Text einmal normal und einmal gesperrt (Zeichenabstand in mm), wie ihn viele Designs für Straßennamen nutzen.
+const ABSTAENDE = [0, 1.2];
 
 const browser = await chromium.launch();
 const page = await browser.newPage();
 await page.goto(basis + '/testshop/');
-const imBrowser = await page.evaluate(async ({schriften, texte, groesse, basis}) => {
+const imBrowser = await page.evaluate(async ({schriften, texte, groesse, basis, abstaende}) => {
   const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
   document.body.append(svg);
   const ergebnis = {};
@@ -27,25 +29,28 @@ const imBrowser = await page.evaluate(async ({schriften, texte, groesse, basis})
     const familie = 'gk-' + name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
     const face = new FontFace(familie, `url(${basis}/daten/${s.u})`);
     await face.load(); document.fonts.add(face);
-    ergebnis[name] = texte.map(t => {
+    ergebnis[name] = abstaende.flatMap(abstand => texte.map(t => {
       const el = document.createElementNS('http://www.w3.org/2000/svg', 'text');
       el.setAttribute('font-family', familie); el.setAttribute('font-size', groesse);
-      el.setAttribute('style', `font-kerning:${s.k === 0 ? 'none' : 'normal'};font-variant-ligatures:none;font-feature-settings:"liga" 0,"clig" 0,"calt" 0;white-space:pre`);
+      if (abstand) el.setAttribute('letter-spacing', abstand);
+      el.setAttribute('style', 'font-kerning:none;font-variant-ligatures:none;font-feature-settings:"kern" 0,"liga" 0,"clig" 0,"calt" 0;white-space:pre');
       el.textContent = t; svg.append(el);
       const w = el.getComputedTextLength(); el.remove(); return w;
-    });
+    }));
   }
   return ergebnis;
-}, {schriften: stand.schriften, texte: TEXTE, groesse: GROESSE, basis});
+}, {schriften: stand.schriften, texte: TEXTE, groesse: GROESSE, basis, abstaende: ABSTAENDE});
 await browser.close();
 
 const zeilen = [];
 for (const [name, breiten] of Object.entries(imBrowser)) {
-  const abweichungen = TEXTE.map((t, i) => satz.zeile(name, t, GROESSE).breite - breiten[i]);
+  const faelle = ABSTAENDE.flatMap(abstand => TEXTE.map(text => ({text, abstand})));
+  const abweichungen = faelle.map((f, i) => satz.zeile(name, f.text, GROESSE, f.abstand).breite - breiten[i]);
   const groesste = abweichungen.reduce((a, b) => Math.abs(b) > Math.abs(a) ? b : a, 0);
-  zeilen.push({name, mm: Number(groesste.toFixed(3)), prozent: Number((100 * groesste / breiten[abweichungen.indexOf(groesste)]).toFixed(2)), text: TEXTE[abweichungen.indexOf(groesste)]});
+  const fall = faelle[abweichungen.indexOf(groesste)] || faelle[0];
+  zeilen.push({name, mm: Number(groesste.toFixed(3)), prozent: Number((100 * groesste / breiten[Math.max(0, abweichungen.indexOf(groesste))]).toFixed(2)), text: fall.text, abstand: fall.abstand});
 }
 zeilen.sort((a, b) => Math.abs(b.mm) - Math.abs(a.mm));
 const ueber = zeilen.filter(z => Math.abs(z.mm) > 0.05);
-console.log(JSON.stringify({schriften: zeilen.length, schriftgroesseMm: GROESSE, gleichBis005mm: zeilen.length - ueber.length, abweichend: ueber.length, groessteAbweichungen: zeilen.slice(0, 12)}, null, 1));
+console.log(JSON.stringify({schriften: zeilen.length, schriftgroesseMm: GROESSE, abstaendeMm: ABSTAENDE, gleichBis005mm: zeilen.length - ueber.length, abweichend: ueber.length, groessteAbweichungen: zeilen.slice(0, 12)}, null, 1));
 fs.writeFileSync(path.join(wurzel, 'dist', 'textbreiten-vergleich.json'), JSON.stringify(zeilen, null, 1));

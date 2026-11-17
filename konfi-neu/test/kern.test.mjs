@@ -311,8 +311,27 @@ test('Bindung: Server nimmt die Shopify-Variante aus der Abgleich-Datei und weis
 });
 
 // ---------------------------------------------------------------- Fertigung
-import {fertigung} from '../server/fertigung.mjs';
+import {fertigung, schriftSatz} from '../server/fertigung.mjs';
+import {textMarkup} from '../core/zeichnen.mjs';
 const erzeugen = fertigung({schriftOrdner: path.join(wurzel, 'dist', 'fertigung', 'schriften')});
+
+test('Textsatz wie im bestehenden Konfi: keine Unterschneidung, Zeichenabstand zählt nicht hinter dem letzten Buchstaben', () => {
+  const satz = schriftSatz(path.join(wurzel, 'dist', 'fertigung', 'schriften'));
+  // Ohne Unterschneidung ist ein Wort genau so breit wie seine Buchstaben einzeln (Cinzel und Lato haben Unterschneidungspaare).
+  for (const font of ['Cinzel', 'Lato']) {
+    const einzeln = [...'WAVE'].reduce((summe, zeichen) => summe + satz.zeile(font, zeichen, 10).breite, 0);
+    assert.ok(Math.abs(satz.zeile(font, 'WAVE', 10).breite - einzeln) < 1e-6, font);
+  }
+  const gesperrt = satz.zeile('Cinzel', 'WEG', 10, 2);
+  assert.ok(Math.abs(gesperrt.breite - (satz.zeile('Cinzel', 'WEG', 10).breite + 3 * 2)) < 1e-6, 'Breite wie im Browser: Abstand hinter jedem Buchstaben');
+  assert.ok(Math.abs(gesperrt.sichtbar - (gesperrt.breite - 2)) < 1e-6, 'ausgerichtet wird ohne den Abstand hinter dem letzten Buchstaben');
+  // Vorschau: derselbe Ausgleich über die x-Lage des Textes.
+  const text = {t: 'text', text: 'WEG', font: 'Cinzel', size: 10, x: 50, y: 20, ls: 2};
+  assert.match(textMarkup({...text, anker: 'm'}, '#000'), /<text x="51" y="20"/);
+  assert.match(textMarkup({...text, anker: 'e'}, '#000'), /<text x="52" y="20"/);
+  assert.match(textMarkup({...text, anker: 's'}, '#000'), /<text x="50" y="20"/);
+  assert.match(textMarkup({...text, anker: 'm'}, '#000'), /font-kerning:none/);
+});
 
 test('Fertigung Edelstahl: Text als Pfade, Kontur blau, Bohrungen rot, maßhaltig', () => {
   const e = eintrag(FREI);

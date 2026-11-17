@@ -22,8 +22,9 @@ import {motivTransform, motivInhalt} from '../core/zeichnen.mjs';
 
 const HAARLINIE = 0.0762;
 const BLAU = '#0000ff', GELB = '#ffff00', ROT = '#ff0000', SCHWARZ = '#000000';
-// Wie in der Vorschau (core/zeichnen.mjs): Unterschneidung an, Ligaturen und kontextabhängige Varianten aus.
-const MERKMALE = ['liga', 'clig', 'calt', 'dlig', 'hlig'].map(tag => new hb.Feature(tag, 0));
+// Wie in der Vorschau (core/zeichnen.mjs) und im bestehenden Konfi: keine Unterschneidung, keine Ligaturen,
+// keine kontextabhängigen Varianten – jeder Buchstabe steht für sich.
+const MERKMALE = ['kern', 'liga', 'clig', 'calt', 'dlig', 'hlig'].map(tag => new hb.Feature(tag, 0));
 
 /** Glyphenumriss aus Schrifteinheiten (y nach oben) in mm an seine Stelle setzen. */
 function umrissSetzen(d, k, x0, y0) {
@@ -45,8 +46,6 @@ export function schriftSatz(schriftOrdner) {
       if (!eintrag) throw new Error('Schrift für die Fertigung fehlt: ' + name);
       const bytes = fs.readFileSync(path.join(schriftOrdner, eintrag.datei));
       const face = new hb.Face(new hb.Blob(bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength)));
-      // Schriften, die ihre Unterschneidung nur in der alten Tabelle „kern“ tragen, werden überall ohne
-      // Unterschneidung gesetzt (publish/schriften.py). Diese HarfBuzz-Fassung wertet die Tabelle ohnehin nicht aus.
       geladen.set(name, {font: new hb.Font(face), upem: face.upem, umrisse: new Map()});
     }
     return geladen.get(name);
@@ -71,7 +70,9 @@ export function schriftSatz(schriftOrdner) {
         x += p.xAdvance * k + abstand;
       });
       buffer.destroy?.();
-      return {breite: x, fehlt: [...fehlt], pfad: (x0, y0) => glyphen.map(g => g.d ? umrissSetzen(g.d, k, x0 + g.x, y0 - g.y) : '').join('')};
+      // `breite` zählt den Zeichenabstand auch hinter dem letzten Buchstaben mit (so misst der Browser),
+      // `sichtbar` nicht: Danach wird ausgerichtet, wie in der Vorschau und im bestehenden Konfi.
+      return {breite: x, sichtbar: glyphen.length ? x - abstand : 0, fehlt: [...fehlt], pfad: (x0, y0) => glyphen.map(g => g.d ? umrissSetzen(g.d, k, x0 + g.x, y0 - g.y) : '').join('')};
     },
   };
 }
@@ -93,7 +94,7 @@ export function fertigung({schriftOrdner}) {
       const zeile = satz.zeile(el.font, text, el.size, el.ls || 0);
       for (const zeichen of zeile.fehlt) fehlt.add(zeichen);
       breiteMax = Math.max(breiteMax, zeile.breite);
-      const start = el.anker === 'm' ? el.x - zeile.breite / 2 : el.anker === 'e' ? el.x - zeile.breite : el.x;
+      const start = el.anker === 'm' ? el.x - zeile.sichtbar / 2 : el.anker === 'e' ? el.x - zeile.sichtbar : el.x;
       d += zeile.pfad(start, el.y + index * abstand);
     });
     const markup = `<path d="${d}"${el.rot ? ` transform="rotate(${el.rot} ${n(el.x)} ${n(el.y)})"` : ''}/>`;

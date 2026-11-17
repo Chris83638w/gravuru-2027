@@ -2,8 +2,11 @@
 // Kontaktbogen „neu neben alt“: Jedes veröffentlichte Design wird in jeder Größe einmal mit dem bestehenden
 // Zeichencode (app/workshop, wie Konfi und Werkstatt) und einmal mit dem Neuaufbau (core/) gezeichnet und vermessen.
 //
-//   node dev/kontaktbogen.mjs --katalog <Katalogordner> [--out dist/kontaktbogen] [--familie a,b] [--grenze n]
-//                             [--schlimmste 40] [--stichprobe 20] [--seiten 4]
+//   node dev/kontaktbogen.mjs --katalog <Katalogordner> [--art platten|klingel] [--out dist/kontaktbogen] [--familie a,b]
+//                             [--grenze n] [--schlimmste 40] [--stichprobe 20] [--seiten 4]
+//
+// --art platten (Standard): Türschilder, Gedenktafeln, Grabstecker. --art klingel: Funkklingelschilder,
+// je Gerät, Format und Klingelposition; dort zeichnet der Bestand über productPreview wie im Konfi.
 //
 // Gemessen wird nur die Gestaltung (Text, Motive, Linien), ohne Platte und ohne Befestigung, beschnitten auf
 // die Platte wie in beiden Vorschauen:
@@ -20,6 +23,9 @@ import {fileURLToPath} from 'node:url';
 import {katalogFor} from '../../app/workshop/design-dashboard.mjs';
 import {designTargets} from '../../app/workshop/design-targets.mjs';
 import {targetDesignPreview} from '../../app/workshop/design-target-preview.mjs';
+import {productPreview} from '../../app/workshop/product-preview.mjs';
+import {loadDoorbellCatalog, buildDoorbellConfig} from '../../scripts/import-doorbell-catalog.mjs';
+import {prepareDoorbellDesignRepair} from '../../scripts/prepare-doorbell-design-repair.mjs';
 
 const require = createRequire(import.meta.url);
 const {chromium} = require('playwright');
@@ -30,7 +36,9 @@ const katalogOrdner = arg('katalog');
 if (!katalogOrdner) { console.error('Aufruf: node dev/kontaktbogen.mjs --katalog <Katalogordner>'); process.exit(1); }
 const root = path.resolve(katalogOrdner);
 const daten = path.join(wurzel, 'dist', 'daten');
-const out = path.resolve(arg('out') || path.join(wurzel, 'dist', 'kontaktbogen'));
+const art = arg('art') || 'platten';
+if (!['platten', 'klingel'].includes(art)) { console.error('--art platten oder klingel'); process.exit(1); }
+const out = path.resolve(arg('out') || path.join(wurzel, 'dist', art === 'klingel' ? 'kontaktbogen-klingel' : 'kontaktbogen'));
 const grenze = Number(arg('grenze') || Infinity);
 const schlimmste = Number(arg('schlimmste') || 40);
 const stichprobe = Number(arg('stichprobe') || 20);
@@ -52,8 +60,15 @@ const auftraege = [];
 const familien = {};
 for (const [id, f] of Object.entries(stand.familien)) {
   const familie = lesen(f.u);
-  if (familie.art === 'klingel' || (nurFamilien && !nurFamilien.has(id))) continue;
+  if ((familie.art === 'klingel') !== (art === 'klingel') || (nurFamilien && !nurFamilien.has(id))) continue;
   familien[id] = familie;
+  if (art === 'klingel') {
+    for (const [schluessel, adresse] of Object.entries(familie.galerie || {})) {
+      const [groesse, position] = schluessel.split('|');
+      for (const d of lesen(adresse).designs) auftraege.push({familie: id, groesse, position, id: d.id, datei: d.u, ein: 0});
+    }
+    continue;
+  }
   for (const [groesse, adresse] of Object.entries(familie.galerie || {})) {
     if (!familie.groessen.some(g => g.k === groesse)) continue; // Größe ohne Preis ist nicht veröffentlicht
     for (const d of lesen(adresse).designs) auftraege.push({familie: id, groesse, id: d.id, datei: d.u, ein: d.ein ? 1 : 0});
@@ -61,7 +76,7 @@ for (const [id, f] of Object.entries(stand.familien)) {
 }
 // Je Familie nach Design sortiert: Der bestehende Zeichner wandelt ein Design einmal um und merkt es sich
 // (batchCache); so folgen alle Größen eines Designs direkt aufeinander.
-auftraege.sort((a, b) => a.familie.localeCompare(b.familie) || a.id.localeCompare(b.id) || a.groesse.localeCompare(b.groesse));
+auftraege.sort((a, b) => a.familie.localeCompare(b.familie) || a.id.localeCompare(b.id) || a.groesse.localeCompare(b.groesse) || String(a.position).localeCompare(String(b.position)));
 if (auftraege.length > grenze) {
   // Gleichmäßig über alle Aufträge verteilt, damit auch ein kurzer Lauf jede Familie berührt.
   const schritt = auftraege.length / grenze;
@@ -77,13 +92,37 @@ function meisterVon(familie, id) {
   if (!meister.has(key)) meister.set(key, katalog.designs.masters.filter(d => d.id === id && designTargets(d, katalog).some(t => t.familie === familie)));
   return meister.get(key);
 }
+// Funkklingeln: dieselbe Aufbereitung wie beim Veröffentlichen (publish/klingel.mjs), gezeichnet vom Bestand.
+let klingelKatalog = null;
+const klingelConfigs = new Map();
+function klingelConfig(modelKey) {
+  if (!klingelConfigs.has(modelKey)) {
+    klingelKatalog ||= loadDoorbellCatalog(path.join(root, 'migrationen', 'funkklingeln-42x3-20261027'));
+    const eintrag = klingelKatalog.entries.find(e => e.modelKey === modelKey);
+    const native = klingelKatalog.bundles.get(modelKey);
+    const basis = buildDoorbellConfig(native, eintrag, {imageSha256: '0'.repeat(64)});
+    const config = prepareDoorbellDesignRepair(basis).input || prepareDoorbellDesignRepair(basis);
+    // Die Zierelemente (Linien, Rahmen) liegen im Katalogpaket des Geräts; ohne sie zeichnet der Bestand nur Text.
+    klingelConfigs.set(modelKey, {...config, localResources: {...config.localResources, motifs: native.localResources?.motifs || []}});
+  }
+  return klingelConfigs.get(modelKey);
+}
+function altKlingel(auftrag) {
+  try {
+    const design = lesen(auftrag.datei);
+    const svg = productPreview({universal: klingelConfig(auftrag.familie.replace(/^fk-/, ''))},
+      {options: {format: auftrag.groesse, color: 'schwarz', frame: design.rahmen || 'FK-RUNDUM', mounting: 'K00', position: auftrag.position}, designId: auftrag.id.split('~').at(-1)});
+    return {svg, status: null};
+  } catch (error) { return {fehler: String(error.message).slice(0, 200)}; }
+}
 async function altZeichnen(auftrag) {
+  if (art === 'klingel') return altKlingel(auftrag);
   const treffer = meisterVon(auftrag.familie, auftrag.id);
   if (treffer.length !== 1) return {fehler: treffer.length ? 'Design-ID im Katalog mehrfach' : 'Design im Katalog nicht gefunden'};
   const family = katalog.families.get(auftrag.familie);
   const preview = {designArea: false, ...(family.withoutMounting ? {options: {mounting: 'K00'}, mountingPlacement: true} : {})};
   try {
-    const r = await targetDesignPreview(root, {reihe: treffer[0].seriesFolder, id: auftrag.id, familie: auftrag.familie, size: auftrag.groesse}, {katalog, preview, batchCache});
+    const r = await targetDesignPreview(root, {reihe: treffer[0].seriesFolder, id: auftrag.id, familie: auftrag.familie, size: auftrag.groesse}, {katalog, preview, batchCache, singleSizeReview: true}); // nur diese Größe prüfen, nicht jedes Mal alle
     return r.svg ? {svg: r.svg, status: r.fit.status, hinweise: r.fit.issues} : {fehler: r.fit.issues.at(-1) || 'keine Vorschau', status: r.fit.status};
   } catch (error) { return {fehler: String(error.message).slice(0, 200)}; }
 }
@@ -101,7 +140,7 @@ await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
 const basis = `http://127.0.0.1:${server.address().port}`;
 
 const SEITE = `
-  import {gestaltungSvg, elementMarkup, schriftFamilie} from '/core/zeichnen.mjs';
+  import {gestaltungSvg, elementMarkup, schriftFamilie, szene} from '/core/zeichnen.mjs';
   import {elementeAusDesign} from '/core/modell.mjs';
   const TOLERANZ_MM = 0.5;
   const cache = new Map();
@@ -112,7 +151,7 @@ const SEITE = `
   async function bildVon(svg) { const bild = new Image(); bild.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg); await bild.decode(); return bild; }
 
   // Nur die Gestaltung der bestehenden Vorschau: Platte, Befestigung und Hilfslinien fallen weg.
-  function altNurGestaltung(altSvg, w, h, breite, hoehe, fotoIds = []) {
+  function altNurGestaltung(altSvg, w, h, breite, hoehe, fotoIds = [], mitFarbfilter = false) {
     const doc = new DOMParser().parseFromString(altSvg, 'image/svg+xml');
     const svg = doc.documentElement;
     for (const kind of [...svg.children]) {
@@ -123,6 +162,10 @@ const SEITE = `
     for (const el of svg.querySelectorAll('[data-role="guide"],[data-design-area],[data-keepout]')) el.remove();
     // Der Milchglas-Effekt der Rückseitengravur ist nur Anzeige und verbreitert die Kanten.
     for (const el of svg.querySelectorAll('[data-preview-rear-engraving]')) el.removeAttribute('filter');
+    // Der Farbfilter der Zierelemente färbt nur um. Auf einer rein waagerechten oder senkrechten Linie blendet
+    // der Browser damit aber das ganze Element aus (Filterfläche ohne Höhe). Gemessen wird die Geometrie, also
+    // ohne Filter; mitFarbfilter zeigt, was die bestehende Vorschau tatsächlich darstellt.
+    if (!mitFarbfilter) for (const el of svg.querySelectorAll('[data-object] [filter]')) el.removeAttribute('filter');
     const objekte = svg.querySelectorAll('[data-object]').length;
     const fotos = {};
     for (const id of fotoIds) {
@@ -135,10 +178,11 @@ const SEITE = `
     svg.setAttribute('viewBox', '0 0 ' + w + ' ' + h); svg.setAttribute('width', breite); svg.setAttribute('height', hoehe);
     return {svg: new XMLSerializer().serializeToString(svg), objekte, fotos};
   }
-  // Gestaltung des Neuaufbaus ohne Fotofelder, auf die Platte beschnitten wie in gestaltungSvg.
-  const neuNurGestaltung = (els, groesse, css, breite, hoehe) =>
+  // Gestaltung des Neuaufbaus ohne Fotofelder, beschnitten wie in gestaltungSvg: auf die Platte, bei
+  // Funkklingeln auf die Acrylfläche des gewählten Rahmens.
+  const neuNurGestaltung = (els, groesse, css, breite, hoehe, flaeche) =>
     '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + groesse.w + ' ' + groesse.h + '" width="' + breite + '" height="' + hoehe + '"><style>' + css + '</style>' +
-    '<clipPath id="p"><path d="' + groesse.d + '"/></clipPath><g clip-path="url(#p)">' + els.filter(el => el.t !== 'foto').map(el => elementMarkup(el, '#000', 'n')).join('') + '</g></svg>';
+    '<clipPath id="p"><path d="' + flaeche + '"/></clipPath><g clip-path="url(#p)">' + els.filter(el => el.t !== 'foto').map(el => elementMarkup(el, '#000', 'n')).join('') + '</g></svg>';
 
   function maske(bild, breite, hoehe) {
     const canvas = new OffscreenCanvas(breite, hoehe);
@@ -170,11 +214,12 @@ const SEITE = `
     const groesse = familie.groessen.find(g => g.k === auftrag.groesse);
     const css = (await Promise.all(design.schriften.map(name => schriftCss(schriften, name)))).join('');
     const els = elementeAusDesign(design, groesse, Boolean(auftrag.ein));
-    return {familie, design, groesse, css, els};
+    const opt = familie.optionen ? Object.fromEntries(familie.optionen.map(o => [o.k, o.k === 'position' && auftrag.position ? auftrag.position : o.k === 'rahmen' && design.rahmen ? design.rahmen : o.werte[0].k])) : undefined;
+    return {familie, design, groesse, css, els, opt, flaeche: szene(familie, groesse, {opt}).flaeche};
   }
 
   window.vergleiche = async job => {
-    const {design, groesse, css, els} = await vorbereiten(job);
+    const {design, groesse, css, els, flaeche} = await vorbereiten(job);
     const {w, h} = groesse;
     // Auflösung: mindestens 3, höchstens 8 Pixel je mm; große Platten nie über 1,5 Mio. Pixel.
     let s = Math.min(8, Math.max(3, 1600 / Math.max(w, h)));
@@ -183,8 +228,13 @@ const SEITE = `
     const fotoEls = els.filter(el => el.t === 'foto');
     const alt = altNurGestaltung(job.altSvg, w, h, breite, hoehe, fotoEls.map(el => el.id));
     const a = maske(await bildVon(alt.svg), breite, hoehe);
-    const b = maske(await bildVon(neuNurGestaltung(els, groesse, css, breite, hoehe)), breite, hoehe);
+    const b = maske(await bildVon(neuNurGestaltung(els, groesse, css, breite, hoehe, flaeche)), breite, hoehe);
     const mess = {px: +s.toFixed(2), elemente: [alt.objekte, els.length], schriften: design.schriften};
+    // Zeigt die bestehende Vorschau weniger, als im Design steht? (Anteil der Gravurfläche, der dort fehlt.)
+    if (a.n) {
+      const gezeigt = maske(await bildVon(altNurGestaltung(job.altSvg, w, h, breite, hoehe, fotoEls.map(el => el.id), true).svg), breite, hoehe);
+      if (gezeigt.n < a.n * 0.98) mess.altZeigtNicht = +(1 - gezeigt.n / a.n).toFixed(3);
+    }
     // Fotofelder: Lage und Größe des Feldes.
     if (fotoEls.length) {
       let fotoKante = 0, fehlt = 0;
@@ -213,7 +263,7 @@ const SEITE = `
 
   // Bilder für den Bogen: alt und neu so, wie sie der Kunde sieht, dazu die Überlagerung (alt rot, neu blau, deckungsgleich dunkel).
   window.bilder = async (job, zielBreite) => {
-    const {familie, groesse, css, els} = await vorbereiten(job);
+    const {familie, design, groesse, css, els, opt, flaeche} = await vorbereiten(job);
     const {w, h} = groesse;
     const webp = async (bild, breite, hoehe, malen) => { const c = new OffscreenCanvas(breite, hoehe); const ctx = c.getContext('2d'); malen ? malen(ctx) : ctx.drawImage(bild, 0, 0, breite, hoehe);
       const blob = await c.convertToBlob({type: 'image/webp', quality: 0.82}); return new Promise(ok => { const fr = new FileReader(); fr.onload = () => ok(fr.result.split(',')[1]); fr.readAsDataURL(blob); }); };
@@ -221,11 +271,12 @@ const SEITE = `
     const material = {...familie.material};
     if (material.textur) material.textur = await dataUrl('/daten/' + material.textur);
     delete material.schraube;
-    const opt = familie.optionen ? Object.fromEntries(familie.optionen.map(o => [o.k, o.werte[0].k])) : undefined;
-    const neuBild = await bildVon(gestaltungSvg({groesse: groesse.k, bef: groesse.bef[0].id, opt, els}, {...familie, material}, {schriftCss: css, breite: zielBreite, rand: 0.05}));
+    if (material.stahl?.textur) material.stahl = {...material.stahl, textur: await dataUrl('/daten/' + material.stahl.textur)};
+    const geraet = familie.geraet?.bild ? {...familie.geraet, bild: await dataUrl('/daten/' + familie.geraet.bild)} : familie.geraet;
+    const neuBild = await bildVon(gestaltungSvg({groesse: groesse.k, bef: groesse.bef[0].id, opt, els}, {...familie, material, geraet}, {schriftCss: css, breite: zielBreite, rand: 0.05}));
     const breite = zielBreite, hoehe = Math.round(zielBreite * h / w);
     const alt = altNurGestaltung(job.altSvg, w, h, breite, hoehe, els.filter(el => el.t === 'foto').map(el => el.id));
-    const a = maske(await bildVon(alt.svg), breite, hoehe), b = maske(await bildVon(neuNurGestaltung(els, groesse, css, breite, hoehe)), breite, hoehe);
+    const a = maske(await bildVon(alt.svg), breite, hoehe), b = maske(await bildVon(neuNurGestaltung(els, groesse, css, breite, hoehe, flaeche)), breite, hoehe);
     const ueber = await webp(null, breite, hoehe, ctx => {
       const bild = ctx.createImageData(breite, hoehe);
       for (let i = 0; i < a.m.length; i++) { const f = a.m[i] && b.m[i] ? [40, 40, 40] : a.m[i] ? [220, 38, 38] : b.m[i] ? [37, 99, 235] : [255, 255, 255]; bild.data.set([...f, 255], i * 4); }
@@ -262,7 +313,7 @@ async function arbeiter(page) {
       catch (error) { mess = {fehler: 'neu: ' + String(error.message).split('\n')[0].slice(0, 200)}; }
     }
     ergebnisse[i] = {...auftrag, altStatus: alt.status || null, ...mess, stufe: mess.fehler ? 'fehler' : stufe(mess)};
-    if (++erledigt % 2000 === 0) console.log(`… ${erledigt}/${auftraege.length} (${Math.round((Date.now() - started) / 1000)} s)`);
+    if (++erledigt % 500 === 0) { fs.mkdirSync(out, {recursive: true}); fs.writeFileSync(path.join(out, 'fortschritt.json'), JSON.stringify({erledigt, von: auftraege.length, sekunden: Math.round((Date.now() - started) / 1000)})); }
   }
 }
 await Promise.all(seiten.map(arbeiter));
@@ -290,6 +341,8 @@ const zusammenfassung = {
   gesamt: kennzahlen(ergebnisse), jeFamilie,
   jeSchrift: Object.fromEntries(Object.entries(jeSchrift).sort((a, b) => (b[1].abweichung / b[1].paare) - (a[1].abweichung / a[1].paare))),
   fehler: ergebnisse.filter(r => r.fehler).reduce((a, r) => (a[r.fehler] = (a[r.fehler] || 0) + 1, a), {}),
+  // Paare, bei denen die bestehende Vorschau Teile der Gravur nicht zeigt (z. B. waagerechte Zierlinien).
+  altZeigtNicht: {paare: ergebnisse.filter(r => r.altZeigtNicht).length, designs: [...new Set(ergebnisse.filter(r => r.altZeigtNicht).map(r => r.id.split('~').at(-1) + (r.position ? ' ' + r.groesse : '')))].sort().slice(0, 60)},
   sekunden: Math.round((Date.now() - started) / 1000),
 };
 fs.mkdirSync(out, {recursive: true});
@@ -320,7 +373,7 @@ async function bildArbeiter(page) {
     if (alt.fehler) continue;
     try {
       const b = await page.evaluate(([job, breite]) => window.bilder(job, breite), [{auftrag: {...r, familieDatei: stand.familien[r.familie].u}, altSvg: alt.svg, schriften: stand.schriften}, 420]);
-      const name = (r.groesse + '__' + r.id).replace(/[^\w.-]+/g, '_');
+      const name = (r.groesse + (r.position ? '-' + r.position : '') + '__' + r.id).replace(/[^\w.-]+/g, '_');
       const ordner = path.join(out, r.familie);
       fs.mkdirSync(ordner, {recursive: true});
       for (const art of ['alt', 'neu', 'ueber']) fs.writeFileSync(path.join(ordner, `${name}.${art}.webp`), Buffer.from(b[art], 'base64'));
@@ -337,8 +390,8 @@ const stil = 'body{font:13px system-ui,sans-serif;margin:24px;background:#fff;co
   '.reihe div{background:#f2f2f2;text-align:center}.reihe img{max-width:100%;max-height:220px;display:block;margin:auto}.reihe small{display:block;color:#777;padding:2px}' +
   'figcaption{margin-top:6px}figcaption i{font-style:normal;color:#fff;border-radius:3px;padding:1px 6px;margin-left:6px}table{border-collapse:collapse;margin:8px 0 14px}td,th{border:1px solid #ddd;padding:3px 8px;text-align:right}th:first-child,td:first-child{text-align:left}';
 const karte = r => `<figure><div class="reihe">${r.bild ? ['alt', 'neu', 'ueber'].map((art, i) => `<div><img loading="lazy" src="${esc(r.familie + '/' + r.bild + '.' + art + '.webp')}"><small>${['bisher', 'neu', 'Überlagerung'][i]}</small></div>`).join('') : `<div>${esc(r.fehler || r.bildFehler || 'kein Bild')}</div>`}</div>` +
-  `<figcaption><b>${esc(r.id)}</b> · ${esc(r.groesse)}<i style="background:${farbe[r.stufe]}">${esc(r.stufe)}</i><br>` +
-  (r.fehler ? esc(r.fehler) : `Kante ${mm(r.kante)} · daneben ${prozent(r.daneben)}${r.leer ? ' · leer: ' + esc(r.leer) : ''} · ${esc((r.schriften || []).join(', '))}${r.ein ? ' · eingepasst' : ''}${r.foto ? ' · Fotofeld ' + mm(r.fotoKante) : ''}`) + '</figcaption></figure>';
+  `<figcaption><b>${esc(r.id)}</b> · ${esc(r.groesse)}${r.position ? ' · ' + esc(r.position) : ''}<i style="background:${farbe[r.stufe]}">${esc(r.stufe)}</i><br>` +
+  (r.fehler ? esc(r.fehler) : `Kante ${mm(r.kante)} · daneben ${prozent(r.daneben)}${r.leer ? ' · leer: ' + esc(r.leer) : ''} · ${esc((r.schriften || []).join(', '))}${r.ein ? ' · eingepasst' : ''}${r.foto ? ' · Fotofeld ' + mm(r.fotoKante) : ''}${r.altZeigtNicht ? ' · bisherige Vorschau zeigt ' + prozent(r.altZeigtNicht) + ' der Gravur nicht' : ''}`) + '</figcaption></figure>';
 const tabelle = k => `<table><tr><th>Paare</th><th>gleich</th><th>klein</th><th>Abweichung</th><th>leer</th><th>Fehler</th><th>Kante Median</th><th>Kante 95 %</th><th>Kante größte</th></tr>` +
   `<tr><td>${k.paare}</td><td>${k.stufen.gleich || 0}</td><td>${k.stufen.klein || 0}</td><td>${k.stufen.abweichung || 0}</td><td>${k.stufen.leer || 0}</td><td>${k.stufen.fehler || 0}</td><td>${mm(k.kanteMm.median)}</td><td>${mm(k.kanteMm.p95)}</td><td>${mm(k.kanteMm.max)}</td></tr></table>`;
 const erklaerung = `<p>„Kante“: größte Abweichung der Außenkanten der Gestaltung. „daneben“: Anteil der Gravurfläche, der mehr als 0,5 mm neben der anderen Fassung liegt. ` +

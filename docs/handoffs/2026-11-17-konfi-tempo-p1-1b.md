@@ -2,6 +2,8 @@
 
 17.11.2026 · Astra (Codex) · [PR #255](https://github.com/Chris83638w/gravuru-2027/pull/255), [Auftrag #254](https://github.com/Chris83638w/gravuru-2027/issues/254). Basis dieser Ergänzung `13c3a1e65c59522f91ad786e60afb0eb55d0b9a0`; darin Runtime identisch zum von Claude eingespielten B1-Stand `9af3a1ac`. Runtime 1b: `9f57118a1a1e54f7896162e92edb546322f957e4`; erweiterter Messrunner: `b169fcf09a3074d8ef2742ab44b7b7f159218903`.
 
+**Aktueller Stand nach späterer Freigabe:** Chris hat anschließend ausdrücklich „live für 1b“ erteilt, auch direkt im Claude-Chat. Das begrenzte Messfenster ist beendet, live läuft wieder `9af3a1ac`; siehe [Messfenster und Rückstellung](#messfenster-und-rückstellung). Die folgenden Auftrags-/Reviewabschnitte dokumentieren den Stand vor dieser Freigabe.
+
 ## Auftrag und Grenzen
 
 Chris hat auf Claudes Vorschlag 1b direkt „dann antworte und mach weiter“ geantwortet. Astra hat den Beginn hier und direkt im Claude-Tab angekündigt. [Claudes Anforderungen](https://github.com/Chris83638w/gravuru-2027/pull/255#issuecomment-6950093609) wurden einschließlich seiner anschließenden GC-Präzisierung im Tab umgesetzt. Der bestehende P1-Branch bleibt `dev/astra-konfi-tempo-p1-20261117`, Zielbranch `dev/claude-warenkorb-v4-20261116`, nicht main.
@@ -107,3 +109,66 @@ Claude hat diese Präzisierungen anschließend direkt im Tab vollständig bestä
 Claudes Vorschlag, 1b später für drei echte Läufe in einem begrenzten Messfenster einzuspielen und anschließend auf `9af3a1ac` zurückzuschalten, ist **keine Freigabe und kein beschlossener Betriebsablauf**. Der aktuelle Nutzerauftrag verbietet Live-Eingriffe. Kein Merge, Restart oder Deployment; V2/V3 nicht begonnen. Die Runtime bleibt nach dem Review unverändert. Dieser Abschluss aktualisiert nur Dokumentation; Tests und Vergleich nicht ohne Codeänderung wiederholt, `git diff --check` erneut grün.
 
 Der nächste mögliche Schritt außerhalb dieses abgeschlossenen Code-/Reviewauftrags ist eine Entscheidung von Chris über eine echte 1b-Messung und deren Umgang mit dem offenen Logbetrieb. Bis dahin keine Live-Aktion. Die Diagnose kann Hosting-/Daten-/CPU-Ursachen eingrenzen, stellt sie vor diesem realen Messlauf aber nicht fest.
+
+## Messfenster und Rückstellung
+
+**17.11.2026, Claude als Operator, Astra koordiniert und prüft den Zahlenbeleg.** Chris' ausdrückliches „live für 1b“ hier und anschließend direkt im Claude-Chat galt für den geprüften Stand, drei vollständige Warenkorb-Durchläufe und Rückstellung auf `9af3a1ac`. [Freigabe weitergegeben](https://github.com/Chris83638w/gravuru-2027/pull/255#issuecomment-6950795697), [Claudes Durchführung und Messbericht](https://github.com/Chris83638w/gravuru-2027/pull/255#issuecomment-6951203968), [bereinigter Beleg und Präzisierungen](https://github.com/Chris83638w/gravuru-2027/pull/255#issuecomment-6951476656). Kein Merge, keine Bestellung, V2/V3 nicht begonnen. Die Freigabe war kein Auftrag für den später vorgeschlagenen Umbau.
+
+### Durchführung und belegter Rückweg
+
+Zeiten UTC, vom Operator gemeldet; kein eigener zweiter Serverzugriff durch Astra:
+
+- 14:29:49: bisheriger Startdatei-Hash `d02d874a…` bestätigt, `stderr.log` 106.941 Bytes.
+- 14:30:29: Kandidat `e447a859` eingerichtet; 1.898 Dateien, davon 16 aus dem Paket, Rücklesen gleich, keine fremden Dateien. Runtime identisch mit dem von Claude geprüften `68515bf5`.
+- Ca. 14:31: Umschaltung, Startdatei `59cfa21b…`, Sicherung `app.cjs.bak-20261117-1b`, Neustart. Editor-Paket unverändert.
+- 14:31:41–14:35:04: drei vollständige Durchläufe. Danach Log 208.592 Bytes.
+- Ca. 14:36: Rückstellung, Startdatei wieder `d02d874a…`, Rücklesen gleich, Neustart.
+- 14:36:45–14:37:59: Kontrolllauf auf `9af3a1ac`, wieder Logformat Version 1 und korrekter Warenkorb. Danach Log 215.141 Bytes.
+
+Claude bestätigt abschließend: **live wieder `9af3a1ac`, keine weitere Live-Aktion läuft**. Anschließend wurde nur das vorhandene Log lesend für den Beleg ausgewertet. Keine Änderung an Rotation, Kapazitätsgrenzen oder Konfi-Oberfläche. Paket/Rückweg liegen laut Claude privat unter `private/claude-1b-20261117/`.
+
+### Messwerte im gleichen Handy-Profil
+
+Chrome/Playwright, 390×844, CPU ×4, ohne Netzdrosselung; öffentliches Produkt `familienschild-acryl-baum-12x8-personalisiert`, eigene Testgestaltung. Start: letzter Klick „Jetzt in den Warenkorb“. Ende: geladene Warenkorbseite. Alle vier Läufe enthalten genau eine Position, Menge 1, 1.499 Cent und ein geladenes Shopify-CDN-Bild. Keine Bestellung.
+
+| Lauf | Bis geladener Warenkorb, ms |
+| --- | ---: |
+| 1b / 1 | 23.868 |
+| 1b / 2 | 21.726 |
+| 1b / 3 | 22.579 |
+| Nach Rückstellung | 22.597 |
+
+Median 1b **22.579 ms**. Das Ziel unter 5 s ist nicht erreicht. Die Kontrolle belegt den funktionierenden Rückweg; ein einzelner Kontrolllauf ist kein statistischer Nachweis identischer Geschwindigkeit oder eines Verbesserungsgewinns.
+
+| Anfrage | Median Handler, ms | Median User-CPU, ms | Median System-CPU, ms |
+| --- | ---: | ---: | ---: |
+| Entwurf | 4.706,95 | 6.540,53 | 1.084,34 |
+| Übergabe | 2.564,47 | 3.035,57 | 1.059,95 |
+| Daten | 5.946,89 | 5.255,18 | 1.585,91 |
+| Claim | 2.595,34 | 2.419,84 | 1.088,02 |
+| Hintergrundbild | 5.186,46 | 3.875,27 | 1.155,50 |
+
+CPU-Spalten sind separat berechnete Mediane prozessweiter Werte, keine exklusive Anfragezeit. Hintergrundfenster und Vordergrund können überlappen; Werte weder zu einer Gesamtlaufzeit noch zu exklusiver Gesamt-CPU addieren.
+
+### Belastbare Befunde und Grenzen
+
+Die Zähler sind in allen drei Läufen gleich. Produktdokument: **31.205.183 Bytes pro instrumentierter Lesung**, 21 Lesungen über `repository` und 12 über die Registry, insgesamt **33 / 1.029.771.039 zurückgegebene Dokumentbytes pro Übergabe**. Das ist kein gemessener physischer Plattenverkehr. In `theme-cart` werden 33.882 Bindungskandidaten untersucht. Das Prüfstandpaket umfasst 37.393.764 Bytes und wird in drei Anfragen gelesen. Fünf vollständige Angebotsauflösungen bleiben vorhanden; keine Prüfung wurde für die Messung entfernt.
+
+Feine Messpunkte zeigen erhebliche Zeiten beim Prüfen der Registry, Lesen der Produktrevision, kanonischen Serialisieren und Hashen; zusätzlich beim Prüfstand/ZIP und bei der Bildbereitstellung. Beispielsweise Median `theme-cart`: `offer_resolve` 1.036 ms, `registry_document_digest` 825 ms; `cart/data`: `checkout_image_wait` 2.853 ms. Verschachtelte Werte nicht addieren; asynchrone Shopify-Abschnitte enthalten auch Verzögerungen durch parallele blockierende Handler.
+
+Die hohe Prozess-CPU und Datenmengen **stützen** die Hypothese aufwendiger Verarbeitung großer Dokumente. Geringes `fsRead` und `majorPageFault` 0 schließen Scheduling/Drosselung und Speicher-/Cache-Zugriffe nicht aus. Der Abstand zum kleinen lokalen Muster ist ohne kontrollierten Lauf mit gleich großen Daten nicht kausal bewiesen. Warum das Produktdokument 31,2 MB groß ist, wurde nicht untersucht. Ein Produkt / drei Läufe, keine Aussage zu mehreren gleichzeitigen Kunden, anderen Produkten oder Mobilfunk.
+
+RSS im kompakten Beleg **1.711.296.512–2.532.872.192 Bytes**: Prozessspeicher während einer Testsitzung, kein Mehrverbrauch je Kunde. PMEM 4G ist lediglich der historische Eintrag vom 27.10. in `ENTSCHEIDUNGEN.md` 2.1, kein neu bestätigtes Serverlimit. GC-Zusammenfassungen enthalten 10–39 Einträge mit 124,66–319,54 ms beobachteter Dauer je Fenster; überlappende Fenster können dieselben Einträge enthalten.
+
+### Belegprüfung und offene Punkte
+
+Claude commitete [live-sanitized.json](../measurements/2026-11-17-konfi-tempo-p1-1b/live-sanitized.json) als einzigen Dateizuwachs in `b55ed466a56f306e7b9924c6847ef261bd119291`. **Kompakte Auszüge**, keine vollständigen Originalereignisse: traceIds auf 8 Zeichen gekürzt; GC nur bereits zugeordnete Anzahl/Dauer/Fenster, nicht 15 getrennte Original-GC-Zeilen; Serverdaten des Kontrolllaufs nur gerundete Notiz. Originale bleiben im Serverlog. Die notierten Hashes gehören den kompakten JSON-Zeilen, nicht den Original-Logzeilen. Claude hat deren Übereinstimmung mit seiner Serverausgabe geprüft.
+
+Astra hat lokal alle **15/15 Längen und SHA-256-Hashes** neu berechnet, 15 eindeutige Präfixe, **12/12 Browser-/Server-Paare** auf traceId, Status und `totalMs` geprüft, Hintergrund-Elternzuordnung geprüft, 33 Lesungen und Byte-Summen in jedem Lauf nachgerechnet. Alle enthaltenen Schritt-Fehlerzähler null, maximal 48 Schritte und 15 zugeordnete GC-Zusammenfassungen. Diese Prüfung bestätigt die Konsistenz des gelieferten Auszugs, ersetzt keine unabhängige erneute Abfrage der Originale. Keine Runtime geändert; keine Wiederholung der bereits grünen 159 Tests für reine Dokumentation. `git diff --check` grün.
+
+- **B4 offen:** Rotation von `stderr.log` nicht nachgewiesen; Zuwachs im 1b-Fenster **101.651 Bytes** für drei Übergaben. Log blieb über beide Neustarts erhalten. Keine Betriebsregel erfunden.
+- **H1 offen:** Zähler verworfener Diagnoseabschnitte bleibt spätere Verbesserung; gemessen höchstens 48, bestehende Grenze 64 nicht erreicht.
+- Claude meldet sechs eigene Test-Entwürfe über den heutigen Tag (zwei frühere, drei im Fenster, ein Kontrolllauf), ungefähr 224 MB Pakete. **Nicht gelöscht**, keine Datenbanken oder Entwurfsinhalte ins Repo aufgenommen.
+- Claudes Vorschläge (Dokument innerhalb einer Anfrage wiederverwenden, Bild/Sichern früher starten, große Dokumente/Pakete untersuchen und verkleinern) sind **nicht beauftragt**. V2/V3, P2/P3 bleiben unbegonnen; P4 nicht beauftragt.
+
+**Genau nächster Schritt:** Chris entscheidet über das nächste Umsetzungspaket anhand dieser Messung. Bis dahin keine neue Code- oder Live-Änderung; das freigegebene 1b-Messfenster ist abgeschlossen.

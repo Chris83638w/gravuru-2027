@@ -21,6 +21,7 @@ import {spawnSync} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
 import * as katalogAdapter from './katalog-adapter.mjs';
 import {kompaktPfad} from '../core/pfad.mjs';
+import {klingelnVeroeffentlichen} from './klingel.mjs';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const args = parseArgs(process.argv.slice(2));
@@ -63,6 +64,16 @@ for (const font of fontList) {
     continue;
   }
   fontJob.fonts.push({name: font.name, file, ofl: /Open Font License/i.test(font.license || '') && fs.existsSync(path.join(path.dirname(file), 'OFL.txt'))});
+}
+// Schriften, die nur als Glyphendaten des Bestands vorliegen (Funkklingel-Designs): aus den Umrissen bauen.
+const glyphenOrdner = path.join(root, 'migrationen', 'funkklingeln-42x3-20261027', 'legacy-resources');
+if (fs.existsSync(glyphenOrdner)) {
+  for (const file of fs.readdirSync(glyphenOrdner)) {
+    const name = /^fk26-fonts--(.+)\.json$/.exec(file)?.[1];
+    if (!name || fontJob.fonts.some(f => f.name === name)) continue;
+    fontJob.fonts.push({name, glyphs: path.join(glyphenOrdner, file)});
+    hinweise.push({art: 'schrift-aus-glyphen', name, grund: 'keine Schriftdatei im Katalog; aus den Glyphendaten des Bestands gebaut (Lizenznachweis laut Katalog offen)'});
+  }
 }
 const fontRun = spawnSync('python3', [path.join(here, 'schriften.py')], {input: JSON.stringify(fontJob), encoding: 'utf8', maxBuffer: 64e6});
 if (fontRun.status !== 0) throw new Error('Schriften: ' + fontRun.stderr);
@@ -287,16 +298,20 @@ if (args.produkte) {
   }
 }
 
+// ---------------------------------------------------------------- Funkklingelschilder
+const klingeln = klingelnVeroeffentlichen({katalogRoot: root, appRoot, schriften, writeHashed, bildVeroeffentlichen, hinweise, slug, regelQuelle, standKennung, motivIndex, out});
+Object.assign(produkte, klingeln.produkte);
+
 // ---------------------------------------------------------------- Inhaltsverzeichnis
 const dirSize = dir => fs.existsSync(dir) ? fs.readdirSync(dir, {recursive: true, withFileTypes: true}).filter(e => e.isFile()).reduce((sum, e) => sum + fs.statSync(path.join(e.parentPath, e.name)).size, 0) : 0;
 const stand = {
   v: 1, stand: standKennung, erzeugt: new Date().toISOString(), katalog: path.basename(root),
   schriften, motive: motivIndex,
-  familien: Object.fromEntries(Object.entries(familien).map(([id, f]) => [id, {u: f.u, designs: f.designs, groessen: f.groessen}])),
+  familien: {...Object.fromEntries(Object.entries(familien).map(([id, f]) => [id, {u: f.u, designs: f.designs, groessen: f.groessen}])), ...klingeln.familien},
   produkte,
   zaehler: {
     schriften: Object.keys(schriften).length, motive: motive.length, designs: [...designCache.values()].filter(Boolean).length,
-    familien: Object.keys(familien).length, produkte: Object.keys(produkte).length, hinweise: hinweise.length,
+    familien: Object.keys(familien).length, klingelGeraete: Object.keys(klingeln.familien).length, klingelDesigns: klingeln.designs, produkte: Object.keys(produkte).length, hinweise: hinweise.length,
     bytes: {schriften: dirSize(path.join(out, 's')), motive: dirSize(path.join(out, 'm')), designs: dirSize(path.join(out, 'd')), gesamt: dirSize(out)},
     sekunden: round((Date.now() - started) / 1000, 1),
   },

@@ -64,7 +64,7 @@ export function kern(k) {
     }
     // Nur das Ergebnis dieser Rechnung zählt, nicht der Preis aus dem Browser.
     const preis = modell.preis(zustand, familie, eintrag.regeln || {});
-    const sku = `${groesse.k}-${zustand.bef}`;
+    const sku = modell.variantenSchluessel(familie, zustand);
     const gebunden = k.bindung ? k.bindung[`${eintrag.key}|${sku}`] : {variante: sku};
     if (!gebunden) throw new Fehler(409, 'nicht_gebunden', 'Diese Ausführung ist im Shop gerade nicht bestellbar.');
 
@@ -82,8 +82,10 @@ export function kern(k) {
     const staffel = staffelText(familie.staffel || eintrag.regeln?.staffel);
     const ablauf = Math.floor(jetzt() / 1000) + ANGEBOT_TAGE * 86400;
     const eigenschaften = {
-      Format: `${familie.material.name} · ${groesse.n}`,
+      Format: `${familie.art === 'klingel' ? familie.name : familie.material.name} · ${groesse.n}`,
     };
+    // Die Klingelposition ist keine Shop-Variante und muss deshalb in der Zeile stehen.
+    if (familie.art === 'klingel') eigenschaften.Klingelposition = groesse.kl.posNamen[zustand.opt.position];
     modell.texteVon(zustand).slice(0, 30).forEach((text, index) => { eigenschaften[index ? `Gravurtext ${index + 1}` : 'Gravurtext'] = text.replace(/\s*\n\s*/g, ' / ').slice(0, 240); });
     Object.assign(eigenschaften, {
       _gravuru: kennung,
@@ -100,6 +102,7 @@ export function kern(k) {
     const text = (wert, max) => typeof wert === 'string' && wert.length <= max;
     if (!z || z.v !== modell.VERSION || !text(z.produkt, 80) || !text(z.familie, 120) || !text(z.groesse, 120) || !text(z.bef, 40) || !Array.isArray(z.els) || z.els.length > 40) throw new Fehler(422, 'zustand');
     if (!zahl(z.menge, 1, 99) || !Number.isInteger(z.menge)) throw new Fehler(422, 'menge', 'Die Menge muss zwischen 1 und 99 liegen.');
+    if (z.opt != null && (typeof z.opt !== 'object' || Array.isArray(z.opt) || Object.keys(z.opt).length > 8 || !Object.entries(z.opt).every(([name, wert]) => text(name, 40) && text(wert, 40)))) throw new Fehler(422, 'optionen');
     const ids = new Set();
     for (const el of z.els) {
       if (!el || !text(el.id, 80) || ids.has(el.id) || !zahl(el.x, -2000, 4000) || !zahl(el.y, -2000, 4000) || !zahl(el.rot ?? 0, -360, 360)) throw new Fehler(422, 'element');

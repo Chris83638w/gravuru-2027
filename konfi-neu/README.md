@@ -75,7 +75,7 @@ Webhook orders/paid  →  bestellpositionen (jede Zeile mit Status „bereit“ 
 | `shopify/` | Theme-Bausteine, Preisfunktion und Kassenprüfung (Rust), Referenzlogik |
 | `abgleich/` | Shop lesen und Plan gegen den Katalog erzeugen; schreibt die Bindungsdatei |
 | `dev/` | Test-Shop, Durchlauf- und Messskripte |
-| `test/` | 14 automatische Tests |
+| `test/` | 17 automatische Tests |
 
 ### Entscheidungen im Aufbau und ihr Grund
 
@@ -151,9 +151,7 @@ Schriften brauchen beim Veröffentlichen Python mit `fonttools` und `brotli`.
 
 Ehrlich und nach Gewicht. Nichts hiervon ist versteckt eingebaut oder vorgetäuscht.
 
-1. **Funkklingelschilder.** 84 der 87 aktiven Shop-Produkte sind Funkklingelschilder (Format, Position, Rahmen,
-   Farbe, Geräteaussparung). Sie stehen nicht als Familie im Katalog und sind im Neuaufbau **nicht** abgedeckt.
-   Abgedeckt sind die 16 Katalogfamilien: Türschilder Edelstahl und Acryl, Gedenktafeln, Grabstecker, Schiefer.
+1. **Funkklingelschilder sind drin, aber noch nicht an Shopify gebunden.** Siehe Abschnitt 5a.
 2. **Fertigungsdatei.** Der Bestelleingang speichert die Gestaltung, erzeugt aber noch kein PDF/SVG mit Text als
    Pfaden. Die bestehende Exportstrecke ist nicht angeschlossen.
 3. **Oberfläche ist nicht R15.** Aufbau und Reiter sind angelehnt, aber neu gebaut. Es fehlen u. a.: Ausweichen
@@ -168,9 +166,41 @@ Ehrlich und nach Gewicht. Nichts hiervon ist versteckt eingebaut oder vorgetäus
 7. **Vorschau gegen Bestand.** Verglichen wurde ein einziges Design (TRE-V2A-7x2-D5) mit dem bestehenden
    Renderer `scripts/render-vorlagen.mjs`: Lage und Größe von Text und Linien stimmen. Ein Vergleich aller
    Designs fehlt und gehört vor jede Freigabe (Kontaktbogen nach Design-Master).
-8. **Vorschaubilder der Designauswahl** zeigen das Material der ersten Zielfamilie eines Designs. Bei
-   Edelstahl-Produkten erscheinen deshalb Kacheln in dunklem Acryl. Nötig ist ein Bild je Material.
+8. **82 Vorschaubilder fehlen** für Schiefer-Größen, die im Katalog noch keinen Preis haben und deshalb nicht
+   veröffentlicht sind. Die übrigen 16.235 Bilder entstehen je Material.
 9. **Nur am Bildschirm geprüft:** kein echtes iPhone, kein Safari, kein Lauf über Plesk.
+
+## 5a. Funkklingelschilder
+
+Seit 17.11. abgedeckt: alle 42 Geräte mit drei Formaten (Hochformat 16 × 28, Querformat 24 × 20, Länglich 35 × 18),
+4.032 Designs, 126 Produkte. Quelle ist der Katalog (`migrationen/funkklingeln-42x3-20261027`); Lage der Klingel,
+Gegenposition und Designs rechnet beim Veröffentlichen die bestehende Logik (`publish/klingel.mjs`).
+
+- **Aufbau:** Edelstahlplatte unten, Acrylglas darauf. Der Rahmen ist der sichtbare Edelstahlrand. Graviert wird
+  nur auf dem Acryl; die Klingel liegt als Bild darüber und ist fest.
+- **Auswahl:** Format, Klingelposition, Rahmen und Farbe als Auswahllisten, Befestigung als Bildkacheln
+  (Entscheidung 3.37). Die Klingelposition ist keine Shop-Variante und steht deshalb in der Warenkorbzeile.
+- **Preise** aus dem Katalog: 49,99 / 59,99 / 69,99 € je Format, Befestigung +0 bis +5,99 €. Geprüft:
+  24 × 20 mit Schrauben = 63,68 €.
+- **Hinter der Klingel wird nie graviert** (Entscheidung 3.33): Texte werden neben der Klingel eingepasst, und
+  der Warenkorb weist Elemente ab, die auf der Klingel liegen.
+- **Gemessen** (Handy-Profil, kalt, 5 Läufe, WP Cardea 2): bedienbar nach **1,36 s** mit 194 KB. Für dasselbe
+  Gerät sind beim bestehenden Konfi 7,5 s dokumentiert.
+
+Offen bei den Funkklingeln:
+
+1. **Bindung an Shopify fehlt.** Die Varianten-IDs der 84 Produkte und die Namen der drei Shopify-Optionen
+   stehen nicht im Repo. Der Abgleich ordnet bisher nur über die SKU zu; für Funkklingeln muss er über die
+   Optionswerte zuordnen. Dafür ist ein vollständiger Shop-Abzug nötig.
+2. **Designs der Querformate** entstehen mit demselben Erzeuger wie der Live-Stand (Revision 2), sind aber nicht
+   mit der Server-Datenbank verglichen.
+3. **Mindestgrößen** (Hausnummer ≥ 20 mm, Zusatzzeilen ≥ 6 mm, Entscheidung 3.33) werden nicht geprüft – im
+   bestehenden Konfi auch nicht.
+4. **Abstand zur Klingel:** Abgewiesen wird nur Überlappung, kein 5-mm-Abstand (wie im Bestand).
+5. **Positionswechsel** lädt das Design neu; eigene Texte bleiben, eigene Verschiebungen nicht.
+6. **Schriften Nunito und Poppins** gibt es im Katalog nur als Glyphendaten. Daraus baut die Veröffentlichung
+   WOFF2-Dateien mit denselben Buchstabenformen. Der Lizenznachweis ist laut Katalog offen.
+7. **Darstellung nicht mit dem Bestand verglichen**, auch nicht Bild für Bild.
 
 ## 6. Offene Punkte für Chris
 
@@ -178,6 +208,10 @@ Ehrlich und nach Gewicht. Nichts hiervon ist versteckt eingebaut oder vorgetäus
   liegt deshalb getrennt und ersetzt nichts. Ob er R15 ablösen, ergänzen oder nur als Vorlage für einzelne
   Teile dienen soll (z. B. zuerst nur Veröffentlichung und WOFF2-Schriften im bestehenden Konfi), ist deine
   Entscheidung.
+- **Funkklingel: Motive, Foto, Logo.** Im Bestandsimport sind sie abgeschaltet; Entscheidung 1.17 sagt, es soll
+  einen Foto-/Logo-Upload geben. Im Neuaufbau sind sie aus, bis du es festlegst.
+- **Schraubenkopf:** Die Funkklingel-Daten nennen 7 mm in der Vorschau, deine Entscheidung 3.39 sagt 5 mm für
+  alle Produkte. Der Neuaufbau zeigt 5 mm.
 - **Fotopreis:** Im Katalog steht für Schiefer 22 × 14 „jedes weitere Foto 8,99 €“; das Entscheidungsregister
   nennt 9,99 € als neueren Wert (1.20). Der Neuaufbau nimmt den Katalogwert.
 - **Schriften kürzen:** OFL-Schriften werden auf lateinische Zeichen reduziert. Vier Schriften fehlen als Datei

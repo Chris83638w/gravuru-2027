@@ -33,6 +33,15 @@ export function elementeAusDesign(design, groesse, einpassen = false) {
         ls: round((el.ls || 0) * k), lh: el.lh ? round(el.lh * k) : 0, rot: el.rot || 0, original: true,
       };
     }
+    if (el.t === 'motiv' && el.svg) {
+      // Zierelement mit eigenem SVG-Inhalt (Funkklingeln): `qbox` ist die Hüllbox des Inhalts, `box` die Lage im Design.
+      const [bx, by, bw, bh] = el.box;
+      return {
+        t: 'motiv', id: el.id, x: round((bx + bw / 2) * k + dx), y: round((by + bh / 2) * k + dy),
+        w: round(bw * k), h: round(bh * k), rot: el.rot || 0, original: true,
+        quelle: {art: 'design', design: design.id, ebene: el.id, box: el.qbox, tr: [0, 0], svg: el.svg}, s: round(bw / el.qbox[2] * k, 5),
+      };
+    }
     if (el.t === 'motiv') {
       const [bx, by, bw, bh] = el.box;
       return {
@@ -52,8 +61,10 @@ export function elementeAusDesign(design, groesse, einpassen = false) {
 }
 
 /** Neue Gestaltung für ein Produkt: Startgröße, Startbefestigung (immer ohne Befestigung, wenn möglich), Startdesign. */
-export function startZustand(eintrag, wahl = {}) {
+export function startZustand(eintrag, kundenwahl = {}) {
   const familie = eintrag.familie;
+  // Vorgaben des Produkts (z. B. Startformat einer Funkklingel), überschrieben durch die Wahl auf der Produktseite.
+  const wahl = {...(eintrag.wahl || {}), ...Object.fromEntries(Object.entries(kundenwahl).filter(([, wert]) => wert != null))};
   const erlaubt = eintrag.groessen ? familie.groessen.filter(g => eintrag.groessen.includes(g.k)) : familie.groessen;
   const groesse = erlaubt.find(g => g.k === wahl.groesse) || erlaubt[0];
   const bef = groesse.bef.find(b => b.id === wahl.bef) || groesse.bef[0];
@@ -62,7 +73,23 @@ export function startZustand(eintrag, wahl = {}) {
     design: eintrag.start?.id || null,
     els: eintrag.start ? elementeAusDesign(eintrag.start, groesse) : [],
     menge: 1,
+    ...(familie.optionen ? {opt: optionenVon(familie, wahl.opt)} : {}),
   };
+}
+
+/** Gültige Auswahl für jede Zusatzoption der Familie (Position, Rahmen, Farbe …); Unbekanntes fällt auf den ersten Wert. */
+export function optionenVon(familie, wunsch = {}) {
+  return Object.fromEntries((familie.optionen || []).map(o => [o.k, o.werte.some(w => w.k === wunsch?.[o.k]) ? wunsch[o.k] : o.werte[0].k]));
+}
+
+/** Schlüssel der Designauswahl: je Größe, bei Funkklingeln zusätzlich je Klingelposition. */
+export function galerieSchluessel(familie, groesseKey, opt) {
+  return familie.art === 'klingel' ? `${groesseKey}|${opt?.position || 'standard'}` : groesseKey;
+}
+
+/** Schlüssel der Shop-Variante innerhalb eines Produkts. Die Klingelposition ist keine Variante. */
+export function variantenSchluessel(familie, zustand) {
+  return familie.art === 'klingel' ? `${zustand.groesse}-${zustand.opt.farbe}-${zustand.opt.rahmen}-${zustand.bef}` : `${zustand.groesse}-${zustand.bef}`;
 }
 
 /**
@@ -168,6 +195,10 @@ export function pruefen(zustand, familie, fähigkeiten = {}) {
   if (!groesse) return [{code: 'groesse', text: 'Diese Größe ist nicht verfügbar.'}];
   if (!befestigungVon(groesse, zustand.bef)) fehler.push({code: 'befestigung', text: 'Diese Befestigung ist für die Größe nicht verfügbar.'});
   if (zustand.els.length > 40) fehler.push({code: 'anzahl', text: 'Zu viele Elemente.'});
+  for (const o of familie.optionen || []) {
+    if (!o.werte.some(w => w.k === zustand.opt?.[o.k])) fehler.push({code: 'option', text: `Bitte „${o.n}“ wählen.`});
+  }
+  const gesperrt = familie.art === 'klingel' ? (groesse.kl.pos[zustand.opt?.position] || groesse.kl.pos.standard).bell : null;
   for (const el of zustand.els) {
     if (el.t === 'text') {
       if (el.text.length > 500) fehler.push({code: 'text-lang', id: el.id, text: 'Ein Text ist zu lang.'});
@@ -176,9 +207,16 @@ export function pruefen(zustand, familie, fähigkeiten = {}) {
     if (el.t === 'foto' && el.bild && fähigkeiten.foto === false && !el.bild.logo) fehler.push({code: 'foto', id: el.id, text: 'Fotos sind bei diesem Produkt nicht möglich.'});
     if (el.t === 'foto' && el.bild?.logo && fähigkeiten.logo === false) fehler.push({code: 'logo', id: el.id, text: 'Logos sind bei diesem Produkt nicht möglich.'});
     if (el.t === 'foto' && el.original && !el.bild) fehler.push({code: 'foto-fehlt', id: el.id, text: 'Bitte lade noch dein Foto hoch.'});
+    // Motive und Fotos haben bekannte Maße; bei Texten prüft der Editor mit der gemessenen Breite (siehe ueberlappt).
+    if (gesperrt && el.t !== 'text' && !el.rot && ueberlappt([el.x - el.w / 2, el.y - el.h / 2, el.w, el.h], gesperrt)) fehler.push({code: 'geraet', id: el.id, text: 'Ein Element liegt auf der Klingel. Bitte verschiebe es.'});
   }
   if (!zustand.els.some(el => (el.t === 'text' && el.text.trim()) || el.t === 'motiv' || (el.t === 'foto' && el.bild))) fehler.push({code: 'leer', text: 'Die Gestaltung ist noch leer.'});
   return fehler;
+}
+
+/** Überlappen sich zwei Rechtecke [x, y, w, h]? Berührung an der Kante zählt nicht. */
+export function ueberlappt(a, b) {
+  return a[0] < b[0] + b[2] && a[0] + a[2] > b[0] && a[1] < b[1] + b[3] && a[1] + a[3] > b[1];
 }
 
 /** Sichtbare Angaben für Warenkorb und Bestellung: Gravurtexte in Lesereihenfolge. */

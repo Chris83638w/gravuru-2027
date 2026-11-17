@@ -222,3 +222,55 @@ test('Preisfunktion: jede Zeile für sich, Sperre nur an der Kasse', () => {
   const viele = {buyerJourney: {step: 'CART_INTERACTION'}, shop: {schluessel: {value: schluessel}}, cart: {lines: Array.from({length: 40}, (_, i) => zeile('z' + i, 1, {gestaltung: {value: 'gA.1'}, preis: {value: preisangabe}}))}};
   assert.equal(preisLauf(viele).operations.length, 40);
 });
+
+// ---------------------------------------------------------------- Funkklingelschilder
+const KLINGEL = 'cfg_7e8b31c1-b95f-49bb-8a3d-fd44a158db98'; // WP Cardea 2 · Querformat 24 × 20 cm
+
+test('Funkklingel: Startwahl, Preise aus dem Katalog, Position ist keine Variante', () => {
+  const e = eintrag(KLINGEL);
+  const z = modell.startZustand(e);
+  assert.equal(z.groesse, '24x20');
+  assert.deepEqual(z.opt, {position: 'standard', rahmen: 'FK-RUNDUM', farbe: 'schwarz'});
+  assert.equal(modell.preis(z, e.familie, e.regeln).summe, 5999);
+  assert.equal(modell.preis({...z, bef: 'B04S'}, e.familie, e.regeln).summe, 6368);
+  assert.equal(modell.preis({...z, groesse: '35x18', bef: 'GWS', menge: 3}, e.familie, e.regeln).summe, 3 * (6999 + 599), 'keine Mengenstaffel belegt');
+  assert.equal(modell.variantenSchluessel(e.familie, {...z, opt: {...z.opt, position: 'opposite'}}), '24x20-schwarz-FK-RUNDUM-K00');
+  assert.equal(modell.galerieSchluessel(e.familie, '24x20', {position: 'opposite'}), '24x20|opposite');
+  assert.deepEqual(modell.pruefen(z, e.familie), []);
+  assert.equal(modell.pruefen({...z, opt: {...z.opt, rahmen: 'gibt-es-nicht'}}, e.familie)[0].code, 'option');
+  assert.equal(e.familie.groessen.length, 3);
+  assert.equal(Object.keys(e.familie.galerie).length, 6, '3 Formate × 2 Positionen');
+});
+
+test('Funkklingel: Gegenposition liegt gespiegelt, Gerät bleibt auf der Platte', () => {
+  const e = eintrag(KLINGEL);
+  for (const g of e.familie.groessen) {
+    const a = g.kl.pos.standard.bell, b = g.kl.pos.opposite.bell;
+    assert.ok(Math.abs((a[0] + a[2] / 2) + (b[0] + b[2] / 2) - g.w) < 0.01, g.k + ': waagerecht gespiegelt');
+    assert.ok(Math.abs((a[1] + a[3] / 2) + (b[1] + b[3] / 2) - g.h) < 0.01, g.k + ': senkrecht gespiegelt');
+    for (const bell of [a, b]) assert.ok(bell[0] >= 0 && bell[1] >= 0 && bell[0] + bell[2] <= g.w && bell[1] + bell[3] <= g.h);
+  }
+});
+
+test('Funkklingel: Server speichert mit Optionen und nennt die Klingelposition in der Zeile', async () => {
+  await mitServer(async basis => {
+    const e = eintrag(KLINGEL);
+    const z = {...modell.startZustand(e), bef: 'B04S'};
+    // Start-Gestaltung mit Gegenposition gemischt: Die Zierlinie läge auf der Klingel → abgewiesen.
+    const gemischt = await post(basis + '/api/gestaltungen', {zustand: {...z, opt: {...z.opt, position: 'opposite'}}});
+    assert.equal(gemischt.status, 422);
+    assert.equal((await gemischt.json()).code, 'pruefung:geraet');
+    // Richtig: dasselbe Design in der Fassung für die Gegenposition.
+    const liste = JSON.parse(fs.readFileSync(path.join(daten, e.familie.galerie['24x20|opposite']), 'utf8')).designs;
+    const design = JSON.parse(fs.readFileSync(path.join(daten, liste[0].u), 'utf8'));
+    const gespiegelt = {...modell.designWechseln(z, design, modell.groesseVon(e.familie, '24x20')), opt: {...z.opt, position: 'opposite', farbe: 'anthrazit'}};
+    const d = await (await post(basis + '/api/gestaltungen', {zustand: gespiegelt})).json();
+    assert.equal(d.preis.summe, 6368);
+    assert.equal(d.position.sku, '24x20-anthrazit-FK-RUNDUM-B04S');
+    assert.equal(d.position.eigenschaften.Klingelposition, 'Klingel links');
+    assert.match(d.position.eigenschaften.Format, /WP Cardea 2 · Querformat/);
+    // Unbekannte Optionswerte werden abgewiesen, nicht stillschweigend ersetzt.
+    assert.equal((await post(basis + '/api/gestaltungen', {zustand: {...z, opt: {position: 'standard', rahmen: 'y', farbe: 'z'}}})).status, 422);
+    assert.equal((await post(basis + '/api/gestaltungen', {zustand: {...z, opt: undefined}})).status, 422);
+  });
+});

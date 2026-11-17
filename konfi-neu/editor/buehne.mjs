@@ -1,7 +1,7 @@
 // Bühne: zeigt die Platte und macht Elemente anfassbar (auswählen, verschieben, skalieren, drehen, löschen).
 // Zoom: am Handy mit zwei Fingern, am PC mit dem Mausrad (Entscheidung 3.11), dazu der Regler „Ansicht“.
 import {s} from './dom.mjs';
-import {elementMarkup, plattenMarkup, befestigungMarkup, motivTransform, motivInhalt} from '../core/zeichnen.mjs';
+import {elementMarkup, plattenMarkup, befestigungMarkup, geraetMarkup, szene, motivTransform, motivInhalt} from '../core/zeichnen.mjs';
 import {groesseVon, befestigungVon} from '../core/modell.mjs';
 
 const GRIFF_PX = 13; // halbe Kantenlänge der Griffe in Bildschirmpixeln
@@ -21,6 +21,7 @@ export function buehne({familie, basis, onAuswahl, onAendern, onFertig, onDoppel
   let zoom = 1;
   let mitte = null; // Bildmitte in mm bei Zoom > 1
   let plattenSchluessel = '';
+  let aktuelleSzene = null;
   const knoten = new Map(); // id → {g, inhalt, quelle}
 
   // ---------------------------------------------------------------- Ansicht
@@ -57,13 +58,14 @@ export function buehne({familie, basis, onAuswahl, onAendern, onFertig, onDoppel
     auswahl = neueAuswahl;
     groesse = groesseVon(familie, zustand.groesse);
     const bef = befestigungVon(groesse, zustand.bef);
-    const schluessel = groesse.k + '|' + zustand.bef;
+    const schluessel = groesse.k + '|' + zustand.bef + '|' + JSON.stringify(zustand.opt || null);
     if (schluessel !== plattenSchluessel) {
+      if (!plattenSchluessel.startsWith(groesse.k + '|')) mitte = null;
       plattenSchluessel = schluessel;
-      gPlatte.innerHTML = plattenMarkup(groesse, familie.material, basis, 'e');
+      const bild = aktuelleSzene = szene(familie, groesse, zustand);
+      gPlatte.innerHTML = plattenMarkup(groesse, bild, basis, 'e');
       gInhalt.setAttribute('clip-path', 'url(#gk-platte-e)');
-      gBefestigung.innerHTML = befestigungMarkup(bef, familie.material, basis);
-      mitte = null;
+      gBefestigung.innerHTML = geraetMarkup(bild, basis) + befestigungMarkup(bef, familie.material, basis);
     }
     const farbe = familie.verfahren.farbe;
     const gesehen = new Set();
@@ -122,8 +124,8 @@ export function buehne({familie, basis, onAuswahl, onAendern, onFertig, onDoppel
   }
 
   /** Freier waagerechter Bereich der Platte zwischen zwei Höhen (berücksichtigt Oval, Rund und freie Konturen). */
-  function freieBreite(oben, unten) {
-    const kontur = gPlatte.querySelector('path');
+  function freieBreite(oben, unten, bezugX = null) {
+    const kontur = gPlatte.querySelector('[data-flaeche]') || gPlatte.querySelector('path');
     const innen = (x, y) => { try { return kontur.isPointInFill(new DOMPoint(x, y)); } catch { return true; } };
     const frei = x => innen(x, Math.max(0.01, oben)) && innen(x, Math.min(groesse.h - 0.01, unten));
     const mitteX = groesse.w / 2;
@@ -133,7 +135,13 @@ export function buehne({familie, basis, onAuswahl, onAendern, onFertig, onDoppel
       for (let i = 0; i < 18; i++) { const m = (a + b) / 2; if (frei(m)) a = m; else b = m; }
       return a;
     };
-    return [grenze(-1), grenze(1)];
+    let von = grenze(-1), bis = grenze(1);
+    // Neben einem festen Gerät (Funkklingel) endet der freie Bereich an dessen Kante – auf der Seite, auf der der Text liegt.
+    const s = aktuelleSzene?.gesperrt;
+    if (s && unten > s[1] && oben < s[1] + s[3]) {
+      if ((bezugX ?? mitteX) < s[0] + s[2] / 2) bis = Math.min(bis, s[0]); else von = Math.max(von, s[0] + s[2]);
+    }
+    return [von, bis];
   }
 
   /** Hüllbox eines Elements in seinem ungedrehten Koordinatensystem, plus Drehpunkt. */
@@ -168,9 +176,11 @@ export function buehne({familie, basis, onAuswahl, onAendern, onFertig, onDoppel
       k.append(s('path', {d: zeichen, fill: 'none', stroke: '#fff', 'stroke-width': 2, 'stroke-linecap': 'round', 'stroke-linejoin': 'round'}));
       g.append(k);
     };
-    griff('loeschen', ...halte(x0 + w, y0), '#d32f2f', 'M-5 -3h10M-2 -3v-2h4v2M-4 -3l1 8h6l1 -8');
-    griff('groesse', ...halte(x0 + w, y0 + h), '#1d6fd6', 'M-4 -4l8 8M4 0v4h-4M-4 0v-4h4');
-    griff('drehen', ...halte(x0, y0), '#1d6fd6', 'M4 -1a4.5 4.5 0 1 0 0 4M4 -5v4h-4');
+    // Griffe sitzen außen an den Ecken, damit sie kleine Elemente nicht verdecken.
+    const aus = GRIFF_PX * px * 0.75;
+    griff('loeschen', ...halte(x0 + w + aus, y0 - aus), '#d32f2f', 'M-5 -3h10M-2 -3v-2h4v2M-4 -3l1 8h6l1 -8');
+    griff('groesse', ...halte(x0 + w + aus, y0 + h + aus), '#1d6fd6', 'M-4 -4l8 8M4 0v4h-4M-4 0v-4h4');
+    griff('drehen', ...halte(x0 - aus, y0 - aus), '#1d6fd6', 'M4 -1a4.5 4.5 0 1 0 0 4M4 -5v4h-4');
     gAuswahl.append(g);
   }
 
@@ -346,5 +356,6 @@ export function buehne({familie, basis, onAuswahl, onAendern, onFertig, onDoppel
     onAnsicht(fn) { ansichtHoerer = fn; },
     rahmenVon: id => { const el = zustand.els.find(e => e.id === id); return el ? rahmen(el) : null; },
     freieBreite,
+    gesperrt: () => aktuelleSzene?.gesperrt || null,
   };
 }

@@ -93,7 +93,8 @@ export async function oeffnen(o) {
 
   const groesse = () => modell.groesseVon(familie, zustand.groesse);
   const erlaubteGroessen = () => eintrag.groessen ? familie.groessen.filter(g => eintrag.groessen.includes(g.k)) : familie.groessen;
-  const fotoErlaubt = () => Boolean(familie.foto) || zustand.els.some(el => el.t === 'foto');
+  const fotoErlaubt = () => !eintrag.ohne?.foto && (Boolean(familie.foto) || zustand.els.some(el => el.t === 'foto'));
+  const galerieKey = (groesseKey = zustand.groesse, opt = zustand.opt) => modell.galerieSchluessel(familie, groesseKey, opt);
   const regeln = () => eintrag.regeln || {};
 
   /** Zustand setzen. `festhalten` legt einen Schritt für Rückgängig an. */
@@ -141,7 +142,7 @@ export async function oeffnen(o) {
     const p = modell.preis(zustand, familie, regeln());
     preisAnzeige.textContent = euro(p.summe);
     mengeAnzeige.textContent = String(p.menge);
-    info.replaceChildren(h('span', null, `${familie.material.name} · ${g.n}`), h('b', {class: 'gk-nur-mobil-preis'}, euro(p.summe)));
+    info.replaceChildren(h('span', null, `${familie.art === 'klingel' ? familie.name : familie.material.name} · ${g.n}`), h('b', {class: 'gk-nur-mobil-preis'}, euro(p.summe)));
   }
   function menge(delta) {
     setze({...zustand, menge: Math.max(1, Math.min(99, (zustand.menge || 1) + delta))});
@@ -149,7 +150,7 @@ export async function oeffnen(o) {
 
   // ---------------------------------------------------------------- Reiter
   function reiterZeichnen() {
-    const sichtbar = REITER.filter(r => r.id !== 'foto' || fotoErlaubt());
+    const sichtbar = REITER.filter(r => (r.id !== 'foto' || fotoErlaubt()) && !(r.id === 'motive' && eintrag.ohne?.motive));
     reiterLeiste.replaceChildren(
       ...sichtbar.map(r => h('button', {role: 'tab', 'aria-selected': String(reiter === r.id), onclick: () => reiterWaehlen(reiter === r.id && istMobil() ? null : r.id)}, icon(r.id), r.name)),
       h('button', {class: 'gk-nur-mobil', onclick: () => zumWarenkorb()}, icon('korb'), 'Warenkorb'));
@@ -175,7 +176,7 @@ export async function oeffnen(o) {
     const scroll = inhalt.scrollTop;
     const bau = {ausfuehrung: reiterAusfuehrung, designs: reiterDesigns, text: reiterText, motive: reiterMotive, foto: reiterFoto, ebenen: reiterEbenen, schrift: reiterSchrift}[reiter];
     werkzeugTitel.textContent = REITER.find(r => r.id === reiter)?.titel || (reiter === 'ebenen' ? 'Ebenen' : reiter === 'schrift' ? 'Schrift wählen' : 'Werkzeuge');
-    inhalt.replaceChildren(...(bau ? [bau()].flat() : [h('p', {class: 'gk-hinweis'}, 'Wähle oben einen Bereich oder tippe ein Element in der Vorschau an.')]));
+    inhalt.replaceChildren(...(bau ? [bau()].flat(Infinity) : [h('p', {class: 'gk-hinweis'}, 'Wähle oben einen Bereich oder tippe ein Element in der Vorschau an.')]));
     inhalt.scrollTop = scroll;
     if (fokusId) { // Tastatur bleibt offen, Schreibmarke bleibt an ihrer Stelle
       const feld = inhalt.querySelector(`[data-feld-id="${CSS.escape(fokusId)}"]`);
@@ -201,9 +202,25 @@ export async function oeffnen(o) {
     for (const [x, y, d] of bef?.l || []) svg.append(s('circle', {cx: x, cy: y, r: Math.max(d / 2, Math.max(g.w, g.h) * 0.035), fill: bef.schraube ? '#4b575a' : '#fff', stroke: '#4b575a', 'stroke-width': pad * 0.2}));
     return svg;
   }
+  function auswahlListe(titel, werte, aktuell, beiWahl) {
+    return [h('h3', null, titel), h('select', {class: 'gk-suche', 'aria-label': titel, onchange: event => beiWahl(event.target.value)},
+      werte.map(w => h('option', {value: w.k, selected: w.k === aktuell}, w.n)))];
+  }
   function reiterAusfuehrung() {
     const g = groesse();
     const erlaubt = erlaubteGroessen();
+    if (familie.optionen) {
+      // Viele Möglichkeiten (Funkklingel): Auswahllisten; die Befestigung bleibt als Bildkacheln (Entscheidung 3.37).
+      const teile = [auswahlListe('Format', erlaubt.map(x => ({k: x.k, n: `${x.n} · ${euro(x.p)}`})), g.k, key => groesseWaehlen(erlaubt.find(x => x.k === key)))];
+      for (const option of familie.optionen) {
+        const werte = option.werte.map(w => ({k: w.k, n: w.n || g.kl?.posNamen?.[w.k] || w.k}));
+        teile.push(auswahlListe(option.n, werte, zustand.opt[option.k], wert => optionWaehlen(option.k, wert)));
+      }
+      teile.push(h('h3', null, 'Befestigung'), h('div', {class: 'gk-kacheln gk-zwei'}, g.bef.map(b =>
+        h('button', {class: 'gk-kachel', 'aria-pressed': String(b.id === zustand.bef), onclick: () => setze({...zustand, bef: b.id}, {struktur: true})}, miniPlatte(g, b), b.n, h('small', null, b.p ? '+ ' + euro(b.p) : 'inklusive')))));
+      if (familie.geraet) teile.push(h('p', {class: 'gk-hinweis'}, `Lieferumfang: Klingelschild ohne Funkklingel. Passend für ${familie.geraet.name}.`));
+      return teile;
+    }
     const formen = familie.formen.filter(f => erlaubt.some(x => x.g === f.k));
     const teile = [];
     if (formen.length > 1) {
@@ -229,6 +246,22 @@ export async function oeffnen(o) {
     const kandidaten = erlaubteGroessen().filter(x => x.g === formKey);
     return kandidaten.reduce((beste, x) => Math.abs(x.w * x.h - aktuell.w * aktuell.h) < Math.abs(beste.w * beste.h - aktuell.w * aktuell.h) ? x : beste, kandidaten[0]);
   }
+  /** Zusatzoption ändern. Bei der Klingelposition wird dasselbe Design in der gespiegelten Fassung geladen; Texte bleiben. */
+  async function optionWaehlen(k, wert) {
+    const opt = {...zustand.opt, [k]: wert};
+    if (k !== 'position' || !zustand.design) return setze({...zustand, opt}, {struktur: true});
+    try {
+      const aktuell = (await galerie(galerieKey())).find(d => d.id === zustand.design);
+      const ziel = aktuell && (await galerie(galerieKey(zustand.groesse, opt))).find(d => d.nr === aktuell.nr && d.n === aktuell.n);
+      if (!ziel) return setze({...zustand, opt}, {struktur: true});
+      const design = await designLaden(ziel.u);
+      await schriften.alle(design.schriften);
+      setze({...modell.designWechseln(zustand, design, groesse()), opt}, {struktur: true, neueAuswahl: null});
+    } catch {
+      toast('Die Position konnte nicht geändert werden. Bitte versuche es erneut.');
+      werkzeugZeichnen();
+    }
+  }
   async function galerie(key) {
     const adresse = familie.galerie[key];
     if (!adresse) return [];
@@ -244,10 +277,10 @@ export async function oeffnen(o) {
     if (ziel.k === von.k) return;
     let naechster;
     try {
-      const liste = zustand.design ? await galerie(ziel.k) : [];
+      const liste = zustand.design ? await galerie(galerieKey(ziel.k)) : [];
       const gleich = liste.find(d => d.id === zustand.design);
       // Dasselbe Design in anderer Form trägt dieselbe D-Nummer und denselben Namen (Katalogregel „Kennungen“).
-      const aktuell = zustand.design ? (await galerie(von.k).catch(() => [])).find(d => d.id === zustand.design) : null;
+      const aktuell = zustand.design ? (await galerie(galerieKey(von.k)).catch(() => [])).find(d => d.id === zustand.design) : null;
       const verwandt = !gleich && aktuell ? liste.find(d => d.nr != null && d.nr === aktuell.nr && d.n === aktuell.n) : null;
       if (verwandt) {
         const design = await designLaden(verwandt.u);
@@ -279,7 +312,7 @@ export async function oeffnen(o) {
       }));
       if (!treffer.length) raster.replaceChildren(h('p', {class: 'gk-hinweis'}, 'Keine Designs für diese Größe gefunden.'));
     }
-    galerie(zustand.groesse).then(l => { liste = l; fuellen(); }).catch(() => raster.replaceChildren(h('p', {class: 'gk-hinweis'}, 'Die Designs konnten nicht geladen werden. Bitte versuche es erneut.')));
+    galerie(galerieKey()).then(l => { liste = l; fuellen(); }).catch(() => raster.replaceChildren(h('p', {class: 'gk-hinweis'}, 'Die Designs konnten nicht geladen werden. Bitte versuche es erneut.')));
     return [suche, h('p', {class: 'gk-hinweis'}, 'Deine Texte bleiben beim Wechsel erhalten.'), raster];
   }
   async function designWaehlen(d, kachel) {
@@ -350,7 +383,7 @@ export async function oeffnen(o) {
     if (!el || !r || !r.w || el.rot) return;
     const wunsch = el.wunsch || el.size;
     // Freier Bereich der Platte auf Höhe des Textes; bei Oval und Rund schmaler als die Plattenbreite.
-    const [von, bis] = buehne.freieBreite(r.y, r.y + r.h);
+    const [von, bis] = buehne.freieBreite(r.y, r.y + r.h, r.x + r.w / 2);
     const frei = Math.max(1, bis - von - 2);
     // Breite, die der Text bei Wunschgröße hätte (Breite wächst linear mit der Schriftgröße)
     const beiWunsch = r.w * wunsch / el.size;
@@ -518,6 +551,12 @@ export async function oeffnen(o) {
   async function zumWarenkorb() {
     if (beschaeftigt || !zustand) return;
     const fehler = modell.pruefen(zustand, familie, {foto: fotoErlaubt()});
+    // Texte auf dem Gerät: mit der im Browser gemessenen Textbreite prüfen.
+    const gesperrt = buehne.gesperrt();
+    if (gesperrt) for (const el of zustand.els) {
+      const r = el.t === 'text' && !el.rot ? buehne.rahmenVon(el.id) : null;
+      if (r && modell.ueberlappt([r.x, r.y, r.w, r.h], gesperrt)) fehler.push({code: 'geraet', id: el.id, text: `„${el.text.split('\n')[0].slice(0, 30)}“ liegt auf der Klingel. Bitte verschiebe oder kürze den Text.`});
+    }
     if (fehler.length) {
       const zu = dialog('Bitte noch prüfen', h('ul', null, fehler.map(f => h('li', null, f.text))), [h('button', {class: 'gk-knopf', onclick: () => zu()}, 'Verstanden')]);
       const erste = fehler.find(f => f.id);

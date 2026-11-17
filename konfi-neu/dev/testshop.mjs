@@ -48,7 +48,8 @@ button.k{background:#18794e;color:#fff;border:0;border-radius:10px;padding:14px 
   function variantenPreis(sku, bevorzugt) {
     for (const key of [bevorzugt, ...Object.keys(stand().produkte)].filter(Boolean)) {
       const eintrag = produkt(key);
-      for (const g of eintrag.familie.groessen) for (const b of g.bef) if (`${g.k}-${b.id}` === sku) return {cents: g.p + b.p, titel: eintrag.name, produkt: key};
+      const zusatz = eintrag.familie.art === 'klingel' ? eintrag.familie.optionen.find(o => o.k === 'farbe').werte.flatMap(f => eintrag.familie.optionen.find(o => o.k === 'rahmen').werte.map(r => `-${f.k}-${r.k}`)) : [''];
+      for (const g of eintrag.familie.groessen) for (const b of g.bef) for (const z of zusatz) if (`${g.k}${z}-${b.id}` === sku) return {cents: g.p + b.p, titel: eintrag.name, produkt: key};
     }
     return null;
   }

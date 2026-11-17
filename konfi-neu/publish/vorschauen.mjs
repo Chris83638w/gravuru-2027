@@ -34,6 +34,7 @@ for (const familie of Object.values(familien)) {
     for (const d of JSON.parse(fs.readFileSync(path.join(out, adresse), 'utf8')).designs) {
       const file = path.basename(d.u);
       const ziel = `${familie.material.k}/${file.replace(/\.json$/, '.webp')}`;
+      if (!familie.groessen.some(g => g.k === groesse.split('|')[0])) continue; // Größe ohne Preis ist nicht veröffentlicht
       if (!auftraege.has(ziel)) auftraege.set(ziel, {file, familie: familie.id, groesse, ein: d.ein ? 1 : 0});
     }
   }
@@ -70,7 +71,8 @@ await page.addScriptTag({type: 'module', content: `
   const bilder = new Map();
   const dataUrl = async adresse => { if (!bilder.has(adresse)) bilder.set(adresse, fetch(adresse).then(r => r.blob()).then(b => new Promise(ok => { const fr = new FileReader(); fr.onload = () => ok(fr.result); fr.readAsDataURL(b); }))); return bilder.get(adresse); };
   window.zeichne = async ({design, familie, schriften, breite}) => {
-    const groesse = familie.groessen.find(g => g.k === design.bsp?.g) || familie.groessen.find(g => Math.abs(g.w / g.h - design.platte[0] / design.platte[1]) < 0.02) || familie.groessen[0];
+    const [groesseKey, position] = String(design.bsp?.g || '').split('|');
+    const groesse = familie.groessen.find(g => g.k === groesseKey) || familie.groessen.find(g => Math.abs(g.w / g.h - design.platte[0] / design.platte[1]) < 0.02) || familie.groessen[0];
     const css = [];
     for (const name of design.schriften) {
       if (!schriftCss.has(name)) schriftCss.set(name, dataUrl('/daten/' + schriften[name].u).then(url => '@font-face{font-family:"' + schriftFamilie(name) + '";src:url(' + url + ')}'));
@@ -79,7 +81,11 @@ await page.addScriptTag({type: 'module', content: `
     const material = {...familie.material};
     if (material.textur) material.textur = await dataUrl('/daten/' + material.textur);
     delete material.schraube;
-    const zustand = {groesse: groesse.k, bef: groesse.bef[0].id, els: elementeAusDesign(design, groesse, Boolean(design.bsp?.ein))};
+    if (material.stahl?.textur) material.stahl = {...material.stahl, textur: await dataUrl('/daten/' + material.stahl.textur)};
+    const geraet = familie.geraet?.bild ? {...familie.geraet, bild: await dataUrl('/daten/' + familie.geraet.bild)} : familie.geraet;
+    familie = {...familie, geraet};
+    const opt = familie.optionen ? Object.fromEntries(familie.optionen.map(o => [o.k, o.k === 'position' && position ? position : o.k === 'rahmen' && design.rahmen ? design.rahmen : o.werte[0].k])) : undefined;
+    const zustand = {groesse: groesse.k, bef: groesse.bef[0].id, opt, els: elementeAusDesign(design, groesse, Boolean(design.bsp?.ein))};
     const svg = gestaltungSvg(zustand, {...familie, material}, {schriftCss: css.join(''), breite, rand: 0.04});
     const bild = new Image();
     bild.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);

@@ -80,16 +80,50 @@ export function elementMarkup(el, farbe, uid = '') {
   return fotoMarkup(el, farbe, uid);
 }
 
-/** Platte mit Material, Kante und Befestigung. Löcher und Schrauben liegen über der Gestaltung (nur Vorschau). */
-export function plattenMarkup(groesse, material, basis = '', uid = '') {
+const rechteckPfad = ([x, y, w, h]) => `M${x} ${y}H${x + w}V${y + h}H${x}Z`;
+
+/**
+ * Szene: was unter und über der Gestaltung liegt.
+ *   Platten (Türschild, Gedenktafel …): eine Lage; gestaltet wird auf der ganzen Platte.
+ *   Funkklingelschild: Edelstahlplatte unten, Acrylglas darauf (Fläche je Rahmen, Farbe wählbar);
+ *   gestaltet wird nur auf dem Acryl, das Gerät liegt als Bild darüber und ist fest.
+ */
+export function szene(familie, groesse, zustand) {
+  const material = familie.material;
+  if (familie.art !== 'klingel') {
+    return {lagen: [{d: groesse.d, farbe: material.farbe, textur: material.textur || null}], flaeche: groesse.d, geraet: null, gesperrt: null};
+  }
+  const opt = zustand.opt || {};
+  const acryl = groesse.kl.rahmen[opt.rahmen] || Object.values(groesse.kl.rahmen)[0];
+  const position = groesse.kl.pos[opt.position] || groesse.kl.pos.standard;
+  const farbe = familie.optionen.find(o => o.k === 'farbe')?.werte.find(w => w.k === opt.farbe)?.farbe || material.farbe;
+  return {
+    lagen: [{d: groesse.d, farbe: material.stahl.farbe, textur: material.stahl.textur || null}, {d: rechteckPfad(acryl), farbe, textur: null}],
+    flaeche: rechteckPfad(acryl),
+    geraet: familie.geraet?.bild ? {bild: familie.geraet.bild, box: position.bild, name: familie.geraet.name} : null,
+    // Fläche des Geräts auf der Platte: Dahinter wird nie graviert (Entscheidung 3.33).
+    gesperrt: position.bell,
+  };
+}
+
+/** Lagen der Szene mit Glanz und Kante. Das Clip-Rechteck `gk-platte-<uid>` begrenzt die Gestaltung auf ihre Fläche. */
+export function plattenMarkup(groesse, bild, basis = '', uid = '') {
   const clip = `gk-platte-${uid}`;
   const kante = Math.max(0.12, Math.min(groesse.w, groesse.h) * 0.004);
-  return `<defs><clipPath id="${clip}"><path d="${groesse.d}"/></clipPath>` +
+  return `<defs><clipPath id="${clip}"><path data-flaeche="1" d="${bild.flaeche}"/></clipPath>` +
     `<linearGradient id="gk-glanz-${uid}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".16"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".12"/></linearGradient></defs>` +
-    `<path d="${groesse.d}" fill="${material.farbe}"/>` +
-    (material.textur ? `<image href="${esc(basis + material.textur)}" x="0" y="0" width="${groesse.w}" height="${groesse.h}" preserveAspectRatio="xMidYMid slice" clip-path="url(#${clip})"/>` : '') +
-    `<path d="${groesse.d}" fill="url(#gk-glanz-${uid})"/>` +
-    `<path d="${groesse.d}" fill="none" stroke="#000" stroke-opacity=".28" stroke-width="${kante}"/>`;
+    bild.lagen.map((lage, index) =>
+      `<path d="${lage.d}" fill="${lage.farbe}"/>` +
+      (lage.textur ? `<clipPath id="${clip}-l${index}"><path d="${lage.d}"/></clipPath><image href="${esc(basis + lage.textur)}" x="0" y="0" width="${groesse.w}" height="${groesse.h}" preserveAspectRatio="xMidYMid slice" clip-path="url(#${clip}-l${index})"/>` : '') +
+      `<path d="${lage.d}" fill="url(#gk-glanz-${uid})"/>` +
+      `<path d="${lage.d}" fill="none" stroke="#000" stroke-opacity=".28" stroke-width="${kante}"/>`).join('');
+}
+
+/** Gerät (z. B. Funkklingel) als Bild über der Gestaltung. Nur Vorschau, nie Teil der Fertigungsdaten. */
+export function geraetMarkup(bild, basis = '') {
+  if (!bild.geraet) return '';
+  const [x, y, w, h] = bild.geraet.box;
+  return `<image href="${esc(basis + bild.geraet.bild)}" x="${x}" y="${y}" width="${w}" height="${h}" preserveAspectRatio="xMidYMid meet"/>`;
 }
 
 export function befestigungMarkup(bef, material, basis = '') {
@@ -114,13 +148,14 @@ export function gestaltungSvg(zustand, familie, {basis = '', schriftCss = '', ra
   const groesse = familie.groessen.find(g => g.k === zustand.groesse);
   const bef = groesse.bef.find(b => b.id === zustand.bef);
   const farbe = familie.verfahren.farbe;
+  const bild = szene(familie, groesse, zustand);
   const pad = Math.max(groesse.w, groesse.h) * rand;
   const vb = `${-pad} ${-pad} ${groesse.w + 2 * pad} ${groesse.h + 2 * pad}`;
   const masse = breite ? ` width="${breite}" height="${Math.round(breite * (groesse.h + 2 * pad) / (groesse.w + 2 * pad))}"` : '';
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vb}"${masse}>` +
     (schriftCss ? `<style>${schriftCss}</style>` : '') +
     (hintergrund ? `<rect x="${-pad}" y="${-pad}" width="${groesse.w + 2 * pad}" height="${groesse.h + 2 * pad}" fill="${hintergrund}"/>` : '') +
-    plattenMarkup(groesse, familie.material, basis, 'b') +
+    plattenMarkup(groesse, bild, basis, 'b') +
     `<g clip-path="url(#gk-platte-b)">${zustand.els.map(el => elementMarkup(el, farbe, 'b')).join('')}</g>` +
-    befestigungMarkup(bef, familie.material, basis) + '</svg>';
+    geraetMarkup(bild, basis) + befestigungMarkup(bef, familie.material, basis) + '</svg>';
 }

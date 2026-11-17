@@ -76,13 +76,62 @@ def convert(entry, out_dir):
     }
 
 
+def convert_glyphs(entry, out_dir):
+    """Schrift aus den Glyphendaten des Bestands bauen (JSON mit Umrissen je Zeichen).
+
+    Für wenige Schriften der Funkklingel-Designs liegt im Katalog keine Schriftdatei, nur die Umrisse,
+    mit denen der bisherige Konfigurator zeichnet. Aus genau diesen Umrissen entsteht hier eine WOFF2-Datei:
+    gleiche Buchstabenformen und Laufweiten wie bisher, ohne Unterschneidung (die hatten die Daten nie).
+    """
+    from fontTools.fontBuilder import FontBuilder
+    from fontTools.pens.t2CharStringPen import T2CharStringPen
+    from fontTools.svgLib.path import parse_path
+
+    with open(entry['glyphs'], encoding='utf-8') as handle:
+        source = json.load(handle)['regular']
+    units = source['units']
+    order, cmap, advances, charstrings = ['.notdef'], {}, {'.notdef': units // 2}, {}
+    pen = T2CharStringPen(units // 2, None)
+    charstrings['.notdef'] = pen.getCharString()
+    for char, glyph in source['glyphs'].items():
+        if len(char) != 1:
+            continue
+        name = 'uni%04X' % ord(char)
+        pen = T2CharStringPen(glyph['a'], None)
+        if glyph.get('d'):
+            parse_path(glyph['d'], pen)
+        order.append(name)
+        cmap[ord(char)] = name
+        advances[name] = glyph['a']
+        charstrings[name] = pen.getCharString()
+    builder = FontBuilder(units, isTTF=False)
+    builder.setupGlyphOrder(order)
+    builder.setupCharacterMap(cmap)
+    builder.setupCFF(entry['name'].replace(' ', ''), {'FullName': entry['name']}, charstrings, {})
+    builder.setupHorizontalMetrics({name: (advances[name], 0) for name in order})
+    builder.setupHorizontalHeader(ascent=source.get('ascent', units), descent=source.get('descent', -units // 4))
+    builder.setupNameTable({'familyName': entry['name'], 'styleName': 'Regular'})
+    builder.setupOS2(sTypoAscender=source.get('ascent', units), sTypoDescender=source.get('descent', -units // 4), usWinAscent=source.get('ascent', units), usWinDescent=-source.get('descent', -units // 4))
+    builder.setupPost()
+    font = builder.font
+    font.flavor = 'woff2'
+    buffer = io.BytesIO()
+    font.save(buffer)
+    data = buffer.getvalue()
+    file_name = f"{slug(entry['name'])}.{hashlib.sha256(data).hexdigest()[:12]}.woff2"
+    with open(os.path.join(out_dir, file_name), 'wb') as handle:
+        handle.write(data)
+    return {'name': entry['name'], 'file': file_name, 'bytes': len(data), 'sourceBytes': os.path.getsize(entry['glyphs']), 'reduced': False,
+            'unitsPerEm': units, 'ascender': source.get('ascent', units), 'descender': source.get('descent', -units // 4), 'capHeight': None, 'glyphs': len(cmap), 'ausGlyphen': True}
+
+
 def main():
     job = json.load(sys.stdin)
     os.makedirs(job['out'], exist_ok=True)
     result, errors = [], []
     for entry in job['fonts']:
         try:
-            result.append(convert(entry, job['out']))
+            result.append(convert_glyphs(entry, job['out']) if entry.get('glyphs') else convert(entry, job['out']))
         except Exception as error:  # eine defekte Schrift darf den Lauf nicht abbrechen
             errors.append({'name': entry['name'], 'error': str(error)})
     json.dump({'fonts': result, 'errors': errors}, sys.stdout)

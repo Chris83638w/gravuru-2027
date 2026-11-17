@@ -20,7 +20,9 @@ export async function vorschauBild(zustand, familie, {basis, schriften, breite =
   if (material.textur) material.textur = await alsDataUrl(basis + material.textur);
   if (material.schraube) material.schraube = await alsDataUrl(basis + material.schraube);
   const schriftCss = await schriften.css(zustand.els.filter(el => el.t === 'text').map(el => el.font));
-  const svg = gestaltungSvg(zustand, {...familie, material}, {schriftCss, breite, hintergrund: '#f3f6f6'});
+  if (material.stahl?.textur) material.stahl = {...material.stahl, textur: await alsDataUrl(basis + material.stahl.textur)};
+  const geraet = familie.geraet?.bild ? {...familie.geraet, bild: await alsDataUrl(basis + familie.geraet.bild)} : familie.geraet;
+  const svg = gestaltungSvg(zustand, {...familie, material, geraet}, {schriftCss, breite, hintergrund: '#f3f6f6'});
   const bild = new Image();
   bild.decoding = 'async';
   bild.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);

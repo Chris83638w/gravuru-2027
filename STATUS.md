@@ -1,3 +1,14 @@
+## 17.11.2026 · Claude · `konfi-neu`: Funkklingelschilder (Auftrag Chris im Chat: „führe den Neuaufbau weiter und mach die Funkklingeln“)
+
+- Branch `dev/konfi-neu-20261117-claude`. `app/`, Live-Stand und Shop unverändert. Nichts live.
+- Alle 42 Geräte × 3 Formate veröffentlicht: 4.032 Designs, 126 Produkte. Quelle Katalog `migrationen/funkklingeln-42x3-20261027`, Rechenlogik aus dem Bestand.
+- Editor: Format, Klingelposition, Rahmen, Farbe, Befestigung; Gravur nur auf Acryl, nie hinter der Klingel.
+- Prüfungen: 17/17 Tests. Kundenweg Desktop und Handy-Emulation bestanden. Preis 24 × 20 mit Schrauben 63,68 €.
+- Messung Handy-Profil kalt, 5 Läufe, WP Cardea 2: bedienbar nach 1,36 s, 194 KB (bestehender Konfi laut Doku 7,5 s).
+- Vorschaubilder der Designauswahl jetzt je Material: 16.235 Bilder, 82 fehlen (Schiefer-Größen ohne Preis).
+- Offene Grenzen: Funkklingeln nicht an Shopify-Varianten gebunden (IDs und Optionsnamen fehlen im Repo); Fertigungs- und Schnittdaten fehlen; Querformat-Designs nicht mit der Server-DB verglichen.
+- Nächster Schritt: vollständiger Shop-Abzug, Bindung der Funkklingeln über Optionswerte. [Übergabe](docs/handoffs/2026-11-17-konfi-neu.md)
+
 ## 17.11.2026 · Claude · Konfigurator-Neuaufbau `konfi-neu` (Auftrag Chris im Chat)
 
 - Chris: Ladezeit, Warenkorb und Produktanlage neu denken und neu aufbauen, nichts löschen.

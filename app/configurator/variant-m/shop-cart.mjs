@@ -20,6 +20,9 @@ async function referencePng(svg,geometry){
  try{image.src=url;await image.decode();canvas.getContext('2d').drawImage(image,0,0,canvas.width,canvas.height);return canvas.toDataURL('image/png').split(',')[1];}finally{URL.revokeObjectURL(url);}
 }
 const euro=cents=>new Intl.NumberFormat('de-DE',{style:'currency',currency:'EUR'}).format(cents/100);
+// Include the complete renderer state: new state fields cannot silently escape
+// invalidation. Even cosmetic changes may conservatively require another save.
+export const cartDraftKey=({binding,state,quantity,cartEdit,media})=>canonicalCartDraft({binding,state,quantity,cartEdit,media});
 // K8: Nur die Warenkorbzeile desselben Entwurfs wird ersetzt; eine andere Gestaltung wird neu hinzugefügt.
 export function shopCartRequest({saved,cartEdit,quantity,cartMode,presentation}){
  const edit=cartEdit&&cartEdit.draftId===saved.draftId?cartEdit:null;
@@ -57,7 +60,7 @@ export function installShopCart(api,footer,gate){
  const mediaIds=new WeakMap();let nextMediaId=0;
  const mediaId=value=>{if(!value||typeof value!=='object')return null;if(!mediaIds.has(value))mediaIds.set(value,++nextMediaId);return mediaIds.get(value);};
  const usedMedia=()=>[...new Set(api.el.state.objects.filter(o=>o.uxUploadId).map(o=>o.uxUploadId))];
- const draftKey=()=>canonicalCartDraft({binding,designId:api.el.state.designId,objects:api.el.state.objects.map(cleanObject),options:api.el.state.mOptions,ui:editorUi(api.el.state.ui),quantity:quantity(),cartEdit:api.el.cartEdit||null,
+ const draftKey=()=>cartDraftKey({binding,state:api.el.state,quantity:quantity(),cartEdit:api.el.cartEdit||null,
   media:usedMedia().sort().map(id=>{const asset=api.files.get(id);return {id,file:mediaId(asset?.file),edited:mediaId(asset?.blob),vectorLogo:asset?.vectorLogo};})});
  async function prepareDraft(expected){
   if(api.pending?.())throw Error('Bitte warten, bis das Foto vollständig geladen ist.');
@@ -81,7 +84,7 @@ export function installShopCart(api,footer,gate){
   window.addEventListener?.('pagehide',event=>{if(!event.persisted)preparation.close();});
  }
  button.addEventListener('click',async()=>{
-  if(busy)return;busy=true;label();
+  if(busy)return;busy=true;label();let receivedSave=false;
   try{
    api.el.uxAttemptTextValidation?.();api.el.sync();
    const issue=api.el.uxTextIssues?.()[0];
@@ -94,6 +97,7 @@ export function installShopCart(api,footer,gate){
    const expected=draftKey();
    say('1 von 4 · Vorschau wird erstellt …',{busy:true});
    const saved=await (preparation?preparation.get():prepareDraft(expected));
+   receivedSave=true;
    if(expected!==draftKey())throw changedCartDraft();
    const body=shopCartRequest({saved,cartEdit,quantity:count,cartMode:gate.cartMode,presentation:gate.presentation});
    say('3 von 4 · Warenkorb wird vorbereitet …',{busy:true});
@@ -103,7 +107,7 @@ export function installShopCart(api,footer,gate){
    if(result.configuration?.id&&result.lineId)api.el.cartEdit={configId:result.configuration.id,rev:result.configuration.rev,cartLineId:result.lineId,draftId:saved.draftId,draftToken:saved.draftToken,draftRevision:saved.revision};
    say(gate.cartMode==='theme'?'4 von 4 · Deine Gestaltung ist gesichert und wird in den Warenkorb gelegt …':(result.mode==='update'?'Warenkorbposition aktualisiert: ':'Im Warenkorb: ')+euro(result.totalCents)+'. Weiter zu Shopify …',{busy:true});
    window.top.location.assign(target);
-  }catch(error){say(error.message||'Der Warenkorb konnte nicht vorbereitet werden.');}
+  }catch(error){if(receivedSave)preparation?.invalidate();say(error.message||'Der Warenkorb konnte nicht vorbereitet werden.');}
   finally{busy=false;label();}
  });
  const sync=api.el.sync;api.el.sync=function(...args){const result=sync.apply(this,args);label();return result;};label();

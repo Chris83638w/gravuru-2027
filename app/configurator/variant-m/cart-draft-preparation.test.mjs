@@ -1,7 +1,29 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {canonicalCartDraft,createCartDraftPreparation} from './cart-draft-preparation.mjs';
+import {cartDraftKey} from './shop-cart.mjs';
 const deferred=()=>{let resolve,reject;const promise=new Promise((a,b)=>{resolve=a;reject=b;});return {promise,resolve,reject};};
+
+test('production key includes every renderer field, including future nested fields',()=>{
+ const input={binding:{productId:'test',productRevision:1},state:{designId:'test',objects:[],mOptions:{},ui:{}},quantity:1,cartEdit:null,media:[]};
+ const key=cartDraftKey(input);
+ for(const state of [{...input.state,futureRenderSetting:true},{...input.state,ui:{futureRenderSetting:1}},{...input.state,objects:[{futureRenderSetting:1}]}])assert.notEqual(cartDraftKey({...input,state}),key);
+});
+
+test('a failed cart handoff invalidates the saved result and the second click saves a new revision',async()=>{
+ let saves=0,carts=0;const p=createCartDraftPreparation({key:()=> 'same',prepare:async()=>({revision:++saves})});
+ p.prefetch();
+ const click=async()=>{const saved=await p.get();try{if(++carts===1)throw Object.assign(Error('stale draft'),{status:409});return saved;}catch(error){p.invalidate();throw error;}};
+ await assert.rejects(click(),/stale draft/);assert.equal(saves,1);
+ assert.deepEqual(await click(),{revision:2});assert.equal(saves,2);
+});
+
+test('invalidating an in-flight result preserves serial writes and never revives that result',async()=>{
+ const gate=deferred(),started=deferred();let saves=0;
+ const p=createCartDraftPreparation({key:()=> 'same',prepare:async()=>{if(++saves===1){started.resolve();await gate.promise;}return {revision:saves};}});
+ const first=p.get();await started.promise;p.invalidate();const second=p.get();gate.resolve();
+ await assert.rejects(first,/geändert/);assert.deepEqual(await second,{revision:2});assert.equal(saves,2);
+});
 
 test('canonical input includes quantity, uploaded content identity and cart edit while ignoring object key order',()=>{
  const a={design:{name:'A',objects:[{id:'t',text:'Name'}]},quantity:1,media:[{file:1,edited:2}],edit:{revision:1}};

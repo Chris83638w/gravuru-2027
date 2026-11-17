@@ -10,23 +10,24 @@ export const changedCartDraft=()=>Error('Die Gestaltung wurde während der Siche
 // One remembered preparation and one serial save queue per editor. A changed
 // design may supersede a running save, but cannot race its private revision.
 export function createCartDraftPreparation({key,prepare}){
- let current=null,completed=null,tail=Promise.resolve(),closed=false;
+ let current=null,completed=null,tail=Promise.resolve(),closed=false,generation=0;
  function get(){
   if(closed)return Promise.reject(changedCartDraft());
   const wanted=key();
   if(current?.key===wanted)return current.promise;
-  const job={key:wanted};current=job;
+  const job={key:wanted,generation};current=job;
   job.promise=tail.catch(()=>{}).then(async()=>{
-   if(closed||key()!==wanted)throw changedCartDraft();
+   if(closed||job.generation!==generation||key()!==wanted)throw changedCartDraft();
    if(completed?.key===wanted)return completed.saved;
    const saved=await prepare(wanted);
-   completed=closed?null:{key:wanted,saved};
-   if(closed||key()!==wanted)throw changedCartDraft();
+   completed=closed||job.generation!==generation?null:{key:wanted,saved};
+   if(closed||job.generation!==generation||key()!==wanted)throw changedCartDraft();
    return saved;
   });
   tail=job.promise;
   job.promise.catch(()=>{if(current===job)current=null;});
   return job.promise;
  }
- return {get,prefetch(){try{get().catch(()=>{});}catch{}},close(){closed=true;current=null;completed=null;}};
+ function invalidate(){generation++;current=null;completed=null;}
+ return {get,prefetch(){try{get().catch(()=>{});}catch{}},invalidate,close(){closed=true;invalidate();}};
 }

@@ -16,6 +16,7 @@ const realRegistry=process.argv[4]==='real-registry';
 const largeDocument=process.argv.includes('large-document')||process.argv.includes('large-blobs');
 const largeBlobs=process.argv.includes('large-blobs');
 const concurrency=process.argv.includes('two-customers')?2:1;
+const browsingCustomer=process.argv.includes('browse-and-buy');
 assert.ok(Number.isSafeInteger(runs)&&runs>=1&&runs<=100);
 const load=file=>import(pathToFileURL(path.join(root,file)).href);
 const {build}=await load('app/configurator/variant-m/build.mjs');
@@ -95,8 +96,8 @@ try{
   });
  }
  function signed(extra={}){const q=new URLSearchParams({shop:shopDomain,path_prefix:proxyPath,timestamp:String(Math.floor(Date.now()/1000)),logged_in_customer_id:'',...extra});q.set('signature',appProxySignature(q,secret));return q;}
- const samples=[],retainedMemory=[];
- async function customer(run){
+ const samples=[],retainedMemory=[],browseSamples=[];
+ async function customer(run,browseOnly=false){
   const start=await request(proxyPath+'/start?'+signed({product:'90001',variant:variantId}));assert.equal(start.status,302);
   const token=new URLSearchParams(new URL(start.headers.location).hash.slice(1)).get('s'),session={'X-Gravuru-Shop-Session':token};
   const model=await request('/api/shop-entry/model','GET',undefined,session);assert.equal(model.status,200);
@@ -104,6 +105,7 @@ try{
   const input={productId:record.id,productRevision:record.revision,designId:source.id,objects:structuredClone(source.objects),options:structuredClone(variant.options),quantity:2,media:[{id:'synthetic-photo',original:png}],preview:png,customerPreview:webp};
   Object.assign(input.objects.find(o=>o.type==='photoSlot'),{uxUploadId:'synthetic-photo',uxUploadKind:'photo'});
   const saved=await request('/api/shop-entry/acrylic-drafts','POST',{input},session);assert.equal(saved.status,201,JSON.stringify(saved.data));
+  if(browseOnly){if(run>0)browseSamples.push({saveMs:saved.elapsedMs,timing:events.find(e=>e.traceId===saved.headers['x-gravuru-timing-id'])});return;}
   const cart=await request('/api/shop-entry/theme-cart','POST',{draftId:saved.data.id,expectedRevision:1,quantity:2},{...session,'X-Gravuru-Draft':saved.data.token});assert.equal(cart.status,200,JSON.stringify(cart.data));
   const handoff=new URLSearchParams(new URL(cart.data.handoffUrl).hash.slice(1)).get('handoff');
   const proxyHeaders={'X-Gravuru-Cart-Handoff':handoff,'X-Gravuru-Cart-Preview':'hosted',Origin:'https://'+shopDomain};
@@ -112,13 +114,13 @@ try{
   const claim=await request(proxyPath+'/cart/claim?'+signed(),'POST',undefined,proxyHeaders);assert.equal(claim.status,200,JSON.stringify(claim.data));
   if(run>0)samples.push(Object.fromEntries([['acrylic-drafts',saved],['theme-cart',cart],['cart/data',data],['cart/claim',claim]].map(([route,r])=>[route,{elapsedMs:Math.round(r.elapsedMs*100)/100,requestBytes:r.requestBytes,responseBytes:r.responseBytes,timing:events.find(e=>e.traceId===r.headers['x-gravuru-timing-id'])||null}])));
  }
- for(let run=0;run<=runs;run++){await Promise.all(Array.from({length:concurrency},()=>customer(run)));if(global.gc)global.gc();retainedMemory.push({run,...process.memoryUsage()});}
+ for(let run=0;run<=runs;run++){await Promise.all([...Array.from({length:concurrency},()=>customer(run)),...(browsingCustomer?[customer(run,true)]:[])]);if(global.gc)global.gc();retainedMemory.push({run,...process.memoryUsage()});}
  const median=values=>{const sorted=[...values].sort((a,b)=>a-b),mid=Math.floor(sorted.length/2);return sorted.length%2?sorted[mid]:(sorted[mid-1]+sorted[mid])/2;};
  // Let optional v2 GC supplements arrive after the measured HTTP work. Apply
  // the same grace to both checkouts; it is not part of a request duration.
  await delay(60);
  const summary=Object.fromEntries(Object.keys(samples[0]).map(route=>[route,{medianMs:median(samples.map(s=>s[route].elapsedMs)),minMs:Math.min(...samples.map(s=>s[route].elapsedMs)),maxMs:Math.max(...samples.map(s=>s[route].elapsedMs))}]));
- console.log(JSON.stringify({schema:'gravuru-shop-cart-timing-benchmark/v2',commit:execFileSync('git',['-C',root,'rev-parse','HEAD'],{encoding:'utf8'}).trim(),runtimeWorkingTree:execFileSync('git',['-c','core.fsmonitor=false','-C',root,'status','--porcelain','--','app','ops'],{encoding:'utf8'}).trim().split('\n').filter(Boolean),medianConvention:'arithmetic mean of middle pair for even sample counts',profile:{kind:'local-synthetic-http',platform:os.platform(),cpu:os.cpus()[0].model,node:process.version,runs,warmupRuns:1,parallelSessions:concurrency,network:'loopback, no throttling',shopifyMockMs:{lookup:60,create:100,pollWait:25,poll:40},data:'bundled native acrylic sample, 40x60 PNG photo and WebP customer preview, '+(realRegistry?'temporary file-backed database':'in-memory database'),registry:realRegistry?'actual SQLite registry':'synthetic binding provider',fixture,forcedGc:typeof global.gc==='function'},retainedMemory,summary,samples,backgroundEvents:events.filter(e=>e.event==='shop_cart_timing'&&e.route==='checkout-image'),gcEvents:events.filter(e=>e.event==='shop_cart_gc')},null,2));
+ console.log(JSON.stringify({schema:'gravuru-shop-cart-timing-benchmark/v2',commit:execFileSync('git',['-C',root,'rev-parse','HEAD'],{encoding:'utf8'}).trim(),runtimeWorkingTree:execFileSync('git',['-c','core.fsmonitor=false','-C',root,'status','--porcelain','--','app','ops'],{encoding:'utf8'}).trim().split('\n').filter(Boolean),medianConvention:'arithmetic mean of middle pair for even sample counts',profile:{kind:'local-synthetic-http',platform:os.platform(),cpu:os.cpus()[0].model,node:process.version,runs,warmupRuns:1,parallelSessions:concurrency+(browsingCustomer?1:0),browsingSessions:browsingCustomer?1:0,network:'loopback, no throttling',shopifyMockMs:{lookup:60,create:100,pollWait:25,poll:40},data:'bundled native acrylic sample, 40x60 PNG photo and WebP customer preview, '+(realRegistry?'temporary file-backed database':'in-memory database'),registry:realRegistry?'actual SQLite registry':'synthetic binding provider',fixture,forcedGc:typeof global.gc==='function'},retainedMemory,summary,samples,browseSamples,backgroundEvents:events.filter(e=>e.event==='shop_cart_timing'&&e.route==='checkout-image'),gcEvents:events.filter(e=>e.event==='shop_cart_gc')},null,2));
 }finally{
  if(server){server.closeAllConnections();await new Promise(resolve=>server.close(resolve));}
  workshop?.close();if(log!==undefined)fs.closeSync(log);fs.rmSync(dir,{recursive:true,force:true});

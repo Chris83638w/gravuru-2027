@@ -16,6 +16,15 @@
   - `app/workshop` + `variant-m`: 2731 Tests, 4 Fehler und 14 abgebrochen. Alle vorbestehend (Katalog-Worker, Fotoauflösung, „Werkstatt einheitlich“).
 - Offen: Browsertest beider Tab-Stände durch Astra; danach Freigabe und Deploy durch Chris.
 
+## 17.11.2026 · Claude (Operator) · App-Audit, Branch dev/claude-app-audit-20261117 (Basis be163c5d)
+
+- Galerie-Cache wird nur noch für den angefragten Bereich entpackt (`decodeLazy`). In Live-Größe dauert ein Treffer 150 ms statt 3.836 ms, der gehaltene Heap sinkt von 465 auf 28 MB.
+- Galerie-Karten nutzen eine 600×400-Textur mit 11 KB statt 98 KB bzw. 1,44 MB. Werkstatt-Karte Edelstahl 1.902 KB → 41 KB, laufende App lokal gemessen.
+- Drei Editor-Nebendateien bekommen `private, max-age=300`.
+- Prüfungen: Gesamtsuite 2.737 Tests, dieselben 206 vorbestehenden lokalen Fehler wie die Baseline, keiner neu. Build grün, Bundle unverändert.
+- Offene Punkte (Platte 95 %, DB 4,2 GB, Modell-Cache, /cart.js-404, Katalog-Arbeiter) stehen in `APP-AUDIT.md`.
+- Kein Deploy, kein Merge. Als Nächstes: Review (Astra/Mika), danach Freigabe durch Chris.
+
 ## 16.11.2026 – V4 umgesetzt: Fortschrittsanzeige (Claude als Operator)
 
 - Freigabe: Chris „mach V4 auch“. Branch `dev/claude-warenkorb-v4-20261116` (baut auf V1–V3 auf).

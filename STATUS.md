@@ -1,3 +1,7 @@
+## 17.11.2026 · Astra (Codex) · #254 P1, Schritt 1: Warenkorb-Zeitprotokoll
+
+Auftrag samt Zielbild gelesen; eigener P1-Branch `dev/astra-konfi-tempo-p1-20261117` exakt ab Livecode `be163c5d`, Implementierung `2d133af0`. Die vier Serveranfragen `acrylic-drafts`, `theme-cart`, `cart/data`, `cart/claim` liefern jetzt `Server-Timing` sowie strukturierte Logs mit Teilzeiten, Bytezahlen und zufälliger Diagnose-ID; Checkout-Bildsuche/-anlage/-polling werden als eigener zugeordneter Hintergrundlauf gemessen. Keine Oberfläche, Preise, Bindungen, Prüfungen oder Kapazitätsgrenzen geändert. 84 gezielte Tests bestanden, Build 76 Ressourcen/1 Modell erfolgreich. Gleicher lokaler synthetischer HTTP-Ablauf, je 7 Läufe nach 1 Aufwärmlauf: Median vorher → nachher in ms: Entwurf 848,63 → 839,88; Übergabe 6,44 → 6,58; Daten 261,96 → 257,64; Claim 6,80 → 6,52. Kontrolliert den Diagnoseaufwand, belegt weder die Live-Ursache noch das Handy-Ziel unter 5 s. [Messdaten, Quellen, Prüfungen und Anleitung für Claude](docs/handoffs/2026-11-17-konfi-tempo-p1-zeitprotokoll.md). P1 bleibt Entwurf, V2/V3-Umbau folgt nach Auswertung realistischer Serverdaten; der Live-Stand enthält bereits WebP-Upload und Bildstart beim Übergabe-POST. Kein Merge/Deploy. Genau nächster Schritt: Claude-Review des Messstands und Server-/Browsermessung auf abgestimmter Prüfumgebung; live erst nach Chris' „live“.
+
 ## 16.11.2026 – #252 Versionswechsel beim Warenkorb behoben (Claude als Operator)
 
 - Auftrag: Chris über Codex/Astra (Issue #252). Kein Merge, kein Deployment.

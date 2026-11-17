@@ -28,6 +28,12 @@ test('an image cannot escape verification of the immutable archive',async()=>{
  assert.throws(()=>s.api.read(path),{status:422});
 });
 
+test('the delivered image owns its bytes instead of retaining the complete archive',async()=>{
+ const s=await setup(),result=s.api.read(new URL(s.api.snapshotUrl('acryl',proof,digest(s.archive))).pathname);
+ assert.deepEqual(result,png);
+ s.archive.fill(0);assert.deepEqual(result,png,'an already verified response is detached from the archive storage');
+});
+
 test('snapshot upload capability is byte-identical, purpose-separated and tied to every component',async()=>{
  const s=await setup(),hash=digest(s.archive),source=s.api.snapshotUrl('acryl',proof,hash),p=new URL(source).pathname;
  assert.equal(createCustomerDesignImages({origin,shopDomain,secret,stores:s.stores}).snapshotUrl('acryl',proof,hash),source);

@@ -20,7 +20,9 @@ export function createCustomerDesignImages({origin,shopDomain,secret,stores}){
   const archive=readReviewPackage(store.workshop.customerDrafts.downloadSnapshot(saved.snapshotId,'package'),saved.packageSha256,NATIVE_REVIEW_SCHEMAS);
   const png=archive.files.get('gestaltung-kundenansicht.png')||archive.files.get('gestaltung-referenz.png');
   if(!png||!png.subarray(0,8).equals(Buffer.from([137,80,78,71,13,10,26,10])))fail();
-  return png;
+  // A slow HTTP consumer must retain only its PNG, not the entire review ZIP
+  // through this subarray's backing store. Hash verification above is unchanged.
+  return Buffer.from(png);
  }
  return {url,snapshotUrl,matches:p=>p.startsWith(BASE),read(pathname){
   const snapshot=pathname.match(/^\/gestaltung\/([-A-Za-z0-9_]{1,100})\/(proof_[a-f0-9-]{36})\/([a-f0-9]{64})\/([a-f0-9]{64})\.png$/);

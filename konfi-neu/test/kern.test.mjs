@@ -344,8 +344,10 @@ test('Fertigung Funkklingel: Edelstahl und Acryl getrennt, Gravur nur im Acryl, 
   const e = eintrag(KLINGEL);
   const z = {...modell.startZustand(e), bef: 'B04S', opt: {position: 'standard', rahmen: 'FK-RUNDUM', farbe: 'anthrazit'}};
   const {dateien, auftrag} = erzeugen({id: 'gtest', rev: 2, sku: 'x', zustand: z}, e);
-  assert.deepEqual(Object.keys(dateien), ['edelstahl.svg', 'acryl.svg']);
+  assert.deepEqual(Object.keys(dateien), ['edelstahl.svg', 'acryl.svg', 'acryl-laser-gespiegelt.svg']);
   const stahl = dateien['edelstahl.svg'], acryl = dateien['acryl.svg'];
+  // Von hinten graviert (Chris, 17.11.2026): gespiegelt um die Mitte der Acrylfläche (x 10 … 230 → Achse bei 120).
+  assert.match(dateien['acryl-laser-gespiegelt.svg'], /viewBox="10 10 220 180"><title>[^<]*gespiegelt[^<]*<\/title><g transform="translate\(240 0\) scale\(-1 1\)">/);
   assert.match(stahl, /width="240mm" height="200mm"/);
   assert.ok(!stahl.includes('id="gravur"'), 'keine Gravur auf Edelstahl');
   assert.equal((stahl.match(/<circle /g) || []).length, 4, 'vier Eckbohrungen bei Schraubbefestigung');
@@ -377,7 +379,7 @@ test('Bestelleingang erzeugt Fertigungsordner; Testbestellung ist gekennzeichnet
     const antwort = await fetch(basis + '/webhooks/shopify/orders-paid', {method: 'POST', body, headers: {'x-shopify-hmac-sha256': createHmac('sha256', 'hook').update(body).digest('base64'), 'x-shopify-shop-domain': 'test.myshopify.com', 'x-shopify-webhook-id': 'f1'}});
     assert.deepEqual((await antwort.json()).positionen, [{position: '5', status: 'bereit', grund: null}]);
     const ziel = path.join(ordner, 'TEST-1077-5');
-    assert.deepEqual(fs.readdirSync(ziel).sort(), ['acryl.svg', 'auftrag.json', 'edelstahl.svg']);
+    assert.deepEqual(fs.readdirSync(ziel).sort(), ['acryl-laser-gespiegelt.svg', 'acryl.svg', 'auftrag.json', 'edelstahl.svg']);
     const auftrag = JSON.parse(fs.readFileSync(path.join(ziel, 'auftrag.json'), 'utf8'));
     assert.equal(auftrag.test, true);
     assert.equal(auftrag.bestellung, '#1077');

@@ -1,0 +1,116 @@
+# api_version: 2026-07
+#
+# ACHTUNG: Handgeschriebener AUSSCHNITT des Schemas „Cart and Checkout Validation“.
+# Er enthält nur die Typen und Felder, die diese Funktion benutzt, damit sie ohne Shopify-Zugang gebaut und
+# getestet werden kann. Vor dem Release durch das echte Schema ersetzen:
+#     shopify app function schema
+# Stimmt ein Feldname nicht, meldet der Build das sofort. Nicht aus Shopify geprüft sind insbesondere
+# `Input.shop` und `Shop.localTime` in dieser Funktions-API (in der Preisfunktion sind sie belegt).
+
+schema {
+  query: Input
+  mutation: MutationRoot
+}
+
+directive @oneOf on INPUT_OBJECT
+
+# Die Bibliothek `shopify_function` erwartet diese drei Aufzählungen in jedem Schema (hier nur als Platzhalter;
+# das echte Schema enthält die vollständigen Listen).
+enum LanguageCode { DE }
+enum CountryCode { DE }
+enum CurrencyCode { EUR }
+
+scalar Date
+scalar Decimal
+scalar Void
+
+type Input {
+  buyerJourney: BuyerJourney!
+  cart: Cart!
+  shop: Shop!
+}
+
+type BuyerJourney {
+  step: BuyerJourneyStep
+}
+
+enum BuyerJourneyStep {
+  CART_INTERACTION
+  CHECKOUT_INTERACTION
+  CHECKOUT_COMPLETION
+}
+
+type Cart {
+  lines: [CartLine!]!
+}
+
+type CartLine {
+  id: ID!
+  quantity: Int!
+  cost: CartLineCost!
+  attribute(key: String): Attribute
+  merchandise: Merchandise!
+}
+
+type CartLineCost {
+  amountPerQuantity: MoneyV2!
+}
+
+type MoneyV2 {
+  amount: Decimal!
+}
+
+type Attribute {
+  key: String!
+  value: String
+}
+
+union Merchandise = CustomProduct | ProductVariant
+
+type CustomProduct {
+  title: String
+}
+
+type ProductVariant {
+  id: ID!
+  product: Product!
+}
+
+type Product {
+  title: String!
+  metafield(key: String!, namespace: String): Metafield
+}
+
+type Metafield {
+  value: String!
+}
+
+type Shop {
+  localTime: LocalTime!
+  metafield(key: String!, namespace: String): Metafield
+}
+
+type LocalTime {
+  date: Date!
+}
+
+type MutationRoot {
+  cartValidationsGenerateRun(result: CartValidationsGenerateRunResult!): Void!
+}
+
+input CartValidationsGenerateRunResult {
+  operations: [Operation!]!
+}
+
+input Operation @oneOf {
+  validationAdd: ValidationAddOperation
+}
+
+input ValidationAddOperation {
+  errors: [ValidationError!]!
+}
+
+input ValidationError {
+  message: String!
+  target: String!
+}

@@ -13,6 +13,8 @@ use sha2::Sha256;
 pub struct Eingabe {
     #[serde(rename = "buyerJourney")]
     pub kaeufer: Option<Kaeufer>,
+    #[serde(rename = "presentmentCurrencyRate")]
+    pub kurs: Option<Value>,
     pub shop: Option<Shop>,
     pub cart: Warenkorb,
 }
@@ -110,18 +112,32 @@ fn sekunden(datum: &str) -> Option<i64> {
     Some((aera * 146097 + tag_in_aera - 719468) * 86400)
 }
 
-pub fn bewerten(zeile: &Zeile, schluessel: Option<&str>, jetzt: Option<i64>) -> Bewertung {
-    let ware = zeile.merchandise.as_ref();
-    let konfi_produkt = ware.and_then(|w| w.product.as_ref()).and_then(|p| p.konfi.as_ref()).and_then(|k| k.value.as_deref()).map_or(false, |v| !v.is_empty());
-    let kennung = match zeile.gestaltung.as_ref().and_then(|g| g.value.as_deref()).filter(|v| !v.is_empty()) {
+/// Eine Warenkorbzeile, unabhängig davon, wie die Eingabe gelesen wurde (JSON oder Shopify-Typen).
+pub struct ZeileRoh<'a> {
+    /// Wert der Zeilenangabe `_gravuru`, z. B. "gAbc.1"
+    pub kennung: Option<&'a str>,
+    /// Produkt trägt eine Konfigurator-Kennung
+    pub konfi_produkt: bool,
+    pub ist_variante: bool,
+    /// "gid://shopify/ProductVariant/123"
+    pub varianten_gid: &'a str,
+    /// Wert der Zeilenangabe `_gravuru_preis`
+    pub preisangabe: &'a str,
+    /// Variantenpreis je Stück in Cent (Anzeigewährung)
+    pub varianten_cents: Option<i64>,
+    pub menge: i64,
+}
+
+/// `kurs`: Umrechnung Shopwährung → Anzeigewährung (im Shop mit nur EUR immer 1,0).
+pub fn bewerten_roh(zeile: &ZeileRoh, schluessel: Option<&str>, jetzt: Option<i64>, kurs: f64) -> Bewertung {
+    let kennung = match zeile.kennung.filter(|v| !v.is_empty()) {
         Some(k) => k,
-        None => return if konfi_produkt { Bewertung::Gesperrt("ohne_gestaltung") } else { Bewertung::Fremd },
+        None => return if zeile.konfi_produkt { Bewertung::Gesperrt("ohne_gestaltung") } else { Bewertung::Fremd },
     };
-    let ware = match ware.filter(|w| w.art.as_deref() == Some("ProductVariant")) { Some(w) => w, None => return Bewertung::Gesperrt("keine_variante") };
+    if !zeile.ist_variante { return Bewertung::Gesperrt("keine_variante"); }
     let schluessel = match schluessel.filter(|s| !s.is_empty()) { Some(s) => s, None => return Bewertung::Gesperrt("schluessel_fehlt") };
-    let variante = ware.id.as_deref().unwrap_or("").rsplit('/').next().unwrap_or("");
-    let wert = zeile.preis.as_ref().and_then(|p| p.value.as_deref()).unwrap_or("");
-    let teile: Vec<&str> = wert.split('.').collect();
+    let variante = zeile.varianten_gid.rsplit('/').next().unwrap_or("");
+    let teile: Vec<&str> = zeile.preisangabe.split('.').collect();
     if teile.len() != 5 || teile[0] != "v1" { return Bewertung::Gesperrt("format"); }
     let (aufpreis, ablauf) = match (teile[1].parse::<i64>(), teile[3].parse::<i64>()) { (Ok(a), Ok(b)) if a >= 0 && !teile[1].starts_with('+') => (a, b), _ => return Bewertung::Gesperrt("format") };
     if !staffel_gueltig(teile[2]) { return Bewertung::Gesperrt("format"); }
@@ -134,8 +150,45 @@ pub fn bewerten(zeile: &Zeile, schluessel: Option<&str>, jetzt: Option<i64>) -> 
     for (a, b) in erwartet.bytes().zip(teile[4].bytes().chain(std::iter::repeat(0))) { abweichung |= (a ^ b) as usize; }
     if abweichung != 0 { return Bewertung::Gesperrt("unterschrift"); }
     if let Some(jetzt) = jetzt { if jetzt > ablauf { return Bewertung::Gesperrt("abgelaufen"); } }
-    let variante_cents = match zeile.cost.as_ref().and_then(|c| c.je_stueck.as_ref()).and_then(|b| cents(&b.amount)) { Some(c) => c, None => return Bewertung::Gesperrt("variantenpreis") };
-    Bewertung::Ok { stueck: staffel_preis(variante_cents + aufpreis, zeile.quantity, teile[2]), variante: variante_cents }
+    let variante_cents = match zeile.varianten_cents { Some(c) if c >= 0 => c, _ => return Bewertung::Gesperrt("variantenpreis") };
+    if !kurs.is_finite() || kurs <= 0.0 { return Bewertung::Gesperrt("waehrung"); }
+    let aufpreis_anzeige = (aufpreis as f64 * kurs).round() as i64;
+    Bewertung::Ok { stueck: staffel_preis(variante_cents + aufpreis_anzeige, zeile.menge, teile[2]), variante: variante_cents }
+}
+
+pub fn bewerten(zeile: &Zeile, schluessel: Option<&str>, jetzt: Option<i64>, kurs: f64) -> Bewertung {
+    let ware = zeile.merchandise.as_ref();
+    bewerten_roh(&ZeileRoh {
+        kennung: zeile.gestaltung.as_ref().and_then(|g| g.value.as_deref()),
+        konfi_produkt: ware.and_then(|w| w.product.as_ref()).and_then(|p| p.konfi.as_ref()).and_then(|k| k.value.as_deref()).map_or(false, |v| !v.is_empty()),
+        ist_variante: ware.map_or(false, |w| w.art.as_deref() == Some("ProductVariant")),
+        varianten_gid: ware.and_then(|w| w.id.as_deref()).unwrap_or(""),
+        preisangabe: zeile.preis.as_ref().and_then(|p| p.value.as_deref()).unwrap_or(""),
+        varianten_cents: zeile.cost.as_ref().and_then(|c| c.je_stueck.as_ref()).and_then(|b| cents(&b.amount)),
+        menge: zeile.quantity,
+    }, schluessel, jetzt, kurs)
+}
+
+/// Text des Kassenhinweises für eine gesperrte Zeile.
+pub fn sperr_text(titel: &str, grund: &str) -> String {
+    let titel: String = titel.chars().take(80).collect();
+    let vorspann = if titel.is_empty() { String::new() } else { format!("„{}“: ", titel) };
+    let text = if grund == "abgelaufen" {
+        "Diese Gestaltung ist zu alt. Bitte öffne sie im Warenkorb über „Bearbeiten“ und lege sie erneut in den Warenkorb."
+    } else {
+        "Diese Position hat keine gültige Gestaltung. Bitte entferne sie und gestalte das Produkt im Konfigurator."
+    };
+    format!("{}{}", vorspann, text)
+}
+
+/// Betrag für Shopify, z. B. 2296 → "22.96".
+pub fn betrag(cents: i64) -> String { format!("{}.{:02}", cents / 100, cents % 100) }
+
+/// Sekunden seit 1970 aus "JJJJ-MM-TT".
+pub fn datum_sekunden(datum: &str) -> Option<i64> { sekunden(datum) }
+
+fn kurs_von(eingabe: &Eingabe) -> f64 {
+    match &eingabe.kurs { None | Some(Value::Null) => 1.0, Some(Value::String(s)) => s.parse().unwrap_or(f64::NAN), Some(Value::Number(n)) => n.as_f64().unwrap_or(f64::NAN), _ => f64::NAN }
 }
 
 fn rahmen(eingabe: &Eingabe) -> (Option<&str>, Option<i64>) {
@@ -148,9 +201,9 @@ pub fn preis_lauf(eingabe: &Eingabe) -> Value {
     let (schluessel, jetzt) = rahmen(eingabe);
     let mut operationen = Vec::new();
     for zeile in &eingabe.cart.lines {
-        if let Bewertung::Ok { stueck, variante } = bewerten(zeile, schluessel, jetzt) {
+        if let Bewertung::Ok { stueck, variante } = bewerten(zeile, schluessel, jetzt, kurs_von(eingabe)) {
             if stueck != variante {
-                operationen.push(json!({"lineUpdate": {"cartLineId": zeile.id, "price": {"adjustment": {"fixedPricePerUnit": {"amount": format!("{}.{:02}", stueck / 100, stueck % 100)}}}}}));
+                operationen.push(json!({"lineUpdate": {"cartLineId": zeile.id, "price": {"adjustment": {"fixedPricePerUnit": {"amount": betrag(stueck)}}}}}));
             }
         }
     }
@@ -163,15 +216,9 @@ pub fn pruef_lauf(eingabe: &Eingabe) -> Value {
     if schritt == "CHECKOUT_INTERACTION" || schritt == "CHECKOUT_COMPLETION" {
         let (schluessel, jetzt) = rahmen(eingabe);
         for zeile in &eingabe.cart.lines {
-            if let Bewertung::Gesperrt(grund) = bewerten(zeile, schluessel, jetzt) {
-                let titel: String = zeile.merchandise.as_ref().and_then(|w| w.product.as_ref()).and_then(|p| p.title.as_deref()).unwrap_or("").chars().take(80).collect();
-                let vorspann = if titel.is_empty() { String::new() } else { format!("„{}“: ", titel) };
-                let text = if grund == "abgelaufen" {
-                    "Diese Gestaltung ist zu alt. Bitte öffne sie im Warenkorb über „Bearbeiten“ und lege sie erneut in den Warenkorb."
-                } else {
-                    "Diese Position hat keine gültige Gestaltung. Bitte entferne sie und gestalte das Produkt im Konfigurator."
-                };
-                fehler.push(json!({"message": format!("{}{}", vorspann, text), "target": "$.cart"}));
+            if let Bewertung::Gesperrt(grund) = bewerten(zeile, schluessel, jetzt, kurs_von(eingabe)) {
+                let titel = zeile.merchandise.as_ref().and_then(|w| w.product.as_ref()).and_then(|p| p.title.as_deref()).unwrap_or("");
+                fehler.push(json!({"message": sperr_text(titel, grund), "target": "$.cart"}));
             }
         }
     }

@@ -1,0 +1,17 @@
+[package]
+name = "gravuru-konfi-pruefung"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+shopify_function = "2.3.0"
+gravuru-konfi-funktion = { path = "../../funktion/rust" }
+
+[dev-dependencies]
+serde_json = "1"
+
+[profile.release]
+opt-level = "z"
+lto = true
+codegen-units = 1
+strip = true

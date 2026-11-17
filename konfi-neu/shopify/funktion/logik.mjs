@@ -14,7 +14,7 @@ import {pruefen, staffelPreis} from '../../core/signatur.mjs';
 const variantenNummer = gid => String(gid || '').split('/').pop();
 
 /** @returns {{art:'fremd'} | {art:'ok', stueckCents:number} | {art:'gesperrt', grund:string}} */
-export function zeileBewerten(zeile, schluessel, jetztSekunden) {
+export function zeileBewerten(zeile, schluessel, jetztSekunden, kurs = 1) {
   const kennung = zeile.gestaltung?.value;
   const konfiProdukt = Boolean(zeile.merchandise?.product?.konfi?.value);
   if (!kennung) return konfiProdukt ? {art: 'gesperrt', grund: 'ohne_gestaltung'} : {art: 'fremd'};
@@ -24,9 +24,12 @@ export function zeileBewerten(zeile, schluessel, jetztSekunden) {
   if (!ergebnis.ok) return {art: 'gesperrt', grund: ergebnis.grund};
   const variantenCents = Math.round(Number(zeile.cost?.amountPerQuantity?.amount) * 100);
   if (!Number.isSafeInteger(variantenCents) || variantenCents < 0) return {art: 'gesperrt', grund: 'variantenpreis'};
-  return {art: 'ok', stueckCents: staffelPreis(variantenCents + ergebnis.aufpreisCents, zeile.quantity, ergebnis.staffel), variantenCents};
+  // Der Aufpreis ist in Shopwährung unterschrieben; der Variantenpreis kommt in der Anzeigewährung.
+  if (!Number.isFinite(kurs) || kurs <= 0) return {art: 'gesperrt', grund: 'waehrung'};
+  return {art: 'ok', stueckCents: staffelPreis(variantenCents + Math.round(ergebnis.aufpreisCents * kurs), zeile.quantity, ergebnis.staffel), variantenCents};
 }
 
+const kursAus = input => input.presentmentCurrencyRate == null ? 1 : Number(input.presentmentCurrencyRate);
 const zeitAus = input => { const t = Date.parse(input.shop?.localTime?.date ? input.shop.localTime.date + 'T00:00:00Z' : ''); return Number.isFinite(t) ? Math.floor(t / 1000) : null; };
 
 export function preisLauf(input) {
@@ -34,7 +37,7 @@ export function preisLauf(input) {
   const jetzt = zeitAus(input);
   const operations = [];
   for (const zeile of input.cart.lines) {
-    const bewertung = zeileBewerten(zeile, schluessel, jetzt);
+    const bewertung = zeileBewerten(zeile, schluessel, jetzt, kursAus(input));
     if (bewertung.art !== 'ok' || bewertung.stueckCents === bewertung.variantenCents) continue;
     operations.push({lineUpdate: {cartLineId: zeile.id, price: {adjustment: {fixedPricePerUnit: {amount: (bewertung.stueckCents / 100).toFixed(2)}}}}});
   }
@@ -48,7 +51,7 @@ export function pruefLauf(input) {
   const jetzt = zeitAus(input);
   const errors = [];
   for (const zeile of input.cart.lines) {
-    const bewertung = zeileBewerten(zeile, schluessel, jetzt);
+    const bewertung = zeileBewerten(zeile, schluessel, jetzt, kursAus(input));
     if (bewertung.art !== 'gesperrt') continue;
     const titel = String(zeile.merchandise?.product?.title || '').slice(0, 80);
     errors.push({message: (titel ? `„${titel}“: ` : '') + (bewertung.grund === 'abgelaufen'

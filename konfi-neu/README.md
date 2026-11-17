@@ -158,8 +158,10 @@ Ehrlich und nach Gewicht. Nichts hiervon ist versteckt eingebaut oder vorgetäus
    Mengenstaffel-Anzeige, mehrsprachige Texte, „Oval“ statt „Ellipse“ als Kundenname (3.27).
 4. **Fotos** sind mit einer Funkklingel im Browser bis in den Warenkorb durchgespielt (synthetisches Testbild).
    Nicht geprüft: Designs mit festem Fotofeld (Gedenktafeln), echte Handyfotos, HEIC, Freistellen.
-5. **Shopify-Funktion** ist als Programm gebaut und gegen die Referenz geprüft, aber nicht als Erweiterung
-   verpackt und nicht in Shopify gelaufen. Rechenschritte sind nicht gemessen. Siehe `shopify/README.md`.
+5. **Shopify-Funktionen** (Preis und Kassenprüfung) sind als Shopify-Erweiterungen verpackt
+   (`shopify/erweiterung/`), gebaut (78 KB und 71 KB) und über 150 Zufalls-Warenkörbe gegen die Referenz
+   geprüft. Sie sind **nicht eingespielt und nie in Shopify gelaufen**; Rechenschritte sind nicht gemessen.
+   Siehe `shopify/README.md`.
 6. **Abgleich** erzeugt den Plan und die Bindung, schreibt aber noch nichts nach Shopify. Das Anwenden ist
    bewusst ein eigener, freizugebender Schritt.
 7. **Vorschau gegen Bestand.** Verglichen wurde ein einziges Design (TRE-V2A-7x2-D5) mit dem bestehenden
@@ -236,7 +238,7 @@ Sobald eine bezahlte Position geprüft und „bereit“ ist, schreibt der Server
 |---|---|
 | Edelstahl-Schild | `fertigung.svg`: Kontur blau, Gravur schwarz, Bohrungen rot |
 | Acryl-Schild (von hinten graviert) | `fertigung.svg` lesbar, dazu `laser-gespiegelt.svg` (Entscheidung 6.6); Kontur gelb |
-| Funkklingelschild | `edelstahl.svg` (Kontur blau, Geräteaussparungen und Eckbohrungen rot) und `acryl.svg` (Kontur gelb, Gravur, Aussparungen); kein Gerätebild |
+| Funkklingelschild | `edelstahl.svg` (Kontur blau, Geräteaussparungen und Eckbohrungen rot), `acryl.svg` lesbar (Kontur gelb, Gravur, Aussparungen) und `acryl-laser-gespiegelt.svg` für den Laser (Acryl wird von hinten graviert, Chris 17.11.2026); kein Gerätebild |
 
 - Text ist immer in Pfade umgewandelt (6.3). Schnittlinien sind rote Haarlinien, 0,0762 mm (6.8). Bohrlöcher
   sparen die Gravur nicht aus (6.4).
@@ -258,11 +260,12 @@ Sobald eine bezahlte Position geprüft und „bereit“ ist, schreibt der Server
 
 Offen bei der Fertigung:
 
-1. **Nur SVG.** PDF und DXF (Anforderung M-023) entstehen noch nicht.
+1. **Nur SVG.** Chris, 17.11.2026: „svg reicht“. PDF und DXF (Anforderung M-023) entstehen deshalb nicht.
 2. **Nicht von der Werkstatt abgenommen** und nicht mit dem bestehenden Export verglichen. Farben und
    Linienstärken folgen den Entscheidungen, sind aber an keiner Maschine geprüft.
 3. **Fotos** sind als Bild mit Ausschnitt eingebettet, nicht für die Gravur gerastert.
-4. **Funkklingel-Acryl:** Ob von vorn oder von hinten graviert wird, ist nicht festgelegt; die Datei ist lesbar.
+4. **Funkklingel-Acryl** wird von hinten graviert (Chris, 17.11.2026): Die gespiegelte Laserdatei entsteht.
+   An der Maschine geprüft ist sie nicht.
 5. **Nur mit Chrome verglichen.** Safari und Firefox können Text minimal anders setzen; der Breitenvergleich
    im Auftrag fängt das ab.
 6. Der Server braucht dafür das Paket `harfbuzzjs` (einzige Laufzeit-Abhängigkeit).
@@ -273,8 +276,10 @@ Offen bei der Fertigung:
   liegt deshalb getrennt und ersetzt nichts. Ob er R15 ablösen, ergänzen oder nur als Vorlage für einzelne
   Teile dienen soll (z. B. zuerst nur Veröffentlichung und WOFF2-Schriften im bestehenden Konfi), ist deine
   Entscheidung.
-- **Funkklingel-Acryl: von vorn oder von hinten graviert?** Davon hängt ab, ob die Laserdatei gespiegelt wird.
-- **Welche Dateiformate braucht die Werkstatt?** Bisher entsteht SVG. Reicht das, oder PDF/DXF?
+- Beantwortet am 17.11.2026: Funkklingel-Acryl wird **von hinten graviert**; als Dateiformat **reicht SVG**.
+- **Shopify-Funktionen testen:** Je App und Shop läuft nur eine Preisfunktion. Die neue kann deshalb nicht neben
+  der bestehenden in derselben App laufen. Für den Test braucht es einen Entwicklungs-Shop oder eine eigene
+  Test-App – das entscheidest und startest du (siehe `shopify/README.md`).
 - **Schriften ohne ß:** Minimalist, Ashley, Sweetie, Homage und Sunflower können kein ß. Der Editor lässt solche
   Texte nicht in den Warenkorb. Wenn du das anders willst (z. B. diese Schriften nicht anbieten), sag es.
 - **Fotopreis:** Im Katalog steht für Schiefer 22 × 14 „jedes weitere Foto 8,99 €“; das Entscheidungsregister

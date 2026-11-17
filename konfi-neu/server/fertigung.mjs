@@ -175,10 +175,12 @@ export function fertigung({schriftOrdner}) {
         {titel: `${kennung} · Edelstahl 1,5 mm · ${groesse.n}`});
       // Ins Acryl kommen nur Bohrungen, die vollständig in der Acrylfläche liegen.
       const imAcryl = ecken.filter(([x, y, d]) => x - d / 2 >= acryl[0] && y - d / 2 >= acryl[1] && x + d / 2 <= acryl[0] + acryl[2] && y + d / 2 <= acryl[1] + acryl[3]);
-      dateien['acryl.svg'] = rahmen(
-        linie(GELB, 'kontur-acryl', `<path d="${rechteckPfad(acryl)}"/>`) + `<g id="gravur" fill="${SCHWARZ}" stroke="none">${gravur}</g>` + linie(ROT, 'schnitte', schnitte + imAcryl.map(kreis).join('')),
-        {feld: acryl, titel: `${kennung} · Acrylglas 3 mm ${zustand.opt.farbe} · ${n(acryl[2])} × ${n(acryl[3])} mm`});
-      hinweise.push('Funkklingel: Ob das Acryl von vorn oder von hinten graviert wird, ist nicht festgelegt. Die Datei ist lesbar (nicht gespiegelt).');
+      const acrylInhalt = linie(GELB, 'kontur-acryl', `<path d="${rechteckPfad(acryl)}"/>`) + `<g id="gravur" fill="${SCHWARZ}" stroke="none">${gravur}</g>` + linie(ROT, 'schnitte', schnitte + imAcryl.map(kreis).join(''));
+      const acrylTitel = `${kennung} · Acrylglas 3 mm ${zustand.opt.farbe} · ${n(acryl[2])} × ${n(acryl[3])} mm`;
+      dateien['acryl.svg'] = rahmen(acrylInhalt, {feld: acryl, titel: acrylTitel + ' · lesbar'});
+      // Chris, 17.11.2026: Das Acryl der Funkklingel wird von hinten graviert → gespiegelte Datei für den Laser.
+      dateien['acryl-laser-gespiegelt.svg'] = rahmen(acrylInhalt, {feld: acryl, spiegeln: true, titel: acrylTitel + ' · von hinten graviert · gespiegelt für den Laser'});
+      hinweise.push('Acryl wird von hinten graviert: Für den Laser die Datei „acryl-laser-gespiegelt.svg“ verwenden.');
     }
 
     const auftrag = {

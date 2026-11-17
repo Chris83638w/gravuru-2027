@@ -1,3 +1,12 @@
+## 17.11.2026 · Claude · `konfi-neu`: Funkklingel-Acryl gespiegelt, Shopify-Erweiterungen verpackt (Chris im Chat: „von hinten graviert, svg reicht, mach weiter“)
+
+- Funkklingel-Acryl wird von hinten graviert (Chris 17.11.): zusätzliche Laserdatei `acryl-laser-gespiegelt.svg`. SVG reicht als Fertigungsformat (Chris 17.11.), PDF/DXF entfallen.
+- Preisfunktion und Kassenprüfung als Shopify-Erweiterungen verpackt: `konfi-neu/shopify/erweiterung/gravuru-konfi-preis` (78.237 Byte) und `gravuru-konfi-pruefung` (71.342 Byte), je mit `shopify.extension.toml`. Nicht eingespielt.
+- Preisfunktion wendet den Währungskurs jetzt auch auf den Aufpreis an (Referenz und Rust).
+- Prüfungen: 23/23 Node-Tests; `cargo test` je Erweiterung gegen die Referenz über 150 Zufalls-Warenkörbe (1.024 Zeilen): 151 Preisänderungen gleich, 540 Sperrtexte gleich; Wasm-Exporte `cart_transform_run` und `cart_validations_generate_run` vorhanden.
+- Offene Grenzen: nie in Shopify gelaufen; Schema der Kassenprüfung ist ein handgeschriebener Ausschnitt (`Input.shop`, `Shop.localTime` dort unbelegt); Rechenschritte nicht gemessen (Abruf von `function-runner` hier abgewiesen); je App und Shop nur eine Preisfunktion (shopify.dev), die bestehende App hat bereits eine.
+- Nächster Schritt: Chris entscheidet, wo getestet wird (Entwicklungs-Shop oder eigene Test-App); dort echtes Schema ziehen, `shopify app function run`, Rechenschritte messen. [Übergabe](docs/handoffs/2026-11-17-konfi-neu.md)
+
 ## 17.11.2026 · Claude · `konfi-neu`: Motive Funkklingel, Farbauswahl Acryl, Fertigungsdateien (Chris im Chat: „ja motive mit 1,69 €, mach weiter“)
 
 - Motive aus der Bibliothek bei Funkklingeln freigeschaltet, 1,69 € je Motiv (Chris 17.11.).

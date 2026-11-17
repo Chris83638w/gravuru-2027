@@ -1,0 +1,19 @@
+# Shopify-Funktion des Neuaufbaus (konfi-neu). Noch NICHT eingespielt; Einspielen macht nur Chris bzw. der Operator
+# nach Freigabe. Eine uid steht hier bewusst nicht: Shopify CLI trägt sie beim ersten `shopify app dev` selbst ein.
+api_version = "2026-07"
+
+[[extensions]]
+name = "gravuru Konfi – Kassenprüfung"
+handle = "gravuru-konfi-pruefung"
+type = "function"
+description = "Sperrt an der Kasse Zeilen von Konfigurator-Produkten ohne gültige Gestaltung."
+
+  [[extensions.targeting]]
+  target = "cart.validations.generate.run"
+  input_query = "src/cart_validations_generate_run.graphql"
+  export = "cart_validations_generate_run"
+
+  [extensions.build]
+  command = "cargo build --target=wasm32-unknown-unknown --release"
+  path = "target/wasm32-unknown-unknown/release/gravuru-konfi-pruefung.wasm"
+  watch = ["src/**/*.rs", "../../funktion/rust/src/**/*.rs"]

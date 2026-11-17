@@ -168,10 +168,20 @@ test('theme cart: signed entry, immutable design, edit, quantity 1 to 4 and sign
    assert.ok(timingEvents.some(e=>e.route===route&&e.status>=200&&e.status<300),'missing successful '+route);
   }
   assert.ok(timingEvents.some(e=>e.route==='cart/data'&&e.status===401),'invalid proxy is timed too');
+  const success=timingEvents.filter(e=>e.event==='shop_cart_timing'&&e.status===200);
+  const claim=success.find(e=>e.route==='cart/claim');
+  assert.equal(claim.version,2);assert.equal(claim.counts.offer_resolution_calls,2);
+  assert.equal(claim.steps.resolve_product_fixed.calls,2);assert.equal(claim.steps.resolve_product_current.calls,2);
+  assert.equal(claim.steps.claim_revalidate.syncCalls,1);assert.equal(claim.steps.claim_ledger.syncCalls,1);
+  assert.ok(claim.counts.review_package_bytes>0&&claim.counts.review_rows_returned>0&&claim.counts.offer_rows_returned>0);
+  assert.ok(success.find(e=>e.route==='theme-cart').counts.binding_candidates_examined>0);
   const logged=JSON.stringify(timingEvents);
   for(const privateValue of [secret,token,draft.token,draft.id,transferToken,png,webp])assert.ok(!logged.includes(privateValue),'private value in timing log');
  });
  imagePending=false;const data=await proxyRequest('/cart/data','GET',transferToken,hosted);assert.equal(data.status,200,JSON.stringify(data.data));const p=data.data;
+ const dataTiming=timingEvents.find(e=>e.event==='shop_cart_timing'&&e.traceId===data.headers['x-gravuru-timing-id']);
+ assert.equal(dataTiming.steps.resolve_product_fixed.calls,2);assert.equal(dataTiming.steps.cart_revalidate.syncCalls,1);
+ assert.ok(dataTiming.storageReads.calls>0);assert.doesNotMatch(data.headers['server-timing'],/resolve_product|product_document_json|processCpu|registry_/);
  assert.equal(p.variantId,product.variants[3].shopifyVariantId.split('/').at(-1));assert.equal(p.quantity,2);assert.equal(p.totalCents,chosen.priceCents*2);
  assert.equal(p.properties._gravuru_config,prepared.data.configuration.id);assert.equal(p.properties._gravuru_rev,'1');assert.ok(p.properties.Gravurtext);
  assert.equal(p.preview,undefined,'with a READY Shopify file no PNG travels to the customer device');assert.ok(JSON.stringify(p).length<64*1024,'handoff stays small');

@@ -5,7 +5,7 @@ import {prepareBoundCartOffer} from './bound-test-cart.mjs';
 import {readReviewPackage} from './review-package.mjs';
 import {NATIVE_REVIEW_SCHEMAS} from './native-review-schema.mjs';
 import {cartLineInput} from './storefront-cart.mjs';
-import {cartTimingStep} from './shop-cart-timing.mjs';
+import {cartTimingStep,cartTimingDetail} from './shop-cart-timing.mjs';
 const fail=(status,code,message)=>{throw Object.assign(Error(message),{status,code});};
 export function prepareThemeCart({workshop,registry,shopDomain,proxyPath,customerImageUrl,presentation},binding,input,{draftToken}={}){
  const {cartRevision,...offerInput}=input;
@@ -38,7 +38,7 @@ export function prepareThemeCart({workshop,registry,shopDomain,proxyPath,custome
  // The edit link identifies the actual cart revision, not the last prepared offer.
  const previousRevision=input.configId?cartRevision:null;
  return {
-  offerId:offer.id,resolve,claim:nonce=>{resolve();return ledger.claimThemeTransfer(offer.id,nonce);},
+  offerId:offer.id,resolve,claim:nonce=>{cartTimingDetail('claim_revalidate',()=>resolve());return cartTimingDetail('claim_ledger',()=>ledger.claimThemeTransfer(offer.id,nonce));},
   payload:{schema:'gravuru-theme-cart/v1',shopDomain,variantId:offer.variantId,productId:binding.shopifyProductId.split('/').at(-1),quantity:offer.quantity,unitCents:offer.unitCents,totalCents:offer.unitCents*offer.quantity,currency:offer.currency,
    configuration,mode:input.configId?'update':'create',previousRevision,properties,preview:{name:'gravuru-gestaltung.png',type:'image/png',base64:preview.toString('base64')},paymentConfirmed:false,productionReady:false}
  };

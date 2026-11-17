@@ -35,12 +35,13 @@ test('overlapping requests and background work have separate totals and counts',
  ]);
  assert.equal(await image,'ready');
  const request=events.find(e=>e.route==='theme-cart'),data=events.find(e=>e.route==='cart/data'),background=events.find(e=>e.route==='checkout-image');
- assert.equal(events.length,3);assert.equal(new Set(events.map(e=>e.traceId)).size,3);
+ const main=events.filter(e=>e.event==='shop_cart_timing');
+ assert.equal(main.length,3);assert.equal(new Set(main.map(e=>e.traceId)).size,3);
  assert.equal(background.parentTraceId,request.traceId);
  assert.deepEqual(request.counts,{request_bytes:10});assert.deepEqual(data.counts,{response_bytes:20});
  assert.ok(!request.steps.shopify_poll_wait);assert.ok(background.steps.shopify_poll_wait.durationMs>=10);
  assert.ok(background.totalMs>request.totalMs);
- for(const event of events){
+ for(const event of main){
   assert.equal(event.eventLoop.resolutionMs,20);
   for(const window of [event.eventLoop.beforeHandler,event.eventLoop.duringHandler]){
    assert.ok(Object.values(window).every(value=>Number.isFinite(value)&&value>=0));

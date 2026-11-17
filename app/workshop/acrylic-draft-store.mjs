@@ -1,6 +1,7 @@
 import {createHash, randomBytes, randomUUID, timingSafeEqual} from 'node:crypto';
 import {isNativeReviewSchema} from './native-review-schema.mjs';
 import {tenantOption, ensureTenantColumns, TENANT_COLUMN} from './tenant.mjs';
+import {cartTimingRead} from './shop-cart-timing.mjs';
 
 const hash = value => createHash('sha256').update(value).digest('hex');
 const fail = (status, message) => {throw Object.assign(new Error(message), {status, code: 'acrylic_draft'});};
@@ -31,7 +32,7 @@ export function createAcrylicDraftStore({database: db, capture, tenantId}) {
     catch (error) {db.exec('ROLLBACK'); throw error;}
   };
   const auth = (id, token) => {
-    const row = typeof id === 'string' && db.prepare('SELECT * FROM acrylic_customer_drafts WHERE id=? AND tenant_id=?').get(id, tenant);
+    const row = typeof id === 'string' && cartTimingRead('draft_row_read',()=>db.prepare('SELECT * FROM acrylic_customer_drafts WHERE id=? AND tenant_id=?').get(id, tenant));
     if (!row || typeof token !== 'string' || !/^[a-f0-9]{64}$/.test(token) ||
         !timingSafeEqual(Buffer.from(hash(token)), Buffer.from(row.token_hash))) fail(404, 'Dieser private Acrylentwurf ist nicht zugänglich.');
     return row;

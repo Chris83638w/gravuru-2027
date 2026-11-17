@@ -9,6 +9,7 @@ import {isNativeReviewSchema} from './native-review-schema.mjs';
 import {capturePersonalization,personalizationForSnapshot,personalizationAttributes,tierUnitCents} from './cart-personalization.mjs';
 import {tenantOption,ensureTenantColumns,TENANT_COLUMN} from './tenant.mjs';
 import {createShopProductBindingStore} from './shop-product-binding-store.mjs';
+import {cartTimingRead,cartTimingCount} from './shop-cart-timing.mjs';
 import {SURCHARGE_UNAVAILABLE_MESSAGE} from '../configurator/variant-m/surcharge-availability.mjs';
 const fail=(status,message)=>{throw Object.assign(Error(message),{status,code:'order_intake'});};
 const OFFER_MISMATCH='Shop-Variante, Menge oder Preis weichen vom gesicherten Entwurf ab.';
@@ -90,11 +91,11 @@ export function createOrderIntake({database:db,snapshot,clock=Date.now,autoRelea
  CREATE TRIGGER IF NOT EXISTS form_order_line_error_fixed BEFORE UPDATE ON form_order_line_errors BEGIN SELECT RAISE(ABORT,'Order line errors are immutable');END;`);
  ensureTenantColumns(db,['form_shop_bindings','form_shop_binding_personalization','form_offer_personalization','form_shop_binding_selections','form_order_offers','form_order_events','form_order_event_selections','form_order_customers','form_order_lines','form_order_line_errors']);
  const tx=fn=>{if(db.isTransaction)return fn();db.exec('BEGIN IMMEDIATE');try{const v=fn();db.exec('COMMIT');return v;}catch(e){db.exec('ROLLBACK');throw e;}},at=()=>new Date(clock()).toISOString();
- const binding=id=>{const r=db.prepare('SELECT * FROM form_shop_bindings WHERE id=? AND tenant_id=?').get(id,tenant);if(!r)fail(404,'Shop-Zuordnung nicht gefunden.');return r;};
- const selection=id=>{const r=db.prepare('SELECT options FROM form_shop_binding_selections WHERE binding_id=? AND tenant_id=?').get(id,tenant);return r?JSON.parse(r.options):null;};
+ const binding=id=>{const r=cartTimingRead('intake_binding_read',()=>db.prepare('SELECT * FROM form_shop_bindings WHERE id=? AND tenant_id=?').get(id,tenant));if(!r)fail(404,'Shop-Zuordnung nicht gefunden.');return r;};
+ const selection=id=>{const r=cartTimingRead('intake_selection_read',()=>db.prepare('SELECT options FROM form_shop_binding_selections WHERE binding_id=? AND tenant_id=?').get(id,tenant));return r?JSON.parse(r.options):null;};
  const safeBinding=(r,selected=selection(r.id))=>({id:r.id,shopDomain:r.shop,variantId:r.variant_id,productId:r.product_id,productRevision:r.product_revision,unitCents:r.unit_cents,...(selected?{options:selected}:{})});
- const pricing=id=>{const row=db.prepare('SELECT document FROM form_shop_binding_personalization WHERE binding_id=? AND tenant_id=?').get(id,tenant);return row?JSON.parse(row.document):null;};
- const offerPricing=id=>{const row=db.prepare('SELECT document FROM form_offer_personalization WHERE offer_id=? AND tenant_id=?').get(id,tenant);return row?JSON.parse(row.document):null;};
+ const pricing=id=>{const row=cartTimingRead('intake_pricing_read',()=>db.prepare('SELECT document FROM form_shop_binding_personalization WHERE binding_id=? AND tenant_id=?').get(id,tenant));return row?JSON.parse(row.document):null;};
+ const offerPricing=id=>{const row=cartTimingRead('offer_pricing_read',()=>db.prepare('SELECT document FROM form_offer_personalization WHERE offer_id=? AND tenant_id=?').get(id,tenant));return row?JSON.parse(row.document):null;};
  const get=id=>{const r=db.prepare('SELECT document FROM form_order_lines WHERE id=? AND tenant_id=?').get(id,tenant);if(!r)fail(404,'Bestellposition nicht gefunden.');return JSON.parse(r.document);};
 
  // Explicit, immutable release ledger in this existing store. It is created only by
@@ -198,7 +199,7 @@ export function createOrderIntake({database:db,snapshot,clock=Date.now,autoRelea
  const statuses=createOrderStatus({database:db,clock,production:(line,shop)=>release.state(line.id,{shop}),tenantId:tenant});
  release=createProductionRelease({database:db,clock,line:lineOrRejected,shopStatus:line=>statuses.shopState(line),autoRelease,rejectedLines:()=>errorRows(),tenantId:tenant});
  const forSnapshot=snapshotId=>typeof snapshotId==='string'?db.prepare("SELECT document FROM form_order_lines WHERE json_extract(document,'$.snapshotId')=? AND tenant_id=? ORDER BY rowid").all(snapshotId,tenant).map(r=>JSON.parse(r.document)):[];
- return {tenantId:tenant,get,forSnapshot,catalogLiveApproval:catalogLive.approval,catalogLiveApprovals:catalogLive.approvals,approveCatalogLiveProducts:catalogLive.approve,catalogLiveOrderScope:input=>doorbellLiveOrderScope(input,'catalog-live-approved'),doorbellLiveApproval:input=>doorbellLiveApproval(input),doorbellGalleryApprovals,doorbellLiveOrderScope,approveDoorbellLiveProducts,production:release,errors:({onUnreadable}={})=>positionDocuments(errorRecords(),onUnreadable),customer:id=>{const line=get(id);return db.prepare('SELECT customer_id FROM form_order_customers WHERE shop=? AND order_id=? AND tenant_id=?').get(line.shopDomain,line.orderId,tenant)?.customer_id||null;},status:id=>statuses.forLine(get(id)),list,bindings:()=>db.prepare('SELECT b.*,s.options AS selection_options FROM form_shop_bindings b LEFT JOIN form_shop_binding_selections s ON s.binding_id=b.id AND s.tenant_id=b.tenant_id WHERE b.tenant_id=? ORDER BY b.rowid DESC').all(tenant).map(r=>safeBinding(r,r.selection_options===null?null:JSON.parse(r.selection_options))),
+ return {tenantId:tenant,get,forSnapshot,catalogLiveApproval:catalogLive.approval,catalogLiveApprovals:catalogLive.approvals,approveCatalogLiveProducts:catalogLive.approve,catalogLiveOrderScope:input=>doorbellLiveOrderScope(input,'catalog-live-approved'),doorbellLiveApproval:input=>doorbellLiveApproval(input),doorbellGalleryApprovals,doorbellLiveOrderScope,approveDoorbellLiveProducts,production:release,errors:({onUnreadable}={})=>positionDocuments(errorRecords(),onUnreadable),customer:id=>{const line=get(id);return db.prepare('SELECT customer_id FROM form_order_customers WHERE shop=? AND order_id=? AND tenant_id=?').get(line.shopDomain,line.orderId,tenant)?.customer_id||null;},status:id=>statuses.forLine(get(id)),list,bindings:()=>cartTimingRead('intake_bindings_read',()=>db.prepare('SELECT b.*,s.options AS selection_options FROM form_shop_bindings b LEFT JOIN form_shop_binding_selections s ON s.binding_id=b.id AND s.tenant_id=b.tenant_id WHERE b.tenant_id=? ORDER BY b.rowid DESC').all(tenant)).map(r=>safeBinding(r,r.selection_options===null?null:JSON.parse(r.selection_options))),
   // Internal immutable display-image lookup, used only AFTER capability verification.
   imageSnapshot(offerId,shopDomain){
    if(typeof offerId!=='string'||!/^offer_[a-f0-9-]{36}$/.test(offerId)||!domain(shopDomain))fail(404,'Gestaltungsbild nicht gefunden.');
@@ -291,7 +292,7 @@ export function createOrderIntake({database:db,snapshot,clock=Date.now,autoRelea
    // idempotent across lost responses/restarts. HTTP input never sets this option.
    if(stableToken!==undefined){
     if(typeof stableToken!=='string'||!/^[a-f0-9]{64}$/.test(stableToken))fail(422,'Ungültige private Angebotskennung.');
-    const existing=db.prepare('SELECT * FROM form_order_offers WHERE token_hash=? AND tenant_id=?').get(sha(stableToken),tenant);
+    const existing=cartTimingRead('offer_existing_read',()=>db.prepare('SELECT * FROM form_order_offers WHERE token_hash=? AND tenant_id=?').get(sha(stableToken),tenant));cartTimingCount('offer_rows_returned',existing?1:0);
     if(existing){
      if(existing.binding_id!==bindingId||existing.snapshot_id!==snapshotId||existing.quantity!==quantity)fail(409,'Die private Angebotskennung gehört zu einem anderen Stand.');
      return this.resolveCartOffer({offerId:existing.id,offerToken:stableToken,snapshotId,shopDomain:b.shop});
@@ -306,7 +307,7 @@ export function createOrderIntake({database:db,snapshot,clock=Date.now,autoRelea
   // accepted from a browser here. Callers must additionally authenticate its draft.
   resolveCartOffer({offerId,offerToken,snapshotId,shopDomain}){
    if(typeof offerId!=='string'||typeof offerToken!=='string'||!/^[a-f0-9]{64}$/.test(offerToken)||typeof snapshotId!=='string'||!domain(shopDomain))fail(404,'Dieses Angebot ist nicht zugänglich.');
-   const o=db.prepare('SELECT * FROM form_order_offers WHERE id=? AND token_hash=? AND snapshot_id=? AND tenant_id=?').get(offerId,sha(offerToken),snapshotId,tenant);
+   const o=cartTimingRead('offer_token_read',()=>db.prepare('SELECT * FROM form_order_offers WHERE id=? AND token_hash=? AND snapshot_id=? AND tenant_id=?').get(offerId,sha(offerToken),snapshotId,tenant));cartTimingCount('offer_rows_returned',o?1:0);
    if(!o)fail(404,'Dieses Angebot ist nicht zugänglich.');const b=binding(o.binding_id);
    if(b.shop!==shopDomain)fail(404,'Dieses Angebot ist nicht zugänglich.');
    if(o.expires_at<=clock())fail(409,'Dieses Angebot ist abgelaufen.');

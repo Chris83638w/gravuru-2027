@@ -370,7 +370,7 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
    if(!options||typeof options!=='object')fail(409,'shop_entry_variant','Die gesicherte Ausführung ist nicht bestätigt.');
    // Die im Editor gewählte Ausführung (z. B. Befestigung) bestimmt die Shopify-Variante – ausschließlich über
    // eine aktive Registry-Zuordnung {dieses Shopify-Produkt, Variante}. Ohne genau einen Treffer kein Warenkorb.
-   const candidates=cartTimingStep('variant_candidates',()=>store.workshop.orderIntake.bindings().filter(b=>b.shopDomain===shopDomain&&b.productId===session.productId&&b.productRevision===session.productRevision&&optionKey(b.options)===optionKey(options)));
+   const candidates=cartTimingStep('variant_candidates',()=>{const all=store.workshop.orderIntake.bindings();cartTimingCount('binding_candidates_examined',all.length);return all.filter(b=>b.shopDomain===shopDomain&&b.productId===session.productId&&b.productRevision===session.productRevision&&optionKey(b.options)===optionKey(options));});
    const bindings=[];
    for(const variantId of new Set(candidates.map(b=>b.variantId))){
     let found;try{found=cartTimingStep('variant_binding',()=>store.registry.resolve({shopifyProductId:session.shopifyProductId,shopifyVariantId:'gid://shopify/ProductVariant/'+variantId}));}catch(error){if(error.code==='shop_binding_active_not_found'&&error.status===404)continue;throw error;}

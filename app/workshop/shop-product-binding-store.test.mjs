@@ -17,6 +17,7 @@ import {makeProductDocument} from './product-model.mjs';
 import {makeAcrylicConfig} from '../configurator/variant-m/acrylic-product.mjs';
 import {prepareShopProduct} from './shop-preparation.mjs';
 import {withCustomerReadScope} from './customer-read-scope.mjs';
+import {withCartTiming,cartTimingStep,cartTimingHeaders} from './shop-cart-timing.mjs';
 
 // Synthetic documents and a NEW temporary SQLite database only. No backup, live
 // application, Shopify request or production profile is opened or manufactured.
@@ -53,6 +54,25 @@ function fixture(t,document=formDocument()){
 }
 const tables=['form_shop_bindings','form_shop_binding_selections','shop_product_binding_heads','shop_product_binding_revisions'];
 const counts=f=>Object.fromEntries(tables.map(table=>[table,f.db.prepare('SELECT count(*) AS n FROM '+table).get().n]));
+
+test('cart diagnostics split real registry reads, parsing and hashing without changing the binding',async t=>{
+ const f=fixture(t);f.persist();const before=counts(f),expected=f.registry.resolve(pair()),events=[];let headers;
+ await withCartTiming('theme-cart',e=>events.push(e),()=>{
+  assert.deepEqual(cartTimingStep('variant_binding',()=>f.registry.resolve(pair())),expected);
+  headers=cartTimingHeaders(200);
+ });
+ assert.deepEqual(counts(f),before);
+ const e=events.find(e=>e.event==='shop_cart_timing');assert.equal(e.version,2);assert.equal(e.counts.registry_entries_returned,1);
+ for(const name of ['registry_head_read','registry_product_read','registry_binding_read','registry_document_json','registry_canonical','registry_sha256']){
+  assert.ok(e.steps[name].syncCalls>0,name);assert.equal(e.steps[name].asyncCalls,0);assert.equal(e.steps[name].processCpu.available,1);assert.ok(!headers['Server-Timing'].includes(name));
+ }
+ assert.ok(e.storageReads.calls>=5);assert.ok(e.counts.registry_document_bytes>0);
+ const logged=JSON.stringify(e);for(const value of [f.record.id,pair().shopifyVariantId,expected.documentSha256,f.record.document.name])assert.ok(!logged.includes(value),'private registry data in log');
+ await withCartTiming('theme-cart',e=>events.push(e),()=>{
+  assert.throws(()=>cartTimingStep('variant_binding',()=>f.registry.resolve(pair(99))),{code:'shop_binding_active_not_found'});cartTimingHeaders(404);
+ });
+ assert.equal(events.find(e=>e.status===404).steps.variant_binding.failures,1);
+});
 
 test('locked read phase reuses only frozen source records and rejects a same-connection mutation',t=>{
  const f=fixture(t),get=f.repository.get;let reads=0;f.repository.get=(...args)=>{reads++;return get(...args);};

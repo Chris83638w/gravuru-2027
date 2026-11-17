@@ -85,8 +85,11 @@ try{
   if(run>0)samples.push(Object.fromEntries([['acrylic-drafts',saved],['theme-cart',cart],['cart/data',data],['cart/claim',claim]].map(([route,r])=>[route,{elapsedMs:Math.round(r.elapsedMs*100)/100,requestBytes:r.requestBytes,responseBytes:r.responseBytes,timing:events.find(e=>e.traceId===r.headers['x-gravuru-timing-id'])||null}])));
  }
  const median=values=>[...values].sort((a,b)=>a-b)[Math.floor(values.length/2)];
+ // Let optional v2 GC supplements arrive after the measured HTTP work. Apply
+ // the same grace to both checkouts; it is not part of a request duration.
+ await delay(60);
  const summary=Object.fromEntries(Object.keys(samples[0]).map(route=>[route,{medianMs:median(samples.map(s=>s[route].elapsedMs)),minMs:Math.min(...samples.map(s=>s[route].elapsedMs)),maxMs:Math.max(...samples.map(s=>s[route].elapsedMs))}]));
- console.log(JSON.stringify({schema:'gravuru-shop-cart-timing-benchmark/v1',commit:execFileSync('git',['-C',root,'rev-parse','HEAD'],{encoding:'utf8'}).trim(),profile:{kind:'local-synthetic-http',platform:os.platform(),cpu:os.cpus()[0].model,node:process.version,runs,warmupRuns:1,parallelSessions:1,network:'loopback, no throttling',shopifyMockMs:{lookup:60,create:100,pollWait:25,poll:40},data:'bundled native acrylic sample, 40x60 PNG photo and WebP customer preview, in-memory database'},summary,samples,backgroundEvents:events.filter(e=>e.route==='checkout-image')},null,2));
+ console.log(JSON.stringify({schema:'gravuru-shop-cart-timing-benchmark/v2',commit:execFileSync('git',['-C',root,'rev-parse','HEAD'],{encoding:'utf8'}).trim(),profile:{kind:'local-synthetic-http',platform:os.platform(),cpu:os.cpus()[0].model,node:process.version,runs,warmupRuns:1,parallelSessions:1,network:'loopback, no throttling',shopifyMockMs:{lookup:60,create:100,pollWait:25,poll:40},data:'bundled native acrylic sample, 40x60 PNG photo and WebP customer preview, in-memory database'},summary,samples,backgroundEvents:events.filter(e=>e.event==='shop_cart_timing'&&e.route==='checkout-image'),gcEvents:events.filter(e=>e.event==='shop_cart_gc')},null,2));
 }finally{
  if(server){server.closeAllConnections();await new Promise(resolve=>server.close(resolve));}
  workshop?.close();if(log!==undefined)fs.closeSync(log);fs.rmSync(dir,{recursive:true,force:true});

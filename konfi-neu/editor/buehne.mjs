@@ -2,7 +2,7 @@
 // Zoom: am Handy mit zwei Fingern, am PC mit dem Mausrad (Entscheidung 3.11), dazu der Regler „Ansicht“.
 import {s} from './dom.mjs';
 import {elementMarkup, plattenMarkup, befestigungMarkup, geraetMarkup, szene, motivTransform, motivInhalt} from '../core/zeichnen.mjs';
-import {groesseVon, befestigungVon} from '../core/modell.mjs';
+import {groesseVon, befestigungVon, SCHRIFT_MM} from '../core/modell.mjs';
 
 const GRIFF_PX = 13; // halbe Kantenlänge der Griffe in Bildschirmpixeln
 
@@ -279,7 +279,7 @@ export function buehne({familie, basis, onAuswahl, onAendern, onFertig, onDoppel
     } else if (geste.art === 'groesse') {
       const faktor = Math.max(0.05, Math.hypot(p.x - geste.zentrum.x, p.y - geste.zentrum.y) / geste.abstand);
       if (o.t === 'text') {
-        const size = Math.min(300, Math.max(1, o.size * faktor));
+        const size = Math.min(SCHRIFT_MM[1], Math.max(SCHRIFT_MM[0], o.size * faktor));
         const k = size / o.size;
         // um die Mitte des Textes skalieren, damit er unter dem Finger bleibt
         aenderung = {size: rund(size), ls: rund(o.ls * k), lh: rund(o.lh * k), x: rund(geste.zentrum.x + (o.x - geste.zentrum.x) * k), y: rund(geste.zentrum.y + (o.y - geste.zentrum.y) * k)};

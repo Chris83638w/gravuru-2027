@@ -21,6 +21,7 @@ import {spawnSync} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
 import * as katalogAdapter from './katalog-adapter.mjs';
 import {kompaktPfad} from '../core/pfad.mjs';
+import {uebertragung, SCHRIFT_MM} from '../core/modell.mjs';
 import {klingelnVeroeffentlichen} from './klingel.mjs';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
@@ -163,7 +164,9 @@ function designVeroeffentlichen(design, beispiel = null) {
       ...(beispiel ? {bsp: beispiel} : {}),
       ...(design.json?.wholePrintDesign ? {einheit: true} : {}),
     };
-    entry = {id: design.id, name: doc.name, nr: doc.nr, platte: doc.platte, u: writeHashed('d', slug(design.id), 'json', doc), foto: els.some(e => e.t === 'foto')};
+    const textGroessen = els.filter(e => e.t === 'text').map(e => e.size);
+    entry = {id: design.id, name: doc.name, nr: doc.nr, platte: doc.platte, u: writeHashed('d', slug(design.id), 'json', doc), foto: els.some(e => e.t === 'foto'),
+      schrift: textGroessen.length ? [Math.min(...textGroessen), Math.max(...textGroessen)] : null};
   } catch (error) {
     hinweise.push({art: 'design', id: design.id, grund: error.message});
   }
@@ -217,6 +220,16 @@ for (const family of katalog.families.values()) {
     if (!entry) continue;
     designCount++;
     for (const key of row.sizes) {
+      // Wie im Bestand passt ein Design nicht in eine Größe, in der eine Schrift kleiner als 1 mm oder größer
+      // als 100 mm würde (text-paths.mjs; targetDesignPreview meldet dort „passt nicht“).
+      const size = family.sizes.find(s => s.key === key);
+      if (entry.schrift && size) {
+        const {k} = uebertragung(entry.platte, {w: size.widthMm, h: size.heightMm}, row.einpassen);
+        if (entry.schrift[0] * k < SCHRIFT_MM[0] || entry.schrift[1] * k > SCHRIFT_MM[1]) {
+          hinweise.push({art: 'design-groesse', id: entry.id + ' · ' + key, grund: `Schriftgröße außerhalb ${SCHRIFT_MM[0]}–${SCHRIFT_MM[1]} mm, Design in dieser Größe nicht angeboten`});
+          continue;
+        }
+      }
       if (!proGroesse.has(key)) proGroesse.set(key, []);
       proGroesse.get(key).push({id: entry.id, n: entry.name, nr: entry.nr, u: entry.u, ...(row.einpassen ? {ein: 1} : {}), ...(entry.foto ? {foto: 1} : {})});
     }

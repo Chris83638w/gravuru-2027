@@ -3,7 +3,9 @@
 // Zeichencode (app/workshop, wie Konfi und Werkstatt) und einmal mit dem Neuaufbau (core/) gezeichnet und vermessen.
 //
 //   node dev/kontaktbogen.mjs --katalog <Katalogordner> [--art platten|klingel] [--out dist/kontaktbogen] [--familie a,b]
-//                             [--grenze n] [--schlimmste 40] [--stichprobe 20] [--seiten 4]
+//                             [--grenze n] [--schlimmste 40] [--stichprobe 20] [--seiten 4] [--weiter]
+//
+// --weiter übernimmt vorhandene Messwerte aus --out und misst nur, was fehlt oder am Browser gescheitert ist.
 //
 // --art platten (Standard): Türschilder, Gedenktafeln, Grabstecker. --art klingel: Funkklingelschilder,
 // je Gerät, Format und Klingelposition; dort zeichnet der Bestand über productPreview wie im Konfi.
@@ -288,28 +290,50 @@ const SEITE = `
 `;
 
 const browser = await chromium.launch();
-const seiten = [];
-for (let i = 0; i < seitenZahl; i++) {
+async function neueSeite() {
   const page = await browser.newPage();
   await page.goto(basis + '/');
   await page.addScriptTag({type: 'module', content: SEITE});
   await page.waitForFunction('window.bereit === true');
-  seiten.push(page);
+  return page;
+}
+// Stürzt eine Seite ab (z. B. bei knappem Speicher), wird sie ersetzt und der Auftrag einmal wiederholt.
+const seiten = [];
+for (let i = 0; i < seitenZahl; i++) seiten.push({page: await neueSeite()});
+async function imBrowser(seite, fn, argument) {
+  for (let versuch = 0; ; versuch++) {
+    try { return await seite.page.evaluate(fn, argument); }
+    catch (error) {
+      if (versuch || !/crash|closed/i.test(String(error.message))) throw error;
+      try { await seite.page.close(); } catch {}
+      seite.page = await neueSeite();
+    }
+  }
+}
+const schluessel = r => [r.familie, r.groesse, r.position || '', r.id].join('|');
+const vorhanden = new Map();
+if (process.argv.includes('--weiter') && fs.existsSync(path.join(out, 'messwerte.jsonl'))) {
+  for (const zeile of fs.readFileSync(path.join(out, 'messwerte.jsonl'), 'utf8').split('\n')) {
+    if (!zeile) continue;
+    const r = JSON.parse(zeile);
+    if (!String(r.fehler || '').startsWith('neu:')) { delete r.bild; delete r.bildFehler; vorhanden.set(schluessel(r), r); }
+  }
 }
 
 // Messlauf: Der bestehende Zeichner läuft in diesem Prozess, gemessen wird in mehreren Browserseiten.
 const ergebnisse = new Array(auftraege.length);
-let naechster = 0, erledigt = 0;
-async function arbeiter(page) {
+let naechster = 0, erledigt = 0, uebernommen = 0;
+async function arbeiter(seite) {
   for (;;) {
     const i = naechster++;
     if (i >= auftraege.length) return;
     const auftrag = auftraege[i];
+    if (vorhanden.has(schluessel(auftrag))) { ergebnisse[i] = vorhanden.get(schluessel(auftrag)); uebernommen++; continue; }
     const alt = await altZeichnen(auftrag);
     let mess;
     if (alt.fehler) mess = {fehler: 'alt: ' + alt.fehler};
     else {
-      try { mess = await page.evaluate(job => window.vergleiche(job), {auftrag: {...auftrag, familieDatei: stand.familien[auftrag.familie].u}, altSvg: alt.svg, schriften: stand.schriften}); }
+      try { mess = await imBrowser(seite, job => window.vergleiche(job), {auftrag: {...auftrag, familieDatei: stand.familien[auftrag.familie].u}, altSvg: alt.svg, schriften: stand.schriften}); }
       catch (error) { mess = {fehler: 'neu: ' + String(error.message).split('\n')[0].slice(0, 200)}; }
     }
     ergebnisse[i] = {...auftrag, altStatus: alt.status || null, ...mess, stufe: mess.fehler ? 'fehler' : stufe(mess)};
@@ -365,14 +389,14 @@ for (const id of Object.keys(familien)) {
   for (const r of [...schlimm, ...probe]) if (!r.fehler) bildAuftraege.push(r);
 }
 let bildNr = 0, bildFertig = 0;
-async function bildArbeiter(page) {
+async function bildArbeiter(seite) {
   for (;;) {
     const r = bildAuftraege[bildNr++];
     if (!r) return;
     const alt = await altZeichnen(r);
     if (alt.fehler) continue;
     try {
-      const b = await page.evaluate(([job, breite]) => window.bilder(job, breite), [{auftrag: {...r, familieDatei: stand.familien[r.familie].u}, altSvg: alt.svg, schriften: stand.schriften}, 420]);
+      const b = await imBrowser(seite, ([job, breite]) => window.bilder(job, breite), [{auftrag: {...r, familieDatei: stand.familien[r.familie].u}, altSvg: alt.svg, schriften: stand.schriften}, 420]);
       const name = (r.groesse + (r.position ? '-' + r.position : '') + '__' + r.id).replace(/[^\w.-]+/g, '_');
       const ordner = path.join(out, r.familie);
       fs.mkdirSync(ordner, {recursive: true});
@@ -402,4 +426,4 @@ for (const [id, {schlimm, probe}] of Object.entries(karten)) {
 }
 fs.writeFileSync(path.join(out, 'index.html'), `<!doctype html><meta charset="utf-8"><title>neu neben alt</title><style>${stil}</style><h1>Kontaktbogen: neu neben alt</h1>${erklaerung}<h2>Alle Familien</h2>${tabelle(zusammenfassung.gesamt)}` +
   Object.keys(familien).map(id => `<h2><a href="${esc(id)}.html">${esc(familien[id].name || id)}</a></h2>${tabelle(jeFamilie[id])}`).join(''));
-console.log(JSON.stringify({paare: ergebnisse.length, stufen: zusammenfassung.gesamt.stufen, kanteMm: zusammenfassung.gesamt.kanteMm, bilder: bildFertig, sekunden: Math.round((Date.now() - started) / 1000), out}));
+console.log(JSON.stringify({paare: ergebnisse.length, uebernommen, stufen: zusammenfassung.gesamt.stufen, kanteMm: zusammenfassung.gesamt.kanteMm, bilder: bildFertig, sekunden: Math.round((Date.now() - started) / 1000), out}));

@@ -370,7 +370,7 @@ export async function oeffnen(o) {
           h('div', {class: 'gk-gruppe', role: 'group', 'aria-label': 'Ausrichtung'},
             [['s', 'links'], ['m', 'mitte'], ['e', 'rechts']].map(([wert, name]) => h('button', {'aria-pressed': String(el.anker === wert), 'aria-label': name, onclick: () => ausrichten(el.id, wert)}, icon(name, 18))))),
         h('div', {class: 'gk-zeile'}, h('label', null, 'Größe'),
-          h('input', {type: 'range', min: 3, max: Math.round(groesse().h * 0.9), step: 0.5, value: el.size, 'data-groesse-id': el.id,
+          h('input', {type: 'range', min: 3, max: Math.min(modell.SCHRIFT_MM[1], Math.round(groesse().h * 0.9)), step: 0.5, value: el.size, 'data-groesse-id': el.id,
             oninput: event => { const e = aktuell(); const size = Number(event.target.value); const k = size / e.size; aendern(el.id, {size, wunsch: size, ls: e.ls * k, lh: e.lh * k}, false); event.target.nextSibling.textContent = anzeigeGroesse(size); },
             onchange: () => merken()}),
           h('output', null, anzeigeGroesse(el.size))),

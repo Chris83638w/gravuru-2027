@@ -7,6 +7,8 @@
 // werden daraus abgeleitet – es gibt keine zweite Wahrheit.
 
 export const VERSION = 1;
+/** Kleinste und größte Schriftgröße in mm – wie im bestehenden Konfi (text-paths.mjs: „Schriftgröße: 1 bis 100 mm“). */
+export const SCHRIFT_MM = [1, 100];
 const round = (value, digits = 3) => Number(Number(value).toFixed(digits));
 
 export const groesseVon = (familie, key) => familie.groessen.find(g => g.k === key) || null;
@@ -223,7 +225,7 @@ export function pruefen(zustand, familie, fähigkeiten = {}) {
   for (const el of zustand.els) {
     if (el.t === 'text') {
       if (el.text.length > 500) fehler.push({code: 'text-lang', id: el.id, text: 'Ein Text ist zu lang.'});
-      if (el.size < 0.5 || el.size > 300) fehler.push({code: 'text-groesse', id: el.id, text: 'Schriftgröße außerhalb des möglichen Bereichs.'});
+      if (el.size < SCHRIFT_MM[0] || el.size > SCHRIFT_MM[1]) fehler.push({code: 'text-groesse', id: el.id, text: 'Schriftgröße außerhalb des möglichen Bereichs.'});
     }
     if (el.t === 'foto' && el.bild && fähigkeiten.foto === false && !el.bild.logo) fehler.push({code: 'foto', id: el.id, text: 'Fotos sind bei diesem Produkt nicht möglich.'});
     if (el.t === 'foto' && el.bild?.logo && fähigkeiten.logo === false) fehler.push({code: 'logo', id: el.id, text: 'Logos sind bei diesem Produkt nicht möglich.'});

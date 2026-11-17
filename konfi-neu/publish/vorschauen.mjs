@@ -1,12 +1,13 @@
 #!/usr/bin/env node
 // Vorschaubilder der Designs für die Designauswahl (kleine WebP-Dateien).
 //
-//   node publish/vorschauen.mjs [--out dist/daten] [--breite 360] [--grenze n] [--neu]
+//   node publish/vorschauen.mjs [--out dist/daten] [--breite 360] [--grenze n] [--neu] [--neu-vor <Zeitpunkt>]
 //
 // Gezeichnet wird mit demselben Code wie im Editor (core/zeichnen.mjs), in einem unsichtbaren
 // Browser. Der Dateiname hängt am Inhalts-Hash des Designs: d/<name>.<hash>.json → v/<name>.<hash>.webp.
 // Schon vorhandene Bilder werden übersprungen, verwaiste entfernt. Nach einer Änderung am Zeichencode (der Hash
-// des Designs bleibt dann gleich) zeichnet --neu alle Bilder neu und überschreibt sie. Läuft nur beim Veröffentlichen,
+// des Designs bleibt dann gleich) zeichnet --neu alle Bilder neu und überschreibt sie; --neu-vor nur die, die
+// älter sind als der Zeitpunkt (z. B. 2026-11-17T10:00:00Z), um einen abgebrochenen Lauf fortzusetzen. Läuft nur beim Veröffentlichen,
 // nie auf dem Kundenweg.
 import fs from 'node:fs';
 import path from 'node:path';
@@ -23,6 +24,8 @@ const out = path.resolve(arg('out') || path.join(wurzel, 'dist', 'daten'));
 const breite = Number(arg('breite') || 360);
 const grenze = Number(arg('grenze') || Infinity);
 const allesNeu = process.argv.includes('--neu');
+const neuVor = arg('neu-vor') ? Date.parse(arg('neu-vor')) : null;
+if (arg('neu-vor') && !Number.isFinite(neuVor)) { console.error('--neu-vor: Zeitpunkt nicht lesbar'); process.exit(1); }
 const started = Date.now();
 
 const stand = JSON.parse(fs.readFileSync(path.join(out, 'stand.json'), 'utf8'));
@@ -49,7 +52,8 @@ for (const eintrag of fs.readdirSync(path.join(out, 'v'), {recursive: true, with
   if (!auftraege.has(relativ)) { fs.rmSync(path.join(eintrag.parentPath, eintrag.name)); entfernt++; }
 }
 const designs = [...auftraege.keys()];
-const offen = designs.filter(ziel => allesNeu || !fs.existsSync(path.join(out, 'v', ziel))).slice(0, grenze);
+const veraltet = ziel => { const datei = path.join(out, 'v', ziel); return !fs.existsSync(datei) || (neuVor !== null && fs.statSync(datei).mtimeMs < neuVor); };
+const offen = designs.filter(ziel => allesNeu || veraltet(ziel)).slice(0, grenze);
 
 // Kleiner Dateiserver nur für diesen Lauf: liefert core/ und die veröffentlichten Daten an den Browser.
 const typen = {'.mjs': 'text/javascript', '.json': 'application/json', '.woff2': 'font/woff2', '.webp': 'image/webp', '.html': 'text/html'};
@@ -64,9 +68,7 @@ await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
 const basis = `http://127.0.0.1:${server.address().port}`;
 
 const browser = await chromium.launch();
-const page = await browser.newPage();
-await page.goto(basis + '/');
-await page.addScriptTag({type: 'module', content: `
+const SEITE = `
   import {gestaltungSvg, schriftFamilie} from '/core/zeichnen.mjs';
   import {elementeAusDesign} from '/core/modell.mjs';
   const schriftCss = new Map();
@@ -100,8 +102,16 @@ await page.addScriptTag({type: 'module', content: `
     return canvas.toDataURL('image/webp', 0.8).split(',')[1];
   };
   window.bereit = true;
-`});
-await page.waitForFunction('window.bereit === true');
+`;
+// Eine frische Seite; stürzt sie ab (z. B. bei knappem Speicher), wird sie ersetzt und der Lauf geht weiter.
+async function neueSeite() {
+  const seite = await browser.newPage();
+  await seite.goto(basis + '/');
+  await seite.addScriptTag({type: 'module', content: SEITE});
+  await seite.waitForFunction('window.bereit === true');
+  return seite;
+}
+let page = await neueSeite();
 
 let fertig = 0, fehler = 0, bytes = 0;
 const meldungen = [];
@@ -117,6 +127,7 @@ for (const ziel of offen) {
     bytes += data.length; fertig++;
   } catch (error) {
     fehler++;
+    if (/crash|closed/i.test(String(error.message))) { try { await page.close(); } catch {} page = await neueSeite(); }
     if (meldungen.length < 10) meldungen.push(design.id + ': ' + String(error.message).slice(0, 120));
   }
   if ((fertig + fehler) % 1000 === 0) console.log(`… ${fertig + fehler}/${offen.length}`);

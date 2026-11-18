@@ -16,6 +16,12 @@ Quelle: [schriften.json im Katalog, fester Commit 8236b8b](https://github.com/Ch
 
 **Vollständigkeitsabgleich mit der Konfi-Bibliothek:** Die 30 Namen aus den ausgelieferten Laufzeitpaketen (Code 9d00b05, app/designs/aosu-labrador/runtime, katalog + gravuru-entwurf-fonts) enthalten neun Namen außerhalb der 84er-Katalogliste: Cutive Mono, Lora Italic, Merriweather, Nunito, Open Sans, Poppins, Roboto Mono, Source Code Pro, Ubuntu. Diese stehen zusätzlich auf Blatt 7. Ihre Proben sind aus den echten regular-Schriftkonturen der Laufzeit gerendert, keine neu heruntergeladenen oder ersetzten Fonts. Gesamt 93 Namen, 89 echte Proben, vier fehlende Dateien. Fettschnitte innerhalb derselben Familie sind kein zusätzlicher Auswahleintrag. Das belegt die Vereinigung von Katalog und ausgelieferter Bibliothek, nicht dass jedes einzelne Produkt alle 93 anbietet.
 
+## Nachprüfung der Originalzeichen
+
+[Claudes Sichtprüfung](https://github.com/Chris83638w/gravuru-2027/issues/254#issuecomment-6967289323) fand fehlende Umlaut-Punkte. Astra hat darauf **alle 80 Original-TTF/OTF-Dateien** geprüft: Unicode-Zuordnung, leere Konturen und mit aufgelösten Komponenten verglichene Konturen Ä/A, Ö/O, Ü/U sowie ä/a, ö/o, ü/u. Ergebnis: **09 Ashley, 54 Minimalist, 80 Sunflower und 81 Sweetie zeichnen sämtliche sechs Umlaute exakt wie die Grundbuchstaben.** Die Ursache liegt in den Dateien, nicht im PDF-Rendering. Die reine Unicode-Zuordnung hatte diese Qualitätsfehler noch nicht erkannt. 76 weitere Dateien haben keine solche identische Umlautkontur; das ist keine vollständige visuelle Qualitätsgarantie sämtlicher Zeichen.
+
+[Prüfbeleg](2026-11-18-konfi-schriften/glyphen-pruefung.json). In den vier betroffenen Schriften fehlt zusätzlich ß, in Ashley auch €. Arvo fehlt €, Homage fehlen ß und €. Keine leeren Konturen im geprüften Grundzeichensatz der vorhandenen Zuordnungen. Die Euroform von Sunflower/Sweetie ist visuell auffällig und auf den Proben markiert; keine automatische Reparatur/Ersetzung/Sperre. PDF und HTML enthalten jetzt die Hinweise. Eine Aussage darüber, ob die Laufzeit diese vier Originaldateien später ergänzt, ist damit noch nicht geprüft. Die alte 84er-PDF ist eine überholte Vorfassung; bitte die ergänzte 93er-PDF verwenden.
+
 ## Nachladen: was tatsächlich schon vorhanden ist
 
 [Claude-Befund und vorhandene Messung](https://github.com/Chris83638w/gravuru-2027/issues/254#issuecomment-6967192620), von Astra gegen die genannten Module gelesen:
@@ -128,7 +134,6 @@ Nach der Schriftauswahl konkrete betroffene Designs ermitteln; Ersatz oder Herau
 | 82 | Tangerine | vorhanden |
 | 83 | Uncial Antiqua | vorhanden |
 | 84 | Zentenar Fraktur | vorhanden |
-
 | 85 | Cutive Mono | Laufzeitkonturen |
 | 86 | Lora Italic | Laufzeitkonturen |
 | 87 | Merriweather | Laufzeitkonturen |

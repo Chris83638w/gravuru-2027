@@ -1,0 +1,1328 @@
+{
+  "method": "Unicode cmap + decomposed outline equality with base letter; empty contours; no font repair",
+  "filesChecked": 80,
+  "fonts": [
+    {
+      "name": "Aldrich",
+      "missingGlyphs": [],
+      "emptyGlyphs": [],
+      "umlautsIdenticalToBase": [],
+      "symbols": {
+        "ß": {
+          "glyph": "germandbls",
+          "sameAs": []
+        },
+        "€": {
+          "glyph": "Euro",
+          "sameAs": []
+        }
+      }
+    },
+    {
+      "name": "Alex Brush",
+      "missingGlyphs": [],
+      "emptyGlyphs": [],
+      "umlautsIdenticalToBase": [],
+      "symbols": {
+        "ß": {
+          "glyph": "germandbls",
+          "sameAs": []
+        },
+        "€": {
+          "glyph": "Euro",
+          "sameAs": []
+        }
+      }
+    },
+    {
+      "name": "Alfa Slab One",
+      "missingGlyphs": [],
+      "emptyGlyphs": [],
+      "umlautsIdenticalToBase": [],
+      "symbols": {
+        "ß": {
+          "glyph": "germandbls",
+          "sameAs": []
+        },
+        "€": {
+          "glyph": "Euro",
+          "sameAs": []
+        }
+      }
+    },
+    {
+      "name": "Allura",
+      "missingGlyphs": [],
+      "emptyGlyphs": [],
+      "umlautsIdenticalToBase": [],
+      "symbols": {
+        "ß": {
+          "glyph": "germandbls",
+          "sameAs": []
+        },
+        "€": {
+          "glyph": "Euro",
+          "sameAs": []
+        }
+      }
+    },
+    {
+      "name": "Amatic SC",
+      "missingGlyphs": [],
+      "emptyGlyphs": [],
+      "umlautsIdenticalToBase": [],
+      "symbols": {
+        "ß": {
+          "glyph": "germandbls",
+          "sameAs": []
+        },
+        "€": {
+          "glyph": "Euro",
+          "sameAs": []
+        }
+      }
+    },
+    {
+      "name": "Antic Slab",
+      "missingGlyphs": [],
+      "emptyGlyphs": [],
+      "umlautsIdenticalToBase": [],
+      "symbols": {
+        "ß": {
+          "glyph": "germandbls",
+          "sameAs": []
+        },
+        "€": {
+          "glyph": "Euro",
+          "sameAs": []
+        }
+      }
+    },
+    {
+      "name": "Archivo Black",
+      "missingGlyphs": [],
+      "emptyGlyphs": [],
+      "umlautsIdenticalToBase": [],
+      "symbols": {
+        "ß": {
+          "glyph": "germandbls",
+          "sameAs": []
+        },
+        "€": {
+          "glyph": "Euro",
+          "sameAs": []
+        }
+      }
+    },
+    {
+      "name": "Arvo",
+      "missingGlyphs": [
+        "€"
+      ],
+      "emptyGlyphs": [],
+      "umlautsIdenticalToBase": [],
+      "symbols": {
+        "ß": {
+          "glyph": "germandbls",
+          "sameAs": []
+        },
+        "€": {
+          "glyph": null,
+          "sameAs": []
+        }
+      }
+    },
+    {
+      "name": "Ashley",
+      "missingGlyphs": [
+        "ß",
+        "€"
+      ],
+      "emptyGlyphs": [],
+      "umlautsIdenticalToBase": [
+        "Ä",
+        "Ö",
+        "Ü",
+        "ä",
+        "ö",
+        "ü"
+      ],
+      "symbols": {
+        "ß": {
+          "glyph": null,
+          "sameAs": []
+        },
+        "€": {
+          "glyph": null,
+          "sameAs": []
+        }
+      }
+    },
+    {
+      "name": "Audiowide",
+      "missingGlyphs": [],
+      "emptyGlyphs": [],
+      "umlautsIdenticalToBase": [],
+      "symbols": {
+        "ß": {
+          "glyph": "germandbls",
+          "sameAs": []
+        },
+        "€": {
+          "glyph": "Euro",
+          "sameAs": []
+        }
+      }
+    },
+    {
+      "name": "Baby Boho Script",
+      "missingGlyphs": [],
+      "emptyGlyphs": [],
+      "umlautsIdenticalToBase": [],
+      "symbols": {
+        "ß": {
+          "glyph": "germandbls",
+          "sameAs": []
+        },
+        "€": {
+          "glyph": "Euro",
+          "sameAs": []
+        }
+      }
+    },
+    {
+      "name": "Bad Script",
+      "missingGlyphs": [],
+      "emptyGlyphs": [],
+      "umlautsIdenticalToBase": [],
+      "symbols": {
+        "ß": {
+          "glyph": "germandbls",
+          "sameAs": []
+        },
+        "€": {
+          "glyph": "Euro",
+          "sameAs": []
+        }
+      }
+    },
+    {
+      "name": "Baloo 2",
+      "missingGlyphs": [],
+      "emptyGlyphs": [],
+      "umlautsIdenticalToBase": [],
+      "symbols": {
+        "ß": {
+          "glyph": "germandbls",
+          "sameAs": []
+        },
+        "€": {
+          "glyph": "Euro",
+          "sameAs": []
+        }
+      }
+    },
+    {
+      "name": "Bebas Neue",
+      "missingGlyphs": [],
+      "emptyGlyphs": [],
+      "umlautsIdenticalToBase": [],
+      "symbols": {
+        "ß": {
+          "glyph": "germandbls",
+          "sameAs": []
+        },
+        "€": {
+          "glyph": "Euro",
+          "sameAs": []
+        }
+      }
+    },
+    {
+      "name": "Bellefair",
+      "missingGlyphs": [],
+      "emptyGlyphs": [],
+      "umlautsIdenticalToBase": [],
+      "symbols": {
+        "ß": {
+          "glyph": "germandbls",
+          "sameAs": []
+        },
+        "€": {
+          "glyph": "Euro",
+          "sameAs": []
+        }
+      }
+    },
+    {
+      "name": "Bernardo Moda Contrast",
+      "missingGlyphs": [],
+      "emptyGlyphs": [],
+      "umlautsIdenticalToBase": [],
+      "symbols": {
+        "ß": {
+          "glyph": "germandbls",
+          "sameAs": []
+        },
+        "€": {
+          "glyph": "Euro",
+          "sameAs": []
+        }
+      }
+    },
+    {
+      "name": "Betsy Bailey",
+      "missingGlyphs": [],
+      "emptyGlyphs": [],
+      "umlautsIdenticalToBase": [],
+      "symbols": {
+        "ß": {
+          "glyph": "germandbls",
+          "sameAs": []
+        },
+        "€": {
+          "glyph": "Euro",
+          "sameAs": []
+        }
+      }
+    },
+    {
+      "name": "Caveat",
+      "missingGlyphs": [],
+      "emptyGlyphs": [],
+      "umlautsIdenticalToBase": [],
+      "symbols": {
+        "ß": {
+          "glyph": "germandbls",
+          "sameAs": []
+        },
+        "€": {
+          "glyph": "Euro",
+          "sameAs": []
+        }
+      }
+    },
+    {
+      "name": "Caviar Dreams",
+      "missingGlyphs": [],
+      "emptyGlyphs": [],
+      "umlautsIdenticalToBase": [],
+      "symbols": {
+        "ß": {
+          "glyph": "germandbls",
+          "sameAs": []
+        },
+        "€": {
+          "glyph": "Euro",
+          "sameAs": []
+        }
+      }
+    },
+    {
+      "name": "Chewy",
+      "missingGlyphs": [],
+      "emptyGlyphs": [],
+      "umlautsIdenticalToBase": [],
+      "symbols": {
+        "ß": {
+          "glyph": "germandbls",
+          "sameAs": []
+        },
+        "€": {
+          "glyph": "Euro",
+          "sameAs": []
+        }
+      }
+    },
+    {
+      "name": "Cinzel",
+      "missingGlyphs": [],
+      "emptyGlyphs": [],
+      "umlautsIdenticalToBase": [],
+      "symbols": {
+        "ß": {
+          "glyph": "germandbls",
+          "sameAs": []
+        },
+        "€": {
+          "glyph": "Euro",
+          "sameAs": []
+        }
+      }
+    },
+    {
+      "name": "Cinzel Decorative",
+      "missingGlyphs": [],
+      "emptyGlyphs": [],
+      "umlautsIdenticalToBase": [],
+      "symbols": {
+        "ß": {
+          "glyph": "germandbls",
+          "sameAs": []
+        },
+        "€": {
+          "glyph": "Euro",
+          "sameAs": []
+        }
+      }
+    },
+    {
+      "name": "Comfortaa",
+      "missingGlyphs": [],
+      "emptyGlyphs": [],
+      "umlautsIdenticalToBase": [],
+      "symbols": {
+        "ß": {
+          "glyph": "germandbls",
+          "sameAs": []
+        },
+        "€": {
+          "glyph": "Euro",
+          "sameAs": []
+        }
+      }
+    },
+    {
+      "name": "Comic Neue",
+      "missingGlyphs": [],
+      "emptyGlyphs": [],
+      "umlautsIdenticalToBase": [],
+      "symbols": {
+        "ß": {
+          "glyph": "germandbls",
+          "sameAs": []
+        },
+        "€": {
+          "glyph": "Euro",
+          "sameAs": []
+        }
+      }
+    },
+    {
+      "name": "Cookie",
+      "missingGlyphs": [],
+      "emptyGlyphs": [],
+      "umlautsIdenticalToBase": [],
+      "symbols": {
+        "ß": {
+          "glyph": "germandbls",
+          "sameAs": []
+        },
+        "€": {
+          "glyph": "Euro",
+          "sameAs": []
+        }
+      }
+    },
+    {
+      "name": "Cormorant Garamond",
+      "missingGlyphs": [],
+      "emptyGlyphs": [],
+      "umlautsIdenticalToBase": [],
+      "symbols": {
+        "ß": {
+          "glyph": "germandbls",
+          "sameAs": []
+        },
+        "€": {
+          "glyph": "Euro",
+          "sameAs": []
+        }
+      }
+    },
+    {
+      "name": "Courgette",
+      "missingGlyphs": [],
+      "emptyGlyphs": [],
+      "umlautsIdenticalToBase": [],
+      "symbols": {
+        "ß": {
+          "glyph": "germandbls",
+          "sameAs": []
+        },
+        "€": {
+          "glyph": "Euro",
+          "sameAs": []
+        }
+      }
+    },
+    {
+      "name": "Courier Prime",
+      "missingGlyphs": [],
+      "emptyGlyphs": [],
+      "umlautsIdenticalToBase": [],
+      "symbols": {
+        "ß": {
+          "glyph": "germandbls",
+          "sameAs": []
+        },
+        "€": {
+          "glyph": "Euro",
+          "sameAs": []
+        }
+      }
+    },
+    {
+      "name": "Dancing Script",
+      "missingGlyphs": [],
+      "emptyGlyphs": [],
+      "umlautsIdenticalToBase": [],
+      "symbols": {
+        "ß": {
+          "glyph": "germandbls",
+          "sameAs": []
+        },
+        "€": {
+          "glyph": "Euro",
+          "sameAs": []
+        }
+      }
+    },
+    {
+      "name": "Daniel",
+      "missingGlyphs": [],
+      "emptyGlyphs": [],
+      "umlautsIdenticalToBase": [],
+      "symbols": {
+        "ß": {
+          "glyph": "germandbls",
+          "sameAs": []
+        },
+        "€": {
+          "glyph": "currency",
+          "sameAs": []
+        }
+      }
+    },
+    {
+      "name": "Days One",
+      "missingGlyphs": [],
+      "emptyGlyphs": [],
+      "umlautsIdenticalToBase": [],
+      "symbols": {
+        "ß": {
+          "glyph": "germandbls",
+          "sameAs": []
+        },
+        "€": {
+          "glyph": "Euro",
+          "sameAs": []
+        }
+      }
+    },
+    {
+      "name": "Desyrel",
+      "missingGlyphs": [],
+      "emptyGlyphs": [],
+      "umlautsIdenticalToBase": [],
+      "symbols": {
+        "ß": {
+          "glyph": "germandbls",
+          "sameAs": []
+        },
+        "€": {
+          "glyph": "currency",
+          "sameAs": []
+        }
+      }
+    },
+    {
+      "name": "Dream Orphans",
+      "missingGlyphs": [],
+      "emptyGlyphs": [],
+      "umlautsIdenticalToBase": [],
+      "symbols": {
+        "ß": {
+          "glyph": "germandbls",
+          "sameAs": []
+        },
+        "€": {
+          "glyph": "Euro",
+          "sameAs": []
+        }
+      }
+    },
+    {
+      "name": "Fineliner Script",
+      "missingGlyphs": [],
+      "emptyGlyphs": [],
+      "umlautsIdenticalToBase": [],
+      "symbols": {
+        "ß": {
+          "glyph": "germandbls",
+          "sameAs": []
+        },
+        "€": {
+          "glyph": "Euro",
+          "sameAs": []
+        }
+      }
+    },
+    {
+      "name": "Fjalla One",
+      "missingGlyphs": [],
+      "emptyGlyphs": [],
+      "umlautsIdenticalToBase": [],
+      "symbols": {
+        "ß": {
+          "glyph": "germandbls",
+          "sameAs": []
+        },
+        "€": {
+          "glyph": "Euro",
+          "sameAs": []
+        }
+      }
+    },
+    {
+      "name": "Fredoka",
+      "missingGlyphs": [],
+      "emptyGlyphs": [],
+      "umlautsIdenticalToBase": [],
+      "symbols": {
+        "ß": {
+          "glyph": "germandbls",
+          "sameAs": []
+        },
+        "€": {
+          "glyph": "Euro",
+          "sameAs": []
+        }
+      }
+    },
+    {
+      "name": "Gloria Hallelujah",
+      "missingGlyphs": [],
+      "emptyGlyphs": [],
+      "umlautsIdenticalToBase": [],
+      "symbols": {
+        "ß": {
+          "glyph": "germandbls",
+          "sameAs": []
+        },
+        "€": {
+          "glyph": "Euro",
+          "sameAs": []
+        }
+      }
+    },
+    {
+      "name": "Great Vibes",
+      "missingGlyphs": [],
+      "emptyGlyphs": [],
+      "umlautsIdenticalToBase": [],
+      "symbols": {
+        "ß": {
+          "glyph": "germandbls",
+          "sameAs": []
+        },
+        "€": {
+          "glyph": "Euro",
+          "sameAs": []
+        }
+      }
+    },
+    {
+      "name": "Hello Georgia",
+      "missingGlyphs": [],
+      "emptyGlyphs": [],
+      "umlautsIdenticalToBase": [],
+      "symbols": {
+        "ß": {
+          "glyph": "germandbls",
+          "sameAs": []
+        },
+        "€": {
+          "glyph": "Euro",
+          "sameAs": []
+        }
+      }
+    },
+    {
+      "name": "Homage",
+      "missingGlyphs": [
+        "ß",
+        "€"
+      ],
+      "emptyGlyphs": [],
+      "umlautsIdenticalToBase": [],
+      "symbols": {
+        "ß": {
+          "glyph": null,
+          "sameAs": []
+        },
+        "€": {
+          "glyph": null,
+          "sameAs": []
+        }
+      }
+    },
+    {
+      "name": "Italianno",
+      "missingGlyphs": [],
+      "emptyGlyphs": [],
+      "umlautsIdenticalToBase": [],
+      "symbols": {
+        "ß": {
+          "glyph": "germandbls",
+          "sameAs": []
+        },
+        "€": {
+          "glyph": "Euro",
+          "sameAs": []
+        }
+      }
+    },
+    {
+      "name": "Josefin Sans",
+      "missingGlyphs": [],
+      "emptyGlyphs": [],
+      "umlautsIdenticalToBase": [],
+      "symbols": {
+        "ß": {
+          "glyph": "germandbls",
+          "sameAs": []
+        },
+        "€": {
+          "glyph": "Euro",
+          "sameAs": []
+        }
+      }
+    },
+    {
+      "name": "Kalam",
+      "missingGlyphs": [],
+      "emptyGlyphs": [],
+      "umlautsIdenticalToBase": [],
+      "symbols": {
+        "ß": {
+          "glyph": "germandbls",
+          "sameAs": []
+        },
+        "€": {
+          "glyph": "Euro",
+          "sameAs": []
+        }
+      }
+    },
+    {
+      "name": "Kaushan Script",
+      "missingGlyphs": [],
+      "emptyGlyphs": [],
+      "umlautsIdenticalToBase": [],
+      "symbols": {
+        "ß": {
+          "glyph": "germandbls",
+          "sameAs": []
+        },
+        "€": {
+          "glyph": "Euro",
+          "sameAs": []
+        }
+      }
+    },
+    {
+      "name": "Lato",
+      "missingGlyphs": [],
+      "emptyGlyphs": [],
+      "umlautsIdenticalToBase": [],
+      "symbols": {
+        "ß": {
+          "glyph": "germandbls",
+          "sameAs": []
+        },
+        "€": {
+          "glyph": "Euro",
+          "sameAs": []
+        }
+      }
+    },
+    {
+      "name": "Libre Baskerville",
+      "missingGlyphs": [],
+      "emptyGlyphs": [],
+      "umlautsIdenticalToBase": [],
+      "symbols": {
+        "ß": {
+          "glyph": "germandbls",
+          "sameAs": []
+        },
+        "€": {
+          "glyph": "Euro",
+          "sameAs": []
+        }
+      }
+    },
+    {
+      "name": "Lobster",
+      "missingGlyphs": [],
+      "emptyGlyphs": [],
+      "umlautsIdenticalToBase": [],
+      "symbols": {
+        "ß": {
+          "glyph": "germandbls",
+          "sameAs": []
+        },
+        "€": {
+          "glyph": "Euro",
+          "sameAs": []
+        }
+      }
+    },
+    {
+      "name": "Lora",
+      "missingGlyphs": [],
+      "emptyGlyphs": [],
+      "umlautsIdenticalToBase": [],
+      "symbols": {
+        "ß": {
+          "glyph": "germandbls",
+          "sameAs": []
+        },
+        "€": {
+          "glyph": "Euro",
+          "sameAs": []
+        }
+      }
+    },
+    {
+      "name": "Magnolia Script",
+      "missingGlyphs": [],
+      "emptyGlyphs": [],
+      "umlautsIdenticalToBase": [],
+      "symbols": {
+        "ß": {
+          "glyph": "germandbls",
+          "sameAs": []
+        },
+        "€": {
+          "glyph": "Euro",
+          "sameAs": []
+        }
+      }
+    },
+    {
+      "name": "MedievalSharp",
+      "missingGlyphs": [],
+      "emptyGlyphs": [],
+      "umlautsIdenticalToBase": [],
+      "symbols": {
+        "ß": {
+          "glyph": "germandbls",
+          "sameAs": []
+        },
+        "€": {
+          "glyph": "Euro",
+          "sameAs": []
+        }
+      }
+    },
+    {
+      "name": "Michroma",
+      "missingGlyphs": [],
+      "emptyGlyphs": [],
+      "umlautsIdenticalToBase": [],
+      "symbols": {
+        "ß": {
+          "glyph": "germandbls",
+          "sameAs": []
+        },
+        "€": {
+          "glyph": "Euro",
+          "sameAs": []
+        }
+      }
+    },
+    {
+      "name": "Minimalist",
+      "missingGlyphs": [
+        "ß"
+      ],
+      "emptyGlyphs": [],
+      "umlautsIdenticalToBase": [
+        "Ä",
+        "Ö",
+        "Ü",
+        "ä",
+        "ö",
+        "ü"
+      ],
+      "symbols": {
+        "ß": {
+          "glyph": null,
+          "sameAs": []
+        },
+        "€": {
+          "glyph": "Euro",
+          "sameAs": []
+        }
+      }
+    },
+    {
+      "name": "Montserrat",
+      "missingGlyphs": [],
+      "emptyGlyphs": [],
+      "umlautsIdenticalToBase": [],
+      "symbols": {
+        "ß": {
+          "glyph": "germandbls",
+          "sameAs": []
+        },
+        "€": {
+          "glyph": "Euro",
+          "sameAs": []
+        }
+      }
+    },
+    {
+      "name": "Montserrat Light",
+      "missingGlyphs": [],
+      "emptyGlyphs": [],
+      "umlautsIdenticalToBase": [],
+      "symbols": {
+        "ß": {
+          "glyph": "germandbls",
+          "sameAs": []
+        },
+        "€": {
+          "glyph": "Euro",
+          "sameAs": []
+        }
+      }
+    },
+    {
+      "name": "Oswald",
+      "missingGlyphs": [],
+      "emptyGlyphs": [],
+      "umlautsIdenticalToBase": [],
+      "symbols": {
+        "ß": {
+          "glyph": "germandbls",
+          "sameAs": []
+        },
+        "€": {
+          "glyph": "Euro",
+          "sameAs": []
+        }
+      }
+    },
+    {
+      "name": "Pacifico",
+      "missingGlyphs": [],
+      "emptyGlyphs": [],
+      "umlautsIdenticalToBase": [],
+      "symbols": {
+        "ß": {
+          "glyph": "germandbls",
+          "sameAs": []
+        },
+        "€": {
+          "glyph": "Euro",
+          "sameAs": []
+        }
+      }
+    },
+    {
+      "name": "Parisienne",
+      "missingGlyphs": [],
+      "emptyGlyphs": [],
+      "umlautsIdenticalToBase": [],
+      "symbols": {
+        "ß": {
+          "glyph": "germandbls",
+          "sameAs": []
+        },
+        "€": {
+          "glyph": "Euro",
+          "sameAs": []
+        }
+      }
+    },
+    {
+      "name": "Patrick Hand",
+      "missingGlyphs": [],
+      "emptyGlyphs": [],
+      "umlautsIdenticalToBase": [],
+      "symbols": {
+        "ß": {
+          "glyph": "germandbls",
+          "sameAs": []
+        },
+        "€": {
+          "glyph": "Euro",
+          "sameAs": []
+        }
+      }
+    },
+    {
+      "name": "Permanent Marker",
+      "missingGlyphs": [],
+      "emptyGlyphs": [],
+      "umlautsIdenticalToBase": [],
+      "symbols": {
+        "ß": {
+          "glyph": "germandbls",
+          "sameAs": []
+        },
+        "€": {
+          "glyph": "Euro",
+          "sameAs": []
+        }
+      }
+    },
+    {
+      "name": "Playfair Display",
+      "missingGlyphs": [],
+      "emptyGlyphs": [],
+      "umlautsIdenticalToBase": [],
+      "symbols": {
+        "ß": {
+          "glyph": "germandbls",
+          "sameAs": []
+        },
+        "€": {
+          "glyph": "Euro",
+          "sameAs": []
+        }
+      }
+    },
+    {
+      "name": "Poiret One",
+      "missingGlyphs": [],
+      "emptyGlyphs": [],
+      "umlautsIdenticalToBase": [],
+      "symbols": {
+        "ß": {
+          "glyph": "germandbls",
+          "sameAs": []
+        },
+        "€": {
+          "glyph": "Euro",
+          "sameAs": []
+        }
+      }
+    },
+    {
+      "name": "Poppins ExtraLight",
+      "missingGlyphs": [],
+      "emptyGlyphs": [],
+      "umlautsIdenticalToBase": [],
+      "symbols": {
+        "ß": {
+          "glyph": "germandbls",
+          "sameAs": []
+        },
+        "€": {
+          "glyph": "Euro",
+          "sameAs": []
+        }
+      }
+    },
+    {
+      "name": "Raleway",
+      "missingGlyphs": [],
+      "emptyGlyphs": [],
+      "umlautsIdenticalToBase": [],
+      "symbols": {
+        "ß": {
+          "glyph": "germandbls",
+          "sameAs": []
+        },
+        "€": {
+          "glyph": "Euro",
+          "sameAs": []
+        }
+      }
+    },
+    {
+      "name": "Righteous",
+      "missingGlyphs": [],
+      "emptyGlyphs": [],
+      "umlautsIdenticalToBase": [],
+      "symbols": {
+        "ß": {
+          "glyph": "germandbls",
+          "sameAs": []
+        },
+        "€": {
+          "glyph": "Euro",
+          "sameAs": []
+        }
+      }
+    },
+    {
+      "name": "Roboto Condensed",
+      "missingGlyphs": [],
+      "emptyGlyphs": [],
+      "umlautsIdenticalToBase": [],
+      "symbols": {
+        "ß": {
+          "glyph": "germandbls",
+          "sameAs": []
+        },
+        "€": {
+          "glyph": "Euro",
+          "sameAs": []
+        }
+      }
+    },
+    {
+      "name": "Roboto Slab",
+      "missingGlyphs": [],
+      "emptyGlyphs": [],
+      "umlautsIdenticalToBase": [],
+      "symbols": {
+        "ß": {
+          "glyph": "germandbls",
+          "sameAs": []
+        },
+        "€": {
+          "glyph": "Euro",
+          "sameAs": []
+        }
+      }
+    },
+    {
+      "name": "Rochester",
+      "missingGlyphs": [],
+      "emptyGlyphs": [],
+      "umlautsIdenticalToBase": [],
+      "symbols": {
+        "ß": {
+          "glyph": "germandbls",
+          "sameAs": []
+        },
+        "€": {
+          "glyph": "Euro",
+          "sameAs": []
+        }
+      }
+    },
+    {
+      "name": "Rock Salt",
+      "missingGlyphs": [],
+      "emptyGlyphs": [],
+      "umlautsIdenticalToBase": [],
+      "symbols": {
+        "ß": {
+          "glyph": "germandbls",
+          "sameAs": []
+        },
+        "€": {
+          "glyph": "Euro",
+          "sameAs": []
+        }
+      }
+    },
+    {
+      "name": "Rounded Elegance",
+      "missingGlyphs": [],
+      "emptyGlyphs": [],
+      "umlautsIdenticalToBase": [],
+      "symbols": {
+        "ß": {
+          "glyph": "germandbls",
+          "sameAs": []
+        },
+        "€": {
+          "glyph": "Euro",
+          "sameAs": []
+        }
+      }
+    },
+    {
+      "name": "Rye",
+      "missingGlyphs": [],
+      "emptyGlyphs": [],
+      "umlautsIdenticalToBase": [],
+      "symbols": {
+        "ß": {
+          "glyph": "germandbls",
+          "sameAs": []
+        },
+        "€": {
+          "glyph": "Euro",
+          "sameAs": []
+        }
+      }
+    },
+    {
+      "name": "Sacramento",
+      "missingGlyphs": [],
+      "emptyGlyphs": [],
+      "umlautsIdenticalToBase": [],
+      "symbols": {
+        "ß": {
+          "glyph": "germandbls",
+          "sameAs": []
+        },
+        "€": {
+          "glyph": "Euro",
+          "sameAs": []
+        }
+      }
+    },
+    {
+      "name": "Satisfy",
+      "missingGlyphs": [],
+      "emptyGlyphs": [],
+      "umlautsIdenticalToBase": [],
+      "symbols": {
+        "ß": {
+          "glyph": "germandbls",
+          "sameAs": []
+        },
+        "€": {
+          "glyph": "Euro",
+          "sameAs": []
+        }
+      }
+    },
+    {
+      "name": "Special Elite",
+      "missingGlyphs": [],
+      "emptyGlyphs": [],
+      "umlautsIdenticalToBase": [],
+      "symbols": {
+        "ß": {
+          "glyph": "germandbls",
+          "sameAs": []
+        },
+        "€": {
+          "glyph": "Euro",
+          "sameAs": []
+        }
+      }
+    },
+    {
+      "name": "Stardos Stencil",
+      "missingGlyphs": [],
+      "emptyGlyphs": [],
+      "umlautsIdenticalToBase": [],
+      "symbols": {
+        "ß": {
+          "glyph": "germandbls",
+          "sameAs": []
+        },
+        "€": {
+          "glyph": "Euro",
+          "sameAs": []
+        }
+      }
+    },
+    {
+      "name": "Stylish",
+      "missingGlyphs": [],
+      "emptyGlyphs": [],
+      "umlautsIdenticalToBase": [],
+      "symbols": {
+        "ß": {
+          "glyph": "germandbls",
+          "sameAs": []
+        },
+        "€": {
+          "glyph": "Euro",
+          "sameAs": []
+        }
+      }
+    },
+    {
+      "name": "Sunflower",
+      "missingGlyphs": [
+        "ß"
+      ],
+      "emptyGlyphs": [],
+      "umlautsIdenticalToBase": [
+        "Ä",
+        "Ö",
+        "Ü",
+        "ä",
+        "ö",
+        "ü"
+      ],
+      "symbols": {
+        "ß": {
+          "glyph": null,
+          "sameAs": []
+        },
+        "€": {
+          "glyph": "Euro",
+          "sameAs": []
+        }
+      }
+    },
+    {
+      "name": "Sweetie",
+      "missingGlyphs": [
+        "ß"
+      ],
+      "emptyGlyphs": [],
+      "umlautsIdenticalToBase": [
+        "Ä",
+        "Ö",
+        "Ü",
+        "ä",
+        "ö",
+        "ü"
+      ],
+      "symbols": {
+        "ß": {
+          "glyph": null,
+          "sameAs": []
+        },
+        "€": {
+          "glyph": "Euro",
+          "sameAs": []
+        }
+      }
+    },
+    {
+      "name": "Tangerine",
+      "missingGlyphs": [],
+      "emptyGlyphs": [],
+      "umlautsIdenticalToBase": [],
+      "symbols": {
+        "ß": {
+          "glyph": "germandbls",
+          "sameAs": []
+        },
+        "€": {
+          "glyph": "Euro",
+          "sameAs": []
+        }
+      }
+    },
+    {
+      "name": "Uncial Antiqua",
+      "missingGlyphs": [],
+      "emptyGlyphs": [],
+      "umlautsIdenticalToBase": [],
+      "symbols": {
+        "ß": {
+          "glyph": "germandbls",
+          "sameAs": []
+        },
+        "€": {
+          "glyph": "Euro",
+          "sameAs": []
+        }
+      }
+    },
+    {
+      "name": "Zentenar Fraktur",
+      "missingGlyphs": [],
+      "emptyGlyphs": [],
+      "umlautsIdenticalToBase": [],
+      "symbols": {
+        "ß": {
+          "glyph": "germandbls",
+          "sameAs": []
+        },
+        "€": {
+          "glyph": "Euro",
+          "sameAs": []
+        }
+      }
+    }
+  ]
+}

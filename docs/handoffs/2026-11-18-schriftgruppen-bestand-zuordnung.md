@@ -22,7 +22,7 @@ Die acht technischen Kennungen bleiben zunächst erhalten. Mehrere bisherige Lis
 ## Die zwei wichtigen Sonderfälle
 
 - **Tiergedenken gehört zu Andenken & Hochzeit.** Hunde-/Katzenschilder gehören zu Tiere & Hof. Entscheidend ist hier der Verwendungszweck.
-- **Die alte Liste „Schlüsselanhänger“ hat im Katalog keine Verweise.** Die Produktlinie Schlüsselanhänger nutzt bereits je nach Thema andere Listen. Dass die alte Liste auch in der Serverdatenbank unbenutzt ist, ist noch nicht nachgewiesen.
+- **Die alte Liste „Schlüsselanhänger“ hat im Katalog keine Verweise.** Die Produktlinie Schlüsselanhänger nutzt bereits je nach Thema andere Listen. Im geprüften nativen Serverbestand existiert ebenfalls kein Schriftprofil dieser Liste; eingebettete Designressourcen und andere Datenbanken sind damit nicht bewertet.
 
 Unser Vorschlag erhält zunächst die thematische Zuordnung. Deshalb bekäme beispielsweise ein Schlüsselanhänger mit Namen weiterhin die Gruppe Tür & Familie, ein Hochzeits-Schlüsselanhänger Andenken & Hochzeit. In den vier Geschenk-Linien Brettchen, Lineale, Schlüsselanhänger und Stifthalter nutzen **11 von 15 Unterkategorien** solche anderen Themenlisten, vier nutzen Geschenkartikel. Alle Geschenkprodukte pauschal Geschenke & Kinder zuzuordnen wäre eine zusätzliche fachliche Änderung; sie ist hier nicht enthalten.
 
@@ -43,7 +43,7 @@ Beim später bestätigten Übernehmen der 29er-Auswahl würden folgende Schrifte
 
 ## Bestandsprüfung am Server – durchgeführt
 
-Am **18.11.2026, 07:13–07:15 Uhr Europe/Bucharest** (05:13–05:15 UTC) über Chris’ angemeldete Plesk-Sitzung, Konsole **Node.js in app-2027.gravuru-designwerkstatt.de**, Node 24.22.3. Claude hatte eine andere, abgemeldete Browsersitzung; Astra hat die lesenden Abfragen ausgeführt und ihm die Ergebnisse zur Gegenprüfung gegeben. Die Serverprüfung ist nicht mehr durch eine fehlende Anmeldung blockiert.
+Am **18.11.2026, 07:13–07:19 Uhr Europe/Bucharest** (05:13–05:19 UTC) über Chris’ angemeldete Plesk-Sitzung, Konsole **Node.js in app-2027.gravuru-designwerkstatt.de**, Node 24.22.3. Claude hatte eine andere, abgemeldete Browsersitzung; Astra hat die lesenden Abfragen ausgeführt und ihm die Ergebnisse zur Gegenprüfung gegeben. Die Serverprüfung ist nicht mehr durch eine fehlende Anmeldung blockiert.
 
 Die tatsächlich ausgewählte Startdatei start-r5.cjs lädt app.cjs. Aus dessen Konfiguration wurden der native Datenpfad private/acryl-employee-20261021-v1/data und die aktive Katalogkopie private/issue139-katalog-20261102 bestätigt. Dieser Bericht betrifft diesen nativen Konfi-Datenbestand, nicht pauschal alle weiteren Legacy-, Galerie- oder Sicherungsdatenbanken des Servers.
 
@@ -69,6 +69,26 @@ Das vorhandene Türschild-Schriftprofil passt in allen **16 Positionen** zur Kat
 
 Die anderen sieben Kataloglisten haben in diesem nativen Bestand kein Schriftprofil. Insbesondere existiert hier kein Profil der alten Liste Schlüsselanhänger. Das ist ein Befund zu diesem Bestand, keine Aussage über beliebige andere Datenbanken oder eingebettete Designressourcen.
 
+### Kategorien und gespeicherte Shop-Bindungen
+
+Zusätzliche Lesungen um **05:18:30 und 05:19:28 UTC**:
+
+| Zähleinheit | Befund |
+| --- | --- |
+| Aktuelle Produktstände | 798 altes Formprodukt-Schema und 273 neues Produktschema = 1.071; 158 ohne Kategorien |
+| Aktive gespeicherte Shop-Bindungen | 16.725 Varianten, 248 unterschiedliche Shopify-Produktkennungen, 248 Konfigurationskennungen |
+| Tatsächlich gebundene Konfiguration/Revision-Paare | 249 Paare: 248 neues Produktschema, 1 altes Formprodukt-Schema |
+| Schriftzuordnung an diesen Paaren | 248 „Vererben“, 1 ohne Zuordnungsfeld |
+| Themen an diesen Paaren | 10 Familienschilder, 102 Andenkenschilder, 1 Monogramme = 113; übrige 136 ohne Thema |
+| Fehlende Kategorien an diesen Paaren | 132 ohne jede Kategorie; weitere 4 mit Kategorien, aber ohne Thema |
+| Abweichung zum aktuellen Produktstand | 1 gebundene Revision unterscheidet sich vom heutigen Produktstand |
+
+**Die 249 sind Revision-Paare, nicht 249 unterschiedliche Produkte.** Die 248er-Zählung verknüpft die Köpfe der Shop-Bindungen mit deren gespeicherter Bindungsrevision, nicht mit der Forderung „aktueller Produktstand = gebundener Stand“. Die beiden Zählungen stammen aus getrennten Lesungen. Eine von ihrem aktuellen Produktstand abweichende gebundene Revision ist nachgewiesen; die Zuordnung dieses Falls zu der Differenz 248/249 wurde nicht einzeln ausgegeben und wird nicht behauptet.
+
+Diese Bindungen belegen weder aktuelle Shopify-Sichtbarkeit noch tatsächlich erreichbare Kunden-URLs. Eine Aussage „alle Produkte zeigen alle Schriften“ ist aus den Daten ebenfalls nicht möglich. Claude hat diese frühere Aussage ausdrücklich zurückgenommen.
+
+Aus den Themen lassen sich **113 gebundene Revision-Paare** für einen späteren Zuordnungsvorschlag vorselektieren: 11 Tür & Familie und 102 Andenken & Hochzeit. Das ist noch keine Freigabe zum Anschluss. Bei den 136 Paaren ohne Thema sind die 132 ganz ohne Kategorien einzeln zu untersuchen; bei den weiteren vier müssen die vorhandenen Kategorien geprüft werden. Weder ein globaler 29er-Standard noch eine automatische Zuordnung unklarer Produkte ist beschlossen. Auch das alte Formprodukt und die vom aktuellen Stand abweichende Bindung müssen getrennt berücksichtigt werden.
+
 ### Konsequenz für das spätere Einspielen
 
 Die reine Pflege der Listen verbindet die neuen Gruppen **noch nicht** mit den bestehenden Produkten. Die neue Importlogik schützt bestehende abweichende Zuordnungen einschließlich „Vererben“; sie darf diesen Befund nicht still in 1.071 neue Zuordnungen umwandeln. Nach Bestätigung des Vorschlags braucht der Anschluss daher einen ausdrücklich beschriebenen, begrenzten Produkt-/Kategorieplan und eine Prüfung im tatsächlichen Kundenweg. Eingefrorene Designs, Entwürfe, Bestellungen und vorhandene Bindungen bleiben erhalten. Die zwei offenen Gruppeninhalte werden nicht erfunden.
@@ -77,7 +97,11 @@ Die reine Pflege der Listen verbindet die neuen Gruppen **noch nicht** mit den b
 
 Je Datenbank nur lesende Transaktionen mit Zeitstempeln. Getrennte Lesungen sind kein gemeinsamer konsistenter Sicherungssatz. Produktabfragen projizierten nur Schriftzuordnung und Kategorie-IDs mit SQLite json_extract; große Ressourcen-/Designdokumente wurden nicht vollständig in den Prüfprozess geladen. Das ist eine begründete Anpassung der von Claude vorbereiteten Abfrage, kein unverändert ausgeführtes Skript. Keine neue SQLite-Sicherung erstellt; die passende Sicherung vor einer späteren Migration bleibt Teil des Einspielplans. Keine Migration, Geschäftsdatenänderung, App-Unterbrechung, Veröffentlichung oder Deployment. SQLite kann beim Lesen WAL/SHM-Begleitdateien öffnen/anlegen.
 
-Die sichtbaren JSON-Ausgaben wurden inhaltlich unverändert gesichert: docs/measurements/2026-11-18-font-server-inventory.json. Lokaler Quellen-/Dateiabgleich: docs/measurements/2026-11-18-font-server-inventory-comparison.json. Keine Kunden-/Bestelldaten in den Nachweisen.
+Die sichtbaren JSON-Ausgaben wurden inhaltlich unverändert gesichert: docs/measurements/2026-11-18-font-server-inventory.json. Lokaler Quellen-/Dateiabgleich: docs/measurements/2026-11-18-font-server-inventory-comparison.json. Zusätzliche Bindungszählungen: docs/measurements/2026-11-18-font-server-bindings.json. Darin sind Kategoriekennungen auf die drei für den Vorschlag relevanten Präfixe beschränkt und diese Kürzung ausdrücklich ausgewiesen; die Summen und die Ausgabe der gebundenen Revisionen sind unverändert. Keine Kunden-/Bestelldaten in den Nachweisen.
+
+### Abschluss mit Claude
+
+Claude hat die Bestandsprüfung und das gemeinsame 8→5-Mapping [abschließend ohne offenen Fehler bestätigt](https://github.com/Chris83638w/gravuru-2027/issues/254#issuecomment-6969899277). Er hat Astras Ausgaben gegengeprüft, nicht dieselbe Plesk-Konsole selbst bedient. Sein Kommentar nennt einige Revision-Paare verkürzt „Konfigurationen“; die Einheiten und die Abgrenzung der 248/249-Zählungen stehen oben präzise. Die Serverinventur ist damit abgeschlossen. Einspielen, Produktanschluss, eine echte konsistente Sicherung und die Prüfung des Kundenwegs bleiben eigene nächste Schritte.
 
 ## Quellen und Stand
 

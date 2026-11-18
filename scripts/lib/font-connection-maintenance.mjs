@@ -79,7 +79,7 @@ export async function runFontConnectionMaintenance({config,request,signal,depend
     const {lockTestData}=await moduleAt(config.legacyRelease,'lock.mjs');return lockTestData({data:config.dataDirectory,python:config.python});});
   const readRuntime=dependencies.readRuntime??(async()=>{const {merchantConfig}=await moduleAt(config.legacyRelease,'merchant-config.mjs');return merchantConfig({GRAVURU_SHOPIFY_CONFIG_FILE:config.merchantConfigFile});});
   const createRuntime=dependencies.createRuntime??createShopifyTestRuntime;
-  let owner,interrupted=null,releasing=false,closeError;
+  let owner,interrupted=null,releasing=false,closeError,opening=false;
   const closeOwner=()=>{if(closeError)throw closeError;try{owner?.close();}catch(error){closeError=error;throw error;}};
   const check=()=>{if(interrupted||signal?.aborted)fail(interrupted??'font_maintenance_aborted');};
   check();
@@ -96,8 +96,10 @@ export async function runFontConnectionMaintenance({config,request,signal,depend
     const runtime=await readRuntime();check();
     if(runtime.python!==config.python||runtime.runtime?.shopifySessions?.shopDomain!==config.shopDomain)fail('font_maintenance_runtime_scope');
     const mount=createFontConnectionHost({...config,...dependencies.mountOptions,approvedPlanSha:request.phase==='execute'?config.approvedPlanSha:null});
+    opening=true;
     owner=createRuntime({...runtime.runtimeEnv,GRAVURU_PRIVATE_DATA_DIR:config.dataDirectory,GRAVURU_SHOPIFY_DRAFT_TRANSFER:'draft-only'},
       {maintenanceOnly:true,katalogRoot:config.katalogRoot,fontConnection:mount});
+    opening=false;
     check();
     if(owner.server||owner.orderWebhookHandler||typeof owner.close!=='function')fail('font_maintenance_owner');
     const operator=mount.operator();let result;
@@ -115,7 +117,11 @@ export async function runFontConnectionMaintenance({config,request,signal,depend
   }finally{
     // The native owner must be closed before making the data lock available.
     // A close error intentionally retains the lock until this process exits.
-    closeOwner();releasing=true;
+    closeOwner();
+    // A constructor can fail after opening stores but before returning their
+    // owner. Only CLI process exit can then guarantee all OS handles are gone.
+    if(opening)fail('font_maintenance_startup_failed');
+    releasing=true;
     signal?.removeEventListener('abort',onAbort);lock.removeListener('exit',onExit);
     await (dependencies.releaseLock??releaseLock)(lock);
   }

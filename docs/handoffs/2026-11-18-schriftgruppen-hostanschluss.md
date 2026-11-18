@@ -35,7 +35,7 @@ Ablauf im Prozess:
 2. Unter Sperre den App-Einstieg samt SHA, Codeverzeichnis, nativen Datenpfad und Legacy-Verzeichnis prüfen. Erst danach die vorhandene private Runtime-Konfiguration laden; Python-/Shopidentität müssen passen. Keine neue Installation oder Zugangsdaten.
 3. Nur `createShopifyTestRuntime(..., {maintenanceOnly:true, fontConnection})` öffnen, ohne Legacy-Host oder Kundenintegration. Der Haken erhält genau die hier geöffnete native Werkstatt und deren begrenzten Leser.
 4. Einen Plan speichern oder die eine freigegebene SHA ausführen. Beide Dienst-/Operator-Gates sind nur für den exakt gepinnten Ausführungslauf offen, im Planlauf immer geschlossen. Vor Dateizugriff und Schreiben gelten die bisherigen vollständigen Plan-/Shop-/Bindungsprüfungen.
-5. Native Werkstatt schließen, **danach** den Lockprozess beenden und dessen Ende abwarten. Lockverlust/Abbruch sperrt den privaten Operator auch während einer laufenden Shopabfrage. Bei einem Schließfehler wird die Sperre nicht vorzeitig freigegeben; das Einmal-CLI beendet seinen Prozess, damit dessen Ressourcen und die Lock-Pipe vom Betriebssystem geschlossen werden. Die Lockdatei wird nie gelöscht.
+5. Native Werkstatt schließen, **danach** den Lockprozess beenden und dessen Ende abwarten. Lockverlust/Abbruch sperrt den privaten Operator auch während einer laufenden Shopabfrage. Bei einem Schließfehler oder einem fehlgeschlagenen Konstruktor, der noch keinen Besitzer seiner geöffneten Speicher zurückgegeben hat, wird die Sperre nicht vorzeitig freigegeben; das Einmal-CLI beendet seinen Prozess, damit dessen Ressourcen und die Lock-Pipe vom Betriebssystem geschlossen werden. Die Lockdatei wird nie gelöscht.
 
 ## Reale Serverbelege, ausschließlich gelesen
 

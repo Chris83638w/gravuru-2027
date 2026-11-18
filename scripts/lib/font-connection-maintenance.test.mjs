@@ -73,12 +73,12 @@ test('abort during execution closes the owner before unlock and leaves the produ
  assert.deepEqual(f.trace,['lock','code','config','open','read','close','unlock']);assert.equal(f.targetWorkshop.repository.get(f.target.id).revision,1);
 });
 
-test('code mismatch and startup failure release only after the owner boundary, without commands',async t=>{
+test('code mismatch releases an unopened lock; partial startup failure retains it until process exit',async t=>{
  const f=await fixture(t);
  await assert.rejects(f.run({phase:'plan',targetId:'synthetic'},{dependencies:{...f.dependencies,verifyInstalledCode(){throw Object.assign(Error('wrong release'),{code:'font_maintenance_code_mismatch'});}}}),{code:'font_maintenance_code_mismatch'});
  assert.deepEqual(f.trace,['lock','unlock']);f.trace.length=0;
- await assert.rejects(f.run({phase:'plan',targetId:'synthetic'},{dependencies:{...f.dependencies,createRuntime(){f.trace.push('open-failed');throw Error('synthetic startup');}}}),/synthetic startup/);
- assert.deepEqual(f.trace,['lock','code','config','open-failed','unlock']);assert.equal(fs.existsSync(f.config.planDirectory),false);
+ await assert.rejects(f.run({phase:'plan',targetId:'synthetic'},{dependencies:{...f.dependencies,createRuntime(){f.trace.push('open-failed');throw Error('synthetic startup');}}}),{code:'font_maintenance_startup_failed'});
+ assert.deepEqual(f.trace,['lock','code','config','open-failed']);assert.equal(fs.existsSync(f.config.planDirectory),false);
 });
 
 test('an owner close failure never releases a potentially still-owned database',async t=>{

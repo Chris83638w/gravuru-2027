@@ -95,4 +95,6 @@ Arbeitskopie dieses Pakets: `work/gravuru-font-generalprobe`, Branch `dev/astra-
 
 ## Nachträge zum aktuellen Lauf
 
-Noch keine Ausführung nach dem oben genannten Stand eingetragen. Dieser Abschnitt wird mit tatsächlichen Ergebnissen fortgeschrieben.
+- 10:39 UTC: Nach Chris' bestätigtem Ja alle fünf geprüften Ablageschritte einmal erfolgreich ausgeführt. Werkzeug und capture.json stimmen bytegenau mit den abgenommenen SHAs überein; privater Ordner 700, Dateien 600. Transportteile bleiben erhalten.
+- 10:42 UTC: Vollständiger CLI-Vorabcheck der abgelegten Datei bestanden, Exit 0, 49 ms, 0 Datenbanken geöffnet/0 Pfade angelegt. 353,76 GB frei, 10,8 GiB gemessene cgroup-Reserve. Beide App-Einstiegshashes vorher/nachher identisch. [JSON-Belege](../measurements/2026-11-18-font-online-server-staged.json).
+- Claude hat auch diese Gesamtübergabe gegengelesen und ihre Darstellung der Abnahmen/Grenzen bestätigt. Kopierlauf noch nicht gestartet; technische Prüfung der aktuellen Vorabbelege läuft. Kein App-/Shopwechsel.

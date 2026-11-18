@@ -95,6 +95,24 @@ test('historical import evidence cannot disappear and unconfirmed sets cannot be
   assert.equal(f.targetWorkshop.repository.head(f.target.id).revision, 1);
 });
 
+test('existing surcharge contract stays exact; even a same-price contract revision change stops the font plan', async t => {
+  let pricing;
+  const f = await fixture(t, {initialPricingFor({record, variants}) {
+    pricing = {schema: 'gravuru-personalization-pricing/v2', enabled: true, productId: PRODUCT, revision: 1, currency: 'EUR', extraLogoCents: 1299,
+      variants: Object.fromEntries(variants.map(v => [v.id.split('/').at(-1), v.priceCents])),
+      extraMotifCents: record.document.config.extraMotifCents, extraPhotoCents: record.document.config.photo.extraPriceCents};
+    return pricing;
+  }, activationOptions: {approvalMode: 'preserve', personalizationPricingFor: () => pricing}});
+  const original = f.activation.capture(f.mapping), plan = await f.connect.plan({targetId: 'synthetic'});
+  pricing.revision = 2;
+  await assert.rejects(f.connect.plan({targetId: 'synthetic'}), {code: 'font_connection_contract_changed'});
+  await assert.rejects(f.connect.execute(plan), {code: 'font_connection_contract_changed'});
+  assert.equal(f.targetWorkshop.repository.head(f.target.id).revision, 1);
+  pricing.revision = 1;
+  await f.connect.execute(plan);
+  assert.deepEqual(f.activation.capture(f.mapping).heads.map(h => h.personalization), original.heads.map(h => h.personalization));
+});
+
 test('a late approval error rolls all real variant bindings back; retry reuses the saved revision', async t => {
   const f = await fixture(t), before = f.activation.capture(f.mapping), plan = await f.connect.plan({targetId: 'synthetic'});
   const orders = f.targetWorkshop.orderIntake, approve = orders.approveCatalogLiveProducts;

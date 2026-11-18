@@ -3,6 +3,7 @@
 import {isDeepStrictEqual as same} from 'node:util';
 import {syncHash, syncFail} from './gallery-shop-sync-native.mjs';
 import {prepareShopProduct} from './shop-preparation.mjs';
+import {capturePersonalization} from './cart-personalization.mjs';
 
 const clone = value => structuredClone(value);
 const fail = (code, message) => syncFail('font_connection_' + code, message);
@@ -81,6 +82,17 @@ export function createFontGroupConnection({workshop, tenantId, shopDomain, activ
     if (!same(actual, expected)) fail('bindings_changed', 'Die Varianten-Zuordnung hat sich seit der Vorschau geändert.');
     return actual;
   }
+  function unchangedPricing(pricing, binding, document) {
+    for (const head of binding.heads) {
+      const assigned = pricing.variants.find(v => v.id === head.shopifyVariantId);
+      const contract = pricing.contracts.find(c => c.sha256 === assigned?.sha256);
+      const captured = contract ? capturePersonalization(contract.pricing, {
+        variantId: head.shopifyVariantId.split('/').at(-1), baseCents: head.unitCents, document,
+      }) : null;
+      if (!same(captured, head.personalization))
+        fail('contract_changed', 'Der Schriftanschluss würde einen bestehenden Zusatzpreisvertrag ändern oder erstmals anlegen.');
+    }
+  }
   function checkPlan(plan) {
     const {sha256, ...body} = plan;
     if (sha256 !== syncHash(body) || body.tenantId !== tenantId || body.shopDomain !== shopDomain || body.schema !== 'gravuru-font-connection/v1')
@@ -115,6 +127,7 @@ export function createFontGroupConnection({workshop, tenantId, shopDomain, activ
     const remote = await transport.inspect(mapping);
     ensureHead(record.id, record.revision); sameBindings(mapping, binding);
     const pricing = activation.prepare({mapping, record, document: projected.document, binding, remote});
+    unchangedPricing(pricing, binding, projected.document);
     const body = {schema: 'gravuru-font-connection/v1', tenantId, shopDomain, targetId, target: t, approvedSets: fixedSets,
       fromRevision: record.revision, restoreRevision: restoreRevision ?? null, binding, assignment, selectedProfile,
       beforeDocumentSha256: syncHash(record.document), documentSha256: syncHash(projected.document), metadata: projected.metadata, pricing};
@@ -135,6 +148,7 @@ export function createFontGroupConnection({workshop, tenantId, shopDomain, activ
       fail('profiles_changed', 'Die Profilstände haben sich seit der Vorschau geändert.');
     const remote = await transport.inspect(mapping);
     const pricing = activation.prepare({mapping, record: original, document: projected.document, binding: plan.binding, remote});
+    unchangedPricing(pricing, plan.binding, projected.document);
     if (!same(pricing, plan.pricing)) fail('pricing_changed', 'Die geprüften Zusatzpreise haben sich geändert.');
     const prior = repository.importItem(key);
     if (!prior) {

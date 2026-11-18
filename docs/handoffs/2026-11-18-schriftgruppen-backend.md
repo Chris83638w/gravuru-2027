@@ -57,4 +57,6 @@ Lokale Bedienfixture: `node tools/performance/font-backend-fixture.mjs <catalogu
 
 ## Nächster Schritt
 
-Claude prüft diesen PR und den Herkunftsbericht einer echten Datenbankkopie. Offene Datenzuordnungen ins Issue #254; nichts raten. Danach konkrete Aktivierung vorbereiten. Kein Merge/Deploy und nichts live ohne Chris' „live“.
+[Claude hat den Code bis `6dab1ea` abschließend abgenommen](https://github.com/Chris83638w/gravuru-2027/pull/256#issuecomment-6969548604): 43/43 betroffene Tests auf Node 22.23.4 selbst bestanden, Rückweg selbst nachgestellt, A/B gelöst, keine neuen Code-Befunde. Astra hat den aktualisierten Listenvergleich und die verständliche bestehende Grundauswahlprüfung anschließend zusätzlich im lokalen Browser mit Wegwerfdaten geprüft.
+
+Vor Aktivierung offen: Herkunftsbericht einer echten konsistenten Datenbankkopie; tatsächlicher Sicherungs-/Stilllegungsweg am Zielsystem (Merchant-Helfer nicht ungeprüft auf die Live-Runtime übertragen); Poppins-Katalog-PR #192; zwei Gruppenauswahlen und die Zuordnung der acht bisherigen Set-IDs. Diese Datenentscheidungen stehen im Issue #254, sie werden nicht geraten. Claude legt den konkreten Einspielplan einschließlich möglicher kurzer Konfi-Unterbrechung vor. Reihenfolge nach Freigabe: #255, danach #256. Kein Merge/Deploy und nichts live ohne Chris' „live“.

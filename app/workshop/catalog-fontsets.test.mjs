@@ -110,3 +110,9 @@ test('font replacement during conversion invalidates the reviewed source before 
  f.fontLibrary.import=async()=>{fs.writeFileSync(fontFile,'version two');return {id:'converted-cinzel'};};
  await assert.rejects(()=>f.save(f.input(names)),e=>e.code==='catalog_fontset_impact');assert.equal(f.audit().length,0);assert.equal(f.profiles.list().length,0);
 });
+test('regular reimport cannot shrink a previously saved group when a font file becomes unavailable',async t=>{
+ const f=setup(t),saved=await f.save(f.input()),before=f.profiles.get(saved.profile.id),catalog=openKatalog(f.root);
+ delete f.runtimeFonts.Lato;
+ await assert.rejects(()=>ensureFontSet(catalog,catalog.fontSet({fontSet:'tuerschilder'}),f),/bestehende Auswahl bleibt erhalten/);
+ assert.deepEqual(f.profiles.get(saved.profile.id),before);assert.equal(f.audit().length,1);
+});

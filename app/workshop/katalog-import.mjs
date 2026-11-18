@@ -43,6 +43,8 @@ export async function ensureFontSet(katalog,fontSet,{fontLibrary=null,profiles=n
  }
  profiles.registerFonts(fontLibrary.list());
  if(prepareOnly)return {items,missing,imported,available:fontSet.fonts.filter(n=>!missing.some(m=>m.startsWith(n+' ')))};
+ const current=profiles.catalogFontSet(fontSet.id);
+ if(missing.length&&current&&JSON.stringify(current.items)!==JSON.stringify(items))fail('Schrift-Set „'+fontSet.id+'“ konnte nicht vollständig geladen werden. Die bestehende Auswahl bleibt erhalten: '+missing.join('; '));
  const profile=profiles.syncCatalogFontSet(fontSet.id,items);
  return {profileId:profile.id,profileRevision:profile.revision,items,missing,imported,available:fontSet.fonts.filter(n=>!missing.some(m=>m.startsWith(n+' ')))};
 }

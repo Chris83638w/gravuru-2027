@@ -4,6 +4,7 @@ import {workshopResources} from './catalog.mjs';
 import {SUPPORTED_FONT_IDS} from '../platform/sources/app/shared/models/design-content.mjs';
 import {isLayeredDoorbell,selectedDoorbellProfile} from '../configurator/variant-m/doorbell-selection.mjs';
 import {isFamilyFormats,selectedFamilyProfile} from '../configurator/variant-m/family-formats.mjs';
+import {designFontSelection} from '../configurator/variant-m/profile-selection.mjs';
 const fail=message=>{throw Object.assign(Error(message),{status:422,code:'native_review_resource'});};
 export function nativeReviewConfig(config,input){
  const copy=structuredClone(config),local=copy.localResources,profile=isFamilyFormats(copy)?selectedFamilyProfile(copy,input?.options):isLayeredDoorbell(copy)?selectedDoorbellProfile(copy,input?.options):copy.profile,source=profile.designs.find(d=>d.id===input?.designId);
@@ -11,10 +12,11 @@ export function nativeReviewConfig(config,input){
  const known=new Map(source.objects.map(o=>[o.id,o])),usedMotifs=new Set(input.objects.filter(o=>o.type==='motif').map(o=>o.motif));
  const usedFonts=new Set(input.objects.filter(o=>o.type==='text').map(o=>o.font));
  const selections=copy.workshopProfiles?.selections;
+ const selectedFonts=designFontSelection(selections?.fonts,source);
  for(const o of input.objects){
   const old=known.get(o.id);
   if(o.type==='motif'&&(!old||old.motif!==o.motif)&&Array.isArray(selections?.motifs)&&!selections.motifs.includes(o.motif))fail('Dieses Motiv ist für das Produkt nicht freigegeben.');
-  if(o.type==='text'&&(!old||old.font!==o.font)&&Array.isArray(selections?.fonts)&&!selections.fonts.includes(o.font))fail('Diese Schrift ist für das Produkt nicht freigegeben.');
+  if(o.type==='text'&&(!old||old.font!==o.font)&&Array.isArray(selectedFonts)&&!selectedFonts.includes(o.font))fail('Diese Schrift ist für das Produkt nicht freigegeben.');
  }
  let library;
  const resources=()=>library??=workshopResources(local);

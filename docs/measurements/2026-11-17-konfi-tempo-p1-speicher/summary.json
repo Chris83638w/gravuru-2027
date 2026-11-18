@@ -1,0 +1,904 @@
+{
+  "notes": [
+    "Local synthetic HTTP, not mobile/Shopify elapsed time.",
+    "Measured memory samples start after warmup idle. Timer cannot sample during synchronous blocking; maxima are observed samples, not true peaks.",
+    "Idle GC runs explicitly force collection; natural runs do not.",
+    "AB1 records response/round boundaries; BA2 and candidate/natural also record a 50-ms timer."
+  ],
+  "results": [
+    {
+      "name": "before-ab-1",
+      "commit": "105e398017210596bf2cb94d2e8ef4291a3f2ad2",
+      "forcedGc": true,
+      "runtimeWorkingTree": [],
+      "profile": {
+        "kind": "local-synthetic-http",
+        "platform": "win32",
+        "cpu": "Intel(R) Core(TM) Ultra 5 235",
+        "node": "v24.22.1",
+        "runs": 6,
+        "warmupRuns": 1,
+        "parallelSessions": 1,
+        "browsingSessions": 0,
+        "network": "loopback, no throttling",
+        "shopifyMockMs": {
+          "lookup": 60,
+          "create": 100,
+          "pollWait": 25,
+          "poll": 40
+        },
+        "data": "bundled native acrylic sample, 40x60 PNG photo and WebP customer preview, temporary file-backed database",
+        "registry": "actual SQLite registry",
+        "fixture": {
+          "documentBytes": 31205209,
+          "designs": 1,
+          "objects": 9,
+          "stressItems": 8,
+          "stressObjects": 0,
+          "structure": "eight-large-strings",
+          "liveNodeDistribution": "unknown"
+        },
+        "forcedGc": true
+      },
+      "routeMediansMs": {
+        "acrylic-drafts": 2749.52,
+        "theme-cart": 1561.44,
+        "cart/data": 2311.57,
+        "cart/claim": 1768.75
+      },
+      "sequentialFourRequestsMedianMs": 8391,
+      "stepMediansMs": {
+        "review_zip": 449.93,
+        "review_json": null,
+        "review_sha256": null,
+        "review_design_validate": null,
+        "review_product_resolve": null,
+        "review_price": null,
+        "registry_document_digest": 1432.48,
+        "registry_canonical": 887.14,
+        "registry_raw_digest": 340.27
+      },
+      "measuredMemoryMiB": {
+        "rss": {
+          "min": 347.72,
+          "median": 646.42,
+          "max": 1062.96
+        },
+        "heapUsed": {
+          "min": 136.41,
+          "median": 330.93,
+          "max": 851.15
+        },
+        "external": {
+          "min": 4.46,
+          "median": 4.47,
+          "max": 183.35
+        },
+        "arrayBuffers": {
+          "min": 0.58,
+          "median": 0.58,
+          "max": 268.87
+        }
+      },
+      "idleMemoryMiB": {
+        "rss": {
+          "min": 347.72,
+          "median": 348.43,
+          "max": 350.3
+        },
+        "heapUsed": {
+          "min": 136.41,
+          "median": 136.75,
+          "max": 137.01
+        },
+        "external": {
+          "min": 4.46,
+          "median": 4.46,
+          "max": 4.46
+        },
+        "arrayBuffers": {
+          "min": 0.58,
+          "median": 0.58,
+          "max": 0.58
+        }
+      },
+      "maxDistinctSteps": 48,
+      "droppedStepCalls": null,
+      "digestHits": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "probeKinds": [
+        "http-response",
+        "round-boundary"
+      ]
+    },
+    {
+      "name": "av2-ab-1",
+      "commit": "b51e9d73cf0f9056335ee11cdf92c52041608c3d",
+      "forcedGc": true,
+      "runtimeWorkingTree": [],
+      "profile": {
+        "kind": "local-synthetic-http",
+        "platform": "win32",
+        "cpu": "Intel(R) Core(TM) Ultra 5 235",
+        "node": "v24.22.1",
+        "runs": 6,
+        "warmupRuns": 1,
+        "parallelSessions": 1,
+        "browsingSessions": 0,
+        "network": "loopback, no throttling",
+        "shopifyMockMs": {
+          "lookup": 60,
+          "create": 100,
+          "pollWait": 25,
+          "poll": 40
+        },
+        "data": "bundled native acrylic sample, 40x60 PNG photo and WebP customer preview, temporary file-backed database",
+        "registry": "actual SQLite registry",
+        "fixture": {
+          "documentBytes": 31205209,
+          "designs": 1,
+          "objects": 9,
+          "stressItems": 8,
+          "stressObjects": 0,
+          "structure": "eight-large-strings",
+          "liveNodeDistribution": "unknown"
+        },
+        "forcedGc": true
+      },
+      "routeMediansMs": {
+        "acrylic-drafts": 2583.69,
+        "theme-cart": 1109.07,
+        "cart/data": 1172.82,
+        "cart/claim": 732.65
+      },
+      "sequentialFourRequestsMedianMs": 5599.69,
+      "stepMediansMs": {
+        "review_zip": 443.17,
+        "review_json": null,
+        "review_sha256": null,
+        "review_design_validate": null,
+        "review_product_resolve": null,
+        "review_price": null,
+        "registry_document_digest": 777.11,
+        "registry_canonical": 492.15,
+        "registry_raw_digest": 185.97
+      },
+      "measuredMemoryMiB": {
+        "rss": {
+          "min": 347.77,
+          "median": 648.83,
+          "max": 1008.87
+        },
+        "heapUsed": {
+          "min": 136.48,
+          "median": 256.71,
+          "max": 614.42
+        },
+        "external": {
+          "min": 4.46,
+          "median": 183.27,
+          "max": 183.35
+        },
+        "arrayBuffers": {
+          "min": 0.58,
+          "median": 60.19,
+          "max": 268.87
+        }
+      },
+      "idleMemoryMiB": {
+        "rss": {
+          "min": 347.77,
+          "median": 350.65,
+          "max": 355.31
+        },
+        "heapUsed": {
+          "min": 136.48,
+          "median": 136.85,
+          "max": 137.15
+        },
+        "external": {
+          "min": 4.46,
+          "median": 4.46,
+          "max": 4.46
+        },
+        "arrayBuffers": {
+          "min": 0.58,
+          "median": 0.58,
+          "max": 0.58
+        }
+      },
+      "maxDistinctSteps": 49,
+      "droppedStepCalls": 0,
+      "digestHits": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "probeKinds": [
+        "http-response",
+        "round-boundary"
+      ]
+    },
+    {
+      "name": "av2-ba-2",
+      "commit": "b51e9d73cf0f9056335ee11cdf92c52041608c3d",
+      "forcedGc": true,
+      "runtimeWorkingTree": [],
+      "profile": {
+        "kind": "local-synthetic-http",
+        "platform": "win32",
+        "cpu": "Intel(R) Core(TM) Ultra 5 235",
+        "node": "v24.22.1",
+        "runs": 6,
+        "warmupRuns": 1,
+        "parallelSessions": 1,
+        "browsingSessions": 0,
+        "network": "loopback, no throttling",
+        "shopifyMockMs": {
+          "lookup": 60,
+          "create": 100,
+          "pollWait": 25,
+          "poll": 40
+        },
+        "data": "bundled native acrylic sample, 40x60 PNG photo and WebP customer preview, temporary file-backed database",
+        "registry": "actual SQLite registry",
+        "fixture": {
+          "documentBytes": 31205209,
+          "designs": 1,
+          "objects": 9,
+          "stressItems": 8,
+          "stressObjects": 0,
+          "structure": "eight-large-strings",
+          "liveNodeDistribution": "unknown"
+        },
+        "forcedGc": true
+      },
+      "routeMediansMs": {
+        "acrylic-drafts": 2560.71,
+        "theme-cart": 1078.78,
+        "cart/data": 1173.62,
+        "cart/claim": 709.01
+      },
+      "sequentialFourRequestsMedianMs": 5525.51,
+      "stepMediansMs": {
+        "review_zip": 445.86,
+        "review_json": null,
+        "review_sha256": null,
+        "review_design_validate": null,
+        "review_product_resolve": null,
+        "review_price": null,
+        "registry_document_digest": 771.09,
+        "registry_canonical": 490.8,
+        "registry_raw_digest": 183.2
+      },
+      "measuredMemoryMiB": {
+        "rss": {
+          "min": 348.72,
+          "median": 559.64,
+          "max": 1179.43
+        },
+        "heapUsed": {
+          "min": 136.51,
+          "median": 286.09,
+          "max": 937.62
+        },
+        "external": {
+          "min": 4.46,
+          "median": 64.07,
+          "max": 302.49
+        },
+        "arrayBuffers": {
+          "min": 0.58,
+          "median": 60.18,
+          "max": 268.87
+        }
+      },
+      "idleMemoryMiB": {
+        "rss": {
+          "min": 348.82,
+          "median": 350.63,
+          "max": 353.52
+        },
+        "heapUsed": {
+          "min": 136.51,
+          "median": 136.9,
+          "max": 137.2
+        },
+        "external": {
+          "min": 4.46,
+          "median": 4.46,
+          "max": 4.46
+        },
+        "arrayBuffers": {
+          "min": 0.58,
+          "median": 0.58,
+          "max": 0.58
+        }
+      },
+      "maxDistinctSteps": 49,
+      "droppedStepCalls": 0,
+      "digestHits": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "probeKinds": [
+        "timer",
+        "http-response",
+        "round-boundary"
+      ]
+    },
+    {
+      "name": "before-ba-2",
+      "commit": "105e398017210596bf2cb94d2e8ef4291a3f2ad2",
+      "forcedGc": true,
+      "runtimeWorkingTree": [],
+      "profile": {
+        "kind": "local-synthetic-http",
+        "platform": "win32",
+        "cpu": "Intel(R) Core(TM) Ultra 5 235",
+        "node": "v24.22.1",
+        "runs": 6,
+        "warmupRuns": 1,
+        "parallelSessions": 1,
+        "browsingSessions": 0,
+        "network": "loopback, no throttling",
+        "shopifyMockMs": {
+          "lookup": 60,
+          "create": 100,
+          "pollWait": 25,
+          "poll": 40
+        },
+        "data": "bundled native acrylic sample, 40x60 PNG photo and WebP customer preview, temporary file-backed database",
+        "registry": "actual SQLite registry",
+        "fixture": {
+          "documentBytes": 31205209,
+          "designs": 1,
+          "objects": 9,
+          "stressItems": 8,
+          "stressObjects": 0,
+          "structure": "eight-large-strings",
+          "liveNodeDistribution": "unknown"
+        },
+        "forcedGc": true
+      },
+      "routeMediansMs": {
+        "acrylic-drafts": 2735.84,
+        "theme-cart": 1541.66,
+        "cart/data": 2294.39,
+        "cart/claim": 1742.24
+      },
+      "sequentialFourRequestsMedianMs": 8317.87,
+      "stepMediansMs": {
+        "review_zip": 441.21,
+        "review_json": null,
+        "review_sha256": null,
+        "review_design_validate": null,
+        "review_product_resolve": null,
+        "review_price": null,
+        "registry_document_digest": 1422.22,
+        "registry_canonical": 881.96,
+        "registry_raw_digest": 337.69
+      },
+      "measuredMemoryMiB": {
+        "rss": {
+          "min": 349.18,
+          "median": 587.94,
+          "max": 975.15
+        },
+        "heapUsed": {
+          "min": 136.45,
+          "median": 286.08,
+          "max": 762.15
+        },
+        "external": {
+          "min": 4.46,
+          "median": 93.86,
+          "max": 242.88
+        },
+        "arrayBuffers": {
+          "min": 0.58,
+          "median": 89.98,
+          "max": 268.87
+        }
+      },
+      "idleMemoryMiB": {
+        "rss": {
+          "min": 349.2,
+          "median": 350.62,
+          "max": 351.09
+        },
+        "heapUsed": {
+          "min": 136.45,
+          "median": 136.81,
+          "max": 137.1
+        },
+        "external": {
+          "min": 4.46,
+          "median": 4.46,
+          "max": 4.46
+        },
+        "arrayBuffers": {
+          "min": 0.58,
+          "median": 0.58,
+          "max": 0.58
+        }
+      },
+      "maxDistinctSteps": 48,
+      "droppedStepCalls": null,
+      "digestHits": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "probeKinds": [
+        "timer",
+        "http-response",
+        "round-boundary"
+      ]
+    },
+    {
+      "name": "candidate-gc",
+      "commit": "05baae95f6895b6d2db6a880718ccb8634eb339b",
+      "forcedGc": true,
+      "runtimeWorkingTree": [],
+      "profile": {
+        "kind": "local-synthetic-http",
+        "platform": "win32",
+        "cpu": "Intel(R) Core(TM) Ultra 5 235",
+        "node": "v24.22.1",
+        "runs": 6,
+        "warmupRuns": 1,
+        "parallelSessions": 1,
+        "browsingSessions": 0,
+        "network": "loopback, no throttling",
+        "shopifyMockMs": {
+          "lookup": 60,
+          "create": 100,
+          "pollWait": 25,
+          "poll": 40
+        },
+        "data": "bundled native acrylic sample, 40x60 PNG photo and WebP customer preview, temporary file-backed database",
+        "registry": "actual SQLite registry",
+        "fixture": {
+          "documentBytes": 31205209,
+          "designs": 1,
+          "objects": 9,
+          "stressItems": 8,
+          "stressObjects": 0,
+          "structure": "eight-large-strings",
+          "liveNodeDistribution": "unknown"
+        },
+        "forcedGc": true
+      },
+      "routeMediansMs": {
+        "acrylic-drafts": 2056.45,
+        "theme-cart": 890.76,
+        "cart/data": 993.65,
+        "cart/claim": 633.37
+      },
+      "sequentialFourRequestsMedianMs": 4584.33,
+      "stepMediansMs": {
+        "review_zip": 27.68,
+        "review_json": 234.53,
+        "review_sha256": 46.41,
+        "review_design_validate": 97.15,
+        "review_product_resolve": 83.47,
+        "review_price": 0.33,
+        "registry_document_digest": 188.46,
+        "registry_canonical": null,
+        "registry_raw_digest": 376.46
+      },
+      "measuredMemoryMiB": {
+        "rss": {
+          "min": 261.64,
+          "median": 475.84,
+          "max": 776.68
+        },
+        "heapUsed": {
+          "min": 136.56,
+          "median": 286.17,
+          "max": 554.78
+        },
+        "external": {
+          "min": 4.46,
+          "median": 93.86,
+          "max": 302.49
+        },
+        "arrayBuffers": {
+          "min": 0.58,
+          "median": 60.18,
+          "max": 119.86
+        }
+      },
+      "idleMemoryMiB": {
+        "rss": {
+          "min": 261.65,
+          "median": 265.27,
+          "max": 275.34
+        },
+        "heapUsed": {
+          "min": 136.56,
+          "median": 136.95,
+          "max": 137.22
+        },
+        "external": {
+          "min": 4.46,
+          "median": 4.46,
+          "max": 4.46
+        },
+        "arrayBuffers": {
+          "min": 0.58,
+          "median": 0.58,
+          "max": 0.58
+        }
+      },
+      "maxDistinctSteps": 47,
+      "droppedStepCalls": 0,
+      "digestHits": [
+        6,
+        6,
+        6,
+        6,
+        6,
+        6
+      ],
+      "probeKinds": [
+        "timer",
+        "http-response",
+        "round-boundary"
+      ]
+    },
+    {
+      "name": "av2-natural",
+      "commit": "b51e9d73cf0f9056335ee11cdf92c52041608c3d",
+      "forcedGc": false,
+      "runtimeWorkingTree": [],
+      "profile": {
+        "kind": "local-synthetic-http",
+        "platform": "win32",
+        "cpu": "Intel(R) Core(TM) Ultra 5 235",
+        "node": "v24.22.1",
+        "runs": 6,
+        "warmupRuns": 1,
+        "parallelSessions": 1,
+        "browsingSessions": 0,
+        "network": "loopback, no throttling",
+        "shopifyMockMs": {
+          "lookup": 60,
+          "create": 100,
+          "pollWait": 25,
+          "poll": 40
+        },
+        "data": "bundled native acrylic sample, 40x60 PNG photo and WebP customer preview, temporary file-backed database",
+        "registry": "actual SQLite registry",
+        "fixture": {
+          "documentBytes": 31205209,
+          "designs": 1,
+          "objects": 9,
+          "stressItems": 8,
+          "stressObjects": 0,
+          "structure": "eight-large-strings",
+          "liveNodeDistribution": "unknown"
+        },
+        "forcedGc": false
+      },
+      "routeMediansMs": {
+        "acrylic-drafts": 2580.57,
+        "theme-cart": 1102.05,
+        "cart/data": 1191.78,
+        "cart/claim": 726.06
+      },
+      "sequentialFourRequestsMedianMs": 5600.02,
+      "stepMediansMs": {
+        "review_zip": 443.17,
+        "review_json": null,
+        "review_sha256": null,
+        "review_design_validate": null,
+        "review_product_resolve": null,
+        "review_price": null,
+        "registry_document_digest": 792.25,
+        "registry_canonical": 488.07,
+        "registry_raw_digest": 186.43
+      },
+      "measuredMemoryMiB": {
+        "rss": {
+          "min": 495.73,
+          "median": 587.06,
+          "max": 1063.53
+        },
+        "heapUsed": {
+          "min": 166.26,
+          "median": 286.21,
+          "max": 822.92
+        },
+        "external": {
+          "min": 4.46,
+          "median": 123.67,
+          "max": 302.49
+        },
+        "arrayBuffers": {
+          "min": 0.58,
+          "median": 60.19,
+          "max": 268.87
+        }
+      },
+      "idleMemoryMiB": {
+        "rss": {
+          "min": 644.25,
+          "median": 647.09,
+          "max": 651.4
+        },
+        "heapUsed": {
+          "min": 256.23,
+          "median": 256.64,
+          "max": 256.94
+        },
+        "external": {
+          "min": 183.27,
+          "median": 183.27,
+          "max": 183.27
+        },
+        "arrayBuffers": {
+          "min": 60.19,
+          "median": 60.19,
+          "max": 60.19
+        }
+      },
+      "maxDistinctSteps": 49,
+      "droppedStepCalls": 0,
+      "digestHits": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "probeKinds": [
+        "timer",
+        "http-response",
+        "round-boundary"
+      ]
+    },
+    {
+      "name": "candidate-natural",
+      "commit": "05baae95f6895b6d2db6a880718ccb8634eb339b",
+      "forcedGc": false,
+      "runtimeWorkingTree": [],
+      "profile": {
+        "kind": "local-synthetic-http",
+        "platform": "win32",
+        "cpu": "Intel(R) Core(TM) Ultra 5 235",
+        "node": "v24.22.1",
+        "runs": 6,
+        "warmupRuns": 1,
+        "parallelSessions": 1,
+        "browsingSessions": 0,
+        "network": "loopback, no throttling",
+        "shopifyMockMs": {
+          "lookup": 60,
+          "create": 100,
+          "pollWait": 25,
+          "poll": 40
+        },
+        "data": "bundled native acrylic sample, 40x60 PNG photo and WebP customer preview, temporary file-backed database",
+        "registry": "actual SQLite registry",
+        "fixture": {
+          "documentBytes": 31205209,
+          "designs": 1,
+          "objects": 9,
+          "stressItems": 8,
+          "stressObjects": 0,
+          "structure": "eight-large-strings",
+          "liveNodeDistribution": "unknown"
+        },
+        "forcedGc": false
+      },
+      "routeMediansMs": {
+        "acrylic-drafts": 2044.77,
+        "theme-cart": 888.85,
+        "cart/data": 983.36,
+        "cart/claim": 630.58
+      },
+      "sequentialFourRequestsMedianMs": 4553.42,
+      "stepMediansMs": {
+        "review_zip": 26.98,
+        "review_json": 238.06,
+        "review_sha256": 45.28,
+        "review_design_validate": 88.7,
+        "review_product_resolve": 81.75,
+        "review_price": 0.33,
+        "registry_document_digest": 186.28,
+        "registry_canonical": null,
+        "registry_raw_digest": 373.04
+      },
+      "measuredMemoryMiB": {
+        "rss": {
+          "min": 377.21,
+          "median": 554.9,
+          "max": 845.39
+        },
+        "heapUsed": {
+          "min": 166.23,
+          "median": 286.2,
+          "max": 610.12
+        },
+        "external": {
+          "min": 4.46,
+          "median": 123.67,
+          "max": 302.49
+        },
+        "arrayBuffers": {
+          "min": 0.58,
+          "median": 60.19,
+          "max": 149.59
+        }
+      },
+      "idleMemoryMiB": {
+        "rss": {
+          "min": 555.17,
+          "median": 558.29,
+          "max": 567.73
+        },
+        "heapUsed": {
+          "min": 256.33,
+          "median": 256.65,
+          "max": 257.04
+        },
+        "external": {
+          "min": 183.27,
+          "median": 183.27,
+          "max": 183.27
+        },
+        "arrayBuffers": {
+          "min": 60.19,
+          "median": 60.19,
+          "max": 60.19
+        }
+      },
+      "maxDistinctSteps": 47,
+      "droppedStepCalls": 0,
+      "digestHits": [
+        6,
+        6,
+        6,
+        6,
+        6,
+        6
+      ],
+      "probeKinds": [
+        "timer",
+        "http-response",
+        "round-boundary"
+      ]
+    },
+    {
+      "name": "server-final-natural",
+      "commit": "1c6b6dfcb480b2102b582ee2e1efd603c6a03f1a",
+      "forcedGc": false,
+      "runtimeWorkingTree": [],
+      "profile": {
+        "kind": "local-synthetic-http",
+        "platform": "win32",
+        "cpu": "Intel(R) Core(TM) Ultra 5 235",
+        "node": "v24.22.1",
+        "runs": 6,
+        "warmupRuns": 1,
+        "parallelSessions": 1,
+        "browsingSessions": 0,
+        "network": "loopback, no throttling",
+        "shopifyMockMs": {
+          "lookup": 60,
+          "create": 100,
+          "pollWait": 25,
+          "poll": 40
+        },
+        "data": "bundled native acrylic sample, 40x60 PNG photo and WebP customer preview, temporary file-backed database",
+        "registry": "actual SQLite registry",
+        "fixture": {
+          "documentBytes": 31205209,
+          "designs": 1,
+          "objects": 9,
+          "stressItems": 8,
+          "stressObjects": 0,
+          "structure": "eight-large-strings",
+          "liveNodeDistribution": "unknown"
+        },
+        "forcedGc": false
+      },
+      "routeMediansMs": {
+        "acrylic-drafts": 2029.63,
+        "theme-cart": 884.2,
+        "cart/data": 982.44,
+        "cart/claim": 623.55
+      },
+      "sequentialFourRequestsMedianMs": 4516.45,
+      "stepMediansMs": {
+        "review_zip": 27.06,
+        "review_json": 240.82,
+        "review_sha256": 45.81,
+        "review_design_validate": 88.09,
+        "review_product_resolve": 80.9,
+        "review_price": 0.33,
+        "registry_document_digest": 184.95,
+        "registry_canonical": null,
+        "registry_raw_digest": 369.36
+      },
+      "measuredMemoryMiB": {
+        "rss": {
+          "min": 405.14,
+          "median": 495.19,
+          "max": 816.8
+        },
+        "heapUsed": {
+          "min": 166.25,
+          "median": 286.27,
+          "max": 609.41
+        },
+        "external": {
+          "min": 64.06,
+          "median": 123.67,
+          "max": 302.49
+        },
+        "arrayBuffers": {
+          "min": 60.15,
+          "median": 60.19,
+          "max": 119.86
+        }
+      },
+      "idleMemoryMiB": {
+        "rss": {
+          "min": 555.36,
+          "median": 560.51,
+          "max": 566.75
+        },
+        "heapUsed": {
+          "min": 256.31,
+          "median": 256.77,
+          "max": 257.09
+        },
+        "external": {
+          "min": 183.27,
+          "median": 183.27,
+          "max": 183.27
+        },
+        "arrayBuffers": {
+          "min": 60.19,
+          "median": 60.19,
+          "max": 60.19
+        }
+      },
+      "maxDistinctSteps": 47,
+      "droppedStepCalls": 0,
+      "digestHits": [
+        6,
+        6,
+        6,
+        6,
+        6,
+        6
+      ],
+      "probeKinds": [
+        "timer",
+        "http-response",
+        "round-boundary"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1971 @@
+{
+ "schema": "gravuru-konfi-tempo-messbeleg/1",
+ "titel": "P1 Teil A + V2 – bereinigter Rohbeleg der Live-Messung vom 17.11.2026 (Messfenster mit Rueckstellung)",
+ "erstelltVon": "Claude (Pruefer/Operator), aus vorhandenen Messdateien und einem lesenden Auszug des Zeitprotokolls",
+ "bezug": {
+  "issue": 254,
+  "pr": 255,
+  "messkandidat": "b51e9d73cf0f9056335ee11cdf92c52041608c3d",
+  "messBranch": "dev/astra-konfi-p1-server-pruefstand-20261117",
+  "liveStandVorherUndNachher": "9af3a1ac",
+  "vergleich": "docs/measurements/2026-11-17-konfi-tempo-p1-1b/live-sanitized.json"
+ },
+ "testprodukt": "familienschild-acryl-baum-12x8-personalisiert (oeffentliches Produkt, eigener Testtext, keine Bestellung)",
+ "ablaufUtc": [
+  {
+   "at": "17:05:07",
+   "schritt": "kandidat-b51e9d73-20261117 eingerichtet: 1899 Dateien, 24 aus dem Paket, 1875 aus dem aktiven Ordner, ruecklesenGleich true, fremdeDateien leer",
+   "baumSha256": "84effaea808ccabc4339b7c245d777e13ba0ce66d922863252f359f6bdc7b2d7",
+   "paketSha256": "932fc5545bf1506cbe991d821dc12515508b3bbbca5651b48a780a30e3a0eaa4"
+  },
+  {
+   "at": "17:05:27",
+   "schritt": "stderr.log gelesen",
+   "logBytes": 215141
+  },
+  {
+   "at": "17:05:50",
+   "schritt": "umgeschaltet, kontrolleGleich true, danach Neustart",
+   "appCjsSha256Vorher16": "d02d874a6700371a",
+   "appCjsSha256Nachher16": "08af2b39a15c007c"
+  },
+  {
+   "at": "17:06:31-17:09:24",
+   "schritt": "drei Durchlaeufe c1-c3"
+  },
+  {
+   "at": "17:09:38",
+   "schritt": "Protokoll gelesen: 15 Ereignisse, 15 GC-Nachlieferungen, 0 unlesbar",
+   "logBytes": 317838,
+   "bytesDieserEreignisse": 101813
+  },
+  {
+   "at": "17:10:17",
+   "schritt": "zurueckgestellt, kontrolleGleich true, danach Neustart",
+   "appCjsSha256": "d02d874a6700371ae8c2b49a0a11c6ed93863ed69d84d6ff0eb46bc082d7bb29"
+  },
+  {
+   "at": "17:10:47-17:11:53",
+   "schritt": "Kontrolllauf z2 auf 9af3a1ac, Ereignisse Version 1"
+  },
+  {
+   "at": "17:14:53",
+   "schritt": "Protokoll erneut gelesen (dieser Beleg): 20 Ereignisse, 15 GC-Nachlieferungen, 0 unlesbar",
+   "logBytes": 324090,
+   "bytesDieserEreignisse": 107572
+  }
+ ],
+ "grenzen": [
+  "Kurzauszug des Lese-Skripts lies-kurz.cjs, nicht die vollstaendigen Original-Ereignisse: traceId auf 8 Zeichen gekuerzt, Zeit ohne Datum, Speicher in MiB gerundet, nur die unter format genannten Schritte und Zaehler. Die Originale stehen unveraendert in stderr.log.",
+  "Die shop_cart_gc-Nachlieferungen liegen nicht als eigene Zeilen vor; das Skript hat sie per traceId zugeordnet und count und pauseMs in das Feld gc uebernommen. Version-1-Ereignisse der Kontrolle haben keine GC-, CPU- und Speicherwerte.",
+  "laenge und sha256 gehoeren zur kompakten Zeile des Skripts; JSON.stringify(e) ergibt genau diese Zeile. Alle 20 Zeilen wurden gegen die Serverausgabe geprueft (Laenge und SHA-256-Praefix).",
+  "Nichts rekonstruiert oder geschaetzt. Nur Diagnosewerte, feste Bezeichner und traceId-Praefixe; keine URLs mit Tokens, keine Kundentexte, keine Konfigurationen, keine privaten IDs. Shopify-eigene Server-Timing-Kopfzeilen sind weggelassen.",
+  "Ein Produkt, drei Durchlaeufe, kein gleichzeitiger zweiter Kunde. Vergleichswerte stammen aus dem 1b-Fenster rund 2,5 Stunden frueher. CPU-, Speicher- und Ressourcenwerte gelten prozessweit.",
+  "Der Kandidat lief ohne die zur Laufzeit erzeugten Vorschau-Zwischendateien des aktiven Ordners; der kalte Editorstart in c1 lag vor dem letzten Klick. Indirekte Cache-Effekte auf die Warenkorbzeit sind damit nicht nachgewiesen ausgeschlossen."
+ ],
+ "lesehilfe": [
+  "product_document_bytes und registry_document_bytes sind summierte zurueckgegebene Dokumentbytes instrumentierter Lesungen, kein gemessener Plattenverkehr.",
+  "Die Dauer des Bildauftrags (checkout-image) enthaelt eigenes Polling in festen Abstaenden und Zeit, in der der Prozess durch andere Handler blockiert war; sie ist keine exklusiv von Shopify verursachte Dauer.",
+  "Summen aus Browser-Anfragedauern sind keine reine Serverzeit; Schrittzeiten sind verschachtelt und nicht addierbar."
+ ],
+ "format": {
+  "e": "at=Uhrzeit UTC, v=Version, id=traceId (8 Zeichen), p=Eltern-traceId, r=Route, st=HTTP-Status, t=totalMs, n=Anzahl Schritte, drop=droppedStepCalls",
+  "el": "eventLoop.duringHandler maxMs",
+  "cpu": "[userMs, systemMs] prozessweit",
+  "mem": "[rss vorher, rss nachher, heapUsed vorher, heapUsed nachher] in MiB",
+  "gc": "[Anzahl, Pausen-ms]",
+  "fs": "[fsRead, fsWrite, majorPageFault] Differenz",
+  "s": "ausgewaehlte Schritte: [durationMs, calls]",
+  "z": "ausgewaehlte Zaehler"
+ },
+ "laeufe": [
+  {
+   "lauf": 1,
+   "stand": "b51e9d73 (Teil A + V2, Zeitprotokoll Version 2)",
+   "browser": {
+    "profil": {
+     "viewport": "390x844",
+     "cpuDrosselung": 4,
+     "netzDrosselung": false,
+     "handy": true
+    },
+    "marken": {
+     "seite-geladen": 9051,
+     "klick-personalisieren": 12118,
+     "konfi-bedienbar": 28320,
+     "warenkorb-klick": 31364,
+     "warenkorb-final-klick": 44963,
+     "warenkorb-fertig": 63642
+    },
+    "klickBisWarenkorbSeiteGeladenMs": 18679,
+    "klickBisCartAddMs": 15793,
+    "klickBisNavigationMs": 16729,
+    "konfiBedienbarMs": 16202,
+    "warenkorbPruefung": {
+     "positionen": 1,
+     "menge": 1,
+     "zeilenpreisCent": 1499,
+     "summeCent": 1499,
+     "bildVonShopifyCdn": true,
+     "bildGeladen": true,
+     "anzahlEigenschaften": 14
+    },
+    "kette": [
+     {
+      "schritt": "acrylic-drafts",
+      "methode": "POST",
+      "status": 201,
+      "startMs": 45997,
+      "ttfbMs": 5210,
+      "dauerMs": 5232,
+      "serverTimingMs": {
+       "total": 4350.34,
+       "session_binding": 219.95,
+       "body_read": 0.61,
+       "body_json": 0.84,
+       "product_read": 301.1,
+       "model_build": 129.05,
+       "review_prepare": 3127.1,
+       "review_config": 115.22,
+       "review_validate": 1336.06,
+       "review_sources": 8.82,
+       "customer_preview": 391.27,
+       "reference_preview": 134.18,
+       "review_zip": 699.04,
+       "originals_zip": 0.42,
+       "draft_persist": 547.35,
+       "response_json": 0.03
+      },
+      "traceIdPraefix": "b90b1590"
+     },
+     {
+      "schritt": "theme-cart",
+      "methode": "POST",
+      "status": 200,
+      "startMs": 51251,
+      "ttfbMs": 1900,
+      "dauerMs": 1911,
+      "serverTimingMs": {
+       "total": 1769.49,
+       "session_binding": 186.79,
+       "body_read": 0.21,
+       "body_json": 0.02,
+       "draft_read": 0.15,
+       "review_read": 12.15,
+       "variant_candidates": 140.94,
+       "variant_binding": 921.43,
+       "cart_prepare": 309.39,
+       "bound_offer": 48.61,
+       "offer_resolve": 29.61,
+       "offer_create": 18.55,
+       "review_package": 137.52,
+       "cart_assign": 2.37,
+       "customer_image_url": 0.22,
+       "response_json": 0.02
+      },
+      "traceIdPraefix": "4dbe4f3b"
+     },
+     {
+      "schritt": "cart/data",
+      "methode": "GET",
+      "status": 200,
+      "startMs": 53188,
+      "ttfbMs": 5112,
+      "dauerMs": 5121,
+      "serverTimingMs": {
+       "total": 4845.09,
+       "proxy_verify": 0.43,
+       "session_binding": 355.65,
+       "cart_prepare": 887.87,
+       "bound_offer": 697.8,
+       "offer_resolve": 674.56,
+       "offer_create": 23.03,
+       "review_package": 110.57,
+       "cart_assign": 0.31,
+       "customer_image_url": 0.11,
+       "checkout_image_wait": 2767.6,
+       "cart_revalidate": 832.35,
+       "response_json": 0.07
+      },
+      "traceIdPraefix": "929153e7"
+     },
+     {
+      "schritt": "cart/claim",
+      "methode": "POST",
+      "status": 200,
+      "startMs": 58485,
+      "ttfbMs": 1402,
+      "dauerMs": 1407,
+      "serverTimingMs": {
+       "total": 1103.18,
+       "proxy_verify": 0.29,
+       "session_binding": 159.09,
+       "cart_prepare": 917.15,
+       "bound_offer": 701.97,
+       "offer_resolve": 678.48,
+       "offer_create": 23.28,
+       "review_package": 122.02,
+       "cart_assign": 0.27,
+       "customer_image_url": 0.09,
+       "cart_claim": 25.94,
+       "response_json": 0.01
+      },
+      "traceIdPraefix": "81219319"
+     },
+     {
+      "schritt": "shopify:cart/add.js",
+      "methode": "POST",
+      "status": 200,
+      "startMs": 59922,
+      "ttfbMs": 822,
+      "dauerMs": 834
+     },
+     {
+      "schritt": "shopify:cart-seite",
+      "methode": "GET",
+      "status": 200,
+      "startMs": 60957,
+      "ttfbMs": 470,
+      "dauerMs": 498
+     }
+    ]
+   },
+   "serverEreignisse": [
+    {
+     "laenge": 482,
+     "sha256": "b3f0a56ac95d45941d7e86351f406bf2268049264817062fb7194eca1dc26107",
+     "e": {
+      "at": "17:07:20.250",
+      "v": 2,
+      "id": "b90b1590",
+      "r": "acrylic-drafts",
+      "st": 201,
+      "t": 4350.34,
+      "n": 25,
+      "drop": 0,
+      "el": 2493.51,
+      "cpu": [
+       6525.68,
+       952.93
+      ],
+      "mem": [
+       1775,
+       1737,
+       1450,
+       738
+      ],
+      "gc": [
+       40,
+       314.49
+      ],
+      "fs": [
+       0,
+       147760,
+       0
+      ],
+      "s": {
+       "product_revision_read": [
+        170.44,
+        2
+       ],
+       "product_document_json": [
+        208.88,
+        2
+       ],
+       "customer_read_freeze": [
+        96.89,
+        3
+       ],
+       "review_prepare": [
+        3127.1,
+        1
+       ],
+       "review_validate": [
+        1336.06,
+        1
+       ],
+       "draft_persist": [
+        547.35,
+        1
+       ]
+      },
+      "z": {
+       "product_document_bytes": 62410366,
+       "customer_read_hit": 2,
+       "checkout_image_started": 1
+      }
+     }
+    },
+    {
+     "laenge": 648,
+     "sha256": "ba4529836ff6bd76c7cc4aa02a4024fc245c7ff7376370f3f6952255c63da62d",
+     "e": {
+      "at": "17:07:24.781",
+      "v": 2,
+      "id": "4dbe4f3b",
+      "r": "theme-cart",
+      "st": 200,
+      "t": 1769.49,
+      "n": 48,
+      "drop": 0,
+      "el": 1764.75,
+      "cpu": [
+       2654.05,
+       688.65
+      ],
+      "mem": [
+       1740,
+       2228,
+       739,
+       1271
+      ],
+      "gc": [
+       7,
+       118.54
+      ],
+      "fs": [
+       0,
+       160,
+       0
+      ],
+      "s": {
+       "product_revision_read": [
+        208.28,
+        2
+       ],
+       "product_document_json": [
+        74.48,
+        2
+       ],
+       "registry_product_read": [
+        178.36,
+        2
+       ],
+       "registry_document_digest": [
+        572.41,
+        1
+       ],
+       "registry_canonical": [
+        445.11,
+        1
+       ],
+       "customer_read_freeze": [
+        39.41,
+        4
+       ],
+       "cart_prepare": [
+        309.39,
+        1
+       ],
+       "offer_resolve": [
+        29.61,
+        1
+       ]
+      },
+      "z": {
+       "product_document_bytes": 62410366,
+       "registry_document_bytes": 62410366,
+       "review_package_bytes": 37393764,
+       "customer_read_hit": 4,
+       "checkout_image_pending": 1,
+       "binding_candidates_examined": 33882
+      }
+     }
+    },
+    {
+     "laenge": 337,
+     "sha256": "c80da1afc0a229769da125cce6be74e92656bc72a18295f685cd5c89ecc4874b",
+     "e": {
+      "at": "17:07:24.579",
+      "v": 2,
+      "id": "2146c826",
+      "p": "b90b1590",
+      "r": "checkout-image",
+      "st": 200,
+      "t": 6084.63,
+      "n": 5,
+      "drop": 0,
+      "el": 1765.8,
+      "cpu": [
+       6559.1,
+       1594.73
+      ],
+      "mem": [
+       1839,
+       1629,
+       760,
+       672
+      ],
+      "gc": [
+       19,
+       328.91
+      ],
+      "fs": [
+       0,
+       200,
+       0
+      ],
+      "s": {
+       "shopify_lookup": [
+        1340.12,
+        1
+       ],
+       "shopify_create": [
+        160.96,
+        1
+       ],
+       "shopify_poll_wait": [
+        2250.36,
+        3
+       ],
+       "access_token": [
+        1979.76,
+        5
+       ]
+      },
+      "z": {}
+     }
+    },
+    {
+     "laenge": 675,
+     "sha256": "8310759a267ad2043dec775e3cab99584f2a0838a7de217210c7d5a2218cc192",
+     "e": {
+      "at": "17:07:26.838",
+      "v": 2,
+      "id": "929153e7",
+      "r": "cart/data",
+      "st": 200,
+      "t": 4845.09,
+      "n": 46,
+      "drop": 0,
+      "el": 1047.53,
+      "cpu": [
+       4837.74,
+       1202.81
+      ],
+      "mem": [
+       1693,
+       1897,
+       707,
+       1038
+      ],
+      "gc": [
+       15,
+       200.47
+      ],
+      "fs": [
+       0,
+       0,
+       0
+      ],
+      "s": {
+       "product_revision_read": [
+        173.45,
+        2
+       ],
+       "product_document_json": [
+        75.22,
+        2
+       ],
+       "registry_product_read": [
+        307.05,
+        4
+       ],
+       "registry_document_digest": [
+        786.73,
+        2
+       ],
+       "registry_canonical": [
+        607.04,
+        2
+       ],
+       "customer_read_freeze": [
+        35.97,
+        6
+       ],
+       "cart_prepare": [
+        887.87,
+        1
+       ],
+       "cart_revalidate": [
+        832.35,
+        1
+       ],
+       "checkout_image_wait": [
+        2767.6,
+        1
+       ],
+       "offer_resolve": [
+        674.56,
+        1
+       ]
+      },
+      "z": {
+       "product_document_bytes": 62410366,
+       "registry_document_bytes": 124820732,
+       "review_package_bytes": 37393764,
+       "customer_read_hit": 5,
+       "checkout_image_pending": 1
+      }
+     }
+    },
+    {
+     "laenge": 612,
+     "sha256": "911c8062c58575b25210cef7e0dc62597a4cc2b72071e012b3f02da973c67d57",
+     "e": {
+      "at": "17:07:32.171",
+      "v": 2,
+      "id": "81219319",
+      "r": "cart/claim",
+      "st": 200,
+      "t": 1103.18,
+      "n": 49,
+      "drop": 0,
+      "el": 1087.37,
+      "cpu": [
+       1224.62,
+       499.64
+      ],
+      "mem": [
+       1897,
+       2309,
+       1038,
+       1405
+      ],
+      "gc": [
+       5,
+       54.52
+      ],
+      "fs": [
+       0,
+       24,
+       0
+      ],
+      "s": {
+       "product_revision_read": [
+        84.98,
+        1
+       ],
+       "product_document_json": [
+        32.2,
+        1
+       ],
+       "registry_product_read": [
+        118.65,
+        2
+       ],
+       "registry_document_digest": [
+        378.79,
+        1
+       ],
+       "registry_canonical": [
+        247.43,
+        1
+       ],
+       "customer_read_freeze": [
+        13.75,
+        3
+       ],
+       "cart_prepare": [
+        917.15,
+        1
+       ],
+       "claim_revalidate": [
+        22.53,
+        1
+       ],
+       "offer_resolve": [
+        678.48,
+        1
+       ]
+      },
+      "z": {
+       "product_document_bytes": 31205183,
+       "registry_document_bytes": 62410366,
+       "review_package_bytes": 37393764,
+       "customer_read_hit": 7
+      }
+     }
+    }
+   ]
+  },
+  {
+   "lauf": 2,
+   "stand": "b51e9d73 (Teil A + V2, Zeitprotokoll Version 2)",
+   "browser": {
+    "profil": {
+     "viewport": "390x844",
+     "cpuDrosselung": 4,
+     "netzDrosselung": false,
+     "handy": true
+    },
+    "marken": {
+     "seite-geladen": 4128,
+     "klick-personalisieren": 7156,
+     "konfi-bedienbar": 14751,
+     "warenkorb-klick": 17827,
+     "warenkorb-final-klick": 31111,
+     "warenkorb-fertig": 49081
+    },
+    "klickBisWarenkorbSeiteGeladenMs": 17970,
+    "klickBisCartAddMs": 15436,
+    "klickBisNavigationMs": 16194,
+    "konfiBedienbarMs": 7595,
+    "warenkorbPruefung": {
+     "positionen": 1,
+     "menge": 1,
+     "zeilenpreisCent": 1499,
+     "summeCent": 1499,
+     "bildVonShopifyCdn": true,
+     "bildGeladen": true,
+     "anzahlEigenschaften": 14
+    },
+    "kette": [
+     {
+      "schritt": "acrylic-drafts",
+      "methode": "POST",
+      "status": 201,
+      "startMs": 32088,
+      "ttfbMs": 5297,
+      "dauerMs": 5314,
+      "serverTimingMs": {
+       "total": 4718.35,
+       "session_binding": 214.78,
+       "body_read": 0.81,
+       "body_json": 0.58,
+       "product_read": 229.12,
+       "model_build": 131.75,
+       "review_prepare": 3601.85,
+       "review_config": 129.98,
+       "review_validate": 1726.93,
+       "review_sources": 13.53,
+       "customer_preview": 300.85,
+       "reference_preview": 128.74,
+       "review_zip": 746.36,
+       "originals_zip": 0.35,
+       "draft_persist": 536.85,
+       "response_json": 0.03
+      },
+      "traceIdPraefix": "3bb71abc"
+     },
+     {
+      "schritt": "theme-cart",
+      "methode": "POST",
+      "status": 200,
+      "startMs": 37404,
+      "ttfbMs": 2005,
+      "dauerMs": 2010,
+      "serverTimingMs": {
+       "total": 1879.72,
+       "session_binding": 227.16,
+       "body_read": 0.25,
+       "body_json": 0.03,
+       "draft_read": 0.18,
+       "review_read": 13.31,
+       "variant_candidates": 190.26,
+       "variant_binding": 922.86,
+       "cart_prepare": 305.04,
+       "bound_offer": 50.44,
+       "offer_resolve": 31.71,
+       "offer_create": 18.25,
+       "review_package": 129.71,
+       "cart_assign": 2.49,
+       "customer_image_url": 0.17,
+       "response_json": 0.03
+      },
+      "traceIdPraefix": "38182344"
+     },
+     {
+      "schritt": "cart/data",
+      "methode": "GET",
+      "status": 200,
+      "startMs": 39439,
+      "ttfbMs": 4734,
+      "dauerMs": 4747,
+      "serverTimingMs": {
+       "total": 4109.89,
+       "proxy_verify": 0.4,
+       "session_binding": 393.78,
+       "cart_prepare": 869.15,
+       "bound_offer": 686.69,
+       "offer_resolve": 665.55,
+       "offer_create": 20.94,
+       "review_package": 103.78,
+       "cart_assign": 0.29,
+       "customer_image_url": 0.08,
+       "checkout_image_wait": 1959.34,
+       "cart_revalidate": 886.14,
+       "response_json": 0.03
+      },
+      "traceIdPraefix": "af05c7f4"
+     },
+     {
+      "schritt": "cart/claim",
+      "methode": "POST",
+      "status": 200,
+      "startMs": 44381,
+      "ttfbMs": 1595,
+      "dauerMs": 1598,
+      "serverTimingMs": {
+       "total": 1244.92,
+       "proxy_verify": 0.3,
+       "session_binding": 201.98,
+       "cart_prepare": 992.52,
+       "bound_offer": 784.17,
+       "offer_resolve": 763.2,
+       "offer_create": 20.78,
+       "review_package": 105.59,
+       "cart_assign": 0.35,
+       "customer_image_url": 0.09,
+       "cart_claim": 49.29,
+       "response_json": 0.02
+      },
+      "traceIdPraefix": "61c65e96"
+     },
+     {
+      "schritt": "shopify:cart/add.js",
+      "methode": "POST",
+      "status": 200,
+      "startMs": 45988,
+      "ttfbMs": 541,
+      "dauerMs": 547
+     },
+     {
+      "schritt": "shopify:cart-seite",
+      "methode": "GET",
+      "status": 200,
+      "startMs": 46773,
+      "ttfbMs": 383,
+      "dauerMs": 413
+     }
+    ]
+   },
+   "serverEreignisse": [
+    {
+     "laenge": 481,
+     "sha256": "28e03be13eb7f0b1408c6fe5d98fee4854d9f42e3fd17c1977ea723304bc6003",
+     "e": {
+      "at": "17:08:12.344",
+      "v": 2,
+      "id": "3bb71abc",
+      "r": "acrylic-drafts",
+      "st": 201,
+      "t": 4718.35,
+      "n": 25,
+      "drop": 0,
+      "el": 2724.2,
+      "cpu": [
+       6923.32,
+       877.07
+      ],
+      "mem": [
+       1590,
+       1804,
+       639,
+       739
+      ],
+      "gc": [
+       36,
+       210.69
+      ],
+      "fs": [
+       0,
+       147744,
+       0
+      ],
+      "s": {
+       "product_revision_read": [
+        207.74,
+        2
+       ],
+       "product_document_json": [
+        118.66,
+        2
+       ],
+       "customer_read_freeze": [
+        66.07,
+        3
+       ],
+       "review_prepare": [
+        3601.85,
+        1
+       ],
+       "review_validate": [
+        1726.93,
+        1
+       ],
+       "draft_persist": [
+        536.85,
+        1
+       ]
+      },
+      "z": {
+       "product_document_bytes": 62410366,
+       "customer_read_hit": 2,
+       "checkout_image_started": 1
+      }
+     }
+    },
+    {
+     "laenge": 647,
+     "sha256": "f673ef7d87e6435a82386ea18bf4efc6fd1a04990d21cd7e4909561a1be2d2a2",
+     "e": {
+      "at": "17:08:17.225",
+      "v": 2,
+      "id": "38182344",
+      "r": "theme-cart",
+      "st": 200,
+      "t": 1879.72,
+      "n": 48,
+      "drop": 0,
+      "el": 1864.37,
+      "cpu": [
+       2749.85,
+       679.11
+      ],
+      "mem": [
+       1741,
+       2264,
+       740,
+       1297
+      ],
+      "gc": [
+       6,
+       76.21
+      ],
+      "fs": [
+       0,
+       176,
+       0
+      ],
+      "s": {
+       "product_revision_read": [
+        236.66,
+        2
+       ],
+       "product_document_json": [
+        92.62,
+        2
+       ],
+       "registry_product_read": [
+        173.85,
+        2
+       ],
+       "registry_document_digest": [
+        564.42,
+        1
+       ],
+       "registry_canonical": [
+        447.13,
+        1
+       ],
+       "customer_read_freeze": [
+        41.69,
+        4
+       ],
+       "cart_prepare": [
+        305.04,
+        1
+       ],
+       "offer_resolve": [
+        31.71,
+        1
+       ]
+      },
+      "z": {
+       "product_document_bytes": 62410366,
+       "registry_document_bytes": 62410366,
+       "review_package_bytes": 37393764,
+       "customer_read_hit": 4,
+       "checkout_image_pending": 1,
+       "binding_candidates_examined": 33882
+      }
+     }
+    },
+    {
+     "laenge": 336,
+     "sha256": "135eb3f30dc9e31c9f7f82321c39bd242d3a266e07ebb9c4b33403947a4fc1f5",
+     "e": {
+      "at": "17:08:17.062",
+      "v": 2,
+      "id": "6cc18441",
+      "p": "3bb71abc",
+      "r": "checkout-image",
+      "st": 200,
+      "t": 5690.82,
+      "n": 5,
+      "drop": 0,
+      "el": 1864.37,
+      "cpu": [
+       5878.85,
+       1580.94
+      ],
+      "mem": [
+       1842,
+       1773,
+       764,
+       708
+      ],
+      "gc": [
+       15,
+       318.2
+      ],
+      "fs": [
+       0,
+       216,
+       0
+      ],
+      "s": {
+       "shopify_lookup": [
+        2040.17,
+        1
+       ],
+       "shopify_create": [
+        180.97,
+        1
+       ],
+       "shopify_poll_wait": [
+        2979.82,
+        3
+       ],
+       "access_token": [
+        11.65,
+        5
+       ]
+      },
+      "z": {}
+     }
+    },
+    {
+     "laenge": 674,
+     "sha256": "2be68b0ffb9b3506cc59ff44f1be8b0756559e7712f790cb10e3452aed63dc30",
+     "e": {
+      "at": "17:08:19.746",
+      "v": 2,
+      "id": "af05c7f4",
+      "r": "cart/data",
+      "st": 200,
+      "t": 4109.89,
+      "n": 46,
+      "drop": 0,
+      "el": 1092.62,
+      "cpu": [
+       2491.46,
+       1067.66
+      ],
+      "mem": [
+       1840,
+       2199,
+       708,
+       1248
+      ],
+      "gc": [
+       9,
+       225.3
+      ],
+      "fs": [
+       0,
+       0,
+       0
+      ],
+      "s": {
+       "product_revision_read": [
+        202.69,
+        2
+       ],
+       "product_document_json": [
+        72.34,
+        2
+       ],
+       "registry_product_read": [
+        310.43,
+        4
+       ],
+       "registry_document_digest": [
+        817.65,
+        2
+       ],
+       "registry_canonical": [
+        629.07,
+        2
+       ],
+       "customer_read_freeze": [
+        37.14,
+        6
+       ],
+       "cart_prepare": [
+        869.15,
+        1
+       ],
+       "cart_revalidate": [
+        886.14,
+        1
+       ],
+       "checkout_image_wait": [
+        1959.34,
+        1
+       ],
+       "offer_resolve": [
+        665.55,
+        1
+       ]
+      },
+      "z": {
+       "product_document_bytes": 62410366,
+       "registry_document_bytes": 124820732,
+       "review_package_bytes": 37393764,
+       "customer_read_hit": 5,
+       "checkout_image_pending": 1
+      }
+     }
+    },
+    {
+     "laenge": 611,
+     "sha256": "d076c54420c35ea7faf1d6a33107258ce703403cd6f7f7ec87b5ac3be63c04b8",
+     "e": {
+      "at": "17:08:24.410",
+      "v": 2,
+      "id": "61c65e96",
+      "r": "cart/claim",
+      "st": 200,
+      "t": 1244.92,
+      "n": 49,
+      "drop": 0,
+      "el": 1239.42,
+      "cpu": [
+       1455.04,
+       525.71
+      ],
+      "mem": [
+       2044,
+       2611,
+       1039,
+       1615
+      ],
+      "gc": [
+       4,
+       36.82
+      ],
+      "fs": [
+       0,
+       24,
+       0
+      ],
+      "s": {
+       "product_revision_read": [
+        100.4,
+        1
+       ],
+       "product_document_json": [
+        38.32,
+        1
+       ],
+       "registry_product_read": [
+        173.78,
+        2
+       ],
+       "registry_document_digest": [
+        363.9,
+        1
+       ],
+       "registry_canonical": [
+        277.67,
+        1
+       ],
+       "customer_read_freeze": [
+        20.14,
+        3
+       ],
+       "cart_prepare": [
+        992.52,
+        1
+       ],
+       "claim_revalidate": [
+        46.63,
+        1
+       ],
+       "offer_resolve": [
+        763.2,
+        1
+       ]
+      },
+      "z": {
+       "product_document_bytes": 31205183,
+       "registry_document_bytes": 62410366,
+       "review_package_bytes": 37393764,
+       "customer_read_hit": 7
+      }
+     }
+    }
+   ]
+  },
+  {
+   "lauf": 3,
+   "stand": "b51e9d73 (Teil A + V2, Zeitprotokoll Version 2)",
+   "browser": {
+    "profil": {
+     "viewport": "390x844",
+     "cpuDrosselung": 4,
+     "netzDrosselung": false,
+     "handy": true
+    },
+    "marken": {
+     "seite-geladen": 4485,
+     "klick-personalisieren": 7504,
+     "konfi-bedienbar": 15801,
+     "warenkorb-klick": 18869,
+     "warenkorb-final-klick": 32128,
+     "warenkorb-fertig": 50531
+    },
+    "klickBisWarenkorbSeiteGeladenMs": 18403,
+    "klickBisCartAddMs": 16042,
+    "klickBisNavigationMs": 16728,
+    "konfiBedienbarMs": 8297,
+    "warenkorbPruefung": {
+     "positionen": 1,
+     "menge": 1,
+     "zeilenpreisCent": 1499,
+     "summeCent": 1499,
+     "bildVonShopifyCdn": true,
+     "bildGeladen": true,
+     "anzahlEigenschaften": 14
+    },
+    "kette": [
+     {
+      "schritt": "acrylic-drafts",
+      "methode": "POST",
+      "status": 201,
+      "startMs": 33086,
+      "ttfbMs": 5358,
+      "dauerMs": 5374,
+      "serverTimingMs": {
+       "total": 4481.51,
+       "session_binding": 238.4,
+       "body_read": 0.76,
+       "body_json": 0.65,
+       "product_read": 308.48,
+       "model_build": 101.92,
+       "review_prepare": 3279.45,
+       "review_config": 90.41,
+       "review_validate": 1455.75,
+       "review_sources": 11.47,
+       "customer_preview": 381.77,
+       "reference_preview": 166.95,
+       "review_zip": 694.49,
+       "originals_zip": 0.47,
+       "draft_persist": 549.19,
+       "response_json": 0.02
+      },
+      "traceIdPraefix": "5dda746b"
+     },
+     {
+      "schritt": "theme-cart",
+      "methode": "POST",
+      "status": 200,
+      "startMs": 38457,
+      "ttfbMs": 1793,
+      "dauerMs": 1796,
+      "serverTimingMs": {
+       "total": 1665.72,
+       "session_binding": 241.48,
+       "body_read": 0.26,
+       "body_json": 0.03,
+       "draft_read": 0.28,
+       "review_read": 16.31,
+       "variant_candidates": 167.1,
+       "variant_binding": 797.28,
+       "cart_prepare": 282.17,
+       "bound_offer": 44.28,
+       "offer_resolve": 26.65,
+       "offer_create": 17.21,
+       "review_package": 120.4,
+       "cart_assign": 2.64,
+       "customer_image_url": 0.15,
+       "response_json": 0.02
+      },
+      "traceIdPraefix": "cad29e39"
+     },
+     {
+      "schritt": "cart/data",
+      "methode": "GET",
+      "status": 200,
+      "startMs": 40302,
+      "ttfbMs": 4850,
+      "dauerMs": 4854,
+      "serverTimingMs": {
+       "total": 4462.41,
+       "proxy_verify": 0.57,
+       "session_binding": 483.98,
+       "cart_prepare": 1047.29,
+       "bound_offer": 793.86,
+       "offer_resolve": 762.29,
+       "offer_create": 31.4,
+       "review_package": 133.68,
+       "cart_assign": 0.32,
+       "customer_image_url": 0.1,
+       "checkout_image_wait": 2115.31,
+       "cart_revalidate": 814.25,
+       "response_json": 0.03
+      },
+      "traceIdPraefix": "d1f3c8ef"
+     },
+     {
+      "schritt": "cart/claim",
+      "methode": "POST",
+      "status": 200,
+      "startMs": 45330,
+      "ttfbMs": 2160,
+      "dauerMs": 2163,
+      "serverTimingMs": {
+       "total": 1693.39,
+       "proxy_verify": 0.29,
+       "session_binding": 222.57,
+       "cart_prepare": 1428.79,
+       "bound_offer": 877.26,
+       "offer_resolve": 849.64,
+       "offer_create": 27.39,
+       "review_package": 192.3,
+       "cart_assign": 0.34,
+       "customer_image_url": 0.11,
+       "cart_claim": 40.96,
+       "response_json": 0.02
+      },
+      "traceIdPraefix": "300d054b"
+     },
+     {
+      "schritt": "shopify:cart/add.js",
+      "methode": "POST",
+      "status": 200,
+      "startMs": 47510,
+      "ttfbMs": 632,
+      "dauerMs": 640
+     },
+     {
+      "schritt": "shopify:cart-seite",
+      "methode": "GET",
+      "status": 200,
+      "startMs": 48337,
+      "ttfbMs": 315,
+      "dauerMs": 337
+     }
+    ]
+   },
+   "serverEreignisse": [
+    {
+     "laenge": 483,
+     "sha256": "c2a5cdaec671b431f495b0ef0d4ac97bc9170ab6498f46f27f2904b82fe3ec73",
+     "e": {
+      "at": "17:09:05.162",
+      "v": 2,
+      "id": "5dda746b",
+      "r": "acrylic-drafts",
+      "st": 201,
+      "t": 4481.51,
+      "n": 25,
+      "drop": 0,
+      "el": 2636.12,
+      "cpu": [
+       6645.71,
+       864.53
+      ],
+      "mem": [
+       2017,
+       1851,
+       1494,
+       739
+      ],
+      "gc": [
+       38,
+       244.22
+      ],
+      "fs": [
+       0,
+       147768,
+       0
+      ],
+      "s": {
+       "product_revision_read": [
+        210.88,
+        2
+       ],
+       "product_document_json": [
+        199.27,
+        2
+       ],
+       "customer_read_freeze": [
+        65.59,
+        3
+       ],
+       "review_prepare": [
+        3279.45,
+        1
+       ],
+       "review_validate": [
+        1455.75,
+        1
+       ],
+       "draft_persist": [
+        549.19,
+        1
+       ]
+      },
+      "z": {
+       "product_document_bytes": 62410366,
+       "customer_read_hit": 2,
+       "checkout_image_started": 1
+      }
+     }
+    },
+    {
+     "laenge": 646,
+     "sha256": "8f86ff9f3484380c594eaa0c96af368a0a6b38900469d52f2d988eec355ca963",
+     "e": {
+      "at": "17:09:09.795",
+      "v": 2,
+      "id": "cad29e39",
+      "r": "theme-cart",
+      "st": 200,
+      "t": 1665.72,
+      "n": 48,
+      "drop": 0,
+      "el": 1657.8,
+      "cpu": [
+       2611.99,
+       630.43
+      ],
+      "mem": [
+       1786,
+       2308,
+       740,
+       1293
+      ],
+      "gc": [
+       6,
+       78.47
+      ],
+      "fs": [
+       0,
+       144,
+       0
+      ],
+      "s": {
+       "product_revision_read": [
+        218.81,
+        2
+       ],
+       "product_document_json": [
+        80.57,
+        2
+       ],
+       "registry_product_read": [
+        142.34,
+        2
+       ],
+       "registry_document_digest": [
+        489.41,
+        1
+       ],
+       "registry_canonical": [
+        390.84,
+        1
+       ],
+       "customer_read_freeze": [
+        37.87,
+        4
+       ],
+       "cart_prepare": [
+        282.17,
+        1
+       ],
+       "offer_resolve": [
+        26.65,
+        1
+       ]
+      },
+      "z": {
+       "product_document_bytes": 62410366,
+       "registry_document_bytes": 62410366,
+       "review_package_bytes": 37393764,
+       "customer_read_hit": 4,
+       "checkout_image_pending": 1,
+       "binding_candidates_examined": 33882
+      }
+     }
+    },
+    {
+     "laenge": 336,
+     "sha256": "ee821b26f2a64abf8f18eed9445f71c355fef9ea2ef8f67c2f49baa7464c4224",
+     "e": {
+      "at": "17:09:09.643",
+      "v": 2,
+      "id": "db32ebdb",
+      "p": "5dda746b",
+      "r": "checkout-image",
+      "st": 200,
+      "t": 5682.24,
+      "n": 5,
+      "drop": 0,
+      "el": 1657.8,
+      "cpu": [
+       6861.42,
+       1708.13
+      ],
+      "mem": [
+       1887,
+       1676,
+       753,
+       674
+      ],
+      "gc": [
+       16,
+       329.61
+      ],
+      "fs": [
+       0,
+       176,
+       0
+      ],
+      "s": {
+       "shopify_lookup": [
+        1812.79,
+        1
+       ],
+       "shopify_create": [
+        181.14,
+        1
+       ],
+       "shopify_poll_wait": [
+        3064.13,
+        3
+       ],
+       "access_token": [
+        10.56,
+        5
+       ]
+      },
+      "z": {}
+     }
+    },
+    {
+     "laenge": 678,
+     "sha256": "490f8e4b7fcc542a73b532255635980b09ca9c01a0365c0d6aa469b65e4419dc",
+     "e": {
+      "at": "17:09:11.888",
+      "v": 2,
+      "id": "d1f3c8ef",
+      "r": "cart/data",
+      "st": 200,
+      "t": 4462.41,
+      "n": 46,
+      "drop": 0,
+      "el": 1303.38,
+      "cpu": [
+       4115.98,
+       1315.58
+      ],
+      "mem": [
+       1812,
+       2102,
+       708,
+       1213
+      ],
+      "gc": [
+       10,
+       230.47
+      ],
+      "fs": [
+       0,
+       8,
+       0
+      ],
+      "s": {
+       "product_revision_read": [
+        235.14,
+        2
+       ],
+       "product_document_json": [
+        116.68,
+        2
+       ],
+       "registry_product_read": [
+        315.16,
+        4
+       ],
+       "registry_document_digest": [
+        874.81,
+        2
+       ],
+       "registry_canonical": [
+        661.87,
+        2
+       ],
+       "customer_read_freeze": [
+        44.43,
+        6
+       ],
+       "cart_prepare": [
+        1047.29,
+        1
+       ],
+       "cart_revalidate": [
+        814.25,
+        1
+       ],
+       "checkout_image_wait": [
+        2115.31,
+        1
+       ],
+       "offer_resolve": [
+        762.29,
+        1
+       ]
+      },
+      "z": {
+       "product_document_bytes": 62410366,
+       "registry_document_bytes": 124820732,
+       "review_package_bytes": 37393764,
+       "customer_read_hit": 5,
+       "checkout_image_pending": 1
+      }
+     }
+    },
+    {
+     "laenge": 614,
+     "sha256": "0aee48c8fe28e647e1823be72d533b6e8ca232eee6a9137785c34e6a58b16c60",
+     "e": {
+      "at": "17:09:16.995",
+      "v": 2,
+      "id": "300d054b",
+      "r": "cart/claim",
+      "st": 200,
+      "t": 1693.39,
+      "n": 49,
+      "drop": 0,
+      "el": 1689.26,
+      "cpu": [
+       1582.48,
+       660.1
+      ],
+      "mem": [
+       1947,
+       1746,
+       1003,
+       707
+      ],
+      "gc": [
+       5,
+       170.98
+      ],
+      "fs": [
+       0,
+       24,
+       0
+      ],
+      "s": {
+       "product_revision_read": [
+        114.84,
+        1
+       ],
+       "product_document_json": [
+        41.79,
+        1
+       ],
+       "registry_product_read": [
+        167.37,
+        2
+       ],
+       "registry_document_digest": [
+        423.34,
+        1
+       ],
+       "registry_canonical": [
+        315.68,
+        1
+       ],
+       "customer_read_freeze": [
+        19.86,
+        3
+       ],
+       "cart_prepare": [
+        1428.79,
+        1
+       ],
+       "claim_revalidate": [
+        33.38,
+        1
+       ],
+       "offer_resolve": [
+        849.64,
+        1
+       ]
+      },
+      "z": {
+       "product_document_bytes": 31205183,
+       "registry_document_bytes": 62410366,
+       "review_package_bytes": 37393764,
+       "customer_read_hit": 7
+      }
+     }
+    }
+   ]
+  }
+ ],
+ "kontrolleNachRueckstellung": {
+  "stand": "9af3a1ac (Zeitprotokoll Version 1)",
+  "browser": {
+   "profil": {
+    "viewport": "390x844",
+    "cpuDrosselung": 4,
+    "netzDrosselung": false,
+    "handy": true
+   },
+   "marken": {
+    "seite-geladen": 10869,
+    "klick-personalisieren": 13891,
+    "konfi-bedienbar": 25118,
+    "warenkorb-klick": 28093,
+    "warenkorb-final-klick": 41019,
+    "warenkorb-fertig": 62894
+   },
+   "klickBisWarenkorbSeiteGeladenMs": 21875,
+   "klickBisCartAddMs": 19233,
+   "klickBisNavigationMs": 20010,
+   "konfiBedienbarMs": 11227,
+   "warenkorbPruefung": {
+    "positionen": 1,
+    "menge": 1,
+    "zeilenpreisCent": 1499,
+    "summeCent": 1499,
+    "bildVonShopifyCdn": true,
+    "bildGeladen": true,
+    "anzahlEigenschaften": 14
+   },
+   "kette": [
+    {
+     "schritt": "acrylic-drafts",
+     "methode": "POST",
+     "status": 201,
+     "startMs": 42087,
+     "ttfbMs": 5225,
+     "dauerMs": 5250,
+     "serverTimingMs": {
+      "total": 4367.9,
+      "session_binding": 170.08,
+      "body_read": 0.96,
+      "body_json": 0.83,
+      "product_read": 254.32,
+      "model_build": 233.75,
+      "review_config": 102.37,
+      "review_validate": 1346.51,
+      "review_sources": 7.59,
+      "customer_preview": 301.32,
+      "reference_preview": 123.13,
+      "review_zip": 704.31,
+      "originals_zip": 0.28,
+      "review_prepare": 3016.35,
+      "draft_persist": 551.02,
+      "response_json": 0.04
+     },
+     "traceIdPraefix": "bd07ad58"
+    },
+    {
+     "schritt": "theme-cart",
+     "methode": "POST",
+     "status": 200,
+     "startMs": 47348,
+     "ttfbMs": 2371,
+     "dauerMs": 2376,
+     "serverTimingMs": {
+      "total": 2226.0,
+      "session_binding": 134.19,
+      "body_read": 0.3,
+      "body_json": 0.03,
+      "draft_read": 0.15,
+      "review_read": 12.9,
+      "variant_candidates": 108.61,
+      "variant_binding": 721.21,
+      "offer_resolve": 844.95,
+      "offer_create": 15.76,
+      "bound_offer": 861.1,
+      "review_package": 120.24,
+      "cart_assign": 2.32,
+      "customer_image_url": 0.19,
+      "cart_prepare": 1078.05,
+      "response_json": 0.01
+     },
+     "traceIdPraefix": "66407ce4"
+    },
+    {
+     "schritt": "cart/data",
+     "methode": "GET",
+     "status": 200,
+     "startMs": 49751,
+     "ttfbMs": 6407,
+     "dauerMs": 6411,
+     "serverTimingMs": {
+      "total": 6145.1,
+      "proxy_verify": 0.57,
+      "session_binding": 290.64,
+      "offer_resolve": 963.32,
+      "offer_create": 30.55,
+      "bound_offer": 994.11,
+      "review_package": 146.12,
+      "cart_assign": 0.34,
+      "customer_image_url": 0.12,
+      "cart_prepare": 1273.27,
+      "checkout_image_wait": 3409.82,
+      "cart_revalidate": 1042.6,
+      "response_json": 0.05
+     },
+     "traceIdPraefix": "b12de4c3"
+    },
+    {
+     "schritt": "cart/claim",
+     "methode": "POST",
+     "status": 200,
+     "startMs": 56337,
+     "ttfbMs": 3228,
+     "dauerMs": 3234,
+     "serverTimingMs": {
+      "total": 2947.54,
+      "proxy_verify": 0.29,
+      "session_binding": 158.99,
+      "offer_resolve": 1063.89,
+      "offer_create": 28.46,
+      "bound_offer": 1092.6,
+      "review_package": 130.46,
+      "cart_assign": 0.3,
+      "customer_image_url": 0.1,
+      "cart_prepare": 1507.48,
+      "cart_claim": 1125.64,
+      "response_json": 0.02
+     },
+     "traceIdPraefix": "bbd07907"
+    },
+    {
+     "schritt": "shopify:cart/add.js",
+     "methode": "POST",
+     "status": 200,
+     "startMs": 59584,
+     "ttfbMs": 635,
+     "dauerMs": 645
+    },
+    {
+     "schritt": "shopify:cart-seite",
+     "methode": "GET",
+     "status": 200,
+     "startMs": 60453,
+     "ttfbMs": 311,
+     "dauerMs": 332
+    }
+   ]
+  },
+  "serverEreignisse": [
+   {
+    "laenge": 264,
+    "sha256": "51e067bff5e1da2d73a452bed97dd16df46879cc33c8ca25a566abfa0085d784",
+    "e": {
+     "at": "17:11:30.536",
+     "v": 1,
+     "id": "bd07ad58",
+     "r": "acrylic-drafts",
+     "st": 201,
+     "t": 4367.9,
+     "n": 15,
+     "el": 2459.96,
+     "cpu": [
+      null,
+      null
+     ],
+     "mem": null,
+     "gc": null,
+     "fs": [
+      null,
+      null,
+      null
+     ],
+     "s": {
+      "review_prepare": [
+       3016.35,
+       1
+      ],
+      "review_validate": [
+       1346.51,
+       1
+      ],
+      "draft_persist": [
+       551.02,
+       1
+      ]
+     },
+     "z": {}
+    }
+   },
+   {
+    "laenge": 251,
+    "sha256": "637d3b1ad05032b478e5a44f202e45d2c5ae462d6af2114be6dc697f6260ce98",
+    "e": {
+     "at": "17:11:35.090",
+     "v": 1,
+     "id": "66407ce4",
+     "r": "theme-cart",
+     "st": 200,
+     "t": 2226,
+     "n": 15,
+     "el": 2210.4,
+     "cpu": [
+      null,
+      null
+     ],
+     "mem": null,
+     "gc": null,
+     "fs": [
+      null,
+      null,
+      null
+     ],
+     "s": {
+      "cart_prepare": [
+       1078.05,
+       1
+      ],
+      "offer_resolve": [
+       844.95,
+       1
+      ]
+     },
+     "z": {
+      "checkout_image_started": 1
+     }
+    }
+   },
+   {
+    "laenge": 308,
+    "sha256": "f8fb6910460a17d534cc67f2388acd210d81698a74755bd5188f9e6d5ac33780",
+    "e": {
+     "at": "17:11:37.308",
+     "v": 1,
+     "id": "acc44c68",
+     "p": "66407ce4",
+     "r": "checkout-image",
+     "st": 200,
+     "t": 5240.23,
+     "n": 5,
+     "el": 1521.48,
+     "cpu": [
+      null,
+      null
+     ],
+     "mem": null,
+     "gc": null,
+     "fs": [
+      null,
+      null,
+      null
+     ],
+     "s": {
+      "shopify_lookup": [
+       636.13,
+       1
+      ],
+      "shopify_create": [
+       194.42,
+       1
+      ],
+      "shopify_poll_wait": [
+       2252.42,
+       3
+      ],
+      "access_token": [
+       1840.61,
+       5
+      ]
+     },
+     "z": {}
+    }
+   },
+   {
+    "laenge": 316,
+    "sha256": "47e61e02bf581a4ac1ac192d865fa684e413710add9fcad558fed702f68a7f62",
+    "e": {
+     "at": "17:11:37.609",
+     "v": 1,
+     "id": "b12de4c3",
+     "r": "cart/data",
+     "st": 200,
+     "t": 6145.1,
+     "n": 12,
+     "el": 1521.48,
+     "cpu": [
+      null,
+      null
+     ],
+     "mem": null,
+     "gc": null,
+     "fs": [
+      null,
+      null,
+      null
+     ],
+     "s": {
+      "cart_prepare": [
+       1273.27,
+       1
+      ],
+      "cart_revalidate": [
+       1042.6,
+       1
+      ],
+      "checkout_image_wait": [
+       3409.82,
+       1
+      ],
+      "offer_resolve": [
+       963.32,
+       1
+      ]
+     },
+     "z": {
+      "checkout_image_pending": 1
+     }
+    }
+   },
+   {
+    "laenge": 230,
+    "sha256": "00b8e3f5b3eeb43ee9588532ad27a6b21c0b96f38f2f939326ba5aef4b957739",
+    "e": {
+     "at": "17:11:44.211",
+     "v": 1,
+     "id": "bbd07907",
+     "r": "cart/claim",
+     "st": 200,
+     "t": 2947.54,
+     "n": 11,
+     "el": 2940.21,
+     "cpu": [
+      null,
+      null
+     ],
+     "mem": null,
+     "gc": null,
+     "fs": [
+      null,
+      null,
+      null
+     ],
+     "s": {
+      "cart_prepare": [
+       1507.48,
+       1
+      ],
+      "offer_resolve": [
+       1063.89,
+       1
+      ]
+     },
+     "z": {}
+    }
+   }
+  ]
+ }
+}

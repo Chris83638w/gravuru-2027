@@ -17,6 +17,7 @@ import {makeProductDocument} from './product-model.mjs';
 import {makeAcrylicConfig} from '../configurator/variant-m/acrylic-product.mjs';
 import {prepareShopProduct} from './shop-preparation.mjs';
 import {withCustomerReadScope} from './customer-read-scope.mjs';
+import {withCartTiming,cartTimingStep,cartTimingHeaders} from './shop-cart-timing.mjs';
 
 // Synthetic documents and a NEW temporary SQLite database only. No backup, live
 // application, Shopify request or production profile is opened or manufactured.
@@ -53,6 +54,56 @@ function fixture(t,document=formDocument()){
 }
 const tables=['form_shop_bindings','form_shop_binding_selections','shop_product_binding_heads','shop_product_binding_revisions'];
 const counts=f=>Object.fromEntries(tables.map(table=>[table,f.db.prepare('SELECT count(*) AS n FROM '+table).get().n]));
+
+test('cart diagnostics split real registry reads, parsing and hashing without changing the binding',async t=>{
+ const f=fixture(t);f.persist();const before=counts(f),expected=f.registry.resolve(pair()),events=[];let headers;
+ await withCartTiming('theme-cart',e=>events.push(e),()=>{
+  assert.deepEqual(cartTimingStep('variant_binding',()=>f.registry.resolve(pair())),expected);
+  headers=cartTimingHeaders(200);
+ });
+ assert.deepEqual(counts(f),before);
+ const e=events.find(e=>e.event==='shop_cart_timing');assert.equal(e.version,2);assert.equal(e.counts.registry_entries_returned,1);
+ for(const name of ['registry_head_read','registry_product_read','registry_binding_read','registry_document_json','registry_raw_digest']){
+  assert.ok(e.steps[name].syncCalls>0,name);assert.equal(e.steps[name].asyncCalls,0);assert.equal(e.steps[name].processCpu.available,1);assert.ok(!headers['Server-Timing'].includes(name));
+ }
+ assert.ok(e.storageReads.calls>=5);assert.ok(e.counts.registry_document_bytes>0);
+ assert.equal(e.counts.registry_digest_hits,1);assert.equal(e.steps.registry_canonical,undefined);
+ const logged=JSON.stringify(e);for(const value of [f.record.id,pair().shopifyVariantId,expected.documentSha256,f.record.document.name])assert.ok(!logged.includes(value),'private registry data in log');
+ await withCartTiming('theme-cart',e=>events.push(e),()=>{
+  assert.throws(()=>cartTimingStep('variant_binding',()=>f.registry.resolve(pair(99))),{code:'shop_binding_active_not_found'});cartTimingHeaders(404);
+ });
+ assert.equal(events.find(e=>e.status===404).steps.variant_binding.failures,1);
+});
+
+test('digest memo preserves canonical identity, rereads changed bytes and rejects damage after a hit',async t=>{
+ for(const document of [formDocument(),nativeDocument()]){
+  const f=fixture(t,document),options=prepareShopProduct(f.record).variants[0].options;
+  f.persist(f.plan([{record:f.record,...pair(),options}]));
+  const registry=createShopProductBindingStore({database:f.db,orderIntake:f.orders,tenantId,storeId,shopDomain,adapter:f.adapter,clock:f.clock});
+  const events=[];
+  const read=()=>withCartTiming('theme-cart',e=>events.push(e),()=>{const value=registry.resolve(pair());cartTimingHeaders(200);return value;});
+  const first=await read(),second=await read();assert.deepEqual(second,first);
+  assert.equal(events[0].counts.registry_digest_misses,1);assert.equal(events[1].counts.registry_digest_hits,1);
+  assert.ok(events[0].steps.registry_canonical.calls);assert.equal(events[1].steps.registry_canonical,undefined);
+  const raw=f.db.prepare('SELECT document FROM product_revisions WHERE product_id=? AND revision=1').get(f.record.id).document;
+  f.db.exec('DROP TRIGGER immutable_revision_update');
+  const write=text=>f.db.prepare('UPDATE product_revisions SET document=? WHERE product_id=? AND revision=1').run(text,f.record.id);
+  write(JSON.stringify(JSON.parse(raw),null,2));assert.deepEqual(await read(),first);assert.equal(events[2].counts.registry_digest_misses,1,'different raw bytes must be hashed afresh');
+  assert.deepEqual(await read(),first);assert.equal(events[3].counts.registry_digest_hits,1);
+  write(JSON.stringify({...JSON.parse(raw),name:'Geändert · 日本語 🐾'}));await assert.rejects(read(),{code:'shop_binding_active_integrity'});
+  f.db.exec('PRAGMA ignore_check_constraints=ON');write('{invalid');await assert.rejects(read(),{code:'shop_binding_document'});
+ }
+});
+
+test('digest memo bounds retained entries without retaining old documents',async t=>{
+ const f=fixture(t);f.persist();const expected=f.registry.resolve(pair());
+ const raw=f.db.prepare('SELECT document FROM product_revisions WHERE product_id=? AND revision=1').get(f.record.id).document;
+ f.db.exec('DROP TRIGGER immutable_revision_update');
+ for(let i=1;i<=65;i++){f.db.prepare('UPDATE product_revisions SET document=? WHERE product_id=? AND revision=1').run(raw+' '.repeat(i),f.record.id);assert.deepEqual(f.registry.resolve(pair()),expected);}
+ f.db.prepare('UPDATE product_revisions SET document=? WHERE product_id=? AND revision=1').run(raw,f.record.id);
+ const events=[];await withCartTiming('theme-cart',e=>events.push(e),()=>{assert.deepEqual(f.registry.resolve(pair()),expected);cartTimingHeaders(200);});
+ assert.equal(events[0].counts.registry_digest_misses,1,'the least-recently-used entry was evicted');
+});
 
 test('locked read phase reuses only frozen source records and rejects a same-connection mutation',t=>{
  const f=fixture(t),get=f.repository.get;let reads=0;f.repository.get=(...args)=>{reads++;return get(...args);};

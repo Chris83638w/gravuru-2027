@@ -6,6 +6,28 @@ import path from 'node:path';
 import os from 'node:os';
 import {withCustomerReadScope,customerDatabaseRead,customerReadMemo} from './customer-read-scope.mjs';
 import {createProductRepository} from './repository.mjs';
+import {withCartTiming,cartTimingHeaders} from './shop-cart-timing.mjs';
+
+test('interleaved customer phases isolate tenant/store/revision and report the bounded memo',async()=>{
+ const owner={},events=[];let reads=0;
+ const read=key=>customerReadMemo(owner,key,()=>({key,n:++reads}));
+ const customer=key=>withCartTiming('theme-cart',e=>events.push(e),()=>withCustomerReadScope(async()=>{
+  const first=read(key);assert.equal(read(key),first);
+  assert.notEqual(read(key+':revision2'),first);
+  await Promise.resolve();
+  withCustomerReadScope(()=>{const next=read(key);assert.notEqual(next,first);assert.equal(read(key),next);});
+  cartTimingHeaders(200);
+ }));
+ await Promise.all([customer('tenant-a:store-a:product:1'),customer('tenant-b:store-b:product:1')]);
+ assert.equal(reads,6);assert.ok(events.every(e=>e.counts.customer_read_hit===2));
+ await withCartTiming('theme-cart',e=>events.push(e),()=>withCustomerReadScope(()=>{
+  for(let i=0;i<18;i++)read('key:'+i);
+  read('key:0');read('key:17');cartTimingHeaders(200);
+ }));
+ assert.equal(events.at(-1).counts.customer_read_overflow,3);
+ assert.equal(events.at(-1).counts.customer_read_hit,1);
+ assert.equal(events.at(-1).steps.customer_read_freeze.calls,19);
+});
 
 test('read phases reuse detached immutable JSON only synchronously; callers outside keep normal semantics',()=>{
  const db=new DatabaseSync(':memory:');db.exec("CREATE TABLE value(body TEXT); INSERT INTO value VALUES('{\"price\":1999,\"options\":{\"logo\":true}}')");

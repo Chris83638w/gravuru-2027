@@ -50,7 +50,7 @@ import {placeNewMotif,MOTIF_MIN_MM} from './motif-placement.mjs';
 import {physicalTextSize,designTextSize,applyPrintColor} from './usability-model.mjs';
 import {installAcrylicScene} from './acrylic-scene.mjs';
 import {acrylicSelection,acrylicOptions} from './acrylic-product.mjs';
-import {selectionIds} from './profile-selection.mjs';
+import {selectionIds,designFontSelection,initialTextFont} from './profile-selection.mjs';
 import {rightForProperty,canEditElement,customerAdditionPolicy} from './element-rights.mjs';
 import {beginCustomerRights} from './customer-rights.mjs';
 import {textLimits,textLimitIssue,textLength,textLimitCount,sameSampleText,requiredTextMissing,clampText} from '../../workshop/theme-limits.mjs';
@@ -91,7 +91,8 @@ export async function installUX(el,config,legacy,{attach}={}){
   const minTextMm=process?.minTextMm??4;
   el.uxProcess=process&&!moduleEnabled(config,'colors')?{...process,tools:{...process.tools,textColor:false,motifColor:false}}:process;el.uxMinTextMm=minTextMm;
   const profileChoices=config?.workshopProfiles?.selections;
-  const availableFonts=()=>selectionIds(Object.keys(el.fontData).sort((a,b)=>a.localeCompare(b,'de')),profileChoices?.fonts);
+  const fontSelection=()=>designFontSelection(profileChoices?.fonts,design());
+  const availableFonts=()=>selectionIds(Object.keys(el.fontData).sort((a,b)=>a.localeCompare(b,'de')),fontSelection());
   const fontFits=(object,font)=>{try{measureText({...object,font},el.fontData);return true;}catch{return false;}};
   // The scene uses the original design grid; the customer always edits physical mm.
   const textScale=()=>config?.acrylic?acrylicSelection(acrylicOptions(el.state.mOptions),config.acrylic.pricing).size.width/config.acrylic.designWidth:1;
@@ -300,7 +301,7 @@ export async function installUX(el,config,legacy,{attach}={}){
     if(isText){$('[data-ux-font-name]').textContent=fontDisplayName(o.font);if(r.activeElement!==$('#ux-size'))$('#ux-size').value=(config?.workbench?.embedded?roundEdit(o.size):displayTextSize(o));$('[data-ux=bold]').setAttribute('aria-pressed',!!o.bold);$('[data-ux=italic]')?.setAttribute('aria-pressed',!!o.italic);if($('[data-ux-color]'))$('[data-ux-color]').value=o.color||'#202824';for(const f of all('[data-ux-prop]'))if(r.activeElement!==f)f.value=(config?.workbench?.embedded?roundEdit(o[f.dataset.uxProp]||0):Math.round((o[f.dataset.uxProp]||0)*10)/10);}
     el.uxUpdateTextUI?.();
   }
-  function renderFontPage(){const o=el.state.objects.find(o=>o.id===fontObject);if(!o)return;const fonts=selectionIds((el.uxKnownFonts?.()||Object.keys(el.fontData)).sort((a,b)=>a.localeCompare(b,'de')),profileChoices?.fonts),grid=$('.ux-font-grid'),scrollTop=grid.scrollTop,focusedFont=r.activeElement?.dataset?.uxFont;
+  function renderFontPage(){const o=el.state.objects.find(o=>o.id===fontObject);if(!o)return;const fonts=selectionIds((el.uxKnownFonts?.()||Object.keys(el.fontData)).sort((a,b)=>a.localeCompare(b,'de')),fontSelection()),grid=$('.ux-font-grid'),scrollTop=grid.scrollTop,focusedFont=r.activeElement?.dataset?.uxFont;
     $('.ux-font-grid').innerHTML=fonts.length?fonts.map(name=>{
       if(!el.fontData[name])return `<button type="button" data-ux-font="${esc(name)}" disabled aria-busy="true" aria-label="Schrift ${esc(fontDisplayName(name))} wird geladen"><svg viewBox="0 0 100 20" aria-hidden="true"></svg><span>${esc(fontDisplayName(name))}<small>Schriftprobe wird geladen …</small></span></button>`;
       const text={...o,text:o.text.trim()?o.text:'Dein Text',font:name,size:12,bold:false};let unavailable=false;
@@ -396,7 +397,7 @@ export async function installUX(el,config,legacy,{attach}={}){
     if(action==='lock'){mutate(()=>{const o=el.state.objects.find(o=>o.id===b.dataset.id);if(o?.type==='motif-raster')return;o.uxLocked=!o.uxLocked;});return;}
     if(action==='remove-content'){const o=el.state.objects.find(o=>o.id===b.dataset.id);if(!o||o.uxLocked||o.locked||o.acrylicFixed)return;mutate(()=>{el.state.objects=el.state.objects.filter(v=>v.id!==o.id);if(el.state.selected===o.id)el.state.selected=null;});return;}
     if(['photo-upload','logo-upload','replace-upload','fill-photo-slot'].includes(action)){replacing=['replace-upload','fill-photo-slot'].includes(action)?b.dataset.id:null;uploadKind=replacing?(el.state.objects.find(o=>o.id===replacing)?.uxUploadKind||'photo'):action==='logo-upload'?'logo':'photo';if(!uploadAllowed(config,uploadKind))return say('Dieser Upload ist bei diesem Produkt nicht vorgesehen.');$('[data-ux-file]').accept=uploadKind==='logo'&&vectorLogos?VECTOR_LOGO_ACCEPT:PHOTO_ACCEPT;$('[data-ux-file]').click();return;}
-    if(action==='add-text'){if(!additions.text)return say('Eigener Text ist bei diesem Produkt nicht vorgesehen.');const font=config?'Montserrat':'Nunito';try{await el.uxEnsureFonts?.(profileChoices?.fonts?selectionIds(el.uxKnownFonts(),profileChoices.fonts):[font]);}catch{return say('Die Schrift konnte nicht geladen werden. Bitte erneut versuchen.');}el.add({type:'text',text:'Dein Text',font,size:10,bold:false});showTab('text');return;}
+    if(action==='add-text'){if(!additions.text)return say('Eigener Text ist bei diesem Produkt nicht vorgesehen.');const font=initialTextFont(el.uxKnownFonts?.()||Object.keys(el.fontData),fontSelection(),config?'Montserrat':'Nunito');try{if(!font)throw Error('Keine verfügbare Schrift.');await el.uxEnsureFonts?.([font]);if(!el.fontData[font])throw Error('Schrift nicht geladen.');}catch{return say('Die Schrift konnte nicht geladen werden. Bitte erneut versuchen.');}el.add({type:'text',text:'Dein Text',font,size:10,bold:false});showTab('text');return;}
     if(action==='smaller'||action==='bigger'){changeObject('size',(selected()?displayTextSize(selected()):minTextMm)+(action==='bigger'?1:-1));return;}
     if(action==='bold'||action==='italic'){changeObject(action,!selected()?.[action]);return;}
     if(['left','center','right'].includes(action)){if(el.uxAlign){el.uxAlign(action);return;}const o=selected();if(o)changeObject('x',action==='center'?currentSize().width/2:action==='left'?o.w/2+8:currentSize().width-o.w/2-8);return;}

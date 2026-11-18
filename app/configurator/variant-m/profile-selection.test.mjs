@@ -1,6 +1,34 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {selectionIds, motifChoices, bestsellerChoices, colorPalettes} from './profile-selection.mjs';
+import {selectionIds, designFontSelection, motifChoices, bestsellerChoices, colorPalettes} from './profile-selection.mjs';
+import {captureDesignContent,carryDesignContent} from './design-content-transfer.mjs';
+
+test('design change carries customer text, takes target fonts and restores the source list with undo state',()=>{
+ const source={id:'a',objects:[{id:'name',type:'text',fieldKey:'name',text:'Anna',font:'Original A',customerEditable:true,x:20,y:20,w:20,h:5,size:5}]};
+ const target={id:'b',objects:[{...source.objects[0],text:'Maria',font:'Original B'}]};
+ const config={profile:{geometry:{width:120,height:80}},photo:{enabled:false}};
+ const previous={designId:source.id,objects:structuredClone(source.objects)};previous.objects[0].text='Chris';
+ const next={designId:target.id,...carryDesignContent(captureDesignContent(previous.objects,source),target,config)};
+ const templates=[source,target],choices=state=>designFontSelection(['Group'],templates.find(d=>d.id===state.designId));
+ assert.equal(next.objects[0].text,'Chris');assert.equal(next.objects[0].font,'Original B');
+ assert.deepEqual(choices(next),['Group','Original B']);
+ assert.deepEqual(choices(previous),['Group','Original A']);assert.equal(previous.objects[0].font,'Original A');
+});
+
+test('font choices include only the open original design, with no truncation or resource mutation',()=>{
+ const group=Object.freeze(Array.from({length:29},(_,i)=>'Group '+i));
+ const a=Object.freeze({objects:[{type:'text',font:'Original A'},{type:'text',font:'Original B'},{type:'text',font:'Original A'},{type:'motif',font:'not a typeface'}]});
+ const b=Object.freeze({objects:[{type:'text',font:'Original C'}]});
+ const all=[...group,'Original A','Original B','Original C','Customer injection'];
+ const before=JSON.stringify({group,a,b});
+ assert.deepEqual(designFontSelection(group,a),[...group,'Original A','Original B']);
+ assert.deepEqual(selectionIds(all,designFontSelection(group,b)),[...group,'Original C']);
+ assert.deepEqual(designFontSelection([],a),['Original A','Original B']);
+ assert.equal(designFontSelection(null,a),null);
+ assert.equal(designFontSelection(undefined,a),null);
+ assert.throws(()=>designFontSelection('Original A',a),/Profilauswahl/);
+ assert.equal(JSON.stringify({group,a,b}),before);
+});
 
 test('missing/null keeps choices, empty disables new choices, explicit order is preserved', () => {
   const available = ['Default Font', 'Script', 'Default Font', 'Serif'];

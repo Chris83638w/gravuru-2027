@@ -11,6 +11,23 @@ export function selectionIds(available, selection = null) {
   return [...new Set(selection ?? available)].filter(id => known.has(id));
 }
 
+// Chris, 18.11.2026: offer the group plus the original typefaces of the open
+// design. Pass the trusted template, never the customer's edited objects or
+// the complete product gallery. Missing/null still means the native catalog.
+export function designFontSelection(selection = null, design = null) {
+  if (selection === null) return null;
+  const selected = selectionIds(selection, selection);
+  const original = (design?.objects ?? []).filter(o => o.type === 'text' && typeof o.font === 'string').map(o => o.font);
+  return [...new Set([...selected, ...original])];
+}
+
+// Retain the familiar start font when allowed, otherwise follow the configured
+// choice order. No replacement font or choice is invented for an empty list.
+export function initialTextFont(available, selection, preferred) {
+  const choices = selectionIds(available, selection);
+  return choices.includes(preferred) ? preferred : choices[0] ?? null;
+}
+
 export function motifChoices(entries, selection = null, excludedKeys = new Set()) {
   const index = new Map();
   for (const entry of entries) if (entry.category !== 'Grundmotive' && !excludedKeys.has(entry.key) && !index.has(entry.key)) index.set(entry.key, entry);

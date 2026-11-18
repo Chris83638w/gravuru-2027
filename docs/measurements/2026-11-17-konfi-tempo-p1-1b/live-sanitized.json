@@ -1,0 +1,6581 @@
+{
+ "schema": "gravuru-konfi-tempo-messbeleg/1",
+ "titel": "P1 Zusatzmessung 1b – bereinigter Rohbeleg der Live-Messung vom 17.11.2026",
+ "erstelltVon": "Claude (Pruefer/Operator), aus vorhandenen Messdateien und einem lesenden Auszug des Zeitprotokolls",
+ "bezug": {
+  "issue": 254,
+  "pr": 255,
+  "branch": "dev/astra-konfi-tempo-p1-20261117",
+  "gemessenerStand": "e447a8590baf4598958f5df6f33fb9675e534cfc",
+  "liveStandVorherUndNachher": "9af3a1ac"
+ },
+ "testprodukt": "familienschild-acryl-baum-12x8-personalisiert (oeffentliches Produkt, eigener Testtext, keine Bestellung)",
+ "wasEnthaltenIst": [
+  "3 Browser-Durchlaeufe im 1b-Fenster und 1 Kontroll-Durchlauf nach der Rueckstellung (Playwright, Chrome, 390x844, CPU x4, ohne Netzdrosselung).",
+  "15 Server-Ereignisse shop_cart_timing Version 2 (5 je Durchlauf) als kompakter Auszug des Lese-Skripts lies-zeitprotokoll-v2.cjs.",
+  "Je Ereignis laenge und sha256 der kompakten Zeile; JSON.stringify(e) ergibt genau diese Zeile."
+ ],
+ "grenzen": [
+  "Kompakter Auszug, nicht die vollstaendigen Original-Ereignisse: das Lese-Skript kuerzt die traceId auf 8 Zeichen und uebernimmt nur die unter format genannten Felder. Die Originale stehen unveraendert in stderr.log auf dem Server.",
+  "Die 15 shop_cart_gc-Nachlieferungen liegen nicht als eigene Zeilen vor. Das Lese-Skript hat sie per traceId zugeordnet und nur count, pauseMs und windowMs in das Feld gc uebernommen (Abschlusszeile des Skripts: 15 Ereignisse, 15 Nachlieferungen, 0 unlesbar).",
+  "Die Server-Ereignisse der Kontrolle nach der Rueckstellung (Version 1) liegen nur als gerundete Notiz vor, siehe kontrolleNachRueckstellung.serverNotizGerundet. Exakt sind dort nur die Browser-Werte samt Server-Timing-Summe.",
+  "Nichts wurde rekonstruiert oder geschaetzt. Enthalten sind nur Diagnosewerte, feste Bezeichner und zufaellige traceId-Praefixe; keine URLs mit Tokens, keine Kundentexte, keine Konfigurationen, keine privaten IDs.",
+  "Ein Produkt, drei Durchlaeufe, keine Parallelmessung. CPU- und Ressourcenwerte gelten prozessweit, nicht je Anfrage."
+ ],
+ "lesehilfe": [
+  "product_document_bytes und registry_document_bytes sind summierte zurueckgegebene Dokumentbytes der instrumentierten Lesungen, keine gemessenen physischen Plattenzugriffe.",
+  "Hohe Prozess-CPU bei geringem fsRead und majorPageFault 0 stuetzt die Hypothese (Rechenarbeit im Prozess), schliesst Scheduling/Drosselung oder Speicherzugriffe aus dem Cache aber nicht aus.",
+  "mem ist der Prozesswert (rss/heapUsed) waehrend dieser Testsitzung, kein gemessener Mehrverbrauch je Kunde. Ein Serverlimit wurde nicht neu gemessen."
+ ],
+ "format": {
+  "e": "at=Zeitstempel UTC, v=Version, id=traceId (8 Zeichen), p=Eltern-traceId (8 Zeichen), r=Route (fester Bezeichner), st=HTTP-Status, t=totalMs, n=Anzahl Schritte",
+  "el": "[eventLoop.beforeHandler maxMs, eventLoop.duringHandler maxMs, samples]",
+  "cpu": "process.cpuUsage-Differenz im Handler (userMs, systemMs), prozessweit",
+  "ru": "resourceUsage-Differenz im Handler, prozessweit",
+  "mem": "[rss vorher, rss nachher, heapUsed vorher, heapUsed nachher] in Bytes",
+  "gcS": "Status der GC-Erfassung im Ereignis",
+  "gc": "[Anzahl, Pausen-ms, Fenster-ms] aus der zugeordneten shop_cart_gc-Nachlieferung",
+  "rd": "instrumentierte synchrone Datenbank-Lesungen",
+  "c": "Zaehler",
+  "s": "[Schritt, durationMs, userMs, systemMs, calls, syncCalls, asyncCalls, failures], absteigend nach Dauer"
+ },
+ "laeufe": [
+  {
+   "lauf": 1,
+   "stand": "e447a859 (Zeitprotokoll Version 2)",
+   "browser": {
+    "profil": {
+     "viewport": "390x844",
+     "cpuDrosselung": 4,
+     "netzDrosselung": false,
+     "handy": true
+    },
+    "marken": {
+     "seite-geladen": 10698,
+     "klick-personalisieren": 13739,
+     "konfi-bedienbar": 24365,
+     "warenkorb-klick": 27316,
+     "warenkorb-final-klick": 40559,
+     "warenkorb-fertig": 64427
+    },
+    "klickBisWarenkorbSeiteGeladenMs": 23868,
+    "klickBisCartAddMs": 20378,
+    "klickBisNavigationMs": 21806,
+    "konfiBedienbarMs": 10626,
+    "warenkorbPruefung": {
+     "positionen": 1,
+     "menge": 1,
+     "zeilenpreisCent": 1499,
+     "summeCent": 1499,
+     "bildVonShopifyCdn": true,
+     "bildGeladen": true,
+     "anzahlEigenschaften": 14
+    },
+    "kette": [
+     {
+      "schritt": "acrylic-drafts",
+      "methode": "POST",
+      "status": 201,
+      "startMs": 41374,
+      "ttfbMs": 5499,
+      "dauerMs": 5517,
+      "serverTimingTotalMs": 4675.72,
+      "traceIdPraefix": "0ff70b1c"
+     },
+     {
+      "schritt": "theme-cart",
+      "methode": "POST",
+      "status": 200,
+      "startMs": 46903,
+      "ttfbMs": 2688,
+      "dauerMs": 2691,
+      "serverTimingTotalMs": 2564.47,
+      "traceIdPraefix": "c6fb748d"
+     },
+     {
+      "schritt": "cart/data",
+      "methode": "GET",
+      "status": 200,
+      "startMs": 49619,
+      "ttfbMs": 6964,
+      "dauerMs": 6968,
+      "serverTimingTotalMs": 6663.75,
+      "traceIdPraefix": "a62ecdb3"
+     },
+     {
+      "schritt": "cart/claim",
+      "methode": "POST",
+      "status": 200,
+      "startMs": 56840,
+      "ttfbMs": 3102,
+      "dauerMs": 3108,
+      "serverTimingTotalMs": 2595.34,
+      "traceIdPraefix": "66d82a96"
+     },
+     {
+      "schritt": "shopify:cart/add.js",
+      "methode": "POST",
+      "status": 200,
+      "startMs": 59961,
+      "ttfbMs": 964,
+      "dauerMs": 969
+     },
+     {
+      "schritt": "shopify:cart-seite",
+      "methode": "GET",
+      "status": 200,
+      "startMs": 61264,
+      "ttfbMs": 906,
+      "dauerMs": 937
+     }
+    ]
+   },
+   "serverEreignisse": [
+    {
+     "laenge": 1808,
+     "sha256": "79b4cc4dcf9b368467ea2cb6910ca1356256c37b909a2fc2033c40b60e320949",
+     "e": {
+      "at": "2026-11-17T14:32:31.142Z",
+      "v": 2,
+      "id": "0ff70b1c",
+      "r": "acrylic-drafts",
+      "st": 201,
+      "t": 4675.72,
+      "n": 24,
+      "el": [
+       1.96,
+       2906.65,
+       20
+      ],
+      "cpu": {
+       "available": 1,
+       "userMs": 6519.63,
+       "systemMs": 1143.38
+      },
+      "ru": {
+       "available": 1,
+       "unsupported": [],
+       "delta": {
+        "involuntaryContextSwitches": 167,
+        "voluntaryContextSwitches": 2757,
+        "fsRead": 16,
+        "fsWrite": 147776,
+        "majorPageFault": 0
+       }
+      },
+      "mem": [
+       2099273728,
+       1937002496,
+       1756346552,
+       819117824
+      ],
+      "gcS": {
+       "supported": 1,
+       "supplementPossible": 1,
+       "graceMs": 25
+      },
+      "gc": [
+       38,
+       274.52,
+       4675.93
+      ],
+      "rd": {
+       "coverage": "instrumented-sync-db-reads",
+       "calls": 12,
+       "failures": 0,
+       "rows": 11,
+       "durationMs": 400.23
+      },
+      "c": {
+       "registry_entries_returned": 1,
+       "product_document_bytes": 124820732,
+       "product_metadata_bytes": 8,
+       "request_bytes": 270753,
+       "response_bytes": 347
+      },
+      "s": [
+       [
+        "review_prepare",
+        3184.43,
+        4278.65,
+        625.8,
+        1,
+        0,
+        1,
+        0
+       ],
+       [
+        "review_validate",
+        1431.4,
+        1445.29,
+        136.43,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "review_zip",
+        726.57,
+        1416.38,
+        176.48,
+        1,
+        0,
+        1,
+        0
+       ],
+       [
+        "draft_persist",
+        538,
+        722.37,
+        161.16,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "product_revision_read",
+        384.96,
+        516.02,
+        193.27,
+        4,
+        4,
+        0,
+        0
+       ],
+       [
+        "customer_preview",
+        322.5,
+        646.69,
+        100.89,
+        1,
+        0,
+        1,
+        0
+       ],
+       [
+        "product_document_json",
+        318.41,
+        684.71,
+        117.32,
+        4,
+        4,
+        0,
+        0
+       ],
+       [
+        "model_build",
+        277.38,
+        246.79,
+        73.4,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "product_read",
+        204.72,
+        315.92,
+        92.57,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "session_binding",
+        186.71,
+        119.04,
+        66.48,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "reference_preview",
+        127.06,
+        2.52,
+        6.37,
+        1,
+        0,
+        1,
+        0
+       ],
+       [
+        "review_config",
+        87.04,
+        88.04,
+        17.71,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "review_sources",
+        14.98,
+        14.49,
+        0.43,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "registry_scope",
+        14.89,
+        5.81,
+        8.89,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "registry_scope_read",
+        14.79,
+        5.76,
+        8.88,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "body_read",
+        0.72,
+        0.87,
+        0,
+        1,
+        0,
+        1,
+        0
+       ],
+       [
+        "body_json",
+        0.58,
+        0.52,
+        0.07,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "product_row_read",
+        0.45,
+        0.22,
+        0.23,
+        4,
+        4,
+        0,
+        0
+       ],
+       [
+        "originals_zip",
+        0.37,
+        4.3,
+        0,
+        1,
+        0,
+        1,
+        0
+       ],
+       [
+        "registry_head_read",
+        0.17,
+        0,
+        0.16,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "registry_binding_read",
+        0.14,
+        0,
+        0.14,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "draft_row_read",
+        0.11,
+        4.08,
+        0,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "product_metadata_json",
+        0.05,
+        0.05,
+        0.01,
+        4,
+        4,
+        0,
+        0
+       ],
+       [
+        "response_json",
+        0.04,
+        0.03,
+        0.01,
+        1,
+        1,
+        0,
+        0
+       ]
+      ]
+     }
+    },
+    {
+     "laenge": 3170,
+     "sha256": "8748f4a0e7177579e0c374a3aec510523e3025da8de69a6b0de762f4dda7bbe3",
+     "e": {
+      "at": "2026-11-17T14:32:35.986Z",
+      "v": 2,
+      "id": "c6fb748d",
+      "r": "theme-cart",
+      "st": 200,
+      "t": 2564.47,
+      "n": 47,
+      "el": [
+       1327.5,
+       2558.53,
+       1
+      ],
+      "cpu": {
+       "available": 1,
+       "userMs": 3231.01,
+       "systemMs": 1059.95
+      },
+      "ru": {
+       "available": 1,
+       "unsupported": [],
+       "delta": {
+        "involuntaryContextSwitches": 76,
+        "voluntaryContextSwitches": 1256,
+        "fsRead": 0,
+        "fsWrite": 160,
+        "majorPageFault": 0
+       }
+      },
+      "mem": [
+       1830367232,
+       1758220288,
+       774444240,
+       740297640
+      ],
+      "gcS": {
+       "supported": 1,
+       "supplementPossible": 1,
+       "graceMs": 25
+      },
+      "gc": [
+       12,
+       244.31,
+       2564.54
+      ],
+      "rd": {
+       "coverage": "instrumented-sync-db-reads",
+       "calls": 34,
+       "failures": 0,
+       "rows": 33911,
+       "durationMs": 809.53
+      },
+      "c": {
+       "registry_entries_returned": 3,
+       "product_document_bytes": 124820732,
+       "product_metadata_bytes": 8,
+       "request_bytes": 91,
+       "review_rows_returned": 4,
+       "review_manifest_bytes": 8652,
+       "binding_candidates_examined": 33882,
+       "registry_document_bytes": 124820732,
+       "registry_metadata_bytes": 4,
+       "offer_resolution_calls": 1,
+       "offer_rows_returned": 0,
+       "review_package_bytes": 37393764,
+       "checkout_image_started": 1,
+       "response_bytes": 602
+      },
+      "s": [
+       [
+        "cart_prepare",
+        1464.91,
+        1629.56,
+        638.96,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "bound_offer",
+        1052.29,
+        648.9,
+        430,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "offer_resolve",
+        1035.96,
+        643.32,
+        421.93,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "registry_document_digest",
+        825.01,
+        1337.2,
+        402.75,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "resolve_registry",
+        712.37,
+        437.07,
+        291.94,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "variant_binding",
+        684.46,
+        1288.28,
+        292.14,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "registry_canonical",
+        637.43,
+        1220.36,
+        333.05,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "product_revision_read",
+        322.93,
+        130.28,
+        190.8,
+        4,
+        4,
+        0,
+        0
+       ],
+       [
+        "registry_stamp",
+        315.33,
+        220.12,
+        93.32,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "registry_product_read",
+        280.3,
+        140.81,
+        138.07,
+        4,
+        4,
+        0,
+        0
+       ],
+       [
+        "registry_sha256",
+        187.35,
+        116.69,
+        69.66,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "product_document_json",
+        157.09,
+        148.96,
+        21.51,
+        4,
+        4,
+        0,
+        0
+       ],
+       [
+        "resolve_product_fixed",
+        155.71,
+        93.23,
+        61.5,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "resolve_product_current",
+        152.91,
+        109.82,
+        56.64,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "session_binding",
+        146.8,
+        84.08,
+        61.52,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "registry_raw_digest",
+        132.81,
+        105.3,
+        26.78,
+        4,
+        4,
+        0,
+        0
+       ],
+       [
+        "variant_candidates",
+        123.47,
+        133.85,
+        15.53,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "review_package",
+        120.8,
+        228.32,
+        68.76,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "review_snapshot_read",
+        101.66,
+        18.79,
+        82.94,
+        4,
+        4,
+        0,
+        0
+       ],
+       [
+        "intake_bindings_read",
+        65.86,
+        54.56,
+        10.91,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "registry_document_json",
+        58.46,
+        54.22,
+        3.85,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "registry_scope",
+        36.35,
+        18.02,
+        18.81,
+        3,
+        3,
+        0,
+        0
+       ],
+       [
+        "registry_scope_read",
+        36.27,
+        17.97,
+        18.81,
+        3,
+        3,
+        0,
+        0
+       ],
+       [
+        "offer_create",
+        15.98,
+        5.26,
+        8.04,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "resolve_review",
+        14.23,
+        2.4,
+        11.75,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "review_read",
+        13.11,
+        2.83,
+        10.9,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "cart_assign",
+        2.46,
+        1.12,
+        0.04,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "product_row_read",
+        1.27,
+        1.23,
+        0.03,
+        4,
+        4,
+        0,
+        0
+       ],
+       [
+        "registry_binding_read",
+        0.58,
+        0.46,
+        0.13,
+        3,
+        3,
+        0,
+        0
+       ],
+       [
+        "registry_schema",
+        0.57,
+        0.57,
+        0.01,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "registry_head_read",
+        0.5,
+        0.4,
+        0.1,
+        3,
+        3,
+        0,
+        0
+       ],
+       [
+        "review_preview_copy",
+        0.26,
+        0.21,
+        0.06,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "body_read",
+        0.25,
+        0,
+        0.25,
+        1,
+        0,
+        1,
+        0
+       ],
+       [
+        "resolve_assert_review",
+        0.22,
+        0.18,
+        0.05,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "customer_image_url",
+        0.22,
+        0.17,
+        0.05,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "resolve_draft",
+        0.17,
+        0.33,
+        0,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "draft_read",
+        0.15,
+        0.09,
+        0.07,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "draft_row_read",
+        0.14,
+        0.12,
+        0.03,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "review_manifest_json",
+        0.14,
+        0.2,
+        0.05,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "offer_existing_read",
+        0.09,
+        0.1,
+        0,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "intake_binding_read",
+        0.08,
+        0.06,
+        0.02,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "intake_pricing_read",
+        0.06,
+        0.05,
+        0.01,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "intake_selection_read",
+        0.06,
+        0.06,
+        0,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "registry_pragma_read",
+        0.03,
+        0.03,
+        0,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "product_metadata_json",
+        0.02,
+        0.02,
+        0,
+        4,
+        4,
+        0,
+        0
+       ],
+       [
+        "body_json",
+        0.02,
+        0,
+        0.03,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "response_json",
+        0.02,
+        0.02,
+        0,
+        1,
+        1,
+        0,
+        0
+       ]
+      ]
+     }
+    },
+    {
+     "laenge": 831,
+     "sha256": "3bb22c1d753c74122bea5322be503b8197b73a2c1cf42a8f34d1b5a29251f174",
+     "e": {
+      "at": "2026-11-17T14:32:38.542Z",
+      "v": 2,
+      "id": "dd48a026",
+      "p": "c6fb748d",
+      "r": "checkout-image",
+      "st": 200,
+      "t": 5754.17,
+      "n": 5,
+      "el": [
+       2550.14,
+       1628.44,
+       182
+      ],
+      "cpu": {
+       "available": 1,
+       "userMs": 3712.46,
+       "systemMs": 1069.64
+      },
+      "ru": {
+       "available": 1,
+       "unsupported": [],
+       "delta": {
+        "involuntaryContextSwitches": 124,
+        "voluntaryContextSwitches": 900,
+        "fsRead": 0,
+        "fsWrite": 24,
+        "majorPageFault": 0
+       }
+      },
+      "mem": [
+       1758220288,
+       1711296512,
+       739924888,
+       705054504
+      ],
+      "gcS": {
+       "supported": 1,
+       "supplementPossible": 1,
+       "graceMs": 25
+      },
+      "gc": [
+       11,
+       167.1,
+       5754.2
+      ],
+      "rd": {
+       "coverage": "instrumented-sync-db-reads",
+       "calls": 0,
+       "failures": 0,
+       "rows": 0,
+       "durationMs": 0
+      },
+      "c": {},
+      "s": [
+       [
+        "shopify_poll_wait",
+        2250.52,
+        1593.48,
+        264.85,
+        3,
+        0,
+        3,
+        0
+       ],
+       [
+        "access_token",
+        1950.17,
+        1523.44,
+        709.97,
+        5,
+        0,
+        5,
+        0
+       ],
+       [
+        "shopify_lookup",
+        972.2,
+        376.85,
+        68.43,
+        1,
+        0,
+        1,
+        0
+       ],
+       [
+        "shopify_poll",
+        360.6,
+        212.91,
+        25.75,
+        3,
+        0,
+        3,
+        0
+       ],
+       [
+        "shopify_create",
+        219.42,
+        4.51,
+        0.42,
+        1,
+        0,
+        1,
+        0
+       ]
+      ]
+     }
+    },
+    {
+     "laenge": 3055,
+     "sha256": "be7c08c588f3561f82dc1f34c0d274d1d42fd9509b14f03d1a7c780fa1484d1d",
+     "e": {
+      "at": "2026-11-17T14:32:38.853Z",
+      "v": 2,
+      "id": "a62ecdb3",
+      "r": "cart/data",
+      "st": 200,
+      "t": 6663.75,
+      "n": 45,
+      "el": [
+       2564.82,
+       1628.44,
+       168
+      ],
+      "cpu": {
+       "available": 1,
+       "userMs": 5255.18,
+       "systemMs": 1585.91
+      },
+      "ru": {
+       "available": 1,
+       "unsupported": [],
+       "delta": {
+        "involuntaryContextSwitches": 175,
+        "voluntaryContextSwitches": 1765,
+        "fsRead": 0,
+        "fsWrite": 8,
+        "majorPageFault": 0
+       }
+      },
+      "mem": [
+       1760702464,
+       1867616256,
+       740927328,
+       960644440
+      ],
+      "gcS": {
+       "supported": 1,
+       "supplementPossible": 1,
+       "graceMs": 25
+      },
+      "gc": [
+       17,
+       240.67,
+       6663.8
+      ],
+      "rd": {
+       "coverage": "instrumented-sync-db-reads",
+       "calls": 48,
+       "failures": 0,
+       "rows": 44,
+       "durationMs": 1110.71
+      },
+      "c": {
+       "registry_entries_returned": 4,
+       "product_document_bytes": 218436281,
+       "product_metadata_bytes": 14,
+       "offer_resolution_calls": 2,
+       "registry_document_bytes": 124820732,
+       "registry_metadata_bytes": 4,
+       "review_rows_returned": 5,
+       "review_manifest_bytes": 11536,
+       "offer_rows_returned": 2,
+       "review_package_bytes": 37393764,
+       "checkout_image_pending": 1,
+       "response_bytes": 1543
+      },
+      "s": [
+       [
+        "checkout_image_wait",
+        3811.24,
+        2223.87,
+        359.66,
+        1,
+        0,
+        1,
+        0
+       ],
+       [
+        "resolve_registry",
+        1441.68,
+        1269.91,
+        630.47,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "cart_prepare",
+        1372.95,
+        1291.15,
+        621.45,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "bound_offer",
+        1166.1,
+        696.53,
+        495.51,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "offer_resolve",
+        1134.44,
+        692.93,
+        467.69,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "cart_revalidate",
+        1080.53,
+        1475.88,
+        472.81,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "registry_document_digest",
+        848.27,
+        870.47,
+        435.44,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "product_revision_read",
+        636.12,
+        612.03,
+        342.94,
+        7,
+        7,
+        0,
+        0
+       ],
+       [
+        "registry_canonical",
+        623.47,
+        333.57,
+        336.79,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "resolve_product_fixed",
+        394.58,
+        644.88,
+        156.58,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "resolve_product_current",
+        348.45,
+        246.99,
+        130.4,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "product_document_json",
+        333.82,
+        381.79,
+        65.28,
+        7,
+        7,
+        0,
+        0
+       ],
+       [
+        "registry_stamp",
+        314.18,
+        219.34,
+        93.11,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "registry_product_read",
+        304.07,
+        146.67,
+        156.43,
+        4,
+        4,
+        0,
+        0
+       ],
+       [
+        "session_binding",
+        273.67,
+        182.92,
+        89.21,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "registry_sha256",
+        224.61,
+        536.8,
+        98.62,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "registry_raw_digest",
+        123.97,
+        97.6,
+        25.65,
+        4,
+        4,
+        0,
+        0
+       ],
+       [
+        "review_snapshot_read",
+        121.59,
+        13.6,
+        107.14,
+        5,
+        5,
+        0,
+        0
+       ],
+       [
+        "review_package",
+        119.14,
+        207.59,
+        79.73,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "registry_document_json",
+        63.15,
+        59.06,
+        3.76,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "registry_scope",
+        46.58,
+        27.81,
+        18.33,
+        4,
+        4,
+        0,
+        0
+       ],
+       [
+        "registry_scope_read",
+        46.48,
+        27.75,
+        18.31,
+        4,
+        4,
+        0,
+        0
+       ],
+       [
+        "offer_create",
+        31.43,
+        3.4,
+        27.8,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "resolve_review",
+        29.27,
+        6.17,
+        22.93,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "registry_binding_read",
+        0.74,
+        0.71,
+        0.19,
+        4,
+        4,
+        0,
+        0
+       ],
+       [
+        "product_row_read",
+        0.69,
+        2.49,
+        0.14,
+        7,
+        7,
+        0,
+        0
+       ],
+       [
+        "registry_head_read",
+        0.58,
+        0.47,
+        0.13,
+        4,
+        4,
+        0,
+        0
+       ],
+       [
+        "proxy_verify",
+        0.51,
+        0.48,
+        0,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "resolve_draft",
+        0.42,
+        0.38,
+        0.04,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "review_preview_copy",
+        0.3,
+        0.24,
+        0.07,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "cart_assign",
+        0.3,
+        0.23,
+        0.07,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "draft_row_read",
+        0.15,
+        0.14,
+        0.02,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "intake_binding_read",
+        0.15,
+        0.1,
+        0.05,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "offer_existing_read",
+        0.13,
+        0,
+        0.13,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "review_manifest_json",
+        0.12,
+        0.1,
+        0.03,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "resolve_assert_review",
+        0.12,
+        0.11,
+        0.02,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "intake_pricing_read",
+        0.11,
+        0.09,
+        0.02,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "intake_selection_read",
+        0.1,
+        0.04,
+        0.06,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "offer_token_read",
+        0.1,
+        0,
+        0.1,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "customer_image_url",
+        0.1,
+        0.08,
+        0.02,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "offer_pricing_read",
+        0.08,
+        0.08,
+        0,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "product_metadata_json",
+        0.05,
+        0.05,
+        0,
+        7,
+        7,
+        0,
+        0
+       ],
+       [
+        "registry_schema",
+        0.04,
+        0.04,
+        0,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "response_json",
+        0.04,
+        0.04,
+        0,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "registry_pragma_read",
+        0.02,
+        0.02,
+        0,
+        2,
+        2,
+        0,
+        0
+       ]
+      ]
+     }
+    },
+    {
+     "laenge": 3157,
+     "sha256": "6c19bad9f5f4057403483b4f77363a2e1c1492fda3cfaafe6b85498d325e9bee",
+     "e": {
+      "at": "2026-11-17T14:32:46.281Z",
+      "v": 2,
+      "id": "66d82a96",
+      "r": "cart/claim",
+      "st": 200,
+      "t": 2595.34,
+      "n": 48,
+      "el": [
+       1211.11,
+       2592.08,
+       1
+      ],
+      "cpu": {
+       "available": 1,
+       "userMs": 2419.84,
+       "systemMs": 1088.02
+      },
+      "ru": {
+       "available": 1,
+       "unsupported": [],
+       "delta": {
+        "involuntaryContextSwitches": 59,
+        "voluntaryContextSwitches": 941,
+        "fsRead": 0,
+        "fsWrite": 24,
+        "majorPageFault": 0
+       }
+      },
+      "mem": [
+       1867616256,
+       2394435584,
+       961117808,
+       1446106160
+      ],
+      "gcS": {
+       "supported": 1,
+       "supplementPossible": 1,
+       "graceMs": 25
+      },
+      "gc": [
+       10,
+       145.55,
+       2595.42
+      ],
+      "rd": {
+       "coverage": "instrumented-sync-db-reads",
+       "calls": 45,
+       "failures": 0,
+       "rows": 41,
+       "durationMs": 1017.65
+      },
+      "c": {
+       "registry_entries_returned": 3,
+       "product_document_bytes": 187231098,
+       "product_metadata_bytes": 12,
+       "offer_resolution_calls": 2,
+       "registry_document_bytes": 124820732,
+       "registry_metadata_bytes": 4,
+       "review_rows_returned": 5,
+       "review_manifest_bytes": 11536,
+       "offer_rows_returned": 2,
+       "review_package_bytes": 37393764,
+       "response_bytes": 16
+      },
+      "s": [
+       [
+        "resolve_registry",
+        1465.18,
+        1206.54,
+        635.25,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "cart_claim",
+        1166,
+        1040.06,
+        472.78,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "claim_revalidate",
+        1163.49,
+        1039.29,
+        472.69,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "cart_prepare",
+        1159.8,
+        1201.01,
+        523.96,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "bound_offer",
+        961.12,
+        576.53,
+        407.74,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "offer_resolve",
+        936.21,
+        574.69,
+        384.78,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "registry_document_digest",
+        822.01,
+        465.08,
+        410.65,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "registry_canonical",
+        603.99,
+        335.55,
+        323.36,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "product_revision_read",
+        513.88,
+        253.92,
+        256.47,
+        6,
+        6,
+        0,
+        0
+       ],
+       [
+        "registry_product_read",
+        339.49,
+        445.77,
+        186.25,
+        4,
+        4,
+        0,
+        0
+       ],
+       [
+        "resolve_product_current",
+        307.39,
+        198.07,
+        107.01,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "resolve_product_fixed",
+        296.61,
+        203.32,
+        91.11,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "registry_stamp",
+        296.23,
+        375.39,
+        84.68,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "product_document_json",
+        228.42,
+        202.55,
+        26.08,
+        6,
+        6,
+        0,
+        0
+       ],
+       [
+        "registry_sha256",
+        217.85,
+        129.45,
+        87.27,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "session_binding",
+        132.77,
+        89.71,
+        42.74,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "registry_raw_digest",
+        129.48,
+        104.59,
+        23.92,
+        4,
+        4,
+        0,
+        0
+       ],
+       [
+        "review_package",
+        116.83,
+        253.75,
+        80.74,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "review_snapshot_read",
+        112.19,
+        15.37,
+        96.05,
+        5,
+        5,
+        0,
+        0
+       ],
+       [
+        "registry_document_json",
+        69.29,
+        64.86,
+        3.89,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "registry_scope",
+        50.22,
+        62.41,
+        16.06,
+        3,
+        3,
+        0,
+        0
+       ],
+       [
+        "registry_scope_read",
+        50.12,
+        62.35,
+        16.04,
+        3,
+        3,
+        0,
+        0
+       ],
+       [
+        "resolve_review",
+        29.69,
+        5.48,
+        23.99,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "offer_create",
+        24.7,
+        1.76,
+        22.82,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "claim_ledger",
+        2.41,
+        0.69,
+        0.07,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "registry_binding_read",
+        0.62,
+        0.82,
+        0.11,
+        3,
+        3,
+        0,
+        0
+       ],
+       [
+        "product_row_read",
+        0.51,
+        0.59,
+        0.03,
+        6,
+        6,
+        0,
+        0
+       ],
+       [
+        "resolve_draft",
+        0.47,
+        0.32,
+        0.02,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "registry_head_read",
+        0.44,
+        0.34,
+        0.1,
+        3,
+        3,
+        0,
+        0
+       ],
+       [
+        "cart_assign",
+        0.28,
+        3.42,
+        0.84,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "review_preview_copy",
+        0.27,
+        0.21,
+        0.06,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "proxy_verify",
+        0.24,
+        0.19,
+        0.05,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "draft_row_read",
+        0.14,
+        0.13,
+        0.02,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "resolve_assert_review",
+        0.13,
+        0.1,
+        0.03,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "review_manifest_json",
+        0.11,
+        0.09,
+        0.02,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "intake_binding_read",
+        0.11,
+        0.09,
+        0.02,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "claim_revision_read",
+        0.1,
+        0.1,
+        0,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "offer_existing_read",
+        0.09,
+        0.08,
+        0,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "customer_image_url",
+        0.09,
+        0.07,
+        0.02,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "intake_pricing_read",
+        0.08,
+        0.07,
+        0.02,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "intake_selection_read",
+        0.08,
+        0.06,
+        0.02,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "offer_pricing_read",
+        0.05,
+        0.04,
+        0.01,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "registry_schema",
+        0.04,
+        0.04,
+        0.01,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "offer_token_read",
+        0.04,
+        0.04,
+        0,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "claim_transfer_read",
+        0.04,
+        0.05,
+        0,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "product_metadata_json",
+        0.03,
+        0.02,
+        0,
+        6,
+        6,
+        0,
+        0
+       ],
+       [
+        "registry_pragma_read",
+        0.02,
+        0.02,
+        0,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "response_json",
+        0.02,
+        0.03,
+        0,
+        1,
+        1,
+        0,
+        0
+       ]
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "lauf": 2,
+   "stand": "e447a859 (Zeitprotokoll Version 2)",
+   "browser": {
+    "profil": {
+     "viewport": "390x844",
+     "cpuDrosselung": 4,
+     "netzDrosselung": false,
+     "handy": true
+    },
+    "marken": {
+     "seite-geladen": 4045,
+     "klick-personalisieren": 7058,
+     "konfi-bedienbar": 14732,
+     "warenkorb-klick": 17719,
+     "warenkorb-final-klick": 30038,
+     "warenkorb-fertig": 51764
+    },
+    "klickBisWarenkorbSeiteGeladenMs": 21726,
+    "klickBisCartAddMs": 18888,
+    "klickBisNavigationMs": 20089,
+    "konfiBedienbarMs": 7674,
+    "warenkorbPruefung": {
+     "positionen": 1,
+     "menge": 1,
+     "zeilenpreisCent": 1499,
+     "summeCent": 1499,
+     "bildVonShopifyCdn": true,
+     "bildGeladen": true,
+     "anzahlEigenschaften": 14
+    },
+    "kette": [
+     {
+      "schritt": "acrylic-drafts",
+      "methode": "POST",
+      "status": 201,
+      "startMs": 31047,
+      "ttfbMs": 5610,
+      "dauerMs": 5630,
+      "serverTimingTotalMs": 4706.95,
+      "traceIdPraefix": "693ff6b5"
+     },
+     {
+      "schritt": "theme-cart",
+      "methode": "POST",
+      "status": 200,
+      "startMs": 36670,
+      "ttfbMs": 2395,
+      "dauerMs": 2401,
+      "serverTimingTotalMs": 2262.91,
+      "traceIdPraefix": "0e97fbeb"
+     },
+     {
+      "schritt": "cart/data",
+      "methode": "GET",
+      "status": 200,
+      "startMs": 39084,
+      "ttfbMs": 5671,
+      "dauerMs": 5673,
+      "serverTimingTotalMs": 5376.9,
+      "traceIdPraefix": "17573ac0"
+     },
+     {
+      "schritt": "cart/claim",
+      "methode": "POST",
+      "status": 200,
+      "startMs": 44906,
+      "ttfbMs": 3254,
+      "dauerMs": 3261,
+      "serverTimingTotalMs": 2777.69,
+      "traceIdPraefix": "601a1a56"
+     },
+     {
+      "schritt": "shopify:cart/add.js",
+      "methode": "POST",
+      "status": 200,
+      "startMs": 48181,
+      "ttfbMs": 714,
+      "dauerMs": 718
+     },
+     {
+      "schritt": "shopify:cart-seite",
+      "methode": "GET",
+      "status": 200,
+      "startMs": 49154,
+      "ttfbMs": 736,
+      "dauerMs": 754
+     }
+    ]
+   },
+   "serverEreignisse": [
+    {
+     "laenge": 1803,
+     "sha256": "8a39669ea16a51e71fa4acf2d0592c1241f7dc040755199e62410628aacb56f8",
+     "e": {
+      "at": "2026-11-17T14:33:28.050Z",
+      "v": 2,
+      "id": "693ff6b5",
+      "r": "acrylic-drafts",
+      "st": 201,
+      "t": 4706.95,
+      "n": 24,
+      "el": [
+       1.19,
+       2917.14,
+       23
+      ],
+      "cpu": {
+       "available": 1,
+       "userMs": 6540.53,
+       "systemMs": 1077.78
+      },
+      "ru": {
+       "available": 1,
+       "unsupported": [],
+       "delta": {
+        "involuntaryContextSwitches": 141,
+        "voluntaryContextSwitches": 1566,
+        "fsRead": 8,
+        "fsWrite": 147752,
+        "majorPageFault": 0
+       }
+      },
+      "mem": [
+       2212352000,
+       1966940160,
+       1601488456,
+       796210648
+      ],
+      "gcS": {
+       "supported": 1,
+       "supplementPossible": 1,
+       "graceMs": 25
+      },
+      "gc": [
+       39,
+       319.54,
+       4707.13
+      ],
+      "rd": {
+       "coverage": "instrumented-sync-db-reads",
+       "calls": 12,
+       "failures": 0,
+       "rows": 11,
+       "durationMs": 408.03
+      },
+      "c": {
+       "registry_entries_returned": 1,
+       "product_document_bytes": 124820732,
+       "product_metadata_bytes": 8,
+       "request_bytes": 270753,
+       "response_bytes": 347
+      },
+      "s": [
+       [
+        "review_prepare",
+        3238.29,
+        4325.97,
+        595.06,
+        1,
+        0,
+        1,
+        0
+       ],
+       [
+        "review_validate",
+        1443.5,
+        1482.73,
+        106.36,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "review_zip",
+        702,
+        1414.59,
+        169.83,
+        1,
+        0,
+        1,
+        0
+       ],
+       [
+        "draft_persist",
+        541.17,
+        750.43,
+        131.29,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "product_revision_read",
+        392.77,
+        490.6,
+        204.95,
+        4,
+        4,
+        0,
+        0
+       ],
+       [
+        "customer_preview",
+        378.83,
+        669.26,
+        81.09,
+        1,
+        0,
+        1,
+        0
+       ],
+       [
+        "model_build",
+        300.51,
+        252.4,
+        86.28,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "product_document_json",
+        294.3,
+        645.55,
+        101.67,
+        4,
+        4,
+        0,
+        0
+       ],
+       [
+        "product_read",
+        283.3,
+        908.47,
+        133.33,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "session_binding",
+        189.38,
+        194.32,
+        82.91,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "review_config",
+        120.97,
+        136.52,
+        22.53,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "reference_preview",
+        116.49,
+        3.55,
+        6.1,
+        1,
+        0,
+        1,
+        0
+       ],
+       [
+        "registry_scope",
+        14.63,
+        9.5,
+        4.97,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "registry_scope_read",
+        14.59,
+        9.48,
+        4.97,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "review_sources",
+        8.67,
+        8.49,
+        0.14,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "body_read",
+        0.54,
+        2.06,
+        0.03,
+        1,
+        0,
+        1,
+        0
+       ],
+       [
+        "body_json",
+        0.53,
+        3.52,
+        0,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "product_row_read",
+        0.41,
+        0.43,
+        0.05,
+        4,
+        4,
+        0,
+        0
+       ],
+       [
+        "originals_zip",
+        0.24,
+        0.19,
+        0.05,
+        1,
+        0,
+        1,
+        0
+       ],
+       [
+        "registry_head_read",
+        0.19,
+        0.19,
+        0,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "registry_binding_read",
+        0.1,
+        0.11,
+        0,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "draft_row_read",
+        0.1,
+        0.08,
+        0.02,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "response_json",
+        0.04,
+        0.04,
+        0,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "product_metadata_json",
+        0.03,
+        0.03,
+        0,
+        4,
+        4,
+        0,
+        0
+       ]
+      ]
+     }
+    },
+    {
+     "laenge": 3160,
+     "sha256": "eb49f7367559d9cd246b159f5e614f6bd4cc71b30dfebcef5997c72c237440ea",
+     "e": {
+      "at": "2026-11-17T14:33:32.905Z",
+      "v": 2,
+      "id": "0e97fbeb",
+      "r": "theme-cart",
+      "st": 200,
+      "t": 2262.91,
+      "n": 47,
+      "el": [
+       1288.7,
+       2243.95,
+       1
+      ],
+      "cpu": {
+       "available": 1,
+       "userMs": 2697.79,
+       "systemMs": 946.84
+      },
+      "ru": {
+       "available": 1,
+       "unsupported": [],
+       "delta": {
+        "involuntaryContextSwitches": 54,
+        "voluntaryContextSwitches": 1360,
+        "fsRead": 0,
+        "fsWrite": 176,
+        "majorPageFault": 0
+       }
+      },
+      "mem": [
+       1860370432,
+       2532872192,
+       775872032,
+       1508324776
+      ],
+      "gcS": {
+       "supported": 1,
+       "supplementPossible": 1,
+       "graceMs": 25
+      },
+      "gc": [
+       10,
+       124.66,
+       2262.97
+      ],
+      "rd": {
+       "coverage": "instrumented-sync-db-reads",
+       "calls": 34,
+       "failures": 0,
+       "rows": 33911,
+       "durationMs": 762.03
+      },
+      "c": {
+       "registry_entries_returned": 3,
+       "product_document_bytes": 124820732,
+       "product_metadata_bytes": 8,
+       "request_bytes": 91,
+       "review_rows_returned": 4,
+       "review_manifest_bytes": 8652,
+       "binding_candidates_examined": 33882,
+       "registry_document_bytes": 124820732,
+       "registry_metadata_bytes": 4,
+       "offer_resolution_calls": 1,
+       "offer_rows_returned": 0,
+       "review_package_bytes": 37393764,
+       "checkout_image_started": 1,
+       "response_bytes": 602
+      },
+      "s": [
+       [
+        "cart_prepare",
+        1114.71,
+        1198.38,
+        486.43,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "bound_offer",
+        895.76,
+        531.13,
+        386.1,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "offer_resolve",
+        879.57,
+        529.02,
+        375.59,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "registry_document_digest",
+        750.33,
+        785.85,
+        391.15,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "variant_binding",
+        687.33,
+        805.68,
+        289.06,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "resolve_registry",
+        618.89,
+        366.44,
+        279.13,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "registry_canonical",
+        558.06,
+        323.32,
+        298.98,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "product_revision_read",
+        317.67,
+        410.22,
+        174.53,
+        4,
+        4,
+        0,
+        0
+       ],
+       [
+        "registry_stamp",
+        290.48,
+        196.6,
+        92.4,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "registry_product_read",
+        250.81,
+        125.65,
+        123.98,
+        4,
+        4,
+        0,
+        0
+       ],
+       [
+        "registry_sha256",
+        192.01,
+        462.35,
+        92.16,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "product_document_json",
+        187.74,
+        249.43,
+        48.93,
+        4,
+        4,
+        0,
+        0
+       ],
+       [
+        "session_binding",
+        136.49,
+        82.54,
+        53.76,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "resolve_product_fixed",
+        124.63,
+        83.27,
+        40.69,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "registry_raw_digest",
+        122.67,
+        92.28,
+        29.86,
+        4,
+        4,
+        0,
+        0
+       ],
+       [
+        "resolve_product_current",
+        121.94,
+        77.39,
+        43.66,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "variant_candidates",
+        107.93,
+        98.71,
+        13,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "review_package",
+        107.91,
+        253.83,
+        62.52,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "review_snapshot_read",
+        90.48,
+        8.56,
+        81.49,
+        4,
+        4,
+        0,
+        0
+       ],
+       [
+        "registry_document_json",
+        90.34,
+        83.82,
+        15.55,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "intake_bindings_read",
+        68.23,
+        55.95,
+        12.01,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "registry_scope",
+        32.85,
+        21.51,
+        11.95,
+        3,
+        3,
+        0,
+        0
+       ],
+       [
+        "registry_scope_read",
+        32.78,
+        21.48,
+        11.94,
+        3,
+        3,
+        0,
+        0
+       ],
+       [
+        "offer_create",
+        15.77,
+        1.71,
+        10.49,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "resolve_review",
+        13.47,
+        1.37,
+        12.05,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "review_read",
+        13.07,
+        1.2,
+        11.82,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "cart_assign",
+        2.22,
+        8.7,
+        0.2,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "product_row_read",
+        0.73,
+        0.69,
+        0.04,
+        4,
+        4,
+        0,
+        0
+       ],
+       [
+        "registry_binding_read",
+        0.59,
+        0.47,
+        0.13,
+        3,
+        3,
+        0,
+        0
+       ],
+       [
+        "registry_head_read",
+        0.53,
+        0.45,
+        0.08,
+        3,
+        3,
+        0,
+        0
+       ],
+       [
+        "review_preview_copy",
+        0.24,
+        0.2,
+        0.05,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "body_read",
+        0.23,
+        0.23,
+        0,
+        1,
+        0,
+        1,
+        0
+       ],
+       [
+        "resolve_assert_review",
+        0.22,
+        0.2,
+        0,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "resolve_draft",
+        0.21,
+        0.17,
+        0.04,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "draft_read",
+        0.2,
+        0.2,
+        0,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "draft_row_read",
+        0.17,
+        0.16,
+        0.02,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "registry_schema",
+        0.15,
+        0.12,
+        0.03,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "customer_image_url",
+        0.15,
+        0.15,
+        0,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "review_manifest_json",
+        0.12,
+        0.1,
+        0.03,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "offer_existing_read",
+        0.09,
+        0,
+        0.09,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "intake_binding_read",
+        0.07,
+        0.08,
+        0,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "intake_pricing_read",
+        0.05,
+        0.04,
+        0.01,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "intake_selection_read",
+        0.05,
+        0.04,
+        0.01,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "product_metadata_json",
+        0.03,
+        0.02,
+        0,
+        4,
+        4,
+        0,
+        0
+       ],
+       [
+        "body_json",
+        0.03,
+        0.03,
+        0,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "registry_pragma_read",
+        0.03,
+        0.02,
+        0,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "response_json",
+        0.02,
+        0.01,
+        0,
+        1,
+        1,
+        0,
+        0
+       ]
+      ]
+     }
+    },
+    {
+     "laenge": 830,
+     "sha256": "1844ade1e1c05feefe1e7be30ee4b7761e6886b2cd5e430248d816c863dce953",
+     "e": {
+      "at": "2026-11-17T14:33:35.167Z",
+      "v": 2,
+      "id": "adcea48d",
+      "p": "0e97fbeb",
+      "r": "checkout-image",
+      "st": 200,
+      "t": 4531.05,
+      "n": 5,
+      "el": [
+       2243.95,
+       1398.8,
+       129
+      ],
+      "cpu": {
+       "available": 1,
+       "userMs": 3875.27,
+       "systemMs": 1155.5
+      },
+      "ru": {
+       "available": 1,
+       "unsupported": [],
+       "delta": {
+        "involuntaryContextSwitches": 104,
+        "voluntaryContextSwitches": 852,
+        "fsRead": 0,
+        "fsWrite": 24,
+        "majorPageFault": 0
+       }
+      },
+      "mem": [
+       2532687872,
+       1715634176,
+       1508262000,
+       706386720
+      ],
+      "gcS": {
+       "supported": 1,
+       "supplementPossible": 1,
+       "graceMs": 25
+      },
+      "gc": [
+       11,
+       230.13,
+       4531.08
+      ],
+      "rd": {
+       "coverage": "instrumented-sync-db-reads",
+       "calls": 0,
+       "failures": 0,
+       "rows": 0,
+       "durationMs": 0
+      },
+      "c": {},
+      "s": [
+       [
+        "shopify_poll_wait",
+        2257.47,
+        1705.53,
+        299.43,
+        3,
+        0,
+        3,
+        0
+       ],
+       [
+        "shopify_lookup",
+        1709.22,
+        1645.79,
+        722.35,
+        1,
+        0,
+        1,
+        0
+       ],
+       [
+        "shopify_poll",
+        365.08,
+        107.3,
+        27.92,
+        3,
+        0,
+        3,
+        0
+       ],
+       [
+        "shopify_create",
+        197.3,
+        409.83,
+        102.81,
+        1,
+        0,
+        1,
+        0
+       ],
+       [
+        "access_token",
+        1.1,
+        4.03,
+        1.02,
+        5,
+        0,
+        5,
+        0
+       ]
+      ]
+     }
+    },
+    {
+     "laenge": 3045,
+     "sha256": "fd10e7ea477f7cd8ac5a7a47d01140f375ae2082f388bd9b9698531b9f977918",
+     "e": {
+      "at": "2026-11-17T14:33:35.470Z",
+      "v": 2,
+      "id": "17573ac0",
+      "r": "cart/data",
+      "st": 200,
+      "t": 5376.9,
+      "n": 45,
+      "el": [
+       2250.24,
+       1398.8,
+       118
+      ],
+      "cpu": {
+       "available": 1,
+       "userMs": 5099.04,
+       "systemMs": 1532
+      },
+      "ru": {
+       "available": 1,
+       "unsupported": [],
+       "delta": {
+        "involuntaryContextSwitches": 140,
+        "voluntaryContextSwitches": 1634,
+        "fsRead": 0,
+        "fsWrite": 0,
+        "majorPageFault": 0
+       }
+      },
+      "mem": [
+       1788223488,
+       2106896384,
+       741759992,
+       1209356536
+      ],
+      "gcS": {
+       "supported": 1,
+       "supplementPossible": 1,
+       "graceMs": 25
+      },
+      "gc": [
+       15,
+       217.66,
+       5376.97
+      ],
+      "rd": {
+       "coverage": "instrumented-sync-db-reads",
+       "calls": 48,
+       "failures": 0,
+       "rows": 44,
+       "durationMs": 945.85
+      },
+      "c": {
+       "registry_entries_returned": 4,
+       "product_document_bytes": 218436281,
+       "product_metadata_bytes": 14,
+       "offer_resolution_calls": 2,
+       "registry_document_bytes": 124820732,
+       "registry_metadata_bytes": 4,
+       "review_rows_returned": 5,
+       "review_manifest_bytes": 11536,
+       "offer_rows_returned": 2,
+       "review_package_bytes": 37393764,
+       "checkout_image_pending": 1,
+       "response_bytes": 1543
+      },
+      "s": [
+       [
+        "checkout_image_wait",
+        2826.45,
+        2245.28,
+        434.45,
+        1,
+        0,
+        1,
+        0
+       ],
+       [
+        "resolve_registry",
+        1321.9,
+        1488.17,
+        585.61,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "cart_prepare",
+        1148.33,
+        1163.22,
+        533.57,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "cart_revalidate",
+        988.02,
+        1425.83,
+        417.26,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "bound_offer",
+        922.08,
+        532.91,
+        403.49,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "offer_resolve",
+        896.17,
+        529,
+        381.76,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "registry_document_digest",
+        775.93,
+        1135.4,
+        394.65,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "registry_canonical",
+        572.65,
+        872.05,
+        313.77,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "product_revision_read",
+        533.18,
+        283.48,
+        292.18,
+        7,
+        7,
+        0,
+        0
+       ],
+       [
+        "session_binding",
+        290.29,
+        180.66,
+        107.77,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "resolve_product_fixed",
+        278.82,
+        258.92,
+        94.71,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "registry_stamp",
+        275.25,
+        183.29,
+        90.33,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "product_document_json",
+        256.55,
+        299.9,
+        30.49,
+        7,
+        7,
+        0,
+        0
+       ],
+       [
+        "resolve_product_current",
+        254.8,
+        203.36,
+        94.57,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "registry_product_read",
+        253.3,
+        124.94,
+        126.95,
+        4,
+        4,
+        0,
+        0
+       ],
+       [
+        "registry_sha256",
+        203.12,
+        263.26,
+        80.87,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "registry_raw_digest",
+        116.47,
+        87.9,
+        27.89,
+        4,
+        4,
+        0,
+        0
+       ],
+       [
+        "review_package",
+        114.79,
+        212.04,
+        69.12,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "review_snapshot_read",
+        111.31,
+        13.62,
+        97.13,
+        5,
+        5,
+        0,
+        0
+       ],
+       [
+        "registry_document_json",
+        84.06,
+        63.44,
+        21.1,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "registry_scope",
+        45.83,
+        18.83,
+        26.71,
+        4,
+        4,
+        0,
+        0
+       ],
+       [
+        "registry_scope_read",
+        45.74,
+        18.77,
+        26.7,
+        4,
+        4,
+        0,
+        0
+       ],
+       [
+        "resolve_review",
+        27.93,
+        3.73,
+        24.07,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "offer_create",
+        25.69,
+        3.74,
+        21.68,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "registry_binding_read",
+        0.65,
+        0.62,
+        0.02,
+        4,
+        4,
+        0,
+        0
+       ],
+       [
+        "registry_head_read",
+        0.63,
+        0.55,
+        0.07,
+        4,
+        4,
+        0,
+        0
+       ],
+       [
+        "product_row_read",
+        0.6,
+        0.5,
+        0.1,
+        7,
+        7,
+        0,
+        0
+       ],
+       [
+        "proxy_verify",
+        0.39,
+        0.31,
+        0.08,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "cart_assign",
+        0.33,
+        0.26,
+        0.07,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "resolve_draft",
+        0.31,
+        0.31,
+        0,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "review_preview_copy",
+        0.3,
+        0.24,
+        0.07,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "intake_binding_read",
+        0.27,
+        0.15,
+        0,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "draft_row_read",
+        0.12,
+        0.12,
+        0,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "resolve_assert_review",
+        0.12,
+        0.1,
+        0.03,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "customer_image_url",
+        0.1,
+        0.1,
+        0,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "review_manifest_json",
+        0.09,
+        0.07,
+        0.02,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "intake_pricing_read",
+        0.09,
+        0.07,
+        0.02,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "intake_selection_read",
+        0.09,
+        0.08,
+        0.01,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "offer_existing_read",
+        0.07,
+        0.07,
+        0,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "offer_token_read",
+        0.07,
+        0.07,
+        0,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "offer_pricing_read",
+        0.07,
+        0.06,
+        0.02,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "registry_schema",
+        0.05,
+        0.04,
+        0.01,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "product_metadata_json",
+        0.04,
+        0.03,
+        0,
+        7,
+        7,
+        0,
+        0
+       ],
+       [
+        "response_json",
+        0.04,
+        0.03,
+        0.01,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "registry_pragma_read",
+        0.02,
+        0.02,
+        0,
+        2,
+        2,
+        0,
+        0
+       ]
+      ]
+     }
+    },
+    {
+     "laenge": 3137,
+     "sha256": "d76282598001400b3def0f0b56f2bdec37fbb816fea199eb4c175668ed9b943a",
+     "e": {
+      "at": "2026-11-17T14:33:41.479Z",
+      "v": 2,
+      "id": "601a1a56",
+      "r": "cart/claim",
+      "st": 200,
+      "t": 2777.69,
+      "n": 48,
+      "el": [
+       1141.9,
+       2764.05,
+       1
+      ],
+      "cpu": {
+       "available": 1,
+       "userMs": 2505.44,
+       "systemMs": 1147.85
+      },
+      "ru": {
+       "available": 1,
+       "unsupported": [],
+       "delta": {
+        "involuntaryContextSwitches": 83,
+        "voluntaryContextSwitches": 934,
+        "fsRead": 0,
+        "fsWrite": 24,
+        "majorPageFault": 0
+       }
+      },
+      "mem": [
+       2106957824,
+       2273599488,
+       1209537736,
+       1319761648
+      ],
+      "gcS": {
+       "supported": 1,
+       "supplementPossible": 1,
+       "graceMs": 25
+      },
+      "gc": [
+       11,
+       210.56,
+       2777.76
+      ],
+      "rd": {
+       "coverage": "instrumented-sync-db-reads",
+       "calls": 45,
+       "failures": 0,
+       "rows": 41,
+       "durationMs": 982.07
+      },
+      "c": {
+       "registry_entries_returned": 3,
+       "product_document_bytes": 187231098,
+       "product_metadata_bytes": 12,
+       "offer_resolution_calls": 2,
+       "registry_document_bytes": 124820732,
+       "registry_metadata_bytes": 4,
+       "review_rows_returned": 5,
+       "review_manifest_bytes": 11536,
+       "offer_rows_returned": 2,
+       "review_package_bytes": 37393764,
+       "response_bytes": 16
+      },
+      "s": [
+       [
+        "cart_prepare",
+        1424.01,
+        1635.66,
+        623.96,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "resolve_registry",
+        1362.79,
+        823.09,
+        579,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "cart_claim",
+        1050.98,
+        644.11,
+        423.81,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "claim_revalidate",
+        1046.97,
+        644.11,
+        422.99,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "bound_offer",
+        1041.67,
+        649.8,
+        415.33,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "offer_resolve",
+        1016.89,
+        643.02,
+        397.49,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "registry_document_digest",
+        757.53,
+        410.8,
+        389.63,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "registry_canonical",
+        567.28,
+        305.41,
+        305.87,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "product_revision_read",
+        528.88,
+        245.78,
+        279.7,
+        6,
+        6,
+        0,
+        0
+       ],
+       [
+        "registry_stamp",
+        351.43,
+        237.14,
+        112.2,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "resolve_product_current",
+        340.04,
+        233.02,
+        104.21,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "resolve_product_fixed",
+        328.39,
+        224.84,
+        111.02,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "registry_product_read",
+        297.89,
+        155.99,
+        140.12,
+        4,
+        4,
+        0,
+        0
+       ],
+       [
+        "product_document_json",
+        281.15,
+        286.45,
+        27.27,
+        6,
+        6,
+        0,
+        0
+       ],
+       [
+        "registry_sha256",
+        190.1,
+        105.3,
+        83.74,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "session_binding",
+        158.48,
+        110.04,
+        58.77,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "registry_raw_digest",
+        137.73,
+        105.33,
+        31.58,
+        4,
+        4,
+        0,
+        0
+       ],
+       [
+        "review_package",
+        116.36,
+        254.97,
+        75.87,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "review_snapshot_read",
+        115.08,
+        13.24,
+        101.13,
+        5,
+        5,
+        0,
+        0
+       ],
+       [
+        "registry_document_json",
+        61.83,
+        60.61,
+        0.94,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "registry_scope",
+        38.24,
+        14.58,
+        23.31,
+        3,
+        3,
+        0,
+        0
+       ],
+       [
+        "registry_scope_read",
+        38.17,
+        14.55,
+        23.29,
+        3,
+        3,
+        0,
+        0
+       ],
+       [
+        "resolve_review",
+        32.03,
+        5.69,
+        26.15,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "offer_create",
+        24.53,
+        6.54,
+        17.84,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "claim_ledger",
+        3.9,
+        0,
+        0.71,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "registry_binding_read",
+        0.58,
+        0.5,
+        0.07,
+        3,
+        3,
+        0,
+        0
+       ],
+       [
+        "registry_head_read",
+        0.54,
+        0.43,
+        0.12,
+        3,
+        3,
+        0,
+        0
+       ],
+       [
+        "product_row_read",
+        0.53,
+        0.43,
+        0.09,
+        6,
+        6,
+        0,
+        0
+       ],
+       [
+        "proxy_verify",
+        0.47,
+        0,
+        0.46,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "review_preview_copy",
+        0.34,
+        0.16,
+        0.17,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "resolve_draft",
+        0.29,
+        0.3,
+        0,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "cart_assign",
+        0.29,
+        0.23,
+        0.06,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "draft_row_read",
+        0.14,
+        0.14,
+        0,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "intake_binding_read",
+        0.14,
+        0.14,
+        0,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "review_manifest_json",
+        0.13,
+        0.1,
+        0.02,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "resolve_assert_review",
+        0.11,
+        0.05,
+        0.05,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "customer_image_url",
+        0.1,
+        0.08,
+        0.02,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "claim_revision_read",
+        0.1,
+        0,
+        0.1,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "intake_pricing_read",
+        0.09,
+        0.08,
+        0.01,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "intake_selection_read",
+        0.08,
+        0.07,
+        0.01,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "offer_existing_read",
+        0.07,
+        0.08,
+        0,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "registry_schema",
+        0.05,
+        0.04,
+        0.02,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "product_metadata_json",
+        0.04,
+        0.05,
+        0,
+        6,
+        6,
+        0,
+        0
+       ],
+       [
+        "offer_token_read",
+        0.04,
+        0.04,
+        0,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "offer_pricing_read",
+        0.04,
+        0.04,
+        0.01,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "claim_transfer_read",
+        0.04,
+        0,
+        0.04,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "registry_pragma_read",
+        0.02,
+        0.02,
+        0,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "response_json",
+        0.02,
+        0,
+        0.02,
+        1,
+        1,
+        0,
+        0
+       ]
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "lauf": 3,
+   "stand": "e447a859 (Zeitprotokoll Version 2)",
+   "browser": {
+    "profil": {
+     "viewport": "390x844",
+     "cpuDrosselung": 4,
+     "netzDrosselung": false,
+     "handy": true
+    },
+    "marken": {
+     "seite-geladen": 3130,
+     "klick-personalisieren": 6144,
+     "konfi-bedienbar": 13653,
+     "warenkorb-klick": 16604,
+     "warenkorb-final-klick": 29958,
+     "warenkorb-fertig": 52537
+    },
+    "klickBisWarenkorbSeiteGeladenMs": 22579,
+    "klickBisCartAddMs": 19799,
+    "klickBisNavigationMs": 20504,
+    "konfiBedienbarMs": 7509,
+    "warenkorbPruefung": {
+     "positionen": 1,
+     "menge": 1,
+     "zeilenpreisCent": 1499,
+     "summeCent": 1499,
+     "bildVonShopifyCdn": true,
+     "bildGeladen": true,
+     "anzahlEigenschaften": 14
+    },
+    "kette": [
+     {
+      "schritt": "acrylic-drafts",
+      "methode": "POST",
+      "status": 201,
+      "startMs": 31120,
+      "ttfbMs": 5574,
+      "dauerMs": 5607,
+      "serverTimingTotalMs": 4851.89,
+      "traceIdPraefix": "7b2cc883"
+     },
+     {
+      "schritt": "theme-cart",
+      "methode": "POST",
+      "status": 200,
+      "startMs": 36707,
+      "ttfbMs": 2851,
+      "dauerMs": 2855,
+      "serverTimingTotalMs": 2717.36,
+      "traceIdPraefix": "5c6e326a"
+     },
+     {
+      "schritt": "cart/data",
+      "methode": "GET",
+      "status": 200,
+      "startMs": 39599,
+      "ttfbMs": 6306,
+      "dauerMs": 6313,
+      "serverTimingTotalMs": 5946.89,
+      "traceIdPraefix": "fde20c37"
+     },
+     {
+      "schritt": "cart/claim",
+      "methode": "POST",
+      "status": 200,
+      "startMs": 46095,
+      "ttfbMs": 2893,
+      "dauerMs": 2900,
+      "serverTimingTotalMs": 2457.54,
+      "traceIdPraefix": "a00c3967"
+     },
+     {
+      "schritt": "shopify:cart/add.js",
+      "methode": "POST",
+      "status": 200,
+      "startMs": 49010,
+      "ttfbMs": 727,
+      "dauerMs": 732
+     },
+     {
+      "schritt": "shopify:cart-seite",
+      "methode": "GET",
+      "status": 200,
+      "startMs": 49945,
+      "ttfbMs": 238,
+      "dauerMs": 262
+     }
+    ]
+   },
+   "serverEreignisse": [
+    {
+     "laenge": 1818,
+     "sha256": "5cf315258c8a37348347c22b06802b650397fd28265cc20b58e7ba9b07785079",
+     "e": {
+      "at": "2026-11-17T14:34:22.070Z",
+      "v": 2,
+      "id": "7b2cc883",
+      "r": "acrylic-drafts",
+      "st": 201,
+      "t": 4851.89,
+      "n": 24,
+      "el": [
+       1.86,
+       2915.04,
+       20
+      ],
+      "cpu": {
+       "available": 1,
+       "userMs": 6623.29,
+       "systemMs": 1084.34
+      },
+      "ru": {
+       "available": 1,
+       "unsupported": [],
+       "delta": {
+        "involuntaryContextSwitches": 174,
+        "voluntaryContextSwitches": 1600,
+        "fsRead": 0,
+        "fsWrite": 147776,
+        "majorPageFault": 0
+       }
+      },
+      "mem": [
+       2292137984,
+       1980870656,
+       1801445472,
+       809089904
+      ],
+      "gcS": {
+       "supported": 1,
+       "supplementPossible": 1,
+       "graceMs": 25
+      },
+      "gc": [
+       39,
+       301.21,
+       4851.95
+      ],
+      "rd": {
+       "coverage": "instrumented-sync-db-reads",
+       "calls": 12,
+       "failures": 0,
+       "rows": 11,
+       "durationMs": 381.86
+      },
+      "c": {
+       "registry_entries_returned": 1,
+       "product_document_bytes": 124820732,
+       "product_metadata_bytes": 8,
+       "request_bytes": 270753,
+       "response_bytes": 347
+      },
+      "s": [
+       [
+        "review_prepare",
+        3361.06,
+        4418.54,
+        510.22,
+        1,
+        0,
+        1,
+        0
+       ],
+       [
+        "review_validate",
+        1375.62,
+        1407.73,
+        99.67,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "review_zip",
+        887.62,
+        1572.07,
+        119.55,
+        1,
+        0,
+        1,
+        0
+       ],
+       [
+        "draft_persist",
+        539.32,
+        746.53,
+        172.83,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "product_revision_read",
+        368.41,
+        490.78,
+        224.2,
+        4,
+        4,
+        0,
+        0
+       ],
+       [
+        "product_document_json",
+        334.62,
+        641.96,
+        134.25,
+        4,
+        4,
+        0,
+        0
+       ],
+       [
+        "product_read",
+        333.26,
+        896.64,
+        206.48,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "customer_preview",
+        315.56,
+        639.09,
+        65.51,
+        1,
+        0,
+        1,
+        0
+       ],
+       [
+        "model_build",
+        287.43,
+        229.88,
+        86.14,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "session_binding",
+        178.75,
+        219.79,
+        62.9,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "reference_preview",
+        148.75,
+        4.76,
+        4.65,
+        1,
+        0,
+        1,
+        0
+       ],
+       [
+        "review_config",
+        110.6,
+        126.14,
+        26.68,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "registry_scope",
+        12.93,
+        8.91,
+        3.79,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "registry_scope_read",
+        12.89,
+        8.89,
+        3.79,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "review_sources",
+        10.5,
+        10.33,
+        0.11,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "body_json",
+        0.69,
+        4.65,
+        0,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "body_read",
+        0.67,
+        3.49,
+        0,
+        1,
+        0,
+        1,
+        0
+       ],
+       [
+        "originals_zip",
+        0.43,
+        0.34,
+        0.09,
+        1,
+        0,
+        1,
+        0
+       ],
+       [
+        "product_row_read",
+        0.36,
+        0.31,
+        0.07,
+        4,
+        4,
+        0,
+        0
+       ],
+       [
+        "registry_head_read",
+        0.17,
+        0.14,
+        0.04,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "draft_row_read",
+        0.08,
+        0.06,
+        0.02,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "registry_binding_read",
+        0.07,
+        0.06,
+        0.02,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "response_json",
+        0.05,
+        0.04,
+        0.01,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "product_metadata_json",
+        0.03,
+        0.03,
+        0,
+        4,
+        4,
+        0,
+        0
+       ]
+      ]
+     }
+    },
+    {
+     "laenge": 3164,
+     "sha256": "b691902ef8acf3fc704d61ef52c720c2469cf7930b2dadc932e0e79bbf7f82d2",
+     "e": {
+      "at": "2026-11-17T14:34:27.084Z",
+      "v": 2,
+      "id": "5c6e326a",
+      "r": "theme-cart",
+      "st": 200,
+      "t": 2717.36,
+      "n": 47,
+      "el": [
+       1493.17,
+       2717.91,
+       1
+      ],
+      "cpu": {
+       "available": 1,
+       "userMs": 3035.57,
+       "systemMs": 1071.26
+      },
+      "ru": {
+       "available": 1,
+       "unsupported": [],
+       "delta": {
+        "involuntaryContextSwitches": 60,
+        "voluntaryContextSwitches": 873,
+        "fsRead": 0,
+        "fsWrite": 168,
+        "majorPageFault": 0
+       }
+      },
+      "mem": [
+       1874292736,
+       2484453376,
+       775350680,
+       1446355200
+      ],
+      "gcS": {
+       "supported": 1,
+       "supplementPossible": 1,
+       "graceMs": 25
+      },
+      "gc": [
+       10,
+       140.2,
+       2717.5
+      ],
+      "rd": {
+       "coverage": "instrumented-sync-db-reads",
+       "calls": 34,
+       "failures": 0,
+       "rows": 33911,
+       "durationMs": 1031.81
+      },
+      "c": {
+       "registry_entries_returned": 3,
+       "product_document_bytes": 124820732,
+       "product_metadata_bytes": 8,
+       "request_bytes": 91,
+       "review_rows_returned": 4,
+       "review_manifest_bytes": 8652,
+       "binding_candidates_examined": 33882,
+       "registry_document_bytes": 124820732,
+       "registry_metadata_bytes": 4,
+       "offer_resolution_calls": 1,
+       "offer_rows_returned": 0,
+       "review_package_bytes": 37393764,
+       "checkout_image_started": 1,
+       "response_bytes": 602
+      },
+      "s": [
+       [
+        "cart_prepare",
+        1331.92,
+        1668.26,
+        574.05,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "bound_offer",
+        1110.97,
+        1002.95,
+        449.21,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "offer_resolve",
+        1093.32,
+        996.21,
+        437.27,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "registry_document_digest",
+        836.72,
+        487.62,
+        401.9,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "variant_binding",
+        835.1,
+        531.86,
+        338.58,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "resolve_registry",
+        794.48,
+        808.44,
+        327.8,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "registry_canonical",
+        620.86,
+        353.7,
+        321.54,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "registry_product_read",
+        416.67,
+        475.2,
+        196.67,
+        4,
+        4,
+        0,
+        0
+       ],
+       [
+        "registry_stamp",
+        399.86,
+        422.61,
+        118.17,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "product_revision_read",
+        366.1,
+        326.06,
+        200.95,
+        4,
+        4,
+        0,
+        0
+       ],
+       [
+        "registry_sha256",
+        215.59,
+        133.72,
+        80.34,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "session_binding",
+        200.08,
+        128.83,
+        69.77,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "product_document_json",
+        174.48,
+        342.79,
+        13.49,
+        4,
+        4,
+        0,
+        0
+       ],
+       [
+        "variant_candidates",
+        156.26,
+        140.14,
+        18.06,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "registry_raw_digest",
+        156.17,
+        117.29,
+        37.76,
+        4,
+        4,
+        0,
+        0
+       ],
+       [
+        "resolve_product_current",
+        145.2,
+        95.5,
+        48.75,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "resolve_product_fixed",
+        137.15,
+        89.97,
+        46.61,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "review_package",
+        119.65,
+        255.1,
+        78.66,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "review_snapshot_read",
+        106.02,
+        13.16,
+        92.26,
+        4,
+        4,
+        0,
+        0
+       ],
+       [
+        "intake_bindings_read",
+        98.53,
+        82.11,
+        15.71,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "registry_document_json",
+        95.62,
+        87.96,
+        17.59,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "registry_scope",
+        42.13,
+        81.09,
+        17.87,
+        3,
+        3,
+        0,
+        0
+       ],
+       [
+        "registry_scope_read",
+        42.03,
+        81.03,
+        17.85,
+        3,
+        3,
+        0,
+        0
+       ],
+       [
+        "offer_create",
+        17.16,
+        2.31,
+        11.94,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "review_read",
+        16.89,
+        1.83,
+        14.93,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "resolve_review",
+        15.75,
+        1.63,
+        14.04,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "cart_assign",
+        2.58,
+        7.87,
+        0.98,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "product_row_read",
+        0.85,
+        0.81,
+        0.03,
+        4,
+        4,
+        0,
+        0
+       ],
+       [
+        "registry_head_read",
+        0.79,
+        4.72,
+        0.05,
+        3,
+        3,
+        0,
+        0
+       ],
+       [
+        "registry_binding_read",
+        0.63,
+        0.49,
+        0.14,
+        3,
+        3,
+        0,
+        0
+       ],
+       [
+        "review_preview_copy",
+        0.39,
+        0.39,
+        0,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "review_manifest_json",
+        0.3,
+        0.26,
+        0.01,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "draft_read",
+        0.29,
+        0.29,
+        0,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "resolve_assert_review",
+        0.27,
+        0.27,
+        0,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "body_read",
+        0.26,
+        0.26,
+        0,
+        1,
+        0,
+        1,
+        0
+       ],
+       [
+        "registry_schema",
+        0.2,
+        0.2,
+        0,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "resolve_draft",
+        0.2,
+        0.16,
+        0.04,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "customer_image_url",
+        0.16,
+        0.16,
+        0,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "draft_row_read",
+        0.15,
+        0.14,
+        0.01,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "offer_existing_read",
+        0.13,
+        0.11,
+        0,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "intake_pricing_read",
+        0.09,
+        0.07,
+        0.02,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "intake_binding_read",
+        0.08,
+        0.08,
+        0,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "intake_selection_read",
+        0.06,
+        0.05,
+        0.01,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "product_metadata_json",
+        0.04,
+        0.04,
+        0,
+        4,
+        4,
+        0,
+        0
+       ],
+       [
+        "body_json",
+        0.03,
+        0.03,
+        0,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "registry_pragma_read",
+        0.03,
+        0.04,
+        0,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "response_json",
+        0.01,
+        0.01,
+        0,
+        1,
+        1,
+        0,
+        0
+       ]
+      ]
+     }
+    },
+    {
+     "laenge": 832,
+     "sha256": "32cee195a30450333eafbe16f8a6d59f81cb6128b2643d74502b682cfa34b57f",
+     "e": {
+      "at": "2026-11-17T14:34:29.800Z",
+      "v": 2,
+      "id": "eb2f343f",
+      "p": "5c6e326a",
+      "r": "checkout-image",
+      "st": 200,
+      "t": 5186.46,
+      "n": 5,
+      "el": [
+       2715.81,
+       1925.19,
+       131
+      ],
+      "cpu": {
+       "available": 1,
+       "userMs": 4629.52,
+       "systemMs": 1270.31
+      },
+      "ru": {
+       "available": 1,
+       "unsupported": [],
+       "delta": {
+        "involuntaryContextSwitches": 105,
+        "voluntaryContextSwitches": 847,
+        "fsRead": 0,
+        "fsWrite": 16,
+        "majorPageFault": 0
+       }
+      },
+      "mem": [
+       2484453376,
+       1729589248,
+       1446289520,
+       706204696
+      ],
+      "gcS": {
+       "supported": 1,
+       "supplementPossible": 1,
+       "graceMs": 25
+      },
+      "gc": [
+       11,
+       247.4,
+       5186.49
+      ],
+      "rd": {
+       "coverage": "instrumented-sync-db-reads",
+       "calls": 0,
+       "failures": 0,
+       "rows": 0,
+       "durationMs": 0
+      },
+      "c": {},
+      "s": [
+       [
+        "shopify_lookup",
+        2337.63,
+        2207.23,
+        822.06,
+        1,
+        0,
+        1,
+        0
+       ],
+       [
+        "shopify_poll_wait",
+        2250.54,
+        1836.42,
+        340.25,
+        3,
+        0,
+        3,
+        0
+       ],
+       [
+        "shopify_poll",
+        371.76,
+        256.88,
+        35.17,
+        3,
+        0,
+        3,
+        0
+       ],
+       [
+        "shopify_create",
+        223.96,
+        319.06,
+        72.53,
+        1,
+        0,
+        1,
+        0
+       ],
+       [
+        "access_token",
+        1.46,
+        5.23,
+        0.2,
+        5,
+        0,
+        5,
+        0
+       ]
+      ]
+     }
+    },
+    {
+     "laenge": 3058,
+     "sha256": "759be87dc174ded22bef7182d564abb536f8b78c26e1d55477d00a824bfe9730",
+     "e": {
+      "at": "2026-11-17T14:34:30.191Z",
+      "v": 2,
+      "id": "fde20c37",
+      "r": "cart/data",
+      "st": 200,
+      "t": 5946.89,
+      "n": 45,
+      "el": [
+       2724.2,
+       1925.19,
+       116
+      ],
+      "cpu": {
+       "available": 1,
+       "userMs": 5789.26,
+       "systemMs": 1664.73
+      },
+      "ru": {
+       "available": 1,
+       "unsupported": [],
+       "delta": {
+        "involuntaryContextSwitches": 113,
+        "voluntaryContextSwitches": 1653,
+        "fsRead": 0,
+        "fsWrite": 0,
+        "majorPageFault": 0
+       }
+      },
+      "mem": [
+       1802141696,
+       2120101888,
+       741803688,
+       1208150928
+      ],
+      "gcS": {
+       "supported": 1,
+       "supplementPossible": 1,
+       "graceMs": 25
+      },
+      "gc": [
+       15,
+       223.17,
+       5946.96
+      ],
+      "rd": {
+       "coverage": "instrumented-sync-db-reads",
+       "calls": 48,
+       "failures": 0,
+       "rows": 44,
+       "durationMs": 1200.01
+      },
+      "c": {
+       "registry_entries_returned": 4,
+       "product_document_bytes": 218436281,
+       "product_metadata_bytes": 14,
+       "offer_resolution_calls": 2,
+       "registry_document_bytes": 124820732,
+       "registry_metadata_bytes": 4,
+       "review_rows_returned": 5,
+       "review_manifest_bytes": 11536,
+       "offer_rows_returned": 2,
+       "review_package_bytes": 37393764,
+       "checkout_image_pending": 1,
+       "response_bytes": 1543
+      },
+      "s": [
+       [
+        "checkout_image_wait",
+        2852.87,
+        2442.61,
+        448.07,
+        1,
+        0,
+        1,
+        0
+       ],
+       [
+        "resolve_registry",
+        1615.77,
+        1714.21,
+        649.83,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "cart_prepare",
+        1594.71,
+        1608.34,
+        617.13,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "bound_offer",
+        1336.07,
+        855.42,
+        502.1,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "offer_resolve",
+        1305.15,
+        850.6,
+        476.34,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "cart_revalidate",
+        979.8,
+        1405.76,
+        416.61,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "registry_document_digest",
+        891.46,
+        1209.26,
+        433.81,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "product_revision_read",
+        671.81,
+        372.09,
+        351.25,
+        7,
+        7,
+        0,
+        0
+       ],
+       [
+        "registry_canonical",
+        663.73,
+        963.27,
+        339.83,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "registry_stamp",
+        368.65,
+        254.67,
+        111.03,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "session_binding",
+        354.73,
+        227,
+        125.18,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "registry_product_read",
+        342.23,
+        204.36,
+        135.69,
+        4,
+        4,
+        0,
+        0
+       ],
+       [
+        "resolve_product_fixed",
+        334.34,
+        270.41,
+        126.66,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "resolve_product_current",
+        305.26,
+        266.53,
+        92.28,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "product_document_json",
+        305.18,
+        338.23,
+        29.3,
+        7,
+        7,
+        0,
+        0
+       ],
+       [
+        "registry_sha256",
+        227.56,
+        245.9,
+        93.96,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "registry_raw_digest",
+        156.1,
+        113.15,
+        41.57,
+        4,
+        4,
+        0,
+        0
+       ],
+       [
+        "review_package",
+        131.29,
+        278.5,
+        80.08,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "review_snapshot_read",
+        128.08,
+        18.87,
+        106.94,
+        5,
+        5,
+        0,
+        0
+       ],
+       [
+        "registry_document_json",
+        103.93,
+        82.45,
+        22.51,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "registry_scope",
+        55.28,
+        18.28,
+        36.51,
+        4,
+        4,
+        0,
+        0
+       ],
+       [
+        "registry_scope_read",
+        55.18,
+        18.23,
+        36.51,
+        4,
+        4,
+        0,
+        0
+       ],
+       [
+        "offer_create",
+        30.65,
+        4.57,
+        25.76,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "resolve_review",
+        28.84,
+        4.57,
+        24.08,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "registry_head_read",
+        0.8,
+        0.66,
+        0.13,
+        4,
+        4,
+        0,
+        0
+       ],
+       [
+        "registry_binding_read",
+        0.77,
+        0.68,
+        0.08,
+        4,
+        4,
+        0,
+        0
+       ],
+       [
+        "product_row_read",
+        0.77,
+        0.71,
+        0.07,
+        7,
+        7,
+        0,
+        0
+       ],
+       [
+        "proxy_verify",
+        0.58,
+        0.58,
+        0,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "resolve_draft",
+        0.37,
+        0.35,
+        0.01,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "cart_assign",
+        0.31,
+        0.24,
+        0.07,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "review_preview_copy",
+        0.28,
+        0.14,
+        0.13,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "intake_binding_read",
+        0.15,
+        0.15,
+        0,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "draft_row_read",
+        0.13,
+        0.13,
+        0.01,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "intake_pricing_read",
+        0.12,
+        0.1,
+        0.01,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "review_manifest_json",
+        0.11,
+        0.1,
+        0.01,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "offer_token_read",
+        0.11,
+        0.11,
+        0,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "resolve_assert_review",
+        0.1,
+        0.05,
+        0.05,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "customer_image_url",
+        0.1,
+        0.1,
+        0,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "intake_selection_read",
+        0.09,
+        0.08,
+        0.01,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "offer_existing_read",
+        0.09,
+        0.1,
+        0,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "offer_pricing_read",
+        0.09,
+        0.07,
+        0.02,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "registry_schema",
+        0.06,
+        0.05,
+        0.01,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "product_metadata_json",
+        0.05,
+        0.05,
+        0,
+        7,
+        7,
+        0,
+        0
+       ],
+       [
+        "response_json",
+        0.04,
+        0,
+        0.04,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "registry_pragma_read",
+        0.02,
+        0.02,
+        0,
+        2,
+        2,
+        0,
+        0
+       ]
+      ]
+     }
+    },
+    {
+     "laenge": 3158,
+     "sha256": "43974e21237cb741de9db9a898cb882f9b56ea6561162ad5320857951735dd7e",
+     "e": {
+      "at": "2026-11-17T14:34:36.776Z",
+      "v": 2,
+      "id": "a00c3967",
+      "r": "cart/claim",
+      "st": 200,
+      "t": 2457.54,
+      "n": 48,
+      "el": [
+       1140.85,
+       2449.47,
+       1
+      ],
+      "cpu": {
+       "available": 1,
+       "userMs": 2286.16,
+       "systemMs": 1028.36
+      },
+      "ru": {
+       "available": 1,
+       "unsupported": [],
+       "delta": {
+        "involuntaryContextSwitches": 57,
+        "voluntaryContextSwitches": 713,
+        "fsRead": 0,
+        "fsWrite": 24,
+        "majorPageFault": 0
+       }
+      },
+      "mem": [
+       2120101888,
+       2350030848,
+       1208331872,
+       1384487240
+      ],
+      "gcS": {
+       "supported": 1,
+       "supplementPossible": 1,
+       "graceMs": 25
+      },
+      "gc": [
+       11,
+       181.52,
+       2457.62
+      ],
+      "rd": {
+       "coverage": "instrumented-sync-db-reads",
+       "calls": 45,
+       "failures": 0,
+       "rows": 41,
+       "durationMs": 983.62
+      },
+      "c": {
+       "registry_entries_returned": 3,
+       "product_document_bytes": 187231098,
+       "product_metadata_bytes": 12,
+       "offer_resolution_calls": 2,
+       "registry_document_bytes": 124820732,
+       "registry_metadata_bytes": 4,
+       "review_rows_returned": 5,
+       "review_manifest_bytes": 11536,
+       "offer_rows_returned": 2,
+       "review_package_bytes": 37393764,
+       "response_bytes": 16
+      },
+      "s": [
+       [
+        "resolve_registry",
+        1358.73,
+        1077.73,
+        618.98,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "cart_prepare",
+        1131.47,
+        1160.47,
+        472.86,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "cart_claim",
+        974.68,
+        868.45,
+        441.06,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "claim_revalidate",
+        972.29,
+        863.85,
+        440.92,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "bound_offer",
+        929.07,
+        555.18,
+        386.33,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "offer_resolve",
+        904.59,
+        548.67,
+        368.47,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "registry_document_digest",
+        712.73,
+        387.08,
+        361.81,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "registry_canonical",
+        528.92,
+        280.97,
+        285.34,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "product_revision_read",
+        481.99,
+        227.83,
+        251.23,
+        6,
+        6,
+        0,
+        0
+       ],
+       [
+        "registry_product_read",
+        360.85,
+        418.14,
+        202.7,
+        4,
+        4,
+        0,
+        0
+       ],
+       [
+        "registry_stamp",
+        316.56,
+        361.19,
+        101.49,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "resolve_product_fixed",
+        256.52,
+        174.2,
+        90.86,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "resolve_product_current",
+        235.13,
+        155.37,
+        78.41,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "product_document_json",
+        234.57,
+        240.94,
+        25.07,
+        6,
+        6,
+        0,
+        0
+       ],
+       [
+        "session_binding",
+        201.04,
+        141.67,
+        69.9,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "registry_sha256",
+        183.66,
+        106.03,
+        76.45,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "registry_raw_digest",
+        129.26,
+        91.76,
+        36.58,
+        4,
+        4,
+        0,
+        0
+       ],
+       [
+        "review_package",
+        109.08,
+        250.87,
+        60.91,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "review_snapshot_read",
+        104.31,
+        17.31,
+        86.37,
+        5,
+        5,
+        0,
+        0
+       ],
+       [
+        "registry_document_json",
+        60.31,
+        59.91,
+        0,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "registry_scope",
+        34.75,
+        50.57,
+        23.67,
+        3,
+        3,
+        0,
+        0
+       ],
+       [
+        "registry_scope_read",
+        34.69,
+        50.54,
+        23.67,
+        3,
+        3,
+        0,
+        0
+       ],
+       [
+        "resolve_review",
+        26.01,
+        4.82,
+        21.06,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "offer_create",
+        24.27,
+        6.32,
+        17.83,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "claim_ledger",
+        2.25,
+        0.51,
+        0.14,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "registry_binding_read",
+        0.54,
+        0.45,
+        0.09,
+        3,
+        3,
+        0,
+        0
+       ],
+       [
+        "product_row_read",
+        0.48,
+        0.4,
+        0.08,
+        6,
+        6,
+        0,
+        0
+       ],
+       [
+        "registry_head_read",
+        0.46,
+        3.56,
+        0.88,
+        3,
+        3,
+        0,
+        0
+       ],
+       [
+        "proxy_verify",
+        0.37,
+        0.3,
+        0.08,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "cart_assign",
+        0.3,
+        0.23,
+        0.06,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "review_preview_copy",
+        0.24,
+        0.21,
+        0.03,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "resolve_draft",
+        0.23,
+        0.19,
+        0.03,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "intake_binding_read",
+        0.1,
+        0.09,
+        0,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "draft_row_read",
+        0.09,
+        0.08,
+        0.02,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "resolve_assert_review",
+        0.09,
+        0.09,
+        0.01,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "intake_selection_read",
+        0.09,
+        0.08,
+        0.01,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "review_manifest_json",
+        0.08,
+        0.08,
+        0.01,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "intake_pricing_read",
+        0.08,
+        0.08,
+        0.01,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "customer_image_url",
+        0.08,
+        0.07,
+        0.02,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "offer_existing_read",
+        0.07,
+        0.07,
+        0,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "claim_revision_read",
+        0.07,
+        0.05,
+        0.02,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "offer_pricing_read",
+        0.06,
+        0.05,
+        0.01,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "registry_schema",
+        0.04,
+        0.04,
+        0.02,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        "offer_token_read",
+        0.04,
+        0.04,
+        0,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "product_metadata_json",
+        0.03,
+        0.02,
+        0,
+        6,
+        6,
+        0,
+        0
+       ],
+       [
+        "claim_transfer_read",
+        0.03,
+        0.02,
+        0.01,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "response_json",
+        0.03,
+        0.02,
+        0.01,
+        1,
+        1,
+        0,
+        0
+       ],
+       [
+        "registry_pragma_read",
+        0.02,
+        0.02,
+        0,
+        2,
+        2,
+        0,
+        0
+       ]
+      ]
+     }
+    }
+   ]
+  }
+ ],
+ "kontrolleNachRueckstellung": {
+  "stand": "9af3a1ac (Zeitprotokoll Version 1)",
+  "browser": {
+   "profil": {
+    "viewport": "390x844",
+    "cpuDrosselung": 4,
+    "netzDrosselung": false,
+    "handy": true
+   },
+   "marken": {
+    "seite-geladen": 3479,
+    "klick-personalisieren": 6496,
+    "konfi-bedienbar": 15433,
+    "warenkorb-klick": 18484,
+    "warenkorb-final-klick": 31339,
+    "warenkorb-fertig": 53936
+   },
+   "klickBisWarenkorbSeiteGeladenMs": 22597,
+   "klickBisCartAddMs": 19986,
+   "klickBisNavigationMs": 20695,
+   "konfiBedienbarMs": 8937,
+   "warenkorbPruefung": {
+    "positionen": 1,
+    "menge": 1,
+    "zeilenpreisCent": 1499,
+    "summeCent": 1499,
+    "bildVonShopifyCdn": true,
+    "bildGeladen": true,
+    "anzahlEigenschaften": 14
+   },
+   "kette": [
+    {
+     "schritt": "acrylic-drafts",
+     "methode": "POST",
+     "status": 201,
+     "startMs": 32473,
+     "ttfbMs": 4713,
+     "dauerMs": 4743,
+     "serverTimingTotalMs": 4103.45,
+     "traceIdPraefix": "37f51c32"
+    },
+    {
+     "schritt": "theme-cart",
+     "methode": "POST",
+     "status": 200,
+     "startMs": 37213,
+     "ttfbMs": 2678,
+     "dauerMs": 2683,
+     "serverTimingTotalMs": 2546.38,
+     "traceIdPraefix": "1a7e4947"
+    },
+    {
+     "schritt": "cart/data",
+     "methode": "GET",
+     "status": 200,
+     "startMs": 39932,
+     "ttfbMs": 7016,
+     "dauerMs": 7018,
+     "serverTimingTotalMs": 6729.21,
+     "traceIdPraefix": "bbcffe8d"
+    },
+    {
+     "schritt": "cart/claim",
+     "methode": "POST",
+     "status": 200,
+     "startMs": 47529,
+     "ttfbMs": 3061,
+     "dauerMs": 3074,
+     "serverTimingTotalMs": 2611.96,
+     "traceIdPraefix": "83181bcb"
+    },
+    {
+     "schritt": "shopify:cart/add.js",
+     "methode": "POST",
+     "status": 200,
+     "startMs": 50612,
+     "ttfbMs": 692,
+     "dauerMs": 699
+    },
+    {
+     "schritt": "shopify:cart-seite",
+     "methode": "GET",
+     "status": 200,
+     "startMs": 51524,
+     "ttfbMs": 305,
+     "dauerMs": 329
+    }
+   ]
+  },
+  "serverNotizGerundet": [
+   {
+    "atUtc": "14:36:45",
+    "r": "theme-cart",
+    "st": 403,
+    "totalMs": 1
+   },
+   {
+    "atUtc": "14:37:19",
+    "r": "acrylic-drafts",
+    "st": 201,
+    "totalMs": 4103
+   },
+   {
+    "atUtc": "14:37:23",
+    "r": "theme-cart",
+    "st": 200,
+    "totalMs": 2546
+   },
+   {
+    "atUtc": "14:37:26",
+    "r": "checkout-image",
+    "st": null,
+    "totalMs": 5819
+   },
+   {
+    "atUtc": "14:37:26",
+    "r": "cart/data",
+    "st": null,
+    "totalMs": 6729
+   },
+   {
+    "atUtc": "14:37:34",
+    "r": "cart/claim",
+    "st": null,
+    "totalMs": 2612
+   }
+  ]
+ },
+ "protokollGroesse": {
+  "hinweis": "Werte aus den Abschlusszeilen des Lese-Skripts, als Notiz uebernommen.",
+  "stderrLogBytes": [
+   {
+    "atUtc": "2026-11-17T14:29:49Z",
+    "bytes": 106941
+   },
+   {
+    "atUtc": "2026-11-17T14:35:04Z",
+    "bytes": 208592
+   },
+   {
+    "nach": "Kontrolllauf",
+    "bytes": 215141
+   }
+  ],
+  "bytesDer15Ereignisse": 99589,
+  "rotationB4": "nicht nachgewiesen, offen"
+ }
+}

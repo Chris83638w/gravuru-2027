@@ -5,6 +5,7 @@
 // genau einmal nachgetragen, sobald der Shop sie bestätigt hat.
 import {randomUUID} from 'node:crypto';
 import {tenantOption,ensureTenantColumns,TENANT_COLUMN} from './tenant.mjs';
+import {cartTimingRead} from './shop-cart-timing.mjs';
 
 const fail = (status, code, message) => {
   throw Object.assign(new Error(message), {status, code, retryable: false, paymentConfirmed: false});
@@ -52,8 +53,8 @@ export function createCartConfigurations({database: db, clock = Date.now, tenant
     claimThemeTransfer(offerId,nonce){
       if(typeof offerId!=='string'||!/^offer_[A-Za-z0-9_-]{1,100}$/.test(offerId)||typeof nonce!=='string'||!/^[a-f0-9]{64}$/.test(nonce))fail(422,'theme_cart_claim','Die Warenkorbübergabe ist ungültig.');
       return tx(()=>{
-        if(!db.prepare('SELECT 1 FROM cart_configuration_revisions WHERE offer_id=? AND tenant_id=?').get(offerId,tenant))fail(404,'theme_cart_claim','Diese Gestaltung ist nicht bekannt.');
-        if(db.prepare('SELECT 1 FROM theme_cart_transfers WHERE offer_id=? AND tenant_id=?').get(offerId,tenant))fail(409,'theme_cart_uncertain','Diese Übertragung wurde bereits begonnen. Bitte den Warenkorb prüfen; die Gestaltung wird nicht erneut hinzugefügt.');
+        if(!cartTimingRead('claim_revision_read',()=>db.prepare('SELECT 1 FROM cart_configuration_revisions WHERE offer_id=? AND tenant_id=?').get(offerId,tenant)))fail(404,'theme_cart_claim','Diese Gestaltung ist nicht bekannt.');
+        if(cartTimingRead('claim_transfer_read',()=>db.prepare('SELECT 1 FROM theme_cart_transfers WHERE offer_id=? AND tenant_id=?').get(offerId,tenant)))fail(409,'theme_cart_uncertain','Diese Übertragung wurde bereits begonnen. Bitte den Warenkorb prüfen; die Gestaltung wird nicht erneut hinzugefügt.');
         db.prepare('INSERT INTO theme_cart_transfers(offer_id,nonce,created_at,tenant_id) VALUES(?,?,?,?)').run(offerId,nonce,at(),tenant);
         return {claimed:true};
       });

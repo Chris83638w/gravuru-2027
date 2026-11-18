@@ -139,6 +139,17 @@ test('doorbell text suggestions wait for a text action',async()=>{
  assert.deepEqual(f.requests.filter(r=>r.url.includes('/schriften/')).map(r=>r.url),['/l/schriften/montserrat.json']);
 });
 
+test('optional font warming follows the current group and never loads an excluded recommendation',async()=>{
+ const f=await fakeEditor('profile-font-warmup');
+ const q=installBackgroundLoading({el:f.el,r:f.r,config:{profile:{optionGroups:[]},workshopProfiles:{selections:{fonts:['Caveat']}}},win:f.win});
+ await f.run();await q.request('fonts');
+ assert.deepEqual(f.requests.filter(r=>r.url.includes('/schriften/')).map(r=>r.url),['/l/schriften/caveat.json']);
+ const empty=await fakeEditor('empty-font-warmup');
+ const eq=installBackgroundLoading({el:empty.el,r:empty.r,config:{profile:{optionGroups:[]},workshopProfiles:{selections:{fonts:[]}}},win:empty.win});
+ await empty.run();await eq.request('fonts');
+ assert.equal(empty.requests.some(r=>r.url.includes('/schriften/')),false);
+});
+
 test('Save-Data preloads no optional font/motif/image; explicit visible request still works',async()=>{
  const f=await fakeEditor('bounded-savedata');f.win.navigator.connection={saveData:true};
  const q=installBackgroundLoading({el:f.el,r:f.r,config:{profile:{optionGroups:[]}},win:f.win});await f.run();

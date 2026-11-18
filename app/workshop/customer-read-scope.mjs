@@ -1,6 +1,7 @@
 // Reuse exists only while this synchronous call stack is active. Returning a
 // Promise does NOT retain the scope: each continuation must open a new phase.
 // There is no database transaction, timer, AsyncLocalStorage or cross-request cache.
+import {cartTimingCount,cartTimingDetail} from './shop-cart-timing.mjs';
 let current=null;
 const epochs=new WeakMap();
 export function withCustomerReadScope(work){
@@ -13,9 +14,10 @@ function freeze(value,seen=new WeakSet()){
 export function customerReadMemo(owner,key,read){
  if(!current||owner===null)return read();
  let cache=current.get(owner);if(!cache){cache=new Map();current.set(owner,cache);}
- if(cache.has(key))return cache.get(key);
+ if(cache.has(key)){cartTimingCount('customer_read_hit');return cache.get(key);}
  const value=read();if(value&&typeof value.then==='function')throw new TypeError('Customer read phases require synchronous values.');
- freeze(value);if(cache.size<16)cache.set(key,value);return value;
+ cartTimingDetail('customer_read_freeze',()=>freeze(value));
+ if(cache.size<16)cache.set(key,value);else cartTimingCount('customer_read_overflow');return value;
 }
 // Stand der Datenbank: eigene Schreibvorgänge (auch zurückgerollte), Commits fremder Verbindungen und Schemaänderungen
 // (Haupt- und TEMP-Schema). Zwei gleiche Werte derselben Verbindung belegen, dass nichts geschrieben wurde.

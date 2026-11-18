@@ -1,0 +1,13 @@
+{
+  "catalogCommit": "8236b8bfab7322447ec46661c116fa526331af3d",
+  "catalogFilesByteIdentical": [
+    "schriften/sets.json",
+    "themen.json",
+    "struktur.json"
+  ],
+  "setsIdentical": true,
+  "profileOrderMatches": true,
+  "literalFontIds": 10,
+  "fileHashMatchedIds": 6,
+  "adopted": false
+}

@@ -79,7 +79,7 @@ export async function runFontConnectionMaintenance({config,request,signal,depend
     const {lockTestData}=await moduleAt(config.legacyRelease,'lock.mjs');return lockTestData({data:config.dataDirectory,python:config.python});});
   const readRuntime=dependencies.readRuntime??(async()=>{const {merchantConfig}=await moduleAt(config.legacyRelease,'merchant-config.mjs');return merchantConfig({GRAVURU_SHOPIFY_CONFIG_FILE:config.merchantConfigFile});});
   const createRuntime=dependencies.createRuntime??createShopifyTestRuntime;
-  let owner,interrupted=null,releasing=false,closeError,opening=false;
+  let owner,interrupted=null,releasing=false,closeError,opening=false,restoreProcess;
   const closeOwner=()=>{if(closeError)throw closeError;try{owner?.close();}catch(error){closeError=error;throw error;}};
   const check=()=>{if(interrupted||signal?.aborted)fail(interrupted??'font_maintenance_aborted');};
   check();
@@ -95,6 +95,11 @@ export async function runFontConnectionMaintenance({config,request,signal,depend
     check();(dependencies.verifyInstalledCode??verifyInstalledCode)(config);
     const runtime=await readRuntime();check();
     if(runtime.python!==config.python||runtime.runtime?.shopifySessions?.shopDomain!==config.shopDomain)fail('font_maintenance_runtime_scope');
+    // Match the existing merchant runtime's interpreter and private-file setup.
+    // Restore process globals for the programmatic test boundary; the CLI is one-shot.
+    const previousPython=process.env.GRAVURU_PYTHON,previousPath=process.env.PYTHONPATH,previousMask=process.umask(0o077);
+    process.env.GRAVURU_PYTHON=runtime.python;delete process.env.PYTHONPATH;
+    restoreProcess=()=>{process.umask(previousMask);for(const [key,value] of [['GRAVURU_PYTHON',previousPython],['PYTHONPATH',previousPath]]){if(value===undefined)delete process.env[key];else process.env[key]=value;}};
     const mount=createFontConnectionHost({...config,...dependencies.mountOptions,approvedPlanSha:request.phase==='execute'?config.approvedPlanSha:null});
     opening=true;
     owner=createRuntime({...runtime.runtimeEnv,GRAVURU_PRIVATE_DATA_DIR:config.dataDirectory,GRAVURU_SHOPIFY_DRAFT_TRANSFER:'draft-only'},
@@ -117,10 +122,12 @@ export async function runFontConnectionMaintenance({config,request,signal,depend
   }finally{
     // The native owner must be closed before making the data lock available.
     // A close error intentionally retains the lock until this process exits.
-    closeOwner();
-    // A constructor can fail after opening stores but before returning their
-    // owner. Only CLI process exit can then guarantee all OS handles are gone.
-    if(opening)fail('font_maintenance_startup_failed');
+    try{
+      closeOwner();
+      // A constructor can fail after opening stores but before returning their
+      // owner. Only CLI process exit can then guarantee all OS handles are gone.
+      if(opening)fail('font_maintenance_startup_failed');
+    }finally{restoreProcess?.();}
     releasing=true;
     signal?.removeEventListener('abort',onAbort);lock.removeListener('exit',onExit);
     await (dependencies.releaseLock??releaseLock)(lock);

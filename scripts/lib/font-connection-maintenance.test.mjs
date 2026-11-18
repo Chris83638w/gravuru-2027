@@ -33,6 +33,7 @@ async function fixture(t){
   verifyInstalledCode:()=>trace.push('code'),
   readRuntime:async()=>{trace.push('config');return {python:config.python,runtime:{shopifySessions:{shopDomain}},runtimeEnv:{}};},
   createRuntime:(env,options)=>{trace.push('open');assert.equal(options.maintenanceOnly,true);assert.equal(env.GRAVURU_PRIVATE_DATA_DIR,config.dataDirectory);
+   assert.equal(process.env.GRAVURU_PYTHON,config.python);assert.equal(process.env.PYTHONPATH,undefined);if(process.platform!=='win32')assert.equal(process.umask(),0o077);
    const mounted=options.fontConnection.connect({workshop:f.targetWorkshop,dataDirectory:config.dataDirectory,katalogRoot,shopifyReader:reader});let closed=false;
    return {workshop:f.targetWorkshop,close(){if(!closed){closed=true;trace.push('close');mounted.close();}}};},
   releaseLock:async()=>trace.push('unlock'),mountOptions:{runtimeFonts:Object.fromEntries(fonts.map(n=>[n,{regular:{units:1000,glyphs:{}}}]))}
@@ -47,7 +48,10 @@ test('lock refusal ends before runtime config, database, network or output creat
 });
 
 test('separate plan and execute commands close before unlock; only the pinned valid plan may run',async t=>{
- const f=await fixture(t),plan=await f.run({phase:'plan',targetId:'synthetic'});
+ const originalPath=process.env.PYTHONPATH;process.env.PYTHONPATH='synthetic-untrusted-python-path';
+ t.after(()=>{if(originalPath===undefined)delete process.env.PYTHONPATH;else process.env.PYTHONPATH=originalPath;});
+ const f=await fixture(t),before={python:process.env.GRAVURU_PYTHON,path:process.env.PYTHONPATH,mask:process.umask()},plan=await f.run({phase:'plan',targetId:'synthetic'});
+ assert.deepEqual({python:process.env.GRAVURU_PYTHON,path:process.env.PYTHONPATH,mask:process.umask()},before);
  assert.deepEqual(f.trace,['lock','code','config','open','read','close','unlock']);assert.equal(plan.path,undefined);
  const otherConfig={...f.config,targets:[{...f.config.targets[0],id:'other'}]};
  const other=await f.run({phase:'plan',targetId:'other'},{config:otherConfig});assert.notEqual(other.sha256,plan.sha256);

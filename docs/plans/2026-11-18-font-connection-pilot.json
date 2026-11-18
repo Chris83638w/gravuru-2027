@@ -1,0 +1,85 @@
+{
+  "schema": "gravuru-font-pilot-proposal/v1",
+  "executionEnabled": false,
+  "source": "2026-11-18T06:09:46.621Z",
+  "reason": "Existing approved family sign, 5 explicit bound variants, current bound revision 4. Proposal for a later live authorization, not executed.",
+  "targets": [
+    {
+      "id": "leuchtturm-12x8",
+      "setId": "tuerschilder",
+      "reviewedRevision": 4,
+      "mapping": {
+        "target": {
+          "productId": "cfg_98436fb0-886d-4af8-bc11-f45ef809684c"
+        },
+        "shopifyProductId": "gid://shopify/Product/16077798965628",
+        "shopifyVariantIds": [
+          "gid://shopify/ProductVariant/57265913332092",
+          "gid://shopify/ProductVariant/58022851838332",
+          "gid://shopify/ProductVariant/58022851871100",
+          "gid://shopify/ProductVariant/58022851903868",
+          "gid://shopify/ProductVariant/58022851936636"
+        ]
+      }
+    }
+  ],
+  "bindingEvidence": [
+    {
+      "shop": "gravuru-design.myshopify.com",
+      "product_gid": "gid://shopify/Product/16077798965628",
+      "variant_gid": "gid://shopify/ProductVariant/57265913332092",
+      "cfg_id": "cfg_98436fb0-886d-4af8-bc11-f45ef809684c",
+      "cfg_revision": 4,
+      "revision": 3,
+      "unit_cents": 1999,
+      "options": "{\"mounting\":\"K00\"}"
+    },
+    {
+      "shop": "gravuru-design.myshopify.com",
+      "product_gid": "gid://shopify/Product/16077798965628",
+      "variant_gid": "gid://shopify/ProductVariant/58022851838332",
+      "cfg_id": "cfg_98436fb0-886d-4af8-bc11-f45ef809684c",
+      "cfg_revision": 4,
+      "revision": 3,
+      "unit_cents": 2298,
+      "options": "{\"mounting\":\"KGL\"}"
+    },
+    {
+      "shop": "gravuru-design.myshopify.com",
+      "product_gid": "gid://shopify/Product/16077798965628",
+      "variant_gid": "gid://shopify/ProductVariant/58022851871100",
+      "cfg_id": "cfg_98436fb0-886d-4af8-bc11-f45ef809684c",
+      "cfg_revision": 4,
+      "revision": 3,
+      "unit_cents": 2398,
+      "options": "{\"mounting\":\"KRA\"}"
+    },
+    {
+      "shop": "gravuru-design.myshopify.com",
+      "product_gid": "gid://shopify/Product/16077798965628",
+      "variant_gid": "gid://shopify/ProductVariant/58022851903868",
+      "cfg_id": "cfg_98436fb0-886d-4af8-bc11-f45ef809684c",
+      "cfg_revision": 4,
+      "revision": 3,
+      "unit_cents": 2248,
+      "options": "{\"mounting\":\"B02\"}"
+    },
+    {
+      "shop": "gravuru-design.myshopify.com",
+      "product_gid": "gid://shopify/Product/16077798965628",
+      "variant_gid": "gid://shopify/ProductVariant/58022851936636",
+      "cfg_id": "cfg_98436fb0-886d-4af8-bc11-f45ef809684c",
+      "cfg_revision": 4,
+      "revision": 3,
+      "unit_cents": 2268,
+      "options": "{\"mounting\":\"B02S\"}"
+    }
+  ],
+  "prerequisites": [
+    "Merge/activate reviewed backend package only after Chris live.",
+    "Poppins catalogue dependency and confirmed 29-font set synchronized.",
+    "Fresh consistent private backup and restart/rollback check.",
+    "Fresh local binding and authenticated Shopify price evidence.",
+    "Claude reviews the complete customer-to-cart path after live."
+  ]
+}

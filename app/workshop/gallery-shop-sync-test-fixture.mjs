@@ -5,6 +5,7 @@ import path from 'node:path';
 import {DatabaseSync} from 'node:sqlite';
 import {build,OUTPUT} from '../configurator/variant-m/build.mjs';
 import {createWorkshop} from './http.mjs';
+import {createProductRepository} from './repository.mjs';
 import {planFamilyFormats} from './katalog-family-formats.mjs';
 import {workshopResources} from './catalog.mjs';
 import {makeProductDocument} from './product-model.mjs';
@@ -18,7 +19,7 @@ import {syncHash} from './gallery-shop-sync-native.mjs';
 
 export const GALLERY_SYNC_TEST_SHOP='isolated-gallery-sync.myshopify.com';
 export const GALLERY_SYNC_TEST_PRODUCT='gid://shopify/Product/168001';
-export async function createGallerySyncTestFixture({directory,transportOptions={},serviceOptions={},documentTransform,activationOptions={},initialPricingFor}={}){
+export async function createGallerySyncTestFixture({directory,transportOptions={},serviceOptions={},documentTransform,activationOptions={},initialPricingFor,initiallyApproved=true,historicalMetadata}={}){
  const tenantId='gravuru',shopDomain=GALLERY_SYNC_TEST_SHOP,PRODUCT=GALLERY_SYNC_TEST_PRODUCT;
  if(!path.isAbsolute(directory)||fs.existsSync(path.join(directory,'source'))||fs.existsSync(path.join(directory,'target')))throw Error('Use a fresh, explicitly isolated test directory.');
  fs.mkdirSync(directory,{recursive:true});
@@ -36,7 +37,16 @@ export async function createGallerySyncTestFixture({directory,transportOptions={
   const {config}=await planFamilyFormats(katalog,'test','familie',{shopProduct:{sizeKey:size.key,themeId:'familie',defaultDesignId:master.id}});
   let document=makeProductDocument(config,{name:'Isoliertes Shopprodukt'});
   if(documentTransform)document=await documentTransform(document);
-  const target=targetWorkshop.repository.create(document),sourceDocument=structuredClone(document);
+  let target;
+  if(historicalMetadata===undefined)target=targetWorkshop.repository.create(document);
+  else{
+   // Simulate an older importer with its original metadata callback. Do not
+   // defeat immutable triggers or alter an already saved historical snapshot.
+   const historical=createProductRepository({filename:path.join(directory,'target','workshop.sqlite'),tenantId,
+    validateDocument:value=>targetWorkshop.repository.validate(value),snapshotMetadata:()=>structuredClone(historicalMetadata)});
+   try{target=historical.create(document);}finally{historical.close();}
+  }
+  const sourceDocument=structuredClone(document);
   sourceDocument.config.reviewOnly=true;
   for(const d of [sourceDocument.config.profile.designs[0],sourceDocument.config.familyFormats.designs[0]])d.objects[0].text='Neu aus Galerie';
   const source=sourceWorkshop.repository.create(sourceDocument),designId=source.document.config.profile.designs[0].id;
@@ -50,7 +60,7 @@ export async function createGallerySyncTestFixture({directory,transportOptions={
   const registry=initialIntake.idBindings({storeId:'acryl',shopDomain,adapter});
   const reader={async inspectVariants(ids){return {installation:{shopDomain,currency:'EUR',scope:'admin-readonly'},variants:ids.map(id=>{const v=variants.find(v=>v.id===id);return {id,found:true,productId:PRODUCT,status:'ACTIVE',priceCents:v.priceCents,options:Object.entries(v.options).map(([name,value])=>({name,value}))};})};}};
   for(let offset=0;offset<selections.length;offset+=100){const checks=await checkSelections(selections.slice(offset,offset+100),{adapter,reader});applyChecks(checks,{orderIntake:initialIntake,storeId:'acryl',shopDomain,adapter});}
-  targetWorkshop.orderIntake.approveCatalogLiveProducts({shopDomain,approvalId:'synthetic-original',registry,products:[{productId:target.id,productRevision:1,shopifyProductId:PRODUCT}]});
+  if(initiallyApproved)targetWorkshop.orderIntake.approveCatalogLiveProducts({shopDomain,approvalId:'synthetic-original',registry,products:[{productId:target.id,productRevision:1,shopifyProductId:PRODUCT}]});
   const mapping={id:'test-mapping',label:'Türschild Test',source:{productId:source.id,designId,originalId:master.id},target:{productId:target.id,designId},shopifyProductId:PRODUCT,shopifyVariantIds:variants.map(v=>v.id),media:[{id:'gid://shopify/MediaImage/168'}]};
   const transport=createGallerySyncTestTransport({shopDomain,products:[{id:PRODUCT,variants:variants.map(v=>({id:v.id,priceCents:v.priceCents})),commerce:{title:'Shop-Titel',seo:{title:'Beibehalten'},inventory:17},media:[{id:mapping.media[0].id,sha256:'a'.repeat(64),url:'https://synthetic.invalid/old.png'}]}],...transportOptions});
   const activation=createGallerySyncActivation({workshop:targetWorkshop,tenantId,shopDomain,...activationOptions});

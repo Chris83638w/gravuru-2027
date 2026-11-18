@@ -1,5 +1,6 @@
 import { DatabaseSync } from 'node:sqlite';
 import { randomUUID, createHash } from 'node:crypto';
+import {isDeepStrictEqual} from 'node:util';
 import { mkdirSync, realpathSync, statSync } from 'node:fs';
 import { dirname } from 'node:path';
 import {createProductCatalog} from './product-catalog.mjs';
@@ -172,7 +173,7 @@ export function createProductRepository({ filename, validateDocument = (value) =
 
   const state = (row) => row.archived ? 'archived' : row.published_revision !== null ? 'active' : 'draft';
 
-  function insertSnapshot(row, document) {
+  function insertSnapshot(row, document, expectedMetadata) {
     let metadata;
     try {
       // The callback must neither alter the validated document nor retain mutable snapshot data.
@@ -185,7 +186,10 @@ export function createProductRepository({ filename, validateDocument = (value) =
       if (!detached || typeof detached !== 'object' || Array.isArray(detached)) {
         throw new Error('Revisionsmetadaten müssen ein JSON-Objekt sein.');
       }
+      if(expectedMetadata!==undefined&&!isDeepStrictEqual(detached,expectedMetadata))
+        throw failure(409,'snapshot_metadata_changed','Die Profilstände haben sich seit der Vorschau geändert. Bitte erneut prüfen.');
     } catch (error) {
+      if(error?.code==='snapshot_metadata_changed')throw error;
       throw failure(422, 'invalid_snapshot_metadata', error?.message || 'Revisionsmetadaten konnten nicht gespeichert werden.');
     }
     db.prepare(`INSERT INTO product_revisions
@@ -207,7 +211,7 @@ export function createProductRepository({ filename, validateDocument = (value) =
     return record(row);
   }
 
-  function append(row, document, { archived = row.archived, publish = false } = {}) {
+  function append(row, document, { archived = row.archived, publish = false, expectedMetadata } = {}) {
     reference(document, row.id);
     // A referenced master cannot change its type: existing copies retain valid provenance.
     if (row.kind === 'master' && document.kind !== 'master' &&
@@ -220,7 +224,7 @@ export function createProductRepository({ filename, validateDocument = (value) =
       name = ?, kind = ?, master_id = ?, updated_at = ? WHERE id = ? AND tenant_id = ?`)
       .run(revision, published, archived, document.name, document.kind, document.masterId, new Date().toISOString(), row.id, tenant);
     const updated = product(row.id);
-    insertSnapshot(updated, document);
+    insertSnapshot(updated, document, expectedMetadata);
     return record(updated);
   }
 
@@ -316,12 +320,13 @@ export function createProductRepository({ filename, validateDocument = (value) =
             if(prior&&prior.product_id!==entry.productId)throw failure(409,'import_key_conflict','Importschlüssel gehört zu einem anderen Produkt.');
             if(!prior){expected(target,entry.expectedRevision);if(target.archived||target.kind!=='product')throw failure(409,'inactive_target','Nur aktive Produkte können aktualisiert werden.');}
           }
-          return {...entry,prior,document:documentValue(entry.document)};
+          return {...entry,prior,document:documentValue(entry.document),...(entry.expectedMetadata===undefined?{}:{expectedMetadata:JSON.parse(JSON.stringify(entry.expectedMetadata))})};
         });
         return validated.map(entry=>{
           if(entry.prior)return {key:entry.key,id:entry.prior.product_id,created:false};
           const updating=entry.action==='update';
-          const item=updating?append(product(entry.productId),entry.document):createInside(entry.document);
+          if(!updating&&entry.expectedMetadata!==undefined)throw failure(422,'invalid_import_guard','Die geprüften Profilstände sind nur für bestehende Produkte vorgesehen.');
+          const item=updating?append(product(entry.productId),entry.document,{expectedMetadata:entry.expectedMetadata}):createInside(entry.document);
           db.prepare('INSERT INTO import_items (import_key, fingerprint, product_id, created_at, tenant_id) VALUES (?, ?, ?, ?, ?)').run(entry.key,entry.fingerprint,item.id,new Date().toISOString(),tenant);
           return {key:entry.key,id:item.id,created:!updating,...(updating?{updated:true,revision:item.revision}:{})};
         });

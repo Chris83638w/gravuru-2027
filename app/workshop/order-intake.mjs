@@ -209,8 +209,8 @@ export function createOrderIntake({database:db,snapshot,clock=Date.now,autoRelea
    return {snapshotId:row.snapshot_id,packageSha256:row.package_sha256};
   },
   // Caller supplies the actual saved product record, never a browser price.
-  idBindings({storeId,shopDomain,adapter,personalizationPricingFor}={}){
-   return createShopProductBindingStore({database:db,orderIntake:this,tenantId:tenant,storeId,shopDomain,adapter,clock,personalizationPricingFor});
+  idBindings({storeId,shopDomain,adapter,personalizationPricingFor,readOnly=false}={}){
+   return createShopProductBindingStore({database:db,orderIntake:this,tenantId:tenant,storeId,shopDomain,adapter,clock,personalizationPricingFor,readOnly});
   },
   // Server-only; no customer/HTTP endpoint exposes this immutable contract.
   bindingPricing(bindingId){binding(bindingId);return pricing(bindingId);},

@@ -1,0 +1,54 @@
+{
+  "at": "2026-11-18T06:11:13.833Z",
+  "environment": {
+    "node": "v24.22.1",
+    "platform": "win32",
+    "arch": "x64"
+  },
+  "profile": "Same isolated native steel sign, same design, all existing variants, synthetic two-font set; old metadata {}.",
+  "before": {
+    "revision": 1,
+    "boundRevision": 1,
+    "approved": true,
+    "variants": 5,
+    "fonts": null,
+    "otherSelections": {
+      "motifs": null,
+      "colors": null,
+      "bestsellers": null
+    },
+    "documentConfigSha256": "639f7bcf3302cf4c7c7269efcf57ee688a8c376d0b3b8544435480b884ccdce1",
+    "svgSha256": "a0d6cef9a1c63e8feed0e9d1b4d10319358987d24e84ce018d2db95a9858e907",
+    "bindingCommercialSha256": "2d0375006596d4842db2b72ad89ff462cac32dde83d71f9b5284507781896962",
+    "modelResourceFontCount": 1,
+    "storedDocumentBytes": 2433973
+  },
+  "after": {
+    "revision": 2,
+    "boundRevision": 2,
+    "approved": true,
+    "variants": 5,
+    "fonts": [
+      "Allura",
+      "Montserrat"
+    ],
+    "otherSelections": {
+      "motifs": null,
+      "colors": null,
+      "bestsellers": null
+    },
+    "documentConfigSha256": "639f7bcf3302cf4c7c7269efcf57ee688a8c376d0b3b8544435480b884ccdce1",
+    "svgSha256": "a0d6cef9a1c63e8feed0e9d1b4d10319358987d24e84ce018d2db95a9858e907",
+    "bindingCommercialSha256": "2d0375006596d4842db2b72ad89ff462cac32dde83d71f9b5284507781896962",
+    "modelResourceFontCount": 2,
+    "storedDocumentBytes": 2434012
+  },
+  "planMs": 167.3,
+  "executeMs": 471.6,
+  "shopifyWrites": 0,
+  "limits": [
+    "One local synthetic sample, not a mobile/network/customer-cart speed measurement.",
+    "Synthetic fonts test connection mechanics, not completeness of Chris’s real 29-font catalogue.",
+    "RSS/production capacity and the original performance task are not resolved by this comparison."
+  ]
+}

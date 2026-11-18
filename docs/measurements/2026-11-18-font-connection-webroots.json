@@ -1,0 +1,114 @@
+{
+  "audit": "font-connection-subscription-webroots",
+  "observedAt": "2026-11-18T07:18:02.823Z",
+  "subscription": "gravuru-designwerkstatt.de",
+  "subscriptionId": 14,
+  "uiCount": 8,
+  "subscriptionPage": "https://gravuru.highspeed.cloud/admin/subscription/overview/id/14",
+  "roots": [
+    {
+      "domain": "gravuru-designwerkstatt.de",
+      "siteId": 14,
+      "documentRoot": "/gravuru-werkstatt/webroot",
+      "absolutePath": "/var/www/vhosts/gravuru-designwerkstatt.de/gravuru-werkstatt/webroot",
+      "page": "https://gravuru.highspeed.cloud/modules/nodejs/index.php/domain/index?dom_id=14&site_id=14"
+    },
+    {
+      "domain": "app-2027.gravuru-designwerkstatt.de",
+      "siteId": 20,
+      "documentRoot": "/gravuru-2027-merchant/public",
+      "absolutePath": "/var/www/vhosts/gravuru-designwerkstatt.de/gravuru-2027-merchant/public",
+      "page": "https://gravuru.highspeed.cloud/modules/nodejs/index.php/domain/index?dom_id=14&site_id=20"
+    },
+    {
+      "domain": "team.gravuru-designwerkstatt.de",
+      "siteId": 15,
+      "documentRoot": "/gravuru-team/public",
+      "absolutePath": "/var/www/vhosts/gravuru-designwerkstatt.de/gravuru-team/public",
+      "page": "https://gravuru.highspeed.cloud/modules/nodejs/index.php/domain/index?dom_id=14&site_id=15"
+    },
+    {
+      "domain": "assistent.gravuru-designwerkstatt.de",
+      "siteId": 16,
+      "documentRoot": "/gravuru-assistent/webroot",
+      "absolutePath": "/var/www/vhosts/gravuru-designwerkstatt.de/gravuru-assistent/webroot",
+      "page": "https://gravuru.highspeed.cloud/modules/nodejs/index.php/domain/index?dom_id=14&site_id=16"
+    },
+    {
+      "domain": "ai.gravuru-designwerkstatt.de",
+      "siteId": 17,
+      "documentRoot": "/gravuru-ai-hub/services/ai-hub/public",
+      "absolutePath": "/var/www/vhosts/gravuru-designwerkstatt.de/gravuru-ai-hub/services/ai-hub/public",
+      "page": "https://gravuru.highspeed.cloud/modules/nodejs/index.php/domain/index?dom_id=14&site_id=17"
+    },
+    {
+      "domain": "test-2027.gravuru-designwerkstatt.de",
+      "siteId": 19,
+      "documentRoot": "/gravuru-2027-bulkapproval-3db1ef5d/public",
+      "absolutePath": "/var/www/vhosts/gravuru-designwerkstatt.de/gravuru-2027-bulkapproval-3db1ef5d/public",
+      "page": "https://gravuru.highspeed.cloud/modules/nodejs/index.php/domain/index?dom_id=14&site_id=19"
+    },
+    {
+      "domain": "cdr.gravuru-designwerkstatt.de",
+      "siteId": 21,
+      "documentRoot": "/gravuru-cdr-mcp/public",
+      "absolutePath": "/var/www/vhosts/gravuru-designwerkstatt.de/gravuru-cdr-mcp/public",
+      "page": "https://gravuru.highspeed.cloud/modules/nodejs/index.php/domain/index?dom_id=14&site_id=21"
+    },
+    {
+      "domain": "dateien.gravuru-designwerkstatt.de",
+      "siteId": 22,
+      "documentRoot": "/dateien.gravuru-designwerkstatt.de",
+      "absolutePath": "/var/www/vhosts/gravuru-designwerkstatt.de/dateien.gravuru-designwerkstatt.de",
+      "page": "https://gravuru.highspeed.cloud/smb/web/overview/id/22/type/domain/hosting-settings"
+    }
+  ],
+  "note": "Read displayed Plesk values only; no fields edited or saved.",
+  "physical": {
+    "audit": "font-webroots-physical",
+    "at": "2026-11-18T07:18:33.844Z",
+    "roots": [
+      {
+        "file": "/var/www/vhosts/gravuru-designwerkstatt.de/gravuru-werkstatt/webroot",
+        "realpath": "/var/www/vhosts/gravuru-designwerkstatt.de/gravuru-werkstatt/webroot",
+        "directory": true
+      },
+      {
+        "file": "/var/www/vhosts/gravuru-designwerkstatt.de/gravuru-2027-merchant/public",
+        "realpath": "/var/www/vhosts/gravuru-designwerkstatt.de/gravuru-2027-merchant/public",
+        "directory": true
+      },
+      {
+        "file": "/var/www/vhosts/gravuru-designwerkstatt.de/gravuru-team/public",
+        "realpath": "/var/www/vhosts/gravuru-designwerkstatt.de/gravuru-team/public",
+        "directory": true
+      },
+      {
+        "file": "/var/www/vhosts/gravuru-designwerkstatt.de/gravuru-assistent/webroot",
+        "realpath": "/var/www/vhosts/gravuru-designwerkstatt.de/gravuru-assistent/webroot",
+        "directory": true
+      },
+      {
+        "file": "/var/www/vhosts/gravuru-designwerkstatt.de/gravuru-ai-hub/services/ai-hub/public",
+        "realpath": "/var/www/vhosts/gravuru-designwerkstatt.de/gravuru-ai-hub/services/ai-hub/public",
+        "directory": true
+      },
+      {
+        "file": "/var/www/vhosts/gravuru-designwerkstatt.de/gravuru-2027-bulkapproval-3db1ef5d/public",
+        "realpath": "/var/www/vhosts/gravuru-designwerkstatt.de/gravuru-2027-bulkapproval-3db1ef5d/public",
+        "directory": true
+      },
+      {
+        "file": "/var/www/vhosts/gravuru-designwerkstatt.de/gravuru-cdr-mcp/public",
+        "realpath": "/var/www/vhosts/gravuru-designwerkstatt.de/gravuru-cdr-mcp/public",
+        "directory": true
+      },
+      {
+        "file": "/var/www/vhosts/gravuru-designwerkstatt.de/dateien.gravuru-designwerkstatt.de",
+        "realpath": "/var/www/vhosts/gravuru-designwerkstatt.de/dateien.gravuru-designwerkstatt.de",
+        "directory": true
+      }
+    ],
+    "planExists": false
+  }
+}

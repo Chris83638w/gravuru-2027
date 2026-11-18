@@ -117,7 +117,7 @@ function checkSessionOptions({operatorCsrfToken=null,merchantCsrfToken=null,shop
   if(shopifySessions&&shopifySessions.mode!=='test-only')fail(503,'shopify_session_config','Nur eine ausdrückliche Test-Sitzungsanbindung ist unterstützt.');
 }
 /** Werkstatt genau eines Mandanten (K13): alle Stores werden mit diesem Mandanten angelegt und lesen/schreiben nur ihn. */
-function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConverter,contourConverter,orderWebhook=null,storefront=null,shopifySessions=null,shopDrafts=null,operatorCsrfToken=null,merchantCsrfToken=null,merchantTestCart=null,shopBindingRead=null,aiDesign=null,themes=null,appProxy=null,tenant=null,platformOverview=null,katalogDir=undefined}){
+function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConverter,contourConverter,orderWebhook=null,storefront=null,shopifySessions=null,shopDrafts=null,operatorCsrfToken=null,merchantCsrfToken=null,merchantTestCart=null,shopBindingRead=null,aiDesign=null,themes=null,appProxy=null,tenant=null,platformOverview=null,katalogDir=undefined,maintenanceOnly=false}){
   // Design-Dashboard (K12/B1): Katalogpfad nur über Option oder katalogPath() (--katalog=<pfad>/GRAVURU_KATALOG), nie im Code.
   const katalogRoot=()=>{const root=katalogDir===undefined?katalogPath():katalogDir;if(!root)fail(503,'katalog_missing','Kein Katalog verbunden. Server mit --katalog=<pfad> starten oder GRAVURU_KATALOG setzen.');return root;};
   // K9: Themen-Definition (themen.json aus dem Katalog) für Galerie und Motivkategorien im Kundeneditor.
@@ -155,6 +155,20 @@ function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConvert
   const contours=createContourStore({filename:filename===':memory:'?':memory:':path.join(path.dirname(filename),'design-assets.sqlite'),converter:contourConverter,tenantId});
   const verifyForm=document=>{const d=verifyFormDesignSources(verifyFormSource(document,contours),assets,formFonts);productionProfiles.resolve(d);return d;};
   const repository=createProductRepository({filename,tenantId,catalogOverview:d=>isFormProduct(d)?formOverview(d):productOverview(d),validateDocument:value=>{const document=validateProductDocument(value);if(isFormProduct(document)){if(document.profileAssignments)profiles.resolve(document);return verifyForm(document);}profiles.resolve(document);assets.validateDocument(document);productionProfiles.resolve(document);return document;},snapshotMetadata:document=>isFormProduct(document)?{...(document.profileAssignments?{profiles:profiles.resolve(document)}:{}),form:{contourId:document.form.contourId,geometrySha256:document.form.geometrySha256},readiness:formReadiness(document),productionProfile:productionProfiles.resolve(document)}:({profiles:profiles.resolve(document),productionProfile:productionProfiles.resolve(document)})});
+  // Same native resources, validation and snapshot metadata as the normal
+  // runtime above. Private maintenance stops before any job recovery, worker,
+  // customer handler or automatic seed product is constructed.
+  if(maintenanceOnly){
+    let store,closed=false;
+    const close=()=>{if(closed)return;closed=true;const errors=[];for(const resource of [store,repository,profiles,productionProfiles,assets,fonts,contours])try{resource?.close();}catch(error){errors.push(error);}if(errors.length)throw Object.assign(new AggregateError(errors,'Wartungsspeicher konnten nicht vollständig geschlossen werden.'),{code:'font_maintenance_close'});};
+    try{
+      if(!repository.firstId())fail(409,'font_maintenance_empty','Wartung benötigt eine vorhandene native Werkstatt.');
+      const autoRelease=line=>Boolean(line.productionProfile)&&productionProfiles.get(line.productionProfile.id,line.productionProfile.revision).document.autoRelease===true;
+      store=createFormCustomerStore({filename,autoRelease,tenantId});
+      return {tenantId,repository,profiles,fonts,productionProfiles,orderIntake:store.orderIntake,
+        sessionContext:shopifySessions?Object.freeze({mode:shopifySessions.mode,shopDomain:shopifySessions.shopDomain,clientId:shopifySessions.clientId}):null,close};
+    }catch(error){close();throw error;}
+  }
   if(ownsBundled&&!repository.firstId())repository.create(seed);
   // Paket 1c: Designliste/Zielvorschau/Designdateien in einem Arbeiter-Thread (nur mit GRAVURU_KATALOG_WORKER=enabled; :memory: hat keine gemeinsame Datei).
   const katalogWorker=ownsBundled&&process.env.GRAVURU_KATALOG_WORKER==='enabled'&&filename!==':memory:'?createKatalogWorker({dbFile:filename,tenantId,available:formFonts,cacheFile:path.join(path.dirname(filename),'katalog-worker-cache.json.gz'),maxRssMb:Number(process.env.GRAVURU_KATALOG_WORKER_MAX_RSS_MB)||2200,logger:entry=>console.warn(JSON.stringify(entry))}):null;
@@ -1223,6 +1237,7 @@ function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConvert
  *  mit eigener, bestätigter Shop-Anbindung aus `tenantOptions(tenant, settings)` – sonst 503. Die Eigenschaften
  *  des Rückgabewerts (repository, orderIntake, …) sind die Stores des Standardmandanten. */
 export function createWorkshop(options){
+  if(options.maintenanceOnly!==undefined&&typeof options.maintenanceOnly!=='boolean')fail(422,'font_maintenance_mode','Ungültiger privater Wartungsmodus.');
   const {filename,tenantOptions=null,tenantSettings=null}=options;
   checkSessionOptions(options);
   if(filename!==':memory:')fs.mkdirSync(path.dirname(filename),{recursive:true});
@@ -1236,6 +1251,7 @@ export function createWorkshop(options){
     // B1: Mandantenliste (Plattformsicht) nur in der Werkstatt des Standardmandanten.
     primary=createTenantWorkshop(DEFAULT_TENANT,{...options,tenant:tenants.seed,platformOverview:()=>tenantOverview(registryDb,tenants)});
   }catch(error){registryDb.close();throw error;}
+  if(options.maintenanceOnly){let closed=false;return {...primary,close:()=>{if(closed)return;closed=true;try{primary.close();}finally{registryDb.close();}}};}
   const others=new Map();
   function workshopFor(tenant){
     if(tenant.id===DEFAULT_TENANT)return primary;

@@ -19,8 +19,8 @@ import {syncHash} from './gallery-shop-sync-native.mjs';
 
 export const GALLERY_SYNC_TEST_SHOP='isolated-gallery-sync.myshopify.com';
 export const GALLERY_SYNC_TEST_PRODUCT='gid://shopify/Product/168001';
-export async function createGallerySyncTestFixture({directory,transportOptions={},serviceOptions={},documentTransform,activationOptions={},initialPricingFor,initiallyApproved=true,historicalMetadata}={}){
- const tenantId='gravuru',shopDomain=GALLERY_SYNC_TEST_SHOP,PRODUCT=GALLERY_SYNC_TEST_PRODUCT;
+export async function createGallerySyncTestFixture({directory,transportOptions={},serviceOptions={},documentTransform,activationOptions={},initialPricingFor,initiallyApproved=true,historicalMetadata,shopDomain=GALLERY_SYNC_TEST_SHOP}={}){
+ const tenantId='gravuru',PRODUCT=GALLERY_SYNC_TEST_PRODUCT;
  if(!path.isAbsolute(directory)||fs.existsSync(path.join(directory,'source'))||fs.existsSync(path.join(directory,'target')))throw Error('Use a fresh, explicitly isolated test directory.');
  fs.mkdirSync(directory,{recursive:true});
  if(!fs.existsSync(path.join(OUTPUT,'models.json')))build();

@@ -6,10 +6,14 @@ import {createPreviewServer} from '../configurator/variant-m/server.mjs';
 import {createOrderWebhookHandler} from './shopify-order-webhook.mjs';
 import {createWorkshop} from './http.mjs';
 import {shopifyRuntimeConfig,checkShopifyRuntime} from './shopify-runtime-config.mjs';
+import {katalogPath} from './katalog-source.mjs';
+import {createGalleryProductionShopifyRead} from '../../scripts/lib/gallery-production-shopify-read.mjs';
 
 // Explicit alternate entry point; npm start continues to use loopback defaults.
 // HTTPS must already terminate at a trusted host preserving the configured Host.
-export function createShopifyTestRuntime(env,{merchantCsrfToken=null,orderWebhook=null,merchantTestCart=null,aiDesign=null}={}){
+export function createShopifyTestRuntime(env,{merchantCsrfToken=null,orderWebhook=null,merchantTestCart=null,aiDesign=null,fontConnection=null,maintenanceOnly=false,katalogRoot}={}){
+  if(typeof maintenanceOnly!=='boolean'||maintenanceOnly&&(orderWebhook||merchantTestCart||aiDesign))throw Object.assign(Error('Ungültiger privater Wartungsmodus.'),{code:'font_maintenance_mode'});
+  if(fontConnection!==null&&typeof fontConnection?.connect!=='function')throw Object.assign(Error('Privater Schriftanschluss ungültig.'),{code:'font_connection_host_config'});
   const config=shopifyRuntimeConfig(env),directory=config.dataDirectory;
   const fail=()=>{throw Error('Private Testablage nicht bestätigt. Vorhandene Daten nicht verändern; Pfad und Berechtigungen prüfen.');};
   // Do not create, chmod, migrate or choose a private directory implicitly.
@@ -19,14 +23,22 @@ export function createShopifyTestRuntime(env,{merchantCsrfToken=null,orderWebhoo
   for(const name of ['workshop.sqlite','profiles.sqlite','design-assets.sqlite'].flatMap(name=>[name,name+'-wal',name+'-shm',name+'-journal'])){
     const file=path.join(directory,name);if(fs.existsSync(file)&&(fs.lstatSync(file).isSymbolicLink()||!fs.statSync(file).isFile()))fail();
   }
-  build();const seed=JSON.parse(fs.readFileSync(path.join(OUTPUT,'models.json')))[0];
-  const workshop=createWorkshop({filename,seedConfig:seed.universal,legacy:seed.legacy,shopifySessions:config.shopifySessions,shopDrafts:config.shopDrafts,appProxy:config.appProxy,tenantSettings:config.tenantSettings,merchantCsrfToken,orderWebhook,merchantTestCart,aiDesign});
-  let server,orderWebhookHandler;try{
+  if(maintenanceOnly){for(const name of ['workshop.sqlite','profiles.sqlite','design-assets.sqlite'])if(!fs.existsSync(path.join(directory,name)))fail();}
+  build();
+  const seed=JSON.parse(fs.readFileSync(path.join(OUTPUT,'models.json')))[0];
+  const workshop=createWorkshop({filename,seedConfig:seed.universal,legacy:seed.legacy,shopifySessions:config.shopifySessions,shopDrafts:config.shopDrafts,appProxy:config.appProxy,tenantSettings:maintenanceOnly?null:config.tenantSettings,merchantCsrfToken,orderWebhook,merchantTestCart,aiDesign,maintenanceOnly,...(maintenanceOnly?{katalogDir:katalogRoot}:{})});
+  let server,orderWebhookHandler,fontOperator;try{
     orderWebhookHandler=orderWebhook?createOrderWebhookHandler({intake:workshop.orderIntake,config:orderWebhook}):null;
-    server=createPreviewServer({workshop,embeddedApp:config.embeddedApp});
-  }catch(e){workshop.close();throw e;}
+    if(!maintenanceOnly)server=createPreviewServer({workshop,embeddedApp:config.embeddedApp});
+    // Explicit server-code composition only. The normal entry supplies no hook.
+    // Pass the already owned native workshop and a bounded reader, never auth.
+    if(fontConnection)fontOperator=fontConnection.connect({workshop,dataDirectory:directory,katalogRoot:maintenanceOnly?katalogRoot:katalogPath(),
+      shopifyReader:createGalleryProductionShopifyRead(config.shopDrafts?.config)});
+  }catch(e){fontOperator?.close();workshop.close();throw e;}
   // Private host composition only; this reference is never serialized or routed.
-  server.once('close',()=>workshop.close());return {server,port:config.port,orderWebhookHandler,workshop};
+  let closed=false;const close=()=>{if(closed)return;closed=true;try{fontOperator?.close();}finally{workshop.close();}};
+  if(maintenanceOnly)return {workshop,close};
+  server.once('close',close);return {server,port:config.port,orderWebhookHandler,workshop};
 }
 if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.url)){
   const args=process.argv.slice(2);

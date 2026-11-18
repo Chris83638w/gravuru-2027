@@ -1,7 +1,7 @@
 import {createGallerySyncShopifyTransport,GALLERY_SYNC_OPERATIONS} from '../../app/workshop/gallery-shop-sync-transport.mjs';
 
 const fail=code=>{throw Object.assign(Error('Der vorhandene Shopify-Leseanschluss konnte nicht bestätigt werden.'),{code,status:502});};
-const allowed=new Set(['GallerySyncProduct','GallerySyncVariants']);
+const allowed=new Set([GALLERY_SYNC_OPERATIONS.product,GALLERY_SYNC_OPERATIONS.variants]);
 
 /** Reuses the existing private app's token provider. Only the two existing
  * gallery read operations are admitted; no OAuth setup, secrets discovery,
@@ -21,14 +21,13 @@ function createConnection({shopDomain,apiVersion,getAccessToken,accessToken,fetc
  const endpoint=`https://${shopDomain}/admin/api/${apiVersion}/graphql.json`;
  async function graphql(query,variables,beforeWrite){
   // Reject mutations before obtaining credentials or contacting the network.
-  const operation=/^query (GallerySyncProduct|GallerySyncVariants)\(/.exec(query||'')?.[1];
   const mutation=query===GALLERY_SYNC_OPERATIONS.release;
   if(mutation){
    const m=variables?.metafields?.[0];
    if(!release?.enabled||typeof beforeWrite!=='function'||Object.keys(variables||{}).join(',')!=='metafields'||variables.metafields.length!==1||!m||Object.keys(m).sort().join(',')!=='compareDigest,key,namespace,ownerId,type,value'||m.ownerId!==release.expected.shopifyProductId||m.namespace!=='gravuru'||m.key!=='gallery_release'||m.type!=='json'||typeof m.value!=='string'||m.value.length>4096||m.compareDigest!==null&&!/^[a-f0-9]{64}$/.test(m.compareDigest||''))fail('gallery_connection_release_scope');
    let value;try{value=JSON.parse(m.value);}catch{fail('gallery_connection_release_scope');}
    if(Object.keys(value).sort().join(',')!=='designId,documentSha256,kind,moduleProfile,nativeSource,productId,productRevision,schema,sourceFingerprint,sourceRevision'||value.schema!=='gravuru-gallery-shop-sync/v1'||value.kind!=='module-profile'||value.productId!==release.expected.productId||value.nativeSource?.productId!==release.expected.productId||value.nativeSource.revision!==release.expected.revision||value.sourceRevision!==release.expected.revision||!release.allowed.has(value.moduleProfile?.id)||!Number.isSafeInteger(value.moduleProfile.revision)||value.moduleProfile.revision<1||!Number.isSafeInteger(value.productRevision)||value.productRevision<release.expected.revision||![value.moduleProfile.sha256,value.documentSha256,value.sourceFingerprint].every(v=>/^[a-f0-9]{64}$/.test(v||'')))fail('gallery_connection_release_scope');
-  }else if(!allowed.has(operation)||/\bmutation\b|__schema|__type/.test(query)||!variables||Object.keys(variables).some(k=>!['id','after'].includes(k))||!/^gid:\/\/shopify\/Product\/[1-9]\d{0,19}$/.test(variables.id)||release&&(query!==GALLERY_SYNC_OPERATIONS.product&&query!==GALLERY_SYNC_OPERATIONS.variants||variables.id!==release.expected.shopifyProductId))fail('gallery_connection_read_only');
+  }else if(!allowed.has(query)||!variables||Object.keys(variables).some(k=>!['id','after'].includes(k))||!/^gid:\/\/shopify\/Product\/[1-9]\d{0,19}$/.test(variables.id)||release&&variables.id!==release.expected.shopifyProductId)fail('gallery_connection_read_only');
   const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),timeoutMs);
   try{
    const token=typeof getAccessToken==='function'?await getAccessToken():accessToken;

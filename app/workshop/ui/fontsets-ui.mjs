@@ -12,6 +12,7 @@ function controls(){
  for(const node of document.querySelectorAll('[data-font-unavailable]'))node.disabled=true;
  for(const node of document.querySelectorAll('[data-move]'))node.disabled=state.busy||(node.dataset.move==='up'?Number(node.dataset.index)===0:Number(node.dataset.index)===state.fonts.length-1);
  $('#fontset-preview').disabled=state.busy||!state.set;
+ $('#fontset-refresh').disabled=state.busy;
  $('#fontset-state').textContent=state.dirty?'Ungespeicherte Auswahl':state.set?.synchronized?'Gespeicherte Auswahl · Profil übernommen':'Im Katalog gespeichert · Profilübernahme ausstehend. Mit „Auswirkungen prüfen“ erneut übernehmen.';
 }
 async function run(work){if(state.busy)return;state.busy=true;controls();try{await work();}catch(e){notice(e.message);}finally{state.busy=false;controls();}}
@@ -49,8 +50,10 @@ $('#fontset-preview').addEventListener('click',()=>run(async()=>{
 }));
 $('#fontset-candidates').addEventListener('click',e=>{const id=e.target.closest('[data-adopt]')?.dataset.adopt;if(!id)return;run(async()=>{
  const p=state.data.migration.find(v=>v.profileId===id);
+ const draft=state.dirty?{setId:state.set.id,fonts:[...state.fonts]}:null;
  if(!await confirm('Herkunft bestätigen','<p>Gehört „'+esc(p.name)+'“ tatsächlich zur Kataloggruppe „'+esc(p.setId)+'“?</p><p>'+p.items.map(esc).join(', ')+'</p><p>Die Liste bleibt erhalten und wird anschließend nur hier gepflegt.</p>','Geprüfte Herkunft übernehmen'))return;
  await api(base+'/adopt',{method:'POST',body:{setId:p.setId,profileId:p.profileId,expectedRevision:p.revision,sourceSha256:state.data.sourceSha256,confirmOrigin:true}});notice('Herkunft zugeordnet. Auswahl und bisherige Stände bleiben erhalten.');await load();
+ if(draft&&state.set?.id===draft.setId){state.fonts=draft.fonts;state.dirty=true;render();}
 });});
 window.addEventListener('beforeunload',e=>{if(state.dirty){e.preventDefault();e.returnValue='';}});
 run(load);

@@ -1,0 +1,39 @@
+{
+  "code": "cbb7f2c2775eefd2c8b8d633f47718e01bee4ca6",
+  "payloadBytes": 7969,
+  "payloadSha256": "99528edc77d577f2b2af67ce30ee984f949fa555d085ada6e4499487a2492676",
+  "files": [
+    {
+      "name": "snapshot-native-online.py",
+      "bytes": 24285,
+      "sha256": "e4268a0c3311e0d5d2bfc9f962cab0e9678d5b45aa2ee5c9dfcf7ac4f9cd96d1"
+    },
+    {
+      "name": "capture.json",
+      "bytes": 2115,
+      "sha256": "6d72fcaa4aef74e4cf42bc9d641066aff444b4ea188f40d372e316381ef409e1"
+    }
+  ],
+  "parts": [
+    {
+      "name": "transfer-00.bin",
+      "bytes": 2400,
+      "sha256": "b79c8642037f61673f8168fcb95d32dcf608e1d645d2157237a2f6f9a9e7a91a"
+    },
+    {
+      "name": "transfer-01.bin",
+      "bytes": 2400,
+      "sha256": "f1a0489c27f3e98e0baa4e1e61cb0fbff94f71cbabdbeb08a61e94286ab48938"
+    },
+    {
+      "name": "transfer-02.bin",
+      "bytes": 2400,
+      "sha256": "0e20b6b23f603b35ac3d6c97e6b0e8b1df5f5feccbec6afcab41a5115d2cfd10"
+    },
+    {
+      "name": "transfer-03.bin",
+      "bytes": 769,
+      "sha256": "8c831959a3250e2092f009d03e62e12ea76d430e9ec65b270c13faa50b6b43b9"
+    }
+  ]
+}

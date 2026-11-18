@@ -1,0 +1,21 @@
+{
+  "audit": "font-online-operator-byte-verification",
+  "code": "cbb7f2c",
+  "preflightSubsetSha256": "e663d64bbeb0e16575b3516ee7bbc2cee4514f2ca57ed96f06957ef490033f5f",
+  "preflightTopLevelNodesUnchanged": true,
+  "stageCommandSourcesExact": true,
+  "assembledToolEqualsReviewedGitBytes": true,
+  "assembledConfigEqualsReviewedGitBytes": true,
+  "toolSha256": "e4268a0c3311e0d5d2bfc9f962cab0e9678d5b45aa2ee5c9dfcf7ac4f9cd96d1",
+  "configSha256": "6d72fcaa4aef74e4cf42bc9d641066aff444b4ea188f40d372e316381ef409e1",
+  "commandBytes": {
+    "preflight-command": 7496,
+    "stage-00": 5716,
+    "stage-01": 4512,
+    "stage-02": 4520,
+    "stage-03": 2272,
+    "stage-04": 1620,
+    "capture-command": 2312
+  },
+  "stageOrCaptureExecuted": false
+}

@@ -1,0 +1,4 @@
+# Preserve the exact bytes embedded in the recorded operator commands.
+*.js -text
+*.cjs -text
+*.py -text

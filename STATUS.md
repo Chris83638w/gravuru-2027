@@ -1,3 +1,7 @@
+## 18.11.2026 · Astra (Codex) · Chris korrigiert die zusätzliche Randfallmeldung
+
+Chris: „sowas gibt es nicht“ und „Die Standardschriftarten habe ich eben bekannt gegeben und zusätzlich mögliche vom Design.“ Maßstab bleibt exakt seine Standardgruppe plus die Schriften des geöffneten Designs. Die in 452e4ba ergänzte Meldungsverzweigung für einen hypothetischen leeren Schriftbestand ist zurückgenommen; tatsächliche Ladefehler werden weiterhin behandelt. Keine neue Schriftregel, keine Daten-/Liveänderung. Backend-Pflege ausdrücklich als nächster Schritt beauftragt; direkte Abstimmung mit Claude läuft.
+
 ## 18.11.2026 · Astra (Codex) mit Claude · #255 Schrift-Schritt abgenommen
 
 Abschluss: [Claude bestätigt auch 452e4ba](https://github.com/Chris83638w/gravuru-2027/pull/255#issuecomment-6968967549), bei ihm 51/51 betroffene Tests grün. Keine offene Code-Nacharbeit in diesem Schrift-Schritt. Veraltete Anzeige der Gruppenhilfe durch Claude korrigiert; Astra sieht drei identische 29er-Listen und zwei weiterhin unbestätigte 25er-Vorschläge. Genau nächster Schritt ist jetzt Backend-/Kataloganschluss, keine erneute Freigabeprüfung derselben Runtime. Keine Live-Änderung.

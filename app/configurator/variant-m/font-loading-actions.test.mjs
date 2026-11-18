@@ -53,6 +53,6 @@ test('no loadable font or a loader that supplies no contours never inserts an in
   const added=[],errors=[],el={fontData:{},uxKnownFonts:()=>known,uxEnsureFonts:async()=>{},add:o=>added.push(o)};
   await run('add-text',{text:true},{},{fonts:['Missing file']},selectionIds,el,m=>errors.push(m),()=>assert.fail());
   assert.equal(added.length,0);assert.equal(errors.length,1);
-  assert.match(errors[0],known.length?/Bitte erneut versuchen/:/keine zusätzlichen Schriften freigegeben/);
+  assert.match(errors[0],/Die Schrift konnte nicht geladen werden/);
  }
 });

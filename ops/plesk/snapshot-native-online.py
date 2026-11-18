@@ -19,6 +19,7 @@ import time
 DATABASES = ('workshop.sqlite', 'profiles.sqlite', 'design-assets.sqlite')
 RECEIPT = 'SNAPSHOT.json'
 SCHEMA = 'gravuru-native-online-snapshot/v1'
+DATABASE_SYNC_BYTES = 256 * 1024**2
 
 
 class SnapshotFailure(Exception):
@@ -77,6 +78,13 @@ def drop_target_cache(p):
     if os.name == 'posix':
         with p.open('rb') as stream:
             os.posix_fadvise(stream.fileno(), 0, 0, os.POSIX_FADV_DONTNEED)
+
+
+def sync_target(p):
+    """Flush only our new private target; never flush or evict a live source."""
+    with p.open('r+b') as synced:
+        os.fsync(synced.fileno())
+    drop_target_cache(p)
 
 
 def sha_file(p, guard=lambda: None, *, private_copy=False):
@@ -322,7 +330,7 @@ def capture(config, *, metrics=None, clock=time.monotonic, hooks=None):
     for name, expected in config.get('expectedHashOnly', {}).items():
         require(hash_only.get(name) == expected, 'expected_configuration_changed')
     inventory_seconds = clock() - guard.started
-    sources, monitors, before_ids, source_counts = {}, {}, {}, {}
+    sources, monitors, before_ids, source_counts, progress_syncs = {}, {}, {}, {}, {}
     opened_at = clock()
     with ExitStack() as stack:
         stack.callback(guard.end_pins)  # Registered first: runs after every DB closes.
@@ -359,16 +367,27 @@ def capture(config, *, metrics=None, clock=time.monotonic, hooks=None):
             target = output / 'data' / name
             fd = os.open(target, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o600)
             os.close(fd)
+            page_size = source.execute('PRAGMA page_size').fetchone()[0]
+            last_synced_bytes = 0
+            progress_syncs[name] = 0
             def progress(status, remaining, total):
+                nonlocal last_synced_bytes
                 guard()
                 require(status not in (sqlite3.SQLITE_BUSY, sqlite3.SQLITE_LOCKED), 'source_busy')
+                copied_bytes = (total - remaining) * page_size
+                if copied_bytes - last_synced_bytes >= DATABASE_SYNC_BYTES:
+                    # SQLite may still hold its own small page cache. This bounds
+                    # accumulated target writeback, without committing its backup
+                    # transaction or touching source DBs or global kernel settings.
+                    sync_target(target)
+                    progress_syncs[name] += 1
+                    last_synced_bytes = copied_bytes
+                    guard()
             with closing(sqlite3.connect(target)) as copied:
                 source.backup(copied, pages=128, progress=progress, sleep=0)
                 copied.execute('PRAGMA journal_mode=DELETE')
             target.chmod(0o600)
-            with target.open('r+b') as synced:
-                os.fsync(synced.fileno())
-            drop_target_cache(target)
+            sync_target(target)
         require(all(stamp(data / n)[:2] == identity for n, identity in before_ids.items()), 'source_replaced')
     readers_seconds = clock() - opened_at
     guard()
@@ -388,6 +407,7 @@ def capture(config, *, metrics=None, clock=time.monotonic, hooks=None):
                    data=str(data), sourceReadOnly=True, liveRuntimeLockTaken=False,
                    method='sqlite-backup-pinned-wal-read-transactions', pinMilliseconds=round(pin_ms, 3),
                    dataVersionsBefore=before, dataVersionsAfter=after, counts=source_counts,
+                   databaseSyncIntervalBytes=DATABASE_SYNC_BYTES, databaseProgressSyncs=progress_syncs,
                    limits=config['limits'], maxWalBytes=guard.max_wal, elapsedSeconds=round(clock()-guard.started, 3),
                    phaseSeconds=dict(inventory=round(inventory_seconds, 3), readersOpen=round(readers_seconds, 3),
                                      pinned=round(guard.pinned_seconds, 3),

@@ -1,0 +1,54 @@
+{
+  "profile": "Same synthetic Windows WAL fixture, 3 MiB extra payload in first DB, 512 KiB test sync interval; injected resource metrics",
+  "beforeCode": "ce11226",
+  "afterCode": "periodic target sync working tree",
+  "runs": {
+    "before": {
+      "captureSeconds": 0.109,
+      "restoreSeconds": 0.047,
+      "phaseSeconds": {
+        "inventory": 0.0,
+        "readersOpen": 0.094,
+        "pinned": 0.063,
+        "verificationAndResources": 0.015
+      },
+      "progressSyncs": null,
+      "payloadHashes": {
+        "data/design-assets.sqlite": "3102153f41fefdd9329e30856a95fff4a6c0138e3dbaba1728156e631e4ae43d",
+        "data/profiles.sqlite": "3102153f41fefdd9329e30856a95fff4a6c0138e3dbaba1728156e631e4ae43d",
+        "data/workshop.sqlite": "bb3ec302e85297b8d0c4b38f234313fb68313f534301701cb3e30881e2b6fb8c",
+        "entry/app.cjs": "fe7ac684bca7853dcc97eb1cdd3330c4261d0e22125c614467a4c169fe9ff7f6",
+        "katalog/font-set.json": "4380843c03b4fe073f75223334cf3ce2247c43403fefd75e0805021b45e437e8"
+      },
+      "restoredExact": true,
+      "sourceStillWritable": true
+    },
+    "after": {
+      "captureSeconds": 0.156,
+      "restoreSeconds": 0.062,
+      "phaseSeconds": {
+        "inventory": 0.0,
+        "readersOpen": 0.141,
+        "pinned": 0.11,
+        "verificationAndResources": 0.015
+      },
+      "progressSyncs": {
+        "workshop.sqlite": 6,
+        "profiles.sqlite": 0,
+        "design-assets.sqlite": 0
+      },
+      "payloadHashes": {
+        "data/design-assets.sqlite": "3102153f41fefdd9329e30856a95fff4a6c0138e3dbaba1728156e631e4ae43d",
+        "data/profiles.sqlite": "3102153f41fefdd9329e30856a95fff4a6c0138e3dbaba1728156e631e4ae43d",
+        "data/workshop.sqlite": "bb3ec302e85297b8d0c4b38f234313fb68313f534301701cb3e30881e2b6fb8c",
+        "entry/app.cjs": "fe7ac684bca7853dcc97eb1cdd3330c4261d0e22125c614467a4c169fe9ff7f6",
+        "katalog/font-set.json": "4380843c03b4fe073f75223334cf3ce2247c43403fefd75e0805021b45e437e8"
+      },
+      "restoredExact": true,
+      "sourceStillWritable": true
+    }
+  },
+  "equivalentPayload": true,
+  "limits": "Functional comparison only; production interval 256 MiB. No Linux dirty/cache/RSS or server speed claim.",
+  "liveChanges": false
+}

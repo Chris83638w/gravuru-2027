@@ -175,6 +175,41 @@ class SnapshotTests(unittest.TestCase):
             (directory / 'memory.stat').write_text('\n'.join(f'{k} {v}' for k, v in zip(fields, (inactive, active, dirty, writeback))))
         return proc, system
 
+    def test_database_target_is_synced_during_backup_and_restore_remains_exact(self):
+        name = module.DATABASES[0]
+        self.writers[name].executescript('CREATE TABLE payload(value BLOB); INSERT INTO payload VALUES(zeroblob(3145728)); PRAGMA wal_checkpoint(TRUNCATE);')
+        source_sha = module.sha_file(self.data / name)
+        calls = []
+        real_sync = module.sync_target
+        def sync(p):
+            calls.append((p, p.stat().st_size))
+            real_sync(p)
+        # A smaller fixture interval exercises multiple real backup callbacks.
+        with patch.object(module, 'DATABASE_SYNC_BYTES', 512*1024), patch.object(module, 'sync_target', side_effect=sync):
+            result = self.capture()
+        receipt = module.verify(self.output, result['receiptSha256'])
+        self.assertEqual(receipt['databaseSyncIntervalBytes'], 512*1024)
+        self.assertGreaterEqual(receipt['databaseProgressSyncs'][name], 5)
+        self.assertEqual(sum(p.name == name for p, size in calls), receipt['databaseProgressSyncs'][name]+1)
+        self.assertTrue(any(p.name == name and size < (self.data / name).stat().st_size for p, size in calls))
+        self.assertTrue(all(p.is_relative_to(self.output / 'data') for p, size in calls))
+        self.assertEqual(module.sha_file(self.data / name), source_sha)
+        restored = self.root / 'restored'
+        module.restore({**self.config, 'snapshot': str(self.output), 'destination': str(restored),
+                        'receiptSha256': result['receiptSha256']}, metrics=self.metrics)
+        self.assertEqual(module.sha_file(restored / 'data' / name), module.sha_file(self.output / 'data' / name))
+
+    def test_periodic_target_sync_failure_releases_all_live_readers(self):
+        name = module.DATABASES[0]
+        self.writers[name].executescript('CREATE TABLE payload(value BLOB); INSERT INTO payload VALUES(zeroblob(1048576));')
+        with patch.object(module, 'DATABASE_SYNC_BYTES', 512*1024), patch.object(module, 'sync_target', side_effect=OSError('synthetic target fsync failure')):
+            with self.assertRaises(OSError):
+                self.capture()
+        self.assertFalse((self.output / module.RECEIPT).exists())
+        for db in self.writers.values():
+            db.execute('UPDATE evidence SET version=2')
+            self.assertEqual(db.execute('PRAGMA wal_checkpoint(TRUNCATE)').fetchone()[0], 0)
+
     def test_v1_clean_cache_is_reclaimable_dirty_pages_and_parent_limits_count(self):
         proc, system = self.fake_cgroup(1, [('worker', 950, 1000, 400, 300, 50, 50),
                                           ('', 1300, 1500, 200, 100, 100, 0)])

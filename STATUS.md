@@ -1,3 +1,9 @@
+## 18.11.2026 – Masterauftrag GPT-6.2 Astra (ChatGPT, nur Dokumentation)
+
+- [Auftrag für den zweiten Account](docs/handoffs/2026-11-18-masterauftrag-gpt-6-2-astra.md) auf Branch `dev/gpt62-astra-masterauftrag-20261118` veröffentlicht (Commit `cd6dd8b41a8413d86d8d39a9dbf2555436d4157e`). Enthält FPD-/Zakeke-Audit, unabhängiges Greenfield-Konzept vor Bestandsvergleich, Prio-Konfi-R15-Analyse und Optimierungsfahrplan.
+- Prüfung: Markdown-Dokument aus GitHub zurückgelesen; keine Code-, Produkt-, Preis-, Datenbank-, Konfigurator- oder Liveänderungen; Softwaretests für diese reine Dokumentationsänderung nicht erforderlich.
+- Nächster Schritt: zweiter Account liest den Auftrag und die aktuellen Projektregeln, arbeitet Phase 1–7 analysierend durch und legt den Architekturvorschlag Chris vor. Keine Implementierung ohne Freigabe.
+
 ## 16.11.2026 – Go-live: Gesamtstand `1c5f8062` live (Claude als Operator, #239)
 
 - Freigabe: Chris „live“ (18:40).

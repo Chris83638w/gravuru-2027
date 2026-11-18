@@ -1,73 +1,74 @@
-# Schriftgruppen: ausgeschalteter Anschluss an den echten Host
+# Schriftgruppen: privater Wartungsaufruf B
 
-Auftrag: Chris, Anschluss der Bestandsprodukte an die bestätigten Gruppen mit Claude; nichts live ohne sein „live“. Folgebranch ab PR257/286ff2d, eigener PR. [Claudes Bedingungen](https://github.com/Chris83638w/gravuru-2027/issues/254#issuecomment-6971734035) sind Grundlage dieses Vorbereitungspakets. Keine neue fachliche Regel, Schriftliste oder Produktfreigabe.
+Auftrag: Chris, Bestandsprodukte an die bestätigten Schriftgruppen anschließen, direkt mit Claude; nichts live ohne „live“. PR258 basiert auf PR257/286ff2d, nicht main. Keine neue Schriftliste, Preisregel oder Verkaufsfreigabe.
 
-## Konkreter Anschluss
+## Entscheidung und Umfang
 
-Die belegte Startkette bleibt `start-r5.cjs` → `app.cjs` → `scripts/acryl-employee-entry.cjs` → `createAcrylEmployeeHost`. Die Startdateien sind **unverändert** und übergeben die neue Option nicht. Kein neuer Umgebungswert aktiviert sie.
+[Claude wählt Weg B](https://github.com/Chris83638w/gravuru-2027/pull/258#issuecomment-6971984610): eigener privater Einmal-Befehl bei gestoppter App. Weg A ist verworfen. `acryl-employee-host.mjs` ist gegenüber der PR-Basis wieder **bytegleich**, ebenso beide Startdateien. Es gibt keinen Kunden-Endpunkt oder Startauftrag. Die native Laufzeitdatei erhält einen kleinen privaten Haken und lädt den vorhandenen Shopify-Leseadapter zusätzlich; diese Datei muss im später geprüften Laufzeitpaket enthalten sein. Das wird nicht als bytegleiche gesamte Laufzeit bezeichnet.
 
-Nur eine spätere geprüfte private Code-Komposition kann `fontConnection` an `createAcrylEmployeeHost` übergeben. Dieser reicht sie unter seinem bestehenden nativen Datenlock an `createShopifyTestRuntime` weiter. Dort bekommt `connect` genau die bereits erzeugte native Werkstatt, deren Datenverzeichnis, den tatsächlich aufgelösten Katalogpfad und den fertigen `createGalleryProductionShopifyRead`-Adapter. Der Adapter verwendet intern den schon für diese Laufzeit erzeugten Tokenanbieter. **Der Schriftanschluss erhält weder Token noch Anbieter**, kann keine Shopify-Mutation ausführen und öffnet keine zweite Datenbank.
+Pflichtbefund erledigt: `gallery-production-shopify-read.mjs` erlaubt nur die beiden exakten Texte `GALLERY_SYNC_OPERATIONS.product` und `.variants`. Ein erlaubter Abfragename mit fremdem Inhalt (Bestellungen, Kunden, Schema) wird vor Tokenabruf/Netz abgewiesen. Bestehender gezielter Freigabeschreiber bleibt separat eingeschränkt. Der Schriftanschluss bekommt ausschließlich den fertigen Leser, niemals Token oder Tokenanbieter.
 
-`scripts/lib/font-connection-host.mjs` hält die feste Ziel-/Gruppen-/Pfadkonfiguration privat, prüft den Hostkontext und erstellt Dienst plus Dateiplan-Operator mit jeweils **fest `executionEnabled:false`**. Es gibt dafür keinen Parameter, Env-Schalter, HTTP-Endpunkt oder Listener. Das Objekt bleibt beim privaten aufrufenden Code, nicht am HTTP-Server. `connect` liest keine Shopdaten, erstellt keinen Plan und führt nichts aus. Nach dem Schließen des Besitzers ist der Operator ungültig; ein gerade laufender Shop-Lesevorgang darf danach keine Plandatei mehr anlegen. Der Anschluss schließt die Werkstatt nicht selbst.
+## Ruhende native Werkstatt
 
-Der konkrete, im Integrationstest ausgeführte Aufruf lautet:
+Der normale Werkstattstart würde AI-Aufträge umstellen und Export-/AI-Intervalle starten. [Mit Claude abgestimmter früher Wartungszweig](https://github.com/Chris83638w/gravuru-2027/pull/258#issuecomment-6972072418): `maintenanceOnly:true` wird ausschließlich im privaten Aufruf per Code gesetzt. Standard bleibt false, kein Env-Schalter.
 
-```js
-const fontConnection = createFontConnectionHost({
-  tenantId, shopDomain, dataDirectory, katalogRoot, planDirectory, webRoots,
-  targets: pilot.targets, approvedSets: groups.approvedSets
-});
-const server = await createAcrylEmployeeHost({
-  legacyRelease, dataDirectory, env, customerIntegration, fontConnection
-});
-// Separater privater Aufruf; niemals automatisch beim Start:
-const saved = await fontConnection.operator().plan({targetId: 'leuchtturm-12x8'});
-// execute bleibt in diesem Kandidaten auch mit gültiger Datei gesperrt.
-```
+Vor dem Zweig laufen dieselben Ressourcen-, Schrift-, Profil- und Repository-Konstruktoren mit derselben Validierung und Metadatenbildung. Danach wird nur der vorhandene Kunden-/Bindungsspeicher als Datenbaustein zusammengesetzt, ohne seine Kundenoberfläche herauszugeben. Zurück kommen genau sieben Teile plus Schließen: `tenantId`, `repository`, `profiles`, `fonts`, `productionProfiles`, `orderIntake`, `sessionContext`, `close`. Keine zweite Preis-/Prüflogik, kein Seedprodukt, Katalog-Worker, Export-Worker, AI-Dienst, Vorschau-Server oder Webhook-Handler. Die vorhandenen drei Datenbankdateien und das gebaute Modellpaket müssen bereits existieren; die Wartung baut kein Paket.
 
-Das ist ein nachgewiesener Anschluss an den tatsächlichen Instanzbesitzer, **noch kein von außen bedienbarer Pilotlauf**. Auf dem laufenden Server wurde kein solcher Aufruf ausgeführt, kein Verzeichnis angelegt und kein Code eingespielt. Der spätere Auslöser braucht eine eigene Prüfung.
+Der Wartungsmodus verwendet dieselben Datenbank-Anpassungen wie diese Codeversion. Deshalb darf er den Bestand **nur aus genau dem Codeverzeichnis öffnen, auf das der geprüfte App-Einstieg verweist**. Es ist keine Möglichkeit, neue Migrationen an der noch alten Live-App vorbeizuschieben.
 
-## Webverzeichnisse und private Ablage
+## Sperre, Befehle und Planfreigabe
 
-Die Plesk-Aboansicht `gravuru-designwerkstatt.de`, ID14, führt acht Websites auf. Alle acht Dokumentenstämme sind aus den jeweiligen sichtbaren Einstellungen gelesen; die Dateidomain verwendet kein Node.js. [Vollständiger Nachweis](../measurements/2026-11-18-font-connection-webroots.json). Der vorgeschlagene Planordner bleibt `/var/www/vhosts/gravuru-designwerkstatt.de/private/font-connection-plans`, bisher nicht angelegt. Die vollständige Liste, nicht nur die App-Domain, ist als `webRoots` zu übergeben. Vor einem späteren Lauf Plesk-Liste und reale Pfade erneut prüfen.
+`scripts/font-connection-maintenance.mjs` ist ein explizites CLI, kein App-Einstieg. Seine private JSON-Konfiguration enthält feste Pfade, Ziele/Gruppen und standardmäßig `approvedPlanSha:null`; keine Geheimnisse und keinen allgemeinen Ein-Schalter. Eine schematisch vollständige [Vorlage mit echten gelesenen Pfaden](../plans/2026-11-18-font-maintenance-config.example.json) liegt bei. Sie referenziert zur Dokumentation noch den beobachteten Live-Stand **9af3a1ac**. Der neue Wartungscode muss diesen abweichenden Stand abweisen. Erst nach Freigabe/Einspielung desselben Kandidaten werden Einstiegspfad und Prüfsumme anhand des tatsächlichen Stands neu festgelegt.
 
-## Zwei Auslösewege zur Entscheidung mit Claude
-
-| Punkt | A: privater Aufruf im Host | B: eigener Wartungsaufruf bei gestoppter App |
-| --- | --- | --- |
-| Besitz | Dieselbe bereits unter Lock geöffnete native Werkstatt, wie in diesem PR getestet. | Eigener Prozess nur unter **demselben** `ops/plesk/lock.mjs`-Lock des nativen Datenverzeichnisses; erst nach erfolgreicher Sperre öffnen. Kein gleichzeitiger Besitzer. Noch nicht gebaut. |
-| Auslösen | Ohne zusätzlichen privaten Bedienkanal müsste ein geprüfter Einmal-Aufruf im privaten Code eingebunden werden. Ein ungeschützter Startauftrag ist ungeeignet. | Expliziter privater Befehl für `plan`, getrennt `execute <geprüfte SHA>`. Kein Server-HTTP-Endpunkt nötig. |
-| Neustarts | Für Code-Aufrufe getrennte Aktivierungs-/Neustartphasen für Plan und Ausführung; mit anschließendem Entfernen des Aufrufs ggf. weitere. Ein exakter Ablauf ist noch auszuwählen. | Normalerweise zwei Wartungsfenster: App stoppen → Plan → Besitzer schließen → App starten; später dasselbe für Ausführung. Einspielung/Synchronisierung kann zusätzliche Neustarts erfordern. |
-| Ungeplanter Neustart | Darf **niemals** einen Auftrag erneut auslösen. Ohne dauerhaft gesicherten Einmalauftrag/Abschlussstatus nicht zur Aktivierung geeignet. In diesem PR gibt es keinen solchen Auftrag. | Kein Autostart. OS gibt Lock nach Prozessende frei. Vor App-Neustart Prozessende und Sperrenfreigabe verifizieren, nicht eine Lockdatei löschen. |
-| Abbruch | Vor Speicherung keine neue Produktrevision. Nach Produktrevision/vor Bindungswechsel eventuell eigene ungebundene Revision; alter Kundenstand bleibt gebunden. | Derselbe bereits geprüfte Plan-/Journal-Wiederanlauf aus PR257. Auch nach Unterbrechung keine zweite schreibende Instanz öffnen. |
-| Rückweg | Ausgangseinstieg wiederherstellen; bereits gebundene Daten über geprüften `restoreRevision`-Plan zurückführen. | Wartungsprozess beenden, bisherigen Einstieg starten; Datenrückweg ebenfalls über neuen geprüften Rückwegplan. |
-| Unterbrechungsdauer | **Nicht gemessen.** Kein Sekundenversprechen. Benötigt Generalprobe mit privater konsistenter Datenkopie und vollständigem Start-/Stop-/Sicherungsablauf. | **Nicht gemessen.** Gleiche Generalprobe plus tatsächliche Linux-Lock-Gegenprobe (App hält Lock → Wartung scheitert vor DB-Öffnung und umgekehrt). |
-
-Technischer Vorschlag: **B zuerst prüfen**, weil der Prüfplan nicht allein zum Auslösen einen Kundenstartauftrag benötigt. Keine Umsetzung des zweiten Wegs vor Claudes Auswahl. Die Tabelle bestätigt keine Live-Unterbrechung; Chris erhält vorher den gemessenen Ablauf und den konkreten Freigabeumfang.
-
-## Einspielplan, noch nicht ausgeführt
-
-1. Exakte freigegebene Commitkette sichern: bestehender Live-Kandidat 9af3a1ac; Code-Pakete #255 → #256 → #257 → dieser Vorbereitungskandidat. Keinen dieser Branches durch `main` ersetzen und keine zusätzlichen Änderungen unbemerkt übernehmen. Katalog-PR192/Poppins bleibt eine eigene Abhängigkeit, kein von Astra veranlasster Merge.
-2. Private konsistente Sicherung von nativer Werkstatt, Profilen, Ressourcen und allen zugehörigen Bestell-/Bindungs-/Journalständen, Katalogstand, Einstiegsdateien sowie vorhandenen vollständigen Prüfplänen. **Nicht** eine laufende SQLite-Datei ohne WAL/Transaktionskonsistenz kopieren. Verfahren und Wiederherstellung an separater Kopie prüfen; Integrität, Zähler und historische Entwürfe/Bestellungen vergleichen. Erst dann Dauer/Ablauf vorlegen.
-3. Isolierter Kandidat: bestehende 16er-Profilherkunft prüfen/übernehmen, bestätigte 29er-Liste samt Poppins über den vorhandenen Backendweg synchronisieren. Keine Produktbindung oder globale Standardzuordnung dabei. PR256-Schema-Rückweg vorher an der Kopie prüfen. Das Ändern einer Profilquelle ist noch kein Produktanschluss.
-4. Frischen Pilotplan für Leuchtturm 12×8, R4 und genau fünf belegte Varianten erstellen, privat dauerhaft speichern und erneut lesen. Plan prüft Shoppreise und vorhandene Zusatzpreisverträge. Jede Abweichung wird untersucht, nicht durch neue Annahmen freigegeben. Claude prüft den vollständigen Plan; Chris' „live“ ist Voraussetzung für produktive Ausführung.
-5. Ausführung nur über den noch auszuwählenden und geprüften privaten Weg. Keine Sammelveröffentlichung der 1.071 Produkte, keine neue Freigabe der 98 bislang nicht freigegebenen Themenprodukte. Nach dem Lauf Bindungsrevision, fünf Preise, Zusatzpreise und Verkaufsfreigabe erneut belegen.
-6. Claude prüft am selben Handy-/Netzprofil den gesamten Kundenweg mit unveränderter Oberfläche, Schriftwahl einschließlich Designschriften, Text, Speichern/Wiederöffnen und Warenkorb. Erst danach weitere konkret bestätigte Produkte. Das übergeordnete Ziel bleibt Variante C, kein erfundenes 5-Sekunden-Kriterium.
-
-Rückweg pro Stufe: vor einer Datenänderung vorherigen Code-/Katalogstand verwenden. Nach Herkunft/Synchronisierung nur den dafür geprüften Schema-/Profilsicherungsweg; nach Produktbindung bevorzugt neue geprüfte Rückweg-Revision auf den nachweislich früher gebundenen Stand. Kein pauschales Zurückkopieren alter Datenbanken über zwischenzeitliche Kundenbestellungen. Bei einem unklaren Zustand zuerst stoppen und Bestand lesen. Eine defekte Plan-Datei wird nicht überschrieben oder automatisch gelöscht; nur nach Rückmeldung an Chris getrennt archivieren/umbenennen und Vorgang nachvollziehbar wiederherstellen.
-
-## Prüfungen und Grenzen
-
-47 gezielte Tests bestanden, keiner übersprungen: fünf neue Host-/Lebenszyklusfälle, neun bestehende Host-/Routingfälle, 23 Anschluss-/Operatorfälle und zehn bestehende Produktionsanschluss-/Privatkonfigurationsfälle. Zusätzlich Laufzeitkonfiguration: 18 bestanden, fünf bestehende POSIX-/Symlink-Prüfungen unter Windows übersprungen; diese Grenze ist keine Linux-Freigabe.
-
-Der neue Hosttest verwendet den echten `createAcrylEmployeeHost`, die echte native Laufzeit und Datenbanken, den echten begrenzten Leser sowie den privaten Anschluss. Unbeteiligte Legacy-Laufzeit und Linux-Lockprozess sind Test-Stellvertreter; unter Windows wird nur die POSIX-Modusinformation der isolierten Verzeichnisse nachgebildet. Der echte Linux-Lock bleibt für Weg B gesondert nachzuweisen. Keine echten Zugangsdaten und keine Shopify-Netzverbindung.
-
-[Vergleich im selben isolierten Profil](../measurements/2026-11-18-font-host-comparison.json): bestehender Einstieg ohne Anschluss gegen explizit übergebenen ausgeschalteten Anschluss; gleicher HTTP-Rückfall 404, keine Netzwerkzugriffe, kein Planverzeichnis und keine Ausführung. Startzeiten und Speicherstände sind als einzelne synthetische Beobachtung aufgezeichnet; warmer zweiter Durchlauf und Speicherbereinigung erlauben **keine** Aussage zur Livebeschleunigung oder zum höheren Server-RSS. Beides bleibt im Performance-Auftrag offen.
-
-Reproduktion:
 ```text
-node --test scripts/lib/font-connection-host.test.mjs app/workshop/acryl-font-host.test.mjs app/workshop/acryl-host-routing.test.mjs app/workshop/font-group-connection.test.mjs scripts/lib/gallery-production-connection.test.mjs scripts/lib/gallery-production-private-settings.test.mjs
-node --test app/workshop/shopify-runtime-config.test.mjs
+node scripts/font-connection-maintenance.mjs --config /PRIVATER/PFAD/font-maintenance.json plan leuchtturm-12x8
+node scripts/font-connection-maintenance.mjs --config /PRIVATER/PFAD/font-maintenance.json execute <ausdrücklich-freigegebene-SHA>
 ```
 
-Genau nächster Schritt: Claudes unabhängige Prüfung dieses ausgeschalteten Kandidaten, Auswahl des privaten Auslösewegs und isolierte Generalprobe vor einer Live-Anfrage. Keine Liveänderung und kein Merge.
+Das sind **zwei getrennte Befehle**. Der zweite funktioniert nur, wenn exakt diese SHA im geprüften privaten Lauf als `approvedPlanSha` festgelegt ist. Jede andere, auch gültige Plan-Datei bleibt gesperrt. Eine Freigabe wird nicht aus dem ersten Befehl oder verstrichener Zeit abgeleitet. Das Eintragen einer echten produktiven Freigabe setzt Chris' konkretes „live“ voraus. Auf diesem Server wurde keine Konfiguration angelegt und kein Wartungsbefehl gestartet.
+
+Planen kann ausdrücklich `--restore-revision 4` und/oder `--recovery-sha <alter-Beleg>` erhalten. Der gespeicherte vollständige Beleg wird eingelesen; die bereits geprüften Herkunfts-/Historienregeln aus PR257 bleiben maßgeblich. Keine Kombination `plan+execute`, keine automatische Wiederholung, kein automatischer Neustart. Ausgabe nur Phase, SHA, Produkt-/Zielkennung, Revisionen und erhaltener Freigabestatus; keine Zugangsdaten oder Kundeninhalte. CLI-Fehler liefern nur einen Fehlercode.
+
+Ablauf im Prozess:
+
+1. Argumente/Konfiguration prüfen; die tatsächliche `lock.mjs` gegen ihre bekannte Prüfsumme prüfen. Dann **dieselbe Sperre** aus dem bestehenden Legacy-Verzeichnis für das native Datenverzeichnis anfordern. Bei belegter Sperre endet der Befehl vor Runtime-Konfiguration, Datenbanköffnung, Ordnererzeugung, Paketbau oder Netzaufruf.
+2. Unter Sperre den App-Einstieg samt SHA, Codeverzeichnis, nativen Datenpfad und Legacy-Verzeichnis prüfen. Erst danach die vorhandene private Runtime-Konfiguration laden; Python-/Shopidentität müssen passen. Keine neue Installation oder Zugangsdaten.
+3. Nur `createShopifyTestRuntime(..., {maintenanceOnly:true, fontConnection})` öffnen, ohne Legacy-Host oder Kundenintegration. Der Haken erhält genau die hier geöffnete native Werkstatt und deren begrenzten Leser.
+4. Einen Plan speichern oder die eine freigegebene SHA ausführen. Beide Dienst-/Operator-Gates sind nur für den exakt gepinnten Ausführungslauf offen, im Planlauf immer geschlossen. Vor Dateizugriff und Schreiben gelten die bisherigen vollständigen Plan-/Shop-/Bindungsprüfungen.
+5. Native Werkstatt schließen, **danach** den Lockprozess beenden und dessen Ende abwarten. Lockverlust/Abbruch sperrt den privaten Operator auch während einer laufenden Shopabfrage. Bei einem Schließfehler wird die Sperre nicht vorzeitig freigegeben; das Einmal-CLI beendet seinen Prozess, damit dessen Ressourcen und die Lock-Pipe vom Betriebssystem geschlossen werden. Die Lockdatei wird nie gelöscht.
+
+## Reale Serverbelege, ausschließlich gelesen
+
+[Pfade und Lock-Prüfsumme](../measurements/2026-11-18-font-maintenance-paths.json):
+
+- Native Daten: `/var/www/vhosts/gravuru-designwerkstatt.de/private/acryl-employee-20261021-v1/data`.
+- Tatsächlich verwendetes Legacy-Verzeichnis: `/var/www/vhosts/gravuru-designwerkstatt.de/private/gravuru-combined-id-20261022-v1/legacy`.
+- `ops/plesk/lock.mjs`: SHA256 `5991c860d0079259bda1b184a0b89e4162824e4b31b4cdf531b537a91e70fb75`, bytegleich zum geprüften Repo-Modul.
+- Python für diese Sperre: `/var/www/vhosts/gravuru-designwerkstatt.de/private/gravuru-2027-test-python311/bin/python`.
+- Katalog: `/var/www/vhosts/gravuru-designwerkstatt.de/private/issue139-katalog-20261102`.
+
+Aus `app.cjs` wurden ausschließlich diese nicht geheimen Pfadwerte gelesen; aus der privaten Konfiguration nur der Python-Pfad. Keine Zugangsdaten ausgegeben, keine App importiert/gestartet. [Alle acht Dokumentenstämme](../measurements/2026-11-18-font-connection-webroots.json) wurden in Plesk gelesen und physisch bestätigt. Der Planordner `/var/www/vhosts/gravuru-designwerkstatt.de/private/font-connection-plans` liegt außerhalb sämtlicher acht und existiert weiterhin nicht.
+
+## Tests und Vergleich
+
+[121 gezielte Fälle](../measurements/2026-11-18-font-maintenance-tests.json): 115 bestanden, 0 fehlgeschlagen, 6 unter Windows übersprungen (fünf bestehende POSIX-/Symlink-Fälle und eine echte Linux-fcntl-Gegenprobe). Nach abschließender Einstieg-/Lock-Code-Prüfung die neun betroffenen Befehlsfälle erneut grün (einschließlich zusätzlichem Abbruch mit fehlgeschlagenem idempotentem Schließen; insgesamt 122 unterschiedliche Fälle, 116 bestanden, sechs übersprungen); Linux-Gegenprobe bleibt für Claude. Der Leser-Fix wurde zusätzlich gegen Galerie-/Modul-/Aktivierungsfälle geprüft: 36 bestanden, zwei bestehende Fälle ohne private 404-Kandidatendatei übersprungen. Der normale native 404-Varianten-Anschluss gehört zu den 115 bestandenen Fällen und benötigt keine private Datei.
+
+Nachgewiesen: falsche/fehlende Planfreigabe vor Lock/DB abgewiesen; zweiter gültiger Plan trotz Freigabe des ersten gesperrt; Reihenfolge Lock → Konfiguration → native Öffnung → ein Aufruf → Schließen → Freigeben; Code-/Startfehler, Lockverlust und Abbruch ohne automatischen Folgeversuch; geänderte Einstiegsdatei oder fremder Codepfad vor nativer Öffnung abgewiesen. Die Linux-Probe benutzt die echte `lockTestData`-Funktion, zwei Prozesse, sauberes Ende und SIGKILL; sie muss zusätzlich im konkreten Server-Dateisystem an isolierten Daten geprüft werden.
+
+Der echte native Laufzeittest sät einen wartenden Exportauftrag sowie laufende AI-Einzel-/Stapelaufträge. Öffnen, Planen und Schließen erhalten deren Zeilen vollständig; jeder Versuch, ein Intervall anzulegen, würde den Test fehlschlagen lassen. Kein Vorschau-Server/Webhook, kein verbleibender Timer. Der Normalmodus bleibt der Standard und behält seine bisherige API. Windows bildet in diesem Test nur POSIX-Modusbits nach; die verfügbare Schriftliste ist ausdrücklich synthetisch. Echte TTF-/Glyphenprüfung ist keine Behauptung dieses Tests.
+
+Vergleich im selben synthetischen Profil: vor/nach Wartungsplanung unveränderte Produktrevision und AI-/Exportzeilen, 0 Hintergrundintervalle, eine reine Produktlesung, keine Ausführung. Laufzeit im Messbeleg. Der frühere A-Vergleich ist durch diesen B-Nachweis ersetzt. Das ist **keine** gemessene Live-Unterbrechung, Handygeschwindigkeit oder Server-RSS-Verbesserung; diese Punkte bleiben offen.
+
+## Generalprobe und Einspielplan, noch nicht ausgeführt
+
+1. Claudes unabhängiges Review dieses B-Kandidaten, besonders Leser, früher Wartungszweig, Linux-Locks und ausschließlich SHA-gebundene Ausführung.
+2. Generalprobe zugleich als Wiederherstellungsprobe an einer **privaten konsistenten Kopie ohne App-Stopp** vorbereiten. Das vorhandene `snapshot-merchant-data.py` verlangt die exklusive laufzeitweite Sperre und ist dafür ungeeignet. Keine einfachen Kopien laufender SQLite-Dateien. Online-Sicherungsweg muss zusammengehörige Datenbanken/WAL-Stände sowie Katalog/Ressourcen nachweislich erhalten; Verfahren noch offen, nicht als vorhandene Funktion behauptet. Keine Serverkopie bisher erstellt.
+3. Sicherung in einen getrennten privaten Bereich zurückspielen; Integrität, Tabellen-/Bestandszähler, Profile, alte Entwürfe/Bestellungen und Originalressourcen vergleichen. Dort exakt denselben Kandidatencode und dieselbe Lockdatei-Logik verwenden. Native Öffnung bei belegter Sperre in beiden Richtungen und nach hartem Abbruch prüfen.
+4. Katalog-PR192/Poppins und Herkunft der vorhandenen 16er-Liste auf der Kopie vorbereiten, bestätigte 29er-Liste über den bestehenden Backendweg synchronisieren. Kein globaler Standard und keine Produktbindung durch diese Vorarbeit. Der Merge des Katalog-PR ist nicht von Astra veranlasst; kein stilles Übernehmen in den Live-Katalog.
+5. Auf der Kopie Plan, Ausführung der exakt freigegebenen Test-SHA, Wiederholung/Abbruchbehandlung und Rückweg durchspielen. Gesamten Stopp-/Start-/Schließablauf und Speicherbedarf messen. Zusätzlich prüfen, ob Plan-SHA der konsistenten Kopie und des gleichen Bestands bei gleichen Abhängigkeiten übereinstimmen. Erst bei Nachweis könnte das erste Live-Wartungsfenster entfallen; derzeit keine solche Behauptung.
+6. Chris erhält den konkreten geprüften Ablauf und gemessene Unterbrechung. Produktiv erst nach seinem „live“: genaue Codefolge #255 → #256 → #257 → #258, passender Katalogstand, konsistente Sicherung, derselbe installierte Code für App und Wartung. Die Vorlage muss auf diesen belegten Einstieg/SHA aktualisiert werden. Dann gegebenenfalls zwei getrennte Wartungsfenster (Plan, später Ausführung); keine erfundene Dauer.
+7. Pilot bleibt Leuchtturm 12×8/R4 mit exakt fünf Varianten. Keine Sammelveröffentlichung der 1.071 Produkte und keine neue Verkaufsfreigabe der 98 bisher nicht freigegebenen Themenprodukte. Claude prüft anschließend Schriftwahl/Designschriften, Text, Speichern/Wiederöffnen und vollständigen Warenkorbweg im gleichen Handy-/Netzprofil; Oberfläche/Bedienung bleiben erhalten. Zielbild Variante C, keine 5-Sekunden-Regel.
+
+Rückweg: vor Datenänderung bisherigen Code-/Katalogstand verwenden; nach Profil-/Schemaänderung nur den an der Kopie geprüften Rückweg. Nach Produktbindung neuen geprüften `restoreRevision`-Plan auf den wirklich früher gebundenen Stand, keine alte DB über neue Kundenbestellungen kopieren. Ein Abbruch kann eine eigene ungebundene Revision hinterlassen; alter Kundenstand bleibt gebunden. Wiederanlauf ausschließlich mit dem vollständigen gespeicherten Plan gemäß PR257. Defekte Plandateien nicht überschreiben/löschen, nur nach Rückmeldung an Chris getrennt archivieren. Keine automatische Löschung; die 45 Tage für Kundenentwürfe werden nicht auf Prüfbelege übertragen.
+
+Genau nächster Schritt: Claude prüft den neuen B-Head. Generalprobe und noch offenes Online-Sicherungsverfahren anschließend gemeinsam konkretisieren. Kein Merge, Deploy, Server-Schreibzugriff oder Live-Wartungslauf.

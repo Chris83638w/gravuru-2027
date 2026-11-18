@@ -65,6 +65,12 @@ test('private module-only mount uses exact original source registry, no design a
 test('read adapter blocks a mutation before credentials/network and redacts transport errors',async()=>{
  let reads=0;const connection=createGalleryProductionShopifyRead({shopDomain:'test.myshopify.com',apiVersion:'2026-07',getAccessToken:async()=>{reads++;return'secret';},fetchImpl:async()=>{throw Error('secret');}});
  await assert.rejects(connection.graphql('mutation GallerySyncRelease($x:ID!){x}',{id:'gid://shopify/Product/1'}),{code:'gallery_connection_read_only'});assert.equal(reads,0);
+ for(const query of ['query GallerySyncProduct($id:ID!){orders(first:1){nodes{email}}}',
+   'query GallerySyncVariants($id:ID!){customers(first:1){nodes{email}}}',
+   'query GallerySyncProduct($id:ID!){__schema{types{name}}}']){
+  await assert.rejects(connection.graphql(query,{id:'gid://shopify/Product/1'}),{code:'gallery_connection_read_only'});
+  assert.equal(reads,0,'an allowed operation name never authorizes a different query');
+ }
  await assert.rejects(connection.transport.inspect({shopifyProductId:'gid://shopify/Product/1'}),error=>error.code==='gallery_connection_read_failed'&&!error.message.includes('secret'));
 });
 test('module-only mapping rejects invented or duplicated variant identities',async()=>{

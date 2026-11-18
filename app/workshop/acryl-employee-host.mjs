@@ -75,14 +75,14 @@ export function customerIntegrationFromEnv(env=process.env){
  if(value!=='merchant-test-only')throw Object.assign(Error('GRAVURU_CUSTOMER_INTEGRATION kennt nur den Wert merchant-test-only.'),{code:'customer_integration_env'});
  return {mode:'merchant-test-only',legacyStoreId:'legacy',acrylStoreId:'acryl',shopEntry:{proxyPath:'/apps/konfigurator',...previews,...(modelCache==='enabled'?{modelResponseCache:true}:{}),...(preSave==='enabled'?{preSaveOnReview:true}:{})},...(live==='approved-20261027'?{doorbellLiveOrders:true}:{}),...(catalog==='approved-issue139-20261102'?{catalogLiveOrders:true}:{})};
 }
-export async function createAcrylEmployeeHost({legacyRelease,dataDirectory,env=process.env,customerIntegration=null,fontConnection=null}){
+export async function createAcrylEmployeeHost({legacyRelease,dataDirectory,env=process.env,customerIntegration=null}){
  const module=file=>import(pathToFileURL(path.join(legacyRelease,'ops/plesk',file)).href);
  const [{merchantConfig},{createMerchantRuntime},{lockTestData}]=await Promise.all([module('merchant-config.mjs'),module('merchant-runtime.mjs'),module('lock.mjs')]);
  const config=merchantConfig(env);let existing,inner,lock,acrylWorkshop,integration;
  try{
   existing=await createMerchantRuntime(env);lock=await lockTestData({...config,data:dataDirectory});
   const token=createHmac('sha256',config.runtime.shopifySessions.secret).update(JSON.stringify(['gravuru-acryl-employee-csrf/v1',config.origin,config.runtime.shopifySessions.clientId])).digest('hex');
-  ({server:inner,workshop:acrylWorkshop}=createShopifyTestRuntime({...config.runtimeEnv,GRAVURU_PRIVATE_DATA_DIR:dataDirectory,GRAVURU_SHOPIFY_DRAFT_TRANSFER:'draft-only'},{merchantCsrfToken:token,fontConnection}));
+  ({server:inner,workshop:acrylWorkshop}=createShopifyTestRuntime({...config.runtimeEnv,GRAVURU_PRIVATE_DATA_DIR:dataDirectory,GRAVURU_SHOPIFY_DRAFT_TRANSFER:'draft-only'},{merchantCsrfToken:token}));
   integration=createConfiguratorIntegration({settings:customerIntegration,legacy:existing.workshop,acryl:acrylWorkshop,origin:config.origin,shopifySessions:config.runtime.shopifySessions,orderWebhook:config.orderWebhook});
   inner.address=net.Server.prototype.address;net.Server.prototype.listen.call(inner,0,'127.0.0.1');await once(inner,'listening');
  }catch(e){inner?.close();existing?.close();lock?.stdin.end();throw e;}

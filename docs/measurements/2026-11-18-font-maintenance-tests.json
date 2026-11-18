@@ -1,0 +1,20 @@
+{
+  "audit": "font-maintenance-B-tests",
+  "node": "v24.22.1",
+  "platform": "win32",
+  "tests": 121,
+  "passed": 115,
+  "skipped": 6,
+  "failed": 0,
+  "finalAffectedRerun": {"tests": 10, "passed": 9, "skipped": 1, "failed": 0, "additionalCase": "Abort plus failed idempotent close retains lock; total distinct cases now 122, 116 passed, 6 skipped."},
+  "skips": "Five existing POSIX/symlink cases and one real Linux fcntl case; Claude must run on Linux.",
+  "native": {
+    "audit": "font-maintenance-native-plan",
+    "elapsedMs": 269.42,
+    "networkCalls": 1,
+    "backgroundIntervals": 0,
+    "jobRowsUnchanged": true,
+    "serverCreated": false
+  },
+  "limits": "Synthetic fixtures only, no real server data restored or commands executed. No live speed, outage duration or RSS claim. The native test simulates POSIX mode bits on Windows and a synthetic font catalogue."
+}

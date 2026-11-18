@@ -1,0 +1,17 @@
+{
+  "audit": "font-maintenance-paths",
+  "at": "2026-11-18T07:37:29.991Z",
+  "selected": {
+    "GRAVURU_ACRYL_LEGACY_RELEASE": "/var/www/vhosts/gravuru-designwerkstatt.de/private/gravuru-combined-id-20261022-v1/legacy",
+    "GRAVURU_ACRYL_DATA_DIR": "/var/www/vhosts/gravuru-designwerkstatt.de/private/acryl-employee-20261021-v1/data",
+    "GRAVURU_KATALOG": "/var/www/vhosts/gravuru-designwerkstatt.de/private/issue139-katalog-20261102",
+    "GRAVURU_PYTHON": "/var/www/vhosts/gravuru-designwerkstatt.de/private/gravuru-2027-test-python311/bin/python",
+    "lockPython": "/var/www/vhosts/gravuru-designwerkstatt.de/private/gravuru-2027-test-python311/bin/python"
+  },
+  "lock": {
+    "file": "/var/www/vhosts/gravuru-designwerkstatt.de/private/gravuru-combined-id-20261022-v1/legacy/ops/plesk/lock.mjs",
+    "sha256": "5991c860d0079259bda1b184a0b89e4162824e4b31b4cdf531b537a91e70fb75",
+    "bytes": 1138
+  },
+  "note": "Only whitelisted non-secret path values and lock source digest; no code imported, no credentials output, no writes."
+}

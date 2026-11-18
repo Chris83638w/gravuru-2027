@@ -14,6 +14,9 @@ function withoutFontMetadata(value) {
     fail('historical_metadata', 'Der bisherige Produktstand enthält keine vollständigen Profilbelege. Den Bestandsfall zuerst gesondert prüfen.');
   delete result.profiles.selections.fonts;
   delete result.profiles.sources.fonts;
+  // Settings counters are evidence, not an effective product selection. The
+  // other selections/sources and manufacturing evidence still compare exactly.
+  delete result.profiles.settingsRevision;
   return result;
 }
 
@@ -51,7 +54,7 @@ export function projectFontConnection({repository, record, assignment}) {
 export function createFontGroupConnection({workshop, tenantId, shopDomain, activation, transport,
   catalogFontSets, targets, approvedSets, executionEnabled = false} = {}) {
   if (workshop?.tenantId !== tenantId || workshop.repository?.tenantId !== tenantId ||
-      activation?.tenantId !== tenantId || activation.shopDomain !== shopDomain || activation.storeId !== 'acryl' || activation.approvalMode !== 'preserve' ||
+      activation?.tenantId !== tenantId || activation.shopDomain !== shopDomain || activation.storeId !== 'acryl' || activation.approvalMode !== 'preserve' || typeof activation.checkBindings !== 'function' ||
       transport?.shopDomain !== shopDomain || typeof transport.inspect !== 'function' ||
       typeof catalogFontSets?.list !== 'function' || !Array.isArray(targets) || !Array.isArray(approvedSets))
     fail('scope', 'Vorhandene Dienste, bestätigte Ziele und Schriftlisten müssen zum selben Mandanten und Shop gehören.');
@@ -101,35 +104,65 @@ export function createFontGroupConnection({workshop, tenantId, shopDomain, activ
     if (!same(body.target, t) || !same(body.approvedSets, fixedSets)) fail('plan_changed', 'Die bestätigte Zuordnung hat sich geändert.');
     return {t, key: 'font-connect:' + sha256};
   }
-  async function plan({targetId, restoreRevision} = {}) {
+  function selection(t, record, restoreRevision) {
+    if (restoreRevision === null) {
+      const selectedProfile = profile(t.setId);
+      return {selectedProfile, assignment: {mode: 'override', profileId: selectedProfile.id}};
+    }
+    if (!Number.isSafeInteger(restoreRevision) || restoreRevision < 1 || restoreRevision >= record.revision)
+      fail('restore_revision', 'Für den Rückweg ist ein früherer Stand desselben Produkts erforderlich.');
+    return {selectedProfile: null, assignment: repository.get(record.id, {revision: restoreRevision}).document.profileAssignments.fonts};
+  }
+  function restoredMetadata(record, projected, restoreRevision) {
+    if (restoreRevision === null) return;
+    const oldMetadata = repository.get(record.id, {revision: restoreRevision}).metadata;
+    assertOnlyFontMetadata(oldMetadata, projected.metadata);
+    if (!same(oldMetadata.profiles?.selections?.fonts ?? null, projected.metadata.profiles?.selections?.fonts ?? null))
+      fail('restore_changed', 'Die frühere wirksame Schriftauswahl lässt sich nicht unverändert wiederherstellen.');
+  }
+  function reviewed(t, binding, restoreRevision) {
+    if (restoreRevision === null && (!Number.isSafeInteger(t.reviewedRevision) || t.reviewedRevision < 1 || binding.boundRevision !== t.reviewedRevision))
+      fail('reviewed_revision', 'Ein ausdrücklich geprüfter, unveränderter gebundener Produktstand ist erforderlich.');
+  }
+  function sourceRecord(t, binding, recoveryPlan = null) {
+    const id = t.mapping.target.productId, head = repository.get(id);
+    ensureHead(id, head.revision);
+    // A supplied earlier plan proves exactly which revision our atomic import
+    // journal saved. A prefix or a font-only manual edit alone is NOT proof.
+    // Nested plans cover consecutive interrupted retries without a new table.
+    let revision = head.revision, proof = recoveryPlan;
+    while (revision > binding.boundRevision) {
+      if (!proof) fail('recovery_required', 'Für den gespeicherten, noch nicht gebundenen Anschluss fehlt sein ursprünglicher Prüfplan.');
+      const {sha256, ...body} = proof, prior = repository.importItem('font-connect:' + sha256);
+      const after = repository.get(id, {revision}), before = repository.get(id, {revision: revision - 1});
+      if (syncHash(body) !== sha256 || proof.schema !== 'gravuru-font-connection/v1' || proof.tenantId !== tenantId || proof.shopDomain !== shopDomain ||
+          proof.targetId !== t.id || !same(proof.target?.mapping, t.mapping) || proof.fromRevision !== revision - 1 ||
+          !same(proof.binding, binding) || prior?.id !== id || prior.fingerprint !== sha256 ||
+          syncHash(before.document) !== proof.beforeDocumentSha256 || syncHash(after.document) !== proof.documentSha256 || !same(after.metadata, proof.metadata))
+        fail('recovery_changed', 'Der Wiederanlaufbeleg passt nicht exakt zum gespeicherten eigenen Anschluss.');
+      const onlyFonts = clone(before.document); onlyFonts.profileAssignments.fonts = clone(after.document.profileAssignments.fonts);
+      if (!same(onlyFonts, after.document)) fail('recovery_changed', 'Der Zwischenstand enthält weitere Produktänderungen.');
+      assertOnlyFontMetadata(before.metadata, after.metadata);
+      revision--; proof = proof.recoveryPlan ?? null;
+    }
+    if (revision !== binding.boundRevision || proof !== null) fail('recovery_changed', 'Der Wiederanlaufbeleg umfasst nicht genau die ungebundenen Zwischenstände.');
+    return head;
+  }
+  async function plan({targetId, restoreRevision = null, recoveryPlan = null} = {}) {
     const t = target(targetId), mapping = t.mapping, binding = activation.capture(mapping);
-    if (restoreRevision === undefined && t.reviewedRevision !== undefined && binding.boundRevision !== t.reviewedRevision)
-      fail('reviewed_revision', 'Der gebundene Produktstand weicht vom ausdrücklich geprüften Ziel ab.');
-    ensureHead(mapping.target.productId, binding.boundRevision);
-    const record = repository.get(mapping.target.productId, {revision: binding.boundRevision});
-    let selectedProfile = null, assignment;
-    if (restoreRevision !== undefined) {
-      if (!Number.isSafeInteger(restoreRevision) || restoreRevision < 1 || restoreRevision >= record.revision)
-        fail('restore_revision', 'Für den Rückweg ist ein früherer Stand desselben Produkts erforderlich.');
-      assignment = repository.get(record.id, {revision: restoreRevision}).document.profileAssignments.fonts;
-    } else {
-      selectedProfile = profile(t.setId);
-      assignment = {mode: 'override', profileId: selectedProfile.id};
-    }
+    reviewed(t, binding, restoreRevision);
+    const record = sourceRecord(t, binding, recoveryPlan);
+    const {selectedProfile, assignment} = selection(t, record, restoreRevision);
     const projected = projectFontConnection({repository, record, assignment});
-    if (same(projected.document, record.document) && same(projected.metadata, record.metadata)) fail('unchanged', 'Das Produkt besitzt bereits diesen Schriftstand.');
-    if (restoreRevision !== undefined) {
-      const oldMetadata = repository.get(record.id, {revision: restoreRevision}).metadata;
-      assertOnlyFontMetadata(oldMetadata, projected.metadata);
-      if (!same(oldMetadata.profiles?.selections?.fonts ?? null, projected.metadata.profiles?.selections?.fonts ?? null))
-        fail('restore_changed', 'Die frühere wirksame Schriftauswahl lässt sich nicht unverändert wiederherstellen.');
-    }
+    if (!recoveryPlan && same(projected.document, record.document) && same(projected.metadata, record.metadata)) fail('unchanged', 'Das Produkt besitzt bereits diesen Schriftstand.');
+    restoredMetadata(record, projected, restoreRevision);
     const remote = await transport.inspect(mapping);
     ensureHead(record.id, record.revision); sameBindings(mapping, binding);
+    activation.checkBindings({mapping, record, binding, remote});
     const pricing = activation.prepare({mapping, record, document: projected.document, binding, remote});
     unchangedPricing(pricing, binding, projected.document);
     const body = {schema: 'gravuru-font-connection/v1', tenantId, shopDomain, targetId, target: t, approvedSets: fixedSets,
-      fromRevision: record.revision, restoreRevision: restoreRevision ?? null, binding, assignment, selectedProfile,
+      fromRevision: record.revision, restoreRevision, recoveryPlan: clone(recoveryPlan), binding, assignment, selectedProfile,
       beforeDocumentSha256: syncHash(record.document), documentSha256: syncHash(projected.document), metadata: projected.metadata, pricing};
     return clone({...body, sha256: syncHash(body)});
   }
@@ -140,24 +173,34 @@ export function createFontGroupConnection({workshop, tenantId, shopDomain, activ
     if (executionEnabled !== true) syncFail('font_connection_execution_disabled', 'Der Anschluss ist noch nicht zum Ausführen freigegeben.', 403);
     plan = clone(plan);
     const {t, key} = checkPlan(plan), mapping = t.mapping, id = mapping.target.productId;
-    if (plan.selectedProfile && !same(profile(t.setId), plan.selectedProfile)) fail('set_changed', 'Das bestätigte Schriftprofil wurde inzwischen geändert.');
+    reviewed(t, plan.binding, plan.restoreRevision);
     const original = repository.get(id, {revision: plan.fromRevision});
+    const selected = selection(t, original, plan.restoreRevision);
+    if (!same(selected.selectedProfile, plan.selectedProfile) || !same(selected.assignment, plan.assignment))
+      fail('set_changed', 'Die Zuordnung muss aus der bestätigten Schriftliste oder dem früheren Produktstand stammen.');
     if (syncHash(original.document) !== plan.beforeDocumentSha256) fail('source_changed', 'Der geprüfte Ausgangsstand stimmt nicht mehr.');
-    const projected = projectFontConnection({repository, record: original, assignment: plan.assignment});
+    const projected = projectFontConnection({repository, record: original, assignment: selected.assignment});
+    restoredMetadata(original, projected, plan.restoreRevision);
     if (syncHash(projected.document) !== plan.documentSha256 || !same(projected.metadata, plan.metadata))
       fail('profiles_changed', 'Die Profilstände haben sich seit der Vorschau geändert.');
     const remote = await transport.inspect(mapping);
+    const prior = repository.importItem(key);
+    if (!prior) {
+      ensureHead(id, plan.fromRevision); sameBindings(mapping, plan.binding);
+      sourceRecord(t, plan.binding, plan.recoveryPlan);
+    } else if (prior.id !== id || prior.fingerprint !== plan.sha256) fail('journal_conflict', 'Der Wiederanlauf gehört zu einem anderen Produktstand.');
+    activation.checkBindings({mapping, record: repository.get(id), binding: plan.binding, remote});
     const pricing = activation.prepare({mapping, record: original, document: projected.document, binding: plan.binding, remote});
     unchangedPricing(pricing, plan.binding, projected.document);
     if (!same(pricing, plan.pricing)) fail('pricing_changed', 'Die geprüften Zusatzpreise haben sich geändert.');
-    const prior = repository.importItem(key);
     if (!prior) {
       repository.importBatch([{key, fingerprint: plan.sha256, action: 'update', productId: id, expectedRevision: plan.fromRevision,
         document: projected.document, expectedMetadata: plan.metadata}], {beforeWrite() {
         ensureHead(id, plan.fromRevision); sameBindings(mapping, plan.binding);
+        sourceRecord(t, plan.binding, plan.recoveryPlan);
         if (plan.selectedProfile && !same(profile(t.setId), plan.selectedProfile)) fail('set_changed', 'Die Schriftliste wurde inzwischen geändert.');
       }});
-    } else if (prior.id !== id || prior.fingerprint !== plan.sha256) fail('journal_conflict', 'Der Wiederanlauf gehört zu einem anderen Produktstand.');
+    }
     const saved = repository.get(id, {revision: plan.fromRevision + 1});
     ensureHead(id, saved.revision);
     if (syncHash(saved.document) !== plan.documentSha256 || !same(saved.metadata, plan.metadata)) fail('saved_changed', 'Der gespeicherte Stand passt nicht zum Prüfplan.');

@@ -29,7 +29,9 @@ export function createGallerySyncActivation({workshop,tenantId,shopDomain,storeI
   const prepared=prepareShopProduct(record),keys=heads.map(h=>syncHash(h.options));
   if(keys.length!==new Set(keys).size||prepared.variants.length!==heads.length||prepared.variants.some(v=>!heads.some(h=>syncHash(h.options)===syncHash(v.options)&&h.unitCents===v.priceCents)))
    syncFail('gallery_sync_binding_coverage','Die ausdrückliche Zuordnung muss alle bisherigen Ausführungen genau einmal enthalten.');
-  const approved=workshop.orderIntake.catalogLiveApprovals(heads.map(h=>({shopDomain,shopifyProductId:target.shopifyProductId,shopifyVariantId:h.shopifyVariantId,productId:h.productId,productRevision:h.productRevision}))).every(Boolean);
+  const approvals=workshop.orderIntake.catalogLiveApprovals(heads.map(h=>({shopDomain,shopifyProductId:target.shopifyProductId,shopifyVariantId:h.shopifyVariantId,productId:h.productId,productRevision:h.productRevision})));
+  if(approvalMode==='preserve'&&approvals.some(Boolean)&&!approvals.every(Boolean))syncFail('gallery_sync_partial_approval','Die vorhandene Verkaufsfreigabe deckt nur einen Teil der Varianten ab. Den Bestand zuerst gesondert prüfen.');
+  const approved=approvals.every(Boolean);
   return {boundRevision,approved,heads:heads.map(h=>({shopifyVariantId:h.shopifyVariantId,assignmentRevision:h.assignmentRevision,bindingId:h.bindingId,productRevision:h.productRevision,options:h.options,unitCents:h.unitCents,personalization:workshop.orderIntake.bindingPricing(h.bindingId)}))};
  }
  function prepare({mapping,record,document,binding,remote}){
@@ -52,6 +54,16 @@ export function createGallerySyncActivation({workshop,tenantId,shopDomain,storeI
    result.variants.push({id:head.shopifyVariantId,sha256});
   }
   return result;
+ }
+ // Run the actual binding planner against the current immutable product before
+ // a font-only revision is appended. No bindings or approvals are written.
+ function checkBindings({mapping,record,binding,remote}){
+  if(remote.shopDomain!==shopDomain||remote.id!==mapping.shopifyProductId)syncFail('gallery_sync_remote_stale','Der Shopify-Prüfbeleg gehört nicht zum Ziel.');
+  return readRegistry.withReadSnapshot(()=>{
+   for(let offset=0;offset<binding.heads.length;offset+=100)planShopProductBindings({tenantId,shopDomain,adapter,purpose:'id-binding',now:clock(),maxEvidenceAgeMs:60000,
+    selections:binding.heads.slice(offset,offset+100).map(h=>({shopifyProductId:mapping.shopifyProductId,shopifyVariantId:h.shopifyVariantId,productId:record.id,productRevision:record.revision,options:h.options})),
+    shopifyEvidence:{tenantId,shopDomain,readAt:remote.readAt,complete:true,products:[{id:remote.id,variants:remote.variants.map(v=>({id:v.id,productId:remote.id,priceCents:v.priceCents}))}]}});
+  });
  }
  function activate({entries,operationId}){
   return workshop.orderIntake.withBindingTransaction(()=>{
@@ -80,5 +92,5 @@ export function createGallerySyncActivation({workshop,tenantId,shopDomain,storeI
    return result;
   });
  }
- return Object.freeze({tenantId,shopDomain,storeId,approvalMode,capture,prepare,activate});
+ return Object.freeze({tenantId,shopDomain,storeId,approvalMode,capture,prepare,checkBindings,activate});
 }

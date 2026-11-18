@@ -7,6 +7,9 @@ import {createHash, createHmac, randomUUID} from 'node:crypto';
 import {createFontGroupConnection, projectFontConnection} from './font-group-connection.mjs';
 import {syncHash} from './gallery-shop-sync-native.mjs';
 import {createGallerySyncActivation} from './gallery-shop-sync-activation.mjs';
+import {createFontGroupShopConnection} from '../../scripts/lib/font-group-connection.mjs';
+import {planFamilyFormats, blankDesignId} from './katalog-family-formats.mjs';
+import {makeProductDocument} from './product-model.mjs';
 import {createGallerySyncTestFixture, GALLERY_SYNC_TEST_SHOP as shopDomain, GALLERY_SYNC_TEST_PRODUCT as PRODUCT} from './gallery-shop-sync-test-fixture.mjs';
 
 async function fixture(t, options = {}) {
@@ -16,12 +19,174 @@ async function fixture(t, options = {}) {
   const profiles = f.targetWorkshop.profiles;
   profiles.syncCatalogFontSet('synthetic-fonts', ['Allura', 'Montserrat']);
   const args = {workshop: f.targetWorkshop, tenantId: 'gravuru', shopDomain, activation: f.activation, transport: f.transport,
-    targets: [{id: 'synthetic', setId: 'synthetic-fonts', mapping: f.mapping}], approvedSets: [{id: 'synthetic-fonts', fonts: ['Allura', 'Montserrat']}],
+    targets: [{id: 'synthetic', setId: 'synthetic-fonts', reviewedRevision: 1, mapping: f.mapping}], approvedSets: [{id: 'synthetic-fonts', fonts: ['Allura', 'Montserrat']}],
     catalogFontSets: {list: () => ({sets: [{id: 'synthetic-fonts', fonts: ['Allura', 'Montserrat'], synchronized: true, profile: profiles.catalogFontSet('synthetic-fonts')}]})}};
   return {...f, args, connect: createFontGroupConnection({...args, executionEnabled: true})};
 }
 const approval = (f, revision) => f.targetWorkshop.orderIntake.catalogLiveApproval({shopDomain, shopifyProductId: PRODUCT,
   shopifyVariantId: f.variants[0].id, productId: f.target.id, productRevision: revision});
+
+function followup(f, fonts, reviewedRevision) {
+  f.targetWorkshop.profiles.syncCatalogFontSet('synthetic-fonts', fonts);
+  return createFontGroupConnection({...f.args, executionEnabled: true,
+    targets: [{...f.args.targets[0], reviewedRevision}], approvedSets: [{id: 'synthetic-fonts', fonts}],
+    catalogFontSets: {list: () => ({sets: [{id: 'synthetic-fonts', fonts, synchronized: true, profile: f.targetWorkshop.profiles.catalogFontSet('synthetic-fonts')}]})}});
+}
+
+test('remote prices are checked before saving, both before planning and after the reviewed plan', async t => {
+  const f = await fixture(t), before = f.activation.capture(f.mapping), plan = await f.connect.plan({targetId: 'synthetic'});
+  f.transport.changeForTest(PRODUCT, p => p.variants[0].priceCents++);
+  await assert.rejects(f.connect.plan({targetId: 'synthetic'}), {code: 'shop_binding_price'});
+  await assert.rejects(f.connect.execute(plan), {code: 'shop_binding_price'});
+  assert.equal(f.targetWorkshop.repository.head(f.target.id).revision, 1);
+  assert.deepEqual(f.activation.capture(f.mapping), before);
+  assert.equal(f.targetWorkshop.repository.importItem('font-connect:' + plan.sha256), null);
+});
+
+test('an interrupted connection can be replaced after a font change only with its exact journaled plan', async t => {
+  const f = await fixture(t), plan = await f.connect.plan({targetId: 'synthetic'});
+  const broken = createFontGroupConnection({...f.args, activation: {...f.activation, activate() { throw Error('interruption'); }}, executionEnabled: true});
+  await assert.rejects(broken.execute(plan), /interruption/);
+  const next = followup(f, ['Allura', 'Montserrat', 'Pacifico'], 1);
+  await assert.rejects(f.connect.execute(plan), {code: 'font_connection_set_changed'});
+  await assert.rejects(next.plan({targetId: 'synthetic'}), {code: 'font_connection_recovery_required'});
+  const tampered = structuredClone(plan); tampered.metadata = {};
+  await assert.rejects(next.plan({targetId: 'synthetic', recoveryPlan: tampered}), {code: 'font_connection_recovery_changed'});
+  const fresh = await next.plan({targetId: 'synthetic', recoveryPlan: plan});
+  assert.equal(fresh.fromRevision, 2); assert.equal(fresh.binding.boundRevision, 1);
+  await next.execute(fresh);
+  assert.equal(f.activation.capture(f.mapping).boundRevision, 3);
+  assert.deepEqual(f.targetWorkshop.repository.get(f.target.id).metadata.profiles.selections.fonts, ['Allura', 'Montserrat', 'Pacifico']);
+});
+
+test('consecutive interrupted own revisions can return to the bound font state; manual intervening revisions cannot', async t => {
+  const f = await fixture(t), first = await f.connect.plan({targetId: 'synthetic'});
+  const broken = createFontGroupConnection({...f.args, activation: {...f.activation, activate() { throw Error('interruption'); }}, executionEnabled: true});
+  await assert.rejects(broken.execute(first), /interruption/);
+  const second = await broken.plan({targetId: 'synthetic', recoveryPlan: first});
+  await assert.rejects(broken.execute(second), /interruption/);
+  const back = await f.connect.plan({targetId: 'synthetic', restoreRevision: 1, recoveryPlan: second});
+  await f.connect.execute(back);
+  assert.equal(f.activation.capture(f.mapping).boundRevision, 4);
+  assert.equal(syncHash(f.targetWorkshop.repository.get(f.target.id).document), syncHash(f.target.document));
+  f.targetWorkshop.repository.save(f.target.id, {...f.target.document, name: 'Manual change'}, 4);
+  const current = followup(f, ['Allura', 'Montserrat'], 4);
+  await assert.rejects(current.plan({targetId: 'synthetic', recoveryPlan: second}), {code: 'font_connection_recovery_changed'});
+  assert.equal(f.targetWorkshop.repository.get(f.target.id).document.name, 'Manual change');
+});
+
+test('unchanged effective settings permit a followup and rollback despite settings counter changes', async t => {
+  const f = await fixture(t);
+  await f.connect.execute(await f.connect.plan({targetId: 'synthetic'}));
+  f.targetWorkshop.profiles.setDefault('motifs', {mode: 'empty', profileId: null}, 1);
+  f.targetWorkshop.profiles.setDefault('motifs', {mode: 'inherit', profileId: null}, 2);
+  const next = followup(f, ['Allura', 'Montserrat', 'Pacifico'], 2);
+  await next.execute(await next.plan({targetId: 'synthetic'}));
+  await next.execute(await next.plan({targetId: 'synthetic', restoreRevision: 1}));
+  const record = f.targetWorkshop.repository.get(f.target.id);
+  assert.equal(record.revision, 4); assert.equal(record.metadata.profiles.settingsRevision, 3);
+  assert.deepEqual(record.metadata.profiles.selections, f.target.metadata.profiles.selections);
+});
+
+test('partial approval stops planning and execution without dropping existing per-variant approval', async t => {
+  const f = await fixture(t), plan = await f.connect.plan({targetId: 'synthetic'}), orders = f.targetWorkshop.orderIntake;
+  const approvals = orders.catalogLiveApprovals;
+  orders.catalogLiveApprovals = entries => approvals(entries).map((a, i) => i ? a : null);
+  await assert.rejects(f.connect.plan({targetId: 'synthetic'}), {code: 'gallery_sync_partial_approval'});
+  await assert.rejects(f.connect.execute(plan), {code: 'gallery_sync_partial_approval'});
+  assert.equal(f.targetWorkshop.repository.head(f.target.id).revision, 1);
+  assert.ok(approval(f, 1)); assert.equal(approval(f, 2), null);
+});
+
+test('manually rehashed forward and rollback assignments cannot bypass managed sets or immutable history', async t => {
+  const f = await fixture(t), plan = await f.connect.plan({targetId: 'synthetic'});
+  const free = f.targetWorkshop.profiles.create({name: 'Free font list', type: 'fonts', items: ['Pacifico']});
+  function changed(input, assignment) {
+    const {sha256, ...body} = structuredClone(input), record = f.targetWorkshop.repository.get(f.target.id, {revision: input.fromRevision});
+    const projected = projectFontConnection({repository: f.targetWorkshop.repository, record, assignment});
+    Object.assign(body, {assignment, selectedProfile: null, documentSha256: syncHash(projected.document), metadata: projected.metadata});
+    return {...body, sha256: syncHash(body)};
+  }
+  await assert.rejects(f.connect.execute(changed(plan, {mode: 'override', profileId: free.id})), {code: 'font_connection_set_changed'});
+  assert.equal(f.targetWorkshop.repository.head(f.target.id).revision, 1);
+  const noRevision = createFontGroupConnection({...f.args, targets: [{...f.args.targets[0], reviewedRevision: undefined}]});
+  await assert.rejects(noRevision.plan({targetId: 'synthetic'}), {code: 'font_connection_reviewed_revision'});
+  await f.connect.execute(plan);
+  const restore = await f.connect.plan({targetId: 'synthetic', restoreRevision: 1});
+  await assert.rejects(f.connect.execute(changed(restore, {mode: 'override', profileId: free.id})), {code: 'font_connection_set_changed'});
+  assert.equal(f.targetWorkshop.repository.head(f.target.id).revision, 2);
+});
+
+test('doorbell and form products cannot enter the native catalogue font connection', async t => {
+  const f = await fixture(t), record = structuredClone(f.target);
+  record.document.config.doorbell = {};
+  assert.throws(() => projectFontConnection({repository: f.targetWorkshop.repository, record, assignment: {mode: 'inherit', profileId: null}}), {code: 'font_connection_product_kind'});
+  delete record.document.config.doorbell; record.document.schema = 'gravuru-form-product/v1';
+  assert.throws(() => projectFontConnection({repository: f.targetWorkshop.repository, record, assignment: {mode: 'inherit', profileId: null}}), {code: 'font_connection_product_kind'});
+});
+
+test('private host factory uses the existing catalogue and read-only Shopify adapter; execution defaults off', async t => {
+  const f = await fixture(t), katalogRoot = path.join(f.dir, 'katalog'), fonts = ['Michroma', 'Lato', 'Cinzel', 'Montserrat'];
+  fs.cpSync(new URL('./fixtures/katalog/', import.meta.url), katalogRoot, {recursive: true});
+  // This host wiring test supplies a synthetic available font catalogue. It
+  // does not claim to verify production glyph files (a separate release gate).
+  f.targetWorkshop.profiles.registerFonts(fonts);
+  f.targetWorkshop.profiles.syncCatalogFontSet('tuerschilder', fonts);
+  const calls = [], args = {workshop: f.targetWorkshop, shopDomain, katalogRoot,
+    runtimeFonts: Object.fromEntries(fonts.map(n => [n, {regular: {units: 1000, glyphs: {}}}])),
+    targets: [{...f.args.targets[0], setId: 'tuerschilder'}], approvedSets: [{id: 'tuerschilder', fonts}],
+    graphql: async (query, variables) => {
+      calls.push({query, variables}); assert.ok(query.startsWith('query ')); assert.equal(variables.id, PRODUCT);
+      return {data: {shop: {myshopifyDomain: shopDomain, currencyCode: 'EUR'}, product: {id: PRODUCT,
+        variants: {nodes: f.variants.map(v => ({id: v.id, price: (v.priceCents / 100).toFixed(2)})), pageInfo: {hasNextPage: false}},
+        media: {nodes: [], pageInfo: {hasNextPage: false}}}}};
+    }};
+  assert.throws(() => createFontGroupShopConnection(), {code: 'font_connection_configuration'});
+  const host = createFontGroupShopConnection(args), plan = await host.plan({targetId: 'synthetic'});
+  await assert.rejects(host.execute(plan), {code: 'font_connection_execution_disabled'});
+  assert.equal(f.targetWorkshop.repository.head(f.target.id).revision, 1);
+  await createFontGroupShopConnection({...args, executionEnabled: true}).execute(plan);
+  assert.equal(f.activation.capture(f.mapping).boundRevision, 2);
+  assert.equal(calls.length, 2); assert.ok(calls.every(c => c.query.startsWith('query ')));
+  assert.deepEqual(f.targetWorkshop.repository.get(f.target.id).metadata.profiles.selections.fonts, fonts);
+});
+
+async function syntheticSteelBank() {
+  const family = JSON.parse(fs.readFileSync(new URL('../../scripts/fixtures/steel-shopify-options/family.json', import.meta.url)));
+  const fonts = JSON.parse(fs.readFileSync(new URL('../designs/aosu-labrador/assets/michroma-vectors.json', import.meta.url)));
+  const size = family.sizes.find(s => s.groupKey === 'AB' && s.widthMm === 120 && s.heightMm === 80);
+  const katalog = {families: new Map([[family.id, family]]), lines: new Map([['proof', {id: 'proof', name: 'Test', families: [family.id], subcategories: [{id: 'normal', name: 'Test', themeId: 'familie'}]}]]),
+    designs: {masters: []}, theme: () => null, fontResources: async ids => ({fonts: Object.fromEntries(ids.map(id => [id, fonts[id]])), missing: ids.filter(id => !fonts[id])})};
+  const {config, report} = await planFamilyFormats(katalog, 'proof', 'normal', {shopProduct: {sizeKey: size.key, themeId: 'familie', defaultDesignId: blankDesignId(size), groessenWahl: 'alle', vorlagen: 'leer'}});
+  assert.deepEqual(report.blocked, []);
+  return makeProductDocument(JSON.parse(JSON.stringify(config)), {name: 'Synthetic 404-variant font connection'});
+}
+
+test('preserve mode with 404 native variants rolls back after the last block and retries without duplicate history', async t => {
+  const f = await fixture(t, {documentTransform: syntheticSteelBank}), before = f.activation.capture(f.mapping), plan = await f.connect.plan({targetId: 'synthetic'});
+  assert.equal(before.heads.length, 404);
+  assert.equal(f.target.document.config.familyFormats.formats.length, 80);
+  assert.equal(new Set(f.target.document.config.familyFormats.formats.map(x => x.form)).size, 8);
+  const orders = f.targetWorkshop.orderIntake, approve = orders.approveCatalogLiveProducts;
+  let reachedAll = false;
+  orders.approveCatalogLiveProducts = input => {
+    assert.equal(input.products[0].productRevision, 2);
+    // Same connection sees every pending block before the deliberate failure.
+    assert.equal(f.activation.capture(f.mapping).boundRevision, 2);
+    reachedAll = true; throw Error('failure after all 404 variants');
+  };
+  await assert.rejects(f.connect.execute(plan), /failure after all 404 variants/);
+  assert.equal(reachedAll, true); assert.deepEqual(f.activation.capture(f.mapping), before);
+  assert.equal(approval(f, 2), null);
+  for (const v of f.variants) assert.equal(f.registry.history({shopifyProductId: PRODUCT, shopifyVariantId: v.id}).length, 1);
+  orders.approveCatalogLiveProducts = approve;
+  await f.connect.execute(plan);
+  const after = f.activation.capture(f.mapping);
+  assert.equal(after.boundRevision, 2); assert.equal(after.approved, true);
+  assert.deepEqual(after.heads.map(h => [h.shopifyVariantId, h.options, h.unitCents, h.personalization]), before.heads.map(h => [h.shopifyVariantId, h.options, h.unitCents, h.personalization]));
+  assert.equal(syncHash(f.targetWorkshop.repository.get(f.target.id).document.config), syncHash(f.target.document.config));
+  assert.equal(f.transport.writes.length, 0);
+});
 
 test('font-only connection is disabled by default; real bindings, prices, old revision and approvals survive switch and forward rollback', async t => {
   const f = await fixture(t), before = structuredClone(f.target), initialBinding = f.activation.capture(f.mapping);

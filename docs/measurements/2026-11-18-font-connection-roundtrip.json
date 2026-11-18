@@ -1,5 +1,5 @@
 {
-  "at": "2026-11-18T06:11:13.833Z",
+  "at": "2026-11-18T06:33:27.237Z",
   "environment": {
     "node": "v24.22.1",
     "platform": "win32",
@@ -43,8 +43,8 @@
     "modelResourceFontCount": 2,
     "storedDocumentBytes": 2434012
   },
-  "planMs": 167.3,
-  "executeMs": 471.6,
+  "planMs": 189.2,
+  "executeMs": 554.7,
   "shopifyWrites": 0,
   "limits": [
     "One local synthetic sample, not a mobile/network/customer-cart speed measurement.",

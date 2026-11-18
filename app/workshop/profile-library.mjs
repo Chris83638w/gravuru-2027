@@ -54,7 +54,7 @@ export function createProfileLibrary({filename,catalog,tenantId}){
     db.exec('PRAGMA foreign_keys=ON; PRAGMA busy_timeout=5000; PRAGMA journal_mode=WAL;');
     transaction(()=>{
       const version=db.prepare('PRAGMA user_version').get().user_version;
-      if(version>2)throw failure(422,'unsupported_database_version','Die Profilbibliothek benötigt eine neuere Anwendung.');
+      if(version>3)throw failure(422,'unsupported_database_version','Die Profilbibliothek benötigt eine neuere Anwendung.');
       if(version===0){
         if(db.prepare("SELECT 1 FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%' LIMIT 1").get())throw failure(422,'wrong_database','Die Profilbibliothek benötigt eine eigene Datenbankdatei.');
         db.exec(`CREATE TABLE profiles (
@@ -99,6 +99,11 @@ export function createProfileLibrary({filename,catalog,tenantId}){
         CREATE TRIGGER immutable_settings_delete BEFORE DELETE ON profile_settings_revisions BEGIN SELECT RAISE(ABORT,'Settings revisions are immutable'); END;
         PRAGMA user_version=2;`);
       }
+      if(version<3)db.exec(`CREATE TABLE profile_catalog_sources (
+        tenant_id TEXT NOT NULL,profile_id TEXT NOT NULL,set_id TEXT NOT NULL,
+        PRIMARY KEY(tenant_id,profile_id),UNIQUE(tenant_id,set_id),
+        FOREIGN KEY(profile_id) REFERENCES profiles(id)
+      ); PRAGMA user_version=3;`);
       // Jeder Mandant beginnt mit leeren Zuordnungen (Stand 1), auch in einer bestehenden Datei.
       if(!db.prepare('SELECT 1 FROM profile_library_settings WHERE tenant_id=?').get(tenant)){
         const document=JSON.stringify({defaults:emptyAssignments(),categories:{}}),now=new Date().toISOString();
@@ -132,8 +137,10 @@ export function createProfileLibrary({filename,catalog,tenantId}){
   function profileRecord(row,revision=row.revision){
     const saved=db.prepare('SELECT document,created_at FROM profile_revisions WHERE profile_id=? AND revision=? AND tenant_id=?').get(row.id,revision,tenant);
     if(!saved)throw failure(404,'profile_revision_not_found','Profilversion nicht gefunden.');
-    return {id:row.id,revision,...JSON.parse(saved.document),createdAt:row.created_at,updatedAt:saved.created_at};
+    const origin=db.prepare('SELECT set_id FROM profile_catalog_sources WHERE tenant_id=? AND profile_id=?').get(tenant,row.id);
+    return {id:row.id,revision,...JSON.parse(saved.document),createdAt:row.created_at,updatedAt:saved.created_at,...(origin?{source:{kind:'katalog-fontset',setId:origin.set_id}}:{})};
   }
+  function assertFreeProfile(id){if(db.prepare('SELECT 1 FROM profile_catalog_sources WHERE tenant_id=? AND profile_id=?').get(tenant,id))throw failure(409,'catalog_profile_managed','Diese Schriftgruppe wird im Katalog gepflegt. Bitte die Schriftgruppen-Pflege öffnen.');}
   function appendProfile(row,document){
     db.prepare('INSERT INTO profile_revisions(profile_id,revision,document,created_at,tenant_id) VALUES(?,?,?,?,?)').run(row.id,row.revision,JSON.stringify(document),row.updated_at,tenant);
     return profileRecord(row);
@@ -204,6 +211,37 @@ export function createProfileLibrary({filename,catalog,tenantId}){
   }
 
   return {
+    catalogFontSet(setId){
+      const row=db.prepare('SELECT profile_id FROM profile_catalog_sources WHERE tenant_id=? AND set_id=?').get(tenant,setId);
+      return row?profileRecord(profileRow(row.profile_id)):null;
+    },
+    adoptCatalogFontSet(setId,id,expectedRevision){
+      if(!validReference(setId))fail('invalid_catalog_source','Ungültige Schriftgruppenkennung.');
+      return transaction(()=>{
+        const row=profileRow(id);checkExpected(row.revision,expectedRevision);
+        if(row.type!=='fonts')fail('invalid_catalog_source','Nur Schriftprofile können einer Schriftgruppe zugeordnet werden.');
+        const existing=db.prepare('SELECT * FROM profile_catalog_sources WHERE tenant_id=? AND (profile_id=? OR set_id=?)').get(tenant,id,setId);
+        if(existing){if(existing.profile_id===id&&existing.set_id===setId)return profileRecord(row);throw failure(409,'catalog_source_conflict','Die Schriftgruppe oder das Profil ist bereits anders zugeordnet.');}
+        db.prepare('INSERT INTO profile_catalog_sources(tenant_id,profile_id,set_id) VALUES(?,?,?)').run(tenant,id,setId);
+        return profileRecord(row);
+      });
+    },
+    syncCatalogFontSet(setId,items){
+      if(!validReference(setId))fail('invalid_catalog_source','Ungültige Schriftgruppenkennung.');
+      return transaction(()=>{
+        const origin=db.prepare('SELECT profile_id FROM profile_catalog_sources WHERE tenant_id=? AND set_id=?').get(tenant,setId),name='Schrift-Set '+setId+' (Katalog)';
+        let row=origin?profileRow(origin.profile_id):null;
+        if(!row&&db.prepare('SELECT 1 FROM profiles WHERE tenant_id=? AND type=? AND name=?').get(tenant,'fonts',name))throw failure(409,'catalog_source_unresolved','Schriftgruppe „'+setId+'“: Die Herkunft ist noch nicht bestätigt. Bitte unter /werkstatt/schriftgruppen/ die vorhandene Liste mit dem Katalog vergleichen und die geprüfte Herkunft übernehmen. Danach den Import erneut starten.');
+        const document=profileData({name:row?.name??name,type:'fonts',items}),now=new Date().toISOString();
+        if(row&&JSON.stringify(profileRecord(row).items)===JSON.stringify(items))return profileRecord(row);
+        if(row)db.prepare('UPDATE profiles SET revision=?,updated_at=? WHERE tenant_id=? AND id=?').run(row.revision+1,now,tenant,row.id);
+        else{
+          const id='prf_'+randomUUID();db.prepare('INSERT INTO profiles(id,revision,name,type,created_at,updated_at,tenant_id) VALUES(?,1,?,?,?,?,?)').run(id,document.name,'fonts',now,now,tenant);
+          db.prepare('INSERT INTO profile_catalog_sources(tenant_id,profile_id,set_id) VALUES(?,?,?)').run(tenant,id,setId);row={id};
+        }
+        return appendProfile(profileRow(row.id),document);
+      });
+    },
     registerFonts(rows){
       const checked=readCatalog({fonts:rows,motifs:[]}).fonts;
       for(const row of checked)if(!catalogIds.fonts.has(row.id)){catalogRows.fonts.push(row);catalogIds.fonts.add(row.id);}
@@ -226,6 +264,7 @@ export function createProfileLibrary({filename,catalog,tenantId}){
     },
     save(id,input,expectedRevision){
       return transaction(()=>{
+        assertFreeProfile(id);
         const row=profileRow(id);checkExpected(row.revision,expectedRevision);
         const document=profileData(input);
         if(document.type!==row.type)fail('profile_type_change','Die Profilart bleibt unverändert. Für eine andere Art bitte ein neues Profil anlegen.');
@@ -235,6 +274,7 @@ export function createProfileLibrary({filename,catalog,tenantId}){
     },
     previewSave(id,input,expectedRevision,documents){
       return transaction(()=>{
+        assertFreeProfile(id);
         const row=profileRow(id);checkExpected(row.revision,expectedRevision);
         const document=profileData(input);
         if(document.type!==row.type)fail('profile_type_change','Die Profilart bleibt unverändert. Für eine andere Art bitte ein neues Profil anlegen.');

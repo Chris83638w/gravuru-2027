@@ -1,0 +1,360 @@
+{
+  "readOnly": true,
+  "source": "Plesk Node.js console app-2027; captured from visible output",
+  "records": [
+    {
+      "file": "profiles.sqlite",
+      "at": "2026-11-18T05:13:12.219Z",
+      "schema": 2,
+      "journal": "wal",
+      "tenants": [
+        {
+          "tenant_id": "gravuru",
+          "n": 2
+        }
+      ]
+    },
+    {
+      "file": "workshop.sqlite",
+      "at": "2026-11-18T05:13:12.223Z",
+      "schema": 4,
+      "journal": "wal",
+      "tenants": [
+        {
+          "tenant_id": "gravuru",
+          "n": 1090
+        }
+      ]
+    },
+    {
+      "at": "2026-11-18T05:13:32.463Z",
+      "profiles": [
+        {
+          "id": "prf_a49a4d13-55f4-4b81-a785-b24cd64da897",
+          "name": "Schrift-Set tuerschilder (Katalog)",
+          "type": "fonts",
+          "revision": 1,
+          "fonts": [
+            "Michroma Regular · 7b7db37152a4",
+            "Lato Regular · c3d3cabdb582",
+            "Cinzel",
+            "Comfortaa Regular · 11bf75ad8a7f",
+            "Raleway",
+            "Rounded Elegance · b53d9f1332d9",
+            "Alex Brush Regular · a63a5c23f032",
+            "Allura",
+            "Dancing Script",
+            "Great Vibes",
+            "Homage · abeda1c9028b",
+            "Cormorant Garamond",
+            "Playfair Display",
+            "Lora",
+            "Montserrat",
+            "Josefin Sans"
+          ]
+        },
+        {
+          "id": "prf_1bc10677-5d8b-4f04-8966-0e0f9e4a360d",
+          "name": "Kleinformate: bestätigte 13 Motive (10.11.2026)",
+          "type": "motifs",
+          "revision": 1
+        }
+      ]
+    },
+    {
+      "settingsRevision": 1,
+      "defaultFonts": {
+        "mode": "inherit",
+        "profileId": null
+      },
+      "categoryFonts": []
+    },
+    {
+      "profilesAt": "2026-11-18T05:14:11.016Z",
+      "productsAt": "2026-11-18T05:14:13.780Z",
+      "settingsRevision": 1,
+      "kinds": [
+        {
+          "kind": "master",
+          "archived": 0,
+          "n": 19
+        },
+        {
+          "kind": "product",
+          "archived": 0,
+          "n": 1071
+        }
+      ],
+      "products": 1071,
+      "internallyPublished": 0,
+      "direct": {
+        "missing": 798,
+        "inherit": 273
+      },
+      "effective": {
+        "unbound/inherit": 1071
+      },
+      "directProfiles": {},
+      "effectiveProfiles": {},
+      "importedModes": {
+        "inherit": 1
+      }
+    },
+    {
+      "at": "2026-11-18T05:15:13.278Z",
+      "catalogCommit": "8236b8bfab7322447ec46661c116fa526331af3d",
+      "hashes": {
+        "schriften/sets.json": "37eb3bc160d73cd6a117d84d988c29b4eae19aa35f2729c7357e617099410e89",
+        "themen.json": "0eefb6053a102a2c37d0ff98fe4a1e5fb17ab303ff623cd36eb75e852a39739f",
+        "struktur.json": "709eef78693a771f1c91284783bc399b07fce8566bb9c6b4ebc70c1015b9f1f3"
+      },
+      "sets": [
+        {
+          "id": "hausnummern",
+          "fonts": [
+            "Michroma",
+            "Lato",
+            "Cinzel",
+            "Roboto Slab",
+            "Comfortaa",
+            "Minimalist",
+            "Rounded Elegance",
+            "Archivo Black",
+            "Bebas Neue",
+            "Days One",
+            "Allura",
+            "Great Vibes",
+            "Fjalla One",
+            "Oswald",
+            "Montserrat"
+          ]
+        },
+        {
+          "id": "tuerschilder",
+          "fonts": [
+            "Michroma",
+            "Lato",
+            "Cinzel",
+            "Comfortaa",
+            "Raleway",
+            "Rounded Elegance",
+            "Alex Brush",
+            "Allura",
+            "Dancing Script",
+            "Great Vibes",
+            "Homage",
+            "Cormorant Garamond",
+            "Playfair Display",
+            "Lora",
+            "Montserrat",
+            "Josefin Sans"
+          ]
+        },
+        {
+          "id": "andenken",
+          "fonts": [
+            "Michroma",
+            "Lato",
+            "Antic Slab",
+            "Bellefair",
+            "Cinzel",
+            "Bernardo Moda Contrast",
+            "Alex Brush",
+            "Great Vibes",
+            "Italianno",
+            "Magnolia Script",
+            "Parisienne",
+            "Cormorant Garamond",
+            "Playfair Display",
+            "Libre Baskerville",
+            "Lora",
+            "Josefin Sans"
+          ]
+        },
+        {
+          "id": "schluesselanhaenger",
+          "fonts": [
+            "Michroma",
+            "Lato",
+            "Bebas Neue",
+            "Chewy",
+            "Righteous",
+            "Kaushan Script",
+            "Pacifico",
+            "Caveat",
+            "Oswald",
+            "Montserrat",
+            "Amatic SC",
+            "Lobster",
+            "Fredoka",
+            "Baloo 2",
+            "Permanent Marker"
+          ]
+        },
+        {
+          "id": "geschenkartikel",
+          "fonts": [
+            "Michroma",
+            "Lato",
+            "Dancing Script",
+            "Satisfy",
+            "Cookie",
+            "Courgette",
+            "Kaushan Script",
+            "Pacifico",
+            "Caveat",
+            "Daniel",
+            "Desyrel",
+            "Montserrat",
+            "Amatic SC",
+            "Patrick Hand",
+            "Lobster",
+            "Sacramento",
+            "Fredoka"
+          ]
+        },
+        {
+          "id": "pferdeschilder",
+          "fonts": [
+            "Michroma",
+            "Lato",
+            "Cinzel",
+            "Roboto Slab",
+            "Bebas Neue",
+            "Alex Brush",
+            "Great Vibes",
+            "Kaushan Script",
+            "Zentenar Fraktur",
+            "Oswald",
+            "Special Elite",
+            "Rye",
+            "Alfa Slab One",
+            "Uncial Antiqua",
+            "MedievalSharp",
+            "Permanent Marker"
+          ]
+        },
+        {
+          "id": "hundeschilder",
+          "fonts": [
+            "Michroma",
+            "Lato",
+            "Bebas Neue",
+            "Chewy",
+            "Great Vibes",
+            "Pacifico",
+            "Caveat",
+            "Oswald",
+            "Montserrat",
+            "Amatic SC",
+            "Kalam",
+            "Lobster",
+            "Rye",
+            "Fredoka",
+            "Baloo 2",
+            "Permanent Marker"
+          ]
+        },
+        {
+          "id": "firmenschilder",
+          "fonts": [
+            "Michroma",
+            "Lato",
+            "Cinzel",
+            "Aldrich",
+            "Audiowide",
+            "Raleway",
+            "Playfair Display",
+            "Libre Baskerville",
+            "Roboto Condensed",
+            "Montserrat",
+            "Josefin Sans",
+            "Courier Prime"
+          ]
+        }
+      ],
+      "doorFontFiles": [
+        {
+          "name": "Michroma",
+          "file": "schriften/dateien/Michroma/Michroma-Regular.ttf",
+          "sha256": "7b7db37152a4fa4cb822e9ce96ea10f95a279c42d35a23ff08b71ff879885648"
+        },
+        {
+          "name": "Lato",
+          "file": "schriften/dateien/Lato/Lato-Regular.ttf",
+          "sha256": "c3d3cabdb582f7c40ee048c704b673a0332d804ef048236116a4269ab11e94ae"
+        },
+        {
+          "name": "Cinzel",
+          "file": "schriften/dateien/Cinzel/Cinzel-Regular.ttf",
+          "sha256": "8985857bcd5f622350f2b164358f0c047feb6ff8d2677996463c93bd1b9e36b6"
+        },
+        {
+          "name": "Comfortaa",
+          "file": "schriften/dateien/Comfortaa/Comfortaa-Regular.ttf",
+          "sha256": "11bf75ad8a7f7bad41bafcd190d5778bcd3bfcf6ae399f50bf437d04012370d3"
+        },
+        {
+          "name": "Raleway",
+          "file": "schriften/dateien/Raleway/Raleway-Regular.ttf",
+          "sha256": "ed3d4c95590fc1230bd09f6f5a7aa7ff80b8510974d89d3044efb58af5af1bd5"
+        },
+        {
+          "name": "Rounded Elegance",
+          "file": "schriften/dateien/Rounded Elegance/RoundedElegance-Regular.ttf",
+          "sha256": "b53d9f1332d996c8378c08c5d0c51e57754d4d1a5bcb465a5cf8f62b315ae864"
+        },
+        {
+          "name": "Alex Brush",
+          "file": "schriften/dateien/Alex Brush/AlexBrush-Regular.ttf",
+          "sha256": "a63a5c23f032e233e215621d1f35083a41629a6d9c0ab5caa56215c7aca8cb5f"
+        },
+        {
+          "name": "Allura",
+          "file": "schriften/dateien/Allura/Allura-Regular.ttf",
+          "sha256": "80432355c546f0d55386605ab460acac47497b14afae9ff955e8943d86b3772f"
+        },
+        {
+          "name": "Dancing Script",
+          "file": "schriften/dateien/Dancing Script/DancingScript-Regular.ttf",
+          "sha256": "66ac8c2c19fd55d34113eddb641b2e56a58eb1f8880871b6dedad73692849e59"
+        },
+        {
+          "name": "Great Vibes",
+          "file": "schriften/dateien/Great Vibes/GreatVibes-Regular.ttf",
+          "sha256": "d4b4126ed2028e7b6c68038e36334f13cd7c5286584951a3dfbfe9e64305e8a2"
+        },
+        {
+          "name": "Homage",
+          "file": "schriften/dateien/Homage/Homage.ttf",
+          "sha256": "abeda1c9028b8b8c01c48c479a7f2205ebe9937beacd7d0e0201d7055bcf8a6b"
+        },
+        {
+          "name": "Cormorant Garamond",
+          "file": "schriften/dateien/Cormorant Garamond/CormorantGaramond-Regular.ttf",
+          "sha256": "e1f9b4e34d051df0b49cfff5ee0cd5e92c818560a916592b20d1b5ff2f875588"
+        },
+        {
+          "name": "Playfair Display",
+          "file": "schriften/dateien/Playfair Display/PlayfairDisplay-Regular.ttf",
+          "sha256": "86a1d7a28b96e4d3cddbf066695493a749d64c1dd3646e1b57e84e398a444afd"
+        },
+        {
+          "name": "Lora",
+          "file": "schriften/dateien/Lora/Lora-Regular.ttf",
+          "sha256": "09cc6b0f5facc213f657896ca3d59b184167e32e3e79ca542223352ffa3463ec"
+        },
+        {
+          "name": "Montserrat",
+          "file": "schriften/dateien/Montserrat/Montserrat-Regular.ttf",
+          "sha256": "6b73a80b856680b214e6c4f624d1ced22889c6f2a028c3f6ccdd34ba4b31386d"
+        },
+        {
+          "name": "Josefin Sans",
+          "file": "schriften/dateien/Josefin Sans/JosefinSans-Regular.ttf",
+          "sha256": "59aab50931d0d5084b2989e0affd162d02a4580cec9355f638fdf0ff26fd89d7"
+        }
+      ]
+    }
+  ]
+}

@@ -16,13 +16,13 @@ async function request(workshop, pathname, method='GET', input, headers={}) {
  await workshop.handle(req,res,new URL(pathname,'http://127.0.0.1'));return res;
 }
 
-test('real native draft routes share group-plus-design choices and pin the saved profile across later backend edits',async t=>{
+for(const managed of [false,true])test('real native drafts keep group-plus-design choices and pinned revisions; catalog-managed='+managed,async t=>{
  const directory=fs.mkdtempSync(path.join(os.tmpdir(),'g27-font-draft-'));
  build({outputDirectory:directory});
  const seed=JSON.parse(fs.readFileSync(path.join(directory,'models.json')))[0];
  const w=createWorkshop({filename:path.join(directory,'workshop.sqlite'),seedConfig:seed.universal,legacy:seed.legacy});
  t.after(()=>{w.close();assert.equal(path.dirname(directory),path.resolve(os.tmpdir()));fs.rmSync(directory,{recursive:true,force:true});});
- const list=w.profiles.create({name:'Synthetische Schriftgruppe',type:'fonts',items:['Montserrat']});
+ const list=managed?w.profiles.syncCatalogFontSet('synthetische-testgruppe',['Montserrat']):w.profiles.create({name:'Synthetische Schriftgruppe',type:'fonts',items:['Montserrat']});
  w.profiles.setDefault('fonts',{mode:'override',profileId:list.id},1);
  const record=w.repository.copy(w.defaultId,{expectedRevision:1,name:'Synthetische Schriftprüfung',kind:'product'});
  const config=w.model(record.id,record.revision).universal,source=config.profile.designs[0];
@@ -51,7 +51,7 @@ test('real native draft routes share group-plus-design choices and pin the saved
  assert.equal(denied.status,422);assert.match(denied.body.error.message,/Schrift.*nicht freigegeben/);
  // A later backend edit changes the live workbench selection, not the pinned
  // model/metadata or the existing draft's immutable input and checkout offer.
- w.profiles.save(list.id,{name:list.name,type:'fonts',items:['Lora']},list.revision);
+ if(managed)w.profiles.syncCatalogFontSet('synthetische-testgruppe',['Lora']);else w.profiles.save(list.id,{name:list.name,type:'fonts',items:['Lora']},list.revision);
  assert.deepEqual(w.model(record.id).universal.workshopProfiles.selections.fonts,['Lora']);
  assert.deepEqual(w.model(record.id,record.revision).universal.workshopProfiles.selections.fonts,['Montserrat']);
  edit('Montserrat');

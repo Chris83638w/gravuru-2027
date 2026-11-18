@@ -27,8 +27,9 @@ const stripFamily=f=>{const {_file,_material,...rest}=f;return structuredClone(r
 // (Laufzeitkatalog oder Schriftbibliothek, Abgleich über sha256 der Katalogdatei), werden
 // wiederverwendet; sonst wird die Katalogdatei in die Schriftbibliothek importiert (E4-Prüfung;
 // ohne Pflichtzeichen bleibt die Schrift draußen und wird gemeldet). Das Profil heißt
-// „Schrift-Set <id> (Katalog)“ und bekommt nur bei geänderter Liste eine neue Revision.
-export async function ensureFontSet(katalog,fontSet,{fontLibrary=null,profiles=null,runtimeFonts={}}={}){
+// anfänglich „Schrift-Set <id> (Katalog)“. Die Herkunft (Mandant/Set-ID), nicht
+// der Anzeigename, identifiziert es. Nur eine geänderte Liste erzeugt eine Revision.
+export async function ensureFontSet(katalog,fontSet,{fontLibrary=null,profiles=null,runtimeFonts={},prepareOnly=false}={}){
  const items=[],missing=[],imported=[];
  if(!fontLibrary||!profiles)return {profileId:null,items,missing:fontSet.fonts.filter(n=>!runtimeFonts[n]),imported,available:fontSet.fonts.filter(n=>runtimeFonts[n])};
  for(const name of fontSet.fonts){
@@ -41,10 +42,10 @@ export async function ensureFontSet(katalog,fontSet,{fontLibrary=null,profiles=n
   items.push(row.id);
  }
  profiles.registerFonts(fontLibrary.list());
- const name='Schrift-Set '+fontSet.id+' (Katalog)',existing=profiles.list({type:'fonts'}).find(p=>p.name===name);
- let profile=existing;
- if(!existing)profile=profiles.create({name,type:'fonts',items});
- else if(JSON.stringify(existing.items)!==JSON.stringify(items))profile=profiles.save(existing.id,{name,type:'fonts',items},existing.revision);
+ if(prepareOnly)return {items,missing,imported,available:fontSet.fonts.filter(n=>!missing.some(m=>m.startsWith(n+' ')))};
+ const current=profiles.catalogFontSet(fontSet.id);
+ if(missing.length&&current&&JSON.stringify(current.items)!==JSON.stringify(items))fail('Schriftgruppe „'+fontSet.id+'“ konnte nicht vollständig geladen werden. Die bestehende Auswahl bleibt erhalten: '+missing.join('; ')+'. Bitte die genannten Schriftdateien im Katalog wiederherstellen, unter /werkstatt/schriftgruppen/ prüfen und den Import erneut starten.');
+ const profile=profiles.syncCatalogFontSet(fontSet.id,items);
  return {profileId:profile.id,profileRevision:profile.revision,items,missing,imported,available:fontSet.fonts.filter(n=>!missing.some(m=>m.startsWith(n+' ')))};
 }
 
@@ -149,6 +150,11 @@ export async function planKatalogImport(katalog,lineId,{repository,families,best
      const product=katalogFamilyToProduct(doc,line,effective,{size,theme,fontSet:{...fontSet,available:set.available},fontProfileId:set.profileId,fonts,templates,revision,mainProduct:main});
      if(customerUx){product.document.config=customerUxConfig(product.document.config);product.document.config.designSelection='all-approved';}
      const prior=repository.importItem(key),current=prior?repository.get(prior.id):null;
+     const existingAssignment=current?.document.profileAssignments?.fonts;
+     if(existingAssignment&&JSON.stringify(existingAssignment)!==JSON.stringify(product.document.profileAssignments.fonts)){
+      product.document.profileAssignments.fonts=structuredClone(existingAssignment);
+      entry.fontAssignmentException={message:'Abweichende bestehende Schriftzuordnung bleibt erhalten.',assignment:structuredClone(existingAssignment),catalogProfileId:set.profileId};
+     }
      const action=!prior?'neu':JSON.stringify(current.document)===JSON.stringify(product.document)?'unverändert':'aktualisieren';
      Object.assign(entry,{action,productId:prior?.id??null,productRevision:current?.revision??null,name:product.document.name,fontsMissing:product.fontsMissing});
      item={key,fingerprint:sha(key),document:product.document,action,productId:prior?.id??null,expectedRevision:current?.revision??null};
@@ -221,6 +227,7 @@ export function formatReport(report){
  for(const f of report.families)lines.push(`Familie ${f.id}: ${f.sizes} Größen, ${f.series.length} Formatreihen (${f.series.map(r=>r.key+'·'+r.sizes+'·D'+r.designs).join(', ')}), ${f.action}${f.ready?'':' – nicht erzeugbar: '+f.reason}${f.pricesOpen.length?' – '+f.pricesOpen.length+' offene Preise':''}`);
  for(const s of report.subcategories)lines.push(`Unterkategorie ${s.id} (${s.family}): Thema ${s.themeId??'–'}, Schrift-Set ${s.fontSet??'–'} (${s.fonts.set.length} Schriften${s.fontProfileId?', Profil '+s.fontProfileId:''}${s.fonts.imported?.length?', neu importiert: '+s.fonts.imported.length:''}${s.fonts.missing.length?', fehlen: '+s.fonts.missing.join('; '):''}), Designs ${s.designs}, Produkte ${s.products.length} (neu ${s.products.filter(p=>p.action==='neu').length}, aktualisieren ${s.products.filter(p=>p.action==='aktualisieren').length}, unverändert ${s.products.filter(p=>p.action==='unverändert').length}, gesperrt ${s.products.filter(p=>p.action==='gesperrt').length})`);
  const c=report.counts;
+ for(const s of report.subcategories)for(const p of s.products)if(p.fontAssignmentException)lines.push('  Schriftzuordnung beibehalten: '+s.id+' / '+p.sizeKey+' – '+p.fontAssignmentException.message);
  lines.push(`Summe: ${c.products} Produkte (neu ${c.new}, aktualisieren ${c.update}, unverändert ${c.unchanged}, gesperrt ${c.blocked}), ${c.templates} Vorlagen (passt ${c.fit.passt}, prüfen ${c.fit['prüfen']}, passt nicht ${c.fit['passt nicht']}), ${c.sizes} Größen, ${c.pricesOpen} offene Preise, Designs: ${report.designs.masters} Master + ${report.designs.bestand} Bestand, davon ${report.designs.considered} zum Material passend, mit Reihe ${report.designs.withSeries}, ohne Reihe (alte Größe) ${c.designsWithoutSeries}, ohne Thema ${report.designs.withoutTheme}, nicht umwandelbar ${report.designs.failed.length}`);
  const blocked=report.subcategories.flatMap(s=>s.products.filter(p=>p.action==='gesperrt').map(p=>p.reason));
  for(const [reason,n] of Object.entries(blocked.reduce((m,r)=>(m[r]=(m[r]||0)+1,m),{})).sort((a,b)=>b[1]-a[1]).slice(0,8))lines.push(`  gesperrt ×${n}: ${reason}`);

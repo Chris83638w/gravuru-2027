@@ -1,0 +1,12 @@
+{
+  "synthetic": true,
+  "node": "v24.22.1",
+  "backupSchema": 2,
+  "upgradedSchema": 3,
+  "codeOnlyRollbackRejected": true,
+  "codeOnlyRollbackError": "unsupported_database_version",
+  "restoredSchema": 2,
+  "restoredProfilesAndSettingsEqual": true,
+  "integrity": "ok",
+  "limitation": "Pre-upgrade snapshot restore only when no business writes occurred after upgrade; otherwise preserve current data and plan a separate recovery."
+}

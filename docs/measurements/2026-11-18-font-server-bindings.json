@@ -1,0 +1,74 @@
+{
+  "scope": "Stored native workshop database, tenant gravuru; read-only Plesk queries. No Shopify visibility or storefront reachability measurement.",
+  "categoryOutput": {
+    "at": "2026-11-18T05:18:30.212Z",
+    "products": 1071,
+    "withoutCategories": 158,
+    "categories": {
+      "linie-edelstahl-tuerschilder": 9,
+      "unterkategorie-edelstahl-tuerschilder-familienschilder": 8,
+      "thema-familienschilder": 10,
+      "linie-acryl-tuerschilder": 3,
+      "unterkategorie-acryl-tuerschilder-familienschilder": 2,
+      "linie-grabstecker-edelstahl": 102,
+      "thema-andenkenschilder": 102,
+      "thema-monogramme": 1
+    },
+    "schemas": {
+      "gravuru-form-product/v1": 798,
+      "gravuru-product/v1": 273
+    },
+    "bindingTables": [
+      "form_shop_bindings",
+      "shop_product_binding_revisions",
+      "shop_product_binding_heads"
+    ]
+  },
+  "categoryOutputFilter": "Only thema-, linie-, unterkategorie- category keys retained from the observed full category-count output; all retained values unchanged. Product codes and external identifiers omitted.",
+  "legacyBindingOutput": {
+    "legacyBindingCounts": [
+      {
+        "shop": "gravuru-design.myshopify.com",
+        "rows": 33882,
+        "variants": 16725,
+        "configs": 248
+      }
+    ]
+  },
+  "activeBindingOutput": {
+    "activeBindingCounts": [
+      {
+        "shop": "gravuru-design.myshopify.com",
+        "variants": 16725,
+        "shopProducts": 248,
+        "configs": 248
+      }
+    ]
+  },
+  "boundRevisionOutput": {
+    "at": "2026-11-18T05:19:28.960Z",
+    "registeredBoundConfigRevisions": 249,
+    "schemas": {
+      "gravuru-product/v1": 248,
+      "gravuru-form-product/v1": 1
+    },
+    "withoutCategories": 132,
+    "withoutTheme": 136,
+    "themes": {
+      "thema-familienschilder": 10,
+      "thema-andenkenschilder": 102,
+      "thema-monogramme": 1
+    },
+    "fontModes": {
+      "inherit": 248,
+      "missing": 1
+    },
+    "differentCurrentHead": 1,
+    "note": "Stored registry bindings; no Shopify visibility or storefront reachability check."
+  },
+  "units": {
+    "activeBindingOutput": "Distinct configuration IDs and Shopify product IDs from binding heads joined to their exact binding revisions. Not a join requiring current product head = bound product revision.",
+    "boundRevisionOutput": "Distinct cfg_id + cfg_revision rows joined to the corresponding stored product revisions and current product heads. Counts refer to revision pairs, not unique products.",
+    "snapshot": "Separate reads at 05:18 and 05:19 UTC, not one atomic snapshot or backup. One bound revision differs from its current product head; this alone does not identify the configuration causing the difference between 248 IDs and 249 revision pairs."
+  }
+}

@@ -28,8 +28,10 @@ Die Kopie enthält drei DBs, 81.750 Katalogdateien und drei kleine Einstieg-/Sta
 
 Die Live-WAL-Metadaten blieben während des Laufs unverändert; tatsächliche gleichzeitige Kunden-Schreiblast ist damit nicht belegt. Synthetische Gleichzeitigkeitstests und echte Sperrwirkung am Server sind auseinanderzuhalten. Keine Aussage über neue P3-Kapazitäten, App-RSS-Verbesserung oder Geschwindigkeit des Kundenwegs.
 
-Wiederherstellung erfolgreich. Nächster Schritt: Claudes Abschlussprüfung und dann gesonderte native Schriftgruppen-Generalprobe mit isoliertem Kandidatencode/Legacy-Daten. Unverändert kein Livewechsel ohne Chris.
+Wiederherstellung erfolgreich; [Claude bestätigt die Abschlussbelege](https://github.com/Chris83638w/gravuru-2027/pull/261#issuecomment-6977231100). Nächster Schritt: gesonderte native Schriftgruppen-Generalprobe mit isoliertem Kandidatencode/Legacy-Daten. Unverändert kein Livewechsel ohne Chris.
 
 ## Belege
 
 [Capture](../measurements/2026-11-18-font-online-capture-result.json), [Restore](../measurements/2026-11-18-font-online-restore-result.json), [belegte Schreibphase/Memory-cgroup](../measurements/2026-11-18-font-online-restore-during-write.json), [exakte Operatorquellen](2026-11-18-font-online-operator/README.md). Keine Datenbank und kein Kundeninhalt wurde aus dem privaten Serverbereich übertragen.
+
+Abgrenzung: Die Differenz der freien Gesamtplatte (rund 20,97 GB) ist keine exklusiv gemessene Belegung unserer drei Verzeichnisse. Direkt erfasst sind je 9.732.780.913 Nutzbytes und der 17.313.390-Byte-Beleg; weitere Dateisystemkosten und andere Serveraktivität sind darin nicht getrennt. Die Memory-cgroup-Zuordnung gilt für die beobachtete Restore-Kette, nicht rückwirkend für Capture. Aus Nullwerten der Dateicache-Stichproben folgt keine allgemeine Nichtanrechnung von Dateicache.

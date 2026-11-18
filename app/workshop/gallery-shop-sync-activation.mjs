@@ -55,6 +55,10 @@ export function createGallerySyncActivation({workshop,tenantId,shopDomain,storeI
   }
   return result;
  }
+ function wasBound(mapping,revision){
+  return mapping.shopifyVariantIds.length>0&&mapping.shopifyVariantIds.every(shopifyVariantId=>readRegistry.history({shopifyProductId:mapping.shopifyProductId,shopifyVariantId})
+   .some(h=>h.productId===mapping.target.productId&&h.productRevision===revision));
+ }
  // Run the actual binding planner against the current immutable product before
  // a font-only revision is appended. No bindings or approvals are written.
  function checkBindings({mapping,record,binding,remote}){
@@ -92,5 +96,5 @@ export function createGallerySyncActivation({workshop,tenantId,shopDomain,storeI
    return result;
   });
  }
- return Object.freeze({tenantId,shopDomain,storeId,approvalMode,capture,prepare,checkBindings,activate});
+ return Object.freeze({tenantId,shopDomain,storeId,approvalMode,capture,prepare,checkBindings,wasBound,activate});
 }

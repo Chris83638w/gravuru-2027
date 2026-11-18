@@ -59,9 +59,51 @@ Rückweg: neuer Plan mit `restoreRevision`, gegebenenfalls zusätzlich `recovery
 
 Claudes Review [B1–B3/P1–P2](https://github.com/Chris83638w/gravuru-2027/pull/257#issuecomment-6970925922) führte zu diesen Nacharbeiten. Zusätzliche Serverlesung: [Freigabedeckung](../measurements/2026-11-18-font-connection-approval-coverage.json). Alle 15 Themenprodukte mit bestehender Freigabe sind vollständig gedeckt, keine Teilfreigabe; Leuchtturm 5 freigegebene / 5 gebundene / 5 tatsächlich abgedeckte Varianten auf R4. Nur gelesen, nichts korrigiert oder erweitert.
 
+[Claude nimmt 8f1dcc9 ab](https://github.com/Chris83638w/gravuru-2027/pull/257#issuecomment-6971217579): 99/99 selbst ausgeführt, keine übersprungen; neun ursprüngliche Gegenproben plus sechs Wiederanlauf-Fälle und Roundtrip. Seine kleine Rückweg-Anmerkung anschließend ergänzt: `restoreRevision` muss für **jede** zugeordnete Variante in der tatsächlichen Bindungshistorie stehen. Ein eigener nie gebundener Zwischenstand benötigt einen regulären bestätigten Vorwärtsplan und kann die Gruppen-/Revisionsprüfung nicht als „Rückweg“ umgehen.
+
+## Privater Operator-Ablauf für den späteren Pilotlauf
+
+`scripts/lib/font-connection-operator.mjs` erzwingt die Dateiablage: `plan` erzeugt die Datei exklusiv (`0600` im privaten `0700`-Ordner), schreibt und synchronisiert sie und liest sie zur Hashprüfung wieder ein. `execute` nimmt ausschließlich die SHA-Kennung einer erneut geöffneten Datei an und ist auch am Operator standardmäßig ausgeschaltet. Vorhandene Dateien werden nicht ersetzt; fehlende, abgeschnittene, veränderte oder einem anderen Ziel zugeordnete Dateien stoppen. Der Host muss seine tatsächlichen Webverzeichnisse als `webRoots` bestätigen; Ablage darin wird auch über Symlink/Junction und bei noch nicht existierendem Unterordner abgewiesen. Die Pfadprüfung wiederholt sich vor Dateizugriffen. Konstruktion allein legt keinen Ordner an. Die eigentliche Verbindung bleibt ebenfalls standardmäßig ausgeschaltet.
+
+Die folgende Schrittfolge wird **erst im freigegebenen Wartungsablauf** in der privaten Host-Verwaltung ausgeführt. `workshop`, `graphql`, `katalogRoot`, `shopDomain` und die vollständigen absoluten `webRoots` müssen vom bestehenden geprüften Serverhost kommen, nicht aus HTTP-Eingaben. `graphql` ist dessen vorhandener authentifizierter Leseadapter. Es werden keine zusätzliche Datenbankinstanz und keine neuen Zugangsdaten eingerichtet. Vorher: Reihenfolge #255 → #256 → #257, konsistente Sicherung samt Wiederherstellungsprobe, Poppins/Katalogliste und Herkunftsprofil prüfen; frischer Zielplan weiterhin Leuchtturm R4. Keine Anwendung dieses Beispiels auf den laufenden alten Code.
+
+```js
+import fs from 'node:fs';
+import {createFontGroupShopConnection} from './scripts/lib/font-group-connection.mjs';
+import {createFontConnectionOperator} from './scripts/lib/font-connection-operator.mjs';
+
+const pilot = JSON.parse(fs.readFileSync('./docs/plans/2026-11-18-font-connection-pilot.json', 'utf8'));
+const groups = JSON.parse(fs.readFileSync('./docs/plans/2026-11-18-font-connection-groups.json', 'utf8'));
+const hostConfig = {workshop, shopDomain, katalogRoot, graphql,
+  targets: pilot.targets, approvedSets: groups.approvedSets};
+const planDirectory = '/var/www/vhosts/gravuru-designwerkstatt.de/private/font-connection-plans';
+
+// Phase 1: Plan prüfen und sicher privat ablegen; Ausführung ist ausgeschaltet.
+const preview = createFontConnectionOperator({planDirectory, webRoots,
+  connection: createFontGroupShopConnection(hostConfig)});
+const saved = await preview.plan({targetId: 'leuchtturm-12x8'});
+console.log(saved); // Nur Kennung, Pfad und Revisionszusammenfassung.
+const reviewedPlan = preview.read(saved.sha256);
+// Vollständigen Plan privat prüfen: fünf Varianten, R4, 29 Standardschriften,
+// unveränderte Zusatzpreisverträge und bestehende vollständige Verkaufsfreigabe.
+// Planordner jetzt in den geprüften Sicherungssatz aufnehmen.
+```
+
+**Hier endet Phase 1.** Der folgende separate Aufruf ist Phase 2 ausschließlich nach Chris' konkretem „live“ für den geprüften Plan. Die Platzhalterkennung ist absichtlich ungültig und muss durch dessen tatsächliche SHA ersetzt werden:
+
+```js
+const approvedPlanSha256 = 'SHA-KENNUNG-DES-EXPLIZIT-FREIGEGEBENEN-PLANS';
+const run = createFontConnectionOperator({planDirectory, webRoots, executionEnabled: true,
+  connection: createFontGroupShopConnection({...hostConfig, executionEnabled: true})});
+const result = await run.execute(approvedPlanSha256);
+console.log(result); // Produkt, bisherige/neue Revision, erhaltene Freigabe.
+```
+
+Zwischen Phase 1 und 2 erfolgt kein automatischer Aufruf. Nach Prozessneustart wird ausschließlich die tatsächlich geprüfte SHA-Kennung erneut verwendet; `execute` holt die Shopbelege frisch und prüft alle Abhängigkeiten. Bei Abbruch zuerst Ergebnis/gebundene Revision lesen. Unveränderter Vorgang: dieselbe Datei erneut ausführen. Geänderte bestätigte Liste: bestehenden vollständigen Plan mit `preview.read(sha)` laden, mit aktuell bestätigter Hostkonfiguration `preview.plan({targetId, recoveryPlan: alterPlan})` erzeugen, neu prüfen und separat freigeben. Für den Rückweg entsprechend `restoreRevision: 4` (der früher gebundene Pilotstand). Kein automatischer Folgelauf und keine automatische Beleglöschung. Abschließend prüft Claude Schriftwahl, Text, Speichern/Wiederöffnen und vollständigen Warenkorbweg im gleichen Profil.
+
 ## Tests und Vorher/Nachher
 
-99 unterschiedliche gezielte Tests bestanden, 0 übersprungen: 21 Repository, 19 Schriftanschluss, 13 Galerie-Sync, 13 Modul-Sync, 31 Bestell-/Routing-/Bindungslistenfälle und 2 native Schrift-/Entwurfs-HTTP-Fälle. Sowohl die gemeinsame Modulaktivierung als auch der Schriftanschluss ausdrücklich im Modus `preserve` wurden mit 404 Varianten über mehrere 100er-Blöcke und einem Fehler nach dem letzten Block geprüft. Die native 404-Varianten-Fixture entsteht aus eingecheckten Daten ohne private Kandidatendatei. Der Host-Fabrik-Test verwendet einen synthetisch verfügbaren Schriftkatalog, keine Behauptung über echte Glyphendateien.
+103 unterschiedliche gezielte Tests bestanden, 0 übersprungen: 21 Repository, 23 Schriftanschluss/Operator, 13 Galerie-Sync, 13 Modul-Sync, 31 Bestell-/Routing-/Bindungslistenfälle und 2 native Schrift-/Entwurfs-HTTP-Fälle. Sowohl die gemeinsame Modulaktivierung als auch der Schriftanschluss ausdrücklich im Modus `preserve` wurden mit 404 Varianten über mehrere 100er-Blöcke und einem Fehler nach dem letzten Block geprüft. Die native 404-Varianten-Fixture entsteht aus eingecheckten Daten ohne private Kandidatendatei. Der Host-Fabrik-Test verwendet einen synthetisch verfügbaren Schriftkatalog, keine Behauptung über echte Glyphendateien. Zusätzliche Operator-/Rückwegfälle prüfen fehlende, abgeschnittene, umgeschriebene und fremde Dateien, Standard-Aus, Neustart, Wiederholung, Webverzeichnis samt Alias, nie gebundene sowie wirklich nur teilweise historisch gebundene Revisionen.
 
 Geprüft: standardmäßig ausgeschaltet, reine Schriftänderung, unverändertes natives Kundenmodell außer notwendiger Schriftressource/Profilbeleg/Revisionskennung, historische leere Metadaten, Schutz anderer Profilwirkungen und Importbelege, fehlende Freigabe bleibt fehlend, neuer freigegebener Stand ohne Freigabelücke, veralteter Variantenstand ohne Teilbindung, spätes Freigabeversagen mit vollständigem Rollback, Wiederanlauf, Vorwärts-Rückweg, alter Kundenentwurf nach Wechsel weiterhin speicherbar und bis zur Bestellannahme verwendbar. Neue Gegenfälle: Preisabweichung vor/nach Plan ohne Speicherung, Listenänderung nach Abbruch mit explizitem Wiederanlaufbeleg, mehrere abgebrochene eigene Zwischenstände, fremder/manipulierter Zwischenstand, wirkungsgleich zurückgestellte Einstellungen, Teilfreigabe, neu gehashter fremder Vorwärts-/Rückwegplan, fehlende geprüfte Revision, Klingel/Formprodukt und tatsächliche private Host-Fabrik.
 

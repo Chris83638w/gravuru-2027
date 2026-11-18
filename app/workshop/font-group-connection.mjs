@@ -54,7 +54,7 @@ export function projectFontConnection({repository, record, assignment}) {
 export function createFontGroupConnection({workshop, tenantId, shopDomain, activation, transport,
   catalogFontSets, targets, approvedSets, executionEnabled = false} = {}) {
   if (workshop?.tenantId !== tenantId || workshop.repository?.tenantId !== tenantId ||
-      activation?.tenantId !== tenantId || activation.shopDomain !== shopDomain || activation.storeId !== 'acryl' || activation.approvalMode !== 'preserve' || typeof activation.checkBindings !== 'function' ||
+      activation?.tenantId !== tenantId || activation.shopDomain !== shopDomain || activation.storeId !== 'acryl' || activation.approvalMode !== 'preserve' || typeof activation.checkBindings !== 'function' || typeof activation.wasBound !== 'function' ||
       transport?.shopDomain !== shopDomain || typeof transport.inspect !== 'function' ||
       typeof catalogFontSets?.list !== 'function' || !Array.isArray(targets) || !Array.isArray(approvedSets))
     fail('scope', 'Vorhandene Dienste, bestätigte Ziele und Schriftlisten müssen zum selben Mandanten und Shop gehören.');
@@ -111,6 +111,8 @@ export function createFontGroupConnection({workshop, tenantId, shopDomain, activ
     }
     if (!Number.isSafeInteger(restoreRevision) || restoreRevision < 1 || restoreRevision >= record.revision)
       fail('restore_revision', 'Für den Rückweg ist ein früherer Stand desselben Produkts erforderlich.');
+    if (!activation.wasBound(t.mapping, restoreRevision))
+      fail('restore_unbound', 'Der frühere Stand war nicht für alle zugeordneten Varianten gebunden. Dafür ist ein bestätigter Vorwärtsplan erforderlich.');
     return {selectedProfile: null, assignment: repository.get(record.id, {revision: restoreRevision}).document.profileAssignments.fonts};
   }
   function restoredMetadata(record, projected, restoreRevision) {

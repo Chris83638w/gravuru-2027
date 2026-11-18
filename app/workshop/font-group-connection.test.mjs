@@ -8,6 +8,9 @@ import {createFontGroupConnection, projectFontConnection} from './font-group-con
 import {syncHash} from './gallery-shop-sync-native.mjs';
 import {createGallerySyncActivation} from './gallery-shop-sync-activation.mjs';
 import {createFontGroupShopConnection} from '../../scripts/lib/font-group-connection.mjs';
+import {createFontConnectionOperator} from '../../scripts/lib/font-connection-operator.mjs';
+import {checkSelections, applyChecks} from '../../scripts/shop-bind.mjs';
+import {createShopBindingReadAdapter} from './shop-product-binding-adapter.mjs';
 import {planFamilyFormats, blankDesignId} from './katalog-family-formats.mjs';
 import {makeProductDocument} from './product-model.mjs';
 import {createGallerySyncTestFixture, GALLERY_SYNC_TEST_SHOP as shopDomain, GALLERY_SYNC_TEST_PRODUCT as PRODUCT} from './gallery-shop-sync-test-fixture.mjs';
@@ -123,6 +126,86 @@ test('doorbell and form products cannot enter the native catalogue font connecti
   assert.throws(() => projectFontConnection({repository: f.targetWorkshop.repository, record, assignment: {mode: 'inherit', profileId: null}}), {code: 'font_connection_product_kind'});
   delete record.document.config.doorbell; record.document.schema = 'gravuru-form-product/v1';
   assert.throws(() => projectFontConnection({repository: f.targetWorkshop.repository, record, assignment: {mode: 'inherit', profileId: null}}), {code: 'font_connection_product_kind'});
+});
+
+test('rollback accepts only revisions that were actually bound for every mapped variant', async t => {
+  const f = await fixture(t), first = await f.connect.plan({targetId: 'synthetic'});
+  const broken = createFontGroupConnection({...f.args, activation: {...f.activation, activate() { throw Error('interruption'); }}, executionEnabled: true});
+  await assert.rejects(broken.execute(first), /interruption/);
+  await f.connect.execute(await f.connect.plan({targetId: 'synthetic', recoveryPlan: first}));
+  assert.equal(f.activation.capture(f.mapping).boundRevision, 3);
+  assert.equal(f.activation.wasBound(f.mapping, 2), false);
+  await assert.rejects(f.connect.plan({targetId: 'synthetic', restoreRevision: 2}), {code: 'font_connection_restore_unbound'});
+  const back = await f.connect.plan({targetId: 'synthetic', restoreRevision: 1});
+  const {sha256, ...body} = structuredClone(back); body.restoreRevision = 2;
+  await assert.rejects(f.connect.execute({...body, sha256: syncHash(body)}), {code: 'font_connection_restore_unbound'});
+  assert.equal(f.targetWorkshop.repository.head(f.target.id).revision, 3);
+  await f.connect.execute(back);
+  assert.equal(f.activation.capture(f.mapping).boundRevision, 4);
+});
+
+test('private operator saves, fsyncs and rereads the exact plan; restart executes only its persisted hash', async t => {
+  const f = await fixture(t), planDirectory = path.join(f.dir, 'private-plans');
+  const webRoots = [path.join(f.dir, 'public')], op = createFontConnectionOperator({connection: f.connect, planDirectory, webRoots});
+  assert.equal(fs.existsSync(planDirectory), false, 'construction creates nothing');
+  const stored = await op.plan({targetId: 'synthetic'});
+  assert.equal(stored.path, path.join(planDirectory, stored.sha256 + '.json'));
+  assert.equal(op.read(stored.sha256).sha256, stored.sha256);
+  assert.equal(f.targetWorkshop.repository.head(f.target.id).revision, 1);
+  assert.deepEqual(await op.plan({targetId: 'synthetic'}), stored, 'same complete file is reused without replacing it');
+  await assert.rejects(op.execute(stored.sha256), {code: 'font_connection_execution_disabled'});
+  const restarted = createFontConnectionOperator({connection: f.connect, planDirectory, webRoots, executionEnabled: true});
+  await restarted.execute(stored.sha256);
+  assert.equal(f.activation.capture(f.mapping).boundRevision, 2);
+  await restarted.execute(stored.sha256);
+  assert.equal(f.targetWorkshop.repository.head(f.target.id).revision, 2);
+});
+
+test('missing, truncated or changed private plan files never execute and existing files are not overwritten', async t => {
+  const f = await fixture(t), planDirectory = path.join(f.dir, 'private-plans');
+  const webRoots = [path.join(f.dir, 'public')], op = createFontConnectionOperator({connection: f.connect, planDirectory, webRoots, executionEnabled: true});
+  assert.throws(() => createFontConnectionOperator({connection: f.connect, planDirectory: path.join(webRoots[0], 'plans'), webRoots}), {code: 'font_connection_plan_file'});
+  fs.mkdirSync(webRoots[0]);
+  const link = path.join(f.dir, 'public-alias'); fs.symlinkSync(webRoots[0], link, process.platform === 'win32' ? 'junction' : 'dir');
+  assert.throws(() => createFontConnectionOperator({connection: f.connect, planDirectory: path.join(link, 'plans'), webRoots}), {code: 'font_connection_plan_file'});
+  await assert.rejects(op.execute('a'.repeat(64)), {code: 'font_connection_plan_file'});
+  await assert.rejects(op.execute('../outside'), {code: 'font_connection_plan_file'});
+  const stored = await op.plan({targetId: 'synthetic'}), document = op.read(stored.sha256);
+  const {sha256, ...foreign} = structuredClone(document); foreign.target.mapping.target.productId = 'cfg_' + randomUUID();
+  const foreignHash = syncHash(foreign);
+  fs.writeFileSync(path.join(planDirectory, foreignHash + '.json'), JSON.stringify({...foreign, sha256: foreignHash}));
+  await assert.rejects(op.execute(foreignHash), {code: 'font_connection_plan_changed'});
+  document.assignment = {mode: 'empty', profileId: null};
+  fs.writeFileSync(stored.path, JSON.stringify(document));
+  await assert.rejects(op.execute(stored.sha256), {code: 'font_connection_plan_file'});
+  fs.writeFileSync(stored.path, '{');
+  await assert.rejects(op.execute(stored.sha256), {code: 'font_connection_plan_file'});
+  await assert.rejects(op.plan({targetId: 'synthetic'}), {code: 'font_connection_plan_file'});
+  assert.equal(fs.readFileSync(stored.path, 'utf8'), '{');
+  assert.equal(f.targetWorkshop.repository.head(f.target.id).revision, 1);
+  assert.equal(f.activation.capture(f.mapping).boundRevision, 1);
+});
+
+test('a revision once bound to only one variant cannot be used as a product-wide rollback', async t => {
+  const f = await fixture(t), w = f.targetWorkshop;
+  const adapter = createShopBindingReadAdapter({storeId: 'acryl', tenantId: 'gravuru', shopDomain,
+    workshop: {...w, sessionContext: {shopDomain}}, productionProfileScope: {storeId: 'acryl', tenantId: 'gravuru'}});
+  const reader = {async inspectVariants(ids) { return {installation: {shopDomain, currency: 'EUR', scope: 'admin-readonly'}, variants: ids.map(id => {
+    const v = f.variants.find(v => v.id === id); return {id, found: true, productId: PRODUCT, status: 'ACTIVE', priceCents: v.priceCents, options: Object.entries(v.options).map(([name, value]) => ({name, value}))};
+  })}; }};
+  const bind = async (revision, variants) => {
+    const checks = await checkSelections(variants.map(v => ({shopifyProductId: PRODUCT, shopifyVariantId: v.id, productId: f.target.id, productRevision: revision, options: v.options, expectedUnitCents: v.priceCents})), {adapter, reader});
+    applyChecks(checks, {orderIntake: w.orderIntake, storeId: 'acryl', shopDomain, adapter});
+  };
+  w.repository.save(f.target.id, f.target.document, 1);
+  await bind(2, [f.variants[0]]);
+  w.repository.save(f.target.id, f.target.document, 2);
+  await bind(3, f.variants);
+  assert.equal(f.activation.capture(f.mapping).boundRevision, 3);
+  assert.ok(f.registry.history({shopifyProductId: PRODUCT, shopifyVariantId: f.variants[0].id}).some(h => h.productRevision === 2));
+  assert.equal(f.activation.wasBound(f.mapping, 2), false);
+  await assert.rejects(f.connect.plan({targetId: 'synthetic', restoreRevision: 2}), {code: 'font_connection_restore_unbound'});
+  assert.equal(w.repository.head(f.target.id).revision, 3);
 });
 
 test('private host factory uses the existing catalogue and read-only Shopify adapter; execution defaults off', async t => {

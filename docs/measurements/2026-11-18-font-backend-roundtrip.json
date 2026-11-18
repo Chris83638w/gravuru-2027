@@ -1,0 +1,161 @@
+{
+  "profile": "synthetic four-font list, remove Cinzel; in-memory SQLite; warm synthetic glyphs; Windows/Node v24.22.1",
+  "initial": [
+    "Michroma",
+    "Lato",
+    "Cinzel",
+    "Montserrat"
+  ],
+  "selected": [
+    "Michroma",
+    "Lato",
+    "Montserrat"
+  ],
+  "runs": [
+    {
+      "variant": "before",
+      "run": 1,
+      "editMs": 0.162,
+      "importMs": 5.948,
+      "finalFonts": [
+        "Michroma",
+        "Lato",
+        "Cinzel",
+        "Montserrat"
+      ],
+      "selectionRetained": false,
+      "profileCount": 1,
+      "revision": 3
+    },
+    {
+      "variant": "before",
+      "run": 2,
+      "editMs": 0.104,
+      "importMs": 5.174,
+      "finalFonts": [
+        "Michroma",
+        "Lato",
+        "Cinzel",
+        "Montserrat"
+      ],
+      "selectionRetained": false,
+      "profileCount": 1,
+      "revision": 3
+    },
+    {
+      "variant": "before",
+      "run": 3,
+      "editMs": 0.075,
+      "importMs": 4.377,
+      "finalFonts": [
+        "Michroma",
+        "Lato",
+        "Cinzel",
+        "Montserrat"
+      ],
+      "selectionRetained": false,
+      "profileCount": 1,
+      "revision": 3
+    },
+    {
+      "variant": "before",
+      "run": 4,
+      "editMs": 0.078,
+      "importMs": 5.555,
+      "finalFonts": [
+        "Michroma",
+        "Lato",
+        "Cinzel",
+        "Montserrat"
+      ],
+      "selectionRetained": false,
+      "profileCount": 1,
+      "revision": 3
+    },
+    {
+      "variant": "before",
+      "run": 5,
+      "editMs": 0.085,
+      "importMs": 4.585,
+      "finalFonts": [
+        "Michroma",
+        "Lato",
+        "Cinzel",
+        "Montserrat"
+      ],
+      "selectionRetained": false,
+      "profileCount": 1,
+      "revision": 3
+    },
+    {
+      "variant": "after",
+      "run": 1,
+      "editMs": 45.854,
+      "importMs": 5.26,
+      "finalFonts": [
+        "Michroma",
+        "Lato",
+        "Montserrat"
+      ],
+      "selectionRetained": true,
+      "profileCount": 1,
+      "revision": 2
+    },
+    {
+      "variant": "after",
+      "run": 2,
+      "editMs": 43.46,
+      "importMs": 4.771,
+      "finalFonts": [
+        "Michroma",
+        "Lato",
+        "Montserrat"
+      ],
+      "selectionRetained": true,
+      "profileCount": 1,
+      "revision": 2
+    },
+    {
+      "variant": "after",
+      "run": 3,
+      "editMs": 41.039,
+      "importMs": 4.874,
+      "finalFonts": [
+        "Michroma",
+        "Lato",
+        "Montserrat"
+      ],
+      "selectionRetained": true,
+      "profileCount": 1,
+      "revision": 2
+    },
+    {
+      "variant": "after",
+      "run": 4,
+      "editMs": 42.189,
+      "importMs": 4.84,
+      "finalFonts": [
+        "Michroma",
+        "Lato",
+        "Montserrat"
+      ],
+      "selectionRetained": true,
+      "profileCount": 1,
+      "revision": 2
+    },
+    {
+      "variant": "after",
+      "run": 5,
+      "editMs": 38.504,
+      "importMs": 5.602,
+      "finalFonts": [
+        "Michroma",
+        "Lato",
+        "Montserrat"
+      ],
+      "selectionRetained": true,
+      "profileCount": 1,
+      "revision": 2
+    }
+  ]
+}

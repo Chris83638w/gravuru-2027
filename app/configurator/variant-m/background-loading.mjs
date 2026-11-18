@@ -46,7 +46,8 @@ export function installBackgroundLoading({el,r,config,win=window}){
   // Bounded on every connection: six initial motifs and two common fonts.
   // The legacy explicit all-loader remains available to old controls,
   // but opening the current text/motif tabs never invokes it.
-  const recommended=RECOMMENDED_FONTS.slice(0,2);
+  const selectedFonts=config?.workshopProfiles?.selections?.fonts;
+  const recommended=RECOMMENDED_FONTS.filter(name=>!Array.isArray(selectedFonts)||selectedFonts.includes(name)).slice(0,2);
   queue.add('motifs',{background:()=>config?.moduleProfile?.modules?.motifs===false?undefined:el.uxPrefetchInitialMotifs?.(),now:()=>el.uxEnsureVisibleMotifs?.(),saveData:'skip'});
   // The doorbell gallery needs its own typefaces. Offer common text fonts on
   // text actions so they do not compete with the first template selection.

@@ -13,6 +13,9 @@ import {prepareShopProduct} from '../../workshop/shop-preparation.mjs';
 import {prepareAcrylicReview} from '../../workshop/acrylic-review.mjs';
 import {acrylicArtwork} from '../../workshop/acrylic-artwork.mjs';
 import {validateCommerce,variantKey} from './commerce-model.mjs';
+import {nativeReviewConfig} from '../../workshop/native-review-resources.mjs';
+import {workshopResources} from '../../workshop/catalog.mjs';
+import {designFontSelection} from './profile-selection.mjs';
 const clone=v=>structuredClone(v);
 // Real pinned catalogue geometry/prices; synthetic A/Name templates only for these tests.
 function fixture(material='steel'){
@@ -29,6 +32,19 @@ function fixture(material='steel'){
  delete c.familyAcrylic;return prepareConfig(c);
 }
 const state=c=>({designId:c.profile.designs[0].id,objects:clone(c.profile.designs[0].objects),mOptions:resolvedOptions(c),selected:null});
+
+test('font choices and review use the selected family format, never the initial profile or other formats',()=>{
+ const c=fixture(),fonts=workshopResources().fonts,[a,b,group]=Object.keys(fonts);
+ c.localResources.fonts={...c.localResources.fonts,[a]:fonts[a],[b]:fonts[b],[group]:fonts[group]};
+ c.workshopProfiles={selections:{fonts:[group]}};
+ const target=c.familyFormats.formats.find(f=>f.form==='RT2'),id=target.variants[0].designIds[0];
+ for(const d of c.familyFormats.designs)for(const o of d.objects)if(o.type==='text')o.font=d.id===id?b:a;
+ const options={...resolvedOptions(c),size:target.key},source=selectedProfile(c,options).designs.find(d=>d.id===id);
+ assert.deepEqual(designFontSelection([group],source),[group,b]);
+ const input=font=>({options,designId:id,objects:[{id:'new-text',type:'text',font}]});
+ for(const font of [b,group])assert.doesNotThrow(()=>nativeReviewConfig(c,input(font)));
+ assert.throws(()=>nativeReviewConfig(c,input(a)),e=>e.status===422);
+});
 
 test('shape switch retains an edited multiword first name together with its unchanged surname and edited slogan',()=>{
  const c=fixture(),sourceSize=c.familyFormats.defaultSize,target=c.familyFormats.formats.find(f=>f.form==='RT2');

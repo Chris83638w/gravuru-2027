@@ -215,7 +215,7 @@ test('Kundenansicht verdrahtet: Reiter/Schritt Motive, Schriftauswahl, Text hinz
   assert.match(ux,/new MutationObserver\(\(\)=>\{if\(!panel\.hidden\)el\.uxEnsureVisibleMotifs\(\)/);
   assert.match(ux,/async function openFonts\(\)\{[\s\S]*?renderFontPage\(\);fontRows\?\.refresh\(\{retry:true\}\)/);
   assert.doesNotMatch(ux,/await el\.uxEnsureFonts\(selectionIds\(el\.uxKnownFonts/);
-  assert.match(ux,/if\(action==='add-text'\)\{if\(!additions\.text\)return say\('[^']+'\);const font=[^;]+;try\{await el\.uxEnsureFonts\?\./);
+  assert.match(ux,/if\(action==='add-text'\)\{[\s\S]*?await el\.uxEnsureFonts\?\.\(\[font\]\)/);
   assert.match(ux,/await el\.uxEnsureDraftResources\(stored\.draft\);[\s\S]*?const savedSession=[^;]+;\n  const missingUploads=savedSession\?await sessionUploads\?\.restore\(savedSession\.uploads\|\|\[\]\):\[\];\n  if\(sessionGuard&&!config\?\.workbench\)\{/);
   assert.match(read('account-drafts.mjs'),/await el\.uxEnsureDraftResources\?\.\(draft\);\n\s*restoreDraft\(draft\);/);
   assert.match(read('adapter.mjs'),/await this\.uxEnsureDraftResources\?\.\(input\);this\.restoreDraft\(input\);/);

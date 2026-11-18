@@ -1,0 +1,193 @@
+{
+  "schema": "gravuru-reviewed-font-groups/v1",
+  "source": "Chris, chat 18.11.2026; mapping confirmed in issue #254 comment 6970260595",
+  "catalogSourceCommit": "8236b8bfab7322447ec46661c116fa526331af3d",
+  "executionEnabled": false,
+  "mapping": [
+    {
+      "setId": "hausnummern",
+      "group": "Hausnummer & Firma",
+      "fontsConfirmed": true
+    },
+    {
+      "setId": "tuerschilder",
+      "group": "Tür & Familie",
+      "fontsConfirmed": true
+    },
+    {
+      "setId": "andenken",
+      "group": "Andenken & Hochzeit",
+      "fontsConfirmed": true
+    },
+    {
+      "setId": "schluesselanhaenger",
+      "group": "Geschenke & Kinder",
+      "fontsConfirmed": false
+    },
+    {
+      "setId": "geschenkartikel",
+      "group": "Geschenke & Kinder",
+      "fontsConfirmed": false
+    },
+    {
+      "setId": "pferdeschilder",
+      "group": "Tiere & Hof",
+      "fontsConfirmed": false
+    },
+    {
+      "setId": "hundeschilder",
+      "group": "Tiere & Hof",
+      "fontsConfirmed": false
+    },
+    {
+      "setId": "firmenschilder",
+      "group": "Hausnummer & Firma",
+      "fontsConfirmed": true
+    }
+  ],
+  "approvedSets": [
+    {
+      "id": "tuerschilder",
+      "fonts": [
+        "Alex Brush",
+        "Allura",
+        "Audiowide",
+        "Bebas Neue",
+        "Caveat",
+        "Caviar Dreams",
+        "Cinzel",
+        "Comfortaa",
+        "Comic Neue",
+        "Dancing Script",
+        "Daniel",
+        "Dream Orphans",
+        "Fineliner Script",
+        "Great Vibes",
+        "Homage",
+        "Kaushan Script",
+        "Lato",
+        "Magnolia Script",
+        "Michroma",
+        "Montserrat",
+        "Pacifico",
+        "Permanent Marker",
+        "Roboto Slab",
+        "Rounded Elegance",
+        "Sacramento",
+        "Stylish",
+        "Tangerine",
+        "Zentenar Fraktur",
+        "Poppins"
+      ]
+    },
+    {
+      "id": "hausnummern",
+      "fonts": [
+        "Alex Brush",
+        "Allura",
+        "Audiowide",
+        "Bebas Neue",
+        "Caveat",
+        "Caviar Dreams",
+        "Cinzel",
+        "Comfortaa",
+        "Comic Neue",
+        "Dancing Script",
+        "Daniel",
+        "Dream Orphans",
+        "Fineliner Script",
+        "Great Vibes",
+        "Homage",
+        "Kaushan Script",
+        "Lato",
+        "Magnolia Script",
+        "Michroma",
+        "Montserrat",
+        "Pacifico",
+        "Permanent Marker",
+        "Roboto Slab",
+        "Rounded Elegance",
+        "Sacramento",
+        "Stylish",
+        "Tangerine",
+        "Zentenar Fraktur",
+        "Poppins"
+      ]
+    },
+    {
+      "id": "firmenschilder",
+      "fonts": [
+        "Alex Brush",
+        "Allura",
+        "Audiowide",
+        "Bebas Neue",
+        "Caveat",
+        "Caviar Dreams",
+        "Cinzel",
+        "Comfortaa",
+        "Comic Neue",
+        "Dancing Script",
+        "Daniel",
+        "Dream Orphans",
+        "Fineliner Script",
+        "Great Vibes",
+        "Homage",
+        "Kaushan Script",
+        "Lato",
+        "Magnolia Script",
+        "Michroma",
+        "Montserrat",
+        "Pacifico",
+        "Permanent Marker",
+        "Roboto Slab",
+        "Rounded Elegance",
+        "Sacramento",
+        "Stylish",
+        "Tangerine",
+        "Zentenar Fraktur",
+        "Poppins"
+      ]
+    },
+    {
+      "id": "andenken",
+      "fonts": [
+        "Alex Brush",
+        "Allura",
+        "Audiowide",
+        "Bebas Neue",
+        "Caveat",
+        "Caviar Dreams",
+        "Cinzel",
+        "Comfortaa",
+        "Comic Neue",
+        "Dancing Script",
+        "Daniel",
+        "Dream Orphans",
+        "Fineliner Script",
+        "Great Vibes",
+        "Homage",
+        "Kaushan Script",
+        "Lato",
+        "Magnolia Script",
+        "Michroma",
+        "Montserrat",
+        "Pacifico",
+        "Permanent Marker",
+        "Roboto Slab",
+        "Rounded Elegance",
+        "Sacramento",
+        "Stylish",
+        "Tangerine",
+        "Zentenar Fraktur",
+        "Poppins"
+      ]
+    }
+  ],
+  "pendingFonts": [
+    "geschenkartikel",
+    "schluesselanhaenger",
+    "hundeschilder",
+    "pferdeschilder"
+  ],
+  "designFonts": "Add the fonts of the opened original design; no hard count cutoff."
+}

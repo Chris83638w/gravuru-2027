@@ -1,0 +1,145 @@
+{
+  "audit": "font-connection-approval-coverage",
+  "at": "2026-11-18T06:33:19.501Z",
+  "products": 15,
+  "fullyCovered": 15,
+  "partiallyCovered": 0,
+  "uncovered": 0,
+  "rows": [
+    {
+      "shopifyProductNumber": "16077798965628",
+      "boundRevision": 4,
+      "approvedVariants": 5,
+      "boundVariants": 5,
+      "coveredVariants": 5,
+      "uncoveredVariants": 0,
+      "pilot": true
+    },
+    {
+      "shopifyProductNumber": "16077799063932",
+      "boundRevision": 2,
+      "approvedVariants": 5,
+      "boundVariants": 5,
+      "coveredVariants": 5,
+      "uncoveredVariants": 0,
+      "pilot": false
+    },
+    {
+      "shopifyProductNumber": "16077799096700",
+      "boundRevision": 1,
+      "approvedVariants": 5,
+      "boundVariants": 5,
+      "coveredVariants": 5,
+      "uncoveredVariants": 0,
+      "pilot": false
+    },
+    {
+      "shopifyProductNumber": "16077799162236",
+      "boundRevision": 1,
+      "approvedVariants": 5,
+      "boundVariants": 5,
+      "coveredVariants": 5,
+      "uncoveredVariants": 0,
+      "pilot": false
+    },
+    {
+      "shopifyProductNumber": "16077799227772",
+      "boundRevision": 1,
+      "approvedVariants": 5,
+      "boundVariants": 5,
+      "coveredVariants": 5,
+      "uncoveredVariants": 0,
+      "pilot": false
+    },
+    {
+      "shopifyProductNumber": "16077799326076",
+      "boundRevision": 1,
+      "approvedVariants": 5,
+      "boundVariants": 5,
+      "coveredVariants": 5,
+      "uncoveredVariants": 0,
+      "pilot": false
+    },
+    {
+      "shopifyProductNumber": "16077799457148",
+      "boundRevision": 1,
+      "approvedVariants": 7,
+      "boundVariants": 7,
+      "coveredVariants": 7,
+      "uncoveredVariants": 0,
+      "pilot": false
+    },
+    {
+      "shopifyProductNumber": "16077799555452",
+      "boundRevision": 2,
+      "approvedVariants": 7,
+      "boundVariants": 7,
+      "coveredVariants": 7,
+      "uncoveredVariants": 0,
+      "pilot": false
+    },
+    {
+      "shopifyProductNumber": "16189689987452",
+      "boundRevision": 1,
+      "approvedVariants": 10,
+      "boundVariants": 10,
+      "coveredVariants": 10,
+      "uncoveredVariants": 0,
+      "pilot": false
+    },
+    {
+      "shopifyProductNumber": "16189690118524",
+      "boundRevision": 1,
+      "approvedVariants": 10,
+      "boundVariants": 10,
+      "coveredVariants": 10,
+      "uncoveredVariants": 0,
+      "pilot": false
+    },
+    {
+      "shopifyProductNumber": "16190551064956",
+      "boundRevision": 1,
+      "approvedVariants": 3,
+      "boundVariants": 3,
+      "coveredVariants": 3,
+      "uncoveredVariants": 0,
+      "pilot": false
+    },
+    {
+      "shopifyProductNumber": "16190552867196",
+      "boundRevision": 1,
+      "approvedVariants": 3,
+      "boundVariants": 3,
+      "coveredVariants": 3,
+      "uncoveredVariants": 0,
+      "pilot": false
+    },
+    {
+      "shopifyProductNumber": "16190553063804",
+      "boundRevision": 1,
+      "approvedVariants": 3,
+      "boundVariants": 3,
+      "coveredVariants": 3,
+      "uncoveredVariants": 0,
+      "pilot": false
+    },
+    {
+      "shopifyProductNumber": "16190553489788",
+      "boundRevision": 1,
+      "approvedVariants": 2,
+      "boundVariants": 2,
+      "coveredVariants": 2,
+      "uncoveredVariants": 0,
+      "pilot": false
+    },
+    {
+      "shopifyProductNumber": "16190554603900",
+      "boundRevision": 1,
+      "approvedVariants": 2,
+      "boundVariants": 2,
+      "coveredVariants": 2,
+      "uncoveredVariants": 0,
+      "pilot": false
+    }
+  ]
+}

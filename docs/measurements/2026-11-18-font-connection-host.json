@@ -1,0 +1,168 @@
+{
+  "audit": "font-connection-host-evidence",
+  "ui": {
+    "observedAt": "2026-11-18T06:59:35.433Z",
+    "domain": "app-2027.gravuru-designwerkstatt.de",
+    "page": "https://gravuru.highspeed.cloud/modules/nodejs/index.php/domain/index?dom_id=14&site_id=20",
+    "documentRoot": "/gravuru-2027-merchant/public",
+    "applicationRoot": "/gravuru-2027-merchant",
+    "startupFile": "start-r5.cjs",
+    "note": "Read from Plesk Node.js settings; no field edited."
+  },
+  "startChain": {
+    "audit": "font-connection-host-chain",
+    "at": "2026-11-18T07:00:46.180Z",
+    "records": [
+      {
+        "file": "/var/www/vhosts/gravuru-designwerkstatt.de/gravuru-2027-merchant/start-r5.cjs",
+        "realpath": "/var/www/vhosts/gravuru-designwerkstatt.de/gravuru-2027-merchant/start-r5.cjs",
+        "bytes": 22,
+        "sha256": "42cd0a64f2e8e2a48761aefac2c0323990dbfe667517c88497eb03ca243852dd",
+        "lfSha256": "42cd0a64f2e8e2a48761aefac2c0323990dbfe667517c88497eb03ca243852dd",
+        "moduleReferences": [
+          "./app.cjs"
+        ],
+        "exportedFunctions": [],
+        "hasNativeWorkshopFactory": false,
+        "hasServerWorkshopExport": false,
+        "hasGraphqlIdentifier": false
+      },
+      {
+        "file": "/var/www/vhosts/gravuru-designwerkstatt.de/gravuru-2027-merchant/app.cjs",
+        "realpath": "/var/www/vhosts/gravuru-designwerkstatt.de/gravuru-2027-merchant/app.cjs",
+        "bytes": 1721,
+        "sha256": "d02d874a6700371ae8c2b49a0a11c6ed93863ed69d84d6ff0eb46bc082d7bb29",
+        "lfSha256": "d02d874a6700371ae8c2b49a0a11c6ed93863ed69d84d6ff0eb46bc082d7bb29",
+        "moduleReferences": [
+          "/var/www/vhosts/gravuru-designwerkstatt.de/private/kandidat-9af3a1ac-20261117/scripts/acryl-employee-entry.cjs"
+        ],
+        "exportedFunctions": [],
+        "hasNativeWorkshopFactory": false,
+        "hasServerWorkshopExport": false,
+        "hasGraphqlIdentifier": false
+      },
+      {
+        "file": "/var/www/vhosts/gravuru-designwerkstatt.de/private/kandidat-9af3a1ac-20261117/scripts/acryl-employee-entry.cjs",
+        "realpath": "/var/www/vhosts/gravuru-designwerkstatt.de/private/kandidat-9af3a1ac-20261117/scripts/acryl-employee-entry.cjs",
+        "bytes": 1053,
+        "sha256": "b36d2f22b22993d5f934b181f15ffb6ce88a2dee2d91234a686c294e1a4a7769",
+        "lfSha256": "b36d2f22b22993d5f934b181f15ffb6ce88a2dee2d91234a686c294e1a4a7769",
+        "moduleReferences": [
+          "../app/workshop/acryl-employee-host.mjs"
+        ],
+        "exportedFunctions": [],
+        "hasNativeWorkshopFactory": false,
+        "hasServerWorkshopExport": false,
+        "hasGraphqlIdentifier": false
+      },
+      {
+        "file": "/var/www/vhosts/gravuru-designwerkstatt.de/private/kandidat-9af3a1ac-20261117/app/workshop/acryl-employee-host.mjs",
+        "realpath": "/var/www/vhosts/gravuru-designwerkstatt.de/private/kandidat-9af3a1ac-20261117/app/workshop/acryl-employee-host.mjs",
+        "bytes": 13709,
+        "sha256": "2236e6a4b01ee4dd4e7663bda0e0c776e1c786801f09be18953da6a3ed07a781",
+        "lfSha256": "2236e6a4b01ee4dd4e7663bda0e0c776e1c786801f09be18953da6a3ed07a781",
+        "moduleReferences": [],
+        "exportedFunctions": [
+          "acrylCacheControl",
+          "acrylRoute",
+          "acrylAssetText",
+          "customerIntegrationFromEnv",
+          "createAcrylEmployeeHost"
+        ],
+        "hasNativeWorkshopFactory": true,
+        "hasServerWorkshopExport": false,
+        "hasGraphqlIdentifier": false
+      },
+      {
+        "file": "/var/www/vhosts/gravuru-designwerkstatt.de/private/kandidat-9af3a1ac-20261117/app/workshop/shopify-admin-test-server.mjs",
+        "realpath": "/var/www/vhosts/gravuru-designwerkstatt.de/private/kandidat-9af3a1ac-20261117/app/workshop/shopify-admin-test-server.mjs",
+        "bytes": 3610,
+        "sha256": "a7a2abed3b3a89a5899912fd2eac5e9e0dd17d1acd2a2ed047957ae2114c0622",
+        "lfSha256": "a7a2abed3b3a89a5899912fd2eac5e9e0dd17d1acd2a2ed047957ae2114c0622",
+        "moduleReferences": [],
+        "exportedFunctions": [
+          "createShopifyTestRuntime"
+        ],
+        "hasNativeWorkshopFactory": false,
+        "hasServerWorkshopExport": false,
+        "hasGraphqlIdentifier": false
+      }
+    ],
+    "paths": [
+      {
+        "file": "/var/www/vhosts/gravuru-designwerkstatt.de/gravuru-2027-merchant/public",
+        "exists": true,
+        "realpath": "/var/www/vhosts/gravuru-designwerkstatt.de/gravuru-2027-merchant/public"
+      },
+      {
+        "file": "/var/www/vhosts/gravuru-designwerkstatt.de/private/font-connection-plans",
+        "exists": false,
+        "realpath": null
+      }
+    ],
+    "note": "Read source files only; no imports, startup, database open, environment values or tokens."
+  },
+  "initialEntryInspection": {
+    "audit": "font-connection-host-paths",
+    "at": "2026-11-18T06:57:37.183Z",
+    "cwd": "/var/www/vhosts/gravuru-designwerkstatt.de/gravuru-2027-merchant",
+    "entry": "/var/www/vhosts/gravuru-designwerkstatt.de/gravuru-2027-merchant/app.cjs",
+    "bytes": 1721,
+    "sha256": "d02d874a6700371ae8c2b49a0a11c6ed93863ed69d84d6ff0eb46bc082d7bb29",
+    "references": [
+      {
+        "literal": "/var/www/vhosts/gravuru-designwerkstatt.de/private/gravuru-2027-merchant-shopify.json",
+        "resolved": "/var/www/vhosts/gravuru-designwerkstatt.de/private/gravuru-2027-merchant-shopify.json",
+        "exists": true
+      },
+      {
+        "literal": "/var/www/vhosts/gravuru-designwerkstatt.de/private/kandidat-9af3a1ac-20261117/scripts/acryl-employee-entry.cjs",
+        "resolved": "/var/www/vhosts/gravuru-designwerkstatt.de/private/kandidat-9af3a1ac-20261117/scripts/acryl-employee-entry.cjs",
+        "exists": true
+      }
+    ],
+    "environmentKeys": [
+      "GRAVURU_CATALOG_LIVE_ORDERS",
+      "GRAVURU_PYTHON",
+      "GRAVURU_KATALOG",
+      "GRAVURU_SHOPIFY_CONFIG_FILE",
+      "GRAVURU_ACRYL_LEGACY_RELEASE",
+      "GRAVURU_ACRYL_DATA_DIR",
+      "GRAVURU_CUSTOMER_INTEGRATION",
+      "GRAVURU_DOORBELL_LIVE_ORDERS",
+      "GRAVURU_PUBLIC_PREVIEW_DIRECTORY",
+      "GRAVURU_PUBLIC_PREVIEW_PREPARE_PRODUCT",
+      "GRAVURU_PUBLIC_PREVIEW_PREPARE_VARIANT",
+      "GRAVURU_CUSTOMER_MODEL_CACHE",
+      "GRAVURU_KATALOG_WORKER"
+    ],
+    "configs": [
+      {
+        "file": "/var/www/vhosts/system/app-2027.gravuru-designwerkstatt.de/conf/last_httpd.conf",
+        "error": "EACCES"
+      },
+      {
+        "file": "/var/www/vhosts/system/app-2027.gravuru-designwerkstatt.de/conf/last_nginx.conf",
+        "error": "EACCES"
+      },
+      {
+        "file": "/var/www/vhosts/system/app-2027.gravuru-designwerkstatt.de/conf/httpd.conf",
+        "error": "EACCES"
+      },
+      {
+        "file": "/var/www/vhosts/system/app-2027.gravuru-designwerkstatt.de/conf/nginx.conf",
+        "error": "EACCES"
+      }
+    ],
+    "note": "Static path references and web-root directives only; no app import, credentials or configuration values."
+  },
+  "interpretation": {
+    "workshopOwner": "app/workshop/acryl-employee-host.mjs:createAcrylEmployeeHost, local acrylWorkshop from createShopifyTestRuntime",
+    "workshopFactory": "app/workshop/shopify-admin-test-server.mjs:createShopifyTestRuntime",
+    "existingOperatorExport": false,
+    "existingGenericGraphqlExport": false,
+    "readOnlyAdminClient": "app/workshop/shopify-admin-readonly.mjs exposes fixed inspect methods, not arbitrary graphql",
+    "deploymentIntegrationPending": true,
+    "liveChanges": false
+  }
+}

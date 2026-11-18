@@ -291,6 +291,31 @@ test('metadata is detached, immutable and pinned across profile changes and rest
   } finally { raw.close(); }
 });
 
+test('reviewed import metadata is compared at the actual snapshot write and rolls back the whole batch', t => {
+  let changeSecond = false;
+  const {repository} = fixture(t, {snapshotMetadata: value => ({
+    profiles: {fonts: ['Montserrat'], motifs: [changeSecond && value.name === 'Second changed' ? 'new' : 'original']},
+  })});
+  const first = repository.create(document('First')), second = repository.create(document('Second'));
+  const expectedMetadata = repository.previewMetadata(first.document);
+  const entries = [first, second].map((row, i) => ({
+    key: 'font-connect:test-' + i, fingerprint: String(i + 1).repeat(64), action: 'update',
+    productId: row.id, expectedRevision: 1, document: {...row.document, name: i ? 'Second changed' : 'First changed'}, expectedMetadata,
+  }));
+  assert.throws(() => repository.importBatch(entries, {beforeWrite() { changeSecond = true; }}), errorIs(409, 'snapshot_metadata_changed'));
+  assert.deepEqual(repository.get(first.id), first);
+  assert.deepEqual(repository.get(second.id), second);
+  for (const entry of entries) assert.equal(repository.importItem(entry.key), null);
+  assert.equal(repository.history(first.id).length, 1);
+  assert.equal(repository.catalog({}).products.some(row => row.name === 'First changed'), false);
+  changeSecond = false;
+  assert.equal(repository.importBatch(entries).filter(row => row.updated).length, 2);
+  assert.deepEqual(repository.get(first.id).metadata, expectedMetadata);
+  assert.equal(repository.get(first.id).revision, 2);
+  repository.importBatch(entries);
+  assert.equal(repository.get(first.id).revision, 2, 'journal replay must not append again');
+});
+
 test('metadata callback failures roll back product changes and earlier batch rows including import keys', (t) => {
   let reject = '';
   const { repository } = fixture(t, {

@@ -16,5 +16,6 @@
     "jobRowsUnchanged": true,
     "serverCreated": false
   },
+  "nativeBuildParityRerun": {"passed": 2, "failed": 0, "skipped": 0, "elapsedMs": 536.38, "networkCalls": 1, "backgroundIntervals": 0, "jobRowsUnchanged": true, "serverCreated": false, "note": "Same build() and seed as normal runtime, always reached after lock in private CLI; POSIX fixture directory explicitly 0700."},
   "limits": "Synthetic fixtures only, no real server data restored or commands executed. No live speed, outage duration or RSS claim. The native test simulates POSIX mode bits on Windows and a synthetic font catalogue."
 }

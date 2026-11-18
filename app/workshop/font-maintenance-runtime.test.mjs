@@ -16,6 +16,8 @@ async function setup(t){
  const dataDirectory=path.join(root,'target'),katalogRoot=path.join(root,'katalog'),fonts=['Michroma','Lato','Cinzel','Montserrat'];
  fs.cpSync(new URL('./fixtures/katalog/',import.meta.url),katalogRoot,{recursive:true});
  f.targetWorkshop.profiles.registerFonts(fonts);f.targetWorkshop.profiles.syncCatalogFontSet('tuerschilder',fonts);f.close();
+ // The HTTP runtime requires a private directory on POSIX as it does in production.
+ fs.chmodSync(dataDirectory,0o700);
  t.after(()=>{assert.equal(path.dirname(root),parent);fs.rmSync(root,{recursive:true,force:true});});
  if(process.platform==='win32'){
   // Only the POSIX permission flag is simulated on Windows; Linux must also run this test.

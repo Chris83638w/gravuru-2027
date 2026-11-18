@@ -24,7 +24,7 @@ export function createShopifyTestRuntime(env,{merchantCsrfToken=null,orderWebhoo
     const file=path.join(directory,name);if(fs.existsSync(file)&&(fs.lstatSync(file).isSymbolicLink()||!fs.statSync(file).isFile()))fail();
   }
   if(maintenanceOnly){for(const name of ['workshop.sqlite','profiles.sqlite','design-assets.sqlite'])if(!fs.existsSync(path.join(directory,name)))fail();}
-  else build();
+  build();
   const seed=JSON.parse(fs.readFileSync(path.join(OUTPUT,'models.json')))[0];
   const workshop=createWorkshop({filename,seedConfig:seed.universal,legacy:seed.legacy,shopifySessions:config.shopifySessions,shopDrafts:config.shopDrafts,appProxy:config.appProxy,tenantSettings:maintenanceOnly?null:config.tenantSettings,merchantCsrfToken,orderWebhook,merchantTestCart,aiDesign,maintenanceOnly,...(maintenanceOnly?{katalogDir:katalogRoot}:{})});
   let server,orderWebhookHandler,fontOperator;try{

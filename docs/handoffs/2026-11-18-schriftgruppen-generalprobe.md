@@ -37,7 +37,9 @@ Claude bestätigt diese sechs Laufgrenzen im direkten Chat am 18.11.2026. Ebenso
 /var/www/vhosts/gravuru-designwerkstatt.de/private/gravuru-2027-test-python311/bin/python /var/www/vhosts/gravuru-designwerkstatt.de/private/font-online-tool-20261118-01/snapshot-native-online.py capture --config /var/www/vhosts/gravuru-designwerkstatt.de/private/font-online-tool-20261118-01/capture.json
 ```
 
-4. Ergebnis/Exitstatus abwarten, nur Zähler/Pfade/Hashes weitergeben. Bei Abbruch bleibt eine private Teilkopie ohne Erfolgsbeleg; keine Wiederholung, kein Überschreiben, keine automatische Löschung. Der Fehler ist zu klären und Chris zu melden.
+4. Für den längeren Lauf über die Plesk-Nodekonsole: vorhandenes `/usr/bin/timeout` vorab lesend prüfen, privates `capture-launched.json` exklusiv anlegen (Werkzeug-/Konfigurations-SHA), dann genau einen abgetrennten `/bin/sh`-Prozess mit ignorierten Standardkanälen starten. Dieser führt den obigen Python-Aufruf mit `-I` und vorgeschaltetem `/usr/bin/timeout --signal=TERM --kill-after=15s 1800s` aus. `umask 077`, `set -C`, Ausgabe ausschließlich in frisches `capture.log`, abschließender numerischer Exitstatus exklusiv in `capture.exit`. Der Python-Prozess bleibt durch RLIMIT_AS begrenzt. Nur diesen Kopierprozess bei Fristablauf beenden, kein App-Prozess. Die Start-PID im privaten Startbeleg festhalten. Kein Wiederanlauf nach verlorenem Browseraufruf, sondern zuerst Startbeleg/Log/Exitdatei prüfen. Dasselbe Muster getrennt für `restore`; diese Transportform wird mit Claude vor Ausführung abgestimmt.
+
+   Ergebnis/Exitstatus abwarten, nur Zähler/Pfade/Hashes weitergeben. Bei Abbruch bleibt eine private Teilkopie ohne Erfolgsbeleg; keine Wiederholung, kein Überschreiben, keine automatische Löschung. Der Fehler ist zu klären und Chris zu melden.
 5. Erfolgs-SHA ausdrücklich in die [Restore-Konfiguration](2026-11-18-font-online-snapshot-restore.json) übernehmen, separat exklusiv 0600 speichern. Ihr Platzhalter ist keine ausführbare Freigabe. Wiederherstellung ausschließlich in neues privates Geschwisterziel:
 
 ```text

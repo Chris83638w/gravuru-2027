@@ -8,6 +8,7 @@ import shutil
 import sqlite3
 import tempfile
 import unittest
+from unittest.mock import patch
 
 spec = importlib.util.spec_from_file_location('snapshot_native_online', Path(__file__).with_name('snapshot-native-online.py'))
 module = importlib.util.module_from_spec(spec)
@@ -20,6 +21,7 @@ class SnapshotTests(unittest.TestCase):
         self.root = Path(tempfile.mkdtemp(prefix='font-online-snapshot-', dir=self.parent)).resolve()
         self.data = self.root / 'data'
         self.data.mkdir(mode=0o700)
+        (self.root / 'public').mkdir()
         self.writers = {}
         for name in module.DATABASES:
             p = self.data / name
@@ -38,13 +40,14 @@ class SnapshotTests(unittest.TestCase):
         self.entry.write_text('// synthetic entry\n')
         self.credentials = self.root / 'shopify.json'
         self.credentials.write_text('{"secret":"never-copy-synthetic-secret"}')
+        self.credentials.chmod(0o600)
         self.output = self.root / 'snapshot'
         self.config = dict(schema=module.SCHEMA, data=str(self.data), destination=str(self.output),
                            webRoots=[str(self.root / 'public')], trees={'katalog': str(self.catalog)},
                            files={'entry/app.cjs': str(self.entry)}, hashOnly={'shopifyConfig': str(self.credentials)},
                            expectedHashes={'entry/app.cjs': module.sha_file(self.entry)},
                            expectedHashOnly={'shopifyConfig': module.sha_file(self.credentials)},
-                           limits=dict(maxSeconds=1800, maxWalBytes=1024**3, minFreeBytes=10*1024**3,
+                           limits=dict(maxSeconds=1800, maxPinnedSeconds=300, maxWalBytes=1024**3, minFreeBytes=10*1024**3,
                                        minHostAvailableBytes=6*1024**3, minCgroupHeadroomBytes=6*1024**3,
                                        addressSpaceBytes=512*1024**2))
 
@@ -123,6 +126,71 @@ class SnapshotTests(unittest.TestCase):
         self.assert_code('time_limit', lambda: self.capture(clock=clock))
         self.assertFalse((self.output / module.RECEIPT).exists())
         self.assertTrue(all(db.execute('PRAGMA wal_checkpoint(TRUNCATE)').fetchone()[0] == 0 for db in self.writers.values()))
+
+    def test_pinned_deadline_is_separate_and_releases_every_reader(self):
+        def clock():
+            return 301 if (self.output / 'data' / module.DATABASES[0]).exists() else 0
+        self.assert_code('pinned_time_limit', lambda: self.capture(clock=clock))
+        self.assertFalse((self.output / module.RECEIPT).exists())
+        self.assertTrue(all(db.execute('PRAGMA wal_checkpoint(TRUNCATE)').fetchone()[0] == 0 for db in self.writers.values()))
+
+    def test_preflight_creates_nothing_and_never_opens_a_database(self):
+        before = sorted(str(p) for p in self.root.rglob('*'))
+        hashes = {n: module.sha_file(self.data / n) for n in module.DATABASES}
+        with patch.object(module.sqlite3, 'connect', side_effect=AssertionError('preflight must not open SQLite')):
+            result = module.preflight(self.config, metrics=self.metrics)
+        self.assertEqual(result['databasesOpened'], 0)
+        self.assertEqual(result['pathsCreated'], 0)
+        self.assertEqual(before, sorted(str(p) for p in self.root.rglob('*')))
+        self.assertEqual(hashes, {n: module.sha_file(self.data / n) for n in module.DATABASES})
+        self.assertFalse(self.output.exists())
+        bad = {**self.config, 'webRoots': [str(self.root / 'missing-webroot')]}
+        self.assert_code('web_root_directory', lambda: module.preflight(bad, metrics=self.metrics))
+
+    def test_cache_advice_is_only_for_private_copies_never_live_sources(self):
+        advised = []
+        with patch.object(module, 'drop_target_cache', side_effect=lambda p: advised.append(p)):
+            result = self.capture()
+            restored = self.root / 'restored'
+            module.restore({**self.config, 'snapshot': str(self.output), 'destination': str(restored),
+                            'receiptSha256': result['receiptSha256']}, metrics=self.metrics)
+        self.assertTrue(advised)
+        self.assertTrue(all(p.is_relative_to(self.output) or p.is_relative_to(restored) for p in advised))
+        self.assertTrue(all(self.output / 'data' / n in advised for n in module.DATABASES))
+        receipt = module.verify(self.output, result['receiptSha256'])
+        self.assertGreaterEqual(receipt['phaseSeconds']['readersOpen'], receipt['phaseSeconds']['pinned'])
+
+    def fake_cgroup(self, version, levels):
+        system = self.root / ('sys-v' + str(version))
+        base = system / 'memory' if version == 1 else system
+        proc = self.root / ('proc-v' + str(version))
+        proc.write_text('1:memory:/worker\n' if version == 1 else '0::/worker\n')
+        for name, used, limit, inactive, active, dirty, writeback in levels:
+            directory = base / name
+            directory.mkdir(parents=True, exist_ok=True)
+            names = ('memory.usage_in_bytes', 'memory.limit_in_bytes') if version == 1 else ('memory.current', 'memory.max')
+            (directory / names[0]).write_text(str(used))
+            (directory / names[1]).write_text(str(limit))
+            fields = ('total_inactive_file', 'total_active_file', 'total_dirty', 'total_writeback') if version == 1 else ('inactive_file', 'active_file', 'file_dirty', 'file_writeback')
+            (directory / 'memory.stat').write_text('\n'.join(f'{k} {v}' for k, v in zip(fields, (inactive, active, dirty, writeback))))
+        return proc, system
+
+    def test_v1_clean_cache_is_reclaimable_dirty_pages_and_parent_limits_count(self):
+        proc, system = self.fake_cgroup(1, [('worker', 950, 1000, 400, 300, 50, 50),
+                                          ('', 1300, 1500, 200, 100, 100, 0)])
+        result = module.cgroup_memory(proc, system)
+        self.assertEqual(result['headroomBytes'], 400)
+        self.assertEqual([g['headroomBytes'] for g in result['groups']], [650, 400])
+        self.assertEqual(result['groups'][0]['chargedBytes'], 350)
+
+    def test_v2_clean_cache_reclaims_but_dirty_writeback_and_missing_stats_fail_closed(self):
+        proc, system = self.fake_cgroup(2, [('worker', 999, 1000, 500, 400, 100, 50),
+                                          ('', 999, 'max', 500, 400, 100, 50)])
+        self.assertEqual(module.cgroup_memory(proc, system)['headroomBytes'], 751)
+        (system / 'worker' / 'memory.stat').write_text('inactive_file 20\nactive_file 10\nfile_dirty 100\nfile_writeback 20\n')
+        self.assertEqual(module.cgroup_memory(proc, system)['headroomBytes'], 1)
+        (system / 'worker' / 'memory.stat').write_text('inactive_file 20\n')
+        self.assert_code('cgroup_stat_incomplete', lambda: module.cgroup_memory(proc, system))
 
     def test_changed_resource_or_configuration_never_gets_success_receipt(self):
         for key, target in [('resource', self.catalog / 'font-set.json'), ('config', self.credentials)]:

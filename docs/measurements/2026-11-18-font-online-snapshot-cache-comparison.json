@@ -1,0 +1,85 @@
+{
+  "profile": "identical synthetic Windows fixture, three real WAL databases, one catalogue file and one entry; injected resource metrics, no customer data",
+  "beforeCode": "b53a146",
+  "afterCode": "working tree cache/preflight fix",
+  "runs": {
+    "before": {
+      "captureSeconds": 0.125,
+      "restoreSeconds": 0.047,
+      "phaseSeconds": null,
+      "databases": [
+        {
+          "database": "workshop.sqlite",
+          "sourceBefore": 1,
+          "sourceAfter": 2,
+          "restoredVersion": 1,
+          "sha256Equal": true
+        },
+        {
+          "database": "profiles.sqlite",
+          "sourceBefore": 1,
+          "sourceAfter": 2,
+          "restoredVersion": 1,
+          "sha256Equal": true
+        },
+        {
+          "database": "design-assets.sqlite",
+          "sourceBefore": 1,
+          "sourceAfter": 2,
+          "restoredVersion": 1,
+          "sha256Equal": true
+        }
+      ],
+      "payloadHashes": {
+        "data/design-assets.sqlite": "3102153f41fefdd9329e30856a95fff4a6c0138e3dbaba1728156e631e4ae43d",
+        "data/profiles.sqlite": "3102153f41fefdd9329e30856a95fff4a6c0138e3dbaba1728156e631e4ae43d",
+        "data/workshop.sqlite": "3102153f41fefdd9329e30856a95fff4a6c0138e3dbaba1728156e631e4ae43d",
+        "entry/app.cjs": "fe7ac684bca7853dcc97eb1cdd3330c4261d0e22125c614467a4c169fe9ff7f6",
+        "katalog/font-set.json": "4380843c03b4fe073f75223334cf3ce2247c43403fefd75e0805021b45e437e8"
+      }
+    },
+    "after": {
+      "captureSeconds": 0.125,
+      "restoreSeconds": 0.032,
+      "phaseSeconds": {
+        "inventory": 0.0,
+        "readersOpen": 0.109,
+        "pinned": 0.078,
+        "verificationAndResources": 0.016
+      },
+      "databases": [
+        {
+          "database": "workshop.sqlite",
+          "sourceBefore": 1,
+          "sourceAfter": 2,
+          "restoredVersion": 1,
+          "sha256Equal": true
+        },
+        {
+          "database": "profiles.sqlite",
+          "sourceBefore": 1,
+          "sourceAfter": 2,
+          "restoredVersion": 1,
+          "sha256Equal": true
+        },
+        {
+          "database": "design-assets.sqlite",
+          "sourceBefore": 1,
+          "sourceAfter": 2,
+          "restoredVersion": 1,
+          "sha256Equal": true
+        }
+      ],
+      "payloadHashes": {
+        "data/design-assets.sqlite": "3102153f41fefdd9329e30856a95fff4a6c0138e3dbaba1728156e631e4ae43d",
+        "data/profiles.sqlite": "3102153f41fefdd9329e30856a95fff4a6c0138e3dbaba1728156e631e4ae43d",
+        "data/workshop.sqlite": "3102153f41fefdd9329e30856a95fff4a6c0138e3dbaba1728156e631e4ae43d",
+        "entry/app.cjs": "fe7ac684bca7853dcc97eb1cdd3330c4261d0e22125c614467a4c169fe9ff7f6",
+        "katalog/font-set.json": "4380843c03b4fe073f75223334cf3ce2247c43403fefd75e0805021b45e437e8"
+      }
+    }
+  },
+  "equivalentPayload": true,
+  "limits": "No Linux fadvise/RLIMIT/cgroup performance claim. Actual Linux correction benchmark awaits Claude.",
+  "liveChanges": false
+}

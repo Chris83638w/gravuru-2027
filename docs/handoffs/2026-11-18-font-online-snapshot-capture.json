@@ -36,6 +36,7 @@
     "minFreeBytes": 30064771072,
     "minHostAvailableBytes": 6442450944,
     "minCgroupHeadroomBytes": 6442450944,
-    "addressSpaceBytes": 536870912
+    "addressSpaceBytes": 536870912,
+    "maxPinnedSeconds": 300
   }
 }

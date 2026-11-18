@@ -1,0 +1,25 @@
+{
+  "audit": "font-host-isolated-comparison",
+  "node": "v24.22.1",
+  "platform": "win32",
+  "measurements": [
+    {
+      "mode": "unchanged-entry-without-mount",
+      "startupMs": 716.49,
+      "rssBefore": 86777856,
+      "rssAfter": 238936064,
+      "heapBefore": 20269672,
+      "heapAfter": 96495472
+    },
+    {
+      "mode": "optional-private-mount",
+      "startupMs": 519.55,
+      "rssBefore": 237633536,
+      "rssAfter": 182677504,
+      "heapBefore": 97581368,
+      "heapAfter": 64600624
+    }
+  ],
+  "networkCalls": 0,
+  "note": "One interleaved synthetic run per mode, same process and fixture; second run benefits from warm imports. Not outage, customer speed or server RSS evidence."
+}

@@ -1,0 +1,9 @@
+{
+  "audit": "font-online-launched",
+  "phase": "restore",
+  "pid": 4189794,
+  "toolSha256": "e4268a0c3311e0d5d2bfc9f962cab0e9678d5b45aa2ee5c9dfcf7ac4f9cd96d1",
+  "configSha256": "106a63bc3b990c61657e628e93d2dfa2dc948cbf94321037533b7c7da996b645",
+  "applicationChanged": false,
+  "noAutomaticRetry": true
+}

@@ -1,5 +1,12 @@
 # Schriftgruppen: private Online-Kopie vor der Generalprobe
 
+## Aktueller Serverlauf am 18.11., 11:24 UTC
+
+Chris hat das private Kopierpaket direkt bestätigt; [Freigabeprotokoll](https://github.com/Chris83638w/gravuru-2027/issues/254#issuecomment-6975961005). Werkzeug inzwischen privat abgelegt und vollständiger CLI-Vorabcheck bestanden. Einmalige Online-Sicherung erfolgreich: Exit 0, 81.756 Dateien / 9.732.780.913 Bytes, 875,772 s, 98,833 s gepinnt, 232,3 MiB Spitzen-RSS, 18 Zwischensynchronisierungen; Einstiegshashes unverändert. [Abschlussbeleg](../measurements/2026-11-18-font-online-capture-result.json). Externer Receipt-SHA `fd476927108f2e382f9e96e3214fda06015742cacd78b542397691f562b014e6`.
+
+Claude hat auch die konkrete Wiederherstellung geprüft und bestätigt ([Review](https://github.com/Chris83638w/gravuru-2027/pull/261#issuecomment-6976627985)). Konfiguration am Server SHA `106a63bc3b990c61657e628e93d2dfa2dc948cbf94321037533b7c7da996b645`, 1.282 Bytes / 600. Restore genau einmal um 11:03:32 UTC gestartet, PID 4189794, erfolgreich mit Exit 0 beendet: 1.191,199 s, 192,9 MiB Spitzen-RSS, 81.756 Dateien, extern identischer Beleg-SHA. [Abschlussbericht](2026-11-18-font-online-server-run.md). Keine Liveänderung. Native Schriftgruppen-Generalprobe bleibt offen. Die folgenden datierten früheren Angaben wie „noch keine Serverdatei“ sind historische Arbeitsstände. Gesamtübergabe auch als [Issue #262](https://github.com/Chris83638w/gravuru-2027/issues/262).
+
+
 Stand 18.11.2026, Astra mit Claude. Eigenes Folgepaket ab PR258/b3f9725; dessen Implementierung b0baaee ist von Claude mit 106/106 Linux-Tests abgenommen. Chris beauftragt den Anschluss der Bestandsprodukte mit Claude und untersagt Liveänderungen ohne sein „live“. Dieses Paket bereitet ausschließlich eine private Kopie vor. Keine neue Kunden-, Schrift-, Preis- oder Kapazitätsregel.
 
 ## Werkzeug und Nachweise

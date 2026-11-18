@@ -36,6 +36,12 @@ Pro Datenbank: `integrity_check`, `foreign_key_check`, Tabellenzähler gegen die
 
 ## Tatsächlicher Umfang und Grenzen
 
+[Neue rein lesende Serverprüfung, 09:37–09:38 UTC](../measurements/2026-11-18-font-online-server-preflight.json): unveränderte `preflight`-Funktion und benötigte Hilfsdefinitionen aus cbb7f2c direkt im Prozessspeicher ausgeführt, ohne Ablage des Werkzeugs oder der Konfiguration. Original- und ausgeführte Teilquelltext-SHA im Beleg. `ionice -c3`, Python `-I -B`, 512-MiB-Adressraumgrenze, nice +10; Exit 0, 42 ms, Spitzen-RSS 16.265.216 Bytes. Alle Quell-/Ziel-/Ressourcenprüfungen grün, 0 DB-Öffnungen und 0 angelegte Pfade. Freie Platte 353.826.021.376 Bytes, Host verfügbar 68.239.847.424 Bytes, gemessene cgroup 11.596.435.456 Bytes Reserve, WAL 37.953.472 Bytes. Beide echten Startdatei-SHAs vorher/nachher unverändert. Kein Nachweis der App-Prozessstartzeit und noch kein CLI-Test der Rechte einer abgelegten Konfigurationsdatei.
+
+Zusätzlich mit 30-s-/1-GiB-Lesegrenze und niedriger I/O-/CPU-Priorität genau 1.073.741.824 Bytes aus 24.808 Katalogdateien gelesen und laufend gehasht, ohne Cachehinweise oder Schreibzugriff. Dauer 20,486 s, Spitzen-RSS 16.916.480 Bytes. Eigene begrenzte 12-GiB-cgroup vor/nach weiterhin Datei-LRU/dirty/writeback jeweils 0; Nutzung 1.286.053.888 → 1.285.652.480 Bytes. Das belegt nur diese begrenzte Lektüre; Schreibcache und Appzuordnung bleiben offen. Keine Kopie, kein Restore oder Kundeninhalt übertragen.
+
+Transportbefund: drei lange Plesk-Aufrufe wurden vor der Python-Ausführung mit `node: -e/--eval requires an argument` abgewiesen; kurze Textprobe und 7.496-Byte-Aufruf funktionieren. Deshalb noch keinen langen Upload-/Startbefehl ungeprüft verwenden. Das ist kein Snapshot-Fehler. Für eine spätere Ablage sind kleinere, eindeutig gehashte Übertragungsschritte vorzubereiten; keine Serverdatei wurde bisher erstellt.
+
 [Rein lesende Serverbelege](../measurements/2026-11-18-font-online-snapshot-source.json), 07:47–08:28 UTC:
 
 - Drei aktive Datenbanken zusammen rund 5,04 GB; WAL 37.953.472 Bytes. SQLite 3.54.1, alle drei WAL.

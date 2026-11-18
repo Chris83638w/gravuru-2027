@@ -21,6 +21,14 @@ function workshop(t){
 // Fixture-Designs tragen keine Freigabe; die Mechanik-Tests laufen daher mit allDesigns, die Freigabe-Regel hat einen eigenen Test.
 const options=ws=>({repository:ws.repository,families:ws.families,fontLibrary:ws.fonts,profiles:ws.profiles,available:workshopResources().fonts,allDesigns:true});
 const writableOptions=ws=>({...options(ws),allDesigns:false});
+test('regular importer stops for an unverified legacy origin, then resumes after explicit adoption',async t=>{
+ const ws=workshop(t),k=approvedFixture(openKatalog(FIXTURE)),legacy=ws.profiles.create({name:'Schrift-Set tuerschilder (Katalog)',type:'fonts',items:['Cinzel','Montserrat']});
+ const before=ws.repository.list({includeArchived:true}),families=ws.families.list();
+ await assert.rejects(()=>planKatalogImport(k,'test-linie',writableOptions(ws)),e=>e.code==='catalog_source_unresolved'&&/tuerschilder/.test(e.message)&&/\/werkstatt\/schriftgruppen\//.test(e.message));
+ assert.deepEqual(ws.repository.list({includeArchived:true}),before);assert.deepEqual(ws.families.list(),families);assert.equal(ws.profiles.get(legacy.id).source,undefined);
+ ws.profiles.adoptCatalogFontSet('tuerschilder',legacy.id,1);
+ const plan=await planKatalogImport(k,'test-linie',writableOptions(ws));assert.equal(plan.report.subcategories[0].fontProfileId,legacy.id);assert.equal(ws.profiles.get(legacy.id).revision,1);
+});
 test('a pre-existing different font assignment survives reimport and is named in the report',async t=>{
  const ws=workshop(t),k=approvedFixture(openKatalog(FIXTURE));applyKatalogImport(await planKatalogImport(k,'test-linie',writableOptions(ws)),writableOptions(ws));
  const id=ws.repository.importItem(importKey('test-linie','namensschilder','TS-RE-90X60')).id,product=ws.repository.get(id);

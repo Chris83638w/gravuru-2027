@@ -51,7 +51,7 @@ export function createCatalogFontSets({root,profiles,fontLibrary,repository,runt
   const all=profiles.list({type:'fonts'}),sets=[...katalog.fonts.sets.keys()];
   return all.filter(p=>!p.source&&/^Schrift-Set .+ \(Katalog\)$/.test(p.name)).map(p=>{
    const setId=p.name.slice(12,-10),matches=all.filter(v=>v.name===p.name&&!v.source),valid=sets.includes(setId)&&matches.length===1&&!profiles.catalogFontSet(setId);
-   return {profileId:p.id,revision:p.revision,name:p.name,setId,items:p.items,eligible:valid,reason:valid?'Namenshinweis – Herkunft vor Übernahme prüfen.':'Nicht eindeutig zuordenbar; keine automatische Übernahme.'};
+   return {profileId:p.id,revision:p.revision,name:p.name,setId,items:p.items,catalogFonts:katalog.fonts.sets.get(setId)?.fonts??[],eligible:valid,reason:valid?'Namenshinweis – Herkunft vor Übernahme prüfen.':'Nicht eindeutig zuordenbar; keine automatische Übernahme.'};
   });
  }
  function list(){
@@ -63,8 +63,9 @@ export function createCatalogFontSets({root,profiles,fontLibrary,repository,runt
   const s=read();
   if(!input||input.sourceSha256!==s.sourceSha256)fail(409,'catalog_fontset_stale','Die Schriftgruppen wurden inzwischen geändert. Bitte neu laden; deine Auswahl bleibt erhalten.');
   const set=s.katalog.fonts.sets.get(input.setId);if(!set)fail(404,'catalog_fontset_missing','Schriftgruppe nicht gefunden.');
+  if(Array.isArray(input.fonts)&&FONT_SET_ALWAYS.some(name=>!input.fonts.includes(name)))fail(422,'catalog_font_required','Bitte Michroma und Lato in der Auswahl lassen. Sie gehören zur bestehenden Grundauswahl.');
   validateFontSet({...set,fonts:input.fonts},{known:new Set(s.katalog.fonts.list.keys())});
-  const unresolved=migration(s.katalog).filter(p=>p.setId===set.id);if(unresolved.length)fail(409,'catalog_source_unresolved','Bitte zuerst die Herkunft der bestehenden Schriftliste prüfen und übernehmen.');
+  const unresolved=migration(s.katalog).filter(p=>p.setId===set.id);if(unresolved.length)fail(409,'catalog_source_unresolved','Schriftgruppe „'+set.id+'“: Bitte unter /werkstatt/schriftgruppen/ zuerst die Herkunft der bestehenden Schriftliste prüfen und übernehmen.');
   for(const name of input.fonts){const meta=s.katalog.fonts.list.get(name);if(!runtimeFonts[name]){if(!meta?.file)fail(422,'catalog_font_missing','Schriftdatei fehlt: '+name);safeKatalogPath(s.dir,meta.fileListed);}}
   return {...s,set};
  }

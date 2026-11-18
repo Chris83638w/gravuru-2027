@@ -51,7 +51,7 @@ $('#fontset-preview').addEventListener('click',()=>run(async()=>{
 $('#fontset-candidates').addEventListener('click',e=>{const id=e.target.closest('[data-adopt]')?.dataset.adopt;if(!id)return;run(async()=>{
  const p=state.data.migration.find(v=>v.profileId===id);
  const draft=state.dirty?{setId:state.set.id,fonts:[...state.fonts]}:null;
- if(!await confirm('Herkunft bestätigen','<p>Gehört „'+esc(p.name)+'“ tatsächlich zur Kataloggruppe „'+esc(p.setId)+'“?</p><p>'+p.items.map(esc).join(', ')+'</p><p>Die Liste bleibt erhalten und wird anschließend nur hier gepflegt.</p>','Geprüfte Herkunft übernehmen'))return;
+ if(!await confirm('Herkunft bestätigen','<p>Gehört „'+esc(p.name)+'“ tatsächlich zur Kataloggruppe „'+esc(p.setId)+'“?</p><h3>Bisheriges Profil · '+p.items.length+' Schriften</h3>'+rows(p.items,esc)+'<h3>Aktuelle Kataloggruppe · '+p.catalogFonts.length+' Schriften</h3>'+rows(p.catalogFonts,esc)+'<p>Profilkennungen können von Katalognamen abweichen. Diese Bestätigung ändert nur die Herkunft; die bisherige Auswahl bleibt jetzt erhalten. Beim nächsten Speichern oder Import wird die Katalogauswahl übernommen. Abweichungen deshalb vorher prüfen.</p>','Geprüfte Herkunft übernehmen'))return;
  await api(base+'/adopt',{method:'POST',body:{setId:p.setId,profileId:p.profileId,expectedRevision:p.revision,sourceSha256:state.data.sourceSha256,confirmOrigin:true}});notice('Herkunft zugeordnet. Auswahl und bisherige Stände bleiben erhalten.');await load();
  if(draft&&state.set?.id===draft.setId){state.fonts=draft.fonts;state.dirty=true;render();}
 });});

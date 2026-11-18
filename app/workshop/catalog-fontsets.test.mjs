@@ -45,6 +45,7 @@ test('provenance survives a previously renamed profile; free name lookalike is n
 test('migration is a read-only proposal; explicit verified adoption preserves the old selection/revision',t=>{
  const f=setup(t),p=f.profiles.create({name:'Schrift-Set tuerschilder (Katalog)',type:'fonts',items:['Cinzel']});
  const listing=f.service.list(),candidate=listing.migration[0];assert.equal(candidate.setId,'tuerschilder');assert.equal(candidate.eligible,true);
+ assert.deepEqual(candidate.items,['Cinzel']);assert.deepEqual(candidate.catalogFonts,names);
  assert.equal(f.profiles.get(p.id).source,undefined);
  const input={setId:'tuerschilder',profileId:p.id,expectedRevision:1,sourceSha256:listing.sourceSha256};
  assert.throws(()=>f.service.adopt(input),e=>e.code==='catalog_origin_confirmation');
@@ -66,6 +67,7 @@ test('impact includes theme and explicit/inherited subcategories, effective prof
 test('stale catalogue, changed impact and invalid selection do not write source, audit or profile',async t=>{
  const f=setup(t),value=f.input(),preview=f.service.impact(value),bytes=fs.readFileSync(path.join(f.root,'schriften/sets.json'),'utf8');
  for(const fonts of [['Michroma'],['Michroma','Lato','alien'],['Michroma','Lato','Lato']])assert.throws(()=>f.service.impact({...value,fonts}));
+ assert.throws(()=>f.service.impact({...value,fonts:['Michroma']}),e=>e.code==='catalog_font_required'&&/Michroma und Lato/.test(e.message));
  f.products.push(product('neu',null));
  await assert.rejects(()=>f.service.save({...value,impactToken:preview.token}),e=>e.code==='catalog_fontset_impact');
  fs.appendFileSync(path.join(f.root,'schriften/sets.json'),' ');
@@ -113,6 +115,6 @@ test('font replacement during conversion invalidates the reviewed source before 
 test('regular reimport cannot shrink a previously saved group when a font file becomes unavailable',async t=>{
  const f=setup(t),saved=await f.save(f.input()),before=f.profiles.get(saved.profile.id),catalog=openKatalog(f.root);
  delete f.runtimeFonts.Lato;
- await assert.rejects(()=>ensureFontSet(catalog,catalog.fontSet({fontSet:'tuerschilder'}),f),/bestehende Auswahl bleibt erhalten/);
+ await assert.rejects(()=>ensureFontSet(catalog,catalog.fontSet({fontSet:'tuerschilder'}),f),e=>/bestehende Auswahl bleibt erhalten/.test(e.message)&&/tuerschilder/.test(e.message)&&/Schriftdateien im Katalog wiederherstellen/.test(e.message)&&/\/werkstatt\/schriftgruppen\//.test(e.message));
  assert.deepEqual(f.profiles.get(saved.profile.id),before);assert.equal(f.audit().length,1);
 });

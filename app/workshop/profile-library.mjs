@@ -231,7 +231,7 @@ export function createProfileLibrary({filename,catalog,tenantId}){
       return transaction(()=>{
         const origin=db.prepare('SELECT profile_id FROM profile_catalog_sources WHERE tenant_id=? AND set_id=?').get(tenant,setId),name='Schrift-Set '+setId+' (Katalog)';
         let row=origin?profileRow(origin.profile_id):null;
-        if(!row&&db.prepare('SELECT 1 FROM profiles WHERE tenant_id=? AND type=? AND name=?').get(tenant,'fonts',name))throw failure(409,'catalog_source_unresolved','Die Herkunft der bestehenden Schriftliste ist noch nicht bestätigt. Bitte zuerst die Übernahme prüfen.');
+        if(!row&&db.prepare('SELECT 1 FROM profiles WHERE tenant_id=? AND type=? AND name=?').get(tenant,'fonts',name))throw failure(409,'catalog_source_unresolved','Schriftgruppe „'+setId+'“: Die Herkunft ist noch nicht bestätigt. Bitte unter /werkstatt/schriftgruppen/ die vorhandene Liste mit dem Katalog vergleichen und die geprüfte Herkunft übernehmen. Danach den Import erneut starten.');
         const document=profileData({name:row?.name??name,type:'fonts',items}),now=new Date().toISOString();
         if(row&&JSON.stringify(profileRecord(row).items)===JSON.stringify(items))return profileRecord(row);
         if(row)db.prepare('UPDATE profiles SET revision=?,updated_at=? WHERE tenant_id=? AND id=?').run(row.revision+1,now,tenant,row.id);

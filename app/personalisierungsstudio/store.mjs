@@ -3,6 +3,7 @@ import {randomUUID} from 'node:crypto';
 import {hash,worker} from './catalog.mjs';
 import {scene,svg} from './render.mjs';
 
+export const DEMO_SHOP='studio-probe.myshopify.com';
 export const shopName=s=>typeof s==='string' && /^[a-z0-9][a-z0-9-]*\.myshopify\.com$/.test(s);
 const shopId=s=>typeof s==='string' && /^[1-9]\d{0,19}$/.test(s);
 const uuid=s=>typeof s==='string' && /^[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}$/i.test(s);
@@ -96,11 +97,17 @@ export function openStore(file) {
   function receive(shop,order) {
     demand(shopId(order.id) && Array.isArray(order.lines),'Ungültige Bestellreferenz.');
     return tx(()=>{
+      let status=String(order.status||'UNKNOWN'),cancelled=Number(!!order.cancelled);
+      const last=db.prepare('SELECT v.updated,o.status,o.cancelled FROM order_versions v JOIN orders o ON o.shop=v.shop AND o.id=v.id WHERE v.shop=? AND v.id=?').get(shop,order.id);
+      demand(!last || order.updatedAt,'Zeitstempel für den aktuellen Bestellstand fehlt.');
       if(order.updatedAt){
         const stamp=Date.parse(order.updatedAt);
         demand(Number.isFinite(stamp),'Shopify-Zeitstempel ungültig.');
-        const last=db.prepare('SELECT updated FROM order_versions WHERE shop=? AND id=?').get(shop,order.id);
         demand(!last || stamp>=last.updated,'Ein neuerer Bestellstand wurde bereits übernommen.');
+        if(last?.updated===stamp && (last.status!==status || last.cancelled!==cancelled)){
+          status='CONFLICT';
+          cancelled=Math.max(last.cancelled,cancelled);
+        }
         db.prepare('INSERT OR REPLACE INTO order_versions VALUES(?,?,?)').run(shop,order.id,stamp);
       }
       const selected=[];
@@ -111,7 +118,7 @@ export function openStore(file) {
         demand(job && job.variant===line.variant && job.product===line.product,'Bestellposition und gesicherte Gestaltung passen nicht zusammen.');
         selected.push(line);
       }
-      db.prepare('INSERT OR REPLACE INTO orders VALUES(?,?,?,?,?)').run(shop,order.id,String(order.name),String(order.status),Number(!!order.cancelled));
+      db.prepare('INSERT OR REPLACE INTO orders VALUES(?,?,?,?,?)').run(shop,order.id,String(order.name),status,cancelled);
       db.prepare('DELETE FROM lines WHERE shop=? AND order_id=?').run(shop,order.id);
       for(const line of selected) db.prepare('INSERT INTO lines VALUES(?,?,?,?,?)').run(shop,order.id,line.id,line.job,line.quantity);
       return selected.length;
@@ -120,9 +127,18 @@ export function openStore(file) {
   function orders(shop) {
     return db.prepare('SELECT o.id,o.name,o.status,o.cancelled,l.id AS line,l.qty FROM orders o JOIN lines l ON l.shop=o.shop AND l.order_id=o.id WHERE o.shop=? ORDER BY length(o.id) DESC,o.id DESC,l.id').all(shop);
   }
-  async function download(shop,order,line,format) {
-    const row=db.prepare('SELECT j.*,l.qty,o.cancelled FROM lines l JOIN jobs j ON j.shop=l.shop AND j.id=l.job JOIN orders o ON o.shop=l.shop AND o.id=l.order_id WHERE l.shop=? AND l.order_id=? AND l.id=?').get(shop,order,line);
-    demand(row && !row.cancelled && row.qty>0,'Keine aktive zugeordnete Bestellposition.');
+  const position=db.prepare('SELECT j.*,l.qty,o.cancelled,o.status FROM lines l JOIN jobs j ON j.shop=l.shop AND j.id=l.job JOIN orders o ON o.shop=l.shop AND o.id=l.order_id WHERE l.shop=? AND l.order_id=? AND l.id=?');
+  async function download(shop,order,line,format,{localDemo=false}={}) {
+    function releasedPosition(){
+      const row=position.get(shop,order,line);
+      demand(row && !row.cancelled && row.qty>0,'Keine aktive zugeordnete Bestellposition.');
+      const simulated=localDemo && shop===DEMO_SHOP && row.status==='TEST';
+      if(row.status!=='PAID' && !simulated){
+        throw Object.assign(Error('Die Fertigungsdatei erfordert den bestätigten Zahlungsstatus PAID.'),{status:409});
+      }
+      return row;
+    }
+    const row=releasedPosition();
     const data=JSON.parse(row.payload);
     if(format==='original' && data.photo){
       const original=db.prepare('SELECT original FROM photos WHERE shop=? AND id=?').get(shop,data.photo).original;
@@ -143,6 +159,10 @@ export function openStore(file) {
     }
     for(const p of geometry.paths) if(p.image) p.image=pixelsFor(shop,p.image,row.variant,row.rev);
     const bytes=format==='svg'?Buffer.from(svg(geometry)):await worker('pdf',geometry);
+    if(format==='pdf'){
+      const current=releasedPosition();
+      demand(current.id===row.id && current.qty===row.qty,'Die Bestellposition wurde während der Dateierstellung geändert.');
+    }
     db.prepare('INSERT OR IGNORE INTO files VALUES(?,?,?,?)').run(shop,row.id,format,bytes);
     return {type,bytes:Buffer.from(saved.get(shop,row.id,format).bytes)};
   }

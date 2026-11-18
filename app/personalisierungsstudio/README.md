@@ -54,10 +54,10 @@ node cli.mjs export --shop beispiel.myshopify.com --order 123456789 --line 98765
 | --- | --- |
 | `POST /api/orders/{Shopify-Bestell-ID}/sync` | Liest alle Seiten der Bestellung über die Admin GraphQL API, bestätigt Shop, Produkt, Variante und Entwurf und übernimmt die Positionen atomar. |
 | `GET /api/orders` | Zugeordnete Bestellpositionen mit aktueller Menge und Status. |
-| `GET /api/orders/{ID}/lines/{Positions-ID}/{svg,pdf,json,original}` | Liefert die Datei zur gesicherten Zeichnung. `original` ist für ein hochgeladenes Foto verfügbar. Stornierte Positionen und Positionen mit Menge null sind gesperrt. |
+| `GET /api/orders/{ID}/lines/{Positions-ID}/{svg,pdf,json,original}` | Liest den Shopify-Auftrag erneut. Eine aktive bezahlte Position erhält die Datei der gebundenen Zeichnungsrevision. `original` liefert das zugehörige hochgeladene Foto. |
 | `POST /api/imports/check` und `POST /api/imports/publish` | Die Händleroberfläche prüft eine einzeln übermittelte Quelle in einem eigenen Prozess und bindet eine geprüfte Revision. |
 
-Die GraphQL-Anbindung verwendet Version 2026-10, `currentQuantity` und `customAttributes`. Rückerstattete oder entfernte Stücke berücksichtigt der nächste Abruf. Wiederholte Übernahmen aktualisieren dieselbe Positions-ID. [Shopify LineItem](https://shopify.dev/docs/api/admin-graphql/2026-10/objects/LineItem)
+Die GraphQL-Anbindung verwendet Version 2026-10, `currentQuantity` und `customAttributes`. Werkstatt-API und CLI lesen bei jedem Dateidownload den Zahlungsstatus und die Position bei Shopify, auch für bereits erzeugte Dateien. Der Pilot gibt Dateien bei `PAID`, positiver aktueller Menge, korrekter Zuordnung und aktiver Bestellung aus. Ein anderer Zahlungsstatus oder widersprüchliche Zahlungsstände mit gleichem Zeitstempel führen zu HTTP 409. Bei fehlendem API-Zugang oder fehlgeschlagenem Abruf bleibt die Datei gesperrt. Teilzahlungen, offene Rechnungen und Teilrückzahlungen benötigen vor einer Betriebsfreigabe eine ausdrückliche Regel für die betroffenen Positionen. Der Download erteilt keine Maschinenfreigabe. Nur der lokale Demoweg verarbeitet seine simulierten Bestellungen mit Status `TEST`. [Shopify-Zahlungsstatus](https://shopify.dev/docs/api/admin-graphql/2026-10/enums/OrderDisplayFinancialStatus) · [Shopify-Bestellposition](https://shopify.dev/docs/api/admin-graphql/2026-10/objects/LineItem)
 
 ## Fertigung und Prüfung
 

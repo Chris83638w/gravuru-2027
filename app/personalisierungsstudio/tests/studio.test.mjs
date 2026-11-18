@@ -74,6 +74,106 @@ test('Corel-kompatibles mm-SVG mit Kurvenkontur, Loch, Originalfont und gebunden
   fs.writeFileSync(file,content.replace('CutContour','Unklar'));assert.throws(()=>importFiles([file]),/Schnittpfad fehlt|Schnittpfad.*fehlt/);
   fs.writeFileSync(file,content.replace('Q0 0 2 0 Z','Q0 0 2 0'));assert.throws(()=>importFiles([file]),/geschlossen/);
 });
+
+test('Fertigung folgt dem Zahlungsstand auch während der PDF-Erstellung und bei Wiederholungen',async t=>{
+  const db=setup(t);
+  const record=order(db.save(shop,context()).id);
+  let tick=0;
+  const timestamp=()=>new Date(Date.UTC(2026,10,18,10,0,++tick)).toISOString();
+  const update=(status,updatedAt=timestamp())=>db.receive(shop,{...record,status,updatedAt});
+  for(const financial of ['AUTHORIZED','EXPIRED','PARTIALLY_PAID','PARTIALLY_REFUNDED','PENDING','REFUNDED','VOIDED',null,'UNKNOWN','TEST']){
+    update(financial);
+    for(const format of ['svg','pdf','json','original']){
+      await assert.rejects(db.download(shop,'101','11',format),{status:409});
+    }
+  }
+  update('PAID');
+  const rendering=db.download(shop,'101','11','pdf');
+  update('REFUNDED');
+  await assert.rejects(rendering,{status:409});
+  const sameTime=timestamp();
+  update('PAID',sameTime);
+  const released=await db.download(shop,'101','11','pdf');
+  assert.equal(released.bytes.subarray(0,5).toString(),'%PDF-');
+  update('PENDING',sameTime);
+  update('PAID',sameTime);
+  await assert.rejects(db.download(shop,'101','11','pdf'),{status:409});
+  assert.throws(()=>db.receive(shop,record),/Zeitstempel/);
+  update('PAID');
+  assert.deepEqual((await db.download(shop,'101','11','pdf')).bytes,released.bytes);
+  const removed=structuredClone(record);
+  removed.lines[0].quantity=0;
+  db.receive(shop,{...removed,updatedAt:timestamp()});
+  await assert.rejects(db.download(shop,'101','11','svg'),/Keine aktive/);
+});
+
+test('Die Werkstatt prüft Shopify vor jedem Dateidownload einschließlich zwischengespeicherter Dateien',async t=>{
+  const db=setup(t),job=db.save(shop,context()).id;
+  let financial='PAID',calls=0,available=true;
+  const shopifyFetch=async()=>{
+    calls++;
+    if(!available) return new Response(null,{status:503});
+    return Response.json({data:{order:{
+      id:'gid://shopify/Order/101',name:'#101',cancelledAt:null,
+      displayFinancialStatus:financial,updatedAt:new Date(Date.UTC(2026,10,18,12,0,calls)).toISOString(),
+      lineItems:{nodes:[{id:'gid://shopify/LineItem/11',currentQuantity:1,
+        product:{id:'gid://shopify/Product/'+DEMO_PRODUCT},variant:{id:'gid://shopify/ProductVariant/'+variant},
+        customAttributes:[{key:'_gravuru_studio',value:job}]}],pageInfo:{hasNextPage:false}}
+    }}});
+  };
+  const server=createServer(db,{shop,opsToken:'test-werkstatt',shopifyToken:'test-admin',shopifyFetch});
+  await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
+  t.after(()=>new Promise(resolve=>server.close(resolve)));
+  const url='http://127.0.0.1:'+server.address().port+'/api/orders/101/lines/11/pdf';
+  const options={headers:{authorization:'Bearer test-werkstatt'}};
+  assert.equal((await fetch(url)).status,401);
+  assert.equal(calls,0);
+  const paid=await fetch(url,options);
+  assert.equal(paid.status,200);
+  assert.equal(paid.headers.get('content-type'),'application/pdf');
+  await paid.arrayBuffer();
+  financial='PENDING';
+  const pending=await fetch(url,options);
+  assert.equal(pending.status,409);
+  assert.equal(pending.headers.get('content-disposition'),null);
+  available=false;
+  const unavailable=await fetch(url,options);
+  assert.ok(unavailable.status>=400);
+  assert.equal(unavailable.headers.get('content-disposition'),null);
+  assert.equal(calls,3);
+});
+
+test('Zehn lokale Bestellpositionen behalten nach paralleler PDF-Ausgabe und Neustart ihren Shop und Entwurf',async()=>{
+  const dir=fs.mkdtempSync(path.join(os.tmpdir(),'studio-wiederanlauf-'));
+  const file=path.join(dir,'studio.sqlite');
+  const shops=['referenz-eins.myshopify.com','referenz-zwei.myshopify.com'];
+  let db=openStore(file);
+  try{
+    for(const tenant of shops) db.publish(tenant,DEMO_PRODUCT,variant,sample);
+    const positions=Array.from({length:10},(_,i)=>{
+      const tenant=shops[i%2],id=String(Math.floor(i/2)+1),name='Muster '+i;
+      const data=context(),field=Object.keys(data.edits)[0];
+      data.edits[field]=name;
+      const job=db.save(tenant,data);
+      const record=order(job.id);
+      record.id=id;
+      db.receive(tenant,record);
+      return {tenant,id,name,field};
+    });
+    const files=await Promise.all(positions.map(p=>db.download(p.tenant,p.id,'11','pdf')));
+    assert.equal(new Set(files.map(f=>f.bytes.toString('base64'))).size,10);
+    db.close();
+    db=openStore(file);
+    for(const [i,p] of positions.entries()){
+      const drawing=JSON.parse((await db.download(p.tenant,p.id,'11','json')).bytes);
+      assert.equal(drawing.edits[p.field],p.name);
+      assert.deepEqual((await db.download(p.tenant,p.id,'11','pdf')).bytes,files[i].bytes);
+    }
+  }finally{
+    db.close();
+    if(path.dirname(dir)===os.tmpdir()) fs.rmSync(dir,{recursive:true,force:true});
+  }
+});
 test('FPD-Vorstufe unterscheidet Originaltexte, Motivbilder und kundenseitige Fotozone',t=>{
   const dir=fs.mkdtempSync(path.join(os.tmpdir(),'studio-fpd-'));t.after(()=>fs.rmSync(dir,{recursive:true,force:true}));
   const file=path.join(dir,'product.json');

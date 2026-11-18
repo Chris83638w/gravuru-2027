@@ -3,10 +3,11 @@ import fs from 'node:fs';
 import {randomBytes,timingSafeEqual} from 'node:crypto';
 import {gzipSync} from 'node:zlib';
 import {hash,here} from './catalog.mjs';
-import {proxyShop,readOrder} from './shopify.mjs';
+import {DEMO_SHOP} from './store.mjs';
+import {proxyShop,readOrder,downloadShopifyFile} from './shopify.mjs';
 import {merchantPage,merchantImport} from './merchant-server.mjs';
 
-export const DEMO_SHOP='studio-probe.myshopify.com';
+export {DEMO_SHOP};
 export const DEMO_VARIANT='90002';
 const DEMO_PRODUCT='70001';
 export {DEMO_PRODUCT};
@@ -24,7 +25,7 @@ async function body(req,limit=100_000){
   return JSON.parse(Buffer.concat(parts).toString());
 }
 export function createServer(store, options={}) {
-  const {demo=false,secret,shop,opsToken,shopifyToken}=options;
+  const {demo=false,secret,shop,opsToken,shopifyToken,shopifyFetch=fetch}=options;
   const carts=new Map(),encoded=new Map();let orderNumber=1000;
   const files=new Map();
   if(demo) orderNumber=Math.max(orderNumber,...store.orders(DEMO_SHOP).map(o=>Number(o.id)).filter(Number.isSafeInteger));
@@ -89,10 +90,12 @@ export function createServer(store, options={}) {
         }
         const sync=/^\/orders\/(\d+)\/sync$/.exec(route);
         const dl=/^\/orders\/(\d+)\/lines\/(\d+)\/(svg|pdf|json|original)$/.exec(route);
-        if(!local && sync && method==='POST') return json({positions:store.receive(shop,await readOrder(shop,shopifyToken,sync[1]))});
+        if(!local && sync && method==='POST') return json({positions:store.receive(shop,await readOrder(shop,shopifyToken,sync[1],shopifyFetch))});
         if(route==='/orders' && method==='GET') return json(store.orders(owner));
         if(dl && method==='GET'){
-          const file=await store.download(owner,dl[1],dl[2],dl[3]);
+          const file=local
+            ? await store.download(owner,dl[1],dl[2],dl[3],{localDemo:true})
+            : await downloadShopifyFile(store,owner,shopifyToken,dl[1],dl[2],dl[3],shopifyFetch);
           res.setHeader('Content-Disposition','attachment; filename="'+dl[1]+'-'+dl[2]+'.'+(dl[3]==='original' ? file.type.split('/')[1] : dl[3])+'"');
           return send(200,file.type,file.bytes);
         }
@@ -128,13 +131,13 @@ export function createServer(store, options={}) {
       }
       const download=/^\/demo\/export\/(\d+)\/(\d+)\/(svg|pdf|json|original)$/.exec(p);
       if(download && method==='GET'){
-        const file=await store.download(DEMO_SHOP,download[1],download[2],download[3]);
+        const file=await store.download(DEMO_SHOP,download[1],download[2],download[3],{localDemo:true});
         res.setHeader('Content-Disposition','attachment; filename="Heimathafen-'+download[1]+'-'+download[2]+'.'+download[3]+'"');
         return send(200,file.type,file.bytes);
       }
       return json({error:'Nicht gefunden.'},404);
     } catch(error) {
-      return json({error:error.message},/Signatur|App-Proxy/.test(error.message)?403:422);
+      return json({error:error.message},error.status===409?409:/Signatur|App-Proxy/.test(error.message)?403:422);
     }
   });
 }

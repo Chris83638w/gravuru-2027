@@ -4,7 +4,7 @@ import {parseArgs} from 'node:util';
 import {openStore,shopName} from './store.mjs';
 import {here,inspectFile,importFiles} from './catalog.mjs';
 import {createServer,DEMO_SHOP,DEMO_PRODUCT,DEMO_VARIANT} from './server.mjs';
-import {readOrder} from './shopify.mjs';
+import {readOrder,downloadShopifyFile} from './shopify.mjs';
 const {values:a,positionals:[cmd,...files]}=parseArgs({allowPositionals:true,options:Object.fromEntries(['db','shop','variant','product','order','line','out','format','port'].map(k=>[k,{type:'string'}]))});
 async function run(){
   if(cmd==='inspect'){if(files.length!==1) throw Error('Eine product.json, design.json oder FPD-ZIP angeben.');console.log(JSON.stringify(inspectFile(files[0]),null,2));return;}
@@ -25,7 +25,7 @@ async function run(){
     if(cmd==='sync') console.log(store.receive(shop,await readOrder(shop,process.env.SHOPIFY_ADMIN_TOKEN,a.order))+' Bestellpositionen übernommen.');
     if(cmd==='export'){
       if(!a.out)throw Error('--out angeben.');
-      const file=await store.download(shop,a.order,a.line,a.format||'pdf');
+      const file=await downloadShopifyFile(store,shop,process.env.SHOPIFY_ADMIN_TOKEN,a.order,a.line,a.format||'pdf');
       fs.writeFileSync(a.out,file.bytes,{flag:'wx'});console.log(a.out);
     }
     if(demo || cmd==='serve'){

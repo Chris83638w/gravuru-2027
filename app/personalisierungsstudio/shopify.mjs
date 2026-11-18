@@ -38,3 +38,10 @@ export async function readOrder(shop,token,orderId,call=fetch) {
   } while(after);
   return order;
 }
+
+export async function downloadShopifyFile(store,shop,token,order,line,format,call=fetch) {
+  const snapshot=await readOrder(shop,token,order,call);
+  if(!snapshot.updatedAt) throw Error('Shopify-Zeitstempel für die Fertigungsprüfung fehlt.');
+  store.receive(shop,snapshot);
+  return store.download(shop,order,line,format);
+}

@@ -146,8 +146,10 @@ try{
   await photoPage.locator('[data-active-design="Foto-B"] .gs-add:disabled').waitFor();unlock();
   await photoPage.locator('.gs-plate image').waitFor();await photoPage.locator('.gs-add').click();await photoPage.waitForURL('**/cart');
   await photoPage.getByRole('button',{name:/Testbestellung/}).click();await photoPage.waitForURL('**/werkstatt');
-  const receipt=store.orders(DEMO_SHOP)[0];const original=await store.download(DEMO_SHOP,receipt.id,receipt.line,'original');
-  assert.deepEqual(original.bytes,photoBytes);
+  const receipt=store.orders(DEMO_SHOP)[0];
+  const original=await photoPage.request.get(origin+'/demo/export/'+receipt.id+'/'+receipt.line+'/original');
+  assert.equal(original.status(),200);
+  assert.deepEqual(await original.body(),photoBytes);
   const report={browser:browser.version(),viewport:[390,844],cpu:4,mobil:{rtt:150,downBps:1600000,upBps:750000},results};
   fs.writeFileSync(path.join(output,'measurements.json'),JSON.stringify(report,null,2)+'\n');
   console.log(JSON.stringify(report));

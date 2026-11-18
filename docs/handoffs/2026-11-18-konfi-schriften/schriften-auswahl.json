@@ -1,5 +1,6 @@
 {
   "catalogCommit": "8236b8bfab7322447ec46661c116fa526331af3d",
+  "runtimeCommit": "9d00b0563340e3146ec74d25a6fa1a4bf72ecdb5",
   "selection": [],
   "fonts": [
     {
@@ -602,6 +603,78 @@
       "name": "Zentenar Fraktur",
       "category": "Fraktur / Gebrochene Schrift",
       "available": true,
+      "missingGlyphs": []
+    },
+    {
+      "number": 85,
+      "name": "Cutive Mono",
+      "category": "Zusätzlich in der Konfi-Bibliothek",
+      "available": true,
+      "source": "Konfi-Schriftkonturen",
+      "missingGlyphs": []
+    },
+    {
+      "number": 86,
+      "name": "Lora Italic",
+      "category": "Zusätzlich in der Konfi-Bibliothek",
+      "available": true,
+      "source": "Konfi-Schriftkonturen",
+      "missingGlyphs": []
+    },
+    {
+      "number": 87,
+      "name": "Merriweather",
+      "category": "Zusätzlich in der Konfi-Bibliothek",
+      "available": true,
+      "source": "Konfi-Schriftkonturen",
+      "missingGlyphs": []
+    },
+    {
+      "number": 88,
+      "name": "Nunito",
+      "category": "Zusätzlich in der Konfi-Bibliothek",
+      "available": true,
+      "source": "Konfi-Schriftkonturen",
+      "missingGlyphs": []
+    },
+    {
+      "number": 89,
+      "name": "Open Sans",
+      "category": "Zusätzlich in der Konfi-Bibliothek",
+      "available": true,
+      "source": "Konfi-Schriftkonturen",
+      "missingGlyphs": []
+    },
+    {
+      "number": 90,
+      "name": "Poppins",
+      "category": "Zusätzlich in der Konfi-Bibliothek",
+      "available": true,
+      "source": "Konfi-Schriftkonturen",
+      "missingGlyphs": []
+    },
+    {
+      "number": 91,
+      "name": "Roboto Mono",
+      "category": "Zusätzlich in der Konfi-Bibliothek",
+      "available": true,
+      "source": "Konfi-Schriftkonturen",
+      "missingGlyphs": []
+    },
+    {
+      "number": 92,
+      "name": "Source Code Pro",
+      "category": "Zusätzlich in der Konfi-Bibliothek",
+      "available": true,
+      "source": "Konfi-Schriftkonturen",
+      "missingGlyphs": []
+    },
+    {
+      "number": 93,
+      "name": "Ubuntu",
+      "category": "Zusätzlich in der Konfi-Bibliothek",
+      "available": true,
+      "source": "Konfi-Schriftkonturen",
       "missingGlyphs": []
     }
   ]

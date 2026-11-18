@@ -8,9 +8,13 @@ Chris ergänzt: „zeig mir auch nochmal alle Schriftarten. Wir werden ein paar 
 
 ## Auswahlübersicht
 
-[PDF: alle 84 Schriftarten auf sechs Seiten](2026-11-18-konfi-schriften/Alle-84-Schriftarten.pdf). Alphabetische Nummern entsprechen der lokalen HTML-Auswahlhilfe. Markieren in der Hilfe erzeugt nur eine Merkliste und schreibt nicht in Katalog oder Shop.
+[PDF: alle 93 Schriftarten auf sieben Seiten](2026-11-18-konfi-schriften/Alle-93-Schriftarten.pdf). Die ersten 84 Nummern bleiben erhalten; neun zusätzliche Konfi-Schriften folgen als 85–93. Beide Gruppen jeweils alphabetisch. Nummern entsprechen der lokalen HTML-Auswahlhilfe. Die frühere 84er-PDF bleibt als Katalog-Teilmenge für bereits versandte Links erhalten. Markieren in der Hilfe erzeugt nur eine Merkliste und schreibt nicht in Katalog oder Shop.
 
 Quelle: [schriften.json im Katalog, fester Commit 8236b8b](https://github.com/Chris83638w/gravuru-katalog./blob/8236b8bfab7322447ec46661c116fa526331af3d/schriften/schriften.json). 84 Einträge, 80 vorhandene Original-TTF/OTF-Dateien. Keine System-/Ersatzschrift als echte Probe ausgegeben. Vier Dateien fehlen: Ashley Marie, Daniel Black, Soulmate, Standlist. Bei Standlist ist Ashley bereits als Ersatz im Katalog dokumentiert; die Übersicht zeigt trotzdem keine Ashley-Probe unter falschem Namen. Sonderzeichen aus den Originaldateien geprüft und fehlende separat vermerkt. Das ist keine neue Freigabe oder Sperre von Schriften. Die 84 Katalogeinträge sind nicht mit den 57 eingebetteten Schriften des einen gemessenen Produkts gleichzusetzen.
+
+
+
+**Vollständigkeitsabgleich mit der Konfi-Bibliothek:** Die 30 Namen aus den ausgelieferten Laufzeitpaketen (Code 9d00b05, app/designs/aosu-labrador/runtime, katalog + gravuru-entwurf-fonts) enthalten neun Namen außerhalb der 84er-Katalogliste: Cutive Mono, Lora Italic, Merriweather, Nunito, Open Sans, Poppins, Roboto Mono, Source Code Pro, Ubuntu. Diese stehen zusätzlich auf Blatt 7. Ihre Proben sind aus den echten regular-Schriftkonturen der Laufzeit gerendert, keine neu heruntergeladenen oder ersetzten Fonts. Gesamt 93 Namen, 89 echte Proben, vier fehlende Dateien. Fettschnitte innerhalb derselben Familie sind kein zusätzlicher Auswahleintrag. Das belegt die Vereinigung von Katalog und ausgelieferter Bibliothek, nicht dass jedes einzelne Produkt alle 93 anbietet.
 
 ## Nachladen: was tatsächlich schon vorhanden ist
 
@@ -34,7 +38,7 @@ Nach der Schriftauswahl konkrete betroffene Designs ermitteln; Ersatz oder Herau
 
 ## Prüfung dieser Dokumentationsrunde
 
-84 eindeutige Katalognamen, 80 Dateien erfolgreich gerendert; sechs Seiten ohne verzerrte Schriftproben. HTML-Suche und Merkliste im Browser geprüft, Testmarkierung zurückgenommen. PDF erneut geöffnet und alle sechs Seiten gerendert. **44/44 vorhandene gezielte Tests bestanden:** lazy-resources, preload-queue, font-display, shop-model-slim und shop-start-model. Keine produktive Schrift- oder Runtimeänderung. 'git diff --check'. Keine neue Laufzeit-Vorher-/Nachher-Messung nötig, da Laufzeit unverändert; bisherige Zahlen unverändert in PR #255.
+84 eindeutige Katalognamen plus neun zusätzliche Laufzeitnamen, 80 Originaldateien und neun Konturproben erfolgreich gerendert; sieben Seiten ohne verzerrte Schriftproben. HTML-Suche und Merkliste im Browser geprüft, Testmarkierung zurückgenommen. PDF erneut geöffnet und alle sieben Seiten gerendert. **44/44 vorhandene gezielte Tests bestanden:** lazy-resources, preload-queue, font-display, shop-model-slim und shop-start-model. Keine produktive Schrift- oder Runtimeänderung. 'git diff --check'. Keine neue Laufzeit-Vorher-/Nachher-Messung nötig, da Laufzeit unverändert; bisherige Zahlen unverändert in PR #255.
 
 ## Nummern
 
@@ -124,3 +128,13 @@ Nach der Schriftauswahl konkrete betroffene Designs ermitteln; Ersatz oder Herau
 | 82 | Tangerine | vorhanden |
 | 83 | Uncial Antiqua | vorhanden |
 | 84 | Zentenar Fraktur | vorhanden |
+
+| 85 | Cutive Mono | Laufzeitkonturen |
+| 86 | Lora Italic | Laufzeitkonturen |
+| 87 | Merriweather | Laufzeitkonturen |
+| 88 | Nunito | Laufzeitkonturen |
+| 89 | Open Sans | Laufzeitkonturen |
+| 90 | Poppins | Laufzeitkonturen |
+| 91 | Roboto Mono | Laufzeitkonturen |
+| 92 | Source Code Pro | Laufzeitkonturen |
+| 93 | Ubuntu | Laufzeitkonturen |

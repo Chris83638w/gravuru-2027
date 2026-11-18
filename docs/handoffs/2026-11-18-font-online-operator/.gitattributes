@@ -2,3 +2,4 @@
 *.js -text
 *.cjs -text
 *.py -text
+restore-actual.json -text

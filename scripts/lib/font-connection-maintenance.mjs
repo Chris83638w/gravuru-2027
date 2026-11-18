@@ -54,7 +54,7 @@ function verifyInstalledCode(config){
   const entry=path.join(config.installedRelease,'scripts','acryl-employee-entry.cjs').replaceAll('\\','/');
   const references=[...bytes.toString('utf8').matchAll(/require\(\s*(['"])(.*?)\1\s*\)/g)].map(m=>m[2].replaceAll('\\','/'));
   if(!references.includes(entry))fail('font_maintenance_code_mismatch');
-  for(const [key,value] of [['GRAVURU_ACRYL_DATA_DIR',config.dataDirectory],['GRAVURU_ACRYL_LEGACY_RELEASE',config.legacyRelease]]){
+  for(const [key,value] of [['GRAVURU_ACRYL_DATA_DIR',config.dataDirectory],['GRAVURU_ACRYL_LEGACY_RELEASE',config.legacyRelease],['GRAVURU_KATALOG',config.katalogRoot],['GRAVURU_PYTHON',config.python]]){
     const found=bytes.toString('utf8').match(new RegExp('process\\.env\\.'+key+'\\s*=\\s*([\x22\x27])([^\x22\x27]+)\\1'))?.[2];
     if(found?.replaceAll('\\','/')!==value.replaceAll('\\','/'))fail('font_maintenance_code_mismatch');
   }

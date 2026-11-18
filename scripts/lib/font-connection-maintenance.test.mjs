@@ -103,7 +103,9 @@ test('abort retains the lock when the first idempotent owner close failed',async
 
 test('real entry-file pin binds maintenance to this installed release before opening the native runtime',async t=>{
  const f=await fixture(t),installedRelease=path.resolve(fileURLToPath(new URL('../../',import.meta.url))),entry=path.join(installedRelease,'scripts','acryl-employee-entry.cjs').replaceAll('\\','/');
- const bytes=Buffer.from('process.env.GRAVURU_ACRYL_DATA_DIR='+JSON.stringify(f.config.dataDirectory.replaceAll('\\','/'))+';\nprocess.env.GRAVURU_ACRYL_LEGACY_RELEASE='+JSON.stringify(f.config.legacyRelease.replaceAll('\\','/'))+';\nrequire('+JSON.stringify(entry)+');\n');fs.writeFileSync(f.config.activeEntryFile,bytes);
+ const assignments=[['GRAVURU_ACRYL_DATA_DIR',f.config.dataDirectory],['GRAVURU_ACRYL_LEGACY_RELEASE',f.config.legacyRelease],['GRAVURU_KATALOG',f.config.katalogRoot],['GRAVURU_PYTHON',f.config.python]];
+ const entryBytes=(replaceKey=null)=>Buffer.from(assignments.map(([key,value])=>'process.env.'+key+'='+JSON.stringify((key===replaceKey?value+'-other':value).replaceAll('\\','/'))+';').join('\n')+'\nrequire('+JSON.stringify(entry)+');\n');
+ const bytes=entryBytes();fs.writeFileSync(f.config.activeEntryFile,bytes);
  const config={...f.config,installedRelease,activeEntrySha256:createHash('sha256').update(bytes).digest('hex')};
  const dependencies={...f.dependencies};delete dependencies.verifyInstalledCode;
  await f.run({phase:'plan',targetId:'synthetic'},{config,dependencies});assert.ok(f.trace.includes('open'));f.trace.length=0;
@@ -113,6 +115,11 @@ test('real entry-file pin binds maintenance to this installed release before ope
  const foreign=Buffer.from('require("/different/release/scripts/acryl-employee-entry.cjs");');fs.writeFileSync(f.config.activeEntryFile,foreign);
  await assert.rejects(f.run({phase:'plan',targetId:'synthetic'},{config:{...config,activeEntrySha256:createHash('sha256').update(foreign).digest('hex')},dependencies}),{code:'font_maintenance_code_mismatch'});
  assert.deepEqual(f.trace,['lock','unlock']);
+ for(const key of ['GRAVURU_KATALOG','GRAVURU_PYTHON']){
+  f.trace.length=0;const changed=entryBytes(key);fs.writeFileSync(f.config.activeEntryFile,changed);
+  await assert.rejects(f.run({phase:'plan',targetId:'synthetic'},{config:{...config,activeEntrySha256:createHash('sha256').update(changed).digest('hex')},dependencies}),{code:'font_maintenance_code_mismatch'});
+  assert.deepEqual(f.trace,['lock','unlock']);
+ }
 });
 
 test('CLI permits only a separate explicit plan or execute command, never an enable switch or combined run',()=>{

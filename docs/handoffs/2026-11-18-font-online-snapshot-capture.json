@@ -1,0 +1,41 @@
+{
+  "schema": "gravuru-native-online-snapshot/v1",
+  "data": "/var/www/vhosts/gravuru-designwerkstatt.de/private/acryl-employee-20261021-v1/data",
+  "destination": "/var/www/vhosts/gravuru-designwerkstatt.de/private/font-online-snapshot-20261118-01",
+  "webRoots": [
+    "/var/www/vhosts/gravuru-designwerkstatt.de/gravuru-werkstatt/webroot",
+    "/var/www/vhosts/gravuru-designwerkstatt.de/gravuru-2027-merchant/public",
+    "/var/www/vhosts/gravuru-designwerkstatt.de/gravuru-team/public",
+    "/var/www/vhosts/gravuru-designwerkstatt.de/gravuru-assistent/webroot",
+    "/var/www/vhosts/gravuru-designwerkstatt.de/gravuru-ai-hub/services/ai-hub/public",
+    "/var/www/vhosts/gravuru-designwerkstatt.de/gravuru-2027-bulkapproval-3db1ef5d/public",
+    "/var/www/vhosts/gravuru-designwerkstatt.de/gravuru-cdr-mcp/public",
+    "/var/www/vhosts/gravuru-designwerkstatt.de/dateien.gravuru-designwerkstatt.de"
+  ],
+  "trees": {
+    "katalog": "/var/www/vhosts/gravuru-designwerkstatt.de/private/issue139-katalog-20261102"
+  },
+  "files": {
+    "entry/app.cjs": "/var/www/vhosts/gravuru-designwerkstatt.de/gravuru-2027-merchant/app.cjs",
+    "entry/start-r5.cjs": "/var/www/vhosts/gravuru-designwerkstatt.de/gravuru-2027-merchant/start-r5.cjs",
+    "support/slate-group-import-state.json": "/var/www/vhosts/gravuru-designwerkstatt.de/private/acryl-employee-20261021-v1/data/slate-group-import-state.json"
+  },
+  "hashOnly": {
+    "shopifyConfig": "/var/www/vhosts/gravuru-designwerkstatt.de/private/gravuru-2027-merchant-shopify.json"
+  },
+  "expectedHashes": {
+    "entry/app.cjs": "d02d874a6700371ae8c2b49a0a11c6ed93863ed69d84d6ff0eb46bc082d7bb29",
+    "entry/start-r5.cjs": "42cd0a64f2e8e2a48761aefac2c0323990dbfe667517c88497eb03ca243852dd"
+  },
+  "expectedHashOnly": {
+    "shopifyConfig": "d3a7bd7a33428edc070a5ae141a37dd4d25d42b6714b8a45a8da15bb146e6c1c"
+  },
+  "limits": {
+    "maxSeconds": 1800,
+    "maxWalBytes": 1073741824,
+    "minFreeBytes": 30064771072,
+    "minHostAvailableBytes": 6442450944,
+    "minCgroupHeadroomBytes": 6442450944,
+    "addressSpaceBytes": 536870912
+  }
+}

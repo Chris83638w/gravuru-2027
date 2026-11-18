@@ -1,0 +1,220 @@
+{
+  "source": {
+    "observedAt": "2026-11-18T07:56:39.457Z",
+    "sizes": {
+      "audit": "font-maintenance-data-size",
+      "at": "2026-11-18T07:47:47.648Z",
+      "files": [
+        {
+          "file": "workshop.sqlite",
+          "bytes": 4873306112,
+          "mode": 384
+        },
+        {
+          "file": "workshop.sqlite-wal",
+          "bytes": 37953472,
+          "mode": 384
+        },
+        {
+          "file": "workshop.sqlite-shm",
+          "bytes": 98304,
+          "mode": 384
+        },
+        {
+          "file": "profiles.sqlite",
+          "bytes": 77824,
+          "mode": 384
+        },
+        {
+          "file": "profiles.sqlite-wal",
+          "bytes": 0,
+          "mode": 384
+        },
+        {
+          "file": "profiles.sqlite-shm",
+          "bytes": 32768,
+          "mode": 384
+        },
+        {
+          "file": "design-assets.sqlite",
+          "bytes": 166719488,
+          "mode": 384
+        },
+        {
+          "file": "design-assets.sqlite-wal",
+          "bytes": 0,
+          "mode": 384
+        },
+        {
+          "file": "design-assets.sqlite-shm",
+          "bytes": 32768,
+          "mode": 384
+        }
+      ],
+      "otherEntries": [
+        ".runtime.lock",
+        "katalog-worker-cache.json.gz",
+        "motif-search-previews.json",
+        "slate-binding-backups",
+        "slate-group-import-state.json",
+        "slate-import-backups"
+      ],
+      "space": {
+        "blockSize": 4096,
+        "freeBlocks": 86395840
+      }
+    },
+    "inventory": {
+      "audit": "font-maintenance-source-inventory",
+      "sqlite": "3.54.1",
+      "databases": [
+        {
+          "file": "workshop.sqlite",
+          "journal": "wal",
+          "pageSize": 4096,
+          "pages": 1189773
+        },
+        {
+          "file": "profiles.sqlite",
+          "journal": "wal",
+          "pageSize": 4096,
+          "pages": 19
+        },
+        {
+          "file": "design-assets.sqlite",
+          "journal": "wal",
+          "pageSize": 4096,
+          "pages": 40703
+        }
+      ],
+      "extras": [
+        {
+          "entry": ".runtime.lock",
+          "directory": false,
+          "files": 1,
+          "bytes": 0,
+          "links": 0
+        },
+        {
+          "entry": "katalog-worker-cache.json.gz",
+          "directory": false,
+          "files": 1,
+          "bytes": 215547,
+          "links": 0
+        },
+        {
+          "entry": "motif-search-previews.json",
+          "directory": false,
+          "files": 1,
+          "bytes": 268,
+          "links": 0
+        },
+        {
+          "entry": "slate-binding-backups",
+          "directory": true,
+          "files": 2,
+          "bytes": 8235229184,
+          "links": 0
+        },
+        {
+          "entry": "slate-group-import-state.json",
+          "directory": false,
+          "files": 1,
+          "bytes": 223,
+          "links": 0
+        },
+        {
+          "entry": "slate-import-backups",
+          "directory": true,
+          "files": 6,
+          "bytes": 8262945729,
+          "links": 0
+        }
+      ],
+      "readOnly": true
+    }
+  },
+  "memory": {
+    "audit": "font-maintenance-memory-preflight",
+    "at": "2026-11-18T08:14:19.671Z",
+    "memory": {
+      "MemTotalBytes": 100781924352,
+      "MemAvailableBytes": 68406120448,
+      "SwapTotalBytes": 33822863360,
+      "SwapFreeBytes": 33366663168
+    },
+    "cgroups": [
+      {
+        "level": 0,
+        "values": {
+          "memory.usage_in_bytes": "1180876800",
+          "memory.limit_in_bytes": "12884901888"
+        }
+      },
+      {
+        "level": 1,
+        "values": {
+          "memory.usage_in_bytes": "1698582528",
+          "memory.limit_in_bytes": "9223372036854771712"
+        }
+      },
+      {
+        "level": 2,
+        "values": {
+          "memory.usage_in_bytes": "58325442560",
+          "memory.limit_in_bytes": "9223372036854771712"
+        }
+      }
+    ],
+    "wal": [
+      {
+        "file": "workshop.sqlite-wal",
+        "bytes": 37953472
+      },
+      {
+        "file": "profiles.sqlite-wal",
+        "bytes": 0
+      },
+      {
+        "file": "design-assets.sqlite-wal",
+        "bytes": 0
+      }
+    ],
+    "readOnly": true
+  },
+  "entry": {
+    "audit": "font-maintenance-entry-and-catalog-preflight",
+    "at": "2026-11-18T08:28:42.399Z",
+    "entrySha256": "d02d874a6700371ae8c2b49a0a11c6ed93863ed69d84d6ff0eb46bc082d7bb29",
+    "checks": [
+      {
+        "key": "GRAVURU_ACRYL_DATA_DIR",
+        "literalFound": true,
+        "matches": true
+      },
+      {
+        "key": "GRAVURU_ACRYL_LEGACY_RELEASE",
+        "literalFound": true,
+        "matches": true
+      },
+      {
+        "key": "GRAVURU_KATALOG",
+        "literalFound": true,
+        "matches": true
+      },
+      {
+        "key": "GRAVURU_PYTHON",
+        "literalFound": true,
+        "matches": true
+      }
+    ],
+    "catalog": {
+      "files": 81750,
+      "bytes": 4692671427,
+      "links": 0,
+      "complete": true
+    },
+    "shopifyConfigSha256": "d3a7bd7a33428edc070a5ae141a37dd4d25d42b6714b8a45a8da15bb146e6c1c",
+    "readOnly": true
+  }
+}

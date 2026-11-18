@@ -1,0 +1,24 @@
+{
+  "schema": "gravuru-native-online-snapshot/v1",
+  "snapshot": "/var/www/vhosts/gravuru-designwerkstatt.de/private/font-online-snapshot-20261118-01",
+  "destination": "/var/www/vhosts/gravuru-designwerkstatt.de/private/font-online-restored-20261118-01",
+  "webRoots": [
+    "/var/www/vhosts/gravuru-designwerkstatt.de/gravuru-werkstatt/webroot",
+    "/var/www/vhosts/gravuru-designwerkstatt.de/gravuru-2027-merchant/public",
+    "/var/www/vhosts/gravuru-designwerkstatt.de/gravuru-team/public",
+    "/var/www/vhosts/gravuru-designwerkstatt.de/gravuru-assistent/webroot",
+    "/var/www/vhosts/gravuru-designwerkstatt.de/gravuru-ai-hub/services/ai-hub/public",
+    "/var/www/vhosts/gravuru-designwerkstatt.de/gravuru-2027-bulkapproval-3db1ef5d/public",
+    "/var/www/vhosts/gravuru-designwerkstatt.de/gravuru-cdr-mcp/public",
+    "/var/www/vhosts/gravuru-designwerkstatt.de/dateien.gravuru-designwerkstatt.de"
+  ],
+  "receiptSha256": "REPLACE_WITH_EXTERNALLY_REVIEWED_CAPTURE_RECEIPT_SHA256",
+  "limits": {
+    "maxSeconds": 1800,
+    "maxWalBytes": 1073741824,
+    "minFreeBytes": 30064771072,
+    "minHostAvailableBytes": 6442450944,
+    "minCgroupHeadroomBytes": 6442450944,
+    "addressSpaceBytes": 536870912
+  }
+}

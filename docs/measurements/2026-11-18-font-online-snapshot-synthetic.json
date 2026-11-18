@@ -1,0 +1,41 @@
+{
+  "profile": "same Windows synthetic fixture, 3 real WAL databases, one catalogue file, one entry file; fake resource metrics; no customer data",
+  "capture": {
+    "phase": "capture",
+    "files": 5,
+    "bytes": 24614,
+    "elapsedSeconds": 0.14,
+    "maxWalBytes": 0
+  },
+  "restore": {
+    "phase": "restore",
+    "files": 5,
+    "elapsedSeconds": 0.031
+  },
+  "pinMilliseconds": 0.0,
+  "databases": [
+    {
+      "database": "workshop.sqlite",
+      "sourceBefore": 1,
+      "sourceAfter": 2,
+      "restoredVersion": 1,
+      "sha256Equal": true
+    },
+    {
+      "database": "profiles.sqlite",
+      "sourceBefore": 1,
+      "sourceAfter": 2,
+      "restoredVersion": 1,
+      "sha256Equal": true
+    },
+    {
+      "database": "design-assets.sqlite",
+      "sourceBefore": 1,
+      "sourceAfter": 2,
+      "restoredVersion": 1,
+      "sha256Equal": true
+    }
+  ],
+  "limits": "Linux RLIMIT_AS/cgroup and real server size not measured here",
+  "liveChanges": false
+}

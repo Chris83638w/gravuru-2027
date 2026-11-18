@@ -1,0 +1,608 @@
+{
+  "catalogCommit": "8236b8bfab7322447ec46661c116fa526331af3d",
+  "selection": [],
+  "fonts": [
+    {
+      "number": 1,
+      "name": "Aldrich",
+      "category": "Serifenlose Schriften",
+      "available": true,
+      "missingGlyphs": []
+    },
+    {
+      "number": 2,
+      "name": "Alex Brush",
+      "category": "Elegante Schreibschriften (kalligrafisch)",
+      "available": true,
+      "missingGlyphs": []
+    },
+    {
+      "number": 3,
+      "name": "Alfa Slab One",
+      "category": "Western / Rustikal",
+      "available": true,
+      "missingGlyphs": []
+    },
+    {
+      "number": 4,
+      "name": "Allura",
+      "category": "Elegante Schreibschriften (kalligrafisch)",
+      "available": true,
+      "missingGlyphs": []
+    },
+    {
+      "number": 5,
+      "name": "Amatic SC",
+      "category": "Marker-/Chalk-Handschrift",
+      "available": true,
+      "missingGlyphs": []
+    },
+    {
+      "number": 6,
+      "name": "Antic Slab",
+      "category": "Klassische Serifenschriften",
+      "available": true,
+      "missingGlyphs": []
+    },
+    {
+      "number": 7,
+      "name": "Archivo Black",
+      "category": "Display- und Plakatschriften (fett/markant)",
+      "available": true,
+      "missingGlyphs": []
+    },
+    {
+      "number": 8,
+      "name": "Arvo",
+      "category": "Klassische Serifenschriften",
+      "available": true,
+      "missingGlyphs": [
+        "€"
+      ]
+    },
+    {
+      "number": 9,
+      "name": "Ashley",
+      "category": "Elegante Schreibschriften (kalligrafisch)",
+      "available": true,
+      "missingGlyphs": [
+        "ß",
+        "€"
+      ]
+    },
+    {
+      "number": 10,
+      "name": "Ashley Marie",
+      "category": "Display- und Plakatschriften (fett/markant)",
+      "available": false,
+      "missingGlyphs": []
+    },
+    {
+      "number": 11,
+      "name": "Audiowide",
+      "category": "Serifenlose Schriften",
+      "available": true,
+      "missingGlyphs": []
+    },
+    {
+      "number": 12,
+      "name": "Baby Boho Script",
+      "category": "Elegante Schreibschriften (kalligrafisch)",
+      "available": true,
+      "missingGlyphs": []
+    },
+    {
+      "number": 13,
+      "name": "Bad Script",
+      "category": "Handschriften (locker/persönlich)",
+      "available": true,
+      "missingGlyphs": []
+    },
+    {
+      "number": 14,
+      "name": "Baloo 2",
+      "category": "Kinder / verspielt",
+      "available": true,
+      "missingGlyphs": []
+    },
+    {
+      "number": 15,
+      "name": "Bebas Neue",
+      "category": "Display- und Plakatschriften (fett/markant)",
+      "available": true,
+      "missingGlyphs": []
+    },
+    {
+      "number": 16,
+      "name": "Bellefair",
+      "category": "Klassische Serifenschriften",
+      "available": true,
+      "missingGlyphs": []
+    },
+    {
+      "number": 17,
+      "name": "Bernardo Moda Contrast",
+      "category": "Display- und Plakatschriften (fett/markant)",
+      "available": true,
+      "missingGlyphs": []
+    },
+    {
+      "number": 18,
+      "name": "Betsy Bailey",
+      "category": "Elegante Schreibschriften (kalligrafisch)",
+      "available": true,
+      "missingGlyphs": []
+    },
+    {
+      "number": 19,
+      "name": "Caveat",
+      "category": "Handschriften (locker/persönlich)",
+      "available": true,
+      "missingGlyphs": []
+    },
+    {
+      "number": 20,
+      "name": "Caviar Dreams",
+      "category": "Geometrische Sans",
+      "available": true,
+      "missingGlyphs": []
+    },
+    {
+      "number": 21,
+      "name": "Chewy",
+      "category": "Display- und Plakatschriften (fett/markant)",
+      "available": true,
+      "missingGlyphs": []
+    },
+    {
+      "number": 22,
+      "name": "Cinzel",
+      "category": "Klassische Serifenschriften",
+      "available": true,
+      "missingGlyphs": []
+    },
+    {
+      "number": 23,
+      "name": "Cinzel Decorative",
+      "category": "Art déco / Versalien",
+      "available": true,
+      "missingGlyphs": []
+    },
+    {
+      "number": 24,
+      "name": "Comfortaa",
+      "category": "Serifenlose Schriften",
+      "available": true,
+      "missingGlyphs": []
+    },
+    {
+      "number": 25,
+      "name": "Comic Neue",
+      "category": "Handschriften (locker/persönlich)",
+      "available": true,
+      "missingGlyphs": []
+    },
+    {
+      "number": 26,
+      "name": "Cookie",
+      "category": "Signatur- und Pinselschriften",
+      "available": true,
+      "missingGlyphs": []
+    },
+    {
+      "number": 27,
+      "name": "Cormorant Garamond",
+      "category": "Klassische Antiqua",
+      "available": true,
+      "missingGlyphs": []
+    },
+    {
+      "number": 28,
+      "name": "Courgette",
+      "category": "Signatur- und Pinselschriften",
+      "available": true,
+      "missingGlyphs": []
+    },
+    {
+      "number": 29,
+      "name": "Courier Prime",
+      "category": "Schreibmaschine / Monospace",
+      "available": true,
+      "missingGlyphs": []
+    },
+    {
+      "number": 30,
+      "name": "Dancing Script",
+      "category": "Elegante Schreibschriften (kalligrafisch)",
+      "available": true,
+      "missingGlyphs": []
+    },
+    {
+      "number": 31,
+      "name": "Daniel",
+      "category": "Handschriften (locker/persönlich)",
+      "available": true,
+      "missingGlyphs": []
+    },
+    {
+      "number": 32,
+      "name": "Daniel Black",
+      "category": "Handschriften (locker/persönlich)",
+      "available": false,
+      "missingGlyphs": []
+    },
+    {
+      "number": 33,
+      "name": "Days One",
+      "category": "Display- und Plakatschriften (fett/markant)",
+      "available": true,
+      "missingGlyphs": []
+    },
+    {
+      "number": 34,
+      "name": "Desyrel",
+      "category": "Handschriften (locker/persönlich)",
+      "available": true,
+      "missingGlyphs": []
+    },
+    {
+      "number": 35,
+      "name": "Dream Orphans",
+      "category": "Display- und Plakatschriften (fett/markant)",
+      "available": true,
+      "missingGlyphs": []
+    },
+    {
+      "number": 36,
+      "name": "Fineliner Script",
+      "category": "Handschriften (locker/persönlich)",
+      "available": true,
+      "missingGlyphs": []
+    },
+    {
+      "number": 37,
+      "name": "Fjalla One",
+      "category": "Serifenlose Schriften",
+      "available": true,
+      "missingGlyphs": []
+    },
+    {
+      "number": 38,
+      "name": "Fredoka",
+      "category": "Kinder / verspielt",
+      "available": true,
+      "missingGlyphs": []
+    },
+    {
+      "number": 39,
+      "name": "Gloria Hallelujah",
+      "category": "Handschriften (locker/persönlich)",
+      "available": true,
+      "missingGlyphs": []
+    },
+    {
+      "number": 40,
+      "name": "Great Vibes",
+      "category": "Elegante Schreibschriften (kalligrafisch)",
+      "available": true,
+      "missingGlyphs": []
+    },
+    {
+      "number": 41,
+      "name": "Hello Georgia",
+      "category": "Signatur- und Pinselschriften",
+      "available": true,
+      "missingGlyphs": []
+    },
+    {
+      "number": 42,
+      "name": "Homage",
+      "category": "Signatur- und Pinselschriften",
+      "available": true,
+      "missingGlyphs": [
+        "ß",
+        "€"
+      ]
+    },
+    {
+      "number": 43,
+      "name": "Italianno",
+      "category": "Elegante Schreibschriften (kalligrafisch)",
+      "available": true,
+      "missingGlyphs": []
+    },
+    {
+      "number": 44,
+      "name": "Josefin Sans",
+      "category": "Geometrische Sans",
+      "available": true,
+      "missingGlyphs": []
+    },
+    {
+      "number": 45,
+      "name": "Kalam",
+      "category": "Marker-/Chalk-Handschrift",
+      "available": true,
+      "missingGlyphs": []
+    },
+    {
+      "number": 46,
+      "name": "Kaushan Script",
+      "category": "Signatur- und Pinselschriften",
+      "available": true,
+      "missingGlyphs": []
+    },
+    {
+      "number": 47,
+      "name": "Lato",
+      "category": "Serifenlose Schriften",
+      "available": true,
+      "missingGlyphs": []
+    },
+    {
+      "number": 48,
+      "name": "Libre Baskerville",
+      "category": "Klassische Antiqua",
+      "available": true,
+      "missingGlyphs": []
+    },
+    {
+      "number": 49,
+      "name": "Lobster",
+      "category": "Retro-Script",
+      "available": true,
+      "missingGlyphs": []
+    },
+    {
+      "number": 50,
+      "name": "Lora",
+      "category": "Klassische Antiqua",
+      "available": true,
+      "missingGlyphs": []
+    },
+    {
+      "number": 51,
+      "name": "Magnolia Script",
+      "category": "Elegante Schreibschriften (kalligrafisch)",
+      "available": true,
+      "missingGlyphs": []
+    },
+    {
+      "number": 52,
+      "name": "MedievalSharp",
+      "category": "Keltisch / Mittelalter",
+      "available": true,
+      "missingGlyphs": []
+    },
+    {
+      "number": 53,
+      "name": "Michroma",
+      "category": "Serifenlose Schriften",
+      "available": true,
+      "missingGlyphs": []
+    },
+    {
+      "number": 54,
+      "name": "Minimalist",
+      "category": "Serifenlose Schriften",
+      "available": true,
+      "missingGlyphs": [
+        "ß"
+      ]
+    },
+    {
+      "number": 55,
+      "name": "Montserrat",
+      "category": "Geometrische Sans",
+      "available": true,
+      "missingGlyphs": []
+    },
+    {
+      "number": 56,
+      "name": "Montserrat Light",
+      "category": "Geometrische Sans",
+      "available": true,
+      "missingGlyphs": []
+    },
+    {
+      "number": 57,
+      "name": "Oswald",
+      "category": "Schmale, kräftige Grotesk",
+      "available": true,
+      "missingGlyphs": []
+    },
+    {
+      "number": 58,
+      "name": "Pacifico",
+      "category": "Signatur- und Pinselschriften",
+      "available": true,
+      "missingGlyphs": []
+    },
+    {
+      "number": 59,
+      "name": "Parisienne",
+      "category": "Elegante Schreibschriften (kalligrafisch)",
+      "available": true,
+      "missingGlyphs": []
+    },
+    {
+      "number": 60,
+      "name": "Patrick Hand",
+      "category": "Marker-/Chalk-Handschrift",
+      "available": true,
+      "missingGlyphs": []
+    },
+    {
+      "number": 61,
+      "name": "Permanent Marker",
+      "category": "Dicke Brush-Hand",
+      "available": true,
+      "missingGlyphs": []
+    },
+    {
+      "number": 62,
+      "name": "Playfair Display",
+      "category": "Klassische Antiqua",
+      "available": true,
+      "missingGlyphs": []
+    },
+    {
+      "number": 63,
+      "name": "Poiret One",
+      "category": "Art déco / Versalien",
+      "available": true,
+      "missingGlyphs": []
+    },
+    {
+      "number": 64,
+      "name": "Poppins ExtraLight",
+      "category": "Geometrische Sans",
+      "available": true,
+      "missingGlyphs": []
+    },
+    {
+      "number": 65,
+      "name": "Raleway",
+      "category": "Serifenlose Schriften",
+      "available": true,
+      "missingGlyphs": []
+    },
+    {
+      "number": 66,
+      "name": "Righteous",
+      "category": "Display- und Plakatschriften (fett/markant)",
+      "available": true,
+      "missingGlyphs": []
+    },
+    {
+      "number": 67,
+      "name": "Roboto Condensed",
+      "category": "Schmale, kräftige Grotesk",
+      "available": true,
+      "missingGlyphs": []
+    },
+    {
+      "number": 68,
+      "name": "Roboto Slab",
+      "category": "Klassische Serifenschriften",
+      "available": true,
+      "missingGlyphs": []
+    },
+    {
+      "number": 69,
+      "name": "Rochester",
+      "category": "Elegante Schreibschriften (kalligrafisch)",
+      "available": true,
+      "missingGlyphs": []
+    },
+    {
+      "number": 70,
+      "name": "Rock Salt",
+      "category": "Handschriften (locker/persönlich)",
+      "available": true,
+      "missingGlyphs": []
+    },
+    {
+      "number": 71,
+      "name": "Rounded Elegance",
+      "category": "Serifenlose Schriften",
+      "available": true,
+      "missingGlyphs": []
+    },
+    {
+      "number": 72,
+      "name": "Rye",
+      "category": "Western / Rustikal",
+      "available": true,
+      "missingGlyphs": []
+    },
+    {
+      "number": 73,
+      "name": "Sacramento",
+      "category": "Retro-Script",
+      "available": true,
+      "missingGlyphs": []
+    },
+    {
+      "number": 74,
+      "name": "Satisfy",
+      "category": "Elegante Schreibschriften (kalligrafisch)",
+      "available": true,
+      "missingGlyphs": []
+    },
+    {
+      "number": 75,
+      "name": "Soulmate",
+      "category": "Signatur- und Pinselschriften",
+      "available": false,
+      "missingGlyphs": []
+    },
+    {
+      "number": 76,
+      "name": "Special Elite",
+      "category": "Schreibmaschine / Monospace",
+      "available": true,
+      "missingGlyphs": []
+    },
+    {
+      "number": 77,
+      "name": "Standlist",
+      "category": "Signatur- und Pinselschriften",
+      "available": false,
+      "missingGlyphs": []
+    },
+    {
+      "number": 78,
+      "name": "Stardos Stencil",
+      "category": "Schablone (Stencil)",
+      "available": true,
+      "missingGlyphs": []
+    },
+    {
+      "number": 79,
+      "name": "Stylish",
+      "category": "Elegante Schreibschriften (kalligrafisch)",
+      "available": true,
+      "missingGlyphs": []
+    },
+    {
+      "number": 80,
+      "name": "Sunflower",
+      "category": "Signatur- und Pinselschriften",
+      "available": true,
+      "missingGlyphs": [
+        "ß"
+      ]
+    },
+    {
+      "number": 81,
+      "name": "Sweetie",
+      "category": "Elegante Schreibschriften (kalligrafisch)",
+      "available": true,
+      "missingGlyphs": [
+        "ß"
+      ]
+    },
+    {
+      "number": 82,
+      "name": "Tangerine",
+      "category": "Elegante Schreibschriften (kalligrafisch)",
+      "available": true,
+      "missingGlyphs": []
+    },
+    {
+      "number": 83,
+      "name": "Uncial Antiqua",
+      "category": "Keltisch / Mittelalter",
+      "available": true,
+      "missingGlyphs": []
+    },
+    {
+      "number": 84,
+      "name": "Zentenar Fraktur",
+      "category": "Fraktur / Gebrochene Schrift",
+      "available": true,
+      "missingGlyphs": []
+    }
+  ]
+}

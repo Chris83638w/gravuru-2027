@@ -71,6 +71,7 @@ import {gzipSync} from 'node:zlib';
 import path from 'node:path';
 import {createProductRepository} from './repository.mjs';
 import {createProfileLibrary} from './profile-library.mjs';
+import {createCatalogFontSets} from './catalog-fontsets.mjs';
 import {workshopCatalog,workshopResources} from './catalog.mjs';
 import {planBatch,commitBatch} from './batch.mjs';
 import {makeProductDocument,validateProductDocument,resolveProduct,validateProductDesign} from './product-model.mjs';
@@ -418,7 +419,7 @@ function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConvert
       if(katalogWorker&&method!=='GET'&&(pathname.startsWith('/api/workshop/designs')||pathname==='/api/workshop/catalog-structure')){katalogWorker.invalidate();const again=()=>katalogWorker.invalidate();res.once('finish',again);res.once('close',again);}
       const accountDraft=pathname.match(/^\/api\/workshop\/account-drafts(?:\/(cdraft_[a-f0-9-]{36})(?:\/(preview\.png)|\/photos\/([A-Za-z0-9_-]{1,64}))?)?$/);
       if(accountDraft)return await accountDraftRoute(req,res,url,accountDraft);
-      if(!['GET','POST','PATCH'].includes(method)&&!(method==='PUT'&&pathname==='/api/workshop/designs/editor'))fail(405,'method_not_allowed','Diese Aktion wird nicht unterstützt.');
+      if(!['GET','POST','PATCH'].includes(method)&&!(method==='PUT'&&['/api/workshop/designs/editor','/api/workshop/catalog-fontsets'].includes(pathname)))fail(405,'method_not_allowed','Diese Aktion wird nicht unterstützt.');
       if(pathname==='/api/workshop/order-webhook'){
         if(method!=='POST')fail(405,'method_not_allowed','Bestellnachrichten benötigen POST.');
         if(!orderWebhook)fail(503,'orders_disabled','Test-Bestellanbindung ist nicht eingerichtet.');
@@ -1083,6 +1084,19 @@ function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConvert
       if(pathname==='/api/workshop/import-template'&&method==='GET'){
         const bytes=fs.readFileSync(new URL('./templates/produktserie.xlsx',import.meta.url));
         res.writeHead(200,{'Content-Type':'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet','Content-Disposition':`attachment; filename="${downloadPrefix}-Produktserie.xlsx"`,'Content-Length':bytes.length,'Cache-Control':'no-store'}).end(bytes);return;
+      }
+      if(pathname==='/api/workshop/catalog-fontsets'||pathname.startsWith('/api/workshop/catalog-fontsets/')){
+        if(!ownsBundled)fail(503,'katalog_tenant','Für diesen Mandanten ist kein Katalog hinterlegt.');
+        const service=createCatalogFontSets({root:katalogRoot,profiles,fontLibrary:fonts,repository,runtimeFonts:workshopResources().fonts});
+        if(method==='GET'&&pathname==='/api/workshop/catalog-fontsets')return json(res,200,service.list());
+        if(method==='POST'&&pathname==='/api/workshop/catalog-fontsets/impact')return json(res,200,service.impact(await body(req,65536)));
+        if(method==='POST'&&pathname==='/api/workshop/catalog-fontsets/adopt')return json(res,200,service.adopt(await body(req,4096)));
+        if(method==='PUT'&&pathname==='/api/workshop/catalog-fontsets'){
+          const result=await service.save(await body(req,65536),{actor:merchantSession?.subject||localActor});
+          Object.assign(formFonts,fonts.resources());
+          return json(res,200,result);
+        }
+        fail(405,'method_not_allowed','Schriftgruppen lesen, Auswirkungen prüfen oder speichern.');
       }
       if(pathname==='/api/workshop/profiles'){
         if(method==='GET')return json(res,200,{profiles:profiles.list(),catalog:profiles.catalog(),settings:profiles.settings()});

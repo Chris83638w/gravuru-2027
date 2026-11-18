@@ -1,0 +1,60 @@
+{
+  "source": "18.11.2026: glyphen-pruefung.json (80 Originaldateien), zusätzliche dokumentierte Sichtprüfung. Hinweise nur für identische Datei-Hashes.",
+  "fonts": [
+    {
+      "name": "Arvo",
+      "sha256": "f41bd41471ec2db7140351bdde614da5341524503598ff7fe79f3c89c13b605e",
+      "notes": [
+        "Zeichen fehlen: €"
+      ]
+    },
+    {
+      "name": "Ashley",
+      "sha256": "2968e2f5aaf70151b98bef2abd359639adeb009cd99ad35c27204341b88647d3",
+      "notes": [
+        "Zeichen fehlen: ß, €",
+        "Umlaute ohne Punkte: Müller sieht aus wie Muller."
+      ]
+    },
+    {
+      "name": "Homage",
+      "sha256": "abeda1c9028b8b8c01c48c479a7f2205ebe9937beacd7d0e0201d7055bcf8a6b",
+      "notes": [
+        "Zeichen fehlen: ß, €"
+      ]
+    },
+    {
+      "name": "Michroma",
+      "sha256": "7b7db37152a4fa4cb822e9ce96ea10f95a279c42d35a23ff08b71ff879885648",
+      "notes": [
+        "Das Eurozeichen sieht in dieser Schrift wie ein O aus (Sichtprüfung Claude, 18.11.2026)."
+      ]
+    },
+    {
+      "name": "Minimalist",
+      "sha256": "e114f68195212712ef0942be8b83c072f00f47d1fc4b74efd56dd5f8d67f2fd4",
+      "notes": [
+        "Zeichen fehlen: ß",
+        "Umlaute ohne Punkte: Müller sieht aus wie Muller."
+      ]
+    },
+    {
+      "name": "Sunflower",
+      "sha256": "0aa7978730ff106af1c2b739c7344f8661d95caeb281d3b36b20db3440b7a5ac",
+      "notes": [
+        "Zeichen fehlen: ß",
+        "Umlaute ohne Punkte: Müller sieht aus wie Muller.",
+        "Das Eurozeichen hat eine auffällige Form; vor Verwendung prüfen."
+      ]
+    },
+    {
+      "name": "Sweetie",
+      "sha256": "8026b33b236ec0edfd6482d0231e37abb05757d9beb4a3f36f0cbea45f0888fb",
+      "notes": [
+        "Zeichen fehlen: ß",
+        "Umlaute ohne Punkte: Müller sieht aus wie Muller.",
+        "Das Eurozeichen hat eine auffällige Form; vor Verwendung prüfen."
+      ]
+    }
+  ]
+}

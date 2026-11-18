@@ -43,6 +43,7 @@ export const WORKSHOP_PAGES=Object.freeze([
   {file:'konfis.html',route:'/werkstatt/konfis/',current:'konfis'},
   {file:'families.html',route:'/werkstatt/familien/',current:'familien'},
   {file:'profiles.html',route:'/werkstatt/profile/',current:'profile'},
+  {file:'fontsets.html',route:'/werkstatt/schriftgruppen/',current:'profile'},
   {file:'export-jobs.html',route:'/werkstatt/ausgaben/',current:'ausgaben'},
   {file:'production-profiles.html',route:'/werkstatt/fertigung/',current:'fertigung'},
   {file:'form-variants.html',route:'/werkstatt/ausfuehrungen/',current:'ausfuehrungen'},

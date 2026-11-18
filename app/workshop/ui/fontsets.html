@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Schriftgruppen · Gravuru Werkstatt</title>
+<link rel="stylesheet" href="/workshop-ui/style.css"><link rel="stylesheet" href="/workshop-ui/workshop-shell.css">
+<script type="module" src="/workshop-ui/workshop-shell.mjs"></script><script type="module" src="/workshop-ui/fontsets-ui.mjs"></script>
+</head><body class="ws-page library-page"><a class="ws-skip" href="#main">Zum Inhalt</a>
+<!-- werkstatt-kopf: erzeugt aus app/workshop/workshop-shell-markup.mjs, nicht von Hand ändern -->
+<header class="ws-topbar">
+<a class="ws-brand" href="/werkstatt/"><em>gravuru</em> werkstatt</a>
+<nav class="ws-nav" aria-label="Hauptnavigation"><a class="ws-nav-item" href="/werkstatt/"><img class="ws-icon" src="/workshop-ui/editor-icons/cube.svg" alt="" aria-hidden="true">Produkte</a><a class="ws-nav-item" href="/werkstatt/?view=masters"><img class="ws-icon" src="/workshop-ui/editor-icons/files.svg" alt="" aria-hidden="true">Mastervorlagen</a><a class="ws-nav-item" href="/werkstatt/serien/"><img class="ws-icon" src="/workshop-ui/editor-icons/stack-2.svg" alt="" aria-hidden="true">Stapelverarbeitung</a><a class="ws-nav-item" href="/werkstatt/bestellungen/"><img class="ws-icon" src="/workshop-ui/editor-icons/shopping-cart.svg" alt="" aria-hidden="true">Bestellungen</a><a class="ws-nav-item" href="/werkstatt/konfis/"><img class="ws-icon" src="/workshop-ui/editor-icons/adjustments-horizontal.svg" alt="" aria-hidden="true">Konfis</a><a class="ws-nav-item" href="/werkstatt/katalog/"><img class="ws-icon" src="/workshop-ui/editor-icons/files.svg" alt="" aria-hidden="true">Katalog</a><a class="ws-nav-item" href="/werkstatt/designs/"><img class="ws-icon" src="/workshop-ui/editor-icons/pencil.svg" alt="" aria-hidden="true">Designs</a></nav>
+<div class="ws-tools"><span data-workshop-session role="status">Verbindung wird geprüft …</span><details class="management-menu"><summary class="ws-current">Verwaltung</summary><nav aria-label="Verwaltung"><a href="/werkstatt/familien/">Produktfamilien</a><a href="/werkstatt/profile/" aria-current="page">Schriften &amp; Profile</a><a href="/werkstatt/ausgaben/">Ausgaben</a><a href="/werkstatt/fertigung/">Fertigungsprofile</a><a href="/werkstatt/ausfuehrungen/">Ausführungen</a><a href="/werkstatt/konturen/">Formkonturen</a><a href="/werkstatt/acryl/">Acryl-Galerie</a><a href="/werkstatt/pruefstaende/">Prüfstände</a><a href="/werkstatt/shopvorbereitung/">Shop vorbereiten</a><a href="/werkstatt/mandanten/">Mandanten</a></nav></details></div>
+</header>
+<!-- /werkstatt-kopf -->
+<div class="app-layout"><main id="main">
+<header class="page-heading"><div><p class="eyebrow">SCHRIFTEN &amp; PROFILE</p><h1>Schriftgruppen pflegen</h1><p>Standardschriften je Gruppe. Die Originalschriften des geöffneten Designs bleiben zusätzlich verfügbar.</p></div><a href="/werkstatt/profile/">Zur Profilbibliothek</a></header>
+<p id="fontset-notice" class="notice" role="status" aria-live="polite" hidden></p>
+<section class="overview"><label>Schriftgruppe<select id="fontset-group" disabled></select></label><p id="fontset-effect"></p><button id="fontset-refresh" type="button">Aktuellen Stand laden</button></section>
+<section id="fontset-editor" class="overview library-editor" hidden>
+<div class="editor-heading"><h2 id="fontset-title"></h2><button id="fontset-preview" class="primary" type="button">Auswirkungen prüfen</button></div><p id="fontset-state" role="status"></p>
+<div class="library-choices"><section><h3>Verfügbare Schriften</h3><label>Schrift suchen<input type="search" id="fontset-search"></label><div id="fontset-fonts" class="catalog-list"></div></section>
+<section><h3>Auswahl <span class="count" id="fontset-count"></span></h3><p>Die Reihenfolge wird übernommen.</p><ol id="fontset-selected" class="selected-items"></ol></section></div></section>
+<section id="fontset-migration" class="overview" hidden><h2>Bestehende Listen zuordnen</h2><p>Der Name ist nur ein Hinweis auf die Herkunft. Prüfe die bestehende Liste, bevor du ihre Zuordnung zum Katalog bestätigst. Ihre Auswahl und bisherigen Stände werden dabei nicht verändert.</p><div id="fontset-candidates"></div></section>
+</main></div>
+<dialog id="fontset-confirm"><form method="dialog"><h2 id="fontset-confirm-title">Änderung prüfen</h2><div id="fontset-confirm-content"></div><div class="dialog-actions"><button value="cancel">Zurück</button><button id="fontset-confirm-save" value="save" class="primary">Im Katalog speichern</button></div></form></dialog>
+</body></html>

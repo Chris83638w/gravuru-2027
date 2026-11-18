@@ -120,12 +120,18 @@ function readFonts(root){
   for(const s of data.sets){
    if(!record(s)||!id(s.id)||!text(s.name,120)||!Array.isArray(s.fonts)||s.fonts.some(n=>!text(n,120)))fail(setsFile,'Schrift-Set ohne Kennung, Namen oder Schriftliste.');
    if(sets.has(s.id))fail(setsFile,'Schrift-Set „'+s.id+'“ doppelt.');
-   for(const n of FONT_SET_ALWAYS)if(!s.fonts.includes(n))fail(setsFile,'Schrift-Set „'+s.id+'“ ohne „'+n+'“ (Katalogregel 11).');
-   if(fonts.size)for(const n of s.fonts)if(!fonts.has(n))fail(setsFile,'Schrift-Set „'+s.id+'“ nennt die unbekannte Schrift „'+n+'“.');
+   validateFontSet(s,{known:fonts.size?new Set(fonts.keys()):null,file:setsFile});
    sets.set(s.id,Object.freeze({id:s.id,name:s.name,note:s.note??null,fonts:Object.freeze([...s.fonts])}));
   }
  }
  return {fonts,sets};
+}
+export function validateFontSet(s,{known=null,file='schriften/sets.json'}={}){
+ if(!record(s)||!id(s.id)||!text(s.name,120)||!Array.isArray(s.fonts)||s.fonts.some(n=>!text(n,120)))fail(file,'Schrift-Set ohne Kennung, Namen oder Schriftliste.');
+ if(new Set(s.fonts).size!==s.fonts.length)fail(file,'Schrift-Set „'+s.id+'“ enthält doppelte Schriften.');
+ for(const n of FONT_SET_ALWAYS)if(!s.fonts.includes(n))fail(file,'Schrift-Set „'+s.id+'“ ohne „'+n+'“ (Katalogregel 11).');
+ if(known)for(const n of s.fonts)if(!known.has(n))fail(file,'Schrift-Set „'+s.id+'“ nennt die unbekannte Schrift „'+n+'“.');
+ return s;
 }
 
 function readMotifs(root){
@@ -240,7 +246,7 @@ export function openKatalog(root){
    const setId=subcategory?.fontSet??theme?.fontSet??null;
    const set=typeof setId==='string'?sets.get(setId)||null:null;
    if(typeof setId==='string'&&!set)fail(path.join(root,'schriften','sets.json'),'Schrift-Set „'+setId+'“ unbekannt.');
-   return {id:set?.id??null,fonts:[...new Set([...FONT_SET_ALWAYS,...(set?.fonts??[])])]};
+   return {id:set?.id??null,fonts:[...(set?.fonts??FONT_SET_ALWAYS)]};
   },
   // Glyphenressourcen für Schriften: vorhandene Werkstatt-Ressourcen zuerst, sonst die
   // Katalogdatei über den Schrift-Importer (font-import.py). Fehlende Dateien → `missing`.

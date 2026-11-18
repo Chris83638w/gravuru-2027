@@ -21,6 +21,16 @@ function workshop(t){
 // Fixture-Designs tragen keine Freigabe; die Mechanik-Tests laufen daher mit allDesigns, die Freigabe-Regel hat einen eigenen Test.
 const options=ws=>({repository:ws.repository,families:ws.families,fontLibrary:ws.fonts,profiles:ws.profiles,available:workshopResources().fonts,allDesigns:true});
 const writableOptions=ws=>({...options(ws),allDesigns:false});
+test('a pre-existing different font assignment survives reimport and is named in the report',async t=>{
+ const ws=workshop(t),k=approvedFixture(openKatalog(FIXTURE));applyKatalogImport(await planKatalogImport(k,'test-linie',writableOptions(ws)),writableOptions(ws));
+ const id=ws.repository.importItem(importKey('test-linie','namensschilder','TS-RE-90X60')).id,product=ws.repository.get(id);
+ const custom=ws.profiles.create({name:'Synthetische Ausnahme',type:'fonts',items:['Montserrat']});
+ product.document.profileAssignments.fonts={mode:'override',profileId:custom.id};ws.repository.save(id,product.document,product.revision);
+ const plan=await planKatalogImport(k,'test-linie',writableOptions(ws)),item=plan.items.find(p=>p.productId===id);
+ assert.equal(item.document.profileAssignments.fonts.profileId,custom.id);
+ assert.match(formatReport(plan.report),/Schriftzuordnung beibehalten: namensschilder \/ TS-RE-90X60/);
+ applyKatalogImport(plan,writableOptions(ws));assert.equal(ws.repository.get(id).document.profileAssignments.fonts.profileId,custom.id);
+});
 // Approvals are explicit synthetic setup only; source fixture files stay untouched.
 function approvedFixture(katalog){
  const ziele=[...katalog.families.keys()].map(familie=>({familie,freigabe:{status:'freigegeben',am:'2026-10-24T00:00:00Z',von:'synthetic-import-fixture'}}));

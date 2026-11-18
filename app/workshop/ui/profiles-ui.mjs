@@ -22,6 +22,7 @@ function controls(){
  for(const button of $$('[data-item-move]')){const index=Number(button.dataset.index);button.disabled=state.busy||(button.dataset.itemMove==='up'?index===0:index===(state.draft?.items.length||0)-1);}
  $('#profile-save-state').textContent=state.busy?'Wird bearbeitet …':state.dirty?'Ungespeicherte Änderungen':state.record?'Stand '+state.record.revision+' · gespeichert':'Noch nicht gespeichert';
  $('#assignment-state').textContent=state.assignmentDirty?'Ungespeichert · '+assignmentTarget(readAssignmentSelection()):state.settings?'Zuordnungen · Stand '+state.settings.revision:'';
+ if(state.record?.source?.kind==='katalog-fontset')for(const node of $$('#profile-editor button,#profile-editor input,#profile-editor select'))node.disabled=true;
 }
 function busy(value){state.busy=value;controls();}
 function dirty(){state.dirty=true;controls();}
@@ -43,6 +44,7 @@ async function loadLibrary({resetAssignment=false}={}){
  if(state.draft){renderCatalog();renderSelected();}
 }
 function openEditor(record=null){
+ const managed=record?.source?.kind==='katalog-fontset';let hint=$('#catalog-source-hint');if(!hint){hint=document.createElement('p');hint.id='catalog-source-hint';$('#profile-editor').prepend(hint);}hint.hidden=!managed;if(managed)hint.innerHTML='Diese Liste wird aus dem Katalog übernommen. <a href="/werkstatt/schriftgruppen/#'+encodeURIComponent(record.source.setId)+'">Schriftgruppe dort bearbeiten →</a>';
  state.record=record;state.draft=record?{name:record.name,type:record.type,items:[...record.items]}:{name:'',type:$('#profile-filter').value||'fonts',items:[]};state.dirty=false;
  $('#profile-editor').hidden=false;$('#profile-conflict').hidden=true;$('#profile-title').textContent=record?.name||'Neues Profil zusammenstellen';$('#profile-record-id').textContent=record?.id||'NEUES PROFIL';$('#profile-name').value=state.draft.name;$('#profile-type').value=state.draft.type;$('#catalog-search').value='';renderCatalog();renderSelected();renderList();controls();
 }

@@ -27,6 +27,8 @@ Explizite Laufgrenzen zur Abstimmung mit Claude, keine P3-Lastgrenzen: 1.800 s, 
 
 Claude bestätigt diese sechs Laufgrenzen im direkten Chat am 18.11.2026. Ebenso bestätigt er Poppins ausschließlich im isolierten Probekatalog: exakter PR192-Commit `58d1ec358cbae206a9fa0a133d5cc36fced94293`, Schriftdatei 160.316 Bytes plus Lizenz, vollständiger SHA im späteren Probebeleg. Live-Katalog/PR-Merge bleiben unangetastet. Werkzeug-/Kommandoreview steht noch aus.
 
+Zusätzliche [rein lesende Cache-/Prozessmessung 08:55 UTC](../measurements/2026-11-18-font-online-cache-preflight.json): eigene sichtbare 12-GiB-cgroup rund 1,20 GiB Nutzung, `cache`, `total_cache`, `inactive_file`, `active_file`, `dirty`, `writeback` jeweils 0. RSS rund 1,20 GiB. Das ist eine Momentaufnahme, keine Zusicherung, dass ein Kopierlauf dort keinen Dateicache anrechnet. Der App-Prozess konnte dabei nicht einzeln identifiziert werden: neun Verzeichnisse derselben UID gesehen, nur npm/Messprozess vollständig lesbar. Keine App-RSS- oder gemeinsame-cgroup-Behauptung. `/usr/bin/timeout` ausführbar, Einstieg weiterhin bytegleich. Keine Cacheleerung, keine Grenzänderung, keine Serverdatei geschrieben.
+
 ## Konkreter isolierter Ablauf zur Prüfung
 
 1. Claude prüft Werkzeug und [Capture-Konfiguration](2026-11-18-font-online-snapshot-capture.json) unter Linux. Vor Ausführung frische Ressourcen-/Einstiegsmessung; bei Abweichung stoppen, keine automatische Anpassung. Alle acht bekannten Webverzeichnisse sind ausgeschlossen.

@@ -1,6 +1,6 @@
 # Übergabe an den prüfenden Chat: Astra und Claude, 17.–18. November 2026
 
-Stand: 18.11.2026, 10:35 UTC. Diese Übersicht ist auf Chris' Wunsch für eine andere KI erstellt. Maßgeblich bleiben die verlinkten Belege und spätere Einträge in STATUS.md / Issue #254. Die private Serverprobe beginnt erst nach diesem Stand; Ergebnisse unten nachtragen. Keine Kundendaten, Zugangsdaten oder Datenbankdateien weitergeben.
+Historischer Grundstand: 18.11.2026, 10:35 UTC; aktuelle Ausführung siehe Nachträge. Vollständig auch als [Issue #262](https://github.com/Chris83638w/gravuru-2027/issues/262) veröffentlicht. Diese Übersicht ist auf Chris' Wunsch für eine andere KI erstellt. Maßgeblich bleiben die verlinkten Belege und spätere Einträge in STATUS.md / Issue #254. Die private Serverprobe beginnt erst nach diesem Stand; Ergebnisse unten nachtragen. Keine Kundendaten, Zugangsdaten oder Datenbankdateien weitergeben.
 
 ## Ziel, Entscheidungen und Freigabe
 
@@ -97,4 +97,5 @@ Arbeitskopie dieses Pakets: `work/gravuru-font-generalprobe`, Branch `dev/astra-
 
 - 10:39 UTC: Nach Chris' bestätigtem Ja alle fünf geprüften Ablageschritte einmal erfolgreich ausgeführt. Werkzeug und capture.json stimmen bytegenau mit den abgenommenen SHAs überein; privater Ordner 700, Dateien 600. Transportteile bleiben erhalten.
 - 10:42 UTC: Vollständiger CLI-Vorabcheck der abgelegten Datei bestanden, Exit 0, 49 ms, 0 Datenbanken geöffnet/0 Pfade angelegt. 353,76 GB frei, 10,8 GiB gemessene cgroup-Reserve. Beide App-Einstiegshashes vorher/nachher identisch. [JSON-Belege](../measurements/2026-11-18-font-online-server-staged.json).
-- Claude hat auch diese Gesamtübergabe gegengelesen und ihre Darstellung der Abnahmen/Grenzen bestätigt. Kopierlauf noch nicht gestartet; technische Prüfung der aktuellen Vorabbelege läuft. Kein App-/Shopwechsel.
+- Claude hat auch diese Gesamtübergabe gegengelesen und ihre Darstellung der Abnahmen/Grenzen bestätigt. Claude hat die Vorabbelege technisch bestätigt ([Einmalfreigabe](https://github.com/Chris83638w/gravuru-2027/pull/261#issuecomment-6976182797)). Capture genau einmal um 10:44:11 UTC gestartet, PID 4126327. Letzte lesende Kontrolle 10:56:52 UTC: Prozess vorhanden, noch kein Exit/Erfolgsbeleg. Die drei privaten Ziel-DBs liegen vor; WAL und Einstiegshashes unverändert. Wiederherstellung noch nicht gestartet. Kein App-/Shopwechsel.
+- Zusätzliche lesende Messung 10:54:49 UTC: 344,32 GB Platte frei, 10,7 GiB Reserve in der beobachteten 12-GiB-Messprozessgruppe, Datei-LRU/dirty/writeback weiterhin 0. Kein Nachweis der App-/Kopierprozesszuordnung.

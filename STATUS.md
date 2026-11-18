@@ -1,3 +1,9 @@
+## 18.11.2026 – Personalisierungsstudio für Bestandsdesigns (Codex, #260)
+
+- Chris priorisiert Import, schnelle Gestaltung, den normalen Shopify-Kaufweg und Fertigungsdateien als SVG und PDF mit Schnittkontur. Eigenständiger Entwicklungsbranch auf `72bf9bb2`. Die lokale Probe verwendet zwei originale Heimathafen-Designs mit Anker und Leuchtturm.
+- Werkstattimport, Kundeneditor, normaler Warenkorbaufruf, GraphQL-Auftragsabruf und Ausgabe je Bestellposition sind umgesetzt. Der Vergleichslauf verwendet einen lokalen Shopify-Gegenpart. Digital geprüft wurden physische Maße, Vektorpfade, die überdruckende Sonderfarbe CutContour und der gerasterte Inhalt.
+- Nächste Abnahme ist ein Vergleich am identischen Produkt im Testshop mit Variante C, Fancy und Zakeke sowie eine Produktionsprobe am vorgesehenen RIP. [Übergabe und Messdaten](docs/handoffs/2026-11-18-personalisierungsstudio.md)
+
 ## 16.11.2026 – Go-live: Gesamtstand `1c5f8062` live (Claude als Operator, #239)
 
 - Freigabe: Chris „live“ (18:40).

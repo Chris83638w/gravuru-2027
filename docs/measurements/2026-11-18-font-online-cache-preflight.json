@@ -1,0 +1,260 @@
+{
+  "audit": "font-online-process-cache-preflight",
+  "at": "2026-11-18T08:55:12.730Z",
+  "selfPid": 3789160,
+  "selfGroups": [
+    {
+      "level": 0,
+      "pathSha256": "45df1a127d40f2d0ed4f74b68491c18a37d25fdacf13434c6c83e1f6e946a702",
+      "memory.usage_in_bytes": "1286234112",
+      "memory.limit_in_bytes": "12884901888",
+      "stats": {
+        "cache": "0",
+        "rss": "1284407296",
+        "mapped_file": "0",
+        "dirty": "0",
+        "writeback": "0",
+        "inactive_file": "0",
+        "active_file": "0",
+        "unevictable": "0",
+        "total_cache": "0",
+        "total_rss": "1284145152",
+        "total_dirty": "0",
+        "total_writeback": "0",
+        "total_inactive_file": "0",
+        "total_active_file": "0",
+        "total_unevictable": "0"
+      }
+    },
+    {
+      "level": 1,
+      "pathSha256": "578ada08ff20b0d3c0ca5ef84d2de9e2790ee7c94a54d69b2659d64d9e309905",
+      "memory.usage_in_bytes": "1989595136",
+      "memory.limit_in_bytes": "9223372036854771712",
+      "stats": {
+        "cache": "0",
+        "rss": "0",
+        "mapped_file": "0",
+        "dirty": "0",
+        "writeback": "0",
+        "inactive_file": "0",
+        "active_file": "0",
+        "unevictable": "0",
+        "total_cache": "94392320",
+        "total_rss": "1893113856",
+        "total_dirty": "0",
+        "total_writeback": "0",
+        "total_inactive_file": "0",
+        "total_active_file": "0",
+        "total_unevictable": "0"
+      }
+    },
+    {
+      "level": 2,
+      "pathSha256": "6ebd96e5b8c6b21c7bc777a759bdaf9132fca28d6c267efea1071d3b975026e6",
+      "memory.usage_in_bytes": "58785263616",
+      "memory.limit_in_bytes": "9223372036854771712",
+      "stats": {
+        "cache": "28084084736",
+        "rss": "0",
+        "mapped_file": "502677504",
+        "dirty": "6799360",
+        "writeback": "0",
+        "inactive_file": "8904871936",
+        "active_file": "19179208704",
+        "unevictable": "0",
+        "total_cache": "32573718528",
+        "total_rss": "26211545088",
+        "total_dirty": "6873088",
+        "total_writeback": "0",
+        "total_inactive_file": "8951316480",
+        "total_active_file": "19241086976",
+        "total_unevictable": "0"
+      }
+    }
+  ],
+  "sameUserProcesses": 9,
+  "candidates": [
+    {
+      "pid": 3788732,
+      "self": false,
+      "entryMatch": false,
+      "cwdMatch": true,
+      "cwdReleaseMatch": false,
+      "comm": "npm exec node -",
+      "memory": {
+        "PPid": "3784344",
+        "VmSize": "1622016 kB",
+        "VmHWM": "90324 kB",
+        "VmRSS": "90324 kB"
+      },
+      "cgroups": [
+        {
+          "level": 0,
+          "pathSha256": "45df1a127d40f2d0ed4f74b68491c18a37d25fdacf13434c6c83e1f6e946a702",
+          "memory.usage_in_bytes": "1285709824",
+          "memory.limit_in_bytes": "12884901888",
+          "stats": {
+            "cache": "0",
+            "rss": "1284145152",
+            "mapped_file": "0",
+            "dirty": "0",
+            "writeback": "0",
+            "inactive_file": "0",
+            "active_file": "0",
+            "unevictable": "0",
+            "total_cache": "0",
+            "total_rss": "1284145152",
+            "total_dirty": "0",
+            "total_writeback": "0",
+            "total_inactive_file": "0",
+            "total_active_file": "0",
+            "total_unevictable": "0"
+          }
+        },
+        {
+          "level": 1,
+          "pathSha256": "578ada08ff20b0d3c0ca5ef84d2de9e2790ee7c94a54d69b2659d64d9e309905",
+          "memory.usage_in_bytes": "1989070848",
+          "memory.limit_in_bytes": "9223372036854771712",
+          "stats": {
+            "cache": "0",
+            "rss": "0",
+            "mapped_file": "0",
+            "dirty": "0",
+            "writeback": "0",
+            "inactive_file": "0",
+            "active_file": "0",
+            "unevictable": "0",
+            "total_cache": "94392320",
+            "total_rss": "1893113856",
+            "total_dirty": "0",
+            "total_writeback": "0",
+            "total_inactive_file": "0",
+            "total_active_file": "0",
+            "total_unevictable": "0"
+          }
+        },
+        {
+          "level": 2,
+          "pathSha256": "6ebd96e5b8c6b21c7bc777a759bdaf9132fca28d6c267efea1071d3b975026e6",
+          "memory.usage_in_bytes": "58785263616",
+          "memory.limit_in_bytes": "9223372036854771712",
+          "stats": {
+            "cache": "28084084736",
+            "rss": "0",
+            "mapped_file": "502677504",
+            "dirty": "6799360",
+            "writeback": "0",
+            "inactive_file": "8904871936",
+            "active_file": "19179208704",
+            "unevictable": "0",
+            "total_cache": "32573718528",
+            "total_rss": "26211545088",
+            "total_dirty": "6873088",
+            "total_writeback": "0",
+            "total_inactive_file": "8951316480",
+            "total_active_file": "19241086976",
+            "total_unevictable": "0"
+          }
+        }
+      ]
+    },
+    {
+      "pid": 3789160,
+      "self": true,
+      "entryMatch": false,
+      "cwdMatch": true,
+      "cwdReleaseMatch": false,
+      "comm": "MainThread",
+      "memory": {
+        "PPid": "3788732",
+        "VmSize": "1420108 kB",
+        "VmHWM": "49256 kB",
+        "VmRSS": "49256 kB"
+      },
+      "cgroups": [
+        {
+          "level": 0,
+          "pathSha256": "45df1a127d40f2d0ed4f74b68491c18a37d25fdacf13434c6c83e1f6e946a702",
+          "memory.usage_in_bytes": "1285709824",
+          "memory.limit_in_bytes": "12884901888",
+          "stats": {
+            "cache": "0",
+            "rss": "1284284416",
+            "mapped_file": "0",
+            "dirty": "0",
+            "writeback": "0",
+            "inactive_file": "0",
+            "active_file": "0",
+            "unevictable": "0",
+            "total_cache": "0",
+            "total_rss": "1284145152",
+            "total_dirty": "0",
+            "total_writeback": "0",
+            "total_inactive_file": "0",
+            "total_active_file": "0",
+            "total_unevictable": "0"
+          }
+        },
+        {
+          "level": 1,
+          "pathSha256": "578ada08ff20b0d3c0ca5ef84d2de9e2790ee7c94a54d69b2659d64d9e309905",
+          "memory.usage_in_bytes": "1989070848",
+          "memory.limit_in_bytes": "9223372036854771712",
+          "stats": {
+            "cache": "0",
+            "rss": "0",
+            "mapped_file": "0",
+            "dirty": "0",
+            "writeback": "0",
+            "inactive_file": "0",
+            "active_file": "0",
+            "unevictable": "0",
+            "total_cache": "94392320",
+            "total_rss": "1893113856",
+            "total_dirty": "0",
+            "total_writeback": "0",
+            "total_inactive_file": "0",
+            "total_active_file": "0",
+            "total_unevictable": "0"
+          }
+        },
+        {
+          "level": 2,
+          "pathSha256": "6ebd96e5b8c6b21c7bc777a759bdaf9132fca28d6c267efea1071d3b975026e6",
+          "memory.usage_in_bytes": "58785263616",
+          "memory.limit_in_bytes": "9223372036854771712",
+          "stats": {
+            "cache": "28084084736",
+            "rss": "0",
+            "mapped_file": "502677504",
+            "dirty": "6799360",
+            "writeback": "0",
+            "inactive_file": "8904871936",
+            "active_file": "19179208704",
+            "unevictable": "0",
+            "total_cache": "32573718528",
+            "total_rss": "26211545088",
+            "total_dirty": "6873088",
+            "total_writeback": "0",
+            "total_inactive_file": "8951316480",
+            "total_active_file": "19241086976",
+            "total_unevictable": "0"
+          }
+        }
+      ]
+    }
+  ],
+  "timeoutExecutable": true,
+  "entrySha256": "d02d874a6700371ae8c2b49a0a11c6ed93863ed69d84d6ff0eb46bc082d7bb29",
+  "readOnly": true,
+  "interpretation": {
+    "onlyOwnVisibleCgroupProven": true,
+    "applicationProcessIdentified": false,
+    "reason": "9 same-uid proc directories seen; only npm/measurement process could be fully read. No claim about individual application RSS.",
+    "observedLeafCacheBytes": 0,
+    "limitsUnchanged": true,
+    "noCacheEviction": true
+  }
+}

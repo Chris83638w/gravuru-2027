@@ -1,0 +1,12 @@
+{
+  "audit": "font-online-capture-process",
+  "at": "2026-11-18T10:59:14.536Z",
+  "processes": [
+    {
+      "pid": 4126327,
+      "depth": 0,
+      "error": "ENOENT"
+    }
+  ],
+  "readOnly": true
+}

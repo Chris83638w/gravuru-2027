@@ -1,0 +1,226 @@
+{
+  "schema": "gravuru-font-online-preflight/v1",
+  "scope": "Read-only server measurements; no databases opened or server files created",
+  "paths": {
+    "audit": "font-online-path-preflight",
+    "at": "2026-11-18T09:12:56.579Z",
+    "uid": 10005,
+    "paths": [
+      {
+        "path": "/var/www/vhosts/gravuru-designwerkstatt.de/private",
+        "exists": true,
+        "link": false,
+        "canonical": true,
+        "uid": 10005,
+        "mode": "700",
+        "bytes": 69632,
+        "directory": true
+      },
+      {
+        "path": "/var/www/vhosts/gravuru-designwerkstatt.de/private/acryl-employee-20261021-v1/data",
+        "exists": true,
+        "link": false,
+        "canonical": true,
+        "uid": 10005,
+        "mode": "700",
+        "bytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/var/www/vhosts/gravuru-designwerkstatt.de/private/acryl-employee-20261021-v1/data/workshop.sqlite",
+        "exists": true,
+        "link": false,
+        "canonical": true,
+        "uid": 10005,
+        "mode": "600",
+        "bytes": 4873306112,
+        "directory": false
+      },
+      {
+        "path": "/var/www/vhosts/gravuru-designwerkstatt.de/private/acryl-employee-20261021-v1/data/profiles.sqlite",
+        "exists": true,
+        "link": false,
+        "canonical": true,
+        "uid": 10005,
+        "mode": "600",
+        "bytes": 77824,
+        "directory": false
+      },
+      {
+        "path": "/var/www/vhosts/gravuru-designwerkstatt.de/private/acryl-employee-20261021-v1/data/design-assets.sqlite",
+        "exists": true,
+        "link": false,
+        "canonical": true,
+        "uid": 10005,
+        "mode": "600",
+        "bytes": 166719488,
+        "directory": false
+      },
+      {
+        "path": "/var/www/vhosts/gravuru-designwerkstatt.de/private/font-online-tool-20261118-01",
+        "exists": false
+      },
+      {
+        "path": "/var/www/vhosts/gravuru-designwerkstatt.de/private/font-online-snapshot-20261118-01",
+        "exists": false
+      },
+      {
+        "path": "/var/www/vhosts/gravuru-designwerkstatt.de/private/font-online-restored-20261118-01",
+        "exists": false
+      }
+    ],
+    "ioniceExecutable": true,
+    "readOnly": true
+  },
+  "preflight": {
+    "audit": "font-online-memory-preflight",
+    "at": "2026-11-18T09:37:13.463Z",
+    "code": "cbb7f2c2775eefd2c8b8d633f47718e01bee4ca6",
+    "fullToolSha256": "e4268a0c3311e0d5d2bfc9f962cab0e9678d5b45aa2ee5c9dfcf7ac4f9cd96d1",
+    "executionScope": "unchanged preflight and required helper definitions from reviewed source; unused backup helpers omitted",
+    "executedSubsetSha256": "e663d64bbeb0e16575b3516ee7bbc2cee4514f2ca57ed96f06957ef490033f5f",
+    "configSha256": "6d72fcaa4aef74e4cf42bc9d641066aff444b4ea188f40d372e316381ef409e1",
+    "entryBefore": {
+      "entry/app.cjs": "d02d874a6700371ae8c2b49a0a11c6ed93863ed69d84d6ff0eb46bc082d7bb29",
+      "entry/start-r5.cjs": "42cd0a64f2e8e2a48761aefac2c0323990dbfe667517c88497eb03ca243852dd"
+    },
+    "entryAfter": {
+      "entry/app.cjs": "d02d874a6700371ae8c2b49a0a11c6ed93863ed69d84d6ff0eb46bc082d7bb29",
+      "entry/start-r5.cjs": "42cd0a64f2e8e2a48761aefac2c0323990dbfe667517c88497eb03ca243852dd"
+    },
+    "exit": 0,
+    "signal": null,
+    "error": null,
+    "result": {
+      "phase": "preflight",
+      "readOnly": true,
+      "databasesOpened": 0,
+      "pathsCreated": 0,
+      "destination": "/var/www/vhosts/gravuru-designwerkstatt.de/private/font-online-snapshot-20261118-01",
+      "uid": 10005,
+      "sourceFiles": [
+        {
+          "file": "workshop.sqlite",
+          "bytes": 4873306112,
+          "mode": "0o600"
+        },
+        {
+          "file": "profiles.sqlite",
+          "bytes": 77824,
+          "mode": "0o600"
+        },
+        {
+          "file": "design-assets.sqlite",
+          "bytes": 166719488,
+          "mode": "0o600"
+        }
+      ],
+      "sourceDirectoryMode": "0o700",
+      "metrics": {
+        "free": 353826021376,
+        "host": 68239847424,
+        "cgroup": 11596435456,
+        "wal": 37953472,
+        "cgroupDetails": [
+          {
+            "version": 1,
+            "pathSha256": "45df1a127d40f2d0ed4f74b68491c18a37d25fdacf13434c6c83e1f6e946a702",
+            "usageBytes": 1288466432,
+            "limitBytes": 12884901888,
+            "fileLruBytes": 0,
+            "dirtyBytes": 0,
+            "writebackBytes": 0,
+            "reclaimableFileBytes": 0,
+            "chargedBytes": 1288466432,
+            "headroomBytes": 11596435456
+          }
+        ]
+      },
+      "limits": {
+        "maxSeconds": 1800,
+        "maxWalBytes": 1073741824,
+        "minFreeBytes": 30064771072,
+        "minHostAvailableBytes": 6442450944,
+        "minCgroupHeadroomBytes": 6442450944,
+        "addressSpaceBytes": 536870912,
+        "maxPinnedSeconds": 300
+      },
+      "timeoutExecutable": true,
+      "ioniceExecutable": true,
+      "appCgroupRelation": "not-established-by-this-check",
+      "peakRssBytes": 16265216
+    },
+    "elapsedMs": 42,
+    "serverFilesCreated": 0,
+    "configFilePermissionsTested": false,
+    "appProcessStartTimeVerified": false,
+    "stderrPresent": false
+  },
+  "catalogueSample": {
+    "audit": "font-online-catalog-probe-wrapper",
+    "exit": 0,
+    "signal": null,
+    "error": null,
+    "result": {
+      "audit": "font-online-catalog-cache-sample",
+      "at": "2026-11-18T09:38:36Z",
+      "bytesRead": 1073741824,
+      "filesRead": 24808,
+      "elapsedSeconds": 20.486,
+      "before": {
+        "headroomBytes": 11598848000,
+        "groups": [
+          {
+            "version": 1,
+            "pathSha256": "45df1a127d40f2d0ed4f74b68491c18a37d25fdacf13434c6c83e1f6e946a702",
+            "usageBytes": 1286053888,
+            "limitBytes": 12884901888,
+            "fileLruBytes": 0,
+            "dirtyBytes": 0,
+            "writebackBytes": 0,
+            "reclaimableFileBytes": 0,
+            "chargedBytes": 1286053888,
+            "headroomBytes": 11598848000
+          }
+        ]
+      },
+      "after": {
+        "headroomBytes": 11599249408,
+        "groups": [
+          {
+            "version": 1,
+            "pathSha256": "45df1a127d40f2d0ed4f74b68491c18a37d25fdacf13434c6c83e1f6e946a702",
+            "usageBytes": 1285652480,
+            "limitBytes": 12884901888,
+            "fileLruBytes": 0,
+            "dirtyBytes": 0,
+            "writebackBytes": 0,
+            "reclaimableFileBytes": 0,
+            "chargedBytes": 1285652480,
+            "headroomBytes": 11599249408
+          }
+        ]
+      },
+      "peakRssBytes": 16916480,
+      "readOnly": true,
+      "cacheEviction": false,
+      "databasesOpened": 0,
+      "pathsCreated": 0,
+      "limitBytes": 1073741824,
+      "timeLimitSeconds": 30
+    },
+    "stderrPresent": false
+  },
+  "transport": {
+    "failedBeforePythonExecution": 3,
+    "reason": "Plesk returned node -e/--eval requires an argument for long commands; short probe succeeded",
+    "successfulCommandBytes": 7496,
+    "fullStagedCliTest": false
+  },
+  "limitations": [
+    "App PID/start time and app-to-worker cgroup relationship not verified",
+    "No guarantee of cache charging during writes; sample only reads existing catalogue files",
+    "No database snapshot or restore performed",
+    "Configuration file permissions for a staged CLI invocation not tested; configuration existed only in memory"
+  ]
+}

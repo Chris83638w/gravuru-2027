@@ -1,0 +1,11 @@
+{
+  "audit": "font-online-restore-config-staged",
+  "at": "2026-11-18T11:03:12.761Z",
+  "bytes": 1282,
+  "sha256": "106a63bc3b990c61657e628e93d2dfa2dc948cbf94321037533b7c7da996b645",
+  "receiptSha256": "fd476927108f2e382f9e96e3214fda06015742cacd78b542397691f562b014e6",
+  "uid": 10005,
+  "mode": "600",
+  "applicationChanged": false,
+  "restoreStarted": false
+}

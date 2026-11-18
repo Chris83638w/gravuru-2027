@@ -1,0 +1,152 @@
+{
+  "staging": {
+    "parts": [
+      {
+        "audit": "font-online-transfer-part",
+        "part": 0,
+        "bytes": 2400,
+        "sha256": "b79c8642037f61673f8168fcb95d32dcf608e1d645d2157237a2f6f9a9e7a91a",
+        "applicationChanged": false
+      },
+      {
+        "audit": "font-online-transfer-part",
+        "part": 1,
+        "bytes": 2400,
+        "sha256": "f1a0489c27f3e98e0baa4e1e61cb0fbff94f71cbabdbeb08a61e94286ab48938",
+        "applicationChanged": false
+      },
+      {
+        "audit": "font-online-transfer-part",
+        "part": 2,
+        "bytes": 2400,
+        "sha256": "0e20b6b23f603b35ac3d6c97e6b0e8b1df5f5feccbec6afcab41a5115d2cfd10",
+        "applicationChanged": false
+      },
+      {
+        "audit": "font-online-transfer-part",
+        "part": 3,
+        "bytes": 769,
+        "sha256": "8c831959a3250e2092f009d03e62e12ea76d430e9ec65b270c13faa50b6b43b9",
+        "applicationChanged": false
+      }
+    ],
+    "staged": {
+      "audit": "font-online-tool-staged",
+      "at": "2026-11-18T10:39:10.145Z",
+      "folder": "/var/www/vhosts/gravuru-designwerkstatt.de/private/font-online-tool-20261118-01",
+      "code": "cbb7f2c2775eefd2c8b8d633f47718e01bee4ca6",
+      "files": [
+        {
+          "name": "snapshot-native-online.py",
+          "bytes": 24285,
+          "sha256": "e4268a0c3311e0d5d2bfc9f962cab0e9678d5b45aa2ee5c9dfcf7ac4f9cd96d1"
+        },
+        {
+          "name": "capture.json",
+          "bytes": 2115,
+          "sha256": "6d72fcaa4aef74e4cf42bc9d641066aff444b4ea188f40d372e316381ef409e1"
+        }
+      ],
+      "applicationChanged": false,
+      "databasesOpened": 0,
+      "transferPartsRetained": true
+    }
+  },
+  "preflight": {
+    "audit": "font-online-staged-preflight",
+    "at": "2026-11-18T10:42:25.216Z",
+    "entryBefore": {
+      "entry/app.cjs": "d02d874a6700371ae8c2b49a0a11c6ed93863ed69d84d6ff0eb46bc082d7bb29",
+      "entry/start-r5.cjs": "42cd0a64f2e8e2a48761aefac2c0323990dbfe667517c88497eb03ca243852dd"
+    },
+    "entryAfter": {
+      "entry/app.cjs": "d02d874a6700371ae8c2b49a0a11c6ed93863ed69d84d6ff0eb46bc082d7bb29",
+      "entry/start-r5.cjs": "42cd0a64f2e8e2a48761aefac2c0323990dbfe667517c88497eb03ca243852dd"
+    },
+    "exit": 0,
+    "signal": null,
+    "spawnError": null,
+    "error": null,
+    "result": {
+      "phase": "preflight",
+      "readOnly": true,
+      "databasesOpened": 0,
+      "pathsCreated": 0,
+      "destination": "/var/www/vhosts/gravuru-designwerkstatt.de/private/font-online-snapshot-20261118-01",
+      "uid": 10005,
+      "sourceFiles": [
+        {
+          "file": "workshop.sqlite",
+          "bytes": 4873306112,
+          "mode": "0o600"
+        },
+        {
+          "file": "profiles.sqlite",
+          "bytes": 77824,
+          "mode": "0o600"
+        },
+        {
+          "file": "design-assets.sqlite",
+          "bytes": 166719488,
+          "mode": "0o600"
+        }
+      ],
+      "sourceDirectoryMode": "0o700",
+      "metrics": {
+        "free": 353757691904,
+        "host": 68351586304,
+        "cgroup": 11595431936,
+        "wal": 37953472,
+        "cgroupDetails": [
+          {
+            "version": 1,
+            "pathSha256": "45df1a127d40f2d0ed4f74b68491c18a37d25fdacf13434c6c83e1f6e946a702",
+            "usageBytes": 1289469952,
+            "limitBytes": 12884901888,
+            "fileLruBytes": 0,
+            "dirtyBytes": 0,
+            "writebackBytes": 0,
+            "reclaimableFileBytes": 0,
+            "chargedBytes": 1289469952,
+            "headroomBytes": 11595431936
+          }
+        ]
+      },
+      "limits": {
+        "maxSeconds": 1800,
+        "maxWalBytes": 1073741824,
+        "minFreeBytes": 30064771072,
+        "minHostAvailableBytes": 6442450944,
+        "minCgroupHeadroomBytes": 6442450944,
+        "addressSpaceBytes": 536870912,
+        "maxPinnedSeconds": 300
+      },
+      "timeoutExecutable": true,
+      "ioniceExecutable": true,
+      "appCgroupRelation": "not-established-by-this-check",
+      "peakRssBytes": 17797120
+    },
+    "elapsedMs": 49,
+    "paths": [
+      {
+        "path": "/var/www/vhosts/gravuru-designwerkstatt.de/private/font-online-tool-20261118-01",
+        "uid": 10005,
+        "mode": "700",
+        "bytes": 4096
+      },
+      {
+        "path": "/var/www/vhosts/gravuru-designwerkstatt.de/private/font-online-tool-20261118-01/snapshot-native-online.py",
+        "uid": 10005,
+        "mode": "600",
+        "bytes": 24285
+      },
+      {
+        "path": "/var/www/vhosts/gravuru-designwerkstatt.de/private/font-online-tool-20261118-01/capture.json",
+        "uid": 10005,
+        "mode": "600",
+        "bytes": 2115
+      }
+    ],
+    "appProcessStartTimeVerified": false
+  }
+}

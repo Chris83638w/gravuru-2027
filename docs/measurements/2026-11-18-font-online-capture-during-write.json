@@ -1,0 +1,65 @@
+{
+  "audit": "font-online-capture-status",
+  "at": "2026-11-18T10:54:49.660Z",
+  "startedAt": "2026-11-18T10:44:11.592Z",
+  "pid": 4126327,
+  "processExists": true,
+  "processProbeError": null,
+  "exit": null,
+  "logBytes": 0,
+  "result": null,
+  "receipt": null,
+  "entries": {
+    "entry/app.cjs": "d02d874a6700371ae8c2b49a0a11c6ed93863ed69d84d6ff0eb46bc082d7bb29",
+    "entry/start-r5.cjs": "42cd0a64f2e8e2a48761aefac2c0323990dbfe667517c88497eb03ca243852dd"
+  },
+  "copyState": {
+    "workshop.sqlite": {
+      "bytes": 4873310208,
+      "modifiedAt": "2026-11-18T10:47:43.214Z"
+    },
+    "profiles.sqlite": {
+      "bytes": 77824,
+      "modifiedAt": "2026-11-18T10:47:43.233Z"
+    },
+    "design-assets.sqlite": {
+      "bytes": 166719488,
+      "modifiedAt": "2026-11-18T10:47:49.413Z"
+    }
+  },
+  "walNow": {
+    "workshop.sqlite": {
+      "bytes": 37953472,
+      "modifiedAt": "2026-11-17T17:11:47.156Z"
+    },
+    "profiles.sqlite": {
+      "bytes": 0,
+      "modifiedAt": "2026-11-17T17:10:50.133Z"
+    },
+    "design-assets.sqlite": {
+      "bytes": 0,
+      "modifiedAt": "2026-11-17T17:10:49.939Z"
+    }
+  },
+  "observedMetrics": {
+    "free": 344319885312,
+    "host": 67240931328,
+    "cgroup": 11460243456,
+    "wal": 37953472,
+    "cgroupDetails": [
+      {
+        "version": 1,
+        "pathSha256": "45df1a127d40f2d0ed4f74b68491c18a37d25fdacf13434c6c83e1f6e946a702",
+        "usageBytes": 1424658432,
+        "limitBytes": 12884901888,
+        "fileLruBytes": 0,
+        "dirtyBytes": 0,
+        "writebackBytes": 0,
+        "reclaimableFileBytes": 0,
+        "chargedBytes": 1424658432,
+        "headroomBytes": 11460243456
+      }
+    ]
+  },
+  "metricsExit": 0
+}

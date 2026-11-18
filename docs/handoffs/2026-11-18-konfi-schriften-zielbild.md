@@ -48,6 +48,8 @@ Nach der Schriftauswahl konkrete betroffene Designs ermitteln; Ersatz oder Herau
 
 ## Nummern
 
+**Reviewabschluss 18.11.2026:** Claude hat den Nachtrag auf `e8133dc` direkt im gemeinsamen Chat nachgeprüft: die vier Umlaut-Hinweise stehen in PDF und Auswahl-Datei, Euro-Hinweise vorhanden, Prüfung aller 80 Dateien ausgewertet. „Der gemeldete Restpunkt ist erledigt, zur Übersicht habe ich keine weiteren Einwände.“ Er bestätigt ausdrücklich: Wählbarkeit und Designabhängigkeiten vor der tatsächlichen Entfernung für die ausgewählten Namen prüfen; keine Voraussetzung für die reine Vorauswahl. Nachtrag `18fa446` benennt im STATUS lediglich den Konturbeleg präziser. Kein Code/Server geändert.
+
 | Nr. | Schrift | Originaldatei |
 | ---: | --- | --- |
 | 01 | Aldrich | vorhanden |

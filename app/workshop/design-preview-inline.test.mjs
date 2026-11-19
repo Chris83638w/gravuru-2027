@@ -31,4 +31,12 @@ test('eighteen graphics at the recorded round trip are slower than bytes already
  const resources=await client.loadResources(universal,async()=>'unused');
  assert.equal(fetched,0);
  assert.ok(resources['/api/workshop/design-assets/'+allowed+'/preview.svg']);
+ const path='/api/workshop/design-assets/'+allowed+'/preview.svg';
+ const doorbell={profile:{defaultDesignId:'a',designs:[{id:'a',objects:[]}],optionGroups:[{id:'format',defaultValueId:'small'}]},doorbell:{schema:'gravuru-doorbell/v1',formats:[{key:'small',profile:{designs:[{id:'a',objects:[{type:'motif',motif:'art'}]}]}}]},localResources:{inlinePreviews:{[allowed]:'data:image/svg+xml;base64,'+svg.toString('base64')},motifs:[{key:'art',svgFragment:'<image href="'+path+'"/>'}]}};
+ let doorbellFetches=0;
+ const door=createShopEntryClient({token,fetchImpl:async()=>{doorbellFetches++;return new Response(svg);}});
+ const prepared=door.prepareDoorbellResources(doorbell,async()=>'unused');
+ await prepared.loadRemaining();
+ assert.equal(doorbellFetches,0);
+ assert.ok(prepared.resources[path]);
 });

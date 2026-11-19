@@ -259,11 +259,13 @@ export function createShopEntryClient({token,fetchImpl=globalThis.fetch,editStor
     const first=previewPaths([design,...motifs]),all=allPreviewPaths(universal);
     addPhotoMaskPaths(first,[design]);
     const resources=Object.create(null);
-    const start=loadPreviewPaths(first,toDataUrl,resources,{priority:'high'});
+    seedInlinePreviews(universal,resources);
+    const missing=urls=>[...urls].filter(url=>resources[url]===undefined);
+    const start=loadPreviewPaths(missing(first),toDataUrl,resources,{priority:'high'});
     start.catch(()=>{}); // The child handles the error once its HTML has arrived.
     let complete;
     return {resources,loadRemaining:()=>complete??=Promise.all([
-      start,loadPreviewPaths([...all].filter(path=>!first.has(path)),toDataUrl,resources,{priority:'low'})
+      start,loadPreviewPaths(missing(all).filter(url=>!first.has(url)),toDataUrl,resources,{priority:'low'})
     ])};
   }
   async function submitCart(input,{draftToken}={}){

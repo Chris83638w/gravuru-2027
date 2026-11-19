@@ -136,7 +136,14 @@ export function buildProductEditorBundles(directory){
  const products=[device,...Object.values(executions),presentation];
  const chunks=Object.fromEntries(products.flatMap(chunk=>chunk.modules.map(url=>[url,chunk.url])));
  const keep=new Set([core,...products].flatMap(chunk=>[chunk.name,chunk.name+'.gz']));
- for(const name of fs.readdirSync(path.join(directory,'bundle')))if(BUNDLE_NAME.test(name.replace(/\.gz$/,''))&&!keep.has(name))fs.rmSync(path.join(directory,'bundle',name),{force:true});
+ const bundleDirectory=path.join(directory,'bundle');
+ for(const name of fs.readdirSync(bundleDirectory)){
+  const moduleName=name.replace(/\.gz$/,'');
+  if(!BUNDLE_NAME.test(moduleName)||keep.has(name))continue;
+  // A release can retain a previously served module for an already-open editor.
+  if(fs.existsSync(path.join(bundleDirectory,moduleName+'.keep')))continue;
+  fs.rmSync(path.join(bundleDirectory,name),{force:true});
+ }
  return {...core,chunks,device,executions,presentation};
 }
 

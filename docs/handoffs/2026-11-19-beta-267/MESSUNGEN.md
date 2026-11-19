@@ -1,5 +1,7 @@
 # Messprotokoll zur Beta #267
 
+Der aktuelle letzte Messpunkt ist der vollständig sichtbare Warenkorb mit den individuellen Bildern beider Positionen. [Aktuelle PC- und Handy-Messung](WARENKORB-VORSCHAU.md)
+
 Lokaler Chrome 157.0.8103.78 auf demselben Windows-PC. Desktop 1365 × 900 bei normaler CPU, mobil 390 × 844 mit Touch-Emulation und vierfacher CPU-Drosselung. Beide Ansichten verwenden den Loopback-Transport ohne Netzdrossel. Drei voneinander unabhängige Browserkontexte je Gerät und Version. Jeder Kaltstart leert den HTTP-Cache und erhält einen frischen Sitzungsspeicher. Der Warmlauf lädt die gleiche URL im gleichen Kontext erneut. Die drei Versionen rotieren pro Wiederholung. Der Testserver liefert Produktmodell und einzelne Quellen absichtlich mit ihren eigenen Cache-Regeln aus.
 
 ## Ring mit 16 Originaldesigns

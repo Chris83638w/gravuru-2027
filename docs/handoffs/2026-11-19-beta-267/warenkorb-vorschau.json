@@ -1,0 +1,149 @@
+{
+  "mode": "Isolierter R15 mit echten Entwürfen, Warenkorbangeboten und persönlichen PNGs, lokaler Transport",
+  "samples": [
+    {
+      "device": "PC",
+      "run": 1,
+      "timings": [
+        {
+          "lastClickToPaintMs": 1226,
+          "startThroughChosenDesignMs": 1692
+        },
+        {
+          "lastClickToPaintMs": 1050,
+          "startThroughChosenDesignMs": 1870
+        }
+      ],
+      "variant": "57471227756924",
+      "unitCents": 4999,
+      "totalCents": 9998,
+      "revisions": [
+        1,
+        1
+      ],
+      "differentImages": true,
+      "fileChecksumsMatch": true,
+      "removePreservesSecond": true
+    },
+    {
+      "device": "PC",
+      "run": 2,
+      "timings": [
+        {
+          "lastClickToPaintMs": 1121,
+          "startThroughChosenDesignMs": 2000
+        },
+        {
+          "lastClickToPaintMs": 1145,
+          "startThroughChosenDesignMs": 1933
+        }
+      ],
+      "variant": "57471227756924",
+      "unitCents": 4999,
+      "totalCents": 9998,
+      "revisions": [
+        1,
+        1
+      ],
+      "differentImages": true,
+      "fileChecksumsMatch": true,
+      "removePreservesSecond": true
+    },
+    {
+      "device": "PC",
+      "run": 3,
+      "timings": [
+        {
+          "lastClickToPaintMs": 1124,
+          "startThroughChosenDesignMs": 1562
+        },
+        {
+          "lastClickToPaintMs": 1157,
+          "startThroughChosenDesignMs": 1953
+        }
+      ],
+      "variant": "57471227756924",
+      "unitCents": 4999,
+      "totalCents": 9998,
+      "revisions": [
+        1,
+        1
+      ],
+      "differentImages": true,
+      "fileChecksumsMatch": true,
+      "removePreservesSecond": true
+    },
+    {
+      "device": "Mobil",
+      "run": 1,
+      "timings": [
+        {
+          "lastClickToPaintMs": 1186,
+          "startThroughChosenDesignMs": 1898
+        },
+        {
+          "lastClickToPaintMs": 1088,
+          "startThroughChosenDesignMs": 1878
+        }
+      ],
+      "variant": "57471227756924",
+      "unitCents": 4999,
+      "totalCents": 9998,
+      "revisions": [
+        1,
+        1
+      ],
+      "differentImages": true,
+      "fileChecksumsMatch": true,
+      "removePreservesSecond": true
+    },
+    {
+      "device": "Mobil",
+      "run": 2,
+      "timings": [
+        {
+          "lastClickToPaintMs": 1084,
+          "startThroughChosenDesignMs": 1673
+        },
+        {
+          "lastClickToPaintMs": 1133,
+          "startThroughChosenDesignMs": 1619
+        }
+      ],
+      "variant": "57471227756924",
+      "unitCents": 4999,
+      "totalCents": 9998,
+      "revisions": [
+        1,
+        1
+      ],
+      "differentImages": true,
+      "fileChecksumsMatch": true,
+      "removePreservesSecond": true
+    },
+    {
+      "device": "Mobil",
+      "run": 3,
+      "timings": [
+        {
+          "lastClickToPaintMs": 1205,
+          "startThroughChosenDesignMs": 1858
+        },
+        {
+          "lastClickToPaintMs": 1127,
+          "startThroughChosenDesignMs": 1850
+        }
+      ],
+      "variant": "57471227756924",
+      "unitCents": 4999,
+      "totalCents": 9998,
+      "revisions": [
+        1,
+        1
+      ],
+      "differentImages": true,
+      "fileChecksumsMatch": true,
+      "removePreservesSecond": true
+    }
+  ]
+}

@@ -1,3 +1,7 @@
+## 19.11.2026 · Grok/Cursor · Team B · Nachmessung d640afcf
+
+Volle Schriften laden außerhalb des Datensparmodus erst im Leerlauf. Der Karten-Cache gilt nur für die Schriften der Karte. Kundentext außerhalb des Pakets lädt die volle Schrift für jede Karte. Vorübergehende Shopify-Fehler bleiben wiederholbar, die Preisprüfung nicht bei jedem Retry. Ein fehlendes Glyphenpaket wird aus dem Modell neu erzeugt. Kein Shop-Schreiben.
+
 ## 19.11.2026 · Grok/Cursor · Team B · Nachmessung 3387918c
 
 `cart/data` wird bei „noch nicht fertig“ bis 14 s wiederholt, `theme-cart` nicht noch einmal. Echter Shopify-Fehler: kein Warenkorb. Karten mit fremdem Kundentext warten auf die volle Schrift. Das Glyphenpaket liegt als Hash-Datei. Volle Schriften nur für fehlende Zeichen. Funkklingel-Grafiken nutzen die mitgeschickte Vorschau. Kein Shop-Schreiben.

@@ -89,6 +89,12 @@ export function removeCartLine(lines,lineId){
  return next;
 }
 
+export function renderCartDrawer(lines){
+  const page = renderCustomerCart(lines,{title:'Kurzansicht'});
+  return page.replace('<h1>Kurzansicht</h1>', '<h1>Kurzansicht</h1><p class="note">Drawer, getrennt von der Warenkorbseite</p>')
+    .replace('max-width:980px', 'max-width:420px');
+}
+
 export function renderCustomerCart(lines,{title='Warenkorb'}={}){
  if(!Array.isArray(lines))fail('cart_line','Der Warenkorb ist ungültig.');
  const total=lines.reduce((sum,line)=>sum+(line.preview?.status==='ready'||line.unitCents!==undefined?line.unitCents*line.quantity:0),0);

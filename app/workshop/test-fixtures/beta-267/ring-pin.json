@@ -1,0 +1,61 @@
+{
+  "source": {
+    "catalogRepo": "Chris83638w/gravuru-katalog.",
+    "catalogPath": "migrationen/funkklingeln-42x3-20261027/models/ring-wired-pro-3-gen-5dfya2-16x28/16x28.json",
+    "catalogBlobSha1": "389afb47377bdbe5489e594280bb540f91418b6d",
+    "profileSourceSha256": "a326de11a6c1ebe4e565f83db25a54165ec60a9bafc7f02c4110017d02cc1e43",
+    "readVia": "bestehende GitHub-Leseverbindung, kein neues Token",
+    "publicProductUrl": "https://gravuru-design.myshopify.com/products/klingelschild-ring-wired-pro-3-gen-5dfya2-personalisiert.js",
+    "publicProductChecked": "2026-11-19 GET, Variante 57471227756924, SKU FK-AV2A-16x28-1441, price 4999, Optionen Schwarz / Ganzer Rahmen / Keine Befestigung"
+  },
+  "variant": {
+    "key": "schwarz|FK-RUNDUM|K00",
+    "variantId": "57471227756924",
+    "sku": "FK-AV2A-16x28-1441",
+    "priceCents": 4999,
+    "formatKey": "16x28"
+  },
+  "basePriceCents": 4999,
+  "mountingK00": {
+    "key": "K00",
+    "name": "Keine Befestigung",
+    "visibleScrews": false,
+    "surchargeCents": 0
+  },
+  "plate": {
+    "widthMm": 160,
+    "heightMm": 280
+  },
+  "bellImageBounds": {
+    "x": 56.384296,
+    "y": 118.130362,
+    "width": 47.231466,
+    "height": 133.000037
+  },
+  "device": {
+    "modelKey": "ring-wired-pro-3-gen-5dfya2-16x28",
+    "sha256": "d3c43f07e0f3139b3724a066c906ee3edb36b0653abbc5ea0d9fe1b483cbe2ab",
+    "bytes": 63482,
+    "catalogPath": "migrationen/funkklingeln-42x3-20261027/devices/d3c43f07e0f3139b3724a066c906ee3edb36b0653abbc5ea0d9fe1b483cbe2ab.webp",
+    "publicUrl": "https://app-2027.gravuru-designwerkstatt.de/doorbell-assets/d3c43f07e0f3139b3724a066c906ee3edb36b0653abbc5ea0d9fe1b483cbe2ab.webp",
+    "localFile": "ring-wired-pro-3-gen-5dfya2-16x28.webp",
+    "note": "Die lokale Datei ist die per GET geladene öffentliche Gerätegrafik. Ihr SHA-256 ist identisch mit dem Katalog-Geräteindex."
+  },
+  "designs": {
+    "FK-RUNDUM": {
+      "id": "FK-RUNDUM",
+      "name": "Strichdesign",
+      "marks": [
+        {
+          "d": "M22 87H138V237",
+          "width": 0.65
+        }
+      ]
+    },
+    "FK-SEITLICH": {
+      "id": "FK-SEITLICH",
+      "name": "Klar & modern",
+      "marks": []
+    }
+  }
+}

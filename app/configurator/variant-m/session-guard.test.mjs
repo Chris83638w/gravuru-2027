@@ -48,6 +48,7 @@ function mountUx({config,resources,storage,timers,pendingDesignTransfer=false,se
   vm.runInContext(block('ux.mjs','  function restoreDraft(draft){','\n  }'),env);
   vm.runInContext(block('ux.mjs','  let sessionGuard=null,initialDraft=null,accountDrafts=null;','\n  }'),env);
   vm.runInContext(line('ux.mjs','const pendingDesignTransfer='),env);
+  vm.runInContext(line('ux.mjs','const cartRevision='),env);
   vm.runInContext(line('ux.mjs','const recoverLocalSession='),env);
   vm.runInContext(line('ux.mjs','const savedSession='),env);
   env.missingUploads=vm.runInContext('savedSession?.uploads||[]',env);

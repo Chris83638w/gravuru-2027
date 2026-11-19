@@ -19,7 +19,7 @@ const worker = fork(path.join(__dirname,'preview.mjs'), ['0'], {
   env:{
     PATH:process.env.PATH, HOME:process.env.HOME, LANG:'C.UTF-8', NODE_ENV:'production',
     GRAVURU_KATALOG:path.join(root,'katalog'), GRAVURU_SCHIEFERREGISTER:path.join(root,'schiefer-original.json'),
-    GRAVURU_PYTHON:path.join(root,'venv/bin/python'), GRAVURU_BETA_PROXY_KEY:gatewayKey
+    GRAVURU_PYTHON:path.join(root,'venv/bin/python'), GRAVURU_BETA_PROXY_KEY:gatewayKey, GRAVURU_BETA_DATA:path.join(root,'private/data')
   }
 });
 let workerPort;
@@ -33,8 +33,9 @@ function customerRoute(method, pathname) {
   const read = method === 'GET' || method === 'HEAD';
   if (!pathname.startsWith('/api/')) {
     if (pathname === '/beta-warenkorb') return ['GET','POST'].includes(method);
+    if (pathname === '/beta-warenkorb/entfernen') return method === 'POST';
     if (!read) return false;
-    return ['/', '/beta/cart', '/favicon.ico', '/beta-client.mjs', '/beta-produkt', '/beta-datei', '/editor.html', '/models.json','/assistant.js','/workshop/theme-limits.mjs','/workshop/process-profiles.mjs'].includes(pathname)
+    return ['/', '/beta/cart', '/beta/dateien','/beta-vorschau','/favicon.ico', '/beta-client.mjs', '/beta-produkt', '/beta-datei', '/editor.html', '/models.json','/assistant.js','/workshop/theme-limits.mjs','/workshop/process-profiles.mjs'].includes(pathname)
       || /^\/(?:_runtime|_bundle|acrylic-assets|doorbell-assets|configurator|platform)\//.test(pathname)
       || /^\/workshop-ui\/(?:editor-icons|material-surfaces)\//.test(pathname);
   }

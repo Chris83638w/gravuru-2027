@@ -1,6 +1,21 @@
 // Ordinary shop cart transport. All values originate in a saved server offer.
 // Read-back is a browser check, never proof of payment or a manufacturing release.
 const fail=message=>{throw Error(message);};
+// Shared by the product-page embed and the standalone handoff page.
+export const CHECKOUT_WAIT_TEXT='Vorschau wird für die Kasse vorbereitet …';
+export async function readCartDataUntilReady(fetchData,{sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms)),now=Date.now,intervalMs=1200,limitMs=14000,pauseAfterMs=4000,onWait}={}){
+ const started=now();let attempt=0;
+ for(;;){
+  const mark=now();
+  try{return await fetchData(attempt);}
+  catch(error){
+   if(error?.code!=='checkout_image_pending')throw error;
+   if(now()-started>=limitMs)throw error;
+   onWait?.();attempt++;
+   if(now()-mark<pauseAfterMs){const gap=Math.min(intervalMs,limitMs-(now()-started));if(gap>0)await sleep(gap);}
+  }
+ }
+}
 const int=n=>Number.isSafeInteger(n)&&n>=0;
 const configId=v=>typeof v==='string'&&/^konfig_[a-f0-9-]{36}$/.test(v);
 export function validateThemeCartPayload(p){

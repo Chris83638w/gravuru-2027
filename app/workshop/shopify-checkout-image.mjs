@@ -11,8 +11,8 @@ export function createShopifyCheckoutImages({origin,shopDomain,getAccessToken},{
  async function request(stage,query,variables){
   const token=await cartTimingStep('access_token',()=>getAccessToken());
   return cartTimingStep(stage,async()=>{
-   const response=await fetchImpl('https://'+shopDomain+'/admin/api/2026-07/graphql.json',{method:'POST',redirect:'error',signal:AbortSignal.timeout(12000),headers:{'Content-Type':'application/json','X-Shopify-Access-Token':token},body:JSON.stringify({query,variables})});
-   if(!response.ok)fail();const data=await response.json();if(data.errors?.length||!data.data)fail();return data.data;
+   let response;try{response=await fetchImpl('https://'+shopDomain+'/admin/api/2026-07/graphql.json',{method:'POST',redirect:'error',signal:AbortSignal.timeout(12000),headers:{'Content-Type':'application/json','X-Shopify-Access-Token':token},body:JSON.stringify({query,variables})});}catch{fail('checkout_image_pending');}
+   if(!response.ok)fail(response.status>=500?'checkout_image_pending':'checkout_image_failed');const data=await response.json();if(data.errors?.length||!data.data)fail('checkout_image_failed');return data.data;
   });
  }
  return async function checkoutImage(source){
@@ -36,7 +36,8 @@ export function createShopifyCheckoutImages({origin,shopDomain,getAccessToken},{
     }else file=created.fileCreate.files[0];
    }
    for(let n=0;n<12;n++){
-    if(!/^gid:\/\/shopify\/MediaImage\/[0-9]+$/.test(file?.id||'')||file.fileStatus==='FAILED')fail();
+    if(file?.fileStatus==='FAILED')fail('checkout_image_failed');
+    if(!/^gid:\/\/shopify\/MediaImage\/[0-9]+$/.test(file?.id||''))fail('checkout_image_failed');
     if(file.fileStatus==='READY'&&file.image?.url){
      const url=file.image.url;
      if(!/^https:\/\/cdn\.shopify\.com\/s\/files\/1\/0920\/5550\/3228\/files\/gravuru-gestaltung-[a-f0-9]{64}\.png(?:\?v=[0-9]+)?$/.test(url)||new URL(url).pathname.split('/').at(-1)!==filename)fail();
@@ -45,8 +46,8 @@ export function createShopifyCheckoutImages({origin,shopDomain,getAccessToken},{
     await cartTimingStep('shopify_poll_wait',()=>wait(750));
     file=(await request('shopify_poll','query CheckoutImageReady($id:ID!){node(id:$id){... on MediaImage{'+fields+'}}}',{id:file.id})).node;
    }
-   fail();
-  }).catch(()=>fail()).finally(()=>pending.delete(filename));
+   fail('checkout_image_pending');
+  }).catch(error=>{if(error?.code==='checkout_image_pending'||error?.code==='checkout_image_failed')throw error;fail('checkout_image_pending');}).finally(()=>pending.delete(filename));
   pending.set(filename,task);return task;
  };
 }

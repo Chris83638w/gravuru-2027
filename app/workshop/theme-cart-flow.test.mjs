@@ -208,6 +208,9 @@ test('theme cart: signed entry, immutable design, edit, quantity 1 to 4 and sign
  assert.ok(!JSON.stringify(p).includes(draft.token));assert.ok(!JSON.stringify(p).includes(token));assert.equal(new URL(p.properties._gravuru_bearbeiten).searchParams.get('line'),'theme');
  assert.equal(p.properties.Bearbeiten,undefined);
  assert.equal(p.properties._gravuru_checkout_image,registeredImage);assert.equal(imageCalls,1);
+ const seen=timingEvents.length;const again=await proxyRequest('/cart/data','GET',transferToken,{...hosted,'X-Gravuru-Cart-Retry':'1'});assert.equal(again.status,200,JSON.stringify(again.data));
+ const repeat=timingEvents.slice(seen).find(e=>e.route==='cart/data'&&e.status===200);
+ assert.equal(repeat.steps.cart_revalidate?.syncCalls||0,0,'a repeated cart/data for the same revision does not recheck the price');
  // #252 Versionswechsel: Tabs mit älterem, zwischengespeichertem Client fragen ohne Kennzeichen und erhalten weiter das PNG.
  const olderTab=await proxyRequest('/cart/data');assert.equal(olderTab.status,200);assert.equal(olderTab.data.preview.type,'image/png');assert.match(olderTab.data.preview.base64,/^iVBORw0KGgo/);
  assert.equal(olderTab.data.properties._gravuru_checkout_image,registeredImage);assert.deepEqual({...olderTab.data,preview:undefined},{...p,preview:undefined},'same handoff apart from the PNG');

@@ -485,7 +485,10 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
    // client only receives the cart once the checkout file is ready, so the
    // browser does not upload the PNG itself.
    const imageTask=checkoutImage?attachRevisionPreview({checkoutImage,source,payload:prepared.payload,waitMs:hosted?checkoutImageWaitMs:0}):null;
-   withCustomerReadScope(()=>{active({headers:{'x-gravuru-shop-session':transfer.sessionToken}});cartTimingStep('cart_revalidate',()=>prepared.resolve());});
+   if(!(req.headers['x-gravuru-cart-retry']==='1'&&transfer.checkedRevision===prepared.payload?.configuration?.rev)){
+    withCustomerReadScope(()=>{active({headers:{'x-gravuru-shop-session':transfer.sessionToken}});cartTimingStep('cart_revalidate',()=>prepared.resolve());});
+    transfer.checkedRevision=prepared.payload?.configuration?.rev;
+   }
    if(imageTask){
     const resolved=await cartTimingStep('checkout_image_wait',()=>imageTask);
     if(hosted&&resolved.failed)fail(502,'checkout_image_failed','Die Vorschau für die Kasse konnte nicht erstellt werden. Es wurde nichts in den Warenkorb gelegt.');

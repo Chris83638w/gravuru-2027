@@ -28,6 +28,13 @@ test('the recorded live waits of 4.2, 4.8 and 5.4 seconds still finish inside th
  }
 });
 
+test('a cart/data attempt that already waited four seconds is not paused again',async()=>{
+ let now=0;const sleeps=[];
+ const payload=await readCartDataUntilReady(async()=>{const at=now;now+=4000;if(at===0)throw pending();return {ok:true};},{now:()=>now,sleep:async ms=>{sleeps.push(ms);now+=ms;},intervalMs:1200,limitMs:14000,pauseAfterMs:4000});
+ assert.equal(payload.ok,true);
+ assert.deepEqual(sleeps,[]);
+});
+
 test('a real Shopify failure does not retry and does not open the cart',async()=>{
  let calls=0;
  await assert.rejects(readCartDataUntilReady(async()=>{calls++;throw failed();},{sleep:async()=>{throw Error('kein weiteres Warten');},intervalMs:1200,limitMs:14000}),error=>error.code==='checkout_image_failed');

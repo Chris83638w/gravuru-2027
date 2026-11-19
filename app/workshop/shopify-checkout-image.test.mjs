@@ -25,6 +25,13 @@ test('immutable preview is registered as IMAGE, awaited until READY, and reused 
 test('restart reuses existing READY MediaImage without overwriting or creating it again',async()=>{
  const f=fixture([{data:{files:{nodes:[ready]}}}]);assert.equal(await f.service(source),url);assert.equal(f.calls.length,1);
 });
+test('a Shopify 5xx and a dropped connection stay retryable',async()=>{
+ const down=fixture([]);
+ down.service=createShopifyCheckoutImages({origin,shopDomain,getAccessToken:async()=>'synthetic-token'},{fetchImpl:async()=>new Response('',{status:503})});
+ await assert.rejects(down.service(source),error=>error.code==='checkout_image_pending'&&error.status===503);
+ const dropped=createShopifyCheckoutImages({origin,shopDomain,getAccessToken:async()=>'synthetic-token'},{fetchImpl:async()=>{throw Error('network');}});
+ await assert.rejects(dropped(source),error=>error.code==='checkout_image_pending');
+});
 test('foreign or mutable sources never reach Shopify',async()=>{
  const f=fixture([]);
  for(const s of [source.replace(origin,'https://evil.example'),source+'?x=1',source+'#x',origin+'/api/private',undefined])await assert.rejects(f.service(s),e=>e.code==='checkout_image_failed');
@@ -92,7 +99,7 @@ test('pending capacity is bounded and a rejected warmup can retry after slots fi
 test('processing is bounded and a later retry can complete the same media',async()=>{
  const processing={id:ready.id,fileStatus:'PROCESSING'};
  const f=fixture([{data:{files:{nodes:[processing]}}},...Array.from({length:12},()=>({data:{node:processing}})),{data:{files:{nodes:[ready]}}}]);
- await assert.rejects(f.service(source),error=>error.code==='checkout_image_failed');assert.equal(f.waits(),12);assert.equal(await f.service(source),url);
+ await assert.rejects(f.service(source),error=>error.code==='checkout_image_pending');assert.equal(f.waits(),12);assert.equal(await f.service(source),url);
 });
 
 test('image timings separate lookup, create, polling, pending reuse and ready cache without private URLs',async()=>{

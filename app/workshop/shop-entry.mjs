@@ -209,6 +209,7 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
  // Schlankes Kundenmodell (shop-model-slim.mjs): Katalog des ausgelieferten Editors einmal über den eigenen Host laden.
  // Eigene Schriften ohne Designbezug liefert der Shop-Einstieg als inhaltsadressierte Datei (unveränderlich, lange zwischenspeicherbar).
  const fontRoute=new RegExp('^'+pagePath+'schriften/([a-f0-9]{64})\\.json$');
+ const previewGlyphRoute=/^\/_acryl-runtime\/lazy\/vorschau-glyphen\/([a-f0-9]{64})\.json$/;
  const previewRoute=new RegExp('^'+pagePath+'vorschauen/([a-f0-9]{64})\\.svg$');
  const slimmer=modelSlimmer===undefined?createModelSlimmer({fetchJson:async p=>{const r=await fetch(origin+p,{signal:AbortSignal.timeout(15000)});if(!r.ok)throw Error('http '+r.status);return r.json();},surfaceSwaps:surfaceSwapsFrom(DEFAULT_SURFACE_DIR),fontUrl:hash=>pagePath+'schriften/'+hash+'.json'}):modelSlimmer;
  function presentedModel(model,binding,store,designId=null){
@@ -218,6 +219,7 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
   }
   const copy=shopStartModel(model,designId,{deferFonts:!!slimmer&&!model.universal.doorbell,options:binding.options});
   // `source`: ausgelagerte Schriften lassen sich nach Verdrängung aus dem gespeicherten Modell nachliefern.
+  if(slimmer?.attachPreviewGlyphs)slimmer.attachPreviewGlyphs(copy.universal);
   if(slimmer){if(copy.universal.doorbell&&!slimmer.ready())slimmer.load();slimmer.slim(copy.universal,{deferAll:!copy.universal.doorbell,key:copy.configuration?.id&&copy.configuration?.revision?copy.configuration.id+':'+copy.configuration.revision+':fonts':null,source:()=>modelFor(store,binding).universal?.localResources?.fonts});}
   for(const group of copy.universal.profile?.optionGroups||[]){const chosen=binding.options?.[group.id];if(typeof chosen==='string'&&group.values?.some(v=>v.id===chosen))group.defaultValueId=chosen;}
   return copy;
@@ -502,7 +504,7 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
  }
  return Object.freeze({
   pagePath,startPath,preparePublicDesignPreviews,publicPreviewPreparation,
-  matches:pathname=>customerImages.matches(pathname)||fontRoute.test(pathname)||previewRoute.test(pathname)||pathname===themePath||pathname===themePath+'/data'||pathname===themePath+'/claim'||themeFiles.has(pathname)||pathname===startPath||pathname===pagePath||pathname===warmPath||pageFiles.has(pathname)||pathname.startsWith(API),
+  matches:pathname=>customerImages.matches(pathname)||fontRoute.test(pathname)||previewGlyphRoute.test(pathname)||previewRoute.test(pathname)||pathname===themePath||pathname===themePath+'/data'||pathname===themePath+'/claim'||themeFiles.has(pathname)||pathname===startPath||pathname===pagePath||pathname===warmPath||pageFiles.has(pathname)||pathname.startsWith(API),
   handle(req,res,url){
    const timedRoute=/^\/api\/shop-entry\/acrylic-drafts(?:\/adraft_[a-f0-9-]{36})?$/.test(url.pathname)?'acrylic-drafts':url.pathname===API+'theme-cart'?'theme-cart':url.pathname===themePath+'/data'?'cart/data':url.pathname===themePath+'/claim'?'cart/claim':null;
    if(timedRoute)return withCartTiming(timedRoute,logger,()=>withCustomerReadScope(()=>handle(req,res,url)));
@@ -527,6 +529,14 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
     }
     if(pathname===startPath)return start(req,res,url);
     if(pathname===themePath||pathname===themePath+'/data'||pathname===themePath+'/claim'||themeFiles.has(pathname))return await themeProxy(req,res,url);
+    const glyphFile=pathname.match(previewGlyphRoute);
+    if(glyphFile){
+     if(!['GET','HEAD'].includes(req.method)||url.search)fail(404,'shop_entry_route','Diese Datei gibt es hier nicht.');
+     checkOrigin(req,{mutating:false});
+     const bytes=typeof slimmer?.previewGlyphFile==='function'?slimmer.previewGlyphFile(glyphFile[1]):null;
+     if(!bytes)fail(404,'shop_entry_route','Diese Datei gibt es hier nicht.');
+     res.writeHead(200,headersFor('application/json; charset=utf-8',{'Content-Length':bytes.length,'Cache-Control':'public, max-age=31536000, immutable'}));return res.end(req.method==='HEAD'?undefined:bytes);
+    }
     const fontFile=pathname.match(fontRoute);
     if(fontFile){
      if(!['GET','HEAD'].includes(req.method))fail(405,'shop_entry_method','Diese Anfrageart ist nicht verfügbar.');

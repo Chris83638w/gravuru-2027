@@ -1,7 +1,14 @@
 import {isLayeredDoorbell} from './doorbell-selection.mjs';
 import {observeVisibleResources} from './visible-resource-loader.mjs';
+function textReady(object,fonts){
+ const font=fonts?.[object.font];
+ if(!font)return false;
+ if(!font.previewSubset)return true;
+ const glyphs=font.regular?.glyphs;
+ return !!glyphs&&[...String(object.text??'').replace(/\n/g,'')].every(char=>Object.hasOwn(glyphs,char));
+}
 export function designResourcesReady(design,fonts={},motifs={}){
- return (design?.objects||[]).every(o=>o.type==='text'?!!fonts[o.font]:o.type==='motif'?typeof motifs[o.motif]==='string'||o.motif?.startsWith('ux-line-'):true);
+ return (design?.objects||[]).every(o=>o.type==='text'?textReady(o,fonts):o.type==='motif'?typeof motifs[o.motif]==='string'||o.motif?.startsWith('ux-line-'):true);
 }
 // Installed after the synchronous design/transfer wrappers. The current design
 // stays intact until every requested outline is present; stale clicks cannot win.

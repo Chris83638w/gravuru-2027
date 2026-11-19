@@ -10,6 +10,7 @@
 // 3. Rohlingbilder, zu denen im Repo eine gleichnamige WebP-Fassung liegt, werden durch diese ersetzt (nur Vorschau).
 // Ohne geladenen Katalog oder bei jedem Fehler bleibt das Modell unverändert.
 import fs from 'node:fs';import path from 'node:path';import {fileURLToPath} from 'node:url';import {createHash} from 'node:crypto';
+import {previewGlyphPack} from '../configurator/variant-m/preview-glyphs.mjs';
 
 const FONT_FILE=/^[a-z0-9-]{1,80}\.json$/;
 export const fontKey=font=>JSON.stringify([font?.regular??null,font?.bold??null]);
@@ -41,7 +42,14 @@ export function designFontNames(universal){
 const hashOf=body=>createHash('sha256').update(body).digest('hex');
 export function createModelSlimmer({fetchJson=null,surfaceSwaps=new Map(),cacheSize=16,fontUrl=null,maxFontFiles=1024,maxFontBytes=96*1024*1024,maxSources=4096}={}){
  let catalog=null,loading=null,fontBytes=0;
- const decisions=new Map(),fontFiles=new Map(),sources=new Map();
+ const decisions=new Map(),fontFiles=new Map(),sources=new Map(),previewFiles=new Map();
+ function attachPreviewGlyphs(universal){
+  const pack=previewGlyphPack(universal);if(!pack)return null;
+  previewFiles.set(pack.hash,pack.body);
+  while(previewFiles.size>64)previewFiles.delete(previewFiles.keys().next().value);
+  universal.localResources??={};universal.localResources.previewGlyphs=pack.url;return pack;
+ }
+ function previewGlyphFile(hash){return previewFiles.get(hash)||null;}
  function remember(body,hash=hashOf(body)){
   if(fontFiles.has(hash)){fontBytes-=fontFiles.get(hash).length;fontFiles.delete(hash);}
   fontFiles.set(hash,body);fontBytes+=body.length;
@@ -114,5 +122,5 @@ export function createModelSlimmer({fetchJson=null,surfaceSwaps=new Map(),cacheS
   }catch{}
   return report;
  }
- return {load,slim,ready:()=>!!catalog,fontFile};
+ return {load,slim,ready:()=>!!catalog,fontFile,attachPreviewGlyphs,previewGlyphFile};
 }

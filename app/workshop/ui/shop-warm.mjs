@@ -4,6 +4,7 @@ export function savingData(connection){return connection?.saveData===true||/(^|-
 export function validWarmManifest(value){
  if(value?.schema!=='gravuru-shop-warm/v1'||value.editorPath!=='/_merchant-acryl-editor.html'||value.catalogPath!=='/_acryl-runtime/lazy/katalog-kern.json'||!Array.isArray(value.fonts)||value.fonts.length>3||!Array.isArray(value.motifs)||value.motifs.length>6)return false;
  if(value.previews!==undefined&&(!Array.isArray(value.previews)||value.previews.length>3||!value.previews.every(url=>typeof url==='string'&&/^\/konfigurator\/shop\/vorschauen\/[a-f0-9]{64}\.svg$/.test(url))))return false;
+ if(value.previewGlyphs!==undefined&&!/^\/_acryl-runtime\/lazy\/vorschau-glyphen\/[a-f0-9]{64}\.json$/.test(value.previewGlyphs))return false;
  return value.fonts.every(f=>typeof f?.name==='string'&&f.name.length>0&&f.name.length<=120&&(f.url===undefined||/^\/konfigurator\/shop\/schriften\/[a-f0-9]{64}\.json$/.test(f.url)))&&value.motifs.every(k=>/^import-[a-f0-9]{24}$/.test(k));
 }
 export function currentEditorBundles(html){
@@ -23,6 +24,7 @@ export function warmAssetPaths(manifest,catalog){
  const index=new Map((catalog?.font_index||[]).map(f=>[f.name,f])),known=new Set((catalog?.motif_index||[]).map(m=>m.key)),out=[];
  for(const font of manifest.fonts){const entry=index.get(font.name);if(font.url)out.push(font.url);else if(/^[a-z0-9-]+\.json$/.test(entry?.file||''))out.push('/_acryl-runtime/lazy/schriften/'+entry.file);}
  for(const key of manifest.motifs)if(known.has(key))out.push('/_acryl-runtime/lazy/motive/'+key+'.json');
+ if(typeof manifest.previewGlyphs==='string')out.push(manifest.previewGlyphs);
  return [...new Set([...out,...(manifest.previews||[])])].slice(0,12);
 }
 export async function warmShopAssets(manifest,{fetchImpl=globalThis.fetch,connection=globalThis.navigator?.connection,signal}={}){

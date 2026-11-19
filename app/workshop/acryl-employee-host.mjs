@@ -15,6 +15,7 @@ export function acrylCacheControl(pathname,status){
  if(status!==200)return null;
  if(/^\/_acryl-bundle\/[A-Za-z0-9_.-]+-[a-f0-9]{16}\.m?js$/.test(pathname))return 'public, max-age=31536000, immutable';
  if(pathname===steelSurfacePath)return 'public, max-age=31536000, immutable';
+ if(/^\/_acryl-runtime\/lazy\/vorschau-glyphen\/[a-f0-9]{64}\.json$/.test(pathname))return 'public, max-age=31536000, immutable';
  if(isAcrylPublicEditorJson(pathname))return 'public, max-age=3600';
  if(pathname==='/_merchant-acryl-editor.html')return 'private, max-age=300';
  if(pathname.startsWith('/_acryl-runtime/images/option-')&&isStandardOptionImage(acrylRoute(pathname)))return 'public, max-age=31536000, immutable';

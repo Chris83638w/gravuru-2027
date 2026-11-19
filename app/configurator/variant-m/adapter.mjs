@@ -61,9 +61,11 @@ export function installUniversal(configInput) {
     return surface==='back'?{...sp,geometry:surfaceGeometry(sp.geometry,'back')}:sp;
   };
   const motifs = () => customerMotifs(config, el.motifs, el.catalog);
-  const svg = (design, {guides=false, selected='', handles=false, keepout=false, surface='front', screen=false, bare=false} = {}) => {
+  const cardFonts=()=>({...(el?.uxPreviewFonts||{}),...(el?.fontData||{})});
+  const svg = (design, {guides=false, selected='', handles=false, keepout=false, surface='front', screen=false, bare=false, fonts=null} = {}) => {
+    const faces=fonts||el.fontData;
     const visible={...design,textOnTop:true,objects:design.objects.filter(o=>!o.uxHidden&&objectSurface(o)===surface)};
-    let result=surfacePreview(studioSvg(profile(surface), visible, el.fontData,{frameKey:options.frame,color:options.color,mountingKey:options.mounting,motifs:motifs(),media:[],guides,selected,handles,id:'customer-'+(++renderId)}),bare?'':screen?previewSurfaceUrl(config.materialSurface):config.materialSurface,profile(surface).geometry);
+    let result=surfacePreview(studioSvg(profile(surface), visible, faces,{frameKey:options.frame,color:options.color,mountingKey:options.mounting,motifs:motifs(),media:[],guides,selected,handles,id:'customer-'+(++renderId)}),bare?'':screen?previewSurfaceUrl(config.materialSurface):config.materialSurface,profile(surface).geometry);
     if(dynamicFamily&&screen&&!bare)result=plateDepthPreview(result,profile(surface).geometry,'customer-'+renderId);
     if(config.reviewOnly){const doc=svgDocument(result);for(const o of visible.objects.filter(o=>o.type==='photoSlot'&&!o.uxUploadId)){const group=doc.querySelector('[data-object="'+CSS.escape(o.id)+'"]');if(group){for(const rect of group.querySelectorAll('rect:not([fill="transparent"])')){rect.setAttribute('fill','none');rect.setAttribute('stroke-dasharray','2 2');}for(const text of group.querySelectorAll('text'))text.setAttribute('fill',processing.ink);}}result=doc.documentElement.outerHTML;}
     if(el.uxObjectSVG){const doc=svgDocument(result);for(const o of visible.objects){const replacement=el.uxObjectSVG(o);if(replacement!==undefined){const group=doc.querySelector('[data-object="'+CSS.escape(o.id)+'"]');if(group)group.outerHTML=replacement;}}result=doc.documentElement.outerHTML;}
@@ -86,7 +88,7 @@ export function installUniversal(configInput) {
   // Leistung (Fehler 20.10.2026): Die Altgalerie ruft thumb() bei jedem sync für jede Karte auf –
   // beim Ziehen also je Fingerbewegung. Vorlagen ändern sich dabei nicht: Ergebnis zwischenspeichern.
   const thumbCache=new Map();let familyThumbOptions=null;
-  window.Funkklingel.thumb = (element, d) => { el = element; if(!el.isConnected||!el.uxLayoutReady)return pendingThumbnail; const design=(dynamicFormats?profile().designs:p.designs).find(x => x.id === d.id) || d; if(dynamicDoorbell&&!designResourcesReady(design,el.fontData,el.motifs))return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 120"><text x="120" y="65" text-anchor="middle" font-size="12" fill="#526b5d">Design wird geladen …</text></svg>'; const optionKey=JSON.stringify(options);if(dynamicProfiles&&familyThumbOptions!==optionKey){thumbCache.clear();familyThumbOptions=optionKey;}const key=JSON.stringify([options,design]); let markup=thumbCache.get(key); if(markup===undefined){markup=svg(design,{screen:true});if(!dynamicFamily&&thumbCache.size>64)thumbCache.clear();thumbCache.set(key,markup);} return markup; };
+  window.Funkklingel.thumb = (element, d) => { el = element; if(!el.isConnected||!el.uxLayoutReady)return pendingThumbnail; const design=(dynamicFormats?profile().designs:p.designs).find(x => x.id === d.id) || d; const faces=cardFonts(); if(dynamicDoorbell&&!designResourcesReady(design,faces,el.motifs))return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 120"><text x="120" y="65" text-anchor="middle" font-size="12" fill="#526b5d">Design wird geladen …</text></svg>'; const optionKey=JSON.stringify(options);if(dynamicProfiles&&familyThumbOptions!==optionKey){thumbCache.clear();familyThumbOptions=optionKey;}const key=JSON.stringify([options,design]); let markup=thumbCache.get(key); if(markup===undefined){markup=svg(design,{screen:true,fonts:faces});if(!dynamicFamily&&thumbCache.size>64)thumbCache.clear();thumbCache.set(key,markup);} return markup; };
   window.Funkklingel.prepare = element => {
     el = element; prepareNativeShellState(el,profile());
     const {width, height, shape, cornerRadiusMm=0} = profile().geometry;
@@ -316,13 +318,14 @@ export function installUniversal(configInput) {
       const thumbnailProfile=dynamicFormats?profile():p;
       for(const card of r.querySelectorAll('[data-c-design]')){
         const design=thumbnailProfile.designs.find(d=>d.id===card.dataset.cDesign);if(!design)continue;
-        if(dynamicDoorbell&&!designResourcesReady(design,el.fontData,el.motifs))continue;
+        const faces=cardFonts();
+        if(dynamicDoorbell&&!designResourcesReady(design,faces,el.motifs))continue;
         let thumbnail=thumbnails.get(card);
         if(!thumbnail||thumbnail.key!==thumbnailKey){
           if(card.hidden||budget<=0||el.uxThumbnailDeferred?.(card)===true){if(!card.hidden&&budget<=0)deferred++;if(!thumbnail)continue;}
           else{budget--;const shown=el.uxThumbnailDesign?.(design)||design;
             // Chris 21.10.2026: Miniaturen zeigen das Musterfoto wie die Vorschau, nicht den Schriftzug „Dein Foto“.
-            let markup=svg(shown,{screen:true});try{if(shown.objects.some(o=>o.type==='photoSlot')){const doc=svgDocument(markup);decorateEmptyPhotoSlots(doc,shown.objects,processing.ink,profile().material.color,config.localResources?.photoPlaceholders||[],design.id,config.localResources?.photoExamples||[],shown.objects.filter(o=>o.type==='photoSlot').map(o=>({designId:design.id,slotId:o.id,enabled:false})),{blendMode:profile().material.kind==='slate'?'lighten':undefined,grayscale:profile().material.kind==='slate'});for(const g of doc.querySelectorAll('[data-ux-empty-photo-slot]')){g.removeAttribute('data-ux-empty-photo-slot');g.removeAttribute('role');g.removeAttribute('tabindex');g.removeAttribute('aria-label');g.style.removeProperty('cursor');}markup=doc.documentElement.outerHTML;}}catch{}
+            let markup=svg(shown,{screen:true,fonts:faces});try{if(shown.objects.some(o=>o.type==='photoSlot')){const doc=svgDocument(markup);decorateEmptyPhotoSlots(doc,shown.objects,processing.ink,profile().material.color,config.localResources?.photoPlaceholders||[],design.id,config.localResources?.photoExamples||[],shown.objects.filter(o=>o.type==='photoSlot').map(o=>({designId:design.id,slotId:o.id,enabled:false})),{blendMode:profile().material.kind==='slate'?'lighten':undefined,grayscale:profile().material.kind==='slate'});for(const g of doc.querySelectorAll('[data-ux-empty-photo-slot]')){g.removeAttribute('data-ux-empty-photo-slot');g.removeAttribute('role');g.removeAttribute('tabindex');g.removeAttribute('aria-label');g.style.removeProperty('cursor');}markup=doc.documentElement.outerHTML;}}catch{}
             thumbnail={key:thumbnailKey,markup};}
         }
         // The legacy sync replaces the SVG with its portrait doorbell preview.

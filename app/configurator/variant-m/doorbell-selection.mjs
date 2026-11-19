@@ -55,17 +55,8 @@ function freeArea(g,frame){
  ].filter(r=>r.right>r.left&&r.bottom>r.top);
  return list.sort((a,b)=>(b.right-b.left)*(b.bottom-b.top)-(a.right-a.left)*(a.bottom-a.top))[0]||{left:a.x,top:a.y,right:a.x+a.width,bottom:a.y+a.height};
 }
-// Callers mutate the returned profile. The cache stores one finished profile per
-// config object, option set and template stamp, and every call still receives
-// its own clone. A changed template text or coordinate misses the cache.
-const profileMemos=new WeakMap();
-function templateStamp(format){
- const g=format.profile.geometry;let s=g.width+'x'+g.height+'@'+g.bell.x+','+g.bell.y+'#';
- for(const d of format.profile.designs||[]){s+=d.id+':';for(const o of d.objects||[])s+=[o.id,o.type,o.x,o.y,o.w,o.h,o.text??'',o.font??'',o.rotation??0].join(',')+';';s+='|';}
- return s;
-}
-function computeDoorbellProfile(config,options,format){
- const p=clone(config.profile),f=format.profile;
+export function selectedDoorbellProfile(config,values={}){
+ const {options,format}=doorbellSelection(config,values),p=clone(config.profile),f=format.profile;
  for(const key of ['geometry','frames','mounting','materials','manufacturing','designs'])p[key]=clone(f[key]);
  p.admin={...clone(f.admin||{}),...clone(p.admin||{})};
  // Reference mid-tone from the retained drawing gradients; never a production ink.
@@ -82,16 +73,8 @@ function computeDoorbellProfile(config,options,format){
  const mounting=p.mounting.options.find(m=>m.key===options.mounting);
  g.holes=mounting?.visibleScrews?p.mounting.holes.map(h=>({...h,diameter:p.mounting.holeDiameterMm})):[];
  delete p.mountingPreview; // Layered studioSvg renders screws once from mounting.options.
- const frame=p.frames.find(item=>item.key===options.frame);if(!frame)fail('Unbekannte Rahmenausführung.');
+ const frame=p.frames.find(f=>f.key===options.frame);if(!frame)fail('Unbekannte Rahmenausführung.');
  g.designArea=freeArea(g,frame);return p;
-}
-export function selectedDoorbellProfile(config,values={}){
- const {options,format}=doorbellSelection(config,values),key=JSON.stringify(options)+'\n'+templateStamp(format);
- let bucket=profileMemos.get(config);
- if(!bucket){bucket=new Map();profileMemos.set(config,bucket);}
- let memo=bucket.get(key);
- if(!memo){memo=computeDoorbellProfile(config,options,format);if(bucket.size>=256)bucket.clear();bucket.set(key,memo);}
- return clone(memo);
 }
 export function selectedDoorbellDesign(c,id,o={}){
  const {options,format}=doorbellSelection(c,o),p=format.profile;

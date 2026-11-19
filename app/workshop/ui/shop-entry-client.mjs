@@ -236,8 +236,19 @@ export function createShopEntryClient({token,fetchImpl=globalThis.fetch,editStor
     }));
     return resources;
   }
+  function seedInlinePreviews(universal,resources){
+    const inline=universal?.localResources?.inlinePreviews;
+    if(!inline||typeof inline!=='object')return;
+    for(const [hash,value] of Object.entries(inline)){
+      if(!/^[a-f0-9]{64}$/.test(hash)||typeof value!=='string'||!value.startsWith('data:image/svg+xml;base64,'))continue;
+      const url=WORKSHOP+'design-assets/'+hash+'/preview.svg';
+      resources[url]=value;resources[url.replace(WORKSHOP,ACRYL)]=value;
+    }
+  }
   function loadResources(universal,toDataUrl){
-    return loadPreviewPaths(allPreviewPaths(universal),toDataUrl,Object.create(null));
+    const resources=Object.create(null);
+    seedInlinePreviews(universal,resources);
+    return loadPreviewPaths([...allPreviewPaths(universal)].filter(url=>resources[url]===undefined),toDataUrl,resources);
   }
   function prepareDoorbellResources(universal,toDataUrl){
     if(universal.doorbell?.schema!=='gravuru-doorbell/v1')return null;

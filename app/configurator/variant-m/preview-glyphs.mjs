@@ -2,6 +2,8 @@
 // font, limited to the template characters. Production and the stage keep the
 // full font in el.fontData and never read this pack.
 import {createHash} from 'node:crypto';
+import fs from 'node:fs';
+import path from 'node:path';
 
 export const PREVIEW_GLYPH_SCHEMA='gravuru-preview-glyphs/v1';
 export const previewGlyphPath=hash=>'/_acryl-runtime/lazy/vorschau-glyphen/'+hash+'.json';
@@ -44,4 +46,15 @@ export function previewGlyphPack(universal){
  const body=Buffer.from(JSON.stringify({schema:PREVIEW_GLYPH_SCHEMA,characters,fonts}));
  const hash=createHash('sha256').update(body).digest('hex');
  return {hash,body,url:previewGlyphPath(hash)};
+}
+export function writePreviewGlyphPack(directory,pack){
+ if(!directory||!/^[a-f0-9]{64}$/.test(pack?.hash||'')||!Buffer.isBuffer(pack.body))return null;
+ fs.mkdirSync(directory,{recursive:true});
+ const file=path.join(directory,pack.hash+'.json');
+ const temp=file+'.'+process.pid+'.tmp';
+ fs.writeFileSync(temp,pack.body);fs.renameSync(temp,file);return file;
+}
+export function readPreviewGlyphPack(directory,hash){
+ if(!directory||!/^[a-f0-9]{64}$/.test(hash||''))return null;
+ try{return fs.readFileSync(path.join(directory,hash+'.json'));}catch{return null;}
 }

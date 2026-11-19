@@ -4,6 +4,8 @@ import {shopWarmManifest} from './shop-warm-manifest.mjs';
 import {createPublicDesignPreviewCache} from './public-design-preview-cache.mjs';
 import {createPublicDesignPreviews} from './public-design-previews.mjs';
 import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
 import {createModelSlimmer,surfaceSwapsFrom,DEFAULT_SURFACE_DIR} from './shop-model-slim.mjs';
 import {createHash,randomBytes} from 'node:crypto';
 import {prepareThemeCart} from './theme-cart.mjs';
@@ -212,7 +214,8 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
  const fontRoute=new RegExp('^'+pagePath+'schriften/([a-f0-9]{64})\\.json$');
  const previewGlyphRoute=/^\/_acryl-runtime\/lazy\/vorschau-glyphen\/([a-f0-9]{64})\.json$/;
  const previewRoute=new RegExp('^'+pagePath+'vorschauen/([a-f0-9]{64})\\.svg$');
- const slimmer=modelSlimmer===undefined?createModelSlimmer({fetchJson:async p=>{const r=await fetch(origin+p,{signal:AbortSignal.timeout(15000)});if(!r.ok)throw Error('http '+r.status);return r.json();},surfaceSwaps:surfaceSwapsFrom(DEFAULT_SURFACE_DIR),fontUrl:hash=>pagePath+'schriften/'+hash+'.json'}):modelSlimmer;
+ const previewGlyphDirectory=path.join(os.tmpdir(),'gravuru-vorschau-glyphen');
+ const slimmer=modelSlimmer===undefined?createModelSlimmer({fetchJson:async p=>{const r=await fetch(origin+p,{signal:AbortSignal.timeout(15000)});if(!r.ok)throw Error('http '+r.status);return r.json();},surfaceSwaps:surfaceSwapsFrom(DEFAULT_SURFACE_DIR),fontUrl:hash=>pagePath+'schriften/'+hash+'.json',previewGlyphDirectory}):modelSlimmer;
  function presentedModel(model,binding,store,designId=null){
   if(designId&&!moduleEnabled(model.universal,'designs')){
    const profile=selectedProfile(model.universal,binding.options);

@@ -1,7 +1,10 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import fs from 'node:fs';
 import zlib from 'node:zlib';
-import {previewGlyphPack} from './preview-glyphs.mjs';
+import os from 'node:os';
+import path from 'node:path';
+import {previewGlyphPack,readPreviewGlyphPack,writePreviewGlyphPack} from './preview-glyphs.mjs';
 import {designResourcesReady} from './doorbell-lazy-designs.mjs';
 import {studioSvg} from '../../platform/sources/app/shared/models/studio-svg.mjs';
 import {textPaths} from '../../platform/sources/app/shared/models/text-paths.mjs';
@@ -71,4 +74,10 @@ test('the loader stores the pack beside the stage font and data saving does not 
  assert.equal(validWarmManifest(manifest),true);
  const cold=await warmShopAssets(manifest,{connection:{saveData:true},fetchImpl:async()=>{throw Error('darf nicht laden');}});
  assert.equal(cold.skipped,true);
+ const directory=fs.mkdtempSync(path.join(os.tmpdir(),'glyphen-'));
+ writePreviewGlyphPack(directory,pack);
+ const again=createModelSlimmer({previewGlyphDirectory:directory});
+ assert.equal(again.previewGlyphFile(pack.hash).toString(),pack.body.toString());
+ assert.equal(readPreviewGlyphPack(directory,pack.hash).toString(),pack.body.toString());
+ fs.rmSync(directory,{recursive:true,force:true});
 });

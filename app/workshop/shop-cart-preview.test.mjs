@@ -43,6 +43,14 @@ test('the remaining Shopify file wait overlaps the price check',async()=>{
  assert.ok(elapsed>=tokenMs+pollMs-80);
 });
 
+test('a Shopify failure is not reported as still in progress',async()=>{
+ const payload={properties:{_gravuru_bild:'https://app.example/gestaltung/x.png'},preview:{base64:'abc',type:'image/png'}};
+ const failed=await attachRevisionPreview({checkoutImage:async()=>{throw Object.assign(Error('Shopify'),{code:'checkout_image_failed'});},source:'https://app.example/gestaltung/x.png',payload,waitMs:4000});
+ assert.equal(failed.failed,true);
+ assert.equal(failed.pending,undefined);
+ assert.equal(payload.properties._gravuru_checkout_image,undefined);
+});
+
 test('a ready Shopify file is still used, and a missing preview stays an error',async()=>{
  const payload={properties:{},preview:{base64:'abc'}};
  const ready=await attachRevisionPreview({checkoutImage:async()=>cdn,source:'x',payload});

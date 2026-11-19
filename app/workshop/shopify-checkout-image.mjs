@@ -5,7 +5,7 @@ import {cartTimingStep,cartTimingCount,cartTimingBackground} from './shop-cart-t
 // Cart Ajax uploads are not MediaImages. Shopify rejects those /uploads/ URLs
 // in lineUpdate.image even when the PNG itself is publicly readable.
 const fields='id fileStatus ... on MediaImage { image { url } }';
-const fail=()=>{throw Object.assign(Error('Die Gestaltungsvorschau wird noch für den Warenkorb vorbereitet. Bitte erneut versuchen.'),{status:502,code:'checkout_image_pending'});};
+const fail=code=>{const name=code||'checkout_image_failed';throw Object.assign(Error(name==='checkout_image_pending'?'Die Gestaltungsvorschau wird noch für den Warenkorb vorbereitet. Bitte erneut versuchen.':'Die Vorschau für die Kasse konnte nicht erstellt werden. Es wurde nichts in den Warenkorb gelegt.'),{status:name==='checkout_image_pending'?503:502,code:name});};
 export function createShopifyCheckoutImages({origin,shopDomain,getAccessToken},{fetchImpl=fetch,wait=delay}={}){
  const cache=new Map(),pending=new Map();
  async function request(stage,query,variables){
@@ -21,7 +21,7 @@ export function createShopifyCheckoutImages({origin,shopDomain,getAccessToken},{
   const filename='gravuru-gestaltung-'+createHash('sha256').update(source).digest('hex')+'.png';
   if(cache.has(filename)){cartTimingCount('checkout_image_cached');return cache.get(filename);}
   if(pending.has(filename)){cartTimingCount('checkout_image_pending');return pending.get(filename);}
-  if(pending.size>=64)fail();
+  if(pending.size>=64)fail('checkout_image_pending');
   cartTimingCount('checkout_image_started');
   const task=cartTimingBackground(async()=>{
    const found=await request('shopify_lookup','query CheckoutImage($query:String!){files(first:2,query:$query){nodes{'+fields+'}}}',{query:'filename:'+filename});

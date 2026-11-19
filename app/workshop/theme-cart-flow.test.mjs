@@ -112,7 +112,7 @@ test('theme cart: signed entry, immutable design, edit, quantity 1 to 4 and sign
   assert.equal(draftTiming.steps[step].calls,1,step);assert.ok(draftTiming.steps[step].durationMs>=0);assert.ok(created.headers['server-timing'].includes(step+';dur='));
  }
  const draft=created.data;assert.match(draft.id,/^adraft_/);assert.match(draft.token,/^[a-f0-9]{64}$/);assert.equal(draft.revision,1);
- const draftImageSource=imageSources.at(-1);assert.ok(draftImageSource.includes('/'+draft.snapshotId+'/'),'image starts immediately after successful persistence');
+ const draftImageSource=imageSources.at(-1);assert.ok(draftImageSource.includes('/'+draft.snapshotId+'/'),'image starts immediately after successful persistence');assert.equal(imageCalls,1,'d7b00751 starts the Shopify file when the draft is saved, before theme-cart');
  assert.equal(w.customerDrafts.cartConfigurations.forDraft(draft.id),null,'preparing an image does not create a cart configuration');
  const manifest=w.customerDrafts.review(draft.snapshotId).manifest;assert.deepEqual(manifest.selection.options,chosen.options);assert.equal(manifest.selection.price.quantity,2);assert.equal(manifest.productionReady,false);
  const storedCustomerPng=readReviewPackage(w.customerDrafts.downloadSnapshot(draft.snapshotId,'package'),manifest.packageSha256,NATIVE_REVIEW_SCHEMAS).files.get('gestaltung-kundenansicht.png');

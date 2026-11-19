@@ -9,6 +9,20 @@ import * as themeCart from './theme-cart-client.mjs';
 // Die kleine JSON-Übergabe (ohne PNG) wird nur angefordert, wenn der tatsächlich geladene Client sie verarbeiten kann.
 const {createThemeCartClient,cartImage}=themeCart,HOSTED_CART_PREVIEW=typeof themeCart.hostedPreview==='function';
 export function cartRequestHeaders(token,path){return {'X-Gravuru-Cart-Handoff':token,...(path==='data'&&HOSTED_CART_PREVIEW?{'X-Gravuru-Cart-Preview':'hosted'}:{})};}
+// Same step line as the cart handoff. Retries stay on this text; no extra control.
+export const CHECKOUT_WAIT_TEXT='4 von 4 · Vorschau wird für die Kasse vorbereitet …';
+export async function readCartDataUntilReady(fetchData,{sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms)),now=Date.now,intervalMs=1200,limitMs=14000,onWait}={}){
+ const started=now();
+ for(;;){
+  try{return await fetchData();}
+  catch(error){
+   if(error?.code!=='checkout_image_pending')throw error;
+   if(now()-started+intervalMs>limitMs)throw error;
+   onWait?.();
+   await sleep(intervalMs);
+  }
+ }
+}
 
 const EDITOR_ORIGIN='__EDITOR_ORIGIN__',PROXY='__PROXY_PATH__';
 const TOKEN=/^[a-f0-9]{64}$/;
@@ -250,12 +264,14 @@ export function install({root=window.Shopify?.routes?.root||'/'}={}){
  document.addEventListener('keydown',event=>{if(event.key==='Escape'&&!shell.hidden)hide();});
  async function request(token,path,method='GET'){
   const r=await fetch(PROXY+'/cart/'+path,{method,credentials:'same-origin',cache:'no-store',headers:cartRequestHeaders(token,path)});
-  const data=await r.json().catch(()=>({}));if(!r.ok)throw Error(data.error?.message||'Die Warenkorbübergabe konnte nicht geladen werden.');return data;
+  const data=await r.json().catch(()=>({}));
+  if(!r.ok){const error=Error(data.error?.message||'Die Warenkorbübergabe konnte nicht geladen werden.');error.code=data.error?.code;throw error;}
+  return data;
  }
  async function handoff(token,source,image){
-  if(busy)return;busy=true;say('4 von 4 · Deine Gestaltung wird in den Warenkorb gelegt …',{busy:true});
+  if(busy)return;busy=true;say(CHECKOUT_WAIT_TEXT,{busy:true});
   try{
-   const payload=await request(token,'data');
+   const payload=await readCartDataUntilReady(()=>request(token,'data'),{onWait:()=>say(CHECKOUT_WAIT_TEXT,{busy:true})});
    if(location.hostname!==payload.shopDomain)throw Error('Diese Übergabe gehört zu einem anderen Shop.');
    const client=createThemeCartClient({root,claim:()=>request(token,'claim','POST'),onProgress:text=>say('4 von 4 · '+text,{busy:true})});
    const submit=()=>client.submit(payload,{image}),result=navigator.locks?await navigator.locks.request('gravuru-theme-cart',submit):await submit();

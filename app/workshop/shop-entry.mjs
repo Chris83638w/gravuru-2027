@@ -485,6 +485,7 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
    withCustomerReadScope(()=>{active({headers:{'x-gravuru-shop-session':transfer.sessionToken}});cartTimingStep('cart_revalidate',()=>prepared.resolve());});
    if(imageTask){
     const resolved=await cartTimingStep('checkout_image_wait',()=>imageTask);
+    if(hosted&&resolved.failed)fail(502,'checkout_image_failed','Die Vorschau für die Kasse konnte nicht erstellt werden. Es wurde nichts in den Warenkorb gelegt.');
     if(hosted&&resolved.pending)fail(503,'checkout_image_pending','Die Gestaltungsvorschau wird noch für den Warenkorb vorbereitet. Bitte erneut versuchen.');
     if(resolved.hosted&&hosted){
      const body={...prepared.payload,properties:{...prepared.payload.properties}};

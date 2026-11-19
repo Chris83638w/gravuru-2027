@@ -27,14 +27,14 @@ test('restart reuses existing READY MediaImage without overwriting or creating i
 });
 test('foreign or mutable sources never reach Shopify',async()=>{
  const f=fixture([]);
- for(const s of [source.replace(origin,'https://evil.example'),source+'?x=1',source+'#x',origin+'/api/private',undefined])await assert.rejects(f.service(s),e=>e.code==='checkout_image_pending');
+ for(const s of [source.replace(origin,'https://evil.example'),source+'?x=1',source+'#x',origin+'/api/private',undefined])await assert.rejects(f.service(s),e=>e.code==='checkout_image_failed');
  assert.equal(f.calls.length,0);
 });
 test('failed, ambiguous, generic-file and wrong-CDN results cannot become checkout images',async()=>{
  for(const nodes of [[ready,ready],[{...ready,id:'gid://shopify/GenericFile/123'}],[{...ready,fileStatus:'FAILED'}],[{...ready,image:{url:url.replace('/files/gravuru-','/uploads/gravuru-')}}],[{...ready,image:{url:url.replace('0920','0000')}}]]){
   const f=fixture([{data:{files:{nodes}}}]);await assert.rejects(f.service(source),e=>e.status===502);
  }
- const f=fixture([{data:{files:{nodes:[]}}},{data:{fileCreate:{files:[],userErrors:[{message:'denied'}]}}},{data:{files:{nodes:[]}}}]);await assert.rejects(f.service(source),/Gestaltungsvorschau/);
+ const f=fixture([{data:{files:{nodes:[]}}},{data:{fileCreate:{files:[],userErrors:[{message:'denied'}]}}},{data:{files:{nodes:[]}}}]);await assert.rejects(f.service(source),error=>error.code==='checkout_image_failed');
 });
 
 test('pre-save and handoff share one immutable snapshot file; a later revision has a new source',async()=>{
@@ -92,7 +92,7 @@ test('pending capacity is bounded and a rejected warmup can retry after slots fi
 test('processing is bounded and a later retry can complete the same media',async()=>{
  const processing={id:ready.id,fileStatus:'PROCESSING'};
  const f=fixture([{data:{files:{nodes:[processing]}}},...Array.from({length:12},()=>({data:{node:processing}})),{data:{files:{nodes:[ready]}}}]);
- await assert.rejects(f.service(source),/Gestaltungsvorschau/);assert.equal(f.waits(),12);assert.equal(await f.service(source),url);
+ await assert.rejects(f.service(source),error=>error.code==='checkout_image_failed');assert.equal(f.waits(),12);assert.equal(await f.service(source),url);
 });
 
 test('image timings separate lookup, create, polling, pending reuse and ready cache without private URLs',async()=>{

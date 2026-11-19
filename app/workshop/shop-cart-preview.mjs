@@ -11,8 +11,9 @@ export async function attachRevisionPreview({checkoutImage,source,payload,waitMs
  const outcome=await Promise.race([settled,new Promise(resolve=>setTimeout(()=>resolve({timeout:true}),waitMs))]);
  if(outcome.timeout)settled.catch(()=>{});
  if(outcome.url){payload.properties._gravuru_checkout_image=outcome.url;return {hosted:outcome.url,status:'shopify_bereit'};}
- // A hosted client must not receive the PNG. The device would upload it, and
- // that upload is not a checkout image. The background file keeps running.
+ if(outcome.err?.code==='checkout_image_failed')return {hosted:null,status:'checkout_image_failed',failed:true};
+ // Still processing. A hosted client must not receive the PNG: the device
+ // would upload it, and that upload is not a checkout image.
  if(waitMs>0)return {hosted:null,status:'checkout_image_pending',pending:true};
  if(secured){payload.properties._gravuru_vorschau_status='persoenlich_gesichert';return {hosted:null,status:'persoenlich_gesichert'};}
  if(outcome.err)throw outcome.err;

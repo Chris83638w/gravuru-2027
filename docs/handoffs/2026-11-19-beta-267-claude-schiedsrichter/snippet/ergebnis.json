@@ -1,0 +1,307 @@
+{
+ "A neu (gravuru-warenkorb-bearbeiten, eingebunden)": {
+  "1 eigenes Bild (Zeile Nord)": {
+   "bild": [
+    "https://app-2027.gravuru-designwerkstatt.de/gestaltung/nord/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.png"
+   ],
+   "bearbeitenLink": 0,
+   "standardbild": 0,
+   "vergroessern": 1,
+   "status": [
+    "status: Persönliche Vorschau wird geladen …"
+   ],
+   "rohesAttribut": false,
+   "leer": false
+  },
+  "2 eigenes Bild (Zeile Süd, gleiche Variante)": {
+   "bild": [
+    "https://app-2027.gravuru-designwerkstatt.de/gestaltung/sued/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb.png"
+   ],
+   "bearbeitenLink": 0,
+   "standardbild": 0,
+   "vergroessern": 1,
+   "status": [
+    "status: Persönliche Vorschau wird geladen …"
+   ],
+   "rohesAttribut": false,
+   "leer": false
+  },
+  "3 nur Shopify-Datei (_gravuru_checkout_image)": {
+   "bild": [
+    "https://cdn.shopify.com/s/files/1/0001/files/gravuru-gestaltung-cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc.png"
+   ],
+   "bearbeitenLink": 0,
+   "standardbild": 0,
+   "vergroessern": 1,
+   "status": [
+    "status: Persönliche Vorschau wird geladen …"
+   ],
+   "rohesAttribut": false,
+   "leer": false
+  },
+  "4 Bild auf fremdem Server": {
+   "bild": [],
+   "bearbeitenLink": 0,
+   "standardbild": 0,
+   "vergroessern": 0,
+   "status": [
+    "status: Die persönliche Vorschau ist derzeit nicht verfügbar."
+   ],
+   "rohesAttribut": false,
+   "leer": false
+  },
+  "5 Bild mit eingeschleustem Attribut": {
+   "bild": [
+    "https://app-2027.gravuru-designwerkstatt.de/gestaltung/x&#34; onerror=&#34;alert(1)&#34; y=&#34;.png"
+   ],
+   "bearbeitenLink": 0,
+   "standardbild": 0,
+   "vergroessern": 1,
+   "status": [
+    "status: Persönliche Vorschau wird geladen …"
+   ],
+   "rohesAttribut": false,
+   "leer": false
+  },
+  "6 kein Bild, Status gesichert": {
+   "bild": [],
+   "bearbeitenLink": 0,
+   "standardbild": 0,
+   "vergroessern": 0,
+   "status": [
+    "status: Die persönliche Vorschau ist derzeit nicht verfügbar."
+   ],
+   "rohesAttribut": false,
+   "leer": false
+  },
+  "7 kein Bild, kein Status": {
+   "bild": [],
+   "bearbeitenLink": 0,
+   "standardbild": 0,
+   "vergroessern": 0,
+   "status": [
+    "status: Die persönliche Vorschau ist derzeit nicht verfügbar."
+   ],
+   "rohesAttribut": false,
+   "leer": false
+  },
+  "8 gewöhnlicher Artikel ohne Gestaltung": {
+   "bild": [],
+   "bearbeitenLink": 0,
+   "standardbild": 0,
+   "vergroessern": 0,
+   "status": [],
+   "rohesAttribut": false,
+   "leer": true
+  },
+  "9 Altbestand (Upload-Weg)": {
+   "bild": [
+    "https://cdn.shopify.com/s/files/1/x/e.png"
+   ],
+   "bearbeitenLink": 0,
+   "standardbild": 0,
+   "vergroessern": 1,
+   "status": [
+    "status: Persönliche Vorschau wird geladen …"
+   ],
+   "rohesAttribut": false,
+   "leer": false
+  }
+ },
+ "B eingebunden (gravuru-warenkorb-bearbeiten, unverändert)": {
+  "1 eigenes Bild (Zeile Nord)": {
+   "bild": [
+    "https://app-2027.gravuru-designwerkstatt.de/gestaltung/nord/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.png"
+   ],
+   "bearbeitenLink": 1,
+   "standardbild": 0,
+   "vergroessern": 1,
+   "status": [],
+   "rohesAttribut": false,
+   "leer": false
+  },
+  "2 eigenes Bild (Zeile Süd, gleiche Variante)": {
+   "bild": [
+    "https://app-2027.gravuru-designwerkstatt.de/gestaltung/sued/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb.png"
+   ],
+   "bearbeitenLink": 1,
+   "standardbild": 0,
+   "vergroessern": 1,
+   "status": [],
+   "rohesAttribut": false,
+   "leer": false
+  },
+  "3 nur Shopify-Datei (_gravuru_checkout_image)": {
+   "bild": [
+    "/standardbild/ring-standard.jpg"
+   ],
+   "bearbeitenLink": 1,
+   "standardbild": 1,
+   "vergroessern": 0,
+   "status": [],
+   "rohesAttribut": false,
+   "leer": false
+  },
+  "4 Bild auf fremdem Server": {
+   "bild": [
+    "/standardbild/ring-standard.jpg"
+   ],
+   "bearbeitenLink": 1,
+   "standardbild": 1,
+   "vergroessern": 0,
+   "status": [],
+   "rohesAttribut": false,
+   "leer": false
+  },
+  "5 Bild mit eingeschleustem Attribut": {
+   "bild": [
+    "https://app-2027.gravuru-designwerkstatt.de/gestaltung/x&#34; onerror=&#34;alert(1)&#34; y=&#34;.png"
+   ],
+   "bearbeitenLink": 1,
+   "standardbild": 0,
+   "vergroessern": 1,
+   "status": [],
+   "rohesAttribut": false,
+   "leer": false
+  },
+  "6 kein Bild, Status gesichert": {
+   "bild": [
+    "/standardbild/ring-standard.jpg"
+   ],
+   "bearbeitenLink": 1,
+   "standardbild": 1,
+   "vergroessern": 0,
+   "status": [],
+   "rohesAttribut": false,
+   "leer": false
+  },
+  "7 kein Bild, kein Status": {
+   "bild": [
+    "/standardbild/ring-standard.jpg"
+   ],
+   "bearbeitenLink": 1,
+   "standardbild": 1,
+   "vergroessern": 0,
+   "status": [],
+   "rohesAttribut": false,
+   "leer": false
+  },
+  "8 gewöhnlicher Artikel ohne Gestaltung": {
+   "bild": [],
+   "bearbeitenLink": 0,
+   "standardbild": 0,
+   "vergroessern": 0,
+   "status": [],
+   "rohesAttribut": false,
+   "leer": true
+  },
+  "9 Altbestand (Upload-Weg)": {
+   "bild": [
+    "https://cdn.shopify.com/s/files/1/x/e.png"
+   ],
+   "bearbeitenLink": 1,
+   "standardbild": 0,
+   "vergroessern": 1,
+   "status": [],
+   "rohesAttribut": false,
+   "leer": false
+  }
+ },
+ "B Vorschlag (gravuru-warenkorb-nur-vorschau, nicht eingebunden)": {
+  "1 eigenes Bild (Zeile Nord)": {
+   "bild": [
+    "https://app-2027.gravuru-designwerkstatt.de/gestaltung/nord/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.png"
+   ],
+   "bearbeitenLink": 0,
+   "standardbild": 0,
+   "vergroessern": 1,
+   "status": [],
+   "rohesAttribut": false,
+   "leer": false
+  },
+  "2 eigenes Bild (Zeile Süd, gleiche Variante)": {
+   "bild": [
+    "https://app-2027.gravuru-designwerkstatt.de/gestaltung/sued/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb.png"
+   ],
+   "bearbeitenLink": 0,
+   "standardbild": 0,
+   "vergroessern": 1,
+   "status": [],
+   "rohesAttribut": false,
+   "leer": false
+  },
+  "3 nur Shopify-Datei (_gravuru_checkout_image)": {
+   "bild": [],
+   "bearbeitenLink": 0,
+   "standardbild": 0,
+   "vergroessern": 0,
+   "status": [
+    "alert: Persönliche Vorschau konnte nicht geladen werden."
+   ],
+   "rohesAttribut": false,
+   "leer": false
+  },
+  "4 Bild auf fremdem Server": {
+   "bild": [],
+   "bearbeitenLink": 0,
+   "standardbild": 0,
+   "vergroessern": 0,
+   "status": [
+    "alert: Persönliche Vorschau konnte nicht geladen werden."
+   ],
+   "rohesAttribut": false,
+   "leer": false
+  },
+  "5 Bild mit eingeschleustem Attribut": {
+   "bild": [
+    "https://app-2027.gravuru-designwerkstatt.de/gestaltung/x&#34; onerror=&#34;alert(1)&#34; y=&#34;.png"
+   ],
+   "bearbeitenLink": 0,
+   "standardbild": 0,
+   "vergroessern": 1,
+   "status": [],
+   "rohesAttribut": false,
+   "leer": false
+  },
+  "6 kein Bild, Status gesichert": {
+   "bild": [],
+   "bearbeitenLink": 0,
+   "standardbild": 0,
+   "vergroessern": 0,
+   "status": [
+    "status: Persönliche Vorschau wird geladen."
+   ],
+   "rohesAttribut": false,
+   "leer": false
+  },
+  "7 kein Bild, kein Status": {
+   "bild": [],
+   "bearbeitenLink": 0,
+   "standardbild": 0,
+   "vergroessern": 0,
+   "status": [
+    "alert: Persönliche Vorschau konnte nicht geladen werden."
+   ],
+   "rohesAttribut": false,
+   "leer": false
+  },
+  "8 gewöhnlicher Artikel ohne Gestaltung": {
+   "bild": [],
+   "bearbeitenLink": 0,
+   "standardbild": 0,
+   "vergroessern": 0,
+   "status": [],
+   "rohesAttribut": false,
+   "leer": true
+  },
+  "9 Altbestand (Upload-Weg)": {
+   "bild": [],
+   "bearbeitenLink": 0,
+   "standardbild": 0,
+   "vergroessern": 0,
+   "status": [],
+   "rohesAttribut": false,
+   "leer": true
+  }
+ }
+}

@@ -1,0 +1,209 @@
+{
+  "origin": "http://127.0.0.1:18267",
+  "repetitions": 3,
+  "started": "2026-11-19T15:38:33.330Z",
+  "network": "ohne künstliche Drosselung",
+  "results": [
+    {
+      "device": "Mobil",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "run": 1,
+      "timings": [
+        {
+          "context": "kalt",
+          "entryThroughDesignMs": 12295,
+          "confirmThroughDecodedPaintMs": 7195,
+          "entryThroughDecodedPaintWithAutomatedInputMs": 28626,
+          "deviceImageSamplesMatched": 24,
+          "deviceImageSamples": 24,
+          "angle": {
+            "horizontal": 0,
+            "vertical": 0
+          }
+        },
+        {
+          "context": "warm",
+          "entryThroughDesignMs": 10455,
+          "confirmThroughDecodedPaintMs": 10204,
+          "entryThroughDecodedPaintWithAutomatedInputMs": 30000,
+          "deviceImageSamplesMatched": 24,
+          "deviceImageSamples": 24,
+          "angle": {
+            "horizontal": 16,
+            "vertical": 16
+          }
+        }
+      ],
+      "products": [
+        "ring",
+        "ring",
+        "heimathafen",
+        "schiefer",
+        "acryl"
+      ],
+      "files": [
+        {
+          "label": "SVG",
+          "bytes": 54417
+        },
+        {
+          "label": "Kontur-PDF",
+          "bytes": 1296
+        },
+        {
+          "label": "Druck-PDF",
+          "bytes": 314641
+        },
+        {
+          "label": "Entwurf und Originale",
+          "bytes": 1195746
+        }
+      ],
+      "pictures": [
+        {
+          "w": 952,
+          "h": 1600,
+          "png": "becb4dfa468e488c279224c50676de337a439ce7c8d66f368f8c18da79704ea3",
+          "pixels": "3f54a4967f535f9bbcb128af9bd984232d633b3ac938c1b574677c39f4d68930",
+          "alt": "Persönliche Vorschau · Klar & modern · Name: Haus · Text „Mustermann“: Nord · Text „12a“: 12"
+        },
+        {
+          "w": 952,
+          "h": 1600,
+          "png": "febdf57a68cf546f787331427827d109b91f2786c690d44a634d7349ab2e1b02",
+          "pixels": "676029297d8bf8c04d62b6ab06d1d1ac87dfabd76367b7d10671687f2b6a0afe",
+          "alt": "Persönliche Vorschau · Strichdesign · Name: Haus · Text „Mustermann“: Süd · Text „12a“: 27"
+        }
+      ],
+      "variant": "57471227756924",
+      "sku": "FK-AV2A-16x28-1441",
+      "totalCents": 9998,
+      "removal": "Nord entfernt, Süd mit identischer Vorschau nach Neuladen",
+      "passed": true
+    },
+    {
+      "device": "Mobil",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "run": 2,
+      "timings": [
+        {
+          "context": "kalt",
+          "entryThroughDesignMs": 12241,
+          "confirmThroughDecodedPaintMs": 7754,
+          "entryThroughDecodedPaintWithAutomatedInputMs": 29039,
+          "deviceImageSamplesMatched": 24,
+          "deviceImageSamples": 24,
+          "angle": {
+            "horizontal": 0,
+            "vertical": 0
+          }
+        },
+        {
+          "context": "warm",
+          "entryThroughDesignMs": 10212,
+          "confirmThroughDecodedPaintMs": 10374,
+          "entryThroughDecodedPaintWithAutomatedInputMs": 29537,
+          "deviceImageSamplesMatched": 24,
+          "deviceImageSamples": 24,
+          "angle": {
+            "horizontal": 16,
+            "vertical": 16
+          }
+        }
+      ],
+      "products": [
+        "ring",
+        "ring"
+      ],
+      "files": [],
+      "pictures": [
+        {
+          "w": 952,
+          "h": 1600,
+          "png": "becb4dfa468e488c279224c50676de337a439ce7c8d66f368f8c18da79704ea3",
+          "pixels": "3f54a4967f535f9bbcb128af9bd984232d633b3ac938c1b574677c39f4d68930",
+          "alt": "Persönliche Vorschau · Klar & modern · Name: Haus · Text „Mustermann“: Nord · Text „12a“: 12"
+        },
+        {
+          "w": 952,
+          "h": 1600,
+          "png": "febdf57a68cf546f787331427827d109b91f2786c690d44a634d7349ab2e1b02",
+          "pixels": "676029297d8bf8c04d62b6ab06d1d1ac87dfabd76367b7d10671687f2b6a0afe",
+          "alt": "Persönliche Vorschau · Strichdesign · Name: Haus · Text „Mustermann“: Süd · Text „12a“: 27"
+        }
+      ],
+      "variant": "57471227756924",
+      "sku": "FK-AV2A-16x28-1441",
+      "totalCents": 9998,
+      "removal": "Nord entfernt, Süd mit identischer Vorschau nach Neuladen",
+      "passed": true
+    },
+    {
+      "device": "Mobil",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "run": 3,
+      "timings": [
+        {
+          "context": "kalt",
+          "entryThroughDesignMs": 12313,
+          "confirmThroughDecodedPaintMs": 7820,
+          "entryThroughDecodedPaintWithAutomatedInputMs": 28680,
+          "deviceImageSamplesMatched": 24,
+          "deviceImageSamples": 24,
+          "angle": {
+            "horizontal": 0,
+            "vertical": 0
+          }
+        },
+        {
+          "context": "warm",
+          "entryThroughDesignMs": 10167,
+          "confirmThroughDecodedPaintMs": 10308,
+          "entryThroughDecodedPaintWithAutomatedInputMs": 29277,
+          "deviceImageSamplesMatched": 24,
+          "deviceImageSamples": 24,
+          "angle": {
+            "horizontal": 16,
+            "vertical": 16
+          }
+        }
+      ],
+      "products": [
+        "ring",
+        "ring"
+      ],
+      "files": [],
+      "pictures": [
+        {
+          "w": 952,
+          "h": 1600,
+          "png": "becb4dfa468e488c279224c50676de337a439ce7c8d66f368f8c18da79704ea3",
+          "pixels": "3f54a4967f535f9bbcb128af9bd984232d633b3ac938c1b574677c39f4d68930",
+          "alt": "Persönliche Vorschau · Klar & modern · Name: Haus · Text „Mustermann“: Nord · Text „12a“: 12"
+        },
+        {
+          "w": 952,
+          "h": 1600,
+          "png": "febdf57a68cf546f787331427827d109b91f2786c690d44a634d7349ab2e1b02",
+          "pixels": "676029297d8bf8c04d62b6ab06d1d1ac87dfabd76367b7d10671687f2b6a0afe",
+          "alt": "Persönliche Vorschau · Strichdesign · Name: Haus · Text „Mustermann“: Süd · Text „12a“: 27"
+        }
+      ],
+      "variant": "57471227756924",
+      "sku": "FK-AV2A-16x28-1441",
+      "totalCents": 9998,
+      "removal": "Nord entfernt, Süd mit identischer Vorschau nach Neuladen",
+      "passed": true
+    }
+  ],
+  "browser": "153.0.8010.12"
+}

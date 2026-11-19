@@ -1,0 +1,4 @@
+99c99
+<   const page=await context.newPage();page.setDefaultTimeout(18000);
+---
+>   const page=await context.newPage();page.setDefaultTimeout(90000);if(process.env.DROSSEL==='1'){const cdp=await context.newCDPSession(page);await cdp.send('Network.enable');await cdp.send('Emulation.setCPUThrottlingRate',{rate:4});await cdp.send('Network.emulateNetworkConditions',{offline:false,latency:150,downloadThroughput:1.6*1024*1024/8,uploadThroughput:0.75*1024*1024/8});}

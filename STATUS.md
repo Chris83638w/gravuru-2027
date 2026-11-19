@@ -1,3 +1,12 @@
+## 19.11.2026 · Claude (Operator, als Schiedsrichter) · #267: Prüfung Kandidat A gegen Kandidat B
+
+- Auftrag: [Prüfauftrag in #265](https://github.com/Chris83638w/gravuru-2027/issues/265#issuecomment-7012429273). Nur lokale Prüfung. **Keine Runtime-, Shop- oder Preisänderung, kein Merge, kein Deployment, keine Bestellung.** Öffentlicher Produktdatensatz des Ring-Schilds einmal gelesen.
+- Übergabe: [docs/handoffs/2026-11-19-beta-267-claude-schiedsrichter.md](docs/handoffs/2026-11-19-beta-267-claude-schiedsrichter.md), Skripte, Rohwerte und Bilder im gleichnamigen Ordner.
+- Geprüft: A `347aa63f`, B `b85bc416` und B `949dae02`, Basis `f84433f8`. Gesamtsuite A 2790/2795 (1 Fehler schon an der Basis, 4 übersprungen), B 2794/2802 (4 Fehler schon an der Basis, 4 übersprungen). Astras Browserprüfung 6/6 und im Handyprofil 3/3. Eigene Gegenprobe (Preis, Revision, zehn manipulierte Zustellungen, Storno, Dateien) an Basis, A und B. Beide Warenkorb-Snippets mit neun gleichen Zeilen gerendert. Aufpreis bei A im Browser bis in den Prüfwarenkorb.
+- Ergebnis: Empfehlung ein Weg, A als Grundlage. A zeigt im Warenkorb das Bild aus dem R15-Editor, B zeichnet es mit einem zweiten Programm nach. Geschwindigkeit: noch kein fairer Sieger. A lokal im Handyprofil 7,75 s vom letzten Klick bis zum Bild, mit zwei Positionen 10,31 s; das Zeitziel ist bei keinem belegt.
+- Offen: echter Shopify-Warenkorb, Kasse, Bestellung, echtes Handy, geschützte Beta (kein Zugang). Bei A bleibt die Wartezeit auf die Shopify-Bilddatei im echten Weg; das Vorschaubild hat rund 0,5 MB je Position.
+- Nächster Schritt: Entscheidung von Chris zu „ein Weg“; danach A in getrennte Commits teilen und Testshop-Lauf mit konkreter Freigabe.
+
 ## 19.11.2026 · Claude (Operator, als Prüfer) · #267 Phase A: Codepfad, Messreihe, Paritätsmatrix
 
 - Auftrag: Chris, Issue #267 („Gemeinsame Beta“). Nur Analyse und Messung. **Keine Runtime-, Shop- oder Preisänderung, kein Merge, kein Deployment.**

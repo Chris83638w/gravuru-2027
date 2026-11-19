@@ -1,0 +1,407 @@
+{
+ "basis-f84433f8": {
+  "g1_preis": {
+   "gespeichert": true,
+   "menge": 3,
+   "unitCents": 2847,
+   "totalCents": 8541,
+   "bezahltJeStueck": "28.47",
+   "konfiguration": {
+    "id": "konfig_627b66a8-43f2-4c16-ac3b-07532f142935",
+    "rev": 3
+   },
+   "productionReady": false
+  },
+  "g2_spaetereAenderung": {
+   "status": 200,
+   "neuerSnapshot": true,
+   "paketUnveraendert": true,
+   "textUnveraendert": true,
+   "textDerBestellung": "[\"U N S E R   A N F A N G\",\"Anna & Lukas\",\"Am See in Hamburg\",\"14.06.2020\",\"Hier begann unser Wir.\"]",
+   "zeileUnveraendert": true
+  },
+  "g3_wiederholung": {
+   "konturGleich": false,
+   "druckGleich": true,
+   "svgGleich": true,
+   "bytes": {
+    "kontur": 1296,
+    "druck": 179228,
+    "svg": 54542
+   }
+  },
+  "eigenschaften": [
+   "Bearbeitbarer Entwurf",
+   "Design",
+   "Format",
+   "Gravurtext",
+   "_Entwurf",
+   "_gravuru_bearbeiten",
+   "_gravuru_bild",
+   "_gravuru_checkout_image",
+   "_gravuru_config",
+   "_gravuru_motifs",
+   "_gravuru_offer",
+   "_gravuru_rev",
+   "_gravuru_revision",
+   "_gravuru_uploads"
+  ],
+  "g4": {
+   "gleicheZustellungNochmal": {
+    "angenommeneZeilen": 1,
+    "fehler": [],
+    "duplicate": true
+   },
+   "alteRevision": {
+    "angenommeneZeilen": 0,
+    "fehler": [
+     "{\"id\":\"ordererror_acdca289-2553-4062-86ea-43b3b4d3a3ec\",\"shopDomain\":\"gravuru-design.myshopify.com\",\"orderId\":"
+    ],
+    "duplicate": false
+   },
+   "preisEinCentWeniger": {
+    "angenommeneZeilen": 0,
+    "fehler": [
+     "{\"id\":\"ordererror_50dab232-f81a-4c77-9837-789e927d4fc1\",\"shopDomain\":\"gravuru-design.myshopify.com\",\"orderId\":"
+    ],
+    "duplicate": false
+   },
+   "fremdeKonfiguration": {
+    "angenommeneZeilen": 0,
+    "fehler": [
+     "{\"id\":\"ordererror_e8315a5b-afde-4bc8-9e73-9d00a810a66e\",\"shopDomain\":\"gravuru-design.myshopify.com\",\"orderId\":"
+    ],
+    "duplicate": false
+   },
+   "fremdesAngebot": {
+    "angenommeneZeilen": 0,
+    "fehler": [
+     "{\"id\":\"ordererror_ed2dff56-6733-43de-8f4e-6df8b992ec3a\",\"shopDomain\":\"gravuru-design.myshopify.com\",\"orderId\":"
+    ],
+    "duplicate": false
+   },
+   "ohneAngebot": {
+    "angenommeneZeilen": 0,
+    "fehler": [
+     "{\"id\":\"ordererror_834b0e98-7a87-45d2-812d-c2853b734f14\",\"shopDomain\":\"gravuru-design.myshopify.com\",\"orderId\":"
+    ],
+    "duplicate": false
+   },
+   "unbezahlt": {
+    "abgewiesen": "Zahlungsstatus, Währung oder Bestellpositionen sind nicht geeignet.",
+    "status": 422
+   },
+   "falscheSignatur": {
+    "abgewiesen": "Bestellnachricht nicht bestätigt.",
+    "status": 401
+   },
+   "fremderShop": {
+    "abgewiesen": "Shop, API-Version oder Ereignis passen nicht zur Testanbindung.",
+    "status": 422
+   },
+   "zweiteBestellungMitGleicherPosition": {
+    "angenommeneZeilen": 0,
+    "fehler": [
+     "{\"id\":\"ordererror_7e342e34-9ee4-4816-a643-274f8fb4233a\",\"shopDomain\":\"gravuru-design.myshopify.com\",\"orderId\":"
+    ],
+    "duplicate": false
+   },
+   "erstattungThema": {
+    "abgewiesen": "Shop, API-Version oder Ereignis passen nicht zur Testanbindung.",
+    "status": 422
+   },
+   "zeilenZumSnapshotDanach": 1,
+   "statusDerZeileDanach": [
+    "test-paid-event-recorded"
+   ]
+  },
+  "g5_storno": {
+   "vorher": [
+    "test-paid-event-recorded"
+   ],
+   "storno": {
+    "ergebnis": "{\"duplicate\":false,\"orderId\":\"123456\",\"matchedLines\":1,\"statuses\":[{\"id\":\"orderline_cb83fa12-1196-4d39-b4dc-c3f0e23274c5\",\"state\":\"cancelled\",\"label\":\"Storniert\",\"financialStatus\":\"paid\",\"financialLabel\":\"Bezahlt\",\"cancelled\":true,\"conflict\":false,\"updatedAt\":"
+   },
+   "nachher": [
+    {
+     "status": "test-paid-event-recorded",
+     "productionReady": false,
+     "cancelled": null
+    }
+   ],
+   "nochmal": {
+    "ergebnis": "{\"duplicate\":true,\"orderId\":\"123456\",\"matchedLines\":1,\"statuses\":[{\"id\":\"orderline_cb83fa12-1196-4d39-b4dc-c3f0e23274c5\",\"state\":\"cancelled\",\"label\":\"Storniert\",\"financialStatus\":\"paid\",\"financialLabel\":\"Bezahlt\",\"cancelled\":true,\"conflict\":false,\"updatedAt\":\""
+   }
+  }
+ },
+ "A-347aa63f": {
+  "g1_preis": {
+   "gespeichert": true,
+   "menge": 3,
+   "unitCents": 2847,
+   "totalCents": 8541,
+   "bezahltJeStueck": "28.47",
+   "konfiguration": {
+    "id": "konfig_13a1518c-e515-455f-89a5-e068f106b4f0",
+    "rev": 3
+   },
+   "productionReady": false
+  },
+  "g2_spaetereAenderung": {
+   "status": 200,
+   "neuerSnapshot": true,
+   "paketUnveraendert": true,
+   "textUnveraendert": true,
+   "textDerBestellung": "[\"Muster 267\",\"Anna & Lukas\",\"Am See in Hamburg\",\"14.06.2020\",\"Hier begann unser Wir.\"]",
+   "zeileUnveraendert": true
+  },
+  "g3_wiederholung": {
+   "konturGleich": true,
+   "druckGleich": true,
+   "svgGleich": true,
+   "bytes": {
+    "kontur": 1296,
+    "druck": 166722,
+    "svg": 48795
+   }
+  },
+  "eigenschaften": [
+   "Bearbeitbarer Entwurf",
+   "Design",
+   "Format",
+   "Gravurtext",
+   "_Entwurf",
+   "_gravuru_bearbeiten",
+   "_gravuru_bild",
+   "_gravuru_checkout_image",
+   "_gravuru_config",
+   "_gravuru_motifs",
+   "_gravuru_offer",
+   "_gravuru_rev",
+   "_gravuru_revision",
+   "_gravuru_uploads"
+  ],
+  "g4": {
+   "gleicheZustellungNochmal": {
+    "angenommeneZeilen": 1,
+    "fehler": [],
+    "duplicate": true
+   },
+   "alteRevision": {
+    "angenommeneZeilen": 0,
+    "fehler": [
+     "{\"id\":\"ordererror_53a47664-33e4-4ba6-adf0-7afde1453a3d\",\"shopDomain\":\"gravuru-design.myshopify.com\",\"orderId\":"
+    ],
+    "duplicate": false
+   },
+   "preisEinCentWeniger": {
+    "angenommeneZeilen": 0,
+    "fehler": [
+     "{\"id\":\"ordererror_fc02549b-265e-4a8b-865d-e911298d87d8\",\"shopDomain\":\"gravuru-design.myshopify.com\",\"orderId\":"
+    ],
+    "duplicate": false
+   },
+   "fremdeKonfiguration": {
+    "angenommeneZeilen": 0,
+    "fehler": [
+     "{\"id\":\"ordererror_d2a65e8c-2539-43ec-a970-5ffe74e9ffe8\",\"shopDomain\":\"gravuru-design.myshopify.com\",\"orderId\":"
+    ],
+    "duplicate": false
+   },
+   "fremdesAngebot": {
+    "angenommeneZeilen": 0,
+    "fehler": [
+     "{\"id\":\"ordererror_35cb8e4a-69fa-48bb-932b-81b8f8c6f8d3\",\"shopDomain\":\"gravuru-design.myshopify.com\",\"orderId\":"
+    ],
+    "duplicate": false
+   },
+   "ohneAngebot": {
+    "angenommeneZeilen": 0,
+    "fehler": [
+     "{\"id\":\"ordererror_eb2ff243-d95c-4857-9905-68821d3844c3\",\"shopDomain\":\"gravuru-design.myshopify.com\",\"orderId\":"
+    ],
+    "duplicate": false
+   },
+   "unbezahlt": {
+    "abgewiesen": "Zahlungsstatus, Währung oder Bestellpositionen sind nicht geeignet.",
+    "status": 422
+   },
+   "falscheSignatur": {
+    "abgewiesen": "Bestellnachricht nicht bestätigt.",
+    "status": 401
+   },
+   "fremderShop": {
+    "abgewiesen": "Shop, API-Version oder Ereignis passen nicht zur Testanbindung.",
+    "status": 422
+   },
+   "zweiteBestellungMitGleicherPosition": {
+    "angenommeneZeilen": 0,
+    "fehler": [
+     "{\"id\":\"ordererror_d42f8051-c357-4036-8f5a-92ef52898909\",\"shopDomain\":\"gravuru-design.myshopify.com\",\"orderId\":"
+    ],
+    "duplicate": false
+   },
+   "erstattungThema": {
+    "abgewiesen": "Shop, API-Version oder Ereignis passen nicht zur Testanbindung.",
+    "status": 422
+   },
+   "zeilenZumSnapshotDanach": 1,
+   "statusDerZeileDanach": [
+    "test-paid-event-recorded"
+   ]
+  },
+  "g5_storno": {
+   "vorher": [
+    "test-paid-event-recorded"
+   ],
+   "storno": {
+    "ergebnis": "{\"duplicate\":false,\"orderId\":\"123456\",\"matchedLines\":1,\"statuses\":[{\"id\":\"orderline_e884b727-6ce4-47dd-a21a-8d9d666ce74a\",\"state\":\"cancelled\",\"label\":\"Storniert\",\"financialStatus\":\"paid\",\"financialLabel\":\"Bezahlt\",\"cancelled\":true,\"conflict\":false,\"updatedAt\":"
+   },
+   "nachher": [
+    {
+     "status": "test-paid-event-recorded",
+     "productionReady": false,
+     "cancelled": null
+    }
+   ],
+   "nochmal": {
+    "ergebnis": "{\"duplicate\":true,\"orderId\":\"123456\",\"matchedLines\":1,\"statuses\":[{\"id\":\"orderline_e884b727-6ce4-47dd-a21a-8d9d666ce74a\",\"state\":\"cancelled\",\"label\":\"Storniert\",\"financialStatus\":\"paid\",\"financialLabel\":\"Bezahlt\",\"cancelled\":true,\"conflict\":false,\"updatedAt\":\""
+   }
+  }
+ },
+ "B-b85bc416": {
+  "g1_preis": {
+   "gespeichert": true,
+   "menge": 3,
+   "unitCents": 2847,
+   "totalCents": 8541,
+   "bezahltJeStueck": "28.47",
+   "konfiguration": {
+    "id": "konfig_27b30d36-d353-4310-a9aa-3bbb216ba519",
+    "rev": 3
+   },
+   "productionReady": false
+  },
+  "g2_spaetereAenderung": {
+   "status": 200,
+   "neuerSnapshot": true,
+   "paketUnveraendert": true,
+   "textUnveraendert": true,
+   "textDerBestellung": "[\"U N S E R   A N F A N G\",\"Anna & Lukas\",\"Am See in Hamburg\",\"14.06.2020\",\"Hier begann unser Wir.\"]",
+   "zeileUnveraendert": true
+  },
+  "g3_wiederholung": {
+   "konturGleich": false,
+   "druckGleich": true,
+   "svgGleich": true,
+   "bytes": {
+    "kontur": 1296,
+    "druck": 179228,
+    "svg": 54542
+   }
+  },
+  "eigenschaften": [
+   "Bearbeitbarer Entwurf",
+   "Design",
+   "Format",
+   "Gravurtext",
+   "_Entwurf",
+   "_gravuru_bearbeiten",
+   "_gravuru_bild",
+   "_gravuru_checkout_image",
+   "_gravuru_config",
+   "_gravuru_motifs",
+   "_gravuru_offer",
+   "_gravuru_rev",
+   "_gravuru_revision",
+   "_gravuru_uploads"
+  ],
+  "g4": {
+   "gleicheZustellungNochmal": {
+    "angenommeneZeilen": 1,
+    "fehler": [],
+    "duplicate": true
+   },
+   "alteRevision": {
+    "angenommeneZeilen": 0,
+    "fehler": [
+     "{\"id\":\"ordererror_a9c5d128-ae18-4acf-88f2-4a23822c1386\",\"shopDomain\":\"gravuru-design.myshopify.com\",\"orderId\":"
+    ],
+    "duplicate": false
+   },
+   "preisEinCentWeniger": {
+    "angenommeneZeilen": 0,
+    "fehler": [
+     "{\"id\":\"ordererror_ae9dd082-818a-4bda-ae9a-76df0176a1b4\",\"shopDomain\":\"gravuru-design.myshopify.com\",\"orderId\":"
+    ],
+    "duplicate": false
+   },
+   "fremdeKonfiguration": {
+    "angenommeneZeilen": 0,
+    "fehler": [
+     "{\"id\":\"ordererror_d55dac7a-2869-470d-baa2-c766cb9615f2\",\"shopDomain\":\"gravuru-design.myshopify.com\",\"orderId\":"
+    ],
+    "duplicate": false
+   },
+   "fremdesAngebot": {
+    "angenommeneZeilen": 0,
+    "fehler": [
+     "{\"id\":\"ordererror_85a7644a-bdda-4553-94e9-ef0c8c6adb4f\",\"shopDomain\":\"gravuru-design.myshopify.com\",\"orderId\":"
+    ],
+    "duplicate": false
+   },
+   "ohneAngebot": {
+    "angenommeneZeilen": 0,
+    "fehler": [
+     "{\"id\":\"ordererror_14607704-5f23-4259-94b4-6fd1cef0040b\",\"shopDomain\":\"gravuru-design.myshopify.com\",\"orderId\":"
+    ],
+    "duplicate": false
+   },
+   "unbezahlt": {
+    "abgewiesen": "Zahlungsstatus, Währung oder Bestellpositionen sind nicht geeignet.",
+    "status": 422
+   },
+   "falscheSignatur": {
+    "abgewiesen": "Bestellnachricht nicht bestätigt.",
+    "status": 401
+   },
+   "fremderShop": {
+    "abgewiesen": "Shop, API-Version oder Ereignis passen nicht zur Testanbindung.",
+    "status": 422
+   },
+   "zweiteBestellungMitGleicherPosition": {
+    "angenommeneZeilen": 0,
+    "fehler": [
+     "{\"id\":\"ordererror_24ade920-c35f-4d34-9571-4700c0e8c580\",\"shopDomain\":\"gravuru-design.myshopify.com\",\"orderId\":"
+    ],
+    "duplicate": false
+   },
+   "erstattungThema": {
+    "abgewiesen": "Shop, API-Version oder Ereignis passen nicht zur Testanbindung.",
+    "status": 422
+   },
+   "zeilenZumSnapshotDanach": 1,
+   "statusDerZeileDanach": [
+    "test-paid-event-recorded"
+   ]
+  },
+  "g5_storno": {
+   "vorher": [
+    "test-paid-event-recorded"
+   ],
+   "storno": {
+    "ergebnis": "{\"duplicate\":false,\"orderId\":\"123456\",\"matchedLines\":1,\"statuses\":[{\"id\":\"orderline_9090182b-d896-44c1-866c-101b4e9335cf\",\"state\":\"cancelled\",\"label\":\"Storniert\",\"financialStatus\":\"paid\",\"financialLabel\":\"Bezahlt\",\"cancelled\":true,\"conflict\":false,\"updatedAt\":"
+   },
+   "nachher": [
+    {
+     "status": "test-paid-event-recorded",
+     "productionReady": false,
+     "cancelled": null
+    }
+   ],
+   "nochmal": {
+    "ergebnis": "{\"duplicate\":true,\"orderId\":\"123456\",\"matchedLines\":1,\"statuses\":[{\"id\":\"orderline_9090182b-d896-44c1-866c-101b4e9335cf\",\"state\":\"cancelled\",\"label\":\"Storniert\",\"financialStatus\":\"paid\",\"financialLabel\":\"Bezahlt\",\"cancelled\":true,\"conflict\":false,\"updatedAt\":\""
+   }
+  }
+ }
+}

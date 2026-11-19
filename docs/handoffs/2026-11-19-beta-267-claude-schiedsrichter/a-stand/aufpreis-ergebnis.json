@@ -1,0 +1,119 @@
+{
+ "mountings": [
+  {
+   "value": "K00",
+   "label": "Keine Befestigung · ohne Aufpreis",
+   "price": [
+    "49,99 €"
+   ]
+  },
+  {
+   "value": "GWS",
+   "label": "Verdeckte Bolzen · +5,99 €",
+   "price": [
+    "55,98 €",
+    "49,99 €"
+   ]
+  },
+  {
+   "value": "KRA",
+   "label": "Selbstklebend – raue Flächen · +4,99 €",
+   "price": [
+    "54,98 €",
+    "49,99 €"
+   ]
+  },
+  {
+   "value": "SIL",
+   "label": "Mit Silikon · +4,99 €",
+   "price": [
+    "54,98 €",
+    "49,99 €"
+   ]
+  },
+  {
+   "value": "B04S",
+   "label": "Bohrlöcher mit Schrauben · +3,69 €",
+   "price": [
+    "53,68 €",
+    "49,99 €"
+   ]
+  }
+ ],
+ "initial": {
+  "value": "K00",
+  "choices": [
+   {
+    "value": "K00",
+    "label": "Keine Befestigung · ohne Aufpreis"
+   },
+   {
+    "value": "GWS",
+    "label": "Verdeckte Bolzen · +5,99 €"
+   },
+   {
+    "value": "KRA",
+    "label": "Selbstklebend – raue Flächen · +4,99 €"
+   },
+   {
+    "value": "SIL",
+    "label": "Mit Silikon · +4,99 €"
+   },
+   {
+    "value": "B04S",
+    "label": "Bohrlöcher mit Schrauben · +3,69 €"
+   }
+  ],
+  "price": [
+   "49,99 €"
+  ]
+ },
+ "pick": {
+  "value": "GWS",
+  "label": "Verdeckte Bolzen · +5,99 €",
+  "price": [
+   "55,98 €",
+   "49,99 €"
+  ]
+ },
+ "cart": {
+  "items": [
+   {
+    "id": "konfig_64a88935-0639-4219-8dc9-d05317ac523c",
+    "rev": 1,
+    "product": "ring",
+    "productName": "Klingelschild für Ring Wired Pro (3.Gen) 5DFYA2 – Hochformat",
+    "design": "Strichdesign",
+    "lettering": "Name: Familie · Text „Mustermann“: Mustermann · Text „12a“: 12a",
+    "options": [
+     {
+      "label": "Format",
+      "value": "Hochformat"
+     },
+     {
+      "label": "Edelstahlrahmen",
+      "value": "Ganzer Rahmen"
+     },
+     {
+      "label": "Acrylfarbe",
+      "value": "Schwarz"
+     },
+     {
+      "label": "Befestigung",
+      "value": "Verdeckte Bolzen"
+     }
+    ],
+    "variant": "57471227789692",
+    "sku": "FK-AV2A-16x28-1442",
+    "quantity": 1,
+    "unitCents": 5598,
+    "totalCents": 5598,
+    "print": false,
+    "imageSha256": "5f97ea07a70d94d7ff1bf77147d5244761bed4abb7b7473ae85d6268acbd74b3"
+   }
+  ],
+  "totalCents": 5598
+ },
+ "cartText": "Klingelschild für Ring Wired Pro (3.Gen) 5DFYA2 – Hochformat\n\nStrichdesign · Name: Familie · Text „Mustermann“: Mustermann · Text „12a“: 12a\n\nHochformat · Ganzer Rahmen · Schwarz · Verdeckte Bolzen\n\n1 × 55,98 €\n\nEntfernen",
+ "sum": "Summe 55,98 €"
+}

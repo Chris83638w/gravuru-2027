@@ -1,0 +1,164 @@
+[
+ {
+  "viewport": "pc",
+  "throttle": false,
+  "warm": false,
+  "elapsedMs": 476,
+  "decoded": {
+   "count": 2,
+   "widths": [
+    800,
+    800
+   ],
+   "texts": [
+    "Haus Nord 12",
+    "Haus Süd 27"
+   ],
+   "edit": false
+  }
+ },
+ {
+  "viewport": "pc",
+  "throttle": false,
+  "warm": true,
+  "elapsedMs": 341,
+  "decoded": {
+   "count": 2,
+   "widths": [
+    800,
+    800
+   ],
+   "texts": [
+    "Haus Nord 12",
+    "Haus Süd 27"
+   ],
+   "edit": false
+  }
+ },
+ {
+  "viewport": "pc",
+  "throttle": false,
+  "warm": true,
+  "elapsedMs": 415,
+  "decoded": {
+   "count": 2,
+   "widths": [
+    800,
+    800
+   ],
+   "texts": [
+    "Haus Nord 12",
+    "Haus Süd 27"
+   ],
+   "edit": false
+  }
+ },
+ {
+  "viewport": "mobile",
+  "throttle": false,
+  "warm": false,
+  "elapsedMs": 476,
+  "decoded": {
+   "count": 2,
+   "widths": [
+    800,
+    800
+   ],
+   "texts": [
+    "Haus Nord 12",
+    "Haus Süd 27"
+   ],
+   "edit": false
+  }
+ },
+ {
+  "viewport": "mobile",
+  "throttle": false,
+  "warm": true,
+  "elapsedMs": 317,
+  "decoded": {
+   "count": 2,
+   "widths": [
+    800,
+    800
+   ],
+   "texts": [
+    "Haus Nord 12",
+    "Haus Süd 27"
+   ],
+   "edit": false
+  }
+ },
+ {
+  "viewport": "mobile",
+  "throttle": false,
+  "warm": true,
+  "elapsedMs": 450,
+  "decoded": {
+   "count": 2,
+   "widths": [
+    800,
+    800
+   ],
+   "texts": [
+    "Haus Nord 12",
+    "Haus Süd 27"
+   ],
+   "edit": false
+  }
+ },
+ {
+  "viewport": "mobile",
+  "throttle": true,
+  "warm": false,
+  "elapsedMs": 5753,
+  "decoded": {
+   "count": 2,
+   "widths": [
+    800,
+    800
+   ],
+   "texts": [
+    "Haus Nord 12",
+    "Haus Süd 27"
+   ],
+   "edit": false
+  }
+ },
+ {
+  "viewport": "mobile",
+  "throttle": true,
+  "warm": true,
+  "elapsedMs": 5757,
+  "decoded": {
+   "count": 2,
+   "widths": [
+    800,
+    800
+   ],
+   "texts": [
+    "Haus Nord 12",
+    "Haus Süd 27"
+   ],
+   "edit": false
+  }
+ },
+ {
+  "viewport": "mobile",
+  "throttle": true,
+  "warm": true,
+  "elapsedMs": 5684,
+  "decoded": {
+   "count": 2,
+   "widths": [
+    800,
+    800
+   ],
+   "texts": [
+    "Haus Nord 12",
+    "Haus Süd 27"
+   ],
+   "edit": false
+  }
+ }
+]

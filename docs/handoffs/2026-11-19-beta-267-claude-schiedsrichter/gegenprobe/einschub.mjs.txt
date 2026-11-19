@@ -1,0 +1,50 @@
+ // ===== Claude · Schiedsrichter-Gegenprobe zu #267 (außerhalb des Repositorys, nur lokal) =====
+ // Selbsttragend: holt seine Hilfsfunktionen selbst und leitet die spätere Änderung aus `input` ab,
+ // damit derselbe Einschub an Basis, Kandidat A und Kandidat B unverändert läuft.
+ await t.test('Claude-Gegenprobe: bestellter Stand nach späteren Änderungen und manipulierten Zustellungen',async()=>{
+  const {digest:gDigest}=await import('__ROOT__/app/workshop/review-package.mjs');
+  const {acrylicArtwork:gArtwork}=await import('__ROOT__/app/workshop/acrylic-artwork.mjs');
+  const {acrylicContourProof:gContour,createAcrylicPrintProof:gPrint}=await import('__ROOT__/app/workshop/acrylic-print-proof.mjs');
+  const line=received.lines[0],out={};
+  const [stored]=w.orderIntake.forSnapshot(line.snapshotId);
+  out.g1_preis={gespeichert:!!stored,menge:stored?.quantity,unitCents:stored?.unitCents,totalCents:stored?.totalCents,bezahltJeStueck:paid.line_items[0].price,konfiguration:stored?.configuration,productionReady:stored?.productionReady};
+  const pkg=()=>w.customerDrafts.downloadSnapshot(line.snapshotId,'package');
+  const vorher=gDigest(pkg());
+  const texte=async()=>JSON.stringify(JSON.parse((await gArtwork(pkg(),vorher)).files.get('produkt-und-gestaltung.json')).state.design.objects.filter(o=>o.type==='text').map(o=>o.text));
+  const textVorher=await texte();
+  const spaeter=structuredClone(input);spaeter.quantity=3;spaeter.objects.find(o=>o.type==='text').text='Nach der Bestellung';
+  const r4=await request('/api/shop-entry/acrylic-drafts/'+draft.id,'POST',{input:spaeter,expectedRevision:3},headers);
+  out.g2_spaetereAenderung={status:r4.status,meldung:r4.status===200?undefined:JSON.stringify(r4.data).slice(0,220),neuerSnapshot:!!r4.data?.snapshotId&&r4.data.snapshotId!==line.snapshotId,paketUnveraendert:gDigest(pkg())===vorher,textUnveraendert:(await texte())===textVorher,textDerBestellung:textVorher,zeileUnveraendert:JSON.stringify(w.orderIntake.forSnapshot(line.snapshotId))===JSON.stringify(stored?[stored]:[])};
+  const dateien=async()=>{const c=await gContour(pkg(),vorher),pr=await gPrint(pkg(),vorher,{dpi:300,bleedMm:0,whiteBleedMm:0},{orderLines:[line]});return {kontur:c,druck:pr.pdf,svg:Buffer.from((await gArtwork(pkg(),vorher)).svg)};};
+  const a=await dateien();await new Promise(r=>setTimeout(r,1100));const b=await dateien();
+  const dir=process.env.GEGENPROBE_OUT||'.';fs.writeFileSync(dir+'/konturA.pdf',a.kontur);fs.writeFileSync(dir+'/konturB.pdf',b.kontur);fs.writeFileSync(dir+'/druck.pdf',a.druck);fs.writeFileSync(dir+'/gestaltung.svg',a.svg);
+  out.g3_wiederholung={konturGleich:gDigest(a.kontur)===gDigest(b.kontur),druckGleich:gDigest(a.druck)===gDigest(b.druck),svgGleich:gDigest(a.svg)===gDigest(b.svg),bytes:{kontur:a.kontur.length,druck:a.druck.length,svg:a.svg.length}};
+  const cfg={shopDomain,secret,apiVersion:'2026-07'};
+  const liefere=(id,payload,extra={})=>{const body=Buffer.from(JSON.stringify(payload));try{const r=w.orderIntake.receive(body,{'x-shopify-hmac-sha256':createHmac('sha256',extra.secret||secret).update(body).digest('base64'),'x-shopify-shop-domain':extra.shop||shopDomain,'x-shopify-api-version':'2026-07','x-shopify-topic':extra.topic||'orders/paid','x-shopify-webhook-id':id},cfg);return {angenommeneZeilen:r.lines?.length??null,fehler:(r.errors||[]).map(e=>String(e.message||e.code||JSON.stringify(e)).slice(0,110)),duplicate:r.duplicate};}catch(e){return {abgewiesen:String(e.message).slice(0,120),status:e.status};}};
+  const L=paid.line_items[0],prop=(name,fn)=>L.properties.map(p=>p.name===name?{...p,value:fn(String(p.value))}:p);
+  const anders=(id,change,orderId)=>liefere(id,{...paid,id:orderId,line_items:[{...L,id:9900+orderId%100,...change}]});
+  const kipp=v=>v.slice(0,-1)+(v.endsWith('0')?'1':'0');
+  out.eigenschaften=L.properties.map(p=>p.name).sort();
+  out.g4={
+   gleicheZustellungNochmal:liefere('evt-theme-cart-0001',paid),
+   alteRevision:anders('evt-claude-rev',{properties:prop('_gravuru_rev',v=>String(Number(v)-1))},223001),
+   preisEinCentWeniger:anders('evt-claude-preis',{price:(Number(L.price)-0.01).toFixed(2)},223002),
+   fremdeKonfiguration:anders('evt-claude-cfg',{properties:prop('_gravuru_config',kipp)},223003),
+   fremdesAngebot:anders('evt-claude-offer',{properties:prop('_gravuru_offer',kipp)},223004),
+   ohneAngebot:anders('evt-claude-nooffer',{properties:L.properties.filter(p=>p.name!=='_gravuru_offer')},223005),
+   unbezahlt:liefere('evt-claude-pending',{...paid,id:223006,financial_status:'pending',line_items:[{...L,id:9906}]}),
+   falscheSignatur:liefere('evt-claude-sig',{...paid,id:223007},{secret:'falsch'}),
+   fremderShop:liefere('evt-claude-shop',{...paid,id:223008},{shop:'anderer-shop.myshopify.com'}),
+   zweiteBestellungMitGleicherPosition:anders('evt-claude-second',{},223009),
+   
+   erstattungThema:liefere('evt-claude-refund',{id:777,order_id:paid.id,refund_line_items:[{line_item_id:L.id,quantity:3}]},{topic:'refunds/create'})
+  };
+  const roh=(id,payload,topic)=>{const body=Buffer.from(JSON.stringify(payload));try{const r=w.orderIntake.receive(body,{'x-shopify-hmac-sha256':createHmac('sha256',secret).update(body).digest('base64'),'x-shopify-shop-domain':shopDomain,'x-shopify-api-version':'2026-07','x-shopify-topic':topic,'x-shopify-webhook-id':id},cfg);return {ergebnis:JSON.stringify(r).slice(0,260)};}catch(e){return {abgewiesen:String(e.message).slice(0,120),status:e.status};}};
+  out.g5_storno={vorher:w.orderIntake.forSnapshot(line.snapshotId).map(l=>l.status),
+   storno:roh('evt-claude-cancel',{...paid,updated_at:'2026-11-19T10:00:00Z',cancelled_at:'2026-11-19T10:00:00Z',cancel_reason:'customer'},'orders/cancelled')};
+  out.g5_storno.nachher=w.orderIntake.forSnapshot(line.snapshotId).map(l=>({status:l.status,productionReady:l.productionReady,cancelled:l.cancelledAt??l.cancelled??null}));
+  out.g5_storno.nochmal=roh('evt-claude-cancel',{...paid,updated_at:'2026-11-19T10:00:00Z',cancelled_at:'2026-11-19T10:00:00Z',cancel_reason:'customer'},'orders/cancelled');
+  out.g4.zeilenZumSnapshotDanach=w.orderIntake.forSnapshot(line.snapshotId).length;
+  out.g4.statusDerZeileDanach=w.orderIntake.forSnapshot(line.snapshotId).map(l=>l.status);
+  console.log('GEGENPROBE '+JSON.stringify(out));
+ });

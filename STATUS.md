@@ -1,3 +1,7 @@
+## 19.11.2026 · Astra · Kandidat A auf der geschützten Beta (#267)
+
+Die getrennte Beta liefert Commit `347aa63f` aus. Zwölf Ring-Gestaltungen auf PC und Handybreite bestätigen jeweils das Gerätefoto, den richtigen Gravurtext und die zum Design gehörende Zierlinie. Die Einzelposition lässt sich entfernen. 337 Projektprüfungen und sechs zusätzliche Gravurprüfungen bestanden. Das Fünf-Sekunden-Ziel, das externe Shopify-Testshop-Szenario am neuen Stand und die unabhängige Gegenüberstellung mit Grok sind offen. Claude erhält denselben Freeze zur Gegenprüfung. [Geschützte Abnahme und Originalbilder](docs/handoffs/2026-11-19-beta-267/GESCHUETZTE-BETA.md)
+
 ## 19.11.2026 · Astra · Persönliche Vorschau im R15-Warenkorb (#267)
 
 Im gemeinsamen Entwurfs-PR #268 gibt es den Ring-Vorschauweg mit zwei unterschiedlich personalisierten Positionen derselben Variante zu insgesamt 99,98 €. Die isolierte Prüfung bestätigt auf PC und Handybreite beide Bilder bis zur tatsächlichen Anzeige, eindeutige Revisionen, die lesbare Vergrößerung und das Entfernen einer einzelnen Position. Am zugrunde liegenden Stand bestanden 317 Abnahmetests einschließlich einer bytegleichen Nachfertigung des Kontur-PDFs. [Screenshots, Messwerte und Quellen](docs/handoffs/2026-11-19-beta-267/WARENKORB-VORSCHAU.md) · [Paritätsmatrix](docs/handoffs/2026-11-19-beta-267/README.md)

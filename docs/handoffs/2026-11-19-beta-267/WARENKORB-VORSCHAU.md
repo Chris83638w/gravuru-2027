@@ -1,5 +1,7 @@
 # Persönliche Warenkorbvorschauen
 
+Der folgende lokale Versuch ist die frühere Vergleichsserie. Am danach ausgelieferten Kandidaten prüft der Browser zusätzlich das Gerätefoto der Ring-Klingel und beide Schenkel der originalen Zierlinie. [Bilder und Zeiten des geschützten Kandidaten](GESCHUETZTE-BETA.md)
+
 Chris hat den Kundenweg am 19. November auf eine schreibgeschützte Bildvorschau je Warenkorbposition festgelegt. Kunden gestalten ihr Produkt vor der Übergabe. Im Warenkorb lassen sich persönliche Bilder ansehen, vergrößern und Positionen entfernen. Eine neue Gestaltung beginnt wieder an der Produktseite. [Verbindliche Entscheidung](https://github.com/Chris83638w/gravuru-2027/issues/267#issuecomment-7008823567)
 
 | PC | Handybreite |

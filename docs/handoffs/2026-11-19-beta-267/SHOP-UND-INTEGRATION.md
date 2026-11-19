@@ -1,5 +1,7 @@
 # Ring im Live-Shop und gemeinsamer Beta-Stand
 
+Für die jetzt erreichbare isolierte Beta gelten Commit `347aa63f` und die dort erhobenen Messwerte. Dieses Dokument erhält die zuvor beobachteten Shopify-Stände. [Aktuelle geschützte Abnahme](GESCHUETZTE-BETA.md)
+
 **Dieses Protokoll dokumentiert den Stand vor Chris’ Entscheidung für einen reinen Vorschau-Warenkorb. Maßgeblich für die aktuelle Abnahme ist der [persönliche Vorschauweg mit zwei Positionen](WARENKORB-VORSCHAU.md).**
 
 Am 19. November legte Chris den Live-Shop als Prüfziel für den echten Warenkorb fest. Auf dem Prüf-PC lief der isolierte gemeinsame R15-Stand. Im Shop wurde die bereits veröffentlichte R15-Darstellung am selben Ring-Artikel aufgerufen. Das Shop-Ergebnis und die lokalen Zeitvergleiche beziehen sich auf verschiedene Builds. [R15 im Live-Shop](https://gravuru-design.myshopify.com/apps/konfigurator/start?product=16126387257724&variant=57471227756924&back=%2Fproducts%2Fklingelschild-ring-wired-pro-3-gen-5dfya2-personalisiert&ui=prio-r15) · [Entwurfs-PR](https://github.com/Chris83638w/gravuru-2027/pull/268)

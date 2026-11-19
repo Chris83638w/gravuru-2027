@@ -11,6 +11,9 @@ assert.ok(Number.isInteger(repetitions)&&repetitions>=1&&repetitions<=10);
 const photo = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAIAAABLbSncAAAAIElEQVR4nGM0Lp/JgA0wYRWlUOJMIIplCAmT9emU2QEA60kEUyzU9KoAAAAASUVORK5CYII=','base64');
 const results = [];
 const report = {origin,repetitions,started:new Date().toISOString(),network:'ohne künstliche Drosselung',results};
+report.saveData=process.env.BETA_SAVE_DATA==='1';
+report.mobileThrottle=process.env.BETA_MOBILE_THROTTLE==='1'?{rttMs:80,downMbps:8,upMbps:2,cpu:4}:null;
+if(report.mobileThrottle)report.network='PC ungedrosselt, Mobil gemäß mobileThrottle';
 const store = ()=>fs.writeFileSync(path.join(output,'Protokoll.json'),JSON.stringify(report,null,2)+'\n');
 const elapsed = start=>Math.round(performance.now()-start);
 
@@ -97,6 +100,13 @@ async function run(browser,device,viewport,runNo) {
   const mobile=device==='Mobil';
   const context=await browser.newContext({viewport,isMobile:mobile,hasTouch:mobile,deviceScaleFactor:1,locale:'de-DE',...(hosted?{httpCredentials:{username:'astra',password:process.env.BETA_REVIEW_PASSWORD,origin}}:{})});
   const page=await context.newPage();page.setDefaultTimeout(18000);
+  if(mobile && report.mobileThrottle){
+    const cdp=await context.newCDPSession(page);
+    await cdp.send('Network.enable');
+    await cdp.send('Network.emulateNetworkConditions',{offline:false,latency:80,downloadThroughput:1000000,uploadThroughput:250000});
+    await cdp.send('Emulation.setCPUThrottlingRate',{rate:4});
+  }
+  const phases=process.env.BETA_PHASES==='1' ? await require('./customer-timing.cjs').captureCustomerTiming(context,page,{saveData:process.env.BETA_SAVE_DATA==='1'}) : null;
   // Record the exact Blob handed to the image element without a second image fetch or re-encoding.
   await page.addInitScript(()=>{
     const original=URL.createObjectURL.bind(URL);window.proofImageBlobs=new Map();
@@ -141,6 +151,10 @@ async function run(browser,device,viewport,runNo) {
     let firstPng;let count=0;
     for(const person of [{name:'Nord',number:'12',design:'FK-SEITLICH'},{name:'Süd',number:'27',design:'FK-RUNDUM'}]){
       const begin=performance.now();await enter('ring');await tab('design').click();
+      if(phases) {
+        // Give the first real card a rendering opportunity before selecting a different design.
+        await page.frames().find(f=>f!==page.mainFrame()).waitForFunction(()=>!!window.betaCardsPaint);
+      }
       const card=frame.locator('[data-c-design="'+person.design+'"]:visible').first();
       if(await card.getAttribute('aria-pressed')!=='true')await card.click();
       await frame.locator('[data-c-design="'+person.design+'"][aria-pressed=true]').first().waitFor({state:'attached'});
@@ -149,6 +163,13 @@ async function run(browser,device,viewport,runNo) {
       const deviceReference=await devicePhotoReference(page.frames().find(f=>f!==page.mainFrame()));
       if(runNo===1&&count===0)await capture('Editor');
       const confirmMs=await save(++count);
+      let trace;
+      if(phases) {
+        await page.waitForFunction(()=>!!window.betaCartPaint);
+        trace=await phases();
+        assert.ok(trace.events.some(e=>e.kind==='Erste sichtbare Designkarte'),'Erste gezeichnete Karte fehlt');
+        assert.ok(trace.events.some(e=>e.kind==='Designwechsel'),'Gezeichneter Designwechsel fehlt');
+      }
       const fullMs=elapsed(begin);
       const pics=await verifyImages(rows,count);const cart=await data();
       const deviceMatches=await checkDevicePhoto(rows.locator('.image-box img').nth(count-1),deviceReference);
@@ -164,7 +185,7 @@ async function run(browser,device,viewport,runNo) {
         assert.equal(pics[0].png,firstPng);assert.notEqual(pics[0].pixels,pics[1].pixels);
         row.pictures=pics;row.variant=cart.items[0].variant;row.sku=cart.items[0].sku;row.totalCents=cart.totalCents;
       }
-      row.timings.push({context:count===1?'kalt':'warm',entryThroughDesignMs:entryMs,confirmThroughDecodedPaintMs:confirmMs,entryThroughDecodedPaintWithAutomatedInputMs:fullMs,deviceImageSamplesMatched:deviceMatches,deviceImageSamples:24,angle});
+      row.timings.push({context:count===1?'kalt':'warm',entryThroughDesignMs:entryMs,confirmThroughDecodedPaintMs:confirmMs,entryThroughDecodedPaintWithAutomatedInputMs:fullMs,deviceImageSamplesMatched:deviceMatches,deviceImageSamples:24,angle,...(trace?{trace}:{})});
     }
     await noEdit(rows);assert.match(await page.locator('#sum').innerText(),/99,98/);
     if(runNo===1)await capture('Warenkorb');
@@ -182,7 +203,7 @@ async function run(browser,device,viewport,runNo) {
     const remaining=await verifyImages(rows,1);assert.equal(remaining[0].png,row.pictures[1].png);
     assert.match(await rows.innerText(),/Süd/);assert.match(await page.locator('#sum').innerText(),/49,99/);
     row.removal='Nord entfernt, Süd mit identischer Vorschau nach Neuladen';
-    if(runNo===1) {
+    if(runNo===1 && process.env.BETA_RING_ONLY!=='1') {
       for(const key of ['heimathafen','schiefer','acryl'])await enter(key);
       await tab('upload').click();
       await frame.locator('[data-ux-file]').setInputFiles({name:'Testfoto.png',mimeType:'image/png',buffer:photo});

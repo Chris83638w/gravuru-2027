@@ -37,3 +37,38 @@ test('the selected design takes priority and background template loads resume af
  assert.equal(el.selected,'b');
 });
 test('all126 true imported products load fewer start fonts without dropping available templates',()=>{const dir=path.resolve('..','import-dryrun','documents');if(!fs.existsSync(dir))return;const files=fs.readdirSync(dir).filter(f=>f.endsWith('.json'));assert.equal(files.length,126);for(const file of files){const c=JSON.parse(fs.readFileSync(path.join(dir,file))).config;const all=startNeeds({...c,doorbell:null}).fonts;const initial=startNeeds(c).fonts;assert.ok(initial.length<all.length,file);assert.ok(initial.length>0);assert.equal(c.profile.designs.length,16);}});
+
+test('data saving draws a visible card and does not load a hidden one', async () => {
+ const visibleCard = {dataset:{cDesign:'same'}, isConnected:true};
+ const hiddenCard = {dataset:{cDesign:'hidden'}, isConnected:true};
+ let intersect, onHide, drawn=0, disconnects=0;
+ const view = {
+  navigator:{connection:{saveData:true}},
+  IntersectionObserver:class {
+   constructor(callback,options){intersect=callback;assert.equal(options.rootMargin,'0px');}
+   observe(){} disconnect(){disconnects++;}
+  },
+  requestAnimationFrame:callback=>setImmediate(callback),
+  addEventListener:(event,callback)=>{if(event==='pagehide')onHide=callback;}
+ };
+ const gallery={className:'c-gallery',ownerDocument:{defaultView:view},querySelectorAll:()=>[visibleCard,hiddenCard]};
+ const calls=[];
+ const el={
+  state:{mOptions:{format:'small'}}, shadowRoot:{querySelector:selector=>selector==='.c-gallery'?gallery:null}, fontData:{},motifs:{},chooseDesign(){},
+  uxRefreshThumbnails(){drawn++;},
+  async uxEnsureDesignResources(design,{priority}){calls.push([design.objects[0].font,priority]);this.fontData[design.objects[0].font]={};}
+ };
+ const formats=['small','large'].map(format=>({key:format,profile:{designs:['same','hidden'].map(id=>({id,objects:[{type:'text',font:format+'-'+id}]}))}}));
+ installDoorbellDesignLoading(el,{doorbell:{schema:'gravuru-doorbell/v1',defaultFormatKey:'small',formats},profile:formats[0].profile});
+ const show=()=>intersect([{target:visibleCard,isIntersecting:true},{target:hiddenCard,isIntersecting:false}]);
+ const tick=()=>new Promise(resolve=>setImmediate(resolve));
+ show();await tick();await tick();
+ assert.deepEqual(calls,[['small-same','low']]);
+ assert.equal(drawn,1);
+ onHide({persisted:true});
+ el.state.mOptions.format='large';
+ show();await tick();await tick();
+ assert.deepEqual(calls,[['small-same','low'],['large-same','low']]);
+ onHide({persisted:false});
+ assert.equal(disconnects,1);
+});

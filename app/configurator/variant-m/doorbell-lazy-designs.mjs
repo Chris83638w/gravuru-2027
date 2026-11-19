@@ -1,4 +1,5 @@
 import {isLayeredDoorbell} from './doorbell-selection.mjs';
+import {observeVisibleResources} from './visible-resource-loader.mjs';
 export function designResourcesReady(design,fonts={},motifs={}){
  return (design?.objects||[]).every(o=>o.type==='text'?!!fonts[o.font]:o.type==='motif'?typeof motifs[o.motif]==='string'||o.motif?.startsWith('ux-line-'):true);
 }
@@ -7,6 +8,20 @@ export function designResourcesReady(design,fonts={},motifs={}){
 export function installDoorbellDesignLoading(el,config,say=()=>{}){
  if(!isLayeredDoorbell(config)||typeof el.uxEnsureDesignResources!=='function')return null;
  const designs=()=>el.uxSelectedProfile?.().designs||config.profile.designs;
+ const gallery=el.shadowRoot?.querySelector('.c-gallery');
+ if(gallery&&Array.isArray(config.doorbell?.formats)){
+  const templates=new Map();
+  for(const format of config.doorbell.formats)for(const design of format.profile?.designs||[])templates.set(format.key+'/'+design.id,design);
+  const view=gallery.ownerDocument?.defaultView;
+  const visible=observeVisibleResources({
+   root:gallery,win:view,selector:'[data-c-design]',rootMargin:'0px',
+   key:card=>(el.state?.mOptions?.format||config.doorbell.defaultFormatKey)+'/'+card.dataset.cDesign,
+   ready:key=>designResourcesReady(templates.get(key),el.fontData,el.motifs),
+   load:key=>{const design=templates.get(key);return design?el.uxEnsureDesignResources(design,{priority:'low'}):undefined;},
+   changed:()=>el.uxRefreshThumbnails?.()
+  });
+  view?.addEventListener?.('pagehide',event=>{if(!event.persisted)visible.disconnect();});
+ }
  const choose=el.chooseDesign;let sequence=0,foreground=null;
  el.chooseDesign=function(id,...args){
   const request=++sequence,design=designs().find(d=>d.id===id);

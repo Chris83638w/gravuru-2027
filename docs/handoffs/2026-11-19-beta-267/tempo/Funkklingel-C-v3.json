@@ -1,0 +1,274 @@
+{
+  "htmlSha256": "81f0ffb643537ff4764c5854c8fda26fdaeb89951f461e5c8eded72d3c9ea646",
+  "htmlBytes": 622220,
+  "browser": "157.0.8103.78",
+  "saveData": true,
+  "slowMobile": true,
+  "externalUnavailable": [],
+  "samples": [
+    {
+      "device": "PC",
+      "cache": "kalt",
+      "round": 1,
+      "entryToFirstVisibleMs": 2713,
+      "afterScrollMs": 18,
+      "designCount": 16,
+      "drawn": 16,
+      "initialRequests": 55,
+      "switches": [
+        {
+          "id": "FK-SEITLICH",
+          "ms": 894,
+          "requests": 0
+        },
+        {
+          "id": "FK-OBENUNTEN",
+          "ms": 879,
+          "requests": 0
+        }
+      ]
+    },
+    {
+      "device": "PC",
+      "cache": "warm",
+      "round": 1,
+      "entryToFirstVisibleMs": 2458,
+      "afterScrollMs": 23,
+      "designCount": 16,
+      "drawn": 16,
+      "initialRequests": 54,
+      "switches": [
+        {
+          "id": "FK-SEITLICH",
+          "ms": 877,
+          "requests": 0
+        },
+        {
+          "id": "FK-OBENUNTEN",
+          "ms": 862,
+          "requests": 0
+        }
+      ]
+    },
+    {
+      "device": "Mobil",
+      "cache": "kalt",
+      "round": 1,
+      "entryToFirstVisibleMs": 35992,
+      "afterScrollMs": 46,
+      "designCount": 16,
+      "drawn": 16,
+      "initialRequests": 54,
+      "switches": [
+        {
+          "id": "FK-SEITLICH",
+          "ms": 6077,
+          "requests": 0
+        },
+        {
+          "id": "FK-OBENUNTEN",
+          "ms": 5988,
+          "requests": 0
+        }
+      ]
+    },
+    {
+      "device": "Mobil",
+      "cache": "warm",
+      "round": 1,
+      "entryToFirstVisibleMs": 15942,
+      "afterScrollMs": 35,
+      "designCount": 16,
+      "drawn": 16,
+      "initialRequests": 54,
+      "switches": [
+        {
+          "id": "FK-SEITLICH",
+          "ms": 11689,
+          "requests": 0
+        },
+        {
+          "id": "FK-OBENUNTEN",
+          "ms": 8602,
+          "requests": 0
+        }
+      ]
+    },
+    {
+      "device": "PC",
+      "cache": "kalt",
+      "round": 2,
+      "entryToFirstVisibleMs": 2623,
+      "afterScrollMs": 27,
+      "designCount": 16,
+      "drawn": 16,
+      "initialRequests": 54,
+      "switches": [
+        {
+          "id": "FK-SEITLICH",
+          "ms": 892,
+          "requests": 0
+        },
+        {
+          "id": "FK-OBENUNTEN",
+          "ms": 894,
+          "requests": 0
+        }
+      ]
+    },
+    {
+      "device": "PC",
+      "cache": "warm",
+      "round": 2,
+      "entryToFirstVisibleMs": 2625,
+      "afterScrollMs": 19,
+      "designCount": 16,
+      "drawn": 16,
+      "initialRequests": 54,
+      "switches": [
+        {
+          "id": "FK-SEITLICH",
+          "ms": 839,
+          "requests": 0
+        },
+        {
+          "id": "FK-OBENUNTEN",
+          "ms": 808,
+          "requests": 0
+        }
+      ]
+    },
+    {
+      "device": "Mobil",
+      "cache": "kalt",
+      "round": 2,
+      "entryToFirstVisibleMs": 37718,
+      "afterScrollMs": 18,
+      "designCount": 16,
+      "drawn": 16,
+      "initialRequests": 54,
+      "switches": [
+        {
+          "id": "FK-SEITLICH",
+          "ms": 4573,
+          "requests": 0
+        },
+        {
+          "id": "FK-OBENUNTEN",
+          "ms": 7862,
+          "requests": 0
+        }
+      ]
+    },
+    {
+      "device": "Mobil",
+      "cache": "warm",
+      "round": 2,
+      "entryToFirstVisibleMs": 18295,
+      "afterScrollMs": 125,
+      "designCount": 16,
+      "drawn": 16,
+      "initialRequests": 54,
+      "switches": [
+        {
+          "id": "FK-SEITLICH",
+          "ms": 4559,
+          "requests": 0
+        },
+        {
+          "id": "FK-OBENUNTEN",
+          "ms": 5163,
+          "requests": 0
+        }
+      ]
+    },
+    {
+      "device": "PC",
+      "cache": "kalt",
+      "round": 3,
+      "entryToFirstVisibleMs": 2633,
+      "afterScrollMs": 25,
+      "designCount": 16,
+      "drawn": 16,
+      "initialRequests": 54,
+      "switches": [
+        {
+          "id": "FK-SEITLICH",
+          "ms": 911,
+          "requests": 0
+        },
+        {
+          "id": "FK-OBENUNTEN",
+          "ms": 943,
+          "requests": 0
+        }
+      ]
+    },
+    {
+      "device": "PC",
+      "cache": "warm",
+      "round": 3,
+      "entryToFirstVisibleMs": 2757,
+      "afterScrollMs": 20,
+      "designCount": 16,
+      "drawn": 16,
+      "initialRequests": 54,
+      "switches": [
+        {
+          "id": "FK-SEITLICH",
+          "ms": 926,
+          "requests": 0
+        },
+        {
+          "id": "FK-OBENUNTEN",
+          "ms": 879,
+          "requests": 0
+        }
+      ]
+    },
+    {
+      "device": "Mobil",
+      "cache": "kalt",
+      "round": 3,
+      "entryToFirstVisibleMs": 42762,
+      "afterScrollMs": 8,
+      "designCount": 16,
+      "drawn": 16,
+      "initialRequests": 54,
+      "switches": [
+        {
+          "id": "FK-SEITLICH",
+          "ms": 6692,
+          "requests": 0
+        },
+        {
+          "id": "FK-OBENUNTEN",
+          "ms": 5523,
+          "requests": 0
+        }
+      ]
+    },
+    {
+      "device": "Mobil",
+      "cache": "warm",
+      "round": 3,
+      "entryToFirstVisibleMs": 17427,
+      "afterScrollMs": 17,
+      "designCount": 16,
+      "drawn": 16,
+      "initialRequests": 54,
+      "switches": [
+        {
+          "id": "FK-SEITLICH",
+          "ms": 5534,
+          "requests": 0
+        },
+        {
+          "id": "FK-OBENUNTEN",
+          "ms": 6183,
+          "requests": 0
+        }
+      ]
+    }
+  ]
+}

@@ -1,6 +1,10 @@
-## 19.11.2026 · Astra · Kandidat A auf der geschützten Beta (#267)
+## 19.11.2026 · Astra · Gemessene R15-Optimierung auf der geschützten Beta (#267)
 
-Die getrennte Beta liefert Commit `347aa63f` aus. Zwölf Ring-Gestaltungen auf PC und Handybreite bestätigen jeweils das Gerätefoto, den richtigen Gravurtext und die zum Design gehörende Zierlinie. Die Einzelposition lässt sich entfernen. 337 Projektprüfungen und sechs zusätzliche Gravurprüfungen bestanden. Das Fünf-Sekunden-Ziel, das externe Shopify-Testshop-Szenario am neuen Stand und die unabhängige Gegenüberstellung mit Grok sind offen. Claude erhält denselben Freeze zur Gegenprüfung. [Geschützte Abnahme und Originalbilder](docs/handoffs/2026-11-19-beta-267/GESCHUETZTE-BETA.md)
+Der freigegebene Prüfstand verwendet `f7504182`. Bei zwölf Ring-Gestaltungen je Stand sank die Zeit vom Öffnen zur ersten sichtbaren Karte von 4,19 auf 2,78 s, der Designwechsel von 366 auf 229 ms. Bis zu den sichtbaren persönlichen Warenkorbbildern vergingen im Median 4,15 → 3,81 s. Der mobile Teil stieg von 4,15 auf 5,22 s. Die vier separat prüfbaren Anwendungscommits betreffen den vorhandenen Editor und die Übergabe seines gespeicherten Bilds. [Messprotokoll, Regression und historische Quellen](docs/handoffs/2026-11-19-beta-267/tempo/README.md) · [Geschützte Beta](https://konfi-beta.gravuru-designwerkstatt.de/)
+
+## 19.11.2026 · Astra · Vorheriger Referenzstand der geschützten Beta (#267)
+
+Bei dieser früheren Abnahme lieferte die getrennte Beta Commit `347aa63f` aus. Zwölf Ring-Gestaltungen auf PC und Handybreite bestätigen jeweils das Gerätefoto, den richtigen Gravurtext und die zum Design gehörende Zierlinie. Die Einzelposition lässt sich entfernen. 337 Projektprüfungen und sechs zusätzliche Gravurprüfungen bestanden. Das Fünf-Sekunden-Ziel, das externe Shopify-Testshop-Szenario am neuen Stand und die unabhängige Gegenüberstellung mit Grok sind offen. Claude erhält denselben Freeze zur Gegenprüfung. [Geschützte Abnahme und Originalbilder](docs/handoffs/2026-11-19-beta-267/GESCHUETZTE-BETA.md)
 
 ## 19.11.2026 · Astra · Persönliche Vorschau im R15-Warenkorb (#267)
 

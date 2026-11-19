@@ -1,6 +1,6 @@
 # Ring im Live-Shop und gemeinsamer Beta-Stand
 
-Für die jetzt erreichbare isolierte Beta gelten Commit `347aa63f` und die dort erhobenen Messwerte. Dieses Dokument erhält die zuvor beobachteten Shopify-Stände. [Aktuelle geschützte Abnahme](GESCHUETZTE-BETA.md)
+Auf der getrennten geschützten Beta läuft `f7504182`. Der folgende Abschnitt dokumentiert frühere Versuche am damaligen Shopify-Stand. [Messrunde und Grenzen der aktuellen Beta](tempo/README.md)
 
 **Dieses Protokoll dokumentiert den Stand vor Chris’ Entscheidung für einen reinen Vorschau-Warenkorb. Maßgeblich für die aktuelle Abnahme ist der [persönliche Vorschauweg mit zwei Positionen](WARENKORB-VORSCHAU.md).**
 

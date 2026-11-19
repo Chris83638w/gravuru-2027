@@ -1,0 +1,104 @@
+{
+  "vorher": {
+    "domain": "konfi-beta.gravuru-designwerkstatt.de",
+    "commit": "347aa63f53b9c751c887faf2ac5a28e79dc8d36e",
+    "checks": [
+      {
+        "account": "anonym",
+        "path": "/",
+        "status": 401
+      },
+      {
+        "account": "anonym",
+        "path": "/editor.html",
+        "status": 401
+      },
+      {
+        "account": "anonym",
+        "path": "/api/workshop/session",
+        "status": 401
+      },
+      {
+        "account": "chris",
+        "path": "/",
+        "status": 200
+      },
+      {
+        "account": "grok",
+        "path": "/beta/cart",
+        "status": 200
+      },
+      {
+        "account": "claude",
+        "path": "/beta/cart",
+        "status": 200
+      },
+      {
+        "account": "astra",
+        "path": "/beta/dateien",
+        "status": 200
+      },
+      {
+        "account": "astra",
+        "path": "/werkstatt/",
+        "status": 404
+      }
+    ],
+    "sourceHashes": {
+      "app/configurator/variant-m/adapter.mjs": "d52bc2e9aaa297660e8383ff9daabcd0b0a61353ff55be7d75579e1dd01f03a1",
+      "app/configurator/variant-m/contract.mjs": "5acd5311e4744a4b252814824fcc6ed1c34a014d0c8c7073504621c7e26c16d0"
+    },
+    "observedUtc": "2026-11-19T15:49:47Z"
+  },
+  "nachher": {
+    "domain": "konfi-beta.gravuru-designwerkstatt.de",
+    "commit": "f7504182d117ba60d16498ae8bb43ba29a75609f",
+    "checks": [
+      {
+        "account": "anonym",
+        "path": "/",
+        "status": 401
+      },
+      {
+        "account": "anonym",
+        "path": "/editor.html",
+        "status": 401
+      },
+      {
+        "account": "anonym",
+        "path": "/api/workshop/session",
+        "status": 401
+      },
+      {
+        "account": "chris",
+        "path": "/",
+        "status": 200
+      },
+      {
+        "account": "grok",
+        "path": "/beta/cart",
+        "status": 200
+      },
+      {
+        "account": "claude",
+        "path": "/beta/cart",
+        "status": 200
+      },
+      {
+        "account": "astra",
+        "path": "/beta/dateien",
+        "status": 200
+      },
+      {
+        "account": "astra",
+        "path": "/werkstatt/",
+        "status": 404
+      }
+    ],
+    "sourceHashes": {
+      "app/configurator/variant-m/adapter.mjs": "d3a85dc20fd2782a041b933baafadb984a4dc46235485029da9fabc0917fb979",
+      "app/configurator/variant-m/contract.mjs": "b099692bba56ac933e23849fbf11889e7480e00b22cb38961dd5d0354a3b252c"
+    },
+    "observedUtc": "2026-11-19T15:51:32Z"
+  }
+}

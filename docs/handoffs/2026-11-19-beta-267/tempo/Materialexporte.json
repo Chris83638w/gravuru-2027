@@ -1,0 +1,376 @@
+{
+  "vorher": [
+    {
+      "key": "heimathafen",
+      "moves": [
+        {
+          "type": "motif",
+          "id": "RE-90X60-EIN-10-1",
+          "before": [
+            19.5,
+            30.5
+          ],
+          "after": [
+            21.078947067260742,
+            30.1515385
+          ]
+        },
+        {
+          "type": "text",
+          "id": "RE-90X60-EIN-10-2",
+          "before": [
+            60.0304094,
+            12.5
+          ],
+          "after": [
+            59.9621154,
+            13.40225601196289
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "format": "svg",
+          "bytes": 24828,
+          "sha256": "6a08536cf76a64d85f298bd82af9babedbdb212a1e175b0bb04ec5ee4b851dd9"
+        },
+        {
+          "format": "kontur",
+          "bytes": 1012,
+          "sha256": "885137a276e2d8b63a851c5e88c2f3e68e0b5647f2f6e6ff9ce7d08b023a8569",
+          "pages": [
+            {
+              "mm": [
+                90,
+                60
+              ],
+              "drawingSha256": "dffe5f8710471b3f3eb5d649300c65f1cad73368f79ccbb9a08f6ffc9f6b14e2"
+            }
+          ]
+        },
+        {
+          "format": "zip",
+          "bytes": 8429831,
+          "sha256": "1b033f0dc8aa50285558fbe97373d0ecadd3396a1d84e5b7d236120e1140c105"
+        }
+      ],
+      "unitCents": 1099,
+      "geometryMm": [
+        90,
+        60
+      ],
+      "options": {
+        "mounting": "K00"
+      },
+      "method": "engraving",
+      "productionReady": false,
+      "rev": 1,
+      "previewSha256": "5ecf7e149ca5883e32b707d6d1335af7c7379d98b2c3963d6bfd691d425590d9",
+      "passed": true
+    },
+    {
+      "key": "schiefer",
+      "moves": [
+        {
+          "type": "photo",
+          "id": "f7ab76c0-4bd0-4e8c-a731-8f1a2e594ed6",
+          "before": [
+            150,
+            100
+          ],
+          "after": [
+            155.26315307617188,
+            103.00752258300781
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "format": "svg",
+          "bytes": 9534,
+          "sha256": "57b008ae1e63707f5b4de126d4e32dc4d9328ad090990f175a8c1c4c0f93598c"
+        },
+        {
+          "format": "kontur",
+          "bytes": 1012,
+          "sha256": "36d1dbbd1bd5983e08858d705aa24cf0fc7c326faf53bdecef0b93b3ae84fe49",
+          "pages": [
+            {
+              "mm": [
+                300,
+                200
+              ],
+              "drawingSha256": "3c4f02281829567539380d818f85539863a5d6927fa42c4ade9a0df92a808757"
+            }
+          ]
+        },
+        {
+          "format": "zip",
+          "bytes": 1218710,
+          "sha256": "7c3fc931f16ded547862f0ee3a083596022288cc81c6af3bf87516fbe8e7061d"
+        }
+      ],
+      "originalSha256": "45b0d95ab09af8de0c61b39cb3c16d09db0544ff9f82c938fd46732a2fedc0bd",
+      "unitCents": 3398,
+      "geometryMm": [
+        300,
+        200
+      ],
+      "options": {
+        "mounting": "K00"
+      },
+      "method": "engraving",
+      "productionReady": false,
+      "rev": 1,
+      "previewSha256": "10e7a6e580c26b784bbb6361cfde8c1b25c4618e3b3ce7e871dc2adfd633acab",
+      "passed": true
+    },
+    {
+      "key": "acryl",
+      "moves": [],
+      "exports": [
+        {
+          "format": "svg",
+          "bytes": 54417,
+          "sha256": "31f4484c54c9071869f00117bfc3568f781275aeadf05233406f8cd5aa26e6f4"
+        },
+        {
+          "format": "kontur",
+          "bytes": 1296,
+          "sha256": "3e2cb376604bae4da13a3f406971722f1f73aa97d887fad6af9e2118543be7c6",
+          "pages": [
+            {
+              "mm": [
+                150,
+                200
+              ],
+              "drawingSha256": "36c6ef7073c0f4598615469a559e08496c0154ccdc6a08da00a627d6717a2697"
+            }
+          ]
+        },
+        {
+          "format": "druck",
+          "bytes": 314641,
+          "sha256": "6bd9b0742c7364c93350c09664ed5868ac8fccc1b27a416961a9acecee8823ca",
+          "pages": [
+            {
+              "mm": [
+                150,
+                200
+              ],
+              "drawingSha256": "d27c925359e257bd45cd362658a6dcd37f13f48021c8ee8c00884688e93a88bf"
+            }
+          ]
+        },
+        {
+          "format": "zip",
+          "bytes": 1203052,
+          "sha256": "2e2e3bc78576246df0bfed230a937b30c4e1243844257dfe99bb38425d55df17"
+        }
+      ],
+      "originalSha256": "45b0d95ab09af8de0c61b39cb3c16d09db0544ff9f82c938fd46732a2fedc0bd",
+      "unitCents": 1499,
+      "geometryMm": [
+        150,
+        200
+      ],
+      "options": {
+        "size": "small",
+        "base": "none",
+        "wall": "none"
+      },
+      "method": "print",
+      "productionReady": false,
+      "rev": 1,
+      "previewSha256": "90bd40196d9a6c6f0f96deefa0c05eb6788ed7302d7280009a24bae428e79b41",
+      "passed": true
+    }
+  ],
+  "nachher": [
+    {
+      "key": "heimathafen",
+      "moves": [
+        {
+          "type": "motif",
+          "id": "RE-90X60-EIN-10-1",
+          "before": [
+            19.5,
+            30.5
+          ],
+          "after": [
+            21.078947067260742,
+            30.1515385
+          ]
+        },
+        {
+          "type": "text",
+          "id": "RE-90X60-EIN-10-2",
+          "before": [
+            60.0304094,
+            12.5
+          ],
+          "after": [
+            59.9621154,
+            13.40225601196289
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "format": "svg",
+          "bytes": 24828,
+          "sha256": "6a08536cf76a64d85f298bd82af9babedbdb212a1e175b0bb04ec5ee4b851dd9"
+        },
+        {
+          "format": "kontur",
+          "bytes": 1012,
+          "sha256": "6a58bc25fe48f41812ec7e0d0598770493eed713f73eb98f103a84b0dea5c8ae",
+          "pages": [
+            {
+              "mm": [
+                90,
+                60
+              ],
+              "drawingSha256": "dffe5f8710471b3f3eb5d649300c65f1cad73368f79ccbb9a08f6ffc9f6b14e2"
+            }
+          ]
+        },
+        {
+          "format": "zip",
+          "bytes": 8429831,
+          "sha256": "7213ebf40a9a3b2545c591ee6c2921ff8c79509b2551d206e6ef1e67e2228ed7"
+        }
+      ],
+      "unitCents": 1099,
+      "geometryMm": [
+        90,
+        60
+      ],
+      "options": {
+        "mounting": "K00"
+      },
+      "method": "engraving",
+      "productionReady": false,
+      "rev": 1,
+      "previewSha256": "5ecf7e149ca5883e32b707d6d1335af7c7379d98b2c3963d6bfd691d425590d9",
+      "passed": true
+    },
+    {
+      "key": "schiefer",
+      "moves": [
+        {
+          "type": "photo",
+          "id": "55772243-4846-4418-9ce1-017b85d62e55",
+          "before": [
+            150,
+            100
+          ],
+          "after": [
+            155.26315307617188,
+            103.00752258300781
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "format": "svg",
+          "bytes": 9534,
+          "sha256": "57b008ae1e63707f5b4de126d4e32dc4d9328ad090990f175a8c1c4c0f93598c"
+        },
+        {
+          "format": "kontur",
+          "bytes": 1012,
+          "sha256": "9f0d529456b7646ddfe3b288f9eed54fe4ac08f9839d6a157983cf6f46f7df46",
+          "pages": [
+            {
+              "mm": [
+                300,
+                200
+              ],
+              "drawingSha256": "3c4f02281829567539380d818f85539863a5d6927fa42c4ade9a0df92a808757"
+            }
+          ]
+        },
+        {
+          "format": "zip",
+          "bytes": 1218710,
+          "sha256": "60e67074401504e8315de10d6c3b0cf8bec879e773ec6e23b1cbcbb4d44f2496"
+        }
+      ],
+      "originalSha256": "45b0d95ab09af8de0c61b39cb3c16d09db0544ff9f82c938fd46732a2fedc0bd",
+      "unitCents": 3398,
+      "geometryMm": [
+        300,
+        200
+      ],
+      "options": {
+        "mounting": "K00"
+      },
+      "method": "engraving",
+      "productionReady": false,
+      "rev": 1,
+      "previewSha256": "10e7a6e580c26b784bbb6361cfde8c1b25c4618e3b3ce7e871dc2adfd633acab",
+      "passed": true
+    },
+    {
+      "key": "acryl",
+      "moves": [],
+      "exports": [
+        {
+          "format": "svg",
+          "bytes": 54417,
+          "sha256": "31f4484c54c9071869f00117bfc3568f781275aeadf05233406f8cd5aa26e6f4"
+        },
+        {
+          "format": "kontur",
+          "bytes": 1296,
+          "sha256": "77ff8114331dfcd4961258ac2c1f5e1465c00af0c1a974f865c5f7379a424171",
+          "pages": [
+            {
+              "mm": [
+                150,
+                200
+              ],
+              "drawingSha256": "36c6ef7073c0f4598615469a559e08496c0154ccdc6a08da00a627d6717a2697"
+            }
+          ]
+        },
+        {
+          "format": "druck",
+          "bytes": 314641,
+          "sha256": "6bd9b0742c7364c93350c09664ed5868ac8fccc1b27a416961a9acecee8823ca",
+          "pages": [
+            {
+              "mm": [
+                150,
+                200
+              ],
+              "drawingSha256": "d27c925359e257bd45cd362658a6dcd37f13f48021c8ee8c00884688e93a88bf"
+            }
+          ]
+        },
+        {
+          "format": "zip",
+          "bytes": 1203052,
+          "sha256": "a50f50334a2a6552c76c7833794849d21886c4892da62c87f39d7a31bef53d04"
+        }
+      ],
+      "originalSha256": "45b0d95ab09af8de0c61b39cb3c16d09db0544ff9f82c938fd46732a2fedc0bd",
+      "unitCents": 1499,
+      "geometryMm": [
+        150,
+        200
+      ],
+      "options": {
+        "size": "small",
+        "base": "none",
+        "wall": "none"
+      },
+      "method": "print",
+      "productionReady": false,
+      "rev": 1,
+      "previewSha256": "90bd40196d9a6c6f0f96deefa0c05eb6788ed7302d7280009a24bae428e79b41",
+      "passed": true
+    }
+  ]
+}

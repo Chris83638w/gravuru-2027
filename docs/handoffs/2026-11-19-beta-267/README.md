@@ -1,6 +1,6 @@
 # R15-Beta für das Ring-Klingelschild
 
-**Der geschützte Kandidat A ist bereit für Chris und den unabhängigen Vergleich.** Die ausgelieferte Version ist `347aa63f`. Sechs PC-/Handy-Durchläufe mit zwölf Gestaltungen prüfen das Ring-Gerätefoto, die originalen Zierlinien, Einzelpreis, gespeicherte Bildrevision, Vergrößerung und Entfernen. [Beta öffnen](https://konfi-beta.gravuru-designwerkstatt.de/) · [Abnahme und Zeitmessung](GESCHUETZTE-BETA.md) · [Eigenständige Strategie und Herkunft](KANDIDAT-A.md)
+**Die gemeinsame geschützte Beta läuft auf `f7504182`.** Der bestehende R15 zeigt die erste sichtbare Ring-Designkarte und den Designwechsel schneller. Im Prüfwarenkorb ist die Streuung auf Handybreite weiter relevant. Die Referenz für diese Messrunde war `347aa63f`. [Beta öffnen](https://konfi-beta.gravuru-designwerkstatt.de/) · [Ergebnisse, Originalquellen und Reproduktion](tempo/README.md) · [Zugangs- und Warenkorbprüfung](GESCHUETZTE-BETA.md)
 
 **Aktueller Kundenweg ab der Prioritätsentscheidung vom 19. November.** Im Warenkorb wird je Position ausschließlich die persönliche Gestaltung angezeigt. Der Kunde kann das Bild vergrößern oder die Position entfernen. Die Abnahme auf PC und Handybreite umfasst zwei verschiedene Gestaltungen derselben Variante. [Bildschirmaufnahmen und bestätigte Warenkorbzeiten](WARENKORB-VORSCHAU.md) · [Entscheidung von Chris](https://github.com/Chris83638w/gravuru-2027/issues/267#issuecomment-7008823567)
 

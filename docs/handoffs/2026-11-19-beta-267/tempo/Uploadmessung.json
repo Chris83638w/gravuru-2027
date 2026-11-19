@@ -1,0 +1,146 @@
+{
+  "build": "f7504182",
+  "started": "2026-11-19T16:01:44.697Z",
+  "browser": "157.0.8103.78",
+  "scope": "Zusatzlauf am geschützten HTTPS-Host. Zeit des Sendens aus Sicht des Browsers und danach bis zum ersten Antwortkopf.",
+  "samples": [
+    {
+      "run": 1,
+      "cache": "kalt",
+      "device": "Mobil",
+      "phases": [
+        {
+          "route": "Entwurf",
+          "status": 201,
+          "protocol": "h2",
+          "connectionReused": true,
+          "sendMs": 113.8,
+          "afterSendToResponseMs": 1463.4
+        },
+        {
+          "route": "Warenkorb",
+          "status": 200,
+          "protocol": "h2",
+          "connectionReused": true,
+          "sendMs": 0.3,
+          "afterSendToResponseMs": 557.9
+        }
+      ]
+    },
+    {
+      "run": 1,
+      "cache": "warm",
+      "device": "Mobil",
+      "phases": [
+        {
+          "route": "Entwurf",
+          "status": 201,
+          "protocol": "h2",
+          "connectionReused": true,
+          "sendMs": 0.4,
+          "afterSendToResponseMs": 1539.2
+        },
+        {
+          "route": "Warenkorb",
+          "status": 200,
+          "protocol": "h2",
+          "connectionReused": true,
+          "sendMs": 0.2,
+          "afterSendToResponseMs": 310.6
+        }
+      ]
+    },
+    {
+      "run": 2,
+      "cache": "kalt",
+      "device": "Mobil",
+      "phases": [
+        {
+          "route": "Entwurf",
+          "status": 201,
+          "protocol": "h2",
+          "connectionReused": true,
+          "sendMs": 86.3,
+          "afterSendToResponseMs": 6279.3
+        },
+        {
+          "route": "Warenkorb",
+          "status": 200,
+          "protocol": "h2",
+          "connectionReused": true,
+          "sendMs": 0.2,
+          "afterSendToResponseMs": 639.5
+        }
+      ]
+    },
+    {
+      "run": 2,
+      "cache": "warm",
+      "device": "Mobil",
+      "phases": [
+        {
+          "route": "Entwurf",
+          "status": 201,
+          "protocol": "h2",
+          "connectionReused": true,
+          "sendMs": 0.7,
+          "afterSendToResponseMs": 1309.2
+        },
+        {
+          "route": "Warenkorb",
+          "status": 200,
+          "protocol": "h2",
+          "connectionReused": true,
+          "sendMs": 0.2,
+          "afterSendToResponseMs": 3047.7
+        }
+      ]
+    },
+    {
+      "run": 3,
+      "cache": "kalt",
+      "device": "Mobil",
+      "phases": [
+        {
+          "route": "Entwurf",
+          "status": 201,
+          "protocol": "h2",
+          "connectionReused": true,
+          "sendMs": 107.3,
+          "afterSendToResponseMs": 1425.3
+        },
+        {
+          "route": "Warenkorb",
+          "status": 200,
+          "protocol": "h2",
+          "connectionReused": true,
+          "sendMs": 0.3,
+          "afterSendToResponseMs": 555.1
+        }
+      ]
+    },
+    {
+      "run": 3,
+      "cache": "warm",
+      "device": "Mobil",
+      "phases": [
+        {
+          "route": "Entwurf",
+          "status": 201,
+          "protocol": "h2",
+          "connectionReused": true,
+          "sendMs": 0.3,
+          "afterSendToResponseMs": 6043.4
+        },
+        {
+          "route": "Warenkorb",
+          "status": 200,
+          "protocol": "h2",
+          "connectionReused": true,
+          "sendMs": 0.1,
+          "afterSendToResponseMs": 599
+        }
+      ]
+    }
+  ]
+}

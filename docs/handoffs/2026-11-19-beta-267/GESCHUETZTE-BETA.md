@@ -1,6 +1,10 @@
 # Geschützter Kandidat A
 
-Chris, Astra, Claude und Grok können denselben Stand an der freigegebenen Adresse prüfen. Der Benutzername für Chris ist `chris`. Kennwörter werden privat übergeben. Für den eigenen Versuch das Ring-Schild zweimal mit unterschiedlichen Namen gestalten. Die Schaltfläche „Kurzansicht“ öffnet den Drawer. Die normalen Warenkorbpositionen erlauben die Bildvergrößerung und das Entfernen. [Geschützte Beta](https://konfi-beta.gravuru-designwerkstatt.de/) · [Eingefrorener Code](https://github.com/Chris83638w/gravuru-2027/commit/347aa63f53b9c751c887faf2ac5a28e79dc8d36e) · [Herkunft und Vorgehensweise](KANDIDAT-A.md)
+Chris, Astra, Claude und Grok nutzen hier denselben R15-Code `f7504182`. Der Benutzername für Chris ist `chris`. Für den eigenen Versuch das Ring-Schild zweimal mit unterschiedlichen Namen gestalten. „Kurzansicht“ öffnet den kleinen Warenkorb. Die persönliche Vorschau lässt sich vergrößern und jede Position einzeln entfernen. [Geschützte Beta](https://konfi-beta.gravuru-designwerkstatt.de/) · [Aktueller Vorher-/Nachher-Vergleich und Fotos](tempo/README.md) · [Code der Messrunde](https://github.com/Chris83638w/gravuru-2027/commit/f7504182d117ba60d16498ae8bb43ba29a75609f)
+
+## Frühere Abnahme auf `347aa63f`
+
+Die folgenden Aufnahmen und Tabellen stammen vom früheren Referenzstand. [Früherer Freeze](https://github.com/Chris83638w/gravuru-2027/commit/347aa63f53b9c751c887faf2ac5a28e79dc8d36e)
 
 | Desktop | Handybreite |
 | --- | --- |

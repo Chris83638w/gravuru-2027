@@ -1,0 +1,177 @@
+{
+  "external": {
+    "coldAccessMs": 1950,
+    "graphqlMs": 120
+  },
+  "scope": "Lokale signierte R15-Anfragen vom Speichern bis cart/data mit bestätigtem CDN-Bild. Shopify-Antworten zeitgesteuert.",
+  "samples": [
+    {
+      "build": "ref",
+      "run": 1,
+      "cache": "kalt",
+      "saveMs": 1013,
+      "dataMs": 3078,
+      "saveThroughDataMs": 4115,
+      "calls": {
+        "login": 1,
+        "lookup": 1,
+        "create": 1,
+        "poll": 1
+      }
+    },
+    {
+      "build": "ref",
+      "run": 1,
+      "cache": "warm",
+      "saveMs": 724,
+      "dataMs": 1124,
+      "saveThroughDataMs": 1861,
+      "calls": {
+        "login": 0,
+        "lookup": 1,
+        "create": 1,
+        "poll": 1
+      }
+    },
+    {
+      "build": "neu",
+      "run": 1,
+      "cache": "kalt",
+      "saveMs": 744,
+      "dataMs": 2305,
+      "saveThroughDataMs": 3073,
+      "calls": {
+        "login": 1,
+        "lookup": 0,
+        "create": 1,
+        "poll": 1
+      }
+    },
+    {
+      "build": "neu",
+      "run": 1,
+      "cache": "warm",
+      "saveMs": 780,
+      "dataMs": 1005,
+      "saveThroughDataMs": 1802,
+      "calls": {
+        "login": 0,
+        "lookup": 0,
+        "create": 1,
+        "poll": 1
+      }
+    },
+    {
+      "build": "neu",
+      "run": 2,
+      "cache": "kalt",
+      "saveMs": 702,
+      "dataMs": 2347,
+      "saveThroughDataMs": 3064,
+      "calls": {
+        "login": 1,
+        "lookup": 0,
+        "create": 1,
+        "poll": 1
+      }
+    },
+    {
+      "build": "neu",
+      "run": 2,
+      "cache": "warm",
+      "saveMs": 765,
+      "dataMs": 1003,
+      "saveThroughDataMs": 1784,
+      "calls": {
+        "login": 0,
+        "lookup": 0,
+        "create": 1,
+        "poll": 1
+      }
+    },
+    {
+      "build": "ref",
+      "run": 2,
+      "cache": "kalt",
+      "saveMs": 1031,
+      "dataMs": 3089,
+      "saveThroughDataMs": 4136,
+      "calls": {
+        "login": 1,
+        "lookup": 1,
+        "create": 1,
+        "poll": 1
+      }
+    },
+    {
+      "build": "ref",
+      "run": 2,
+      "cache": "warm",
+      "saveMs": 1007,
+      "dataMs": 1118,
+      "saveThroughDataMs": 2151,
+      "calls": {
+        "login": 0,
+        "lookup": 1,
+        "create": 1,
+        "poll": 1
+      }
+    },
+    {
+      "build": "ref",
+      "run": 3,
+      "cache": "kalt",
+      "saveMs": 632,
+      "dataMs": 3107,
+      "saveThroughDataMs": 3750,
+      "calls": {
+        "login": 1,
+        "lookup": 1,
+        "create": 1,
+        "poll": 1
+      }
+    },
+    {
+      "build": "ref",
+      "run": 3,
+      "cache": "warm",
+      "saveMs": 990,
+      "dataMs": 1139,
+      "saveThroughDataMs": 2144,
+      "calls": {
+        "login": 0,
+        "lookup": 1,
+        "create": 1,
+        "poll": 1
+      }
+    },
+    {
+      "build": "neu",
+      "run": 3,
+      "cache": "kalt",
+      "saveMs": 451,
+      "dataMs": 2564,
+      "saveThroughDataMs": 3027,
+      "calls": {
+        "login": 1,
+        "lookup": 0,
+        "create": 1,
+        "poll": 1
+      }
+    },
+    {
+      "build": "neu",
+      "run": 3,
+      "cache": "warm",
+      "saveMs": 758,
+      "dataMs": 1012,
+      "saveThroughDataMs": 1784,
+      "calls": {
+        "login": 0,
+        "lookup": 0,
+        "create": 1,
+        "poll": 1
+      }
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "commit": "f7504182",
+  "started": "2026-11-19T16:05:39.877Z",
+  "test": "Sechs weitere Entwürfe auf Handybreite. Ein normaler Produktabruf an denselben Worker wurde einmal ausgelöst, wenn die Entwurfsantwort nach 2.100 ms noch ausstand. Die dritte Geräteprüfung meldete den 503 dieses zusätzlichen Abrufs. Die Cart-Schreibaufrufe selbst erreichten 201 und 200.",
+  "checks": [
+    {
+      "run": 2,
+      "cache": "kalt",
+      "saveMsAfterSend": 6125.4,
+      "afterMs": 2121.9,
+      "durationMs": 4120,
+      "valid": true,
+      "responseStatus": 200
+    },
+    {
+      "run": 3,
+      "cache": "warm",
+      "saveMsAfterSend": 6158.2,
+      "valid": false,
+      "responseStatus": 503
+    }
+  ],
+  "hostingStatistics": {
+    "source": "CloudLinux Manager, Statistik für das einzelne Beta-Konto, Anzeigenfenster letzte zehn Minuten",
+    "observedUtc": "2026-11-19T16:10Z",
+    "fields": "Durchschnitt, Limit, registrierte Grenzverletzungen",
+    "io": {
+      "average": "86.19 KB/s",
+      "limit": "1 MB/s",
+      "faults": 1
+    },
+    "cpu": {
+      "average": "2 %",
+      "limit": "100 %",
+      "faults": 0
+    },
+    "memory": {
+      "average": "214.64 M",
+      "limit": "1 G",
+      "faults": 0
+    },
+    "entryProcessFaults": 0,
+    "processCountFaults": 0,
+    "iopsFaults": 0
+  },
+  "evaluation": "Ein Lesezugriff auf Produktdaten dauerte 4,12 s, einer erhielt 503. Die 10-Minuten-Statistik belegt die zeitweise Drosselung des Datenträgers für das Konto, erlaubt aber keine Zuordnung zu einer einzelnen Anfrage."
+}

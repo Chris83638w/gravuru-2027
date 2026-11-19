@@ -1,0 +1,11 @@
+import fs from 'node:fs';
+import {here,importFiles} from './catalog.mjs';
+const output=process.argv[2];
+if(!output)throw Error('Ziel für die lokale HTML-Designprobe angeben.');
+const pack=importFiles([here('../designs/steel-heimathafen/source.json')]);
+const data={catalog:{product:'70001',variant:'90002',revision:pack.revision,designs:JSON.parse(pack.index)},assets:Object.fromEntries([...pack.assets].map(([k,v])=>[k,JSON.parse(v)]))};
+const code=['../platform/sources/app/shared/models/text-paths.mjs','render.mjs','editor.mjs'].map(name=>fs.readFileSync(here(name),'utf8').replace(/^import [^\n]+\n/gm,'').replace(/^export /gm,'')).join('\n');
+const surface='data:image/webp;base64,'+fs.readFileSync(here('../designs/aosu-labrador/runtime/images/gravuru-edelstahl-feine-maserung-vorschau.webp')).toString('base64');
+const css=fs.readFileSync(here('studio.css'),'utf8');
+const html='<!doctype html><html lang="de"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>gravuru Studio · Heimathafen</title><style>'+css+'</style><body class="gs-demo"><header><strong>gravuru Studio</strong><span>Lokale Designprobe</span></header><main><p class="gs-kicker">Edelstahl · 90 × 60 mm</p><h1>Unser Heimathafen</h1><gravuru-studio data-preview-data="source" data-surface="'+surface+'" data-variant="90002" data-product="70001"></gravuru-studio></main><script type="application/json" id="source">'+JSON.stringify(data).replaceAll('<','\\u003c')+'</script><script type="module">'+code+'</script></body></html>';
+fs.writeFileSync(output,html);

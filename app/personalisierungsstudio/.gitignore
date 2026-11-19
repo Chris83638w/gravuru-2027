@@ -1,0 +1,3 @@
+.studio/
+__pycache__/
+*.sqlite*

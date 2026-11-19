@@ -1,0 +1,29 @@
+gravuru-studio,.gs-demo{font-family:"DM Sans",system-ui,sans-serif;color:#1c352d}
+gravuru-studio{display:block;box-sizing:border-box}
+gravuru-studio *,.gs-demo *{box-sizing:border-box}
+.gs-layout{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(265px,1fr);gap:clamp(1.2rem,4vw,4rem);align-items:start}
+.gs-preview{min-height:310px;aspect-ratio:1.24;background:#eeece5;display:grid;place-items:center;border-radius:8px;padding:clamp(20px,4vw,70px);overflow:hidden}
+.gs-plate{width:100%;max-width:590px;aspect-ratio:3/2;background:#e5e6e3 center/cover;border-radius:2px;box-shadow:0 12px 16px -8px #35352970,0 1px 2px #3b3c35}
+.gs-plate svg{width:100%;height:auto;display:block}
+.gs-plate [data-motif]{cursor:grab;touch-action:none}
+.gs-motif{margin:4px 0 15px}.gs-motif summary{cursor:pointer;color:#245b46;font-weight:600}.gs-motif[open] summary{margin-bottom:12px}
+.gs-demo pre{white-space:pre-wrap;overflow-wrap:anywhere;max-height:26rem;overflow:auto}.gs-demo hr{border:0;border-top:1px solid #d9dfd8;margin:2rem 0}
+.gs-controls h2{font-size:clamp(1.3rem,2vw,1.7rem);margin:0 0 1rem}
+.gs-controls label{display:grid;gap:5px;font-size:.9rem;font-weight:600;margin-bottom:13px}
+.gs-controls input,.gs-controls select,.gs-controls textarea{border:1px solid #86968d;border-radius:5px;background:white;color:#172b24;padding:10px 12px;font:inherit;font-size:16px;width:100%;min-height:44px}
+.gs-controls button,.gs-demo form button{border:0;border-radius:5px;min-height:46px;padding:10px 18px;background:#206047;color:white;font:600 1rem/1.2 system-ui;cursor:pointer}
+.gs-controls button:disabled{opacity:.6;cursor:wait}
+.gs-controls :focus-visible,.gs-demo a:focus-visible{outline:3px solid #438859;outline-offset:3px}
+.gs-actions{display:grid;grid-template-columns:82px 1fr;gap:12px;align-items:end}
+.gs-actions label{margin:0}
+.gs-controls .gs-link{padding:3px;background:none;color:#235f48;text-decoration:underline}
+.gs-message{color:#634123;margin:10px 0 0;min-height:1.4em}
+.gs-demo{margin:0;background:#fafaf6;min-height:100vh}
+.gs-demo header{padding:19px max(5vw,20px);border-bottom:1px solid #d9dfd8;display:flex;justify-content:space-between;align-items:center;gap:1rem}
+.gs-demo header>a{font-size:1.35rem;letter-spacing:-.055em}.gs-demo header>a b{font-weight:400}
+.gs-demo header a{text-decoration:none;color:inherit}.gs-demo nav{display:flex;gap:18px;font-size:.9rem}
+.gs-demo main{max-width:1200px;margin:auto;padding:clamp(24px,5vw,66px) max(5vw,20px) 50px}
+.gs-demo h1{font-family:Georgia,serif;letter-spacing:-.035em;font-weight:500;font-size:clamp(2.2rem,5vw,4.4rem);line-height:1.04;margin:0 0 24px}
+.gs-kicker{margin:0 0 8px;font-weight:650;color:#476759}
+.gs-demo article{padding:1rem 0;border-block-start:1px solid #d9dfd8}.gs-download{display:inline-block;margin-right:.5rem;color:#205f46;padding:.6rem 0}
+@media(max-width:700px){.gs-layout{grid-template-columns:1fr;gap:20px}.gs-preview{aspect-ratio:1.9;min-height:0;padding:14px 17%}.gs-demo main{padding-top:22px}.gs-demo h1{margin-bottom:16px}.gs-controls h2{font-size:1.2rem}.gs-controls input,.gs-controls select{padding:8px}.gs-controls label{margin-bottom:10px}.gs-actions label{margin:0}}

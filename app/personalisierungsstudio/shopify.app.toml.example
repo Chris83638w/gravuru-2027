@@ -1,0 +1,16 @@
+# Before linking, replace placeholders with your own app registration and HTTPS origin.
+client_id = "YOUR_CLIENT_ID"
+name = "gravuru Studio"
+application_url = "https://YOUR_APP_HOST/werkstatt"
+embedded = false
+[access_scopes]
+scopes = "read_orders,write_app_proxy"
+[auth]
+# Provide the callback owned by your Shopify credential provider.
+redirect_urls = ["https://YOUR_AUTH_HOST/shopify/callback"]
+[app_proxy]
+url = "/studio"
+subpath = "gravuru-studio"
+prefix = "apps"
+[webhooks]
+api_version = "2026-10"

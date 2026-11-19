@@ -1,0 +1,30 @@
+{% if product %}
+  {% assign studio_base = routes.root_url | append: 'apps/gravuru-studio/' | replace: '//', '/' %}
+  {% assign last_char = routes.root_url | slice: -1, 1 %}
+  {% unless last_char == '/' %}
+    {% assign studio_base = routes.root_url | append: '/apps/gravuru-studio/' %}
+  {% endunless %}
+  <link rel="stylesheet" href="{{ studio_base }}files/studio.css">
+  <link rel="modulepreload" href="{{ studio_base }}files/render.mjs">
+  <link rel="modulepreload" href="{{ studio_base }}files/text-paths.mjs">
+  <link rel="preload" as="fetch" crossorigin="anonymous" href="{{ studio_base }}catalog?variant={{ product.selected_or_first_available_variant.id }}">
+  <gravuru-studio {{ block.shopify_attributes }}
+    data-base="{{ studio_base | escape }}"
+    data-product="{{ product.id }}"
+    data-variant="{{ product.selected_or_first_available_variant.id }}"
+    data-form="{{ block.settings.product_form_id | escape }}"
+    data-cart="{{ routes.cart_url }}"
+    data-add="{{ routes.cart_add_url }}.js"
+    data-cart-json="{{ routes.cart_url }}.js">
+  </gravuru-studio>
+  <script type="module" src="{{ studio_base }}files/editor.mjs"></script>
+{% endif %}
+{% schema %}
+{
+  "name": "Produkt personalisieren",
+  "target": "section",
+  "settings": [
+    {"type":"text","id":"product_form_id","label":"ID des Produktformulars","info":"Bei mehreren Produktformularen die ID des Variantenformulars eintragen."}
+  ]
+}
+{% endschema %}

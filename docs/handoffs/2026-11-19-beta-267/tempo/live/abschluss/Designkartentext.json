@@ -1,0 +1,76 @@
+[
+  {
+    "device": "PC",
+    "cards": 16,
+    "expected": [
+      "FK-RUNDUM",
+      "FK-SEITLICH",
+      "FK-D05",
+      "FK-D07",
+      "FK-D08",
+      "FK-D11",
+      "FK-D13",
+      "FK-D14",
+      "FK-D15"
+    ],
+    "changed": [
+      "FK-RUNDUM",
+      "FK-SEITLICH",
+      "FK-D05",
+      "FK-D07",
+      "FK-D08",
+      "FK-D11",
+      "FK-D13",
+      "FK-D14",
+      "FK-D15"
+    ],
+    "restored": [
+      "FK-RUNDUM",
+      "FK-SEITLICH",
+      "FK-D05",
+      "FK-D07",
+      "FK-D08",
+      "FK-D11",
+      "FK-D13",
+      "FK-D14",
+      "FK-D15"
+    ]
+  },
+  {
+    "device": "Mobil",
+    "cards": 16,
+    "expected": [
+      "FK-RUNDUM",
+      "FK-SEITLICH",
+      "FK-D05",
+      "FK-D07",
+      "FK-D08",
+      "FK-D11",
+      "FK-D13",
+      "FK-D14",
+      "FK-D15"
+    ],
+    "changed": [
+      "FK-RUNDUM",
+      "FK-SEITLICH",
+      "FK-D05",
+      "FK-D07",
+      "FK-D08",
+      "FK-D11",
+      "FK-D13",
+      "FK-D14",
+      "FK-D15"
+    ],
+    "restored": [
+      "FK-RUNDUM",
+      "FK-SEITLICH",
+      "FK-D05",
+      "FK-D07",
+      "FK-D08",
+      "FK-D11",
+      "FK-D13",
+      "FK-D14",
+      "FK-D15"
+    ]
+  }
+]

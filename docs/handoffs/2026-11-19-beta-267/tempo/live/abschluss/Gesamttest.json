@@ -1,0 +1,86 @@
+{
+  "datum_utc": "2026-11-19",
+  "plattform": "Windows, Node 24.20.0, Python 3.12, CairoSVG 2.8.2 und Cairo für die Wiederholungen",
+  "ausgangsstand": "9af3a1ac",
+  "live_geprueft": "b36a8eef",
+  "vollstaendiger_lokaler_erstlauf": {
+    "tests": 2752,
+    "pass": 2649,
+    "fail": 92,
+    "skipped": 11
+  },
+  "wiederholung_aller_auffaelligen_testdateien_mit_renderbibliothek": {
+    "tests": 204,
+    "pass": 197,
+    "fail": 7,
+    "skipped": 0
+  },
+  "gegenprobe_auf_dem_ausgangsstand": {
+    "tests": 49,
+    "pass": 42,
+    "fail": 7,
+    "skipped": 0
+  },
+  "uebereinstimmende_fehler_beider_staende": {
+    "app/workshop/acrylic-photo-resolution.test.mjs:15:1": "edited image pixels and each placement determine density; originals remain intact",
+    "app/workshop/acrylic-photo-resolution.test.mjs:24:1": "free uploads use contained image dimensions rather than the photo-slot cover",
+    "app/workshop/acrylic-photo-resolution.test.mjs:7:1": "native photo density follows physical scale and crop zoom, not pan or rotation",
+    "app/workshop/customer-model-response-cache.test.mjs:117:1": "repository.revisionState: product state without the document column, same errors as get, blind to writes elsewhere in the file",
+    "app/workshop/customer-model-response-cache.test.mjs:77:1": "databaseEpoch changes on own writes, rolled-back writes, schema changes, foreign commits and TEMP schema; reads leave it alone",
+    "app/workshop/customer-model-response-cache.test.mjs:95:1": "repository.readEpoch follows every repository write, including a rolled-back save",
+    "app/workshop/konfis.test.mjs:160:1": "Werkstatt einheitlich: jede Werkstattseite trägt dieselbe erzeugte Kopfzeile und das gemeinsame Raster"
+  },
+  "wiederholte_testdateien": [
+    "app/workshop/acryl3-rear.test.mjs",
+    "app/workshop/acrylic-engraving.test.mjs",
+    "app/workshop/acrylic-import-tint.test.mjs",
+    "app/workshop/acrylic-photo-resolution.test.mjs",
+    "app/workshop/acrylic-production-profiles.test.mjs",
+    "app/workshop/acrylic-review.test.mjs",
+    "app/workshop/contour-production.test.mjs",
+    "app/workshop/customer-model-response-cache.test.mjs",
+    "app/workshop/customer-vector-logo-media.test.mjs",
+    "app/workshop/customer-vector-logo.test.mjs",
+    "app/workshop/dashboard-print-flow.test.mjs",
+    "app/workshop/doorbell-artwork.test.mjs",
+    "app/workshop/editable-design.test.mjs",
+    "app/workshop/export-recovery.test.mjs",
+    "app/workshop/form-additions.test.mjs",
+    "app/workshop/form-batch.test.mjs",
+    "app/workshop/form-engraving-proof.test.mjs",
+    "app/workshop/form-print-proof.test.mjs",
+    "app/workshop/guide-layers.test.mjs",
+    "app/workshop/issue48-drill-export.test.mjs",
+    "app/workshop/katalog-worker.test.mjs",
+    "app/workshop/konfis.test.mjs",
+    "app/workshop/option-fields.test.mjs",
+    "app/workshop/output-orientation.test.mjs",
+    "app/workshop/photo-color-export.test.mjs",
+    "app/workshop/photo-frame-coverage.test.mjs",
+    "app/workshop/photo-mask-position.test.mjs",
+    "app/workshop/production-profiles.test.mjs",
+    "app/workshop/production-summary.test.mjs",
+    "app/workshop/shopify-order-webhook.test.mjs",
+    "app/workshop/slate-product.test.mjs",
+    "app/workshop/surfaces.test.mjs"
+  ],
+  "einordnung": {
+    "acrylic-photo-resolution": "Drei bestehende Abweichungen zur erwarteten Auflösung bei Skalierung oder Ausschnitt.",
+    "customer-model-response-cache": "Drei Löschversuche temporärer SQLite-Verzeichnisse unter Windows enden mit EPERM.",
+    "konfis": "Die erwartete Liste der Werkstattseiten weicht vom tatsächlich vorhandenen Menü ab."
+  },
+  "gepruefte_pr268_gruppen": {
+    "preis_und_auftrag": {
+      "tests": 41,
+      "pass": 41,
+      "fail": 0,
+      "skipped": 0
+    },
+    "editorpakete": {
+      "tests": 9,
+      "pass": 9,
+      "fail": 0,
+      "skipped": 0
+    }
+  }
+}

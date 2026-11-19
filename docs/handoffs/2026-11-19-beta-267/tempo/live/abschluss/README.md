@@ -58,3 +58,23 @@ node tools/beta-267/compare-live-preview-pairs.mjs <vorher> <nachher> < eigene-b
 ```
 
 Das zweite Skript prüft die SHA-256-Werte der drei identifizierten Browserpakete vor dem Vergleich. Das dritte vergleicht zwei echte, zuvor erfasste Bildpaare in wechselnder Reihenfolge. Berechtigte Prüfer finden die Originale in ihrem eigenen privaten Nachweisordner. [Browsermessung](../../../../../../tools/beta-267/measure-live-r15.cjs) · [Editorvergleich](../../../../../../tools/beta-267/compare-published-ring-editor.cjs) · [Bildvergleich](../../../../../../tools/beta-267/compare-live-preview-pairs.mjs)
+
+## Persönlicher Text auf den Designkarten
+
+Von den 16 Ring-Designs übernehmen neun das erste Namensfeld. Auf der veröffentlichten Produktseite wurde der Name zu „Koch“ geändert. Auf dem PC und in Handybreite änderten sich die tatsächlich gezeichneten Schriftkonturen auf allen neun zugehörigen Karten. Nach dem Zurücksetzen entsprachen sie auf allen neun Karten wieder dem Ausgangszustand. Zwei getrennte Durchläufe ergaben dieselben Kartenkennungen, darunter FK-D05, FK-D07, FK-D08 und FK-D15. [Ergebnisse für beide Bildschirmgrößen](Designkartentext.json) · [Wiederholbarer Browsertest](../../../../../../tools/beta-267/check-ring-card-text.cjs)
+
+Mit Chrome und Playwright lässt sich die Prüfung auf der veröffentlichten Produktseite wiederholen. Das Skript bearbeitet nur das Textfeld im geöffneten Editor.
+
+```text
+node tools/beta-267/check-ring-card-text.cjs <neue-Ausgabedatei.json>
+```
+
+## Breiter Vergleich mit dem ursprünglichen R15
+
+Unter Windows liefen 2.752 Editor- und Werkstatttests auf dem veröffentlichten Code. Im ersten Durchgang bestanden 2.649, 92 schlugen fehl und elf wurden übersprungen. Für die Bild- und Exporttests wurde die fehlende Cairo-Bibliothek im lokalen Prüfstand ergänzt. Anschließend liefen alle 32 zuvor auffälligen Testdateien erneut. Von deren 204 Tests bestanden 197. Die sieben übrigen Fehler traten in der Gegenprüfung auf dem ursprünglichen R15 (`9af3a1ac`) an denselben Stellen mit derselben Abweichung auf.
+
+Drei betreffen die erwartete Auflösung bei Acryl-Fotoausschnitten, drei das Aufräumen temporärer SQLite-Verzeichnisse unter Windows und einer die erwartete Liste der Werkstattseiten. Die zusätzlichen Prüfgruppen für Preis und Auftragsübernahme (41 von 41) sowie die Editor-Dateien (9 von 9) bestanden auf PR #268. [Zählungen, betroffene Testfälle und Wiederholungsliste](Gesamttest.json)
+
+```text
+node --test --test-concurrency=4 app/configurator/variant-m/*.test.mjs app/workshop/*.test.mjs
+```

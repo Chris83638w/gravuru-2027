@@ -123,3 +123,4 @@ export function importFiles(files) {
   return compile(designs,resources);
 }
 export const inspectFile = path => importer('imports.py',['inspect',path]);
+export const corelMotifProof = path => importer('imports.py',['corel-proof',path]);

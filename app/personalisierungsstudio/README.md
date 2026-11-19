@@ -26,13 +26,16 @@ In der Werkstatt eine Quelldatei wählen und „Quelle prüfen“ ausführen. Be
 | Natives gravuru-Werkstatt-JSON mit `product` und `designs[].state.objects` | Die hier unterstützte rechteckige Ausführung übernimmt Maß, Texte, Originalschriften, Motive, Positionen und Rotation aus dem Bestand. Unbekannte Ebenen oder abweichende technische Ausführungen brauchen eine eigene Zuordnung. |
 | Vorbereitetes SVG aus CorelDRAW oder einem anderen Vektorprogramm | Physische Seitenmaße in mm und eine deckungsgleiche ViewBox ab 0/0. `CutContour` ist ein geschlossener Pfad oder eine Gruppe solcher Pfade in Seitenkoordinaten. Auch Innenkonturen und Kurven sind möglich. Gefüllte Motivpfade und Gruppen bleiben vektoriell. Einfache Textobjekte mit bekannter Originalschrift bleiben editierbar. Ein Rechteck mit `data-studio-photo="true"` definiert ein optionales, mittig füllendes Fotofeld. |
 | Fancy Product Designer `product.json` oder Original-ZIP | Die Vorprüfung liest jede Ansicht, native Texte mit Schriftnamen, Bildebenen und ausdrücklich markierte Uploadzonen. Druckbild, Produktansicht, Masken und Schnittlinie benötigen eine bestätigte Zuordnung vor der Veröffentlichung. |
-| Erschlossenes Corel-Katalog-`design.json` | Die Werkstatt zeigt belegte Maße, Schriften, Text- und Hinweisfelder, Motivanzahl und Originalfotodateien. Für die Fertigungsübernahme ist die Zuordnung zum Original-SVG erforderlich. |
+| Erschlossenes Corel-Katalog-`design.json` | Die Werkstatt liest ein ZIP mit zusammengehöriger `design.json` und `design.svg`. Die Prüfung ordnet Originalpfade, Füllregeln, Textzeilen mit Grundlinien, Fotoclip und Bedienhinweise zu. Der Plattenrahmen bleibt als Vorschau gekennzeichnet. Eine einzelne JSON-Datei liefert weiterhin die Bestandsübersicht. |
 | Zakeke | Als Vergleich für die Kundenbedienung erfasst. Ein nativer Projektimport gehört noch zum offenen Umfang. |
 
 Die Schriftprüfung verwendet den vorhandenen Werkstattkatalog. SVG-Effekte, eingebettete Stilregeln, mehrzeilige Tspan-Layouts und freie Masken außerhalb des unterstützten SVG-Profils meldet die Importprüfung. Fehlende Konturen und Druckelemente werden nicht aus Vorschaubildern abgeleitet. Die historische Stahlprobe hat einen übernommenen Testpreis von 10,99 Euro. Im Shop gelten die gebundene Shopify-Variante und deren Preis.
 
 ~~~sh
 node cli.mjs inspect FPD-Paket.zip
+node cli.mjs inspect Corel-Katalogvorlage.zip
+node cli.mjs proof-corel Corel-Katalogvorlage.zip --out Motivprobe.svg
+node cli.mjs proof-corel Corel-Katalogvorlage.zip --out Motivprobe.pdf
 node cli.mjs import /pfad/zu/design.svg --shop beispiel.myshopify.com --product 70001 --variant 90002
 ~~~
 

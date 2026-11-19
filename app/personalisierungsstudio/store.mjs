@@ -2,7 +2,7 @@ import {DatabaseSync} from 'node:sqlite';
 import {randomUUID} from 'node:crypto';
 import {hash,worker} from './catalog.mjs';
 import {scene,svg} from './render.mjs';
-import {f02Binding} from './f02-line.mjs';
+import {F02_SHOP,f02Binding} from './f02-line.mjs';
 
 export const DEMO_SHOP='studio-probe.myshopify.com';
 export const shopName=s=>typeof s==='string' && /^[a-z0-9][a-z0-9-]*\.myshopify\.com$/.test(s);
@@ -29,6 +29,20 @@ export function openStore(file) {
     try {const result=fn();db.exec('COMMIT');return result;}
     catch(e){db.exec('ROLLBACK');throw e;}
   }
+  // A Shopify line ID keeps its first assignment even if an order edit removes the line.
+  // Preserve all historical candidates. A conflict in an older database blocks just that line.
+  tx(()=>{
+    if(db.prepare("SELECT 1 FROM sqlite_master WHERE type='table' AND name='f02_line_owners'").get()) return;
+    db.exec('CREATE TABLE f02_line_owners(shop TEXT, line TEXT, order_id TEXT, job TEXT, PRIMARY KEY(shop,line,order_id,job))');
+    db.prepare('INSERT OR IGNORE INTO f02_line_owners SELECT shop,id,order_id,job FROM lines WHERE shop=?').run(F02_SHOP);
+    const insert=db.prepare('INSERT OR IGNORE INTO f02_line_owners VALUES(?,?,?,?)');
+    for(const row of db.prepare("SELECT id,request FROM jobs WHERE shop=? AND request LIKE 'f02:%'").iterate(F02_SHOP)){
+      const [,order,line]=row.request.split(':');
+      if(shopId(order) && shopId(line)) insert.run(F02_SHOP,line,order,row.id);
+    }
+  });
+  const differentOwner=db.prepare('SELECT 1 FROM f02_line_owners WHERE shop=? AND line=? AND (order_id<>? OR job<>?) LIMIT 1');
+  const rememberOwner=db.prepare('INSERT OR IGNORE INTO f02_line_owners VALUES(?,?,?,?)');
   function publish(shop,product,variant,pack) {
     demand(shopName(shop) && shopId(product) && shopId(variant),'Shop, Produkt- und Varianten-ID prüfen.');
     return tx(()=>{
@@ -123,8 +137,9 @@ export function openStore(file) {
   }
   function receive(shop,order,f02) {
     demand(shopId(order.id) && Array.isArray(order.lines),'Ungültige Bestellreferenz.');
-    const approved=f02 && f02Binding(shop,f02);
+    const approved=shop===F02_SHOP || f02 ? f02Binding(shop,f02) : undefined;
     return tx(()=>{
+      if(approved && !order.lines.length && !db.prepare('SELECT 1 FROM orders WHERE shop=? AND id=?').get(shop,order.id)) return 0;
       let status=String(order.status||'UNKNOWN'),cancelled=Number(!!order.cancelled);
       const last=db.prepare('SELECT v.updated,o.status,o.cancelled FROM order_versions v JOIN orders o ON o.shop=v.shop AND o.id=v.id WHERE v.shop=? AND v.id=?').get(shop,order.id);
       demand(!last || order.updatedAt,'Zeitstempel für den aktuellen Bestellstand fehlt.');
@@ -148,6 +163,10 @@ export function openStore(file) {
         const job=db.prepare('SELECT variant,product,rev FROM jobs WHERE shop=? AND id=?').get(shop,id);
         demand(job && job.variant===line.variant && job.product===line.product && (!approved||job.rev===approved.revision),
           'Bestellposition und gesicherte Gestaltung passen nicht zusammen.');
+        if(approved) {
+          demand(!differentOwner.get(shop,line.id,order.id,id),'Die Shopify-Position wurde bereits einer anderen Bestellung oder Gestaltung zugeordnet.');
+          if(status==='PAID' && !cancelled && line.quantity>0) rememberOwner.run(shop,line.id,order.id,id);
+        }
         selected.push({...line,job:id});
       }
       db.prepare('INSERT OR REPLACE INTO orders VALUES(?,?,?,?,?)').run(shop,order.id,String(order.name),status,cancelled);

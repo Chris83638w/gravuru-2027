@@ -76,8 +76,12 @@ def fragment(raw):
     result = []
     def visit(node, matrix, fill, rule):
         tag = node.tag.split("}")[-1]
-        allowed = {"id","d","fill","stroke","fill-rule","clip-rule","transform","viewBox","width","height","x","y","preserveAspectRatio","version"}
-        require(set(node.attrib).issubset(allowed) and node.get("stroke","none")=="none", "Nicht unterstützte SVG-Eigenschaft. Striche und Effekte vor dem Import in Pfade umwandeln.")
+        allowed = {"id","d","fill","stroke","stroke-width","fill-rule","clip-rule","transform","viewBox","width","height","x","y","preserveAspectRatio","version"}
+        label = tag + ("#" + node.get("id") if node.get("id") else "")
+        extra = sorted(set(node.attrib) - allowed)
+        require(not extra, f"{label}: SVG-Eigenschaft {', '.join(extra)} zuerst prüfen.")
+        stroke = node.get("stroke", "none")
+        require(stroke == "none", f"{label}: stroke={stroke}, stroke-width={node.get('stroke-width', '1')}. Sichtbare Strichgeometrie prüfen oder das Corel-Dateipaar als ZIP einlesen.")
         matrix = mul(matrix,transform(node.get("transform","")))
         fill, rule = node.get("fill",fill), node.get("fill-rule",rule)
         require(rule in ("nonzero","evenodd"), "Unbekannte Füllregel.")
@@ -144,12 +148,13 @@ def make_pdf(s):
             cv.setFillColor(HexColor(p["fill"]))
             cv.drawPath(pdfpath(cv,p["d"]),stroke=0,fill=1,fillMode=int(p["rule"]=="nonzero"))
         cv.restoreState()
-    cv.setStrokeColor(CMYKColorSep(0,1,0,0,spotName="CutContour"))
-    cv.setStrokeOverprint(True)
-    cv.setLineWidth(.1)
-    for d in s["cuts"]:
-        path_data(d,closed=True)
-        cv.drawPath(pdfpath(cv,d),stroke=1,fill=0)
+    if s["cuts"]:
+        cv.setStrokeColor(CMYKColorSep(0,1,0,0,spotName="CutContour"))
+        cv.setStrokeOverprint(True)
+        cv.setLineWidth(.1)
+        for d in s["cuts"]:
+            path_data(d,closed=True)
+            cv.drawPath(pdfpath(cv,d),stroke=1,fill=0)
     cv.showPage()
     cv.save()
     return output.getvalue()

@@ -2,14 +2,22 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {parseArgs} from 'node:util';
 import {openStore,shopName} from './store.mjs';
-import {here,inspectFile,importFiles} from './catalog.mjs';
+import {here,inspectFile,importFiles,corelMotifProof,worker} from './catalog.mjs';
+import {svg} from './render.mjs';
 import {createServer,DEMO_SHOP,DEMO_PRODUCT,DEMO_VARIANT} from './server.mjs';
 import {readOrder,downloadShopifyFile,syncF02Orders} from './shopify.mjs';
 import {f02Binding} from './f02-line.mjs';
 const {values:a,positionals:[cmd,...files]}=parseArgs({allowPositionals:true,options:Object.fromEntries(['db','shop','variant','product','order','line','out','format','port'].map(k=>[k,{type:'string'}]))});
 async function run(){
   if(cmd==='inspect'){if(files.length!==1) throw Error('Eine product.json, design.json oder FPD-ZIP angeben.');console.log(JSON.stringify(inspectFile(files[0]),null,2));return;}
-  if(!['demo','serve','import','sync','sync-f02','export'].includes(cmd)) throw Error('Befehl: demo | serve | inspect DATEI | import DATEI ... | sync | sync-f02 | export. Optionen im README.');
+  if(cmd==='proof-corel'){
+    const format=path.extname(a.out||'').toLowerCase();
+    if(files.length!==1 || !['.svg','.pdf'].includes(format)) throw Error('proof-corel DATEI --out MOTIVPROBE.svg oder .pdf angeben.');
+    const geometry=corelMotifProof(files[0]);
+    const bytes=format==='.pdf'?await worker('pdf',geometry):svg(geometry,{contour:false,label:'Motivprobe aus dem Corel-Original'});
+    fs.writeFileSync(a.out,bytes,{flag:'wx'});return;
+  }
+  if(!['demo','serve','import','sync','sync-f02','export'].includes(cmd)) throw Error('Befehl: demo | serve | inspect DATEI | proof-corel DATEI | import DATEI ... | sync | sync-f02 | export. Optionen im README.');
   const demo=cmd==='demo',shop=demo?DEMO_SHOP:a.shop;
   if(!shopName(shop)) throw Error('--shop mit dem kanonischen myshopify.com-Namen angeben.');
   const configFile=['sync','sync-f02','export','serve'].includes(cmd) && process.env.STUDIO_F02_BINDING;

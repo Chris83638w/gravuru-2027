@@ -8,6 +8,7 @@ import {compile,here,importFiles,nativeDesigns} from '../catalog.mjs';
 import {workshopResources} from '../../workshop/catalog.mjs';
 import {F02_SHOP} from '../f02-line.mjs';
 import {openStore} from '../store.mjs';
+import {DatabaseSync} from 'node:sqlite';
 import {downloadShopifyFile,readOrder,syncF02Orders} from '../shopify.mjs';
 import {createServer} from '../server.mjs';
 
@@ -34,7 +35,7 @@ const names=['Küstenhochzeit','Grüße vom Leuchtturm'];
 function order() {
   return {id:gid('Order',orderId),name:'#Probe',test:true,cancelledAt:null,updatedAt:stamp,displayFinancialStatus:'PAID',
     lineItems:{pageInfo,nodes:designs.map((design,i)=>({
-      id:gid('LineItem',String(11+i)),currentQuantity:i+1,product:{id:gid('Product',binding.product)},
+      id:gid('LineItem',String(11+i)),sku:binding.sku,currentQuantity:i+1,product:{id:gid('Product',binding.product)},
       variant:{id:gid('ProductVariant',binding.variant)},originalUnitPriceSet:{shopMoney:{amount:'10.99',currencyCode:'EUR'}},
       customAttributes:lineProperties(design,names[i],randomUUID())
     }))}};
@@ -141,6 +142,9 @@ test('F02 gibt auch schon erzeugte Dateien nur nach zwei vollständigen Bestäti
     ['fehlendes Datenstück',o=>o.lineItems.nodes[0].customAttributes.pop()],
     ['gleiche Positionsreferenz',o=>o.lineItems.nodes[1].customAttributes[0].value=o.lineItems.nodes[0].customAttributes[0].value],
     ['falsche Variante',o=>o.lineItems.nodes[0].variant.id=gid('ProductVariant','100')],
+    ['fremde Artikelnummer',o=>o.lineItems.nodes[0].sku='ANDERER-ARTIKEL'],
+    ['fehlende Artikelnummer',o=>delete o.lineItems.nodes[0].sku],
+    ['fremdes Produkt auf zweiter Antwort',o=>o.lineItems.nodes[0].product.id=gid('Product','99')],
     ['doppelte Shopify-Zeile',o=>o.lineItems.nodes[1].id=o.lineItems.nodes[0].id],
     ['vermischte Formate',o=>o.lineItems.nodes[0].customAttributes.push({key:'_gravuru_studio',value:randomUUID()})]
   ];
@@ -272,6 +276,103 @@ test('Eine veränderte Quelldatei verhindert die erste Freigabe einer historisch
   const original=order();
   await assert.rejects(get(store,'11','pdf',reader(()=>response(original))),/Prüfsumme/);
   assert.deepEqual(store.orders(F02_SHOP),[]);
+});
+
+test('Ein Suchtreffer mit gemischten Positionen übernimmt nur die gebundene SKU, Variante und Produkt-ID',async t=>{
+  const store=setup(t),mixed=order(),unrelated=order();
+  const good=mixed.lineItems.nodes[0];
+  const copy=(id,overrides)=>({...structuredClone(good),id:gid('LineItem',id),...overrides});
+  mixed.lineItems.nodes=[good,copy('21',{sku:'NUR-SUCHTREFFER'}),
+    copy('22',{variant:{id:gid('ProductVariant','123')}}),copy('23',{product:{id:gid('Product','456')}})];
+  unrelated.id=gid('Order','1002');
+  unrelated.lineItems.nodes.forEach(n=>n.sku='ANDERE');
+  const call=async(_url,options)=>{
+    const {query,variables}=JSON.parse(options.body);
+    if(query.includes('StudioTestOrders')) return Response.json({data:{orders:{
+      nodes:[mixed,unrelated].map(({id,test})=>({id,test})),pageInfo}}});
+    assert.match(query,/nodes\s*\{\s*id sku currentQuantity/);
+    return response(variables.id===mixed.id?mixed:unrelated);
+  };
+  for(let login=0;login<2;login++)
+    assert.deepEqual(await syncF02Orders(store,F02_SHOP,'t',binding,call),{orders:2,positions:1});
+  assert.deepEqual(store.orders(F02_SHOP).map(r=>[r.id,r.line]),[[orderId,'11']]);
+  assert.deepEqual(store.knownProductOrders(F02_SHOP,binding.product,binding.variant),[orderId]);
+  await assert.rejects(get(store,'21','svg',call),/Keine aktive/);
+  await assert.rejects(readOrder(F02_SHOP,'t',orderId,()=>assert.fail('kein Abruf ohne Bindung')),/F02-Freigabe/);
+});
+
+test('Eine entfernte Shopify-Zeile kann auch in einer anderen bezahlten Testbestellung nicht neu gebunden werden',async t=>{
+  const store=setup(t),first=order();
+  await get(store,'11','pdf',reader(()=>response(first)));
+  const empty=structuredClone(first);empty.lineItems.nodes=[];empty.updatedAt=later;
+  store.receive(F02_SHOP,await readOrder(F02_SHOP,'t',orderId,reader(()=>response(empty)),binding),binding);
+  const second=order();second.id=gid('Order','1002');
+  await assert.rejects(downloadShopifyFile(store,F02_SHOP,'t','1002','11','pdf',async()=>response(second),binding),/anderen Bestellung/);
+  assert.deepEqual(store.orders(F02_SHOP),[]);
+});
+
+test('Eine bestehende F02-Datenbank behält die Zuordnung früherer, inzwischen entfernter Zeilen beim Schemawechsel',async t=>{
+  const dir=mkdtempSync(join(tmpdir(),'studio-pos-'));
+  t.after(()=>{for(const f of ['db','db-wal','db-shm']) rmSync(join(dir,f),{force:true});rmdirSync(dir);});
+  const file=join(dir,'db');
+  let store=openStore(file);
+  try{
+    store.publish(F02_SHOP,binding.product,binding.variant,pack);
+    const paid=order();
+    await get(store,'11','svg',reader(()=>response(paid)));
+    const gone=structuredClone(paid);gone.lineItems.nodes=[];gone.updatedAt=later;
+    store.receive(F02_SHOP,await readOrder(F02_SHOP,'t',orderId,reader(()=>response(gone)),binding),binding);
+  } finally{store.close();}
+  const previous=new DatabaseSync(file);
+  previous.exec('DROP TABLE f02_line_owners');previous.close();
+  store=openStore(file);
+  try{
+    const foreign=order();foreign.id=gid('Order','1234');
+    await assert.rejects(downloadShopifyFile(store,F02_SHOP,'t','1234','11','svg',async()=>response(foreign),binding),/anderen Bestellung/);
+  } finally{store.close();}
+});
+
+test('101 Suchtreffer kosten drei Suchseiten und 101 Detailabrufe; Shopify-Punkte bleiben getrennt zählbar',async t=>{
+  const store=setup(t),original=order(),ids=Array.from({length:101},(_,i)=>String(3000+i));
+  let requests=0;
+  const call=async(_url,options)=>{
+    requests++;
+    const {query,variables}=JSON.parse(options.body);
+    let data;
+    if(query.includes('StudioTestOrders')){
+      const offset=Number(variables.after||0),end=Math.min(offset+50,ids.length);
+      data={orders:{nodes:ids.slice(offset,end).map(id=>({id:gid('Order',id),test:true})),
+        pageInfo:{hasNextPage:end<ids.length,endCursor:String(end)}}};
+    } else {
+      data={order:{...original,id:variables.id,lineItems:{nodes:[],pageInfo}}};
+    }
+    // Deliberately artificial point value; real responses supply this field themselves.
+    return Response.json({data,extensions:{cost:{actualQueryCost:2}}});
+  };
+  assert.deepEqual(await syncF02Orders(store,F02_SHOP,'t',binding,call),{orders:101,positions:0,
+    usage:{requests:104,costedRequests:104,actualQueryCost:208}});
+  assert.equal(requests,104);assert.deepEqual(store.orders(F02_SHOP),[]);
+});
+
+test('Zwei gleichzeitige Werkstattanmeldungen teilen einen Scan; die nächste Anmeldung prüft neu',async t=>{
+  const store=setup(t);
+  let queries=0,incoming=0;
+  const started=Promise.withResolvers(),release=Promise.withResolvers(),both=Promise.withResolvers();
+  const shopifyFetch=async()=>{
+    queries++;started.resolve();await release.promise;
+    return Response.json({data:{orders:{nodes:[],pageInfo}}});
+  };
+  const server=createServer(store,{shop:F02_SHOP,opsToken:'test-w',shopifyToken:'test',f02:binding,shopifyFetch});
+  server.on('request',()=>{if(++incoming===2) both.resolve();});
+  await new Promise(r=>server.listen(0,'127.0.0.1',r));
+  t.after(()=>new Promise(r=>server.close(r)));
+  const url='http://127.0.0.1:'+server.address().port+'/api/orders/f02/sync';
+  const request={method:'POST',headers:{Authorization:'Bearer test-w'}};
+  const first=fetch(url,request);await started.promise;
+  const second=fetch(url,request);await both.promise;release.resolve();
+  for(const result of await Promise.all([first,second])) assert.equal(result.status,200);
+  assert.equal(queries,1);
+  assert.equal((await fetch(url,request)).status,200);assert.equal(queries,2);
 });
 
 test('Ein unlesbarer Auftrag sperrt seine Datei und lässt die anderen Bestellungen im Abgleich zu',async t=>{

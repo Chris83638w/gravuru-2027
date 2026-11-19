@@ -28,6 +28,7 @@ export function createServer(store, options={}) {
   const {demo=false,secret,shop,opsToken,shopifyToken,shopifyFetch=fetch,f02}=options;
   const carts=new Map(),encoded=new Map();let orderNumber=1000;
   const files=new Map();
+  let activeF02Sync;
   if(demo) orderNumber=Math.max(orderNumber,...store.orders(DEMO_SHOP).map(o=>Number(o.id)).filter(Number.isSafeInteger));
   return http.createServer(async(req,res)=>{
     const url=new URL(req.url,'http://localhost'),p=url.pathname, method=req.method;
@@ -90,8 +91,11 @@ export function createServer(store, options={}) {
         }
         const sync=/^\/orders\/(\d+)\/sync$/.exec(route);
         const dl=/^\/orders\/(\d+)\/lines\/(\d+)\/(svg|pdf|json|original)$/.exec(route);
-        if(!local && f02 && route==='/orders/f02/sync' && method==='POST')
-          return json(await syncF02Orders(store,shop,shopifyToken,f02,shopifyFetch));
+        if(!local && f02 && route==='/orders/f02/sync' && method==='POST') {
+          activeF02Sync ??= syncF02Orders(store,shop,shopifyToken,f02,shopifyFetch)
+            .finally(()=>{activeF02Sync=undefined;});
+          return json(await activeF02Sync);
+        }
         if(!local && sync && method==='POST') return json({positions:store.receive(shop,await readOrder(shop,shopifyToken,sync[1],shopifyFetch,f02),f02)});
         if(route==='/orders' && method==='GET') return json(store.orders(owner));
         if(dl && method==='GET'){

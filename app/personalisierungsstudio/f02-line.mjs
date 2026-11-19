@@ -11,6 +11,9 @@ export function f02Binding(shop, input) {
     throw Error('Die F02-Freigabe für Testshop, Artikel, Variante, Revision und 10,99 € fehlt.');
   }
   const {product, variant, revision, unitCents, sku} = input;
+  if (typeof sku !== 'string' || !/^[A-Za-z0-9_-]{1,100}$/.test(sku)) {
+    throw Error('Die freigegebene F02-Artikelnummer fehlt oder ist ungültig.');
+  }
   return {shop, product, variant, revision, unitCents, sku};
 }
 

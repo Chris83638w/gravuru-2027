@@ -8,7 +8,7 @@ export const merchantPage=(local,f02=false)=>'<!doctype html><html lang="de"><me
 
 export async function merchantImport(store,shop,input,publish){
   const ext=path.extname(String(input.name||'')).toLowerCase();
-  if(!['.json','.svg','.zip'].includes(ext)||typeof input.bytes!=='string'||input.bytes.length>10_700_000)throw Error('SVG, JSON oder FPD-ZIP bis 8 MB erwartet.');
+  if(!['.json','.svg','.zip'].includes(ext)||typeof input.bytes!=='string'||input.bytes.length>10_700_000)throw Error('SVG, JSON oder ZIP mit Corel- oder FPD-Originalen bis 8 MB erwartet.');
   const dir=fs.mkdtempSync(path.join(os.tmpdir(),'gravuru-studio-import-')),source=path.join(dir,'input'+ext);
   try{
     const raw=Buffer.from(input.bytes,'base64');

@@ -1,11 +1,12 @@
 """Read customer-owned artwork without network access. No guessed contour or font."""
-from pathlib import Path
-from zipfile import ZipFile
+from pathlib import Path, PurePosixPath
+from zipfile import ZipFile, BadZipFile
 import json
 import re
 import sys
 from xml.etree import ElementTree as ET
 from worker import colour, fragment, numbers, path_data, require, transform, IDENTITY
+from corel_review import review_pair
 
 def inspect_fpd(doc):
     views = doc.get("views",[])
@@ -46,22 +47,47 @@ def read_svg(data, title):
     require(cuts, "Expliziter geschlossener Schnittpfad mit ID CutContour fehlt.")
     return dict(id=root.get("id","svg-design"),name=title,width=width,height=height,cuts=cuts,objects=objects)
 
+def source_document(source):
+    if source.suffix.lower() == ".zip":
+        with ZipFile(source) as archive:
+            names = archive.namelist()
+            fpd = [name for name in names if PurePosixPath(name).name == "product.json"]
+            corel = [name for name in names if PurePosixPath(name).name == "design.json"]
+            def entry(name):
+                require(names.count(name) == 1 and archive.getinfo(name).file_size <= 8_000_000,
+                        "Archiveintrag fehlt, ist doppelt oder größer als 8 MB.")
+                return archive.read(name)
+            if fpd:
+                require(len(fpd) == 1, "FPD-Archiv braucht genau eine product.json.")
+                return json.loads(entry(fpd[0])), None
+            require(len(corel) == 1, "Corel-Archiv braucht ein Dateipaar design.json und design.svg.")
+            svg = str(PurePosixPath(corel[0]).with_name("design.svg"))
+            return json.loads(entry(corel[0])), entry(svg)
+    data = json.loads(source.read_text(encoding="utf-8-sig"))
+    svg = source.with_suffix(".svg")
+    if data.get("katalog", {}).get("sourceKind") == "corel-bogen" and svg.is_file():
+        require(svg.stat().st_size <= 8_000_000, "SVG größer als 8 MB.")
+        return data, svg.read_bytes()
+    return data, None
+
+
 if __name__=="__main__":
     try:
         source=Path(sys.argv[2])
         if sys.argv[1]=="svg":
             result=read_svg(source.read_bytes(),sys.argv[3] if len(sys.argv)>3 else source.stem)
-        elif source.suffix.lower()==".zip":
-            with ZipFile(source) as z:
-                names=[n for n in z.namelist() if Path(n).name=="product.json"]
-                require(len(names)==1 and z.getinfo(names[0]).file_size<=8_000_000,"FPD-Archiv braucht genau eine product.json.")
-                result=inspect_fpd(json.loads(z.read(names[0])))
         else:
-            data=json.loads(source.read_text(encoding="utf-8-sig"))
-            if "views" in data: result=inspect_fpd(data)
+            data, paired_svg = source_document(source)
+            if sys.argv[1] == "corel-proof":
+                require(paired_svg, "Für die Motivprobe werden Original-JSON und Original-SVG benötigt.")
+                _, result = review_pair(data, paired_svg)
+            elif "views" in data: result=inspect_fpd(data)
             else:
                 texts=data.get("texts",[])
                 result={"format":"Corel-Katalog","id":data.get("id"),"plate":data.get("plate"),"fonts":data.get("fonts"),"textCount":len(texts),"hintCount":sum(bool(t.get("hint")) for t in texts),"motifCount":len(data.get("motifs",[])),"photoFiles":data.get("photoFiles",[]),"photo":bool(data.get("photo") or data.get("photoFiles")),"status":"review","reason":"Original-SVG, Schriftkonturen und Schnittpfad zuordnen."}
+                if paired_svg:
+                    result["sourceLayers"], _ = review_pair(data, paired_svg)
+                    result["reason"] = "Originalebenen geprüft. Schriftfreigabe, Produktionskontur und Ausführungsbindung sind offen."
         print(json.dumps(result,ensure_ascii=True))
-    except (KeyError,ValueError,TypeError,OSError,ET.ParseError) as error:
+    except (KeyError,ValueError,TypeError,OSError,IndexError,BadZipFile,ET.ParseError) as error:
         sys.exit(str(error))

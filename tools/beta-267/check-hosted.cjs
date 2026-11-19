@@ -14,6 +14,45 @@ const report = {origin,repetitions,started:new Date().toISOString(),network:'ohn
 const store = ()=>fs.writeFileSync(path.join(output,'Protokoll.json'),JSON.stringify(report,null,2)+'\n');
 const elapsed = start=>Math.round(performance.now()-start);
 
+async function devicePhotoReference(frame) {
+  return frame.evaluate(async()=>{
+    const el=document.querySelector('gravuru-configurator');
+    const svg=new DOMParser().parseFromString(el.svg(),'image/svg+xml').documentElement;
+    const photo=Array.from(svg.querySelectorAll('image')).find(n=>/^\/doorbell-assets\//.test(n.getAttribute('href')));
+    if(!photo)throw Error('Das gebundene Ring-Originalbild fehlt im Editor.');
+    const image=new Image();image.src=photo.getAttribute('href');await image.decode();
+    const canvas=document.createElement('canvas');
+    canvas.width=image.naturalWidth;canvas.height=image.naturalHeight;
+    const ctx=canvas.getContext('2d',{willReadFrequently:true});ctx.drawImage(image,0,0);
+    const data=ctx.getImageData(0,0,canvas.width,canvas.height).data;
+    const [ox,oy,width,height]=svg.getAttribute('viewBox').split(/\s+/).map(Number);
+    const read=k=>Number(photo.getAttribute(k));const scale=Math.min(read('width')/canvas.width,read('height')/canvas.height);
+    const x0=read('x')+(read('width')-canvas.width*scale)/2;
+    const y0=read('y')+(read('height')-canvas.height*scale)/2;
+    const samples=[];
+    for(let y=2;y<canvas.height-2;y+=3)for(let x=2;x<canvas.width-2;x+=3){
+      const i=(y*canvas.width+x)*4;
+      const [r,g,b,a]=data.subarray(i,i+4);
+      if(a>245 && b-r>40 && g-r>18 && b>85)samples.push([(x0+(x+.5)*scale-ox)/width,(y0+(y+.5)*scale-oy)/height,r,g,b]);
+    }
+    if(samples.length<24)throw Error('Zu wenige markante Bildpunkte im Ring-Original.');
+    return Array.from({length:24},(_,i)=>samples[Math.floor(i*samples.length/24)]);
+  });
+}
+async function checkDevicePhoto(image,samples){
+  const matched=await image.evaluate((img,points)=>{
+    const c=document.createElement('canvas');c.width=img.naturalWidth;c.height=img.naturalHeight;
+    const ctx=c.getContext('2d',{willReadFrequently:true});ctx.drawImage(img,0,0);
+    const data=ctx.getImageData(0,0,c.width,c.height).data;
+    return points.filter(([x,y,r,g,b])=>{
+      const i=(Math.floor(y*c.height)*c.width+Math.floor(x*c.width))*4;
+      return data[i+2]-data[i]>20 && Math.max(Math.abs(data[i]-r),Math.abs(data[i+1]-g),Math.abs(data[i+2]-b))<52;
+    }).length;
+  },samples);
+  assert.ok(matched>=17,'Ring-Gerätefoto im gespeicherten Bild: '+matched+'/24 Merkmale');
+  return matched;
+}
+
 async function verifyImages(scope,expected) {
   const imgs = scope.locator('article .image-box img');
   await imgs.nth(expected-1).waitFor({state:'visible',timeout:60000});
@@ -43,6 +82,7 @@ async function run(browser,device,viewport,runNo) {
     URL.createObjectURL=blob=>{const url=original(blob);if(blob?.type==='image/png')window.proofImageBlobs.set(url,blob);return url;};
   });
   const row={device,viewport,run:runNo,timings:[],products:[],files:[]};results.push(row);
+  const capture=name=>page.screenshot({path:path.join(output,device+'-'+name+'.png'),timeout:60000,animations:'disabled'});
   const frame=page.frameLocator('iframe');
   const tab=id=>frame.locator('[data-demo-section="'+id+'"]:visible').first();
   const errors=new Set();
@@ -85,10 +125,12 @@ async function run(browser,device,viewport,runNo) {
       await frame.locator('[data-c-design="'+person.design+'"][aria-pressed=true]').first().waitFor({state:'attached'});
       const entryMs=elapsed(begin);
       await tab('text').click();await field('name','Haus');await field('quote',person.name);await field('number',person.number);
-      if(runNo===1&&count===0)await page.screenshot({path:path.join(output,device+'-Editor.png')});
+      const deviceReference=await devicePhotoReference(page.frames().find(f=>f!==page.mainFrame()));
+      if(runNo===1&&count===0)await capture('Editor');
       const confirmMs=await save(++count);
       const fullMs=elapsed(begin);
       const pics=await verifyImages(rows,count);const cart=await data();
+      const deviceMatches=await checkDevicePhoto(rows.locator('.image-box img').nth(count-1),deviceReference);
       assert.equal(cart.items.length,count);assert.equal(cart.totalCents,4999*count);
       assert.match(cart.items.at(-1).lettering,new RegExp(person.name));assert.equal(cart.items.at(-1).quantity,1);
       assert.deepEqual(pics.map(p=>p.png),cart.items.map(i=>i.imageSha256));
@@ -100,14 +142,14 @@ async function run(browser,device,viewport,runNo) {
         assert.equal(pics[0].png,firstPng);assert.notEqual(pics[0].pixels,pics[1].pixels);
         row.pictures=pics;row.variant=cart.items[0].variant;row.sku=cart.items[0].sku;row.totalCents=cart.totalCents;
       }
-      row.timings.push({context:count===1?'kalt':'warm',entryThroughDesignMs:entryMs,confirmThroughDecodedPaintMs:confirmMs,entryThroughDecodedPaintWithAutomatedInputMs:fullMs});
+      row.timings.push({context:count===1?'kalt':'warm',entryThroughDesignMs:entryMs,confirmThroughDecodedPaintMs:confirmMs,entryThroughDecodedPaintWithAutomatedInputMs:fullMs,deviceImageSamplesMatched:deviceMatches,deviceImageSamples:24});
     }
     await noEdit(rows);assert.match(await page.locator('#sum').innerText(),/99,98/);
-    if(runNo===1)await page.screenshot({path:path.join(output,device+'-Warenkorb.png')});
+    if(runNo===1)await capture('Warenkorb');
     await page.getByRole('button',{name:'Kurzansicht'}).click();
     const drawer=page.getByRole('dialog');await noEdit(drawer);
     const drawerPics=await verifyImages(drawer,2);assert.deepEqual(drawerPics,row.pictures);
-    if(runNo===1)await page.screenshot({path:path.join(output,device+'-Kurzansicht.png')});
+    if(runNo===1)await capture('Kurzansicht');
     const [popup]=await Promise.all([context.waitForEvent('page'),drawer.locator('.image-box a').last().click()]);
     await popup.locator('img').waitFor();assert.ok(await popup.locator('img').evaluate(i=>i.naturalWidth)>150);await popup.close();
     const removeAt=runNo%2?drawer:rows;
@@ -141,6 +183,8 @@ async function run(browser,device,viewport,runNo) {
 }
 (async()=>{
  fs.mkdirSync(output,{recursive:true});const browser=await chromium.launch({channel:process.env.BETA_CHROME_CHANNEL||'chrome'});report.browser=browser.version();
- try{for(let i=1;i<=repetitions;i++)for(const [device,viewport] of Object.entries({PC:{width:1365,height:900},Mobil:{width:390,height:844}}))await run(browser,device,viewport,i);}
+ try{for(let i=1;i<=repetitions;i++)for(const [device,viewport] of Object.entries({PC:{width:1365,height:900},Mobil:{width:390,height:844}})){
+   if (!process.env.BETA_DEVICE || device===process.env.BETA_DEVICE) await run(browser,device,viewport,i);
+ }}
  finally{await browser.close();}
 })().catch(e=>{console.error(e.message);process.exitCode=1;});

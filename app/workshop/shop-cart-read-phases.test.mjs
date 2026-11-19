@@ -108,7 +108,7 @@ for(const kind of ['photo','steel-logo','doorbell'])test('read phases: real HTTP
  assert.deepEqual(w.repository.get(record.id),before,'all consumers preserve the frozen product document');
  // Exact counts secure scope placement, not elapsed time. The real registry
  // must not silently reparse the same document after a new await is added.
- if(kind==='photo')for(const [route,response,reads,digests] of [['acrylic-drafts',saved,2,1],['theme-cart',handoff,2,2],['cart/data',data,2,2],['cart/claim',claim,1,1]]){
+ if(kind==='photo')for(const [route,response,reads,digests] of [['acrylic-drafts',saved,2,1],['theme-cart',handoff,2,2],['cart/data',data,1,1],['cart/claim',claim,1,1]]){
   const event=events.find(e=>e.traceId===response.headers.get('x-gravuru-timing-id'));
   assert.equal(event.steps.product_revision_read.calls,reads,route+' product reads');
   assert.equal(event.steps.registry_document_digest.calls,digests,route+' registry digests');

@@ -43,16 +43,18 @@ async function acrylicFlow(page,device,saveEvidence) {
   const saveStart=performance.now();
   await button.click();
   try {
-    await page.locator('#downloads').waitFor({state:'visible',timeout:45000});
+    await page.waitForURL(u=>u.pathname==='/beta/cart',{timeout:45000});
+    await page.locator('#items article .image-box img').last().waitFor();
   } catch(error) {
-    throw Error((await iframe.locator('[data-shop-cart-status]').textContent())||error.message);
+    throw Error((await iframe.locator('[data-shop-cart-status]').textContent({timeout:1000}).catch(()=>''))||error.message);
   }
   const draftMs=performance.now()-saveStart;
-  assert.match(await page.locator('#status').innerText(),/Prüfstand [0-9]+ gesichert/);
+  await page.getByRole('link',{name:'Prüfdateien',exact:true}).click();
+  const saved=page.locator('#items article').last();
   const exportMs={};
   for (const format of ['svg','kontur','druck','zip']) {
     const started=performance.now();
-    const [download]=await Promise.all([page.waitForEvent('download'),page.locator('[data-format="'+format+'"]').click()]);
+    const [download]=await Promise.all([page.waitForEvent('download'),saved.locator('[data-format="'+format+'"]').click()]);
     assert.equal(await download.failure(),null);
     const data=fs.readFileSync(await download.path());
     assert.ok(data.length>50);

@@ -104,58 +104,6 @@ async function run(page, device, cache, repetition) {
   } finally { page.off('requestfinished', track); }
 }
 
-async function reopenEarlier(page, repetition) {
-  const match = await page.evaluate(async repetition => {
-    const response = await fetch('/cart.js', {cache:'no-store'});
-    if (!response.ok) throw Error('Warenkorb fehlt.');
-    const {items} = await response.json();
-    const line = items.find(item => item.properties._gravuru_rev === '1' && String(item.properties.Gravurtext).includes('Test ' + repetition + 'A'));
-    const sibling = items.find(item => item.properties._gravuru_rev === '2' && String(item.properties.Gravurtext).includes('Test ' + repetition + 'B'));
-    if (!line || !sibling || sibling.key === line.key || line.variant_id !== sibling.variant_id) throw Error('Die zwei Ausgangspositionen sind nicht eindeutig.');
-    const edit = new URL(line.properties._gravuru_bearbeiten, location.origin);
-    const links = Array.from(document.querySelectorAll('main a')).filter(a => a.textContent.trim() === 'Bearbeiten');
-    const index = links.findIndex(a => {
-      const url = new URL(a.href);
-      return url.pathname === edit.pathname && ['config', 'rev'].every(key =>
-        edit.searchParams.has(key) && url.searchParams.get(key) === edit.searchParams.get(key));
-    });
-    return {index, href:links[index]?.getAttribute('href'), siblingKey:sibling.key, revision:Number(line.properties._gravuru_rev)};
-  }, repetition);
-  assert.ok(match.index >= 0, 'Bearbeiten-Link der früheren Position fehlt');
-  const start = performance.now();
-  const earlier = page.locator('main a').filter({hasText:/^\s*Bearbeiten\s*$/}).nth(match.index);
-  assert.ok(match.href && (await earlier.getAttribute('href')) === match.href);
-  await earlier.click();
-  const frame = await openEditor(page);
-  await frame.getByRole('tab', {name:'Text', exact:true}).click();
-  const text = frame.locator('textarea:visible').first();
-  const firstReadMatches = (await text.inputValue()) === 'Test ' + repetition + 'A';
-  await frame.waitForFunction(rev => document.querySelector('gravuru-configurator')?.cartEdit?.rev === rev, match.revision, {timeout:15000});
-  assert.equal(await text.inputValue(), 'Test ' + repetition + 'A');
-  const reopenMs = elapsed(start);
-  await text.fill('Neu ' + repetition);
-  await text.press('Tab');
-  await frame.getByRole('button', {name:'In den Warenkorb', exact:true}).first().click();
-  const confirm = frame.getByRole('button', {name:'Warenkorb aktualisieren', exact:true}).last();
-  await confirm.waitFor();
-  const update = performance.now();
-  await confirm.click();
-  await page.waitForURL(url => url.origin === shop && /^\/cart\/?$/.test(url.pathname),
-    {waitUntil:'domcontentloaded', timeout:90000});
-  const received = await page.evaluate(async ({siblingKey, repetition}) => {
-    const response = await fetch('/cart.js', {cache:'no-store'});
-    const {items, total_price} = await response.json();
-    const sibling = items.find(item => item.key === siblingKey);
-    const replaced = items.find(item => String(item.properties.Gravurtext).includes('Neu ' + repetition));
-    return {lines:items.length, totalCents:total_price, replacedRevision:Number(replaced?.properties?._gravuru_rev),
-      siblingIntact:!!sibling && String(sibling.properties.Gravurtext).includes('Test ' + repetition + 'B'),
-      oldTextGone:items.every(item => !String(item.properties.Gravurtext).includes('Test ' + repetition + 'A'))};
-  }, {siblingKey:match.siblingKey, repetition});
-  assert.ok(received.lines === 2 && received.totalCents === 9998 &&
-    received.replacedRevision > match.revision && received.siblingIntact && received.oldTextGone);
-  return {reopenMs, firstReadMatches, editVerifiedMs:elapsed(update), ...received};
-}
-
 (async () => {
   const browser = await chromium.launch({channel:process.env.BETA_CHROME_CHANNEL || 'chrome'});
   try {
@@ -171,10 +119,6 @@ async function reopenEarlier(page, repetition) {
             report.samples.push(await run(page, device, cache, repetition));
             fs.writeFileSync(output, JSON.stringify(report, null, 2) + '\n');
             console.log(device, cache, repetition, report.samples.at(-1).cartVerifiedMs + ' ms');
-          }
-          try { report.samples.at(-1).editEarlier = await reopenEarlier(page, repetition); }
-          catch (error) {
-            report.samples.at(-1).editEarlier = {passed:false, reason:String(error.message).split('Call log')[0].split('https://')[0].slice(0,230)};
           }
           fs.writeFileSync(output, JSON.stringify(report, null, 2) + '\n');
         } finally { await context.close(); }

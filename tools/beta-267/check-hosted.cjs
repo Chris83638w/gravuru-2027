@@ -24,13 +24,10 @@ async function verifyImages(scope,expected) {
       await img.decode();
       const canvas = document.createElement('canvas');
       canvas.width=img.naturalWidth;canvas.height=img.naturalHeight;
-      const ctx=canvas.getContext('2d');ctx.drawImage(img,0,0);
+      const ctx=canvas.getContext('2d',{willReadFrequently:true});ctx.drawImage(img,0,0);
       const pixels=await sha(ctx.getImageData(0,0,canvas.width,canvas.height).data);
-      const row=img.closest('article').dataset;
-      const reference=await fetch('/beta-vorschau?'+new URLSearchParams({config:row.id,revision:row.rev}),{headers:{'X-Beta-Cart':sessionStorage.getItem('gravuru-beta-cart')}});
-      const blob=await reference.blob();const expected=await createImageBitmap(blob);
-      ctx.clearRect(0,0,canvas.width,canvas.height);ctx.drawImage(expected,0,0);expected.close();
-      if (pixels!==await sha(ctx.getImageData(0,0,canvas.width,canvas.height).data)) throw Error('Die sichtbaren Pixel weichen vom gespeicherten Bild der Zeile ab.');
+      const blob=window.proofImageBlobs.get(img.currentSrc);
+      if (!blob || blob.type!=='image/png') throw Error('Das tatsächlich angezeigte PNG fehlt.');
       result.push({w:canvas.width,h:canvas.height,png:await sha(await blob.arrayBuffer()),pixels,alt:img.alt});
     }
     return result;
@@ -40,6 +37,11 @@ async function run(browser,device,viewport,runNo) {
   const mobile=device==='Mobil';
   const context=await browser.newContext({viewport,isMobile:mobile,hasTouch:mobile,deviceScaleFactor:1,locale:'de-DE',...(hosted?{httpCredentials:{username:'astra',password:process.env.BETA_REVIEW_PASSWORD,origin}}:{})});
   const page=await context.newPage();page.setDefaultTimeout(18000);
+  // Record the exact Blob handed to the image element without a second image fetch or re-encoding.
+  await page.addInitScript(()=>{
+    const original=URL.createObjectURL.bind(URL);window.proofImageBlobs=new Map();
+    URL.createObjectURL=blob=>{const url=original(blob);if(blob?.type==='image/png')window.proofImageBlobs.set(url,blob);return url;};
+  });
   const row={device,viewport,run:runNo,timings:[],products:[],files:[]};results.push(row);
   const frame=page.frameLocator('iframe');
   const tab=id=>frame.locator('[data-demo-section="'+id+'"]:visible').first();
@@ -93,7 +95,8 @@ async function run(browser,device,viewport,runNo) {
       assert.ok(pics.every(p=>p.w>150&&p.h>150));
       if(count===1)firstPng=pics[0].png;
       if(count===2) {
-        assert.equal(cart.items[0].variant,cart.items[1].variant);assert.notEqual(cart.items[0].id,cart.items[1].id);
+        assert.equal(cart.items[0].variant,'57471227756924');assert.equal(cart.items[0].variant,cart.items[1].variant);
+        assert.ok(cart.items[0].sku && cart.items[1].sku===cart.items[0].sku);assert.notEqual(cart.items[0].id,cart.items[1].id);
         assert.equal(pics[0].png,firstPng);assert.notEqual(pics[0].pixels,pics[1].pixels);
         row.pictures=pics;row.variant=cart.items[0].variant;row.sku=cart.items[0].sku;row.totalCents=cart.totalCents;
       }

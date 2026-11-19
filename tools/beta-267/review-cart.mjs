@@ -6,7 +6,7 @@ import {customerTextLine} from '../../app/configurator/variant-m/text-summary.mj
 const digest = value => createHash('sha256').update(value).digest('hex');
 const fail = (status,message) => { throw Object.assign(Error(message),{status}); };
 
-export function createReviewCart(workshop, products, db) {
+export function createReviewCart(workshop, products, db, ringTransfer) {
   db.exec(`CREATE TABLE IF NOT EXISTS beta_cart_lines (
     cart TEXT NOT NULL, id TEXT NOT NULL, revision INTEGER NOT NULL, snapshot TEXT NOT NULL,
     line TEXT NOT NULL, png BLOB NOT NULL, PRIMARY KEY (cart,id,revision)
@@ -62,9 +62,11 @@ export function createReviewCart(workshop, products, db) {
       const config = JSON.parse(saved.files.get('konfigurator-quellen.json'));
       const template = config.profile.designs.find(item => item.id === state.design.id);
       const lettering = customerTextLine(state.design.objects,template);
-      const {id,rev} = drafts.cartConfigurations.assign({draftId:draft.id,draftRevision:draft.revision,snapshotId:draft.snapshotId,offerId:'offer_' + offer,productId:draft.productId});
+      const assigned = product==='ring' ? ringTransfer({draft,manifest,quantity,token,nonce:offer}) :
+        drafts.cartConfigurations.assign({draftId:draft.id,draftRevision:draft.revision,snapshotId:draft.snapshotId,offerId:'offer_' + offer,productId:draft.productId});
+      const {id,rev} = assigned;
       const line = {id,rev,product,productName:manifest.product.name,design:state.design.name || state.design.id,lettering,
-        options:labels,variant:JSON.stringify([product,Object.entries(options).sort()]),quantity,unitCents:price.unitCents,totalCents:price.totalCents,
+        options:labels,variant:assigned.variant || JSON.stringify([product,Object.entries(options).sort()]),sku:assigned.sku,quantity,unitCents:price.unitCents,totalCents:price.totalCents,
         print:manifest.product.method === 'print',imageSha256:digest(image)};
       db.prepare('INSERT INTO beta_cart_lines(cart,id,revision,snapshot,line,png) VALUES(?,?,?,?,?,?)')
         .run(cart,id,rev,draft.snapshotId,JSON.stringify(line),image);

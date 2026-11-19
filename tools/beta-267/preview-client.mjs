@@ -78,7 +78,7 @@ async function renderItems(list,sum,files=false) {
     article.append(info); list.append(article);
     if (files) {
       for (const [format,label] of Object.entries({svg:'SVG',kontur:'Kontur-PDF',...(item.print?{druck:'Druck-PDF'}:{}),zip:'Entwurf und Originale'})) {
-        const button = el('button',label); button.type='button';
+        const button = el('button',label); button.type='button';button.dataset.format=format;
         button.addEventListener('click',()=>downloadFile(button,item,format)); info.append(button);
       }
     } else {

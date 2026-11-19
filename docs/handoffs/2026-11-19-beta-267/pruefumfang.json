@@ -1,7 +1,7 @@
 {
-  "testedCommit": "ed2072b176ea8da9acf026fab39ffdd0b9b4cc8f",
-  "tests": 312,
-  "passed": 312,
+  "testedCommit": "42dd2276e9b6b8a7f81cb73d88ca1a0db0b893e2",
+  "tests": 317,
+  "passed": 317,
   "failed": 0,
   "skipped": 0,
   "cancelled": 0,
@@ -45,6 +45,8 @@
     "app/configurator/variant-m/visible-resource-loader.test.mjs",
     "app/workshop/acrylic-photo-resolution.test.mjs",
     "app/configurator/variant-m/legacy-cart-restore.test.mjs",
-    "app/configurator/variant-m/session-guard.test.mjs"
+    "app/configurator/variant-m/session-guard.test.mjs",
+    "app/workshop/form-product.test.mjs",
+    "app/workshop/contour-production.test.mjs"
   ]
 }

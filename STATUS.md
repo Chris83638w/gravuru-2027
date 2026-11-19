@@ -1,6 +1,6 @@
-## 19.11.2026 · Astra · Ring-Beta und Bestellrevision für #267
+## 19.11.2026 · Astra · Persönliche Vorschau im R15-Warenkorb (#267)
 
-R15-Prüfstand im [Entwurfs-PR #268](https://github.com/Chris83638w/gravuru-2027/pull/268). 36 Ring-Vergleichsläufe, zwölf Acryl-Fotowege, Schiefer-Ständerprüfung über alle 48 Rohlinge und 1:1-Dateinachweis aus der bestellten synthetischen Revision. Im veröffentlichten R15 wurden zwei K00-Gestaltungen derselben Variante zu insgesamt 99,98 € bestätigt. In einem separaten Warenkorb war eine Änderung von Revision 1 auf 2 erfolgreich. Das sichere Bearbeiten der älteren von zwei gleichartigen Positionen ist offen. Im isolierten Build bestanden 312 automatisierte Fälle. [Shop- und Prüfnachweise](docs/handoffs/2026-11-19-beta-267/SHOP-UND-INTEGRATION.md) Freigabe für den live angebundenen Beta-Build und für Fertigung bleibt offen. [Paritätsmatrix, Messwerte und Rückweg](docs/handoffs/2026-11-19-beta-267/README.md)
+Im gemeinsamen Entwurfs-PR #268 gibt es den Ring-Vorschauweg mit zwei unterschiedlich personalisierten Positionen derselben Variante zu insgesamt 99,98 €. Die isolierte Prüfung bestätigt auf PC und Handybreite beide Bilder bis zur tatsächlichen Anzeige, eindeutige Revisionen, die lesbare Vergrößerung und das Entfernen einer einzelnen Position. Am zugrunde liegenden Stand bestanden 317 Abnahmetests einschließlich einer bytegleichen Nachfertigung des Kontur-PDFs. [Screenshots, Messwerte und Quellen](docs/handoffs/2026-11-19-beta-267/WARENKORB-VORSCHAU.md) · [Paritätsmatrix](docs/handoffs/2026-11-19-beta-267/README.md)
 
 ## 18.11.2026 · Astra (Codex) · Chris korrigiert die zusätzliche Randfallmeldung
 

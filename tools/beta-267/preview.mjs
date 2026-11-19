@@ -5,6 +5,7 @@ import path from 'node:path';
 import {randomBytes} from 'node:crypto';
 import {DatabaseSync} from 'node:sqlite';
 import {createReviewCart} from './review-cart.mjs';
+import {cartShopDomain,createRingTransfer} from './preview-cart.mjs';
 import {build} from '../../app/configurator/variant-m/build.mjs';
 import {createPreviewServer} from '../../app/configurator/variant-m/server.mjs';
 import {createWorkshop} from '../../app/workshop/http.mjs';
@@ -13,7 +14,7 @@ import {steelSpecimen} from '../../app/workshop/specimen-product.mjs';
 import {workshopResources} from '../../app/workshop/catalog.mjs';
 import {acrylicArtwork} from '../../app/workshop/acrylic-artwork.mjs';
 import {acrylicContourProof,createAcrylicPrintProof} from '../../app/workshop/acrylic-print-proof.mjs';
-import {loadDoorbellCatalog, importDecorations, buildDoorbellConfig, resourceCrosswalk} from '../../scripts/import-doorbell-catalog.mjs';
+import {catalogPath,loadDoorbellCatalog, importDecorations, buildDoorbellConfig, resourceCrosswalk} from '../../scripts/import-doorbell-catalog.mjs';
 import {loadSlateRegister} from './slate-register.mjs';
 
 const requestedPort = Number(process.argv[2] || 18267);
@@ -34,9 +35,10 @@ reviewDb.exec(`PRAGMA busy_timeout=30000; PRAGMA journal_mode=WAL;
   CREATE TABLE IF NOT EXISTS beta_products (version TEXT, name TEXT, id TEXT NOT NULL, revision INTEGER NOT NULL, PRIMARY KEY(version,name))`);
 reviewDb.prepare('INSERT OR IGNORE INTO beta_settings VALUES(?,?)').run('csrf',randomBytes(32).toString('hex'));
 const {value:csrfToken} = reviewDb.prepare('SELECT value FROM beta_settings WHERE name=?').get('csrf');
-const releaseFile = new URL('../../release.json',import.meta.url);
-const version = fs.existsSync(releaseFile) ? JSON.parse(fs.readFileSync(releaseFile)).commit : 'local-review';
-const workshop = createWorkshop({filename:data ? path.join(data,'workshop.sqlite') : ':memory:',seedConfig:seed.universal,legacy:seed.legacy,katalogDir:null,operatorCsrfToken:csrfToken});
+// Bump when a bound specimen/catalogue is revised. A UI-only deployment must retain the product identities.
+const version = 'ring-8236b8bf_slate-ff1ea99e_specimens-42dd2276';
+const workshop = createWorkshop({filename:data ? path.join(data,'workshop.sqlite') : ':memory:',seedConfig:seed.universal,legacy:seed.legacy,katalogDir:null,operatorCsrfToken:csrfToken,
+  orderWebhook:{shopDomain:cartShopDomain,secret:randomBytes(32).toString('hex'),apiVersion:'2026-07',mode:'test-only'}});
 const products = new Map();
 async function addProduct(key,createConfig) {
   const lookup = reviewDb.prepare('SELECT id,revision FROM beta_products WHERE version=? AND name=?');
@@ -47,9 +49,9 @@ async function addProduct(key,createConfig) {
   }
   products.set(key,lookup.get(version,key));
 }
+const catalog = loadDoorbellCatalog(path.join(catalogRoot,'migrationen/funkklingeln-42x3-20261027'));
+const entry = catalog.entries.find(item=>item.modelKey===modelKey && item.formatKey==='16x28');
 await addProduct('ring',async () => {
-  const catalog = loadDoorbellCatalog(path.join(catalogRoot,'migrationen/funkklingeln-42x3-20261027'));
-  const entry = catalog.entries.find(item=>item.modelKey===modelKey && item.formatKey==='16x28');
   const model = catalog.manifest.models.find(item=>item.key===modelKey);
   const library = resourceCrosswalk(catalog,workshopResources());
   const {native} = await importDecorations(catalog.bundles.get(modelKey),workshop.assets);
@@ -65,7 +67,9 @@ if (process.env.GRAVURU_SCHIEFERREGISTER) {
   await addProduct('schiefer',()=>slate);
 }
 const server = createPreviewServer({outputDirectory: directory, workshop});
-const reviewCart = createReviewCart(workshop,products,reviewDb);
+const variants = JSON.parse(fs.readFileSync(catalogPath(catalog.root,entry.variantMatrixRef))).variants;
+const ringTransfer = createRingTransfer({workshop,record:workshop.repository.get(products.get('ring').id),entry,variants});
+const reviewCart = createReviewCart(workshop,products,reviewDb,ringTransfer);
 const serveWorkshop = server.listeners('request')[0];
 server.removeListener('request', serveWorkshop);
 const betaPage = fs.readFileSync(new URL('./preview.html', import.meta.url),'utf8')

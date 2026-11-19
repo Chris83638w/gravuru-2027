@@ -1,0 +1,26 @@
+# Kandidat A für den Vergleich in #267
+
+## Vorgehensweise und Herkunft
+
+Mein Ausgangspunkt war die Identität einer gekauften Gestaltung. Dieselbe Kombination aus Produkt, Auswahl, Design und Originalfoto muss durch Editor, Preisberechnung, Warenkorb und späteren Export verfolgt werden können. Erst bei identischem Endpunkt lässt sich die Geschwindigkeit fair vergleichen. Der erste eigene Befund und die damalige Reihenfolge sind zeitlich vor der Gegenprüfung im Issue dokumentiert. Die neue Wettbewerbsentscheidung gilt ab der Bekanntgabe, frühere Beiträge aus dem bestehenden PR bleiben ihren Urhebern zugeordnet. [Erstbefund](https://github.com/Chris83638w/gravuru-2027/issues/267#issuecomment-7007052775) · [Eigene Priorisierung](https://github.com/Chris83638w/gravuru-2027/issues/267#issuecomment-7007170921) · [Vergleichsentscheidung](https://github.com/Chris83638w/gravuru-2027/issues/267#issuecomment-7009402683)
+
+1. Den tatsächlichen Ring-Einstieg und die Variante bis zu Modell und Kundeneditor verfolgen. 16 Designs liegen in der Produktbindung. Beim Wechsel innerhalb derselben Bindung verwendet der Browser bereits geladene Geometrie und wechselt die Vorlage. Ein Wechsel zu einer anderen Produktbindung fordert Modell, Ressourcen und Sitzung erneut an. Für beide Wege messen wir getrennt.
+2. Vor jeder Tempoänderung Preis, Originalmedien und die bestellte Revision sichern. Die Ring-Katalogmatrix enthält 120 Varianten je betrachteter Produktkonfiguration. Die Abnahme umfasst 7.680 Preisfälle und 240 Paare der Schnittlagen. Die synthetische Bestellprüfung erzeugt aus der gebundenen Revision echte lesbare Dateien.
+3. Den vorhandenen R15-Kundeneditor mit nativer Designwahl verwenden. Die im bisherigen PR geprüfte Wiederverwendung der Profilberechnung und das Zeichnen sichtbarer Designkarten auch im Datensparmodus lassen sich am gleichen Produkt reproduzieren. Dieselbe Werkstatt und dieselben Prüfungen dienen weiter den Materialfamilien. Die Studio-Ergebnisse liefern gesonderte Vergleichswerte zu Quellen, Produktbindung und Werkstatt.
+4. Die Kundenbedienung anhand der neuen Warenkorbentscheidung abschließen. Zwei unterschiedliche Gestaltungen derselben SKU erhalten eigene unveränderliche Prüfpakete und eigene Bilder. Das persönliche Bild darf vergrößert werden. Die neue Gestaltung startet am Produkt. Menge, Einzelpreis und gezieltes Entfernen bleiben erreichbar. PC und Mobil werden kalt und warm bis zu Bilddekodierung und sichtbarer Darstellung gemessen.
+5. Beide Kandidaten am gemeinsamen Ausgangsstand `f84433f8475a410065edd9d1b09af07adea95a87` vergleichen. Für A führt der Zweig `dev/astra-r15-beta-267-20261119` die einzeln geprüften Beiträge zusammen. Grok entwickelt B getrennt. Claude erhält je einen festen Commit und identische Eingaben. Chris trifft die Auswahl.
+
+## Quellen und Reichweite
+
+| Umfang | Gelesen und geprüft |
+| --- | --- |
+| Zuständigkeit und Verlauf | Projektregeln in `AGENTS.md`, Entscheidungen, `PRIO-KONFI.md`, Projektstatus und Einstieg. Aufträge und Diskussionen #260, #262, #265, #266, #267 sowie #263 und #268. Die verlinkten Übergaben zu Studio/F02, Karten, Katalog, Schriften, dem Serverlauf und der Wiederherstellung bilden den fachlichen Verlauf ab. Verzweigte historische Referenzen sind nach ihrer Relevanz eingeordnet. |
+| Durchgehende Quellpfade | R15-Galerie, Adapter, Profilberechnung, Designwechsel über Produktgrenzen, Originalressourcen und Bildaufbau. Weiter über Warenkorbübergabe, Variantenbindung, Preisprüfung, Revisionsspeicher, Bestelleingang und Druck-/Kontur-/SVG-Ausgabe. Die jeweils verwendeten Module und Tests sind in der [Paritätsmatrix](README.md) und im [Testinventar](pruefumfang.json) verknüpft. |
+| Katalog | Der Ring-Importer prüft das Manifest, dessen Eingabedateien und ausgewählte Geometrien. Die Ausführungs- und Preisprüfung verwendet die produktspezifische Variantenmatrix. Für Schiefer wurden die 48 Rohlinge im Familiengenerator geprüft. Die historischen D230/D287-Quellen wurden stichprobenartig untersucht. |
+| Grenzen der Sichtung | Keine pauschale Einzelabnahme sämtlicher Altprodukte, aller gespeicherten Kundenmedien oder aller historischen Serverinstallationen. Autoritativ für diese Beta sind die konkret gebundenen Prüfprodukte und ein separater Datenbestand. Der Bereich Werkstattpflege und der Kundenbereich haben eigene Berechtigungen. |
+
+## Risiko, Wartung und Rückweg
+
+Die drei größten Risiken sind eine falsche Varianten- oder Kaufrevision, ein verlorenes Fotooriginal und eine scheinbar schnelle Warenkorbbestätigung, bevor das richtige Bild erscheint. Deshalb enthält die Matrix einen Preisabgleich, eine nachgelesene Bestellung mit Datei- und Maßprüfung sowie einen Bildvergleich direkt an der gerenderten Warenkorbposition.
+
+Der Webspace verwendet eine Node-App mit SQLite und die bestehende PDF-/Bildverarbeitung. Die Beta benötigt Speicher für Entwürfe, Vorschaubilder und Prüfpakete. Ein separater Tarif oder ein messbarer zusätzlicher Rechnungsbetrag ist hier nicht belegt. Rückweg für diesen Kandidaten ist das Stoppen seiner eigenen Anwendung oder die Rückkehr zum zuvor gesicherten Release im selben Webspace. Die geschützten Prüfdaten sind vom austauschbaren Anwendungscode getrennt. Eine Entscheidung über Produktivbetrieb, Kaufdaten oder Maschinen erfordert die fachlichen Abnahmen in der Matrix.

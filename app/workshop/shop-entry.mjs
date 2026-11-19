@@ -30,6 +30,7 @@ import {selectedProfile} from '../configurator/variant-m/contract.mjs';
 import {withCartTiming,cartTimingStep,cartTimingCount,cartTimingHeaders} from './shop-cart-timing.mjs';
 import {attachRevisionPreview} from './shop-cart-preview.mjs';
 import {inlineDesignPreviews} from './design-preview-inline.mjs';
+import {previewGlyphFromModels} from '../configurator/variant-m/preview-glyphs.mjs';
 
 // Öffentlicher Kundeneinstieg „Jetzt personalisieren“ (SHOP-ENTRY.txt). Shopify ruft über den App-Proxy
 // `GET <proxyPath>/start?product=&variant=…&signature=…` auf; die Zuordnung läuft ausschließlich über die
@@ -542,7 +543,15 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
     if(glyphFile){
      if(!['GET','HEAD'].includes(req.method)||url.search)fail(404,'shop_entry_route','Diese Datei gibt es hier nicht.');
      checkOrigin(req,{mutating:false});
-     const bytes=typeof slimmer?.previewGlyphFile==='function'?slimmer.previewGlyphFile(glyphFile[1]):null;
+     let bytes=typeof slimmer?.previewGlyphFile==='function'?slimmer.previewGlyphFile(glyphFile[1]):null;
+     if(!bytes){
+      const universals=[];
+      for(const store of fixed){
+       let rows=[];try{rows=store.workshop.repository.list?.()||[];}catch{continue;}
+       for(const row of rows){try{const model=store.workshop.model(row.id,row.revision);if(model?.universal)universals.push(model.universal);}catch{}}
+      }
+      bytes=previewGlyphFromModels(universals,glyphFile[1],previewGlyphDirectory,{keep:32});
+     }
      if(!bytes)fail(404,'shop_entry_route','Diese Datei gibt es hier nicht.');
      res.writeHead(200,headersFor('application/json; charset=utf-8',{'Content-Length':bytes.length,'Cache-Control':'public, max-age=31536000, immutable'}));return res.end(req.method==='HEAD'?undefined:bytes);
     }

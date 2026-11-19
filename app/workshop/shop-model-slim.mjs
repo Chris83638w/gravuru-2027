@@ -10,7 +10,7 @@
 // 3. Rohlingbilder, zu denen im Repo eine gleichnamige WebP-Fassung liegt, werden durch diese ersetzt (nur Vorschau).
 // Ohne geladenen Katalog oder bei jedem Fehler bleibt das Modell unverändert.
 import fs from 'node:fs';import path from 'node:path';import {fileURLToPath} from 'node:url';import {createHash} from 'node:crypto';
-import {previewGlyphPack,readPreviewGlyphPack,writePreviewGlyphPack} from '../configurator/variant-m/preview-glyphs.mjs';
+import {previewGlyphPack,prunePreviewGlyphPacks,readPreviewGlyphPack,writePreviewGlyphPack} from '../configurator/variant-m/preview-glyphs.mjs';
 
 const FONT_FILE=/^[a-z0-9-]{1,80}\.json$/;
 export const fontKey=font=>JSON.stringify([font?.regular??null,font?.bold??null]);
@@ -47,7 +47,7 @@ export function createModelSlimmer({fetchJson=null,surfaceSwaps=new Map(),cacheS
   const pack=previewGlyphPack(universal);if(!pack)return null;
   previewFiles.set(pack.hash,pack.body);
   while(previewFiles.size>64)previewFiles.delete(previewFiles.keys().next().value);
-  if(previewGlyphDirectory)writePreviewGlyphPack(previewGlyphDirectory,pack);
+  if(previewGlyphDirectory){writePreviewGlyphPack(previewGlyphDirectory,pack);prunePreviewGlyphPacks(previewGlyphDirectory,{keep:32});}
   universal.localResources??={};universal.localResources.previewGlyphs=pack.url;return pack;
  }
  function previewGlyphFile(hash){

@@ -58,3 +58,20 @@ export function readPreviewGlyphPack(directory,hash){
  if(!directory||!/^[a-f0-9]{64}$/.test(hash||''))return null;
  try{return fs.readFileSync(path.join(directory,hash+'.json'));}catch{return null;}
 }
+export function rebuildPreviewGlyphPack(universals,hash){
+ if(!/^[a-f0-9]{64}$/.test(hash||''))return null;
+ for(const universal of universals||[]){let pack;try{pack=previewGlyphPack(universal);}catch{continue;}if(pack?.hash===hash)return pack;}
+ return null;
+}
+export function prunePreviewGlyphPacks(directory,{keep=32}={}){
+ if(!directory||!Number.isSafeInteger(keep)||keep<1)return 0;
+ let names=[];try{names=fs.readdirSync(directory);}catch{return 0;}
+ const files=names.filter(name=>/^[a-f0-9]{64}\.json$/.test(name)).map(name=>{const file=path.join(directory,name);let mtime=0;try{mtime=fs.statSync(file).mtimeMs;}catch{}return {file,mtime};}).sort((a,b)=>b.mtime-a.mtime);
+ let removed=0;for(const item of files.slice(keep)){try{fs.rmSync(item.file);removed++;}catch{}}
+ return removed;
+}
+export function previewGlyphFromModels(universals,hash,directory,{keep=32}={}){
+ const pack=rebuildPreviewGlyphPack(universals,hash);if(!pack)return null;
+ if(directory){writePreviewGlyphPack(directory,pack);prunePreviewGlyphPacks(directory,{keep});}
+ return pack.body;
+}

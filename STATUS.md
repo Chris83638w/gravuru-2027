@@ -7,6 +7,7 @@
 - Nebenwirkung: 20 Testentwürfe (Text „abcde“) und 20 Wegwerf-Warenkörbe, keine Bestellung. Bestellung #1017 nur gelesen.
 - Offen: 3 von 48 Öffnungen ohne Bereitmeldung binnen 90 s (Ursache ungeklärt). Foto, Export, Aufpreise und mehrere Positionen nicht gemessen.
 - Nächster Schritt: dieselbe Messreihe und der Paritätsdurchlauf gegen den ersten Beta-Stand von Astra.
+- Nachtrag 19.11., nachmittags: Gegenprobe zu PR #268 am Commit `aeddd22f`, nur lokal. Astras Integrationstest 3/3 bestanden. Eigener Einschub (Preis, Revision, spätere Änderung, zehn manipulierte Zustellungen) bestanden; das Kontur-PDF ist bis auf die Dokumentkennung `/ID` wiederholbar. Dateien: `docs/handoffs/2026-11-19-beta-267-claude-phase-a/gegenprobe-pr268/`.
 
 ## 16.11.2026 – Go-live: Gesamtstand `1c5f8062` live (Claude als Operator, #239)
 

@@ -1,0 +1,128 @@
+{
+ "g1_preis": {
+  "gespeichert": true,
+  "felder": [
+   "bindingId",
+   "configuration",
+   "currency",
+   "customerDownloadAllowed",
+   "id",
+   "lineId",
+   "orderId",
+   "product",
+   "productionProfile",
+   "productionReady",
+   "quantity",
+   "receivedAt",
+   "selection",
+   "shopDomain",
+   "snapshotId",
+   "sourcePackageSha256",
+   "sourceSchema",
+   "status",
+   "test",
+   "totalCents",
+   "unitCents",
+   "variantId"
+  ],
+  "menge": 3,
+  "unitCents": 2847,
+  "totalCents": 8541,
+  "bezahltJeStueck": "28.47",
+  "konfiguration": {
+   "id": "konfig_26bda897-67d7-4c93-8320-7ac72ac4149f",
+   "rev": 3
+  },
+  "productionReady": false
+ },
+ "g2_spaetereAenderung": {
+  "status": 200,
+  "neuerSnapshot": true,
+  "paketUnveraendert": true,
+  "textDerBestellung": "Muster 267",
+  "zeileUnveraendert": true
+ },
+ "g3_wiederholung": {
+  "konturGleich": false,
+  "druckGleich": true,
+  "svgGleich": true
+ },
+ "eigenschaften": [
+  "Bearbeitbarer Entwurf",
+  "Design",
+  "Format",
+  "Gravurtext",
+  "_Entwurf",
+  "_gravuru_bearbeiten",
+  "_gravuru_bild",
+  "_gravuru_checkout_image",
+  "_gravuru_config",
+  "_gravuru_motifs",
+  "_gravuru_offer",
+  "_gravuru_rev",
+  "_gravuru_revision",
+  "_gravuru_uploads"
+ ],
+ "g4": {
+  "gleicheZustellungNochmal": {
+   "angenommeneZeilen": 1,
+   "fehler": [],
+   "duplicate": true
+  },
+  "alteRevision": {
+   "angenommeneZeilen": 0,
+   "fehler": [
+    "{\"id\":\"ordererror_07444a8a-e365-4671-be17-7d43b56ae530\",\"shopDomain\":\"gravuru-design.myshopify.com\",\"orderId\":"
+   ],
+   "duplicate": false
+  },
+  "preisEinCentWeniger": {
+   "angenommeneZeilen": 0,
+   "fehler": [
+    "{\"id\":\"ordererror_588d6d14-a22b-4a96-8b20-d78a4d08af3e\",\"shopDomain\":\"gravuru-design.myshopify.com\",\"orderId\":"
+   ],
+   "duplicate": false
+  },
+  "fremdeKonfiguration": {
+   "angenommeneZeilen": 0,
+   "fehler": [
+    "{\"id\":\"ordererror_556555e7-a375-4b61-a890-943d586d020a\",\"shopDomain\":\"gravuru-design.myshopify.com\",\"orderId\":"
+   ],
+   "duplicate": false
+  },
+  "fremdesAngebot": {
+   "angenommeneZeilen": 0,
+   "fehler": [
+    "{\"id\":\"ordererror_8b10be28-7033-4bcb-b81d-ca022bd6cf87\",\"shopDomain\":\"gravuru-design.myshopify.com\",\"orderId\":"
+   ],
+   "duplicate": false
+  },
+  "ohneAngebot": {
+   "angenommeneZeilen": 0,
+   "fehler": [
+    "{\"id\":\"ordererror_b5db2635-a463-467c-80cf-c66c249e1160\",\"shopDomain\":\"gravuru-design.myshopify.com\",\"orderId\":"
+   ],
+   "duplicate": false
+  },
+  "unbezahlt": {
+   "abgewiesen": "Zahlungsstatus, Währung oder Bestellpositionen sind nicht geeignet.",
+   "status": 422
+  },
+  "falscheSignatur": {
+   "abgewiesen": "Bestellnachricht nicht bestätigt.",
+   "status": 401
+  },
+  "fremderShop": {
+   "abgewiesen": "Shop, API-Version oder Ereignis passen nicht zur Testanbindung.",
+   "status": 422
+  },
+  "zweiteBestellungMitGleicherPosition": {
+   "angenommeneZeilen": 0,
+   "fehler": [
+    "{\"id\":\"ordererror_ad4e59fb-ffdb-4357-bfca-e2deaa2c3ca2\",\"shopDomain\":\"gravuru-design.myshopify.com\",\"orderId\":"
+   ],
+   "duplicate": false
+  },
+  "zeilenZumSnapshotDanach": 1
+ }
+}

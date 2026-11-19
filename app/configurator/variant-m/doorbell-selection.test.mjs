@@ -109,3 +109,17 @@ test('incomplete geometry, fabricated prices, unknown position and source schema
  const c=doorbellFixture();assert.throws(()=>doorbellSelection(c,{position:'upside-down'}));assert.throws(()=>doorbellSelection(c,{format:'42x24'}));
 });
 
+test('profile cache returns an isolated copy and follows a changed template',()=>{
+ const c=doorbellFixture(),options={format:'16x28'};
+ const first=selectedDoorbellProfile(c,options),second=selectedDoorbellProfile(c,options);
+ assert.notEqual(first,second);assert.deepEqual(first,second);
+ first.geometry.width=1;
+ assert.equal(selectedDoorbellProfile(c,options).geometry.width,second.geometry.width);
+ const template=c.doorbell.formats[0].profile.designs[0].objects[0];
+ const seen=selectedDoorbellProfile(c,options).designs[0].objects[0].x;
+ template.x+=4;
+ const updated=selectedDoorbellProfile(c,options);
+ assert.equal(updated.designs[0].objects[0].x,seen+4);
+ assert.deepEqual(selectedDoorbellProfile(c,options),updated);
+});
+

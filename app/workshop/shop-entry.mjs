@@ -26,6 +26,7 @@ import {isLayeredDoorbell} from '../configurator/variant-m/doorbell-selection.mj
 import {moduleEnabled} from '../configurator/variant-m/module-profile.mjs';
 import {selectedProfile} from '../configurator/variant-m/contract.mjs';
 import {withCartTiming,cartTimingStep,cartTimingCount,cartTimingHeaders} from './shop-cart-timing.mjs';
+import {attachCheckoutPreview} from './beta-267-checkout-preview.mjs';
 
 // Öffentlicher Kundeneinstieg „Jetzt personalisieren“ (SHOP-ENTRY.txt). Shopify ruft über den App-Proxy
 // `GET <proxyPath>/start?product=&variant=…&signature=…` auf; die Zuordnung läuft ausschließlich über die
@@ -75,9 +76,9 @@ function createWindowLimiter(perMinute,clock){
  return key=>{const minute=Math.floor(clock()/60000);if(windows.size>4096)windows.clear();const entry=windows.get(key);if(!entry||entry.minute!==minute){windows.set(key,{minute,count:1});return true;}entry.count++;return entry.count<=perMinute;};
 }
 
-export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=null,proxyPath,pagePath='/konfigurator/shop/',clock=Date.now,ttlMs,maxAgeSeconds=300,limits={},modelSlimmer,publicPreviewDirectory=null,publicPreviewPrepare=null,modelResponseCache=null,preSaveOnReview=false,logger=event=>console.warn(JSON.stringify(event))}){
+export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=null,proxyPath,pagePath='/konfigurator/shop/',clock=Date.now,ttlMs,maxAgeSeconds=300,limits={},modelSlimmer,publicPreviewDirectory=null,publicPreviewPrepare=null,modelResponseCache=null,preSaveOnReview=false,checkoutPreviewFirst=false,logger=event=>console.warn(JSON.stringify(event))}){
  let address;try{address=new URL(origin);}catch{}
- if(typeof preSaveOnReview!=='boolean')fail(503,'shop_entry_config','Der Konfigurator-Einstieg ist nicht eingerichtet.');
+ if(typeof preSaveOnReview!=='boolean'||typeof checkoutPreviewFirst!=='boolean')fail(503,'shop_entry_config','Der Konfigurator-Einstieg ist nicht eingerichtet.');
  if(!address||address.origin!==origin||address.protocol!=='https:'||address.username||address.password||!/^[-a-z0-9]+\.myshopify\.com$/.test(shopDomain||'')||typeof secret!=='string'||secret.length<16||!Array.isArray(stores)||!stores.length||stores.length>8||
    typeof proxyPath!=='string'||!/^\/[A-Za-z0-9_-]+(?:\/[A-Za-z0-9_-]+)*$/.test(proxyPath)||typeof pagePath!=='string'||!/^\/[A-Za-z0-9_-]+(?:\/[A-Za-z0-9_-]+)*\/$/.test(pagePath)||pagePath.startsWith('/api/')||proxyPath.startsWith('/api/')||proxyPath+'/'===pagePath)
   fail(503,'shop_entry_config','Der Konfigurator-Einstieg ist nicht eingerichtet.');
@@ -470,11 +471,20 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
   const prepared=cartTimingStep('cart_prepare',()=>prepareThemeCart(transfer.args,transfer.binding,transfer.input,{draftToken:transfer.draftToken}));
   if(url.pathname===themePath+'/data'&&req.method==='GET'){
    if(checkoutImage){
-    prepared.payload.properties._gravuru_checkout_image=await cartTimingStep('checkout_image_wait',()=>checkoutImage(prepared.checkoutImageSource||prepared.payload.properties._gravuru_bild));
-    withCustomerReadScope(()=>{active({headers:{'x-gravuru-shop-session':transfer.sessionToken}});cartTimingStep('cart_revalidate',()=>prepared.resolve());});
-    // The READY Shopify file becomes _Entwurf as text; no PNG round trip through the customer's device.
-    // #252: only for clients that announce it. Tabs still running an older cached client keep the PNG path.
-    if(req.headers['x-gravuru-cart-preview']==='hosted')delete prepared.payload.preview;
+    const source=prepared.checkoutImageSource||prepared.payload.properties._gravuru_bild;
+    if(checkoutPreviewFirst){
+     // Beta #267: do not block the cart on Shopify fileCreate. A secured personal
+     // preview is returned immediately; the hosted file attaches when it is already ready.
+     const resolved=await cartTimingStep('checkout_image_wait',()=>attachCheckoutPreview({checkoutImage,source,payload:prepared.payload,previewFirst:true,budgetMs:0}));
+     withCustomerReadScope(()=>{active({headers:{'x-gravuru-shop-session':transfer.sessionToken}});cartTimingStep('cart_revalidate',()=>prepared.resolve());});
+     if(resolved.hosted&&req.headers['x-gravuru-cart-preview']==='hosted')delete prepared.payload.preview;
+    }else{
+     prepared.payload.properties._gravuru_checkout_image=await cartTimingStep('checkout_image_wait',()=>checkoutImage(source));
+     withCustomerReadScope(()=>{active({headers:{'x-gravuru-shop-session':transfer.sessionToken}});cartTimingStep('cart_revalidate',()=>prepared.resolve());});
+     // The READY Shopify file becomes _Entwurf as text; no PNG round trip through the customer's device.
+     // #252: only for clients that announce it. Tabs still running an older cached client keep the PNG path.
+     if(req.headers['x-gravuru-cart-preview']==='hosted')delete prepared.payload.preview;
+    }
    }
    return json(res,200,prepared.payload);
   }
@@ -531,7 +541,16 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
      const script=pageFiles.has(pathname);
      if(script)checkOrigin(req,{mutating:false});
      const bytes=script?pageFiles.get(pathname):pathname===warmPath?warmHtml:pageHtml;
-     res.writeHead(200,headersFor(script?'text/javascript; charset=utf-8':'text/html; charset=utf-8',{'Content-Length':bytes.length,'Content-Security-Policy':PAGE_CSP}));return res.end(req.method==='HEAD'?undefined:bytes);
+     // Page modules are identical for every customer. Revalidate with an ETag
+     // instead of private no-store, so a repeat open can answer 304. The HTML
+     // document stays no-store because it embeds the warm manifest.
+     if(script){
+      const etag='"'+createHash('sha256').update(bytes).digest('hex').slice(0,32)+'"';
+      const cache={'Cache-Control':'public, max-age=300','ETag':etag,'Content-Security-Policy':PAGE_CSP};
+      if(req.headers['if-none-match']===etag){res.writeHead(304,headersFor('text/javascript; charset=utf-8',cache));return res.end();}
+      res.writeHead(200,headersFor('text/javascript; charset=utf-8',{'Content-Length':bytes.length,...cache}));return res.end(req.method==='HEAD'?undefined:bytes);
+     }
+     res.writeHead(200,headersFor('text/html; charset=utf-8',{'Content-Length':bytes.length,'Content-Security-Policy':PAGE_CSP}));return res.end(req.method==='HEAD'?undefined:bytes);
     }
     const action=pathname.slice(API.length);
     if(url.hash)fail(404,'shop_entry_route','Diese Funktion ist nicht verfügbar.');

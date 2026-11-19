@@ -1,0 +1,41 @@
+{% doc %}
+  Beta #267 Team B, local proposal only. Not deployed and not referenced by a live section.
+  Shows the personal preview for one cart line. No edit or reopen link.
+  A missing personal image stays a visible status. The generic product photo is not used as a stand-in.
+  @param {line_item} item - Cart line to display.
+{% enddoc %}
+{%- liquid
+  assign gv_config = item.properties['_gravuru_config']
+  assign gv_rev = item.properties['_gravuru_rev']
+  assign gv_native = false
+  if gv_config != blank and gv_rev != blank
+    assign gv_native = true
+  endif
+  assign gv_saved = item.properties['_gravuru_bild']
+  assign gv_saved_root = 'https://app-2027.gravuru-designwerkstatt.de/gestaltung/'
+  assign gv_saved_prefix = gv_saved | slice: 0, gv_saved_root.size
+  assign gv_saved_ext = gv_saved | slice: -4, 4
+  assign gv_saved_valid = false
+  if gv_native and gv_saved_prefix == gv_saved_root and gv_saved_ext == '.png'
+    assign gv_saved_valid = true
+  endif
+  assign gv_status = item.properties['_gravuru_vorschau_status']
+-%}
+{%- if gv_native -%}
+  <div class="gravuru-cart-personalization" data-gravuru-config="{{ gv_config | escape }}" data-gravuru-rev="{{ gv_rev | escape }}">
+    {%- if gv_saved_valid -%}
+      <a class="gravuru-cart-preview-link" data-gravuru-preview href="{{ gv_saved | escape }}" target="_blank" rel="noopener">
+        <img class="gravuru-cart-preview" src="{{ gv_saved | escape }}" alt="{{ item.product.title | escape }}" width="160" height="120" loading="lazy">
+      </a>
+    {%- elsif gv_status == 'persoenlich_gesichert' -%}
+      <p class="gravuru-cart-preview-state" role="status">Persönliche Vorschau wird geladen.</p>
+    {%- else -%}
+      <p class="gravuru-cart-preview-state" role="alert">Persönliche Vorschau konnte nicht geladen werden.</p>
+    {%- endif -%}
+  </div>
+{%- endif -%}
+{% stylesheet %}
+  .gravuru-cart-personalization { display: flex; flex-direction: column; width: 100%; }
+  .gravuru-cart-preview { display: block; width: 100%; height: auto; object-fit: contain; }
+  .gravuru-cart-preview-state { margin: 0; min-height: 44px; }
+{% endstylesheet %}

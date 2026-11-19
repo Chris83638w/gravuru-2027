@@ -22,7 +22,7 @@ import {installDesignReset,resetOriginalDesign} from './design-reset.mjs';
 import {installLayout} from './layout.mjs';
 import {alignmentContent,alignmentLabel} from './ui-icons.mjs';
 import {installLegacyCartRestore} from './legacy-cart-restore.mjs';
-import {cartEditParams} from './cart-edit.mjs';
+import {cartEditParams,installCartEdit} from './cart-edit.mjs';
 import {photoColorMode,photoColorFilter,photoEngravingPreviewFilter} from '../../platform/sources/app/shared/models/photo-color.mjs';
 import {commercePrice} from './commerce-model.mjs';
 import {previewResourceURL} from './preview-resource.mjs';
@@ -490,7 +490,8 @@ export async function installUX(el,config,legacy,{attach}={}){
   // Ladezeit: Schriften/Motive des gesicherten Stands vor dem (synchronen) Wiederherstellen laden.
   const pendingDesignTransfer=!!window.parent.GravuruShopEntry?.designGallery?.hasPendingTransfer();
   // An explicit cart revision owns restoration, whether its private read finishes before or after these steps.
-  const recoverLocalSession=!pendingDesignTransfer&&!cartEditParams(location.search);
+  const cartRevision=cartEditParams(location.search);
+  const recoverLocalSession=!pendingDesignTransfer&&!cartRevision;
   if(sessionGuard&&!config?.workbench&&recoverLocalSession&&el.uxEnsureDraftResources){const stored=sessionGuard.read();if(stored)try{await el.uxEnsureDraftResources(stored.draft);}catch{}}
   const savedSession=sessionGuard&&!config?.workbench&&recoverLocalSession?sessionGuard.read():null;
   const missingUploads=savedSession?await sessionUploads?.restore(savedSession.uploads||[]):[];
@@ -559,6 +560,8 @@ export async function installUX(el,config,legacy,{attach}={}){
   installModernMotifBrowser({r,el});
   const navigation=document.createElement('style');const navigationResponse=await fetch('/configurator/variant-m/modern-navigation.css');
   if(!navigationResponse.ok)throw Error('Aktuelle Konfigurator-Navigation fehlt.');navigation.textContent=await navigationResponse.text();r.append(navigation);
+  // Finish restoring the selected line before exposing editable fields or signalling readiness to the shop.
+  if(cartRevision)await installCartEdit({el,r,config,files},{required:true});
   // All customer UI and its styles are ready before the first DOM insertion.
   // A connectedCallback replay is harmless: the reference component has a ready guard.
   attach?.();

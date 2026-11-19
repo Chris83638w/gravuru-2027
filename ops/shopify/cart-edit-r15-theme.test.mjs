@@ -38,6 +38,18 @@ test('a missing personal image has an explicit status and never shows the produc
   }
   assert.equal((await render({})).trim(),'');
 });
+test('responsive cart previews use only the confirmed file for this line and preserve the full-size link',async()=>{
+  const file='https://cdn.shopify.com/s/files/1/0920/5550/3228/files/gravuru-gestaltung-'+'c'.repeat(64)+'.png';
+  for(const version of ['', '?v=12']){
+    const full=file+version,query=version?'&amp;width=':'?width=';
+    const html=await render({...native,_Entwurf:full,_gravuru_checkout_image:full,_gravuru_bild:personal+'nord.png'});
+    assert.ok(html.includes('href="'+personal+'nord.png"'));
+    for(const scale of [1,2,3])assert.ok(html.includes(full+query+String(160*scale)+' '+scale+'x'));
+  }
+  for(const props of [{...native,_Entwurf:uploaded,_gravuru_checkout_image:file},{...native,_Entwurf:hosted,_gravuru_checkout_image:hosted}]){
+    assert.doesNotMatch(await render(props),/srcset=/);
+  }
+});
 test('both theme sections select the same line-specific renderer and keep the theme-owned ordinary items',()=>{
   const patch=fs.readFileSync(new URL('./theme-block/cart-media-placement.patch',import.meta.url),'utf8');
   const sections=patch.split('diff --git').slice(1);assert.equal(sections.length,2);

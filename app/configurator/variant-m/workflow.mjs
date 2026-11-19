@@ -186,9 +186,9 @@ export async function installWorkflow(api){
   const order=galleryOrder(profile.designs,config?.designSelection==='all-approved'?null:productTheme(profile)),cards=new Map(all('.c-gallery [data-c-design]').map(c=>[c.dataset.cDesign,c]));
   const ordered=[...order.primary,...order.more].map(id=>cards.get(id)).filter(Boolean);
   if(ordered.some((card,i)=>gallery.children[i]!==card))for(const card of ordered)gallery.append(card);
-  const more=new Set(order.more);let hiddenMore=0;
+  const more=new Set(order.more),designs=chosenProfile().designs;let hiddenMore=0;
   for(const [id,card] of cards){
-   const design=chosenProfile().designs.find(d=>d.id===id),bestseller=design?.bestseller===true;
+   const design=designs.find(d=>d.id===id),bestseller=design?.bestseller===true;
    card.classList.toggle('is-bestseller',bestseller);
    if(bestseller&&!card.querySelector('[data-design-bestseller]')){const badge=document.createElement('span');badge.dataset.designBestseller='';badge.textContent='Bestseller';card.prepend(badge);}
    const tucked=more.has(id)&&!moreExpanded&&id!==el.state.designId;

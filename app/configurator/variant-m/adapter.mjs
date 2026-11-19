@@ -32,6 +32,13 @@ import {updateProductViewport} from './product-viewport.mjs';
 import {scalableSizeState} from './scalable-size-state.mjs';
 
 const clone = value => structuredClone(value);
+// One physical projection per option key. Customer text never changes the key.
+export function projectOnce(cache,active,options,select){
+ if(!active)return select(options);
+ const key=JSON.stringify(options);
+ if(cache.key!==key){cache.profile=select(options);cache.key=key;cache.builds=(cache.builds||0)+1;}
+ return cache.profile;
+}
 const svgDocument = svg => new DOMParser().parseFromString(svg, 'image/svg+xml');
 const pendingThumbnail='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 160" role="img" aria-label="Designvorschau wird geladen"></svg>';
 
@@ -45,13 +52,12 @@ export function installUniversal(configInput) {
   const current = () => designFromState(config, el.state);
   // K14 / Ü15.1: gewählte Seite (`el.state.uxSurface`, Standard vorn); von hinten sind die Bohrlöcher gespiegelt.
   const activeSurface = () => el?.state?.uxSurface === 'back' ? 'back' : 'front';
-  // A family profile projects the whole catalogue. Its immutable templates only
-  // change with the physical options, never while the customer edits text.
-  let familyProfileKey=null,familyProfile=null;
+  // Physical options select the immutable template set. A design switch reuses
+  // that projection instead of cloning it again for every card.
+  const projection={key:null,profile:null,builds:0};
   const profile = (surface = activeSurface()) => {
-    const key=dynamicProfiles?JSON.stringify(options):null;
-    if(dynamicProfiles&&key!==familyProfileKey){familyProfile=selectedProfile(config,options);familyProfileKey=key;}
-    const sp=dynamicProfiles?familyProfile:selectedProfile(config,options);
+    const sp=projectOnce(projection,dynamicFormats,options,next=>selectedProfile(config,next));
+    if(el)el.uxProfileBuilds=projection.builds;
     return surface==='back'?{...sp,geometry:surfaceGeometry(sp.geometry,'back')}:sp;
   };
   const motifs = () => customerMotifs(config, el.motifs, el.catalog);
@@ -307,8 +313,9 @@ export function installUniversal(configInput) {
       if(dragging||!el.isConnected||!el.uxLayoutReady)return 0;
       const thumbnailKey=JSON.stringify(options)+'|'+(el.uxThumbnailSignature?.()||'');
       let budget=Number.isFinite(el.uxThumbnailBudget)?el.uxThumbnailBudget:Infinity,deferred=0;
+      const thumbnailProfile=dynamicFormats?profile():p;
       for(const card of r.querySelectorAll('[data-c-design]')){
-        const design=(dynamicFormats?profile().designs:p.designs).find(d=>d.id===card.dataset.cDesign);if(!design)continue;
+        const design=thumbnailProfile.designs.find(d=>d.id===card.dataset.cDesign);if(!design)continue;
         if(dynamicDoorbell&&!designResourcesReady(design,el.fontData,el.motifs))continue;
         let thumbnail=thumbnails.get(card);
         if(!thumbnail||thumbnail.key!==thumbnailKey){

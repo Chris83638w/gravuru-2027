@@ -45,9 +45,16 @@ export function installDoorbellDesignLoading(el,config,say=()=>{}){
  };
  return async()=>{
   if(el.uxPreviewGlyphsReady)await el.uxPreviewGlyphsReady;
+  // Cards already painted from the pack. Full fonts follow in idle, and only
+  // when data saving is off: the preload queue skips this task in that mode.
+  await new Promise(resolve=>{
+   const view=el.ownerDocument?.defaultView||globalThis;
+   if(typeof view.requestIdleCallback==='function')view.requestIdleCallback(()=>resolve(),{timeout:2000});
+   else setTimeout(resolve,0);
+  });
   for(const design of designs()){
    while(foreground)await foreground;
-   if(designResourcesReady(design,{...(el.uxPreviewFonts||{}),...(el.fontData||{})},el.motifs))continue;
+   if(designResourcesReady(design,el.fontData,el.motifs))continue;
    try{await el.uxEnsureDesignResources(design,{priority:'low'});}catch{/* One unavailable preview must not stop the other cards. */}
   }
   el.uxRefreshThumbnails?.();el.sync();

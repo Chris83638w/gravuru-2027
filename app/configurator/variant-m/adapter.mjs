@@ -41,8 +41,10 @@ export function projectOnce(cache,active,options,select){
 }
 // Cards that show the customer's own letters must redraw when the full font
 // replaces the preview pack. The key follows that font state.
-export function thumbnailCacheKey(options,signature,faces){
- const fonts=Object.keys(faces||{}).sort().map(name=>{const font=faces[name],glyphs=font?.regular?.glyphs;return name+':'+(font?.previewSubset?'pack':'full')+':'+(glyphs?Object.keys(glyphs).length:0);}).join(',');
+export function thumbnailCacheKey(options,signature,faces,design){
+ const used=[...new Set((design?.objects||[]).filter(object=>object?.type==='text'&&typeof object.font==='string').map(object=>object.font))].sort();
+ const names=used.length?used:Object.keys(faces||{}).sort();
+ const fonts=names.map(name=>{const font=faces?.[name],glyphs=font?.regular?.glyphs;return name+':'+(font?.previewSubset?'pack':'full')+':'+(glyphs?Object.keys(glyphs).length:0);}).join(',');
  return JSON.stringify(options)+'|'+String(signature||'')+'|'+fonts;
 }
 const svgDocument = svg => new DOMParser().parseFromString(svg, 'image/svg+xml');
@@ -320,12 +322,13 @@ export function installUniversal(configInput) {
     function renderThumbnails(){
       if(dragging||!el.isConnected||!el.uxLayoutReady)return 0;
       const faces=cardFonts();
-      const thumbnailKey=thumbnailCacheKey(options,el.uxThumbnailSignature?.()||'',faces);
+      const signature=el.uxThumbnailSignature?.()||'';
       let budget=Number.isFinite(el.uxThumbnailBudget)?el.uxThumbnailBudget:Infinity,deferred=0;
       const thumbnailProfile=dynamicFormats?profile():p;
       for(const card of r.querySelectorAll('[data-c-design]')){
         const design=thumbnailProfile.designs.find(d=>d.id===card.dataset.cDesign);if(!design)continue;
         const shown=el.uxThumbnailDesign?.(design)||design;
+        const thumbnailKey=thumbnailCacheKey(options,signature,faces,shown);
         if(dynamicDoorbell&&!designResourcesReady(shown,faces,el.motifs))continue;
         let thumbnail=thumbnails.get(card);
         if(!thumbnail||thumbnail.key!==thumbnailKey){

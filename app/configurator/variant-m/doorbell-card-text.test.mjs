@@ -12,7 +12,10 @@ test('a customer word outside the preview pack waits for the full font and chang
  assert.equal(designResourcesReady(template,pack,{}),true);
  assert.equal(designResourcesReady(customer,pack,{}),false);
  assert.equal(designResourcesReady(customer,full,{}),true);
- assert.notEqual(thumbnailCacheKey({format:'16x28'},'Familie',pack),thumbnailCacheKey({format:'16x28'},'Familie',full));
+ assert.notEqual(thumbnailCacheKey({format:'16x28'},'Familie',pack,template),thumbnailCacheKey({format:'16x28'},'Familie',full,template));
+ const other={Probe:pack.Probe,Andere:{previewSubset:true,regular:{glyphs:{X:{a:1,d:'M0 0'}}}}};
+ const loaded={...other,Andere:{regular:{glyphs:{X:{a:1,d:'M0 0'},Y:{a:1,d:'M1 1'}}}}};
+ assert.equal(thumbnailCacheKey({format:'16x28'},'Familie',other,template),thumbnailCacheKey({format:'16x28'},'Familie',loaded,template));
  const letter={...customer.objects[0]};
  assert.match(textPaths(letter,full),/M0 0H8V1H0Z/);
  assert.equal(textPaths(letter,pack).includes('M0 0H8V1H0Z'),false);

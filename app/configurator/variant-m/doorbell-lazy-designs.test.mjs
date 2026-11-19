@@ -97,3 +97,11 @@ test('a visible card covered by the preview pack does not load the full font', a
  await new Promise(resolve=>setImmediate(resolve));
  assert.deepEqual(calls,['Koch']);
 });
+test('outside data saving the full font is preloaded after the cards can paint',async()=>{
+ const calls=[];
+ const el={fontData:{},motifs:{},chooseDesign(){},sync(){},uxRefreshThumbnails(){},uxPreviewGlyphsReady:Promise.resolve(),uxPreviewFonts:{Probe:{previewSubset:true,regular:{glyphs:{F:{},a:{},m:{},i:{},l:{},e:{}}}}},async uxEnsureDesignResources(design){calls.push(design.id);this.fontData[design.objects[0].font]={};}};
+ const design={id:'a',objects:[{type:'text',font:'Probe',text:'Familie'}]};
+ const warm=installDoorbellDesignLoading(el,{doorbell:{schema:'gravuru-doorbell/v1'},profile:{designs:[design]}});
+ await warm();
+ assert.deepEqual(calls,['a']);
+});

@@ -347,6 +347,8 @@ test('theme cart: signed entry, immutable design, edit, quantity 1 to 4 and sign
   assert.match(artwork.svg,/<path\b/);
   assert.doesNotMatch(artwork.svg,/<text\b/);
   const contour=await acrylicContourProof(archive,review.packageSha256);
+  const repeatedContour=await acrylicContourProof(archive,review.packageSha256);
+  assert.equal(digest(repeatedContour),digest(contour),'Re-exporting the same purchased contour must reproduce its bytes');
   const print=await createAcrylicPrintProof(archive,review.packageSha256,{dpi:300,bleedMm:0,whiteBleedMm:0},{orderLines:[line]});
   assert.equal(print.metadata.sourcePackageSha256,review.packageSha256);
   assert.equal(print.metadata.geometrySha256,artwork.geometrySha256);

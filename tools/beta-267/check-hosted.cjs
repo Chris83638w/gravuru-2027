@@ -52,6 +52,27 @@ async function checkDevicePhoto(image,samples){
   assert.ok(matched>=17,'Ring-Gerätefoto im gespeicherten Bild: '+matched+'/24 Merkmale');
   return matched;
 }
+async function checkOriginalAngle(image,expected){
+  // Ring 16 × 28, K00. The verified source 994bd7bd has the path M22 87 H138 V237.
+  const counts=await image.evaluate(img=>{
+    const canvas=document.createElement('canvas');canvas.width=img.naturalWidth;canvas.height=img.naturalHeight;
+    const ctx=canvas.getContext('2d',{willReadFrequently:true});ctx.drawImage(img,0,0);
+    const data=ctx.getImageData(0,0,canvas.width,canvas.height).data;
+    const bright=(x,y,vertical)=>{
+      const col=Math.round((x+8)*canvas.width/176),row=Math.round((y+8)*canvas.height/296);
+      for(let d=-2;d<=2;d++){
+        const idx=((row+(vertical?0:d))*canvas.width+col+(vertical?d:0))*4;
+        if(Math.min(data[idx],data[idx+1],data[idx+2])>112)return true;
+      }
+      return false;
+    };
+    return {horizontal:Array.from({length:16},(_,i)=>bright(40+i*4,87,false)).filter(Boolean).length,
+      vertical:Array.from({length:16},(_,i)=>bright(138,112+i*6,true)).filter(Boolean).length};
+  });
+  if(expected)assert.ok(counts.horizontal>=14&&counts.vertical>=14,'Originalwinkel fehlt: '+JSON.stringify(counts));
+  else assert.ok(counts.horizontal<=2&&counts.vertical<=2,'Fremder Originalwinkel: '+JSON.stringify(counts));
+  return counts;
+}
 
 async function verifyImages(scope,expected) {
   const imgs = scope.locator('article .image-box img');
@@ -131,6 +152,7 @@ async function run(browser,device,viewport,runNo) {
       const fullMs=elapsed(begin);
       const pics=await verifyImages(rows,count);const cart=await data();
       const deviceMatches=await checkDevicePhoto(rows.locator('.image-box img').nth(count-1),deviceReference);
+      const angle=await checkOriginalAngle(rows.locator('.image-box img').nth(count-1),person.design==='FK-RUNDUM');
       assert.equal(cart.items.length,count);assert.equal(cart.totalCents,4999*count);
       assert.match(cart.items.at(-1).lettering,new RegExp(person.name));assert.equal(cart.items.at(-1).quantity,1);
       assert.deepEqual(pics.map(p=>p.png),cart.items.map(i=>i.imageSha256));
@@ -142,7 +164,7 @@ async function run(browser,device,viewport,runNo) {
         assert.equal(pics[0].png,firstPng);assert.notEqual(pics[0].pixels,pics[1].pixels);
         row.pictures=pics;row.variant=cart.items[0].variant;row.sku=cart.items[0].sku;row.totalCents=cart.totalCents;
       }
-      row.timings.push({context:count===1?'kalt':'warm',entryThroughDesignMs:entryMs,confirmThroughDecodedPaintMs:confirmMs,entryThroughDecodedPaintWithAutomatedInputMs:fullMs,deviceImageSamplesMatched:deviceMatches,deviceImageSamples:24});
+      row.timings.push({context:count===1?'kalt':'warm',entryThroughDesignMs:entryMs,confirmThroughDecodedPaintMs:confirmMs,entryThroughDecodedPaintWithAutomatedInputMs:fullMs,deviceImageSamplesMatched:deviceMatches,deviceImageSamples:24,angle});
     }
     await noEdit(rows);assert.match(await page.locator('#sum').innerText(),/99,98/);
     if(runNo===1)await capture('Warenkorb');

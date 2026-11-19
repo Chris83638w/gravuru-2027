@@ -110,7 +110,7 @@ export function installUniversal(configInput) {
     };
     el.svg = function() { return svg(current()); };
     el.png = async function({type='image/png',quality}={}) {
-      let source=await embedSurface(this.svg(true),config.materialSurface,dynamicDoorbell?profile().admin:undefined);
+      let source=await embedSurface(this.svg(true),config.materialSurface,dynamicDoorbell?profile().admin:undefined,config.localResources?.motifs);
       if(this.uxEmbedPreviewUploads)source=await this.uxEmbedPreviewUploads(source);
       const url = URL.createObjectURL(new Blob([source], {type:'image/svg+xml'}));
       try {

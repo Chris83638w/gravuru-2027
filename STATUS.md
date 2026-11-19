@@ -1,3 +1,13 @@
+## 19.11.2026 · Claude (Operator, als Prüfer) · #267 Phase A: Codepfad, Messreihe, Paritätsmatrix
+
+- Auftrag: Chris, Issue #267 („Gemeinsame Beta“). Nur Analyse und Messung. **Keine Runtime-, Shop- oder Preisänderung, kein Merge, kein Deployment.**
+- Übergabe: [docs/handoffs/2026-11-19-beta-267-claude-phase-a.md](docs/handoffs/2026-11-19-beta-267-claude-phase-a.md), Messskripte, Rohdaten und Bilder im gleichnamigen Ordner.
+- Geprüft: Live-Loader bytegleich mit `9af3a1a`. 35 Messläufe im Live-Shop (Headless Chrome 153, Handyprofil wie #252 und Desktop, kalt und warm, je drei gewertete Läufe) an Klingelschild Ring Wired Pro 3, Türschild Edelstahl und Familienschild Acryl.
+- Ergebnis: Alle drei laufen im selben Editor. Das Klingelschild wechselt Designs im Gerät und braucht im Handyprofil 7,6 s vom letzten Tipp bis in den Warenkorb, das Türschild 14,9 s, das Familienschild 21,3 s. Bis zum bedienbaren Editor brauchen alle 10,6–11,7 s. `Server-Timing`: Warten auf das Checkout-Bild 1,8–3,1 s je Lauf.
+- Nebenwirkung: 20 Testentwürfe (Text „abcde“) und 20 Wegwerf-Warenkörbe, keine Bestellung. Bestellung #1017 nur gelesen.
+- Offen: 3 von 48 Öffnungen ohne Bereitmeldung binnen 90 s (Ursache ungeklärt). Foto, Export, Aufpreise und mehrere Positionen nicht gemessen.
+- Nächster Schritt: dieselbe Messreihe und der Paritätsdurchlauf gegen den ersten Beta-Stand von Astra.
+
 ## 16.11.2026 – Go-live: Gesamtstand `1c5f8062` live (Claude als Operator, #239)
 
 - Freigabe: Chris „live“ (18:40).

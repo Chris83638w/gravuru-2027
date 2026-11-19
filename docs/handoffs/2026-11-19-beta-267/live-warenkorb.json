@@ -1,0 +1,64 @@
+{
+  "date": "2026-11-19",
+  "store": "gravuru-design.myshopify.com",
+  "presentation": "prio-r15",
+  "viewport": {
+    "width": 1440,
+    "height": 960
+  },
+  "checkoutReached": false,
+  "orderCreated": false,
+  "twoPersonalizations": {
+    "sameVariant": true,
+    "distinctConfigurations": true,
+    "cartChecks": [
+      {
+        "action": "hinzufügen",
+        "design": "FK-SEITLICH",
+        "count": 1,
+        "unitCents": 4999,
+        "totalCents": 4999,
+        "revision": 1,
+        "ms": 6295
+      },
+      {
+        "action": "hinzufügen",
+        "design": "FK-RUNDUM",
+        "count": 2,
+        "unitCents": 4999,
+        "totalCents": 9998,
+        "revision": 1,
+        "ms": 5940
+      }
+    ],
+    "editOfOlderLine": "Prüfprogramm erreichte den aktiven Inhalt vor seiner Wartegrenze nicht."
+  },
+  "singlePersonalization": {
+    "cartChecks": [
+      {
+        "action": "hinzufügen",
+        "design": "FK-SEITLICH",
+        "count": 1,
+        "unitCents": 4999,
+        "totalCents": 4999,
+        "revision": 1,
+        "ms": 7402
+      },
+      {
+        "action": "bearbeiten-wiederaufruf",
+        "ms": 5954,
+        "recoveredText": true
+      },
+      {
+        "action": "aktualisieren",
+        "count": 1,
+        "totalCents": 4999,
+        "editedRevision": 2,
+        "ms": 6406
+      }
+    ],
+    "sameConfigurationAfterEdit": true,
+    "textBefore": "Probe A",
+    "textAfter": "Probe C"
+  }
+}

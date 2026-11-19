@@ -42,6 +42,8 @@ Nach Chris’ Freigabe meldete der parallele Astra-Shoptest auf 1440 × 960 den 
 
 Für das Fünf-Sekunden-Ziel werden auf **einem** Käuferweg Einstieg, für die Interaktion blockierende Ressourcennachladung und Übermittlung bis zum vollständigen bestätigten Warenkorb mit persönlichem Bild gemessen. Freie Bearbeitungszeit wird abgezogen. Überlappende Wartezeiten werden nur einmal gezählt. Der Wiederaufruf und die späteren Produktionsdownloads werden zusätzlich einzeln ausgewiesen. Die lokale Ring- und die lokale Acrylreihe werden nicht zu einer künstlichen Gesamtsumme addiert.
 
+Die ausdrücklich gewählte R15-Darstellung im Live-Shop, die zusätzlichen Datensparläufe auf dem gemeinsamen Beta-Build und die Auswertung beider unabhängigen Prüfungen stehen im [ergänzenden Messprotokoll](SHOP-UND-INTEGRATION.md).
+
 ## Wiederholen
 
 1. Den Code dieses PR und einen separaten Checkout der Basis f84433f8 bereitstellen. Verzeichnis tools/beta-267 einschließlich slate-register.mjs auch in den Vorher-Checkout kopieren. Node 24, Chrome, Playwright und die vorhandenen Werkstatt-Python-Abhängigkeiten verwenden. Der Katalog benötigt separaten Lesezugriff.
@@ -50,5 +52,7 @@ Für das Fünf-Sekunden-Ziel werden auf **einem** Käuferweg Einstieg, für die 
 4. Den Ring-Vergleich mit node tools/beta-267/browser.cjs ergebnis-ring und den Fotoweg mit node tools/beta-267/acceptance.cjs ergebnis-acryl ausführen. Das optionale BETA_FILM=1 erfasst echte Bildschirmbilder mit Zeitstempeln, BETA_RUNS=1 begrenzt diesen separaten Filmdurchlauf.
 5. node tools/beta-267/options.cjs prüft jede Ring-Option und den Rückwechsel. node tools/beta-267/slate.mjs PFAD-ZUM-ORIGINALREGISTER prüft alle 48 Platten gegen die hinterlegte Git-Prüfsumme.
 6. node --test app/workshop/theme-cart-flow.test.mjs prüft den synthetischen Bestellweg und liest die tatsächlichen PDF-Seitengrößen. GRAVURU_BETA_EVIDENCE kann auf einen privaten Ausgabeordner für die Musterdateien verweisen.
+
+7. Für den Datensparvergleich beide Prüfstände starten und `node tools/beta-267/measure-visible-designs.cjs 18268 18267 ergebnis-karten` ausführen. Die Vorher-Version, das kontrollierte Drei-Sekunden-Fenster und die erzeugten Einzelwerte sind im ergänzenden Messprotokoll angegeben.
 
 [Desktop mit Ring-Designs](PC-Designs.png) · [Mobile Ring-Ansicht](Mobil-Designs.png) · [Desktop-Film mit Foto und Dateien](PC-Foto-und-Dateien.gif) · [Mobiler Film mit Foto und Dateien](Mobil-Foto-und-Dateien.gif)

@@ -1,6 +1,7 @@
 {
-  "tests": 269,
-  "passed": 269,
+  "testedCommit": "ed2072b176ea8da9acf026fab39ffdd0b9b4cc8f",
+  "tests": 312,
+  "passed": 312,
   "failed": 0,
   "skipped": 0,
   "cancelled": 0,
@@ -39,6 +40,11 @@
     "app/configurator/variant-m/doorbell-master-repair.test.mjs",
     "app/configurator/variant-m/doorbell-ui.test.mjs",
     "app/configurator/variant-m/bundle.test.mjs",
-    "app/workshop/theme-cart-flow.test.mjs"
+    "app/workshop/theme-cart-flow.test.mjs",
+    "app/configurator/variant-m/doorbell-lazy-designs.test.mjs",
+    "app/configurator/variant-m/visible-resource-loader.test.mjs",
+    "app/workshop/acrylic-photo-resolution.test.mjs",
+    "app/configurator/variant-m/legacy-cart-restore.test.mjs",
+    "app/configurator/variant-m/session-guard.test.mjs"
   ]
 }

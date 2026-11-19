@@ -1,134 +1,140 @@
-# #267 · Schiedsrichter-Prüfung Kandidat A gegen Kandidat B (Claude, 19.11.2026)
+# #267 · Prüfung der R15-Tempo-Patches von Team A und Team B (Claude, 19.11.2026)
 
-Auftrag: [Prüfauftrag in #265](https://github.com/Chris83638w/gravuru-2027/issues/265#issuecomment-7012429273). Meine Rolle ist die unabhängige Abnahme, kein drittes Entwicklerteam.
+Auftrag: die [Kurskorrektur von Chris in #267](https://github.com/Chris83638w/gravuru-2027/issues/267) und davor der [Prüfauftrag in #265](https://github.com/Chris83638w/gravuru-2027/issues/265#issuecomment-7012429273). Meine Rolle: nur prüfen und vergleichen.
 
-**Keine Live-, Main-, Preis- oder Maschinenfreigabe durch diese Prüfung.** Alles lief lokal auf meiner Prüfmaschine. Nichts an den Branches der Teams, am Shop, an Servern oder Preisen geändert, keine Bestellung, kein Warenkorb im Live-Shop. Der öffentliche Produktdatensatz des Ring-Schilds wurde einmal gelesen.
+**Keine Live-, Main-, Preis- oder Maschinenfreigabe durch diese Prüfung.** Alles lief lokal auf meiner Prüfmaschine. Nichts an den Branches der Teams, am Shop, an Servern oder Preisen geändert, keine Bestellung, kein Warenkorb im Shop. Der öffentliche Produktdatensatz des Ring-Schilds wurde einmal gelesen.
 
 ## Geprüfte Stände
 
 | | Commit | Was es ist |
 | --- | --- | --- |
-| Basis beider | `f84433f8` | gemeinsamer R15-Ausgangsstand |
-| Kandidat A (Astra) | `347aa63f` | Freeze, PR #268 |
-| Kandidat B (Grok/Cursor) | `b85bc416` | V0, PR #269 |
-| Kandidat B, Nachtrag | `949dae02` | Ring-Fall, von Team B um 14:54 UTC als Freeze gemeldet (nach meinem Auftrag). Der Fairness halber mitgeprüft |
+| Vorher | `f84433f8` | gemeinsamer R15-Ausgangsstand |
+| Team A (Astra) | `f7504182` | Freeze in PR #268. Enthält das frühere Paket bis `347aa63f` und vier neue Tempo-Commits |
+| Team B (Grok/Cursor) | `60f05317` | Freeze in PR #269. Ein kleiner Warenkorb-Patch, der Musterwarenkorb ist entfernt |
 
-Der Branch von A hat inzwischen zwei neuere Commits (Spitze `f8c2d583`): Belege und eine Teständerung. Sie sind nicht Teil dieser Prüfung.
+Die früheren Stände (A `347aa63f`, B `b85bc416` und `949dae02`) habe ich vor der Kurskorrektur geprüft. Das Ergebnis steht in [fruehere-staende.md](2026-11-19-beta-267-claude-schiedsrichter/fruehere-staende.md).
 
 Kennzeichnung: **S** = selbst reproduziert · **F** = fremder Bericht · **N** = nicht prüfbar.
 
-## Urteil
+## Ergebnis
 
-1. **Funktion und sichere Bestellung: ein Weg, Kandidat A als Grundlage.** A zeigt im Warenkorb das Bild, das der Kunde im R15-Editor gestaltet hat: Rahmen, Schrift, Lage, Gerätefoto und Zierwinkel stimmen mit dem Editor überein. B zeichnet das Bild mit einem eigenen kleinen Programm nach. Dort fehlen der Rahmen und die gestaltete Textlage, die Schrift ist eine andere. Ein zweiter Zeichner neben dem Editor ist für eine persönliche Vorschau der falsche Weg, unabhängig vom Prüfstand.
-2. **Geschwindigkeit: noch kein fairer Sieger.** B hat keinen Stand mit dem echten Editor. Das Ziel von rund 5 Sekunden ist bei keinem der beiden belegt.
-3. **Kein Go für Live oder Main.** Die Blocker stehen unten.
+1. **Designkarten und Designwechsel: A ist messbar schneller und funktionsgleich.** B hat an diesen beiden Punkten nichts geändert.
+2. **Warenkorb: bei keinem ist ein Gewinn belegt.** Beide Patches wirken auf Schritte mit Shopify, die es lokal nicht gibt. A bleibt funktionsgleich. B ist es nicht: Ist die Shopify-Datei beim Klick noch nicht fertig, läuft das Bild wieder über das Gerät des Kunden, und der Position fehlt das Bild für die Kasse.
+3. **A ist im Handyprofil beim letzten Klick bis zum Bild lokal langsamer als vorher.** Das Bild ist jetzt vollständig und dadurch 2,3-mal so groß.
+4. **Kein neuer Fehlschlag in den Tests**, weder bei A noch bei B.
+5. **Empfehlung:** den Pfad von A übernehmen. Für den Warenkorb fehlt noch die Messung am Testshop, und das Warenkorbbild muss kleiner werden. Von B die Idee „nicht auf Shopify warten“ erst übernehmen, wenn das Kassenbild nachgetragen wird und nichts über das Kundengerät läuft.
 
-![Warenkorb A und B](2026-11-19-beta-267-claude-schiedsrichter/bilder/01-warenkorb-A-und-B.png)
+## Vorher und nachher (S)
 
-## Tabelle
+Meine Messung. Gleicher lokaler Prüfstand (Astras Werkzeug, auch auf den Basis-Code gesetzt), gleiches Ring-Schild, gleiches Skript, je drei Läufe, Median und Spanne in Sekunden. Handyprofil: 390 × 844, Rechner 4-fach gebremst, 150 ms, 1,6/0,75 Mbit/s. Hinter dem Prüfstand steht kein Shopify.
 
-| Pflichtprüfung | A `347aa63f` | B `b85bc416` / `949dae02` |
+| Messpunkt | Vorher `f84433f8` | A `f7504182` | B `60f05317` |
+| --- | ---: | ---: | --- |
+| **1 Designkarten**, Handy, nach Scrollen ans Ende, bis alle sichtbaren Karten gezeichnet sind | 10,32 (10,31–10,39) | **5,03** (4,95–5,14) | wie vorher, Editor unverändert |
+| **1 Designkarten**, Handy im Datensparmodus | nicht fertig: 1 von 4 Karten nach 20 s | **3,74** (3,73–3,77), 4 von 4 | wie vorher |
+| **1 Designkarten**, PC | 0,16 (0,14–0,33) | 0,09 (0,08–0,11) | wie vorher |
+| **2 Designwechsel**, Handy | 4,15 (2,85–5,70) | **1,90** (1,64–2,37) | wie vorher |
+| **2 Designwechsel**, PC | 0,78 (0,56–0,97) | **0,37** (0,28–0,42) | wie vorher |
+| **3 Letzter Klick bis Bild**, Handy, eine Position | 5,75 (5,71–5,88) | 7,42 (6,99–7,49) | lokal nicht messbar |
+| **3 Letzter Klick bis Bild**, Handy, zwei Positionen | 6,68 (6,52–7,00) | 9,98 (9,78–10,20) | lokal nicht messbar |
+| **3 Letzter Klick bis Bild**, PC, eine / zwei Positionen | 1,32 / 1,41 | 1,30 / 1,38 | lokal nicht messbar |
+| Editor bedienbar ab Seitenaufruf, Handy | 11,85 (11,82–12,51) | 9,57 (9,56–9,71) | wie vorher |
+| Größe eines Warenkorbbilds | 233 kB, ohne Gerätefoto | 535 kB, vollständig | – |
+
+Die Karten direkt nach dem Öffnen sind in allen Ständen sofort da. Der Unterschied entsteht beim Scrollen. „Wie vorher“ bei B heißt: Der Patch ändert den Editor nicht. Die Zwischenspeicherung der Seitenmodule wirkt nur im Shop-Einstieg und ist am Prüfstand nicht messbar.
+
+Zu Punkt 3 gehört dieses Bild. Vorher war der Warenkorb schneller, zeigte aber das falsche Bild:
+
+![Warenkorb vorher und nachher](2026-11-19-beta-267-claude-schiedsrichter/bilder/07-warenkorb-vorher-nachher-390px.png)
+
+**Was die Tabelle nicht zeigt:** die Zeit, in der der Server auf Shopify wartet. Live habe ich dafür in Phase A 1,8 bis 3,1 s gemessen, Grok 3,8 s. Genau dort setzen die Warenkorb-Patches beider Teams an. Ohne Lauf im Testshop bleibt ihr Gewinn eine Rechnung.
+
+## Woher der Gewinn bei A kommt (S)
+
+Dasselbe Skript an drei Ständen, Handyprofil, Median in Sekunden.
+
+| Messpunkt | Vorher `f84433f8` | A `347aa63f` | A `f7504182` |
+| --- | ---: | ---: | ---: |
+| Designwechsel | 4,15 | 2,09 | 1,90 |
+| Letzter Klick bis Bild, eine / zwei Positionen | 5,75 / 6,68 | 7,27 / 10,13 | 7,42 / 9,98 |
+| Editor bedienbar | 11,85 | 9,98 | 9,57 |
+
+Der größte Teil des Gewinns beim Designwechsel steckt im früheren Paket bis `347aa63f`. Das ist der Teil, der noch nicht von Schieferregel, Fototests und Snippet getrennt ist. Die vier neuen Commits ändern am Warenkorb lokal nichts Messbares. Sie zielen auf Schritte mit Shopify.
+
+Astra meldet von der geschützten Beta für `347aa63f` nach `f7504182`: erste Karte 4,19 nach 2,78 s, Designwechsel 366 nach 229 ms, Warenkorb 4,15 nach 3,81 s, Warenkorb auf Handybreite 4,15 nach 5,22 s (F). Die Verschlechterung auf Handybreite sehe ich lokal nicht: ohne Drossel 1,27 und 1,35 s vorher, 1,31 und 1,25 s nachher. Sie kommt demnach nicht aus den vier Commits. Astra nennt selbst die Festplattengrenze des Hosts als mögliche Ursache.
+
+## Funktionsgleichheit
+
+| Prüfung | A `f7504182` | B `60f05317` |
 | --- | --- | --- |
-| **1** Zwei Gestaltungen derselben Ring-Variante `57471227756924`, je 49,99 €, eigene Bilder und Revisionen | **Pass (S).** Astras Browserprüfung von mir ausgeführt, 6 von 6 Läufen (PC und 390 px). Variante, Artikelnummer `FK-AV2A-16x28-1441`, Summe 99,98 €. Am öffentlichen Produktdatensatz gegengelesen | **Teilweise (S).** Erst an `949dae02`. Preis und Variante sind fest hinterlegt und stimmen. Die Bilder sind nachgezeichnet. V0 nutzte eine andere Ausführung zu 54,98 € mit Platzhalterbildern |
-| **1** Warenkorbseite und Kurzansicht: vergrößern, entfernen, kein Bearbeiten | **Pass (S)** am lokalen Prüfwarenkorb. **Teilweise** für das echte Theme: Das Snippet hat keinen Bearbeiten-Link mehr, neun Zeilenfälle habe ich selbst gerendert, vier Theme-Tests bestehen. Im Shop ist es nicht eingebaut | **Pass (S)** in der eigenen Musterseite. **Fehler (S)** im eingebundenen Snippet: Bearbeiten-Link und Rückfall auf das Standard-Produktbild bleiben. Das neue Snippet ist richtig, aber nicht eingebunden und ohne Test |
-| **1** Pixel- und Originalvergleich: Kamerabild, beide weißen Schenkel im Strichdesign | **Pass (S).** Vorschau 952 × 1600 px, Sichtprüfung gegen den Editor, 24 von 24 Gerätestichproben | **Fehler (S).** Gerätebild und Winkel sind da. Das Bild hat aber keinen Rahmen, der Text steht klein oben links statt wie gestaltet, die Schrift ist eine andere (meldet B selbst). Der Test lief bei mir erst mit nachgereichter Schriftdatei, weil der Pfad fest verdrahtet ist |
-| **1** Keine Standardbilder, vertauschten Texte oder versprochenen PNGs | **Pass (S).** Fehlt das Bild, steht ein Hinweis | Eingebunden **Fehler (S)** (Standardbild). Neues Snippet **Pass (S)** |
-| **2** Funktionsparität | **Teilweise (S).** Gesamtsuite 2.790 von 2.795 bestanden, 1 Fehler besteht schon an der Basis, 4 übersprungen. Aufpreis im Browser: „Verdeckte Bolzen“ ergibt 55,98 €, Variante `57471227789692`, Artikelnummer `FK-AV2A-16x28-1442`, wie in Shopify. 16 Ring-Ausführungswerte geprüft. 48 Schieferplatten: 31 mit Ständer, 17 ohne, wie meine eigene Nachrechnung. Acryl mit Foto bis zu den vier Fertigungsdateien. Edelstahl und Schiefer wurden nur geöffnet. Bohrlöcher, Imprägnierung und Vorlagenverwaltung nicht einzeln im Browser geprüft | **Teilweise (S).** Gesamtsuite 2.794 von 2.802 bestanden, 4 Fehler bestehen schon an der Basis, 4 übersprungen. Der Bestand ist unverändert, weil B den Editor kaum anfasst. Es gibt keinen Stand mit Editor. Edelstahl, Acryl und Schiefer: „Preis offen“ |
-| **3** Preis und Variante centgenau, gebundene Revision, Manipulationen | **Pass (S).** Meine Gegenprobe: zehn manipulierte oder wiederholte Zustellungen richtig behandelt, eine spätere Änderung lässt die bestellte Revision unberührt, Storno wird erkannt | **Pass (S).** Identisch, weil B den Kaufweg von R15 nicht verändert. Bs eigene Warenkorb-Buchführung ist eine Nachbildung neben dem Kaufweg |
-| **3** Originale, SVG, Druck- und Kontur-PDF: Maße, wiederholbar | **Pass (S).** 150 × 200 mm. Alle drei Dateien bei Wiederholung bytegleich | **Teilweise (S).** Maße richtig. Das Kontur-PDF ist bei Wiederholung nicht bytegleich (Fehler der Basis, bei A behoben). SVG und PDF für den Ring: offen, meldet B selbst |
-| **3** Storno, Erstattung, doppelte Zustellung, falsche Signatur, fehlendes Bild | **Pass (S)** lokal: Gegenprobe und die vier vorhandenen Erstattungstests. Echte Bestellung und Erstattung: **N** | **Pass (S)** lokal, identisch. Echte Bestellung: **N** |
-| **4** Berechtigungen, anonyme Entwürfe und Löschfrist, Schriftlizenzen | Offen, unverändert. Keine dieser Dateien wurde berührt (S) | Offen, unverändert (S) |
-| **4** Fotoauflösung | **Pass (S).** Die drei an der Basis roten Tests bestehen. A hat die veralteten Sollwerte an die Regel in `PRIO-KONFI.md` angepasst („Fotos vollständig einfügen, erst auf bewussten Zuschnitt beschneiden“) | **Fehler (S).** Die drei Tests bleiben rot |
-| **5** Geschwindigkeit | Nicht vergleichbar, siehe unten | Nicht vergleichbar, siehe unten |
+| Gesamtsuite (Umfang wie `npm test`) | **2.792 von 2.797** bestanden, 1 Fehler schon vorher, 4 übersprungen (S) | **2.786 von 2.794** bestanden, 4 Fehler schon vorher, 4 übersprungen (S) |
+| Preis, Variante, Revision, zehn manipulierte Zustellungen, Storno | unverändert richtig (S) | unverändert richtig (S) |
+| SVG, Druck- und Kontur-PDF: Maße 150 × 200 mm, wiederholbar | alle drei bytegleich (S) | Kontur-PDF nicht bytegleich, wie vorher (S) |
+| Zwei Ring-Gestaltungen derselben Variante `57471227756924`, je 49,99 €, eigene Bilder, vergrößern, einzeln entfernen, kein Bearbeiten | Astras Browserprüfung am Freeze bestanden, PC und 390 px (S). Die Bilder sind pixelgleich mit dem Stand `347aa63f` | kein Stand mit Editor; der Kundenweg bis zum Klick ist unverändert |
+| Aufpreis im Browser: „Verdeckte Bolzen“ ergibt 55,98 €, Variante `57471227789692`, wie in Shopify | geprüft an `347aa63f` (S), am Freeze nicht wiederholt | unverändert |
+| Acryl mit Foto bis zu SVG, Kontur-PDF, Druck-PDF und Paket mit Original | bestanden, Dateigrößen gleich wie an `347aa63f` (S) | unverändert |
+| Warenkorb, wenn die Shopify-Datei beim Klick noch nicht fertig ist | wartet wie bisher, Kassenbild bleibt (S, Code und Test) | **nicht funktionsgleich** (S), siehe unten |
 
-### Geschwindigkeit, getrennt nach Herkunft
+## Befunde nach Art
 
-| Messung | Wert | Einordnung |
-| --- | --- | --- |
-| A, geschützte Beta, ohne Netzdrossel (F) | letzter Klick bis Bild: PC 3,68 s kalt, 4,09 s warm · 390 px 6,15 s kalt, 4,08 s warm | Von mir nicht prüfbar, kein Zugang |
-| A, mein lokaler Lauf, ohne Drossel (S) | PC 3,28 s kalt, 3,32 s warm · 390 px 2,28 s kalt, 2,42 s warm (Median aus je drei) | Parallel lief die Testsuite, die Werte sind eher zu hoch. Kein Shopify dahinter |
-| A, mein lokaler Lauf, Handyprofil (S) | letzter Klick bis Bild: 7,75 s mit einer Position, 10,31 s mit zwei Positionen · Einstieg bis gewähltes Design 12,29 s kalt, 10,21 s warm (Median aus je drei) | Rechner 4-fach gebremst, 150 ms, 1,6/0,75 Mbit/s. Kein Shopify dahinter. Jedes Vorschaubild ist ein PNG mit rund 0,5 MB und kostet in diesem Profil rund 2,7 s |
-| B, eigene Musterseite mit drei Klicks (S) | 0,3 bis 0,5 s ohne Drossel · 5,7 s im Handyprofil | Kein Editor im Weg. B meldet selbst 5,6 s und „Ziel nicht nachgewiesen“ |
-| Live-Shop heute, meine Phase A (S) | Handyprofil: letzter Tipp bis Position 7,6 s, ganzer Weg 20,5 s | Ausgangswert für beide |
+**Neu durch den Patch**
 
-Echtes Handy: **N**. Ein Sieger lässt sich daraus nicht ableiten.
+1. **B, Warenkorb.** Ist die Shopify-Datei nicht sofort fertig, antwortet der Server in 2 ms. In der Antwort steckt dann das ganze Bild (713.900 Zeichen bei einem Bild von 535 kB), und der unveränderte Warenkorb-Client lädt es als Datei über das Kundengerät zu Shopify hoch. Die Position bekommt kein `_gravuru_checkout_image`. Die Bildfunktion für die Kasse setzt ohne diese Angabe kein Bild. Im Handyprofil kostet der Umweg rechnerisch 3,4 s herunter und 5,4 s hinauf, mehr als die gesparte Wartezeit. Auf schnellen Leitungen ist der Patch schneller. Beleg: [b-warenkorb-probe/ergebnis.json](2026-11-19-beta-267-claude-schiedsrichter/b-warenkorb-probe/ergebnis.json). Teil eins bestätigt Bs eigener Test.
+2. **A, Bildgröße.** Das Warenkorbbild zeigt jetzt Gerätefoto und Zierwinkel. Es ist ein PNG mit 535 kB statt 233 kB. Im Handyprofil kostet das 1,7 s bei einer Position und 3,3 s bei zwei. Kein Funktionsfehler, aber ein Nachteil genau am dritten Tempopunkt. Ein kleines Bild für die Zeile und das große erst beim Vergrößern behebt das.
+3. **B, Seitenmodule.** Sie dürfen fünf Minuten im Browser liegen. Nach einer Auslieferung kann ein Browser so lange alte Module mit einer neuen Seite mischen. Kein nachgewiesener Fehler, aber eine Änderung am gemeinsamen Kern ohne Schalter.
 
-## Go-/No-Go-Blocker
+**Schon vorher vorhanden**
 
-**Kandidat A**
+- Warenkorbbild ohne Gerätefoto und Zierwinkel. Bei A behoben.
+- Designkarten bleiben im Datensparmodus leer. Bei A behoben.
+- Kontur-PDF bei Wiederholung nicht bytegleich. Bei A behoben, bei B weiter so.
+- Drei rote Tests zur Fotoauflösung. Bei A an die Regel in `PRIO-KONFI.md`, Zeile 47, angepasst und grün, bei B weiter rot.
+- Ein roter Test zur Werkstatt-Kopfzeile (`konfis.test.mjs`). In allen Ständen, kein Bezug zu #267.
+- Der Server wartet im Klickweg auf Shopify.
 
-1. Der echte Shopify-Warenkorb, die Kurzansicht des Themes und die Kasse sind mit diesem Stand nicht geprüft. Belegt sind der lokale Prüfwarenkorb und das gerenderte Snippet. Nötig ist ein Lauf im Testshop mit konkreter Freigabe von Chris.
-2. Die Wartezeit auf die Shopify-Bilddatei steckt weiter im echten Weg. A hat `shop-entry.mjs` nicht geändert. Im Live-Shop habe ich dafür 1,8 bis 3,1 s gemessen. In allen Beta-Zahlen fehlt dieser Schritt.
-3. 25 Code-, Test- und Theme-Dateien (ohne Belege und Werkzeuge) greifen in den gemeinsamen R15-Kern ein (`adapter`, `ux`, `workflow`, `material-surface`). Das braucht die Abstimmung mit Mika und Mikail und getrennt prüfbare Commits. Die Ständerregel für Schiefer ist inhaltlich richtig und belegt (Chris, 18.11.), gehört aber in einen eigenen Commit.
-4. Das Zeitziel ist nicht belegt. Im Handyprofil dauert bei mir schon der letzte Klick bis zum Bild 7,75 s, mit zwei Positionen 10,31 s.
+**Test- oder Vergleichsproblem**
 
-**Kandidat B**
+- Der lokale Prüfstand ruft die Preis- und Angebotsprüfung direkt auf, nicht die Shop-Route mit Shopify. Die Warenkorb-Patches beider Teams lassen sich dort nicht messen.
+- Bs „unter 100 ms“ ist gegen eine nachgestellte Wartezeit gemessen (F). As Gewinn durch die vorgezogene Shopify-Anmeldung ist noch nicht gemessen.
+- „CI grün“: An `60f05317` und `c01ad06a` gibt es nur den Lauf `compare`, und der wurde übersprungen. An `f7504182` gibt es keinen Lauf. Die Suiten habe ich selbst ausgeführt.
+- Bs eigener Suite-Lauf hatte 47 Fehler aus der Umgebung. Mein Lauf mit vollständiger Umgebung steht oben.
 
-1. Die Vorschau kommt nicht aus dem Editor, sondern aus einem zweiten Zeichenprogramm. Das Bild entspricht nicht der Gestaltung des Kunden.
-2. Der Schalter `checkoutPreviewFirst` lässt sich am geprüften Stand über die Serverkonfiguration nicht einschalten (`configurator-integration.mjs` kennt ihn nicht). Ist die Shopify-Datei nicht sofort fertig, bleibt das Bild in der Antwort und der Browser des Kunden lädt es als Datei hoch (`theme-cart-client.mjs`, Zeilen 85 bis 91). Diesen Umweg hat #252 am 16.11. entfernt. Er kostete damals auf dem Handy 17,5 s und 45,7 s.
-3. Das eingebundene Warenkorb-Snippet ist das alte mit Bearbeiten-Link und Standardbild. Das neue ist nicht eingebunden und hat keinen Test.
-4. Es gibt keinen Stand mit dem echten Editor. Der Ring-Test läuft nur mit einer Schriftdatei unter einem festen Pfad, die nicht im Repository liegt.
-5. Geerbt und nicht behoben: Kontur-PDF nicht wiederholbar, drei rote Fototests.
+**Anderes Thema**
 
-## Die drei größten verbleibenden Risiken (für den empfohlenen Weg)
+- PR #268 enthält am Freeze weiter die Ständerregel für Schiefer, die Fototests und das Warenkorb-Snippet. Chris hat die Trennung vom Tempo-Patch verlangt. Die vier neuen Commits sind getrennt, das frühere Paket noch nicht.
+- Feldnamen im Warenkorb („Text „Mustermann“: Süd“), Beispieltexte ohne Rückfrage bestellbar, Bearbeiten-Link als verdeckte Eigenschaft. Alles schon vorher so, siehe [fruehere-staende.md](2026-11-19-beta-267-claude-schiedsrichter/fruehere-staende.md).
 
-1. **Der Shop-Weg ist unbewiesen.** Alles Grüne ist lokal. Theme, Kurzansicht, Kassenbild, Bestellung und Erstattung im Shop fehlen, dazu die Shopify-Bildwartezeit.
-2. **Zu viel in einem Paket.** Tempo, Warenkorb, Vorschau-Export, Kontur-PDF und eine preiswirksame Regel liegen in einem Branch. Ein Fehler in einem Teil hält alles auf, und ein Rückweg je Teil ist so nicht möglich.
-3. **Zeitziel und echtes Handy.** A meldet auf der geschützten Beta ohne Netzdrossel 6,15 s vom letzten Klick bis zum Bild (390 px, kalt). In meinem Handyprofil sind es lokal 7,75 s, mit zwei Positionen 10,31 s. Der ganze Weg lag live bei 20,5 s. Ein schneller Hebel liegt offen: Das Warenkorbbild ist ein PNG mit rund 0,5 MB je Position. Ein kleines Bild für die Zeile und das große erst beim Vergrößern spart im Handyprofil rechnerisch rund 2,5 s je Position.
+## Was vor einer Auswahl fehlt
 
-## Von B übernehmen
+1. Messung des Warenkorbwegs am Testshop, vorher und nachher, mit beiden Patches. Dafür braucht es die konkrete Freigabe von Chris.
+2. Kleineres Warenkorbbild bei A.
+3. Bei B: Kassenbild nachtragen und den Upload über das Kundengerät vermeiden. Sonst ist der Patch nicht auswählbar.
+4. Echtes Handy mit Gerätemodell und Browser.
+5. Abstimmung der Kernänderungen mit Mika und Mikail.
 
-- Die richtige Diagnose: Der Warenkorb soll nicht auf die Shopify-Bilddatei warten. Umsetzen lässt sich das auf A, denn dessen Snippet zeigt bereits das Bild vom eigenen Server. Der Upload über das Kundengerät darf dabei nicht zurückkommen.
-- Seitenmodule mit Prüfsumme statt „nicht speichern“ ausliefern (spart beim erneuten Öffnen). Das ist eine Änderung am gemeinsamen R15-Kern ohne Schalter und gehört über Mika und Mikail.
-- Groks Gegenprüfung von A als feste Rolle. Sie hat echte Punkte gefunden.
-
-## Kleinere Befunde
-
-- **Feldnamen im Warenkorb (A und Basis).** Die Zeile zeigt „Text „Mustermann“: Süd · Text „12a“: 27“. Die Felder heißen nach ihrem Beispieltext. Bild: [Editor](2026-11-19-beta-267-claude-schiedsrichter/bilder/02-A-editor-feldnamen.png), [Warenkorb](2026-11-19-beta-267-claude-schiedsrichter/bilder/04-A-warenkorb-mit-aufpreis.png).
-- **Beispieltexte gehen unverändert in den Warenkorb.** „Familie“, „Mustermann“ und „12a“ lassen sich ohne Rückfrage bestellen (im Bild oben). Die Frage dazu an Chris ist noch offen.
-- **Der Bearbeiten-Link bleibt als verdeckte Eigenschaft** `_gravuru_bearbeiten` in jeder Zeile, bei A und B gleich. Sichtbar wird er nur, wenn ein Theme-Teil ihn ausgibt.
-- **Bildmaße im Snippet (A und B).** `width="160" height="120"` beschreibt ein Querformat, die Vorschau ist hochkant. Beim Laden kann die Zeile springen.
-- **A nennt als Quelle der Fotoregel „Chris’ aktuelle Vorgabe“.** Der Satz steht in `PRIO-KONFI.md`, Zeile 47. Im Statusbuch ist er am 05.11. als Nachtrag von Mikail vermerkt.
-- **A hat die Theme-Tests gegen den Live-Export ersetzt** (9 Tests an der Basis, 4 neue bei A). Das passt zum neuen Ziel ohne Bearbeiten-Link. Vor einem Theme-Einbau muss der Unterschied zum Live-Theme neu geprüft werden.
-- **„CI grün“ bei B.** Der einzige Lauf an `b85bc416` und `949dae02` heißt `compare` und wurde übersprungen. An `347aa63f` gibt es keinen Lauf. Die Suiten habe ich deshalb selbst ausgeführt.
-
-## Nächster Schritt und fehlende Freigaben
-
-Vorschlag für die Reihenfolge, entscheiden muss Chris:
-
-1. Entscheidung „ein Weg, A als Grundlage“ ja oder nein. Bei Ja keine zweite geschützte Adresse für B aufsetzen. B prüft A gegen und liefert die zwei übernehmbaren Punkte als kleine, getrennte Vorschläge.
-2. A in getrennt prüfbare Commits teilen (Warenkorb-Snippet, Vorschau-Export, Kontur-PDF, Schieferregel, Tempo) und mit Mika und Mikail abstimmen.
-3. Warenkorbbild verkleinern und die Shopify-Bildwartezeit aus dem Klickweg nehmen, ohne den Upload über das Kundengerät.
-4. Lauf im Testshop mit Theme-Kopie, Kurzansicht, Kasse und einer Testbestellung. Dafür fehlt die konkrete Freigabe von Chris.
-5. Dieselbe Messreihe wie in Phase A, dazu ein echtes Handy mit Gerätemodell und Browser.
-
-Offen bei Chris: die Entscheidung zu Punkt 1, die Freigabe zu Punkt 4, und ob ich einen privaten Zugang zur geschützten Beta bekommen soll, um A dort nachzumessen.
+Offen bei Chris: die Freigabe zu Punkt 1, und ob ich einen privaten Zugang zur geschützten Beta bekommen soll.
 
 ## Nicht geprüft
 
-Geschützte Beta von A (kein Zugang, Kennwörter erfrage ich nicht). Echtes Handy. Echter Shopify-Warenkorb, Kasse, Bestellung, Erstattung. Maschine. Die neueren Branch-Spitzen.
+Geschützte Beta von A (kein Zugang, Kennwörter erfrage ich nicht). Echter Shopify-Warenkorb, Kasse, Bestellung, Erstattung. Echtes Handy. Maschine. Die Messwerte, die beide Teams für ihre neuen Stände noch angekündigt haben.
 
 ## Wiederholen
 
-Voraussetzungen: Node 24, Python mit PyMuPDF, Chrome, Playwright, `liquidjs`. `python3` muss auf die Umgebung mit PyMuPDF zeigen, weil einzelne Tests `python3 -c` direkt aufrufen. Ohne das schlagen mehrere hundert Tests fehl, die nichts mit den Kandidaten zu tun haben.
+Voraussetzungen: Node 24, Python mit PyMuPDF, Chrome, Playwright, `liquidjs`. `python3` muss auf die Umgebung mit PyMuPDF zeigen.
 
-| Prüfung | Aufruf | Ergebnis |
+| Prüfung | Aufruf | Rohwerte |
 | --- | --- | --- |
-| Gesamtsuite | `node --test app/configurator/variant-m/*.test.mjs app/workshop/*.test.mjs` je Stand | [suiten/zusammenfassung.md](2026-11-19-beta-267-claude-schiedsrichter/suiten/zusammenfassung.md) |
-| Warenkorb-Snippets, neun gleiche Zeilen | `node snippet/render.mjs <A> <B>` | [snippet/ergebnis.json](2026-11-19-beta-267-claude-schiedsrichter/snippet/ergebnis.json) |
-| Gegenprobe Bestellung und Dateien | `python3 gegenprobe/bauen.py <Arbeitskopie> <Ziel>` und `node --test <Ziel>` | [gegenprobe/ergebnis.json](2026-11-19-beta-267-claude-schiedsrichter/gegenprobe/ergebnis.json) |
-| Browserprüfung A | lokaler Prüfstand laut Astras `MESSUNGEN.md`, dann `node tools/beta-267/preview-cart-browser.cjs 18267 <Ordner>` | [a-stand/abnahme-protokoll-lokal.json](2026-11-19-beta-267-claude-schiedsrichter/a-stand/abnahme-protokoll-lokal.json) |
-| Browserprüfung A im Handyprofil | dieselbe Prüfung mit drei zusätzlichen Zeilen für die Drosselung: [a-stand/drosselung.diff.txt](2026-11-19-beta-267-claude-schiedsrichter/a-stand/drosselung.diff.txt) | [a-stand/abnahme-protokoll-handyprofil.json](2026-11-19-beta-267-claude-schiedsrichter/a-stand/abnahme-protokoll-handyprofil.json) |
-| Aufpreis A | `node a-stand/aufpreis.cjs 18267 <Ordner>` | [a-stand/aufpreis-ergebnis.json](2026-11-19-beta-267-claude-schiedsrichter/a-stand/aufpreis-ergebnis.json) |
-| Ring-Fall B | `node --test app/workshop/beta-267-ring.test.mjs` und `node scripts/beta-267-measure-path.mjs` an `949dae02` | [b-stand/ring-lauf.json](2026-11-19-beta-267-claude-schiedsrichter/b-stand/ring-lauf.json) |
-
-Die Theme-Tests beider Teams (`ops/shopify/cart-edit-r15-theme.test.mjs`) brauchen `liquidjs` unter `.local-data/liquidjs/package`. Mit Version 10.30.1 bestehen sie an Basis (9), A (4) und B (9).
+| Prüfstand je Stand | Ordner `tools/beta-267` aus `f7504182` in die Arbeitskopie legen, `node tools/beta-267/preview.mjs <Port>` mit `GRAVURU_KATALOG` und `GRAVURU_SCHIEFERREGISTER` | – |
+| Zeitreihe Editor, Wechsel, Warenkorb | `node tempo/zeitreihe.cjs <Port> <Ausgabe.json> [--drossel]` | [tempo/](2026-11-19-beta-267-claude-schiedsrichter/tempo/) |
+| Designkarten | `node tempo/karten.cjs <Port> <Ausgabe.json> [--drossel] [--sparen] [--pc]` | [tempo/](2026-11-19-beta-267-claude-schiedsrichter/tempo/) |
+| Warenkorb-Probe B | `node b-warenkorb-probe/probe.mjs <Arbeitskopie B> <Vorschau.png>` | [b-warenkorb-probe/ergebnis.json](2026-11-19-beta-267-claude-schiedsrichter/b-warenkorb-probe/ergebnis.json) |
+| Gegenprobe Bestellung und Dateien | `python3 gegenprobe/bauen.py <Arbeitskopie> <Ziel>`, dann `node --test <Ziel>` | [gegenprobe/ergebnis.json](2026-11-19-beta-267-claude-schiedsrichter/gegenprobe/ergebnis.json) |
+| Gesamtsuite | `node --test app/configurator/variant-m/*.test.mjs app/workshop/*.test.mjs` | [suiten/zusammenfassung.md](2026-11-19-beta-267-claude-schiedsrichter/suiten/zusammenfassung.md) |
+| Astras Browserprüfung | `node tools/beta-267/preview-cart-browser.cjs <Port> <Ordner>` | [a-stand/abnahme-protokoll-f7504182.json](2026-11-19-beta-267-claude-schiedsrichter/a-stand/abnahme-protokoll-f7504182.json) |
 
 ## Bilder
 
-- [Warenkorb A und B](2026-11-19-beta-267-claude-schiedsrichter/bilder/01-warenkorb-A-und-B.png)
-- [Editor von A mit Feldnamen](2026-11-19-beta-267-claude-schiedsrichter/bilder/02-A-editor-feldnamen.png)
+- [Warenkorb vorher und nachher, 390 px](2026-11-19-beta-267-claude-schiedsrichter/bilder/07-warenkorb-vorher-nachher-390px.png)
+- [Designkarten im Datensparmodus, vorher](2026-11-19-beta-267-claude-schiedsrichter/bilder/08-karten-datensparen-basis.png)
+- [Designkarten im Datensparmodus, A](2026-11-19-beta-267-claude-schiedsrichter/bilder/09-karten-datensparen-A.png)
 - [Vorschaubilder von A in voller Größe](2026-11-19-beta-267-claude-schiedsrichter/bilder/03-A-vorschau-nord-sued.png)
-- [Warenkorb von A mit Aufpreis](2026-11-19-beta-267-claude-schiedsrichter/bilder/04-A-warenkorb-mit-aufpreis.png)
-- [Warenkorb A, 390 px](2026-11-19-beta-267-claude-schiedsrichter/bilder/05-A-warenkorb-390px.png)
-- [Warenkorb B, 390 px](2026-11-19-beta-267-claude-schiedsrichter/bilder/06-B-warenkorb-390px.png)

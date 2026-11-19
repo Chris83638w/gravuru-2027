@@ -1,0 +1,321 @@
+{
+ "origin": "http://127.0.0.1:18261",
+ "drossel": true,
+ "mobil": true,
+ "sparen": false,
+ "browser": "153.0.8010.12",
+ "runs": [
+  {
+   "run": 1,
+   "posts": [
+    {
+     "path": "/api/workshop/acrylic-drafts",
+     "bytes": 95414,
+     "customerPreview": 71928,
+     "preview": 22544
+    },
+    {
+     "path": "/beta-warenkorb",
+     "bytes": 134
+    },
+    {
+     "path": "/api/workshop/acrylic-drafts",
+     "bytes": 96629,
+     "customerPreview": 72336,
+     "preview": 23096
+    },
+    {
+     "path": "/beta-warenkorb",
+     "bytes": 134
+    }
+   ],
+   "images": [
+    {
+     "path": "/beta-vorschau",
+     "bytes": 0
+    },
+    {
+     "path": "/beta-vorschau",
+     "bytes": 0
+    },
+    {
+     "path": "/beta-vorschau",
+     "bytes": 0
+    }
+   ],
+   "editor1": 9977.953957,
+   "karten1": {
+    "ms": 18.799999999813735,
+    "sichtbar": 2,
+    "fertig": 2,
+    "gesamt": 16
+   },
+   "kartenAbEinstieg1": 10500.260822,
+   "kartenScroll1": {
+    "ms": null,
+    "sichtbar": 10,
+    "fertig": 6,
+    "gesamt": 16
+   },
+   "wechsel1": [
+    2107.580048,
+    1838.3170360000004
+   ],
+   "korb1": 7329.415100999999,
+   "bildBytes1": [
+    535424
+   ],
+   "bild1": [
+    {
+     "w": 952,
+     "h": 1600,
+     "pixel": "3f54a4967f535f9b"
+    }
+   ],
+   "editor2": 7509.203837000001,
+   "karten2": {
+    "ms": 14.5,
+    "sichtbar": 2,
+    "fertig": 2,
+    "gesamt": 16
+   },
+   "kartenAbEinstieg2": 7975.251679000001,
+   "kartenScroll2": {
+    "ms": null,
+    "sichtbar": 10,
+    "fertig": 6,
+    "gesamt": 16
+   },
+   "wechsel2": [
+    2359.905236999999,
+    2051.125196000001
+   ],
+   "korb2": 10128.748284999994,
+   "bildBytes2": [
+    535424,
+    543771
+   ],
+   "bild2": [
+    {
+     "w": 952,
+     "h": 1600,
+     "pixel": "3f54a4967f535f9b"
+    },
+    {
+     "w": 952,
+     "h": 1600,
+     "pixel": "676029297d8bf8c0"
+    }
+   ],
+   "ok": true
+  },
+  {
+   "run": 2,
+   "posts": [
+    {
+     "path": "/api/workshop/acrylic-drafts",
+     "bytes": 95414,
+     "customerPreview": 71928,
+     "preview": 22544
+    },
+    {
+     "path": "/beta-warenkorb",
+     "bytes": 134
+    },
+    {
+     "path": "/api/workshop/acrylic-drafts",
+     "bytes": 96629,
+     "customerPreview": 72336,
+     "preview": 23096
+    },
+    {
+     "path": "/beta-warenkorb",
+     "bytes": 134
+    }
+   ],
+   "images": [
+    {
+     "path": "/beta-vorschau",
+     "bytes": 0
+    },
+    {
+     "path": "/beta-vorschau",
+     "bytes": 0
+    },
+    {
+     "path": "/beta-vorschau",
+     "bytes": 0
+    }
+   ],
+   "editor1": 9564.599449000001,
+   "karten1": {
+    "ms": 7.300000000745058,
+    "sichtbar": 2,
+    "fertig": 2,
+    "gesamt": 16
+   },
+   "kartenAbEinstieg1": 10041.842862999998,
+   "kartenScroll1": {
+    "ms": null,
+    "sichtbar": 10,
+    "fertig": 6,
+    "gesamt": 16
+   },
+   "wechsel1": [
+    2197.354707999999,
+    1728.766512999995
+   ],
+   "korb1": 7231.66176100001,
+   "bildBytes1": [
+    535424
+   ],
+   "bild1": [
+    {
+     "w": 952,
+     "h": 1600,
+     "pixel": "3f54a4967f535f9b"
+    }
+   ],
+   "editor2": 8104.602540000007,
+   "karten2": {
+    "ms": 16.199999999254942,
+    "sichtbar": 2,
+    "fertig": 2,
+    "gesamt": 16
+   },
+   "kartenAbEinstieg2": 8618.023577,
+   "kartenScroll2": {
+    "ms": null,
+    "sichtbar": 10,
+    "fertig": 6,
+    "gesamt": 16
+   },
+   "wechsel2": [
+    2453.1292589999794,
+    2081.5741719999933
+   ],
+   "korb2": 10242.348677000002,
+   "bildBytes2": [
+    535424,
+    543771
+   ],
+   "bild2": [
+    {
+     "w": 952,
+     "h": 1600,
+     "pixel": "3f54a4967f535f9b"
+    },
+    {
+     "w": 952,
+     "h": 1600,
+     "pixel": "676029297d8bf8c0"
+    }
+   ],
+   "ok": true
+  },
+  {
+   "run": 3,
+   "posts": [
+    {
+     "path": "/api/workshop/acrylic-drafts",
+     "bytes": 95414,
+     "customerPreview": 71928,
+     "preview": 22544
+    },
+    {
+     "path": "/beta-warenkorb",
+     "bytes": 134
+    },
+    {
+     "path": "/api/workshop/acrylic-drafts",
+     "bytes": 96629,
+     "customerPreview": 72336,
+     "preview": 23096
+    },
+    {
+     "path": "/beta-warenkorb",
+     "bytes": 134
+    }
+   ],
+   "images": [
+    {
+     "path": "/beta-vorschau",
+     "bytes": 0
+    },
+    {
+     "path": "/beta-vorschau",
+     "bytes": 0
+    },
+    {
+     "path": "/beta-vorschau",
+     "bytes": 0
+    }
+   ],
+   "editor1": 9993.391147999995,
+   "karten1": {
+    "ms": 17.200000000186265,
+    "sichtbar": 2,
+    "fertig": 2,
+    "gesamt": 16
+   },
+   "kartenAbEinstieg1": 10405.799677000003,
+   "kartenScroll1": {
+    "ms": null,
+    "sichtbar": 10,
+    "fertig": 6,
+    "gesamt": 16
+   },
+   "wechsel1": [
+    2116.9745500000136,
+    1682.5263879999984
+   ],
+   "korb1": 7268.157276999991,
+   "bildBytes1": [
+    535424
+   ],
+   "bild1": [
+    {
+     "w": 952,
+     "h": 1600,
+     "pixel": "3f54a4967f535f9b"
+    }
+   ],
+   "editor2": 7836.014655999985,
+   "karten2": {
+    "ms": 16.40000000037253,
+    "sichtbar": 2,
+    "fertig": 2,
+    "gesamt": 16
+   },
+   "kartenAbEinstieg2": 8354.64606899998,
+   "kartenScroll2": {
+    "ms": null,
+    "sichtbar": 10,
+    "fertig": 6,
+    "gesamt": 16
+   },
+   "wechsel2": [
+    2846.5952340000076,
+    2011.4049870000163
+   ],
+   "korb2": 9687.697706000006,
+   "bildBytes2": [
+    535424,
+    543771
+   ],
+   "bild2": [
+    {
+     "w": 952,
+     "h": 1600,
+     "pixel": "3f54a4967f535f9b"
+    },
+    {
+     "w": 952,
+     "h": 1600,
+     "pixel": "676029297d8bf8c0"
+    }
+   ],
+   "ok": true
+  }
+ ]
+}

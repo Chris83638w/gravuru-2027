@@ -1,0 +1,40 @@
+{
+ "vorschauBytes": 535424,
+ "shopifyNochNichtFertig": {
+  "antwortNachMs": 2,
+  "status": "persoenlich_gesichert",
+  "hatKassenbild": false,
+  "vorschauStatus": "persoenlich_gesichert",
+  "bildLaeuftUeberAntwort": true,
+  "base64Zeichen": 713900,
+  "gueltig": true,
+  "clientNutztShopifyDatei": false
+ },
+ "clientEnde": "Die Gestaltung fehlt nach der Übertragung. Bitte den Warenkorb prüfen.",
+ "anShopify": [
+  {
+   "url": "/cart/add.js",
+   "method": "POST",
+   "art": "Formular mit Datei",
+   "datei": {
+    "name": "gravuru-gestaltung.png",
+    "type": "image/png",
+    "bytes": 535424
+   }
+  }
+ ],
+ "kassenbild": {
+  "ohneShopifyDatei": null,
+  "mitShopifyDatei": {
+   "url": "https://cdn.shopify.com/s/files/1/0920/5550/3228/files/gravuru-gestaltung-cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc.png"
+  }
+ },
+ "shopifySchonFertig": {
+  "status": "shopify_bereit",
+  "hatKassenbild": true
+ },
+ "rechnungHandyprofil": {
+  "herunterS": 3.4,
+  "hinaufS": 5.4
+ }
+}

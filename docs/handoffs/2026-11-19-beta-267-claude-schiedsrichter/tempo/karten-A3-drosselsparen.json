@@ -1,0 +1,86 @@
+{
+ "port": "18267",
+ "drossel": true,
+ "sparen": true,
+ "pc": false,
+ "runs": [
+  {
+   "run": 1,
+   "editor": 9763.507277,
+   "saveData": true,
+   "oeffnen": {
+    "ms": 42.80000000074506,
+    "ersteMs": 15.300000000745058,
+    "sichtbar": 1,
+    "fertig": 1,
+    "karten": [
+     "FK-SEITLICH"
+    ]
+   },
+   "scrollen": {
+    "ms": 3725.4000000003725,
+    "ersteMs": 74,
+    "sichtbar": 4,
+    "fertig": 4,
+    "karten": [
+     "FK-D13",
+     "FK-D14",
+     "FK-D15",
+     "FK-D16"
+    ]
+   }
+  },
+  {
+   "run": 2,
+   "editor": 9179.512233000001,
+   "saveData": true,
+   "oeffnen": {
+    "ms": 43.10000000055879,
+    "ersteMs": 9.700000000186265,
+    "sichtbar": 1,
+    "fertig": 1,
+    "karten": [
+     "FK-SEITLICH"
+    ]
+   },
+   "scrollen": {
+    "ms": 3774,
+    "ersteMs": 65.70000000018626,
+    "sichtbar": 4,
+    "fertig": 4,
+    "karten": [
+     "FK-D13",
+     "FK-D14",
+     "FK-D15",
+     "FK-D16"
+    ]
+   }
+  },
+  {
+   "run": 3,
+   "editor": 9277.046823,
+   "saveData": true,
+   "oeffnen": {
+    "ms": 35.40000000037253,
+    "ersteMs": 4,
+    "sichtbar": 1,
+    "fertig": 1,
+    "karten": [
+     "FK-SEITLICH"
+    ]
+   },
+   "scrollen": {
+    "ms": 3742.600000000559,
+    "ersteMs": 91.79999999981374,
+    "sichtbar": 4,
+    "fertig": 4,
+    "karten": [
+     "FK-D13",
+     "FK-D14",
+     "FK-D15",
+     "FK-D16"
+    ]
+   }
+  }
+ ]
+}

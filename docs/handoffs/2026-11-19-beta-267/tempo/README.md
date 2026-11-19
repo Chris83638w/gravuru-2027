@@ -1,5 +1,7 @@
 # Messrunde am bestehenden Prio-Konfi R15
 
+Die Messwerte auf dieser Seite stammen vom geschützten Prüfstand. Für die späteren Änderungen am veröffentlichten R15 gibt es eigene Rohdaten, Shopify-Warenkörbe und Fertigungsprüfungen. [Messrunde am laufenden Shop](live/README.md)
+
 Die geschützte Beta verwendet `f7504182`. Die vier Anwendungscommits beginnen nach `f8c2d583`. Die Vergleichsinstallation lief auf `347aa63f`. Zwischen diesem Stand und `f8c2d583` änderten sich Übergaben und ein Test. [Gemeinsame Beta](https://konfi-beta.gravuru-designwerkstatt.de/) · [Isolierter Codevergleich](https://github.com/Chris83638w/gravuru-2027/compare/f8c2d583...f7504182) · [Trennung der übrigen PR-Historie und Rückweg](INTEGRATION.md)
 
 ## Gleiche HTTPS-Adresse vor und nach dem Update

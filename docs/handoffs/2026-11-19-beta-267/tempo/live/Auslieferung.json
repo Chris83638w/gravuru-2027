@@ -1,0 +1,145 @@
+{
+  "webHost": "app-2027.gravuru-designwerkstatt.de",
+  "shopHost": "gravuru-design.myshopify.com",
+  "runtimeBase": "9af3a1ace4ca8a38d5266a44485984a223195ac4",
+  "processWhenIdentified": 113651,
+  "entrySha256AtStartAndFinish": "d02d874a6700371ae8c2b49a0a11c6ed93863ed69d84d6ff0eb46bc082d7bb29",
+  "privateWiederherstellungsprobe": {
+    "von": "2026-11-19T18:06:13.375111+00:00",
+    "bis": "2026-11-19T18:09:17.016954+00:00",
+    "datenbanken": [
+      {
+        "name": "profiles.sqlite",
+        "bytes": 77824,
+        "restoredIdentically": true,
+        "quickCheck": "ok",
+        "tables": 6
+      },
+      {
+        "name": "design-assets.sqlite",
+        "bytes": 166719488,
+        "restoredIdentically": true,
+        "quickCheck": "ok",
+        "tables": 7
+      },
+      {
+        "name": "workshop.sqlite",
+        "bytes": 5190668288,
+        "restoredIdentically": true,
+        "quickCheck": "ok",
+        "tables": 68
+      }
+    ]
+  },
+  "editor": [
+    {
+      "commit": "38f6272aa1e8f55a952371efb27910bb43b98787",
+      "base": "9af3a1ace4ca8a38d5266a44485984a223195ac4",
+      "rueckwegErprobt": true,
+      "dateien": {
+        "app/configurator/variant-m/doorbell-lazy-designs.mjs": {
+          "old": "ed66ae57b8bf65d9e309114779a1736bb935a38e703c44fd5cd767098c67800b",
+          "new": "4ed8e5018549bd27aaea877a176e02a30f7ca916c993546be16fd9485825df81"
+        },
+        "app/configurator/variant-m/doorbell-lazy-designs.test.mjs": {
+          "old": "4702fe912132b02f7806854b159241133418c55f58adc94743f17aecc2dd765c",
+          "new": "2c5a677af9829352c5d14db229327e7cb4859a993c626225e5a7bbbba1824688"
+        },
+        "app/configurator/variant-m/visible-resource-loader.mjs": {
+          "old": "fcd51f827bfa891b37561ae0c7976c0a1ccc5ed33a6f073b17d8f3eb7fe12e06",
+          "new": "2d896ae7094ab77932ad1b776472af515ffcc143bb00a9e61598d96af6e386d6"
+        },
+        "app/configurator/variant-m/.preview/editor.html": {
+          "old": "20f71ee1bae699cc66d8acf9e698e08ad0ca68bff21ddc224e1ef8316b2afd0e",
+          "new": "e624aa9dc34b223963798f96b58e774efa5a02e24cc824ed365802771ac75380"
+        }
+      },
+      "browserpakete": {
+        "editor-bbd6f79f32ce9680.mjs": "e0c1913816578b4e648f587ff7a5c1d8fa69c30ca8a05e2e12e6ecb949ed9781",
+        "editor-bbd6f79f32ce9680.mjs.gz": "128701270b5409751bd6120114f07d1b9234f62d7f50f833ae4f297407efa87e",
+        "editor-98620484fcc30c11.mjs": "f65acfb2e3e7e99c98ca766032c666e8ce337e7044c4b6333bd3dd82466837d0",
+        "editor-98620484fcc30c11.mjs.gz": "112a770cb199d15eaa79b74689db791bea537b9290440f9a9cea233a6c5d673a"
+      },
+      "umschaltungen": [
+        {
+          "commit": "38f6272aa1e8f55a952371efb27910bb43b98787",
+          "action": "apply",
+          "utc": "2026-11-19T18:15:16.205961+00:00"
+        }
+      ]
+    },
+    {
+      "commit": "f5bc51bb75a806d4b78c38b7b6305738dd52b0fc",
+      "base": "38f6272aa1e8f55a952371efb27910bb43b98787",
+      "rueckwegErprobt": true,
+      "dateien": {
+        "app/configurator/variant-m/adapter.mjs": {
+          "old": "8a45d30c5e1a9b4eeab1c698fc102f2165c34aa7d3750663e282ee16738cf127",
+          "new": "944d76408ecd1ee90700bb8ddc15dd175a1aa6181e8bae0abe5dd8b918a7362c"
+        },
+        "app/configurator/variant-m/.preview/editor.html": {
+          "old": "e624aa9dc34b223963798f96b58e774efa5a02e24cc824ed365802771ac75380",
+          "new": "29aa4f379adac5100aadde0aafa49fadb48c383fd8e3aba5603f254a6796755d"
+        }
+      },
+      "browserpakete": {
+        "editor-ca7bcd0b03feaecd.mjs": "9897d22e09f0748d25b0549771ec2797b04bc4f36a1e03f9f79c82c1b822024e",
+        "editor-ca7bcd0b03feaecd.mjs.gz": "2b5f3adcd06f0e5fa9b8e5dca51ec62e2f8f6418001507c22bef177b1ce948dc"
+      },
+      "umschaltungen": [
+        {
+          "commit": "f5bc51bb75a806d4b78c38b7b6305738dd52b0fc",
+          "action": "apply",
+          "utc": "2026-11-19T18:24:21.117790+00:00"
+        }
+      ]
+    },
+    {
+      "commit": "14b53038421e6eb819c2ae6d253bfb72eefa6873",
+      "base": "98ecce47ffcf26762997a4c84dc81541e0b03ef1",
+      "rueckwegErprobt": true,
+      "dateien": {
+        "app/configurator/variant-m/adapter.mjs": {
+          "old": "944d76408ecd1ee90700bb8ddc15dd175a1aa6181e8bae0abe5dd8b918a7362c",
+          "new": "fba747e4d78491b8bf3b74c1f507fd4428c3f6133d8a8d16880874595adf4ddf"
+        },
+        "app/configurator/variant-m/issue48-customer.test.mjs": {
+          "old": "4597e3856781a83aa48bd0beeceeae4798ff36cf29d9d9aca6073fd67ac0914c",
+          "new": "20e28b35933f9e659ad9c62c39bf22eb427a1e0b53f0137e2252c07d21a6b668"
+        },
+        "app/configurator/variant-m/material-surface.mjs": {
+          "old": "b2e1aade8938aa31f2373d74ecdbaf060c049e8dbafed8599175a57f45a8a9b4",
+          "new": "ecaa0a1fb99f2fb8d82fba5834cfb2bd26daf432b73e0d7a83f490d4cf49a169"
+        },
+        "app/configurator/variant-m/shop-cart.mjs": {
+          "old": "99dd4756e8b7cc6263f37939b884f23e588231ccba3d037274e1718a2a15ec2b",
+          "new": "f4df8eac0c3c1ad1117444e78b5507d4dbe7c84e3b2fb3b0f8d8db86f6776738"
+        },
+        "app/configurator/variant-m/.preview/editor.html": {
+          "old": "29aa4f379adac5100aadde0aafa49fadb48c383fd8e3aba5603f254a6796755d",
+          "new": "b2c891951db952805a757387d7987e36e391529fe527073329925759af98bb37"
+        }
+      },
+      "browserpakete": {
+        "editor-db031b06f064da6a.mjs": "28a01dc43ba7222499093ac895146f51c4c7e5d2c88865c5d2ef257775b4cb6f",
+        "editor-db031b06f064da6a.mjs.gz": "2d65839550373ead1f34246fbcf4d75228b1ccee75d0a9adbb7062242209e9ff"
+      },
+      "umschaltungen": [
+        {
+          "commit": "14b53038421e6eb819c2ae6d253bfb72eefa6873",
+          "action": "apply",
+          "utc": "2026-11-19T18:57:52.498465+00:00"
+        }
+      ]
+    }
+  ],
+  "shopify": {
+    "themeId": "190984126844",
+    "file": "snippets/gravuru-warenkorb-bearbeiten.liquid",
+    "readBackHashes": {
+      "vorher": "e9e4f2b65cc7aac3d222d298fe0f34aa48706f39336db1f809778de6ec16e1b2",
+      "kleine-bilder": "f3d0d464da437eda7ede5ef8ae13381ac54eadc57377321027259239b0dd62f4",
+      "nur-vorschau": "37b7aeeff0f1b31a98bb9b54d264fefa19d3bfb72c1c3758e8e9a0fdafbd222b"
+    }
+  }
+}

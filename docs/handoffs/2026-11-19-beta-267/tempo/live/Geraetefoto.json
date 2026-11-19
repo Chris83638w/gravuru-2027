@@ -1,0 +1,134 @@
+{
+  "referenz": [
+    {
+      "name": "Nord",
+      "design": "FK-SEITLICH",
+      "sourceSha256": "17024f5465084c1fef7a83f7e5196cb3f8ea45281caeb5ee15cf33246a43dc95",
+      "scene": [
+        "/_acryl-runtime/images",
+        "/doorbell-assets/d3c43f07e0f3139b3724a066c906ee3edb36b0653abbc5ea0d9fe1b483cbe2ab.webp"
+      ],
+      "referenceSamples": 24,
+      "matchedDevicePixels": 0,
+      "angle": {
+        "horizontal": 0,
+        "vertical": 0
+      }
+    },
+    {
+      "name": "Süd",
+      "design": "FK-RUNDUM",
+      "sourceSha256": "ca8a5e95b88a49849d2476e38830239c7e3cbb3b17f10902362518dfe104070c",
+      "scene": [
+        "/_acryl-runtime/images",
+        "data",
+        "/doorbell-assets/d3c43f07e0f3139b3724a066c906ee3edb36b0653abbc5ea0d9fe1b483cbe2ab.webp"
+      ],
+      "referenceSamples": 24,
+      "matchedDevicePixels": 0,
+      "angle": {
+        "horizontal": 16,
+        "vertical": 16
+      }
+    }
+  ],
+  "fotoprobe": [
+    {
+      "name": "Nord",
+      "design": "FK-SEITLICH",
+      "sourceSha256": "17024f5465084c1fef7a83f7e5196cb3f8ea45281caeb5ee15cf33246a43dc95",
+      "scene": [
+        "/_acryl-runtime/images",
+        "/doorbell-assets/d3c43f07e0f3139b3724a066c906ee3edb36b0653abbc5ea0d9fe1b483cbe2ab.webp"
+      ],
+      "referenceSamples": 24,
+      "matchedDevicePixels": 0,
+      "angle": {
+        "horizontal": 0,
+        "vertical": 0
+      }
+    },
+    {
+      "name": "Süd",
+      "design": "FK-RUNDUM",
+      "sourceSha256": "ca8a5e95b88a49849d2476e38830239c7e3cbb3b17f10902362518dfe104070c",
+      "scene": [
+        "/_acryl-runtime/images",
+        "data",
+        "/doorbell-assets/d3c43f07e0f3139b3724a066c906ee3edb36b0653abbc5ea0d9fe1b483cbe2ab.webp"
+      ],
+      "referenceSamples": 24,
+      "matchedDevicePixels": 0,
+      "angle": {
+        "horizontal": 16,
+        "vertical": 16
+      }
+    }
+  ],
+  "fotopruefung": [
+    {
+      "name": "Nord",
+      "design": "FK-SEITLICH",
+      "sourceSha256": "b1ed0cd08c5b530a6d278f73532d610aac6cc4bc17376d08726ebe998749bc9e",
+      "scene": [
+        "/_acryl-runtime/images",
+        "/doorbell-assets/d3c43f07e0f3139b3724a066c906ee3edb36b0653abbc5ea0d9fe1b483cbe2ab.webp"
+      ],
+      "referenceSamples": 24,
+      "matchedDevicePixels": 24,
+      "angle": {
+        "horizontal": 0,
+        "vertical": 0
+      }
+    },
+    {
+      "name": "Süd",
+      "design": "FK-RUNDUM",
+      "sourceSha256": "fc31ce9cb9e6887b3fe26d11662cfe785a6039f403122ae04beb20954fc67e32",
+      "scene": [
+        "/_acryl-runtime/images",
+        "data",
+        "/doorbell-assets/d3c43f07e0f3139b3724a066c906ee3edb36b0653abbc5ea0d9fe1b483cbe2ab.webp"
+      ],
+      "referenceSamples": 24,
+      "matchedDevicePixels": 24,
+      "angle": {
+        "horizontal": 16,
+        "vertical": 16
+      }
+    }
+  ],
+  "stufe5": [
+    {
+      "name": "Nord",
+      "design": "FK-SEITLICH",
+      "sourceSha256": "b1ed0cd08c5b530a6d278f73532d610aac6cc4bc17376d08726ebe998749bc9e",
+      "scene": [
+        "/_acryl-runtime/images",
+        "/doorbell-assets/d3c43f07e0f3139b3724a066c906ee3edb36b0653abbc5ea0d9fe1b483cbe2ab.webp"
+      ],
+      "referenceSamples": 24,
+      "matchedDevicePixels": 24,
+      "angle": {
+        "horizontal": 0,
+        "vertical": 0
+      }
+    },
+    {
+      "name": "Süd",
+      "design": "FK-RUNDUM",
+      "sourceSha256": "fc31ce9cb9e6887b3fe26d11662cfe785a6039f403122ae04beb20954fc67e32",
+      "scene": [
+        "/_acryl-runtime/images",
+        "data",
+        "/doorbell-assets/d3c43f07e0f3139b3724a066c906ee3edb36b0653abbc5ea0d9fe1b483cbe2ab.webp"
+      ],
+      "referenceSamples": 24,
+      "matchedDevicePixels": 24,
+      "angle": {
+        "horizontal": 16,
+        "vertical": 16
+      }
+    }
+  ]
+}

@@ -2,6 +2,8 @@
 
 ## R15-Warenkorb ab 19. November 2026
 
+Im veröffentlichten Theme sind der Schritt für kleinere persönliche Bilder und das Entfernen des nativen Bearbeiten-Links mit zwei einzelnen Patches belegt. Die Beta-Vorlage verwendet dieselben drei Anzeigebreiten für die bestätigte Shopify-Datei und behält ihr bestehendes Vergrößerungsziel. [Live-Messung, Prüfsummen und Rückweg](../../../docs/handoffs/2026-11-19-beta-267/tempo/live/README.md)
+
 Die gemeinsame Beta zeigt das persönliche Bild der gespeicherten Position in der Warenkorbseite und im Drawer. Vergrößern öffnet das Bild. Menge, Preis und Entfernen gehören weiterhin zur umgebenden Theme-Sektion. Eine neue Gestaltung beginnt beim Produkt. Der bestehende Snippet-Dateiname erhält die Einbindung beider Sektionen. Die Beta verwendet dazu `assets/gravuru-cart-preview.js` und `cart-media-placement.patch`. Der Stand liegt in PR #268. Die folgenden Betriebsnachweise beschreiben frühere Shop-Versionen. [Entscheidung von Chris](https://github.com/Chris83638w/gravuru-2027/issues/267#issuecomment-7008823567)
 
 **Live-Nachtrag 30.10.2026:** `cart-native-proof-visibility.patch` blendet ausschließlich die technische Eigenschaft „Bearbeitbarer Entwurf“ nativer Positionen in beiden Cart-Sections aus. Preisvertrag, Daten und Bearbeiten-Link bleiben erhalten. Im MAIN-Theme **185833718140** installiert und vollständig zurückgelesen; sechs Liquid-Fälle sowie bestehender Live-Warenkorb geprüft. [Prüfsummen, Sicherung, Rückweg und Grenzen](../../../docs/handoffs/2026-10-30-master-abgleich-warenkorb.md). Die nachfolgende Testtheme-Aussage vom 27.10. beschreibt den damaligen Stand.

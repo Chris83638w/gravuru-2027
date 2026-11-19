@@ -1,0 +1,731 @@
+{
+  "referenz": {
+    "sourceCommit": "9af3a1ac",
+    "from": "2026-11-19T18:10:10.264Z",
+    "to": "2026-11-19T18:14:23.665Z",
+    "browser": "157.0.8103.78",
+    "positions": 12,
+    "errors": 0,
+    "visibleCardsSaveData": {
+      "n": 0
+    },
+    "saveDataCount": 8,
+    "editorMs": {
+      "n": 12,
+      "min": 2696,
+      "median": 4818.5,
+      "max": 6433
+    },
+    "switchMs": {
+      "n": 12,
+      "min": 397,
+      "median": 976.5,
+      "max": 1840
+    },
+    "cartMs": {
+      "n": 12,
+      "min": 5685,
+      "median": 6594.5,
+      "max": 8760
+    },
+    "cartByDeviceAndCache": {
+      "PC kalt": {
+        "n": 3,
+        "min": 6661,
+        "median": 6844,
+        "max": 8760
+      },
+      "PC warm": {
+        "n": 3,
+        "min": 5922,
+        "median": 6325,
+        "max": 6438
+      },
+      "Mobil kalt": {
+        "n": 3,
+        "min": 6511,
+        "median": 6796,
+        "max": 7036
+      },
+      "Mobil warm": {
+        "n": 3,
+        "min": 5685,
+        "median": 6528,
+        "max": 7056
+      }
+    },
+    "serverDraftPersistMs": {
+      "n": 12,
+      "min": 7.97,
+      "median": 9.805,
+      "max": 26.56
+    },
+    "draftFirstByteMs": {
+      "n": 12,
+      "min": 578,
+      "median": 727.5,
+      "max": 905
+    },
+    "fullDraftMs": {
+      "n": 12,
+      "min": 581,
+      "median": 729.5,
+      "max": 907
+    },
+    "imageDataFirstByteMs": {
+      "n": 12,
+      "min": 1616,
+      "median": 2354.5,
+      "max": 3081
+    },
+    "cartUnder5Seconds": 0,
+    "waitForConfirmedCheckoutImageMs": {
+      "n": 12,
+      "min": 1129.67,
+      "median": 2027.9650000000001,
+      "max": 2703.9
+    },
+    "reviewPrepareMs": {
+      "n": 12,
+      "min": 443.48,
+      "median": 513.175,
+      "max": 569.4
+    },
+    "everyThirdDraft": [
+      {
+        "ordinal": 3,
+        "firstByteMs": 859,
+        "fullResponseMs": 862,
+        "persistMs": 8.79
+      },
+      {
+        "ordinal": 6,
+        "firstByteMs": 578,
+        "fullResponseMs": 581,
+        "persistMs": 10.27
+      },
+      {
+        "ordinal": 9,
+        "firstByteMs": 905,
+        "fullResponseMs": 907,
+        "persistMs": 9.34
+      },
+      {
+        "ordinal": 12,
+        "firstByteMs": 612,
+        "fullResponseMs": 615,
+        "persistMs": 8.66
+      }
+    ]
+  },
+  "stufe1": {
+    "sourceCommit": "38f6272a",
+    "from": "2026-11-19T18:15:39.591Z",
+    "to": "2026-11-19T18:19:04.142Z",
+    "browser": "157.0.8103.78",
+    "positions": 12,
+    "errors": 0,
+    "visibleCardsSaveData": {
+      "n": 8,
+      "min": 52,
+      "median": 59.0,
+      "max": 423
+    },
+    "saveDataCount": 8,
+    "editorMs": {
+      "n": 12,
+      "min": 2672,
+      "median": 4655.5,
+      "max": 6811
+    },
+    "switchMs": {
+      "n": 12,
+      "min": 395,
+      "median": 587.5,
+      "max": 861
+    },
+    "cartMs": {
+      "n": 12,
+      "min": 5735,
+      "median": 6376.5,
+      "max": 7349
+    },
+    "cartByDeviceAndCache": {
+      "PC kalt": {
+        "n": 3,
+        "min": 6550,
+        "median": 7323,
+        "max": 7349
+      },
+      "PC warm": {
+        "n": 3,
+        "min": 6290,
+        "median": 6463,
+        "max": 6593
+      },
+      "Mobil kalt": {
+        "n": 3,
+        "min": 5873,
+        "median": 5958,
+        "max": 6108
+      },
+      "Mobil warm": {
+        "n": 3,
+        "min": 5735,
+        "median": 6196,
+        "max": 6540
+      }
+    },
+    "serverDraftPersistMs": {
+      "n": 12,
+      "min": 7.37,
+      "median": 8.805,
+      "max": 23.65
+    },
+    "draftFirstByteMs": {
+      "n": 12,
+      "min": 618,
+      "median": 770.0,
+      "max": 1243
+    },
+    "fullDraftMs": {
+      "n": 12,
+      "min": 621,
+      "median": 772.0,
+      "max": 1245
+    },
+    "imageDataFirstByteMs": {
+      "n": 12,
+      "min": 1654,
+      "median": 2280.5,
+      "max": 3126
+    },
+    "cartUnder5Seconds": 0,
+    "waitForConfirmedCheckoutImageMs": {
+      "n": 12,
+      "min": 1305.55,
+      "median": 1871.355,
+      "max": 2739.23
+    },
+    "reviewPrepareMs": {
+      "n": 12,
+      "min": 425.67,
+      "median": 472.475,
+      "max": 515.27
+    },
+    "everyThirdDraft": [
+      {
+        "ordinal": 3,
+        "firstByteMs": 740,
+        "fullResponseMs": 742,
+        "persistMs": 7.95
+      },
+      {
+        "ordinal": 6,
+        "firstByteMs": 910,
+        "fullResponseMs": 912,
+        "persistMs": 7.6
+      },
+      {
+        "ordinal": 9,
+        "firstByteMs": 1243,
+        "fullResponseMs": 1245,
+        "persistMs": 7.37
+      },
+      {
+        "ordinal": 12,
+        "firstByteMs": 721,
+        "fullResponseMs": 725,
+        "persistMs": 8.67
+      }
+    ]
+  },
+  "stufe2": {
+    "sourceCommit": "f5bc51bb",
+    "from": "2026-11-19T18:24:43.337Z",
+    "to": "2026-11-19T18:28:04.563Z",
+    "browser": "157.0.8103.78",
+    "positions": 12,
+    "errors": 0,
+    "visibleCardsSaveData": {
+      "n": 8,
+      "min": 45,
+      "median": 57.0,
+      "max": 741
+    },
+    "saveDataCount": 8,
+    "editorMs": {
+      "n": 12,
+      "min": 2215,
+      "median": 4062.0,
+      "max": 6842
+    },
+    "switchMs": {
+      "n": 12,
+      "min": 235,
+      "median": 265.5,
+      "max": 445
+    },
+    "cartMs": {
+      "n": 12,
+      "min": 6263,
+      "median": 6586.5,
+      "max": 8465
+    },
+    "cartByDeviceAndCache": {
+      "PC kalt": {
+        "n": 3,
+        "min": 7416,
+        "median": 7717,
+        "max": 8465
+      },
+      "PC warm": {
+        "n": 3,
+        "min": 6519,
+        "median": 6535,
+        "max": 7582
+      },
+      "Mobil kalt": {
+        "n": 3,
+        "min": 6263,
+        "median": 6340,
+        "max": 6638
+      },
+      "Mobil warm": {
+        "n": 3,
+        "min": 6275,
+        "median": 6529,
+        "max": 6946
+      }
+    },
+    "serverDraftPersistMs": {
+      "n": 12,
+      "min": 8.98,
+      "median": 22.009999999999998,
+      "max": 726.92
+    },
+    "draftFirstByteMs": {
+      "n": 12,
+      "min": 615,
+      "median": 817.0,
+      "max": 1689
+    },
+    "fullDraftMs": {
+      "n": 12,
+      "min": 617,
+      "median": 818.5,
+      "max": 1691
+    },
+    "imageDataFirstByteMs": {
+      "n": 12,
+      "min": 1878,
+      "median": 2358.5,
+      "max": 2804
+    },
+    "cartUnder5Seconds": 0,
+    "waitForConfirmedCheckoutImageMs": {
+      "n": 12,
+      "min": 1460.45,
+      "median": 1919.845,
+      "max": 2385.93
+    },
+    "reviewPrepareMs": {
+      "n": 12,
+      "min": 465.19,
+      "median": 504.91999999999996,
+      "max": 597.77
+    },
+    "everyThirdDraft": [
+      {
+        "ordinal": 3,
+        "firstByteMs": 793,
+        "fullResponseMs": 795,
+        "persistMs": 8.98
+      },
+      {
+        "ordinal": 6,
+        "firstByteMs": 615,
+        "fullResponseMs": 617,
+        "persistMs": 10.21
+      },
+      {
+        "ordinal": 9,
+        "firstByteMs": 1619,
+        "fullResponseMs": 1623,
+        "persistMs": 105.69
+      },
+      {
+        "ordinal": 12,
+        "firstByteMs": 946,
+        "fullResponseMs": 948,
+        "persistMs": 82.38
+      }
+    ]
+  },
+  "stufe3": {
+    "sourceCommit": "c4f855e0",
+    "from": "2026-11-19T18:29:38.735Z",
+    "to": "2026-11-19T18:32:50.105Z",
+    "browser": "157.0.8103.78",
+    "positions": 12,
+    "errors": 0,
+    "visibleCardsSaveData": {
+      "n": 8,
+      "min": 47,
+      "median": 59.0,
+      "max": 126
+    },
+    "saveDataCount": 8,
+    "editorMs": {
+      "n": 12,
+      "min": 2378,
+      "median": 3877.5,
+      "max": 5207
+    },
+    "switchMs": {
+      "n": 12,
+      "min": 220,
+      "median": 271.5,
+      "max": 366
+    },
+    "cartMs": {
+      "n": 12,
+      "min": 5807,
+      "median": 6486.5,
+      "max": 7108
+    },
+    "cartByDeviceAndCache": {
+      "PC kalt": {
+        "n": 3,
+        "min": 6375,
+        "median": 6912,
+        "max": 6953
+      },
+      "PC warm": {
+        "n": 3,
+        "min": 6445,
+        "median": 6864,
+        "max": 7108
+      },
+      "Mobil kalt": {
+        "n": 3,
+        "min": 6266,
+        "median": 6410,
+        "max": 6528
+      },
+      "Mobil warm": {
+        "n": 3,
+        "min": 5807,
+        "median": 6137,
+        "max": 6651
+      }
+    },
+    "serverDraftPersistMs": {
+      "n": 12,
+      "min": 7.05,
+      "median": 10.725,
+      "max": 26.55
+    },
+    "draftFirstByteMs": {
+      "n": 12,
+      "min": 586,
+      "median": 786.5,
+      "max": 936
+    },
+    "fullDraftMs": {
+      "n": 12,
+      "min": 588,
+      "median": 788.5,
+      "max": 938
+    },
+    "imageDataFirstByteMs": {
+      "n": 12,
+      "min": 2154,
+      "median": 2253.5,
+      "max": 2924
+    },
+    "cartUnder5Seconds": 0,
+    "waitForConfirmedCheckoutImageMs": {
+      "n": 12,
+      "min": 1706.81,
+      "median": 1846.25,
+      "max": 2497.57
+    },
+    "reviewPrepareMs": {
+      "n": 12,
+      "min": 417.04,
+      "median": 463.95500000000004,
+      "max": 533.42
+    },
+    "everyThirdDraft": [
+      {
+        "ordinal": 3,
+        "firstByteMs": 800,
+        "fullResponseMs": 802,
+        "persistMs": 8.47
+      },
+      {
+        "ordinal": 6,
+        "firstByteMs": 588,
+        "fullResponseMs": 591,
+        "persistMs": 7.05
+      },
+      {
+        "ordinal": 9,
+        "firstByteMs": 783,
+        "fullResponseMs": 785,
+        "persistMs": 9.08
+      },
+      {
+        "ordinal": 12,
+        "firstByteMs": 586,
+        "fullResponseMs": 588,
+        "persistMs": 8.97
+      }
+    ]
+  },
+  "stufe4": {
+    "sourceCommit": "98ecce47",
+    "from": "2026-11-19T18:34:32.895Z",
+    "to": "2026-11-19T18:37:48.920Z",
+    "browser": "157.0.8103.78",
+    "positions": 12,
+    "errors": 0,
+    "visibleCardsSaveData": {
+      "n": 8,
+      "min": 38,
+      "median": 54.5,
+      "max": 81
+    },
+    "saveDataCount": 8,
+    "editorMs": {
+      "n": 12,
+      "min": 2230,
+      "median": 3813.5,
+      "max": 6489
+    },
+    "switchMs": {
+      "n": 12,
+      "min": 204,
+      "median": 278.0,
+      "max": 635
+    },
+    "cartMs": {
+      "n": 12,
+      "min": 5929,
+      "median": 6667.0,
+      "max": 7121
+    },
+    "cartByDeviceAndCache": {
+      "PC kalt": {
+        "n": 3,
+        "min": 6060,
+        "median": 6503,
+        "max": 7109
+      },
+      "PC warm": {
+        "n": 3,
+        "min": 6867,
+        "median": 7094,
+        "max": 7121
+      },
+      "Mobil kalt": {
+        "n": 3,
+        "min": 6559,
+        "median": 6775,
+        "max": 6948
+      },
+      "Mobil warm": {
+        "n": 3,
+        "min": 5929,
+        "median": 6147,
+        "max": 6426
+      }
+    },
+    "serverDraftPersistMs": {
+      "n": 12,
+      "min": 7.35,
+      "median": 9.184999999999999,
+      "max": 27.22
+    },
+    "draftFirstByteMs": {
+      "n": 12,
+      "min": 601,
+      "median": 784.5,
+      "max": 1065
+    },
+    "fullDraftMs": {
+      "n": 12,
+      "min": 605,
+      "median": 787.5,
+      "max": 1067
+    },
+    "imageDataFirstByteMs": {
+      "n": 12,
+      "min": 1712,
+      "median": 2269.5,
+      "max": 3079
+    },
+    "cartUnder5Seconds": 0,
+    "waitForConfirmedCheckoutImageMs": {
+      "n": 12,
+      "min": 1350.44,
+      "median": 1865.535,
+      "max": 2681.67
+    },
+    "reviewPrepareMs": {
+      "n": 12,
+      "min": 374.65,
+      "median": 467.59000000000003,
+      "max": 546.75
+    },
+    "everyThirdDraft": [
+      {
+        "ordinal": 3,
+        "firstByteMs": 810,
+        "fullResponseMs": 813,
+        "persistMs": 7.35
+      },
+      {
+        "ordinal": 6,
+        "firstByteMs": 609,
+        "fullResponseMs": 611,
+        "persistMs": 8.3
+      },
+      {
+        "ordinal": 9,
+        "firstByteMs": 831,
+        "fullResponseMs": 833,
+        "persistMs": 8.21
+      },
+      {
+        "ordinal": 12,
+        "firstByteMs": 771,
+        "fullResponseMs": 774,
+        "persistMs": 8.29
+      }
+    ]
+  },
+  "stufe5": {
+    "sourceCommit": "14b53038",
+    "from": "2026-11-19T18:58:02.876Z",
+    "to": "2026-11-19T19:00:50.987Z",
+    "browser": "157.0.8103.78",
+    "positions": 12,
+    "errors": 0,
+    "visibleCardsSaveData": {
+      "n": 8,
+      "min": 26,
+      "median": 28.0,
+      "max": 113
+    },
+    "saveDataCount": 8,
+    "editorMs": {
+      "n": 12,
+      "min": 1958,
+      "median": 3118.0,
+      "max": 4856
+    },
+    "switchMs": {
+      "n": 12,
+      "min": 152,
+      "median": 191.0,
+      "max": 216
+    },
+    "cartMs": {
+      "n": 12,
+      "min": 5655,
+      "median": 6059.5,
+      "max": 6651
+    },
+    "cartByDeviceAndCache": {
+      "PC kalt": {
+        "n": 3,
+        "min": 6278,
+        "median": 6335,
+        "max": 6413
+      },
+      "PC warm": {
+        "n": 3,
+        "min": 5693,
+        "median": 5944,
+        "max": 6072
+      },
+      "Mobil kalt": {
+        "n": 3,
+        "min": 5979,
+        "median": 6003,
+        "max": 6047
+      },
+      "Mobil warm": {
+        "n": 3,
+        "min": 5655,
+        "median": 6137,
+        "max": 6651
+      }
+    },
+    "serverDraftPersistMs": {
+      "n": 12,
+      "min": 8.5,
+      "median": 10.940000000000001,
+      "max": 23.07
+    },
+    "draftFirstByteMs": {
+      "n": 12,
+      "min": 585,
+      "median": 818.5,
+      "max": 1330
+    },
+    "fullDraftMs": {
+      "n": 12,
+      "min": 586,
+      "median": 819.5,
+      "max": 1331
+    },
+    "imageDataFirstByteMs": {
+      "n": 12,
+      "min": 1574,
+      "median": 2244.5,
+      "max": 2894
+    },
+    "cartUnder5Seconds": 0,
+    "waitForConfirmedCheckoutImageMs": {
+      "n": 12,
+      "min": 1091.23,
+      "median": 1785.76,
+      "max": 2495.06
+    },
+    "reviewPrepareMs": {
+      "n": 12,
+      "min": 454.82,
+      "median": 479.83,
+      "max": 546.71
+    },
+    "everyThirdDraft": [
+      {
+        "ordinal": 3,
+        "firstByteMs": 866,
+        "fullResponseMs": 868,
+        "persistMs": 8.5
+      },
+      {
+        "ordinal": 6,
+        "firstByteMs": 604,
+        "fullResponseMs": 606,
+        "persistMs": 9.31
+      },
+      {
+        "ordinal": 9,
+        "firstByteMs": 861,
+        "fullResponseMs": 862,
+        "persistMs": 17.64
+      },
+      {
+        "ordinal": 12,
+        "firstByteMs": 640,
+        "fullResponseMs": 642,
+        "persistMs": 10.57
+      }
+    ]
+  }
+}

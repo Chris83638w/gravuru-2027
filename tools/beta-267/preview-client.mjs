@@ -27,8 +27,16 @@ try {
       if(product==='ring'&&parameters.get('warenkorb')!=='dateien'){
         const response=await fetch('/beta-warenkorb/daten',{method:'POST',headers:{'Content-Type':'application/json','X-Gravuru-Draft':draftToken},body:JSON.stringify(body)});
         if(!response.ok){const result=await response.json();throw Error(result.error||'Warenkorb konnte nicht bestätigt werden.');}
-        location.assign('/beta-warenkorb');
-        return;
+        // This harness navigates on the local origin. Keep the editor in its
+        // pending state until the document leaves instead of returning a Shopify URL.
+        return new Promise((_,reject)=>{
+          const timeout=setTimeout(()=>reject(Error('Der Prüfwarenkorb konnte nicht geöffnet werden.')),12000);
+          window.addEventListener('pagehide',()=>{
+            clearTimeout(timeout);
+            window.addEventListener('pageshow',event=>{if(event.persisted)location.reload();},{once:true});
+          },{once:true});
+          location.assign('/beta-warenkorb');
+        });
       }
       const response = await request('/api/workshop/acrylic-drafts/' + encodeURIComponent(body.draftId), {headers: {'X-Gravuru-Draft': draftToken}});
       if (!response.ok) throw Error('Der lokale Entwurf konnte nicht bestätigt werden.');

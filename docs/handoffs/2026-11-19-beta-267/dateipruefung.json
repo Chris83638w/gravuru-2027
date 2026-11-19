@@ -1,0 +1,12 @@
+{
+  "synthetic": true,
+  "revision": 3,
+  "widthMm": 150,
+  "heightMm": 200,
+  "sourceSha256": "8369cc01a12abc10acb32d3ef27a9ddfc8ad156b0cea418b18c8d7d193d608f0",
+  "svgSha256": "aa7387c23a3b5d0d9a6e760836954d8a7baaa1bfaa41fd0e6d9b1be8822b9134",
+  "contourSha256": "1546fdd3b85fa291c6d832b85a6beddaa8b562262cf16cedc2ea3b14eae944cc",
+  "printSha256": "9420fc23bb0cf3086a76d85cc61b5ee171745b75530515c5471f5f4b78b488e7",
+  "vectorGlyphs": 62,
+  "photoSources": 1
+}

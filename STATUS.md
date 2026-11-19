@@ -1,3 +1,7 @@
+## 19.11.2026 · Astra · Ring-Beta und Bestellrevision für #267
+
+R15-Prüfstand im [Entwurfs-PR #268](https://github.com/Chris83638w/gravuru-2027/pull/268). 36 Ring-Vergleichsläufe, zwölf Acryl-Fotowege, Schiefer-Ständerprüfung über alle 48 Rohlinge und 1:1-Dateinachweis aus der bestellten synthetischen Revision. Der native Shopversuch bestätigte zwei getrennte Ring-Positionen und die Bearbeitung einer Position. Freigabe für den live angebundenen Beta-Build und für Fertigung bleibt offen. [Paritätsmatrix, Messwerte und Rückweg](docs/handoffs/2026-11-19-beta-267/README.md)
+
 ## 18.11.2026 · Astra (Codex) · Chris korrigiert die zusätzliche Randfallmeldung
 
 Chris: „sowas gibt es nicht“ und „Die Standardschriftarten habe ich eben bekannt gegeben und zusätzlich mögliche vom Design.“ Maßstab bleibt exakt seine Standardgruppe plus die Schriften des geöffneten Designs. Die in 452e4ba ergänzte Meldungsverzweigung für einen hypothetischen leeren Schriftbestand ist zurückgenommen; tatsächliche Ladefehler werden weiterhin behandelt. Keine neue Schriftregel, keine Daten-/Liveänderung. Backend-Pflege ausdrücklich als nächster Schritt beauftragt; direkte Abstimmung mit Claude läuft.

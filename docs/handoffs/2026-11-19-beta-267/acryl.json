@@ -1,0 +1,170 @@
+[
+  {
+    "run": 1,
+    "device": "PC",
+    "cache": "kalt",
+    "recorded": false,
+    "photoMs": 185.26170000000002,
+    "draftMs": 1644.7659000000003,
+    "exportMs": {
+      "svg": 626.1320999999998,
+      "kontur": 1733.4117999999999,
+      "druck": 5465.8634999999995,
+      "zip": 107.84360000000015
+    }
+  },
+  {
+    "run": 1,
+    "device": "PC",
+    "cache": "warm",
+    "recorded": false,
+    "photoMs": 154.09580000000096,
+    "draftMs": 1516.7531999999992,
+    "exportMs": {
+      "svg": 408.58140000000276,
+      "kontur": 1704.3613000000005,
+      "druck": 5499.2621,
+      "zip": 127.06359999999768
+    }
+  },
+  {
+    "run": 1,
+    "device": "Mobil",
+    "cache": "kalt",
+    "recorded": false,
+    "photoMs": 1129.2405999999974,
+    "draftMs": 2141.1859999999942,
+    "exportMs": {
+      "svg": 329.4913000000015,
+      "kontur": 1662.4512000000032,
+      "druck": 5137.217100000002,
+      "zip": 118.06259999999747
+    }
+  },
+  {
+    "run": 1,
+    "device": "Mobil",
+    "cache": "warm",
+    "recorded": false,
+    "photoMs": 851.8269,
+    "draftMs": 3226.031099999993,
+    "exportMs": {
+      "svg": 341.8328000000038,
+      "kontur": 1917.0350999999937,
+      "druck": 5440.838699999993,
+      "zip": 148.24629999999888
+    }
+  },
+  {
+    "run": 2,
+    "device": "PC",
+    "cache": "kalt",
+    "recorded": false,
+    "photoMs": 166.70879999999306,
+    "draftMs": 1521.1863999999914,
+    "exportMs": {
+      "svg": 325.59049999999115,
+      "kontur": 1841.0104999999894,
+      "druck": 5300.018800000005,
+      "zip": 151.285200000013
+    }
+  },
+  {
+    "run": 2,
+    "device": "PC",
+    "cache": "warm",
+    "recorded": false,
+    "photoMs": 228.62720000000263,
+    "draftMs": 1520.2045999999973,
+    "exportMs": {
+      "svg": 340.3131999999896,
+      "kontur": 1856.861499999999,
+      "druck": 5356.527400000006,
+      "zip": 100.23549999999523
+    }
+  },
+  {
+    "run": 2,
+    "device": "Mobil",
+    "cache": "kalt",
+    "recorded": false,
+    "photoMs": 1668.2865999999922,
+    "draftMs": 3031.410200000013,
+    "exportMs": {
+      "svg": 396.50900000000547,
+      "kontur": 1713.3034999999945,
+      "druck": 5279.507300000012,
+      "zip": 145.09079999999085
+    }
+  },
+  {
+    "run": 2,
+    "device": "Mobil",
+    "cache": "warm",
+    "recorded": false,
+    "photoMs": 938.9912999999942,
+    "draftMs": 2336.1401000000187,
+    "exportMs": {
+      "svg": 338.6128000000026,
+      "kontur": 1634.702099999995,
+      "druck": 5206.906199999998,
+      "zip": 103.43069999999716
+    }
+  },
+  {
+    "run": 3,
+    "device": "PC",
+    "cache": "kalt",
+    "recorded": false,
+    "photoMs": 176.9271000000008,
+    "draftMs": 1512.5909999999858,
+    "exportMs": {
+      "svg": 510.66359999999986,
+      "kontur": 2372.7987999999896,
+      "druck": 5456.641900000017,
+      "zip": 107.88500000000931
+    }
+  },
+  {
+    "run": 3,
+    "device": "PC",
+    "cache": "warm",
+    "recorded": false,
+    "photoMs": 228.72630000000936,
+    "draftMs": 1532.9985999999917,
+    "exportMs": {
+      "svg": 473.4898000000103,
+      "kontur": 2732.2524000000267,
+      "druck": 6084.933300000004,
+      "zip": 104.99620000002324
+    }
+  },
+  {
+    "run": 3,
+    "device": "Mobil",
+    "cache": "kalt",
+    "recorded": false,
+    "photoMs": 917.5721000000194,
+    "draftMs": 3072.7353000000003,
+    "exportMs": {
+      "svg": 443.9631999999983,
+      "kontur": 1899.0822000000044,
+      "druck": 5137.080000000016,
+      "zip": 96.4839000000211
+    }
+  },
+  {
+    "run": 3,
+    "device": "Mobil",
+    "cache": "warm",
+    "recorded": false,
+    "photoMs": 707.9215000000258,
+    "draftMs": 2163.4268999999913,
+    "exportMs": {
+      "svg": 407.606300000014,
+      "kontur": 1587.419200000004,
+      "druck": 5005.473300000012,
+      "zip": 115.8695000000007
+    }
+  }
+]

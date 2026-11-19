@@ -11,6 +11,7 @@ import {workshopResources} from '../../app/workshop/catalog.mjs';
 import {acrylicArtwork} from '../../app/workshop/acrylic-artwork.mjs';
 import {acrylicContourProof,createAcrylicPrintProof} from '../../app/workshop/acrylic-print-proof.mjs';
 import {loadDoorbellCatalog, importDecorations, buildDoorbellConfig, resourceCrosswalk} from '../../scripts/import-doorbell-catalog.mjs';
+import {loadSlateRegister} from './slate-register.mjs';
 
 const port = Number(process.argv[2] || 18267);
 if (!Number.isInteger(port) || port < 1024 || port > 65535) throw Error('Ungültiger lokaler Port.');
@@ -36,10 +37,18 @@ function addProduct(key, config) {
 addProduct('ring', ring);
 addProduct('heimathafen', await steelSpecimen(workshop.assets));
 addProduct('acryl', seed.universal);
+if (process.env.GRAVURU_SCHIEFERREGISTER) {
+  const {source,productFor} = loadSlateRegister(process.env.GRAVURU_SCHIEFERREGISTER);
+  const blank = source.tafeln.find(row=>row.id==='SL-21');
+  const slate = productFor(blank);
+  slate.profile.name='Naturschiefer 30 × 20 cm · Prüfrohling';
+  addProduct('schiefer',slate);
+}
 const server = createPreviewServer({outputDirectory: directory, workshop});
 const serveWorkshop = server.listeners('request')[0];
 server.removeListener('request', serveWorkshop);
-const betaPage = fs.readFileSync(new URL('./preview.html', import.meta.url));
+const betaPage = fs.readFileSync(new URL('./preview.html', import.meta.url),'utf8')
+  .replace('<!--slate-link-->', products.has('schiefer') ? '<a href="/?produkt=schiefer">Schiefer-Rohling</a>' : '');
 const betaClient = fs.readFileSync(new URL('./preview-client.mjs', import.meta.url));
 server.on('request', async (req, res) => {
   const send = (status, type, bytes) => {

@@ -47,15 +47,7 @@ def protect_worker():
     raise BlockingIOError('Photo workers busy')
 
 
-slot_fd = None
-try:
-    slot_fd = protect_worker()
-    # Resource guards are installed before replacing Pillow's pixel threshold.
-    Image.MAX_IMAGE_PIXELS = None
-    payload = sys.stdin.read(MAX_INPUT + 1)
-    if len(payload) > MAX_INPUT:
-        raise ValueError('size')
-    data = json.loads(payload)
+def prepare_photo(data):
     raw = base64.b64decode(data['bytes'], validate=True)
     if not raw or len(raw) > MAX_BYTES:
         raise ValueError('size')
@@ -93,11 +85,28 @@ try:
         image.info.clear()
         out = io.BytesIO()
         image.save(out, format='PNG')
-        print(json.dumps({'width': width, 'height': height, 'preview': base64.b64encode(out.getvalue()).decode()}))
+        return {'width': width, 'height': height, 'preview': base64.b64encode(out.getvalue()).decode()}
+
+
+slot_fd = None
+try:
+    slot_fd = protect_worker()
+    # Resource guards are installed before replacing Pillow's pixel threshold.
+    Image.MAX_IMAGE_PIXELS = None
+    payload = sys.stdin.read(MAX_INPUT + 1)
+    if len(payload) > MAX_INPUT:
+        raise ValueError('size')
+    data = json.loads(payload)
+    if sys.argv[1:] == ['--review-previews']:
+        # Two editor previews share one limited worker slot and keep their individual transforms.
+        result = {name: prepare_photo({'bytes': data[name]}) for name in ('customer', 'reference')}
+    else:
+        result = prepare_photo(data)
+    print(json.dumps(result))
 except BlockingIOError:
     print(json.dumps({'error': 'Die Fotoprüfung ist gerade ausgelastet. Bitte versuche das Speichern gleich erneut; dein Foto bleibt erhalten.'}))
 except MemoryError:
-    print(json.dumps({'error': 'Dieses Foto konnte gerade nicht verarbeitet werden. Dein Original bleibt unverändert. Bitte versuche es erneut.'}))
+    print(json.dumps({'error': 'Dieses Foto konnte gerade nicht verarbeitet werden. Dein Original bleibt unverändert. Bitte versuche es erneut.', 'retrySeparately': True}))
 except Exception:
     print(json.dumps({'error': 'Bitte ein gültiges einzelnes JPEG-, PNG- oder WebP-Foto bis 15 MB verwenden.'}))
 finally:

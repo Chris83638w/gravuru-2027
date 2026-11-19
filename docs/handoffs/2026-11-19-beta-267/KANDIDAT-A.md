@@ -21,6 +21,8 @@ Mein Ausgangspunkt war die Identität einer gekauften Gestaltung. Dieselbe Kombi
 
 ## Risiko, Wartung und Rückweg
 
+Der [Ring-Katalogvergleich](kandidat-a/ring-vertrag.json) enthält die Prüfsumme der ursprünglichen Variantenmatrix und die Fallzahlen nach Ausführung. Die [Designkartenmessung](kandidat-a/Designkarten-Messwerte.json) enthält die Einzelwerte des geprüften Datensparmodus.
+
 Die drei größten Risiken sind eine falsche Varianten- oder Kaufrevision, ein verlorenes Fotooriginal und eine scheinbar schnelle Warenkorbbestätigung, bevor das richtige Bild erscheint. Deshalb enthält die Matrix einen Preisabgleich, eine nachgelesene Bestellung mit Datei- und Maßprüfung sowie einen Bildvergleich direkt an der gerenderten Warenkorbposition.
 
 Der Webspace verwendet eine Node-App mit SQLite und die bestehende PDF-/Bildverarbeitung. Die Beta benötigt Speicher für Entwürfe, Vorschaubilder und Prüfpakete. Ein separater Tarif oder ein messbarer zusätzlicher Rechnungsbetrag ist hier nicht belegt. Rückweg für diesen Kandidaten ist das Stoppen seiner eigenen Anwendung oder die Rückkehr zum zuvor gesicherten Release im selben Webspace. Die geschützten Prüfdaten sind vom austauschbaren Anwendungscode getrennt. Eine Entscheidung über Produktivbetrieb, Kaufdaten oder Maschinen erfordert die fachlichen Abnahmen in der Matrix.

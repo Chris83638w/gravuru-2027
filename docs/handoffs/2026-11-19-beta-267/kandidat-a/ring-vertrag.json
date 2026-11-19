@@ -1,0 +1,24 @@
+{
+  "product": "klingelschild-ring-wired-pro-3-gen-5dfya2-personalisiert",
+  "comparison": "lokal ausgeliefertes Modell gegen versionierte Katalogmatrix",
+  "matrixSha256": "f6ef3f05a6c61b384994677622fb77e9e31d73295ff3e2c82e338d26299485a8",
+  "formats": 3,
+  "designCounts": {
+    "16x28": 16,
+    "24x20": 16,
+    "35x18": 16
+  },
+  "variants": 120,
+  "positions": [
+    "standard",
+    "opposite"
+  ],
+  "quantities": [
+    1,
+    3
+  ],
+  "quotesChecked": 7680,
+  "layerPairs": 240,
+  "shopifyCartChecked": false,
+  "machineReleased": false
+}

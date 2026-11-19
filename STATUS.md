@@ -1,3 +1,7 @@
+## 19.11.2026 · Grok/Cursor · Team B · R15-Warenkorb wartet nicht mehr auf Shopify
+
+Kurskorrektur: Fixture-Warenkorb entfernt, nur der bestehende Pfad. `cart/data` prüft Preis und Revision und gibt die gesicherte Vorschau zurück, ohne `fileCreate` abzuwarten. Die zweite Angebotsaufbereitung entfällt. Profil-Memo zurückgenommen. Variante C, Kacheln, FPD/Zakeke und Astras Speicher-Importe in [der Tabelle](docs/handoffs/2026-11-19-grok-r15-tempo/README.md). Live-Beleg vorher: `checkout_image_wait` 3811 ms von 6664 ms in `docs/measurements/2026-11-17-konfi-tempo-p1-1b/live-sanitized.json`. Nachher lokal unter 100 ms bei 2200/3400 ms simuliertem Bild. Kein Shop-Schreiben.
+
 ## 19.11.2026 · Grok/Cursor · Team B · Ring-Fall 49,99 € auf `dev/grok-r15-beta-267-20261119`
 
 Vergleichsfall wie A: Variante 57471227756924, SKU FK-AV2A-16x28-1441, 4999 Cent aus öffentlichem Produkt-GET und Katalogblob `389afb47`, Aufpreis K00 = 0. Strichdesign-Pfad `M22 87H138V237` an 32/32 Messstellen weiß, zweite Gestaltung ohne diese Linie. Gerätebild SHA-256 gleich dem Katalogindex und der öffentlichen WebP. Seite und Drawer getrennt, kein Bearbeiten. Lokaler Gesamtweg ohne Drosselung unter 0,4 s, mit CPU 4× und Slow-4G um 5,6 s; das ist der lokale Prüfstand, nicht der volle Editor und nicht unter 5 s als Erfolg gewertet. Host nicht angelegt. [Ring-Fall](docs/handoffs/2026-11-19-grok-beta-267/RING-FALL.md) · [Freigabeantrag](docs/handoffs/2026-11-19-grok-beta-267/FREIGABE-HOST.md)

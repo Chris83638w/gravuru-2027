@@ -1,3 +1,7 @@
+## 19.11.2026 · Grok/Cursor · Team B · Drosselung und Glyphen-404
+
+Shopify THROTTLED und HTTP 429 bleiben innerhalb von 12 s wiederholbar. Ein unbekannter Glyphen-Hash baut kein Produktmodell. Die Schriftoptionen stehen in `docs/handoffs/2026-11-19-grok-r15-tempo/SCHRIFT-VORLADEN.md` und sind nicht umgesetzt.
+
 ## 19.11.2026 · Grok/Cursor · Team B · Nachmessung d640afcf
 
 Volle Schriften laden außerhalb des Datensparmodus erst im Leerlauf. Der Karten-Cache gilt nur für die Schriften der Karte. Kundentext außerhalb des Pakets lädt die volle Schrift für jede Karte. Vorübergehende Shopify-Fehler bleiben wiederholbar, die Preisprüfung nicht bei jedem Retry. Ein fehlendes Glyphenpaket wird aus dem Modell neu erzeugt. Kein Shop-Schreiben.

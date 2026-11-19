@@ -13,13 +13,13 @@ export function createVisibleResourceQueue({load,ready=()=>false,changed=()=>{},
  return {request(keys,{retry=false}={}){if(retry){failed.clear();for(const key of completed)if(!ready(key))completed.delete(key);}wanted=[...new Set(keys)].filter(k=>typeof k==='string'&&k);pump();},stop(){stopped=true;wanted=[];},get pending(){return pending.size;}};
 }
 
-export function observeVisibleResources({root,selector,key,load,ready,changed,win=globalThis}){
+export function observeVisibleResources({root,selector,key,load,ready,changed,rootMargin='48px',win=globalThis}){
  const rows=new Set(),visible=new Set();let scheduled=false,closed=false;
  const queue=createVisibleResourceQueue({load,ready,changed:()=>{if(closed||scheduled)return;scheduled=true;const callback=()=>{scheduled=false;if(!closed)changed?.();};if(win.requestAnimationFrame)win.requestAnimationFrame(callback);else win.setTimeout(callback,0);}});
  const flush=(retry=false)=>queue.request([...visible].filter(row=>row.isConnected!==false).map(key),{retry});
  const observer=typeof win.IntersectionObserver==='function'?new win.IntersectionObserver(records=>{
   for(const entry of records){if(entry.isIntersecting)visible.add(entry.target);else visible.delete(entry.target);}flush();
- },{root:null,rootMargin:'48px',threshold:0}):null;
+ },{root:null,rootMargin,threshold:0}):null;
  function refresh({retry=false}={}){
   if(closed)return;
   const current=new Set(root.querySelectorAll(selector));

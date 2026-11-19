@@ -21,7 +21,8 @@ export function installDoorbellDesignLoading(el,config,say=()=>{}){
   for(const format of config.doorbell.formats)for(const design of format.profile?.designs||[])templates.set(format.key+'/'+design.id,design);
   const view=gallery.ownerDocument?.defaultView;
   const faces=()=>({...(el.uxPreviewFonts||{}),...(el.fontData||{})});
-  const covered=design=>!!design&&designResourcesReady(design,faces(),el.motifs);
+  const shown=design=>el.uxThumbnailDesign?.(design)||design;
+  const covered=design=>!!design&&designResourcesReady(shown(design),faces(),el.motifs);
   const visible=observeVisibleResources({
    root:gallery,win:view,selector:'[data-c-design]',rootMargin:'0px',
    key:card=>(el.state?.mOptions?.format||config.doorbell.defaultFormatKey)+'/'+card.dataset.cDesign,

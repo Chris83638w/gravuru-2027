@@ -97,6 +97,27 @@ test('a visible card covered by the preview pack does not load the full font', a
  await new Promise(resolve=>setImmediate(resolve));
  assert.deepEqual(calls,['Koch']);
 });
+test('every card whose customer text leaves the pack requests the full font',async()=>{
+ const ids=['FK-D05','FK-D07','FK-D08','FK-D15','FK-D01','FK-D02','FK-D03','FK-D04','FK-D06'];
+ const cards=ids.map(id=>({dataset:{cDesign:id},isConnected:true}));
+ let intersect;
+ const view={IntersectionObserver:class{constructor(callback){intersect=callback;}observe(){}disconnect(){}},requestAnimationFrame:callback=>setImmediate(callback),addEventListener(){}};
+ const gallery={className:'c-gallery',ownerDocument:{defaultView:view},querySelectorAll:()=>cards};
+ const calls=[];
+ const el={
+  state:{mOptions:{format:'small'}},shadowRoot:{querySelector:()=>gallery},fontData:{},motifs:{},chooseDesign(){},
+  uxPreviewFonts:{Probe:{previewSubset:true,regular:{glyphs:{F:{},a:{},m:{},i:{},l:{},e:{}}}}},
+  uxPreviewGlyphsReady:Promise.resolve(),
+  uxThumbnailDesign(design){return {...design,objects:design.objects.map(object=>object.type==='text'?{...object,text:'Koch'}:object)};},
+  uxEnsureDesignResources(design){calls.push(design.id);return Promise.resolve();}
+ };
+ const designs=ids.map(id=>({id,objects:[{type:'text',font:'Probe',text:'Familie'}]}));
+ installDoorbellDesignLoading(el,{doorbell:{schema:'gravuru-doorbell/v1',defaultFormatKey:'small',formats:[{key:'small',profile:{designs}}]},profile:{designs}});
+ intersect(cards.map(card=>({target:card,isIntersecting:true})));
+ await new Promise(resolve=>setImmediate(resolve));
+ await new Promise(resolve=>setImmediate(resolve));
+ assert.deepEqual(calls,ids);
+});
 test('outside data saving the full font is preloaded after the cards can paint',async()=>{
  const calls=[];
  const el={fontData:{},motifs:{},chooseDesign(){},sync(){},uxRefreshThumbnails(){},uxPreviewGlyphsReady:Promise.resolve(),uxPreviewFonts:{Probe:{previewSubset:true,regular:{glyphs:{F:{},a:{},m:{},i:{},l:{},e:{}}}}},async uxEnsureDesignResources(design){calls.push(design.id);this.fontData[design.objects[0].font]={};}};

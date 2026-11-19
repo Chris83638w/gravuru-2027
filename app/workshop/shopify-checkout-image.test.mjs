@@ -25,6 +25,20 @@ test('immutable preview is registered as IMAGE, awaited until READY, and reused 
 test('restart reuses existing READY MediaImage without overwriting or creating it again',async()=>{
  const f=fixture([{data:{files:{nodes:[ready]}}}]);assert.equal(await f.service(source),url);assert.equal(f.calls.length,1);
 });
+test('GraphQL THROTTLED and HTTP 429 wait with Retry-After or backoff, then try again',async()=>{
+ const waits=[];let n=0;
+ const throttled=createShopifyCheckoutImages({origin,shopDomain,getAccessToken:async()=>'synthetic-token'},{wait:async ms=>{waits.push(ms);},fetchImpl:async()=>{n++;return n===1?Response.json({errors:[{message:'Throttled',extensions:{code:'THROTTLED'}}]}):Response.json({data:{files:{nodes:[ready]}}});}});
+ assert.equal(await throttled(source),url);assert.deepEqual(waits,[500]);
+ const limited=[];let m=0;
+ const rate=createShopifyCheckoutImages({origin,shopDomain,getAccessToken:async()=>'synthetic-token'},{wait:async ms=>{limited.push(ms);},fetchImpl:async()=>{m++;return m===1?new Response('',{status:429,headers:{'retry-after':'1'}}):Response.json({data:{files:{nodes:[ready]}}});}});
+ assert.equal(await rate(source),url);assert.deepEqual(limited,[1000]);
+ const stuck=[];
+ const forever=createShopifyCheckoutImages({origin,shopDomain,getAccessToken:async()=>'synthetic-token'},{wait:async ms=>{stuck.push(ms);},fetchImpl:async()=>Response.json({errors:[{message:'Throttled',extensions:{code:'THROTTLED'}}]})});
+ await assert.rejects(forever(source),error=>error.code==='checkout_image_pending'&&error.status===503);
+ assert.ok(stuck.length>1);assert.ok(stuck.reduce((sum,ms)=>sum+ms,0)<=12000);
+ const other=createShopifyCheckoutImages({origin,shopDomain,getAccessToken:async()=>'synthetic-token'},{wait:async()=>{throw Error('kein Warten');},fetchImpl:async()=>Response.json({errors:[{message:'denied'}]})});
+ await assert.rejects(other(source),error=>error.code==='checkout_image_failed');
+});
 test('a Shopify 5xx and a dropped connection stay retryable',async()=>{
  const down=fixture([]);
  down.service=createShopifyCheckoutImages({origin,shopDomain,getAccessToken:async()=>'synthetic-token'},{fetchImpl:async()=>new Response('',{status:503})});

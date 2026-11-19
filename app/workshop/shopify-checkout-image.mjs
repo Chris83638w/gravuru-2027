@@ -6,13 +6,32 @@ import {cartTimingStep,cartTimingCount,cartTimingBackground} from './shop-cart-t
 // in lineUpdate.image even when the PNG itself is publicly readable.
 const fields='id fileStatus ... on MediaImage { image { url } }';
 const fail=code=>{const name=code||'checkout_image_failed';throw Object.assign(Error(name==='checkout_image_pending'?'Die Gestaltungsvorschau wird noch für den Warenkorb vorbereitet. Bitte erneut versuchen.':'Die Vorschau für die Kasse konnte nicht erstellt werden. Es wurde nichts in den Warenkorb gelegt.'),{status:name==='checkout_image_pending'?503:502,code:name});};
-export function createShopifyCheckoutImages({origin,shopDomain,getAccessToken},{fetchImpl=fetch,wait=delay}={}){
+const THROTTLE_BUDGET_MS=12000;
+const backoff=attempt=>Math.min(4000,500*2**Math.min(attempt,3));
+export function shopifyRetryDelay(response,attempt,now=Date.now){
+ const raw=response?.headers?.get?.('retry-after');
+ if(typeof raw==='string'&&raw.trim()){
+  const seconds=Number(raw);
+  if(Number.isFinite(seconds)&&seconds>=0){const ms=Math.min(Math.round(seconds*1000),4000);if(ms>0)return ms;}
+  const when=Date.parse(raw);if(Number.isFinite(when)){const ms=when-now();if(ms>0)return Math.min(ms,4000);}
+ }
+ return backoff(attempt);
+}
+const throttled=data=>Array.isArray(data?.errors)&&data.errors.some(error=>error?.extensions?.code==='THROTTLED'||/^throttled$/i.test(String(error?.message||'')));
+export function createShopifyCheckoutImages({origin,shopDomain,getAccessToken},{fetchImpl=fetch,wait=delay,now=Date.now}={}){
  const cache=new Map(),pending=new Map();
  async function request(stage,query,variables){
   const token=await cartTimingStep('access_token',()=>getAccessToken());
   return cartTimingStep(stage,async()=>{
-   let response;try{response=await fetchImpl('https://'+shopDomain+'/admin/api/2026-07/graphql.json',{method:'POST',redirect:'error',signal:AbortSignal.timeout(12000),headers:{'Content-Type':'application/json','X-Shopify-Access-Token':token},body:JSON.stringify({query,variables})});}catch{fail('checkout_image_pending');}
-   if(!response.ok)fail(response.status>=500?'checkout_image_pending':'checkout_image_failed');const data=await response.json();if(data.errors?.length||!data.data)fail('checkout_image_failed');return data.data;
+   let spent=0;
+   for(let attempt=0;;attempt++){
+    let response;try{response=await fetchImpl('https://'+shopDomain+'/admin/api/2026-07/graphql.json',{method:'POST',redirect:'error',signal:AbortSignal.timeout(12000),headers:{'Content-Type':'application/json','X-Shopify-Access-Token':token},body:JSON.stringify({query,variables})});}catch{fail('checkout_image_pending');}
+    if(response.status===429){const ms=shopifyRetryDelay(response,attempt,now);if(spent+ms>THROTTLE_BUDGET_MS)fail('checkout_image_pending');spent+=ms;await wait(ms);continue;}
+    if(!response.ok)fail(response.status>=500?'checkout_image_pending':'checkout_image_failed');
+    const data=await response.json();
+    if(throttled(data)){const ms=shopifyRetryDelay(response,attempt,now);if(spent+ms>THROTTLE_BUDGET_MS)fail('checkout_image_pending');spent+=ms;await wait(ms);continue;}
+    if(data.errors?.length||!data.data)fail('checkout_image_failed');return data.data;
+   }
   });
  }
  return async function checkoutImage(source){

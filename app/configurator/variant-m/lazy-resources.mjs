@@ -103,16 +103,19 @@ export function attach(el,{catalog,entries,prepare,get=fetchJSON,base=LAZY_BASE,
     el.uxEnsureVisibleMotifs=()=>visible.refresh({retry:true});
   }
   el.uxPreviewFonts=Object.create(null);
+  let settlePack=()=>{};
+  el.uxPreviewGlyphsReady=new Promise(resolve=>{settlePack=resolve;});
   let packUrl=previewGlyphs||'';
   if(!packUrl){try{packUrl=globalThis.window?.parent?.UniversalConfig?.localResources?.previewGlyphs||'';}catch{packUrl='';}}
+  const accept=pack=>{
+   if(pack?.schema!=='gravuru-preview-glyphs/v1'||!pack.fonts||typeof pack.fonts!=='object')return;
+   const next=Object.create(null);
+   for(const [name,font] of Object.entries(pack.fonts))if(font?.regular?.glyphs)next[name]={regular:font.regular,...(font.bold?{bold:font.bold}:{}),previewSubset:true};
+   el.uxPreviewFonts=next;el.uxRefreshThumbnails?.();
+  };
   if(typeof packUrl==='string'&&/^\/_acryl-runtime\/lazy\/vorschau-glyphen\/[a-f0-9]{64}\.json$/.test(packUrl)){
-   get(packUrl,{priority:'high'}).then(pack=>{
-    if(pack?.schema!=='gravuru-preview-glyphs/v1'||!pack.fonts||typeof pack.fonts!=='object')return;
-    const next=Object.create(null);
-    for(const [name,font] of Object.entries(pack.fonts))if(font?.regular?.glyphs)next[name]={regular:font.regular,...(font.bold?{bold:font.bold}:{}),previewSubset:true};
-    el.uxPreviewFonts=next;el.uxRefreshThumbnails?.();
-   }).catch(()=>{});
-  }
+   get(packUrl,{priority:'high'}).then(accept).catch(()=>{}).finally(settlePack);
+  }else settlePack();
   el.uxEnsureDesignResources=async(design,options)=>{const needs=resourceNeeds(design?.objects,{localFonts:Object.keys(el.fontData),localMotifs:Object.keys(el.motifs)});await Promise.all([el.uxEnsureFonts(needs.fonts,options),el.uxEnsureMotifs(needs.motifs,options)]);};
   // Entwurf (Sitzungsschutz, Kundenkonto, Warenkorb, Datei): genau seine Schriften und Motive vor readDraft.
   el.uxEnsureDraftResources=async draft=>{

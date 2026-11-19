@@ -20,11 +20,13 @@ export function installDoorbellDesignLoading(el,config,say=()=>{}){
   const templates=new Map();
   for(const format of config.doorbell.formats)for(const design of format.profile?.designs||[])templates.set(format.key+'/'+design.id,design);
   const view=gallery.ownerDocument?.defaultView;
+  const faces=()=>({...(el.uxPreviewFonts||{}),...(el.fontData||{})});
+  const covered=design=>!!design&&designResourcesReady(design,faces(),el.motifs);
   const visible=observeVisibleResources({
    root:gallery,win:view,selector:'[data-c-design]',rootMargin:'0px',
    key:card=>(el.state?.mOptions?.format||config.doorbell.defaultFormatKey)+'/'+card.dataset.cDesign,
-   ready:key=>designResourcesReady(templates.get(key),el.fontData,el.motifs),
-   load:key=>{const design=templates.get(key);return design?el.uxEnsureDesignResources(design,{priority:'low'}):undefined;},
+   ready:key=>covered(templates.get(key)),
+   load:async key=>{if(el.uxPreviewGlyphsReady)await el.uxPreviewGlyphsReady;const design=templates.get(key);if(!design||covered(design))return;return el.uxEnsureDesignResources(design,{priority:'low'});},
    changed:()=>el.uxRefreshThumbnails?.()
   });
   view?.addEventListener?.('pagehide',event=>{if(!event.persisted)visible.disconnect();});
@@ -42,8 +44,10 @@ export function installDoorbellDesignLoading(el,config,say=()=>{}){
   return foreground;
  };
  return async()=>{
+  if(el.uxPreviewGlyphsReady)await el.uxPreviewGlyphsReady;
   for(const design of designs()){
    while(foreground)await foreground;
+   if(designResourcesReady(design,{...(el.uxPreviewFonts||{}),...(el.fontData||{})},el.motifs))continue;
    try{await el.uxEnsureDesignResources(design,{priority:'low'});}catch{/* One unavailable preview must not stop the other cards. */}
   }
   el.uxRefreshThumbnails?.();el.sync();

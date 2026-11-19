@@ -131,7 +131,17 @@ try {
       productName:model.name,cartMode:'theme',shopDomain:location.hostname,themeCartPath:'/beta/cart',request:window.GravuruMerchantRequest,csrfToken:session.csrfToken,backUrl:'/',
       async submitCart(body,{draftToken}) {
         const line = await json('/beta-warenkorb',{method:'POST',headers:{...cartHeaders,'Content-Type':'application/json','X-Gravuru-Draft':draftToken,'X-Gravuru-CSRF':session.csrfToken},body:JSON.stringify({...body,product})});
-        if (location.protocol === 'http:') location.assign('/beta/cart');
+        if (location.protocol === 'http:') {
+          // Loopback has no HTTPS handoff. Keep the confirmation busy until this document is replaced.
+          return new Promise((_,reject)=>{
+            const timeout=setTimeout(()=>reject(Error('Der Testwarenkorb konnte nicht geöffnet werden.')),12000);
+            addEventListener('pagehide',()=>{
+              clearTimeout(timeout);
+              addEventListener('pageshow',event=>{if(event.persisted)location.reload();},{once:true});
+            },{once:true});
+            location.assign('/beta/cart');
+          });
+        }
         return {mode:'theme',handoffUrl:location.origin+'/beta/cart#handoff='+line.handoff,totalCents:line.totalCents,paymentConfirmed:false};
       }
     });

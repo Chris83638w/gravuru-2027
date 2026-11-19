@@ -10,7 +10,7 @@
 // 3. Rohlingbilder, zu denen im Repo eine gleichnamige WebP-Fassung liegt, werden durch diese ersetzt (nur Vorschau).
 // Ohne geladenen Katalog oder bei jedem Fehler bleibt das Modell unverändert.
 import fs from 'node:fs';import path from 'node:path';import {fileURLToPath} from 'node:url';import {createHash} from 'node:crypto';
-import {previewGlyphPack,prunePreviewGlyphPacks,readPreviewGlyphPack,writePreviewGlyphPack} from '../configurator/variant-m/preview-glyphs.mjs';
+import {previewGlyphPack,prunePreviewGlyphPacks,readPreviewGlyphPack,rememberPreviewGlyphSource,writePreviewGlyphPack} from '../configurator/variant-m/preview-glyphs.mjs';
 
 const FONT_FILE=/^[a-z0-9-]{1,80}\.json$/;
 export const fontKey=font=>JSON.stringify([font?.regular??null,font?.bold??null]);
@@ -43,11 +43,11 @@ const hashOf=body=>createHash('sha256').update(body).digest('hex');
 export function createModelSlimmer({fetchJson=null,surfaceSwaps=new Map(),cacheSize=16,fontUrl=null,maxFontFiles=1024,maxFontBytes=96*1024*1024,maxSources=4096,previewGlyphDirectory=null}={}){
  let catalog=null,loading=null,fontBytes=0;
  const decisions=new Map(),fontFiles=new Map(),sources=new Map(),previewFiles=new Map();
- function attachPreviewGlyphs(universal){
+ function attachPreviewGlyphs(universal,source=null){
   const pack=previewGlyphPack(universal);if(!pack)return null;
   previewFiles.set(pack.hash,pack.body);
   while(previewFiles.size>64)previewFiles.delete(previewFiles.keys().next().value);
-  if(previewGlyphDirectory){writePreviewGlyphPack(previewGlyphDirectory,pack);prunePreviewGlyphPacks(previewGlyphDirectory,{keep:32});}
+  if(previewGlyphDirectory){writePreviewGlyphPack(previewGlyphDirectory,pack);prunePreviewGlyphPacks(previewGlyphDirectory,{keep:32});if(universal?.doorbell?.schema==='gravuru-doorbell/v1')rememberPreviewGlyphSource(previewGlyphDirectory,pack.hash,source);}
   universal.localResources??={};universal.localResources.previewGlyphs=pack.url;return pack;
  }
  function previewGlyphFile(hash){

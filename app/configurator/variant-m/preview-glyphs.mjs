@@ -75,3 +75,30 @@ export function previewGlyphFromModels(universals,hash,directory,{keep=32}={}){
  if(directory){writePreviewGlyphPack(directory,pack);prunePreviewGlyphPacks(directory,{keep});}
  return pack.body;
 }
+function glyphIndex(directory){
+ try{const parsed=JSON.parse(fs.readFileSync(path.join(directory,'index.json'),'utf8'));return parsed&&typeof parsed==='object'&&!Array.isArray(parsed)?parsed:{};}catch{return {};}
+}
+export function rememberPreviewGlyphSource(directory,hash,source){
+ if(!directory||!/^[a-f0-9]{64}$/.test(hash||'')||typeof source?.storeId!=='string'||typeof source?.productId!=='string'||!Number.isSafeInteger(source?.revision)||source.revision<1)return null;
+ const index=glyphIndex(directory);index[hash]={storeId:source.storeId,productId:source.productId,revision:source.revision};
+ fs.mkdirSync(directory,{recursive:true});
+ const file=path.join(directory,'index.json'),temp=file+'.'+process.pid+'.tmp';
+ fs.writeFileSync(temp,JSON.stringify(index));fs.renameSync(temp,file);return index[hash];
+}
+// A public 404 may rebuild only the one published or shop-bound revision that
+// already produced this hash. An unknown hash is remembered and builds nothing.
+export function createPreviewGlyphRecovery({directory,load,now=()=>Date.now(),negativeMs=30000,keep=32}={}){
+ const negative=new Map();
+ return function recover(hash){
+  if(!/^[a-f0-9]{64}$/.test(hash||''))return null;
+  if((negative.get(hash)||0)>now())return null;
+  const source=glyphIndex(directory)[hash];
+  const miss=()=>{negative.set(hash,now()+negativeMs);return null;};
+  if(!source||typeof source.storeId!=='string'||typeof source.productId!=='string'||!Number.isSafeInteger(source.revision))return miss();
+  let universal;try{universal=load(source);}catch{return miss();}
+  if(universal?.doorbell?.schema!=='gravuru-doorbell/v1')return miss();
+  const body=previewGlyphFromModels([universal],hash,directory,{keep});
+  if(!body)return miss();
+  negative.delete(hash);return body;
+ };
+}

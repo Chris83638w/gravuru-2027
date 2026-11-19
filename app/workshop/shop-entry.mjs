@@ -30,7 +30,7 @@ import {selectedProfile} from '../configurator/variant-m/contract.mjs';
 import {withCartTiming,cartTimingStep,cartTimingCount,cartTimingHeaders} from './shop-cart-timing.mjs';
 import {attachRevisionPreview} from './shop-cart-preview.mjs';
 import {inlineDesignPreviews} from './design-preview-inline.mjs';
-import {previewGlyphFromModels} from '../configurator/variant-m/preview-glyphs.mjs';
+import {createPreviewGlyphRecovery} from '../configurator/variant-m/preview-glyphs.mjs';
 
 // Öffentlicher Kundeneinstieg „Jetzt personalisieren“ (SHOP-ENTRY.txt). Shopify ruft über den App-Proxy
 // `GET <proxyPath>/start?product=&variant=…&signature=…` auf; die Zuordnung läuft ausschließlich über die
@@ -216,6 +216,7 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
  const previewGlyphRoute=/^\/_acryl-runtime\/lazy\/vorschau-glyphen\/([a-f0-9]{64})\.json$/;
  const previewRoute=new RegExp('^'+pagePath+'vorschauen/([a-f0-9]{64})\\.svg$');
  const previewGlyphDirectory=path.join(os.tmpdir(),'gravuru-vorschau-glyphen');
+ const recoverPreviewGlyph=createPreviewGlyphRecovery({directory:previewGlyphDirectory,load(source){const store=fixed.find(item=>item.storeId===source.storeId);if(!store)return null;return store.workshop.model(source.productId,source.revision)?.universal??null;}});
  const slimmer=modelSlimmer===undefined?createModelSlimmer({fetchJson:async p=>{const r=await fetch(origin+p,{signal:AbortSignal.timeout(15000)});if(!r.ok)throw Error('http '+r.status);return r.json();},surfaceSwaps:surfaceSwapsFrom(DEFAULT_SURFACE_DIR),fontUrl:hash=>pagePath+'schriften/'+hash+'.json',previewGlyphDirectory}):modelSlimmer;
  function presentedModel(model,binding,store,designId=null){
   if(designId&&!moduleEnabled(model.universal,'designs')){
@@ -224,7 +225,7 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
   }
   const copy=shopStartModel(model,designId,{deferFonts:!!slimmer&&!model.universal.doorbell,options:binding.options});
   // `source`: ausgelagerte Schriften lassen sich nach Verdrängung aus dem gespeicherten Modell nachliefern.
-  if(slimmer?.attachPreviewGlyphs)slimmer.attachPreviewGlyphs(copy.universal);
+  if(slimmer?.attachPreviewGlyphs)slimmer.attachPreviewGlyphs(copy.universal,{storeId:store.storeId,productId:binding.productId,revision:binding.productRevision});
   try{inlineDesignPreviews(copy.universal,allowedAssets(store,binding,model),hash=>store.workshop.assets.read(hash));}catch{/* A missing graphic stays a separate request. */}
   if(slimmer){if(copy.universal.doorbell&&!slimmer.ready())slimmer.load();slimmer.slim(copy.universal,{deferAll:!copy.universal.doorbell,key:copy.configuration?.id&&copy.configuration?.revision?copy.configuration.id+':'+copy.configuration.revision+':fonts':null,source:()=>modelFor(store,binding).universal?.localResources?.fonts});}
   for(const group of copy.universal.profile?.optionGroups||[]){const chosen=binding.options?.[group.id];if(typeof chosen==='string'&&group.values?.some(v=>v.id===chosen))group.defaultValueId=chosen;}
@@ -544,14 +545,7 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
      if(!['GET','HEAD'].includes(req.method)||url.search)fail(404,'shop_entry_route','Diese Datei gibt es hier nicht.');
      checkOrigin(req,{mutating:false});
      let bytes=typeof slimmer?.previewGlyphFile==='function'?slimmer.previewGlyphFile(glyphFile[1]):null;
-     if(!bytes){
-      const universals=[];
-      for(const store of fixed){
-       let rows=[];try{rows=store.workshop.repository.list?.()||[];}catch{continue;}
-       for(const row of rows){try{const model=store.workshop.model(row.id,row.revision);if(model?.universal)universals.push(model.universal);}catch{}}
-      }
-      bytes=previewGlyphFromModels(universals,glyphFile[1],previewGlyphDirectory,{keep:32});
-     }
+     if(!bytes)bytes=recoverPreviewGlyph(glyphFile[1]);
      if(!bytes)fail(404,'shop_entry_route','Diese Datei gibt es hier nicht.');
      res.writeHead(200,headersFor('application/json; charset=utf-8',{'Content-Length':bytes.length,'Cache-Control':'public, max-age=31536000, immutable'}));return res.end(req.method==='HEAD'?undefined:bytes);
     }

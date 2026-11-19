@@ -1,5 +1,6 @@
 import {createHmac,timingSafeEqual} from 'node:crypto';
 import {shopName} from './store.mjs';
+import {F02_SHOP,confirmF02Price,f02Binding,readF02Line} from './f02-line.mjs';
 function same(a,b){const x=Buffer.from(a),y=Buffer.from(b);return x.length===y.length && timingSafeEqual(x,y);}
 export function proxyShop(params,secret,clock=Date.now()) {
   const shop=params.get('shop'),time=Number(params.get('timestamp'));
@@ -9,39 +10,123 @@ export function proxyShop(params,secret,clock=Date.now()) {
   if(!same(signed,params.get('signature'))) throw Error('Ungültige Proxy-Signatur.');
   return shop;
 }
-const query='query StudioOrder($id:ID!,$after:String){order(id:$id){id name updatedAt cancelledAt displayFinancialStatus lineItems(first:100,after:$after){nodes{id currentQuantity variant{id} product{id} customAttributes{key value}} pageInfo{hasNextPage endCursor}}}}';
+const query=`query StudioOrder($id:ID!, $after:String) {
+  order(id:$id) {
+    id name test updatedAt cancelledAt displayFinancialStatus
+    lineItems(first:100, after:$after) {
+      nodes { id currentQuantity variant {id} product {id} customAttributes {key value}
+        originalUnitPriceSet {shopMoney {amount currencyCode}} }
+      pageInfo {hasNextPage endCursor}
+    }
+  }
+}`;
 function gid(value,kind){const m=new RegExp('^gid://shopify/'+kind+'/([1-9][0-9]*)$').exec(value||'');if(!m) throw Error('Shopify-ID fehlt: '+kind);return m[1];}
-export async function readOrder(shop,token,orderId,call=fetch) {
+async function adminQuery(shop,token,document,variables,call) {
+  const res=await call('https://'+shop+'/admin/api/2026-10/graphql.json',{method:'POST',cache:'no-store',
+    headers:{'Content-Type':'application/json','X-Shopify-Access-Token':token},
+    body:JSON.stringify({query:document,variables}),signal:AbortSignal.timeout(20000),redirect:'error'});
+  if(!res.ok) throw Error('Shopify-Auftragsabruf fehlgeschlagen (HTTP '+res.status+').');
+  const json=await res.json();
+  if(!json.data || json.errors!=null && (!Array.isArray(json.errors)||json.errors.length) ||
+      json.extensions?.search?.some(item=>item.warnings?.length))
+    throw Error('Shopify meldet einen Abfragefehler.');
+  return json.data;
+}
+function nextCursor(page,cursors) {
+  if(typeof page?.hasNextPage!=='boolean') throw Error('Shopify-Seitenfolge unvollständig.');
+  if(!page.hasNextPage) return null;
+  if(typeof page.endCursor!=='string' || !page.endCursor || cursors.has(page.endCursor)) throw Error('Shopify-Seitenfolge unvollständig.');
+  cursors.add(page.endCursor);
+  return page.endCursor;
+}
+export async function readOrder(shop,token,orderId,call=fetch,f02) {
   if(!shopName(shop)||!token||!/^[1-9]\d{0,19}$/.test(orderId)) throw Error('Shop, Lesetoken und Bestellnummer (ID) erforderlich.');
-  let after=null,order,updated;
-  const cursors=new Set(),seen=new Set();
+  const binding=f02 && f02Binding(shop,f02);
+  let after=null,order;
+  const cursors=new Set(),seen=new Set(),references=new Set();
   do {
-    const res=await call('https://'+shop+'/admin/api/2026-10/graphql.json',{method:'POST',headers:{'Content-Type':'application/json','X-Shopify-Access-Token':token},body:JSON.stringify({query,variables:{id:'gid://shopify/Order/'+orderId,after}}),signal:AbortSignal.timeout(20000),redirect:'error'});
-    if(!res.ok) throw Error('Shopify-Auftragsabruf fehlgeschlagen (HTTP '+res.status+').');
-    const json=await res.json(),o=json.data?.order;
-    if(json.errors?.length || !o || gid(o.id,'Order')!==orderId) throw Error('Bestellung fehlt oder Shopify meldet einen Abfragefehler.');
-    if(!order){order={id:orderId,name:o.name,status:o.displayFinancialStatus,cancelled:!!o.cancelledAt,updatedAt:o.updatedAt,lines:[]};updated=o.updatedAt;}
-    if(updated!==o.updatedAt) throw Error('Bestellung wurde während des Abrufs geändert. Erneut abrufen.');
+    const {order:o}=await adminQuery(shop,token,query,{id:'gid://shopify/Order/'+orderId,after},call);
+    if(!o || gid(o.id,'Order')!==orderId) throw Error('Bestellung fehlt oder Shopify meldet einen Abfragefehler.');
+    if(shop===F02_SHOP && o.test!==true) throw Error('F02 benötigt eine bestätigte Testbestellung.');
+    if(typeof o.updatedAt!=='string' || !Number.isFinite(Date.parse(o.updatedAt)) ||
+        (o.cancelledAt!==null && (typeof o.cancelledAt!=='string' || !Number.isFinite(Date.parse(o.cancelledAt)))) ||
+        typeof o.displayFinancialStatus!=='string' || !o.displayFinancialStatus || !Array.isArray(o.lineItems?.nodes))
+      throw Error('Shopify hat den Bestellstand unvollständig beantwortet.');
+    if(!order) order={id:orderId,name:o.name,test:o.test===true,status:o.displayFinancialStatus,cancelled:o.cancelledAt!==null,updatedAt:o.updatedAt,lines:[]};
+    if(order.updatedAt!==o.updatedAt || order.status!==o.displayFinancialStatus || order.cancelled!==(o.cancelledAt!==null))
+      throw Error('Bestellung wurde während des Abrufs geändert. Erneut abrufen.');
     for(const line of o.lineItems.nodes){
+      if(binding && line.product?.id!=='gid://shopify/Product/'+binding.product) continue;
       const refs=line.customAttributes.filter(a=>a.key==='_gravuru_studio');
-      if(!refs.length) continue;
-      if(refs.length!==1) throw Error('Mehrdeutige Gestaltungszuordnung.');
+      const inline=binding && line.customAttributes.some(a=>a.key==='_gravuru_ref'||a.key==='_gravuru_parts'||a.key.startsWith('_gravuru_data_'));
+      if(!refs.length && !inline) continue;
+      if(refs.length>1 || refs.length && inline) throw Error('Mehrdeutige Gestaltungszuordnung.');
       const id=gid(line.id,'LineItem');
       if(seen.has(id)) throw Error('Doppelte Bestellposition.');
       seen.add(id);
-      order.lines.push({id,variant:gid(line.variant?.id,'ProductVariant'),product:gid(line.product?.id,'Product'),quantity:line.currentQuantity,job:refs[0].value});
+      const item={id,variant:gid(line.variant?.id,'ProductVariant'),product:gid(line.product?.id,'Product'),quantity:line.currentQuantity};
+      if(!Number.isSafeInteger(item.quantity)||item.quantity<0) throw Error('Ungültige aktuelle Bestellmenge.');
+      if(binding && item.variant!==binding.variant) throw Error('Die F02-Position gehört zu einer anderen Variante.');
+      if(binding) confirmF02Price(line.originalUnitPriceSet?.shopMoney,binding);
+      if(inline){
+        item.inline=readF02Line(line.customAttributes,binding);
+        if(references.has(item.inline.reference)) throw Error('Mehrfach verwendete F02-Positionsreferenz.');
+        references.add(item.inline.reference);
+      } else item.job=refs[0].value;
+      order.lines.push(item);
     }
-    const page=o.lineItems.pageInfo;
-    after=page.hasNextPage ? page.endCursor : null;
-    if(page.hasNextPage && (!after || cursors.has(after))) throw Error('Shopify-Seitenfolge unvollständig.');
-    cursors.add(after);
+    after=nextCursor(o.lineItems.pageInfo,cursors);
   } while(after);
   return order;
 }
 
-export async function downloadShopifyFile(store,shop,token,order,line,format,call=fetch) {
-  const snapshot=await readOrder(shop,token,order,call);
-  if(!snapshot.updatedAt) throw Error('Shopify-Zeitstempel für die Fertigungsprüfung fehlt.');
-  store.receive(shop,snapshot);
-  return store.download(shop,order,line,format);
+const findOrders=`query StudioTestOrders($filter:String!, $after:String) {
+  orders(first:50, after:$after, query:$filter, sortKey:UPDATED_AT) {
+    nodes {id test} pageInfo {hasNextPage endCursor}
+  }
+}`;
+export async function syncF02Orders(store,shop,token,f02,call=fetch) {
+  const binding=f02Binding(shop,f02);
+  if(!token || typeof binding.sku!=='string' || !/^[A-Za-z0-9_-]{1,100}$/.test(binding.sku))
+    throw Error('Testshop-Lesezugang und freigegebene F02-Artikelnummer erforderlich.');
+  const filter='test:true sku:"'+binding.sku+'"';
+  // Previously associated lines can disappear from a SKU search after a Shopify order edit.
+  const ids=new Set(store.knownProductOrders(shop,binding.product,binding.variant));
+  const cursors=new Set();
+  let after=null;
+  do {
+    const {orders}=await adminQuery(shop,token,findOrders,{filter,after},call);
+    if(!Array.isArray(orders?.nodes)) throw Error('Shopify-Bestellliste unvollständig.');
+    for(const order of orders.nodes) {
+      if(order.test!==true) throw Error('Die Bestellliste enthält eine unbestätigte Testbestellung.');
+      ids.add(gid(order.id,'Order'));
+    }
+    after=nextCursor(orders.pageInfo,cursors);
+  } while(after);
+  let positions=0;
+  const unverified=[];
+  for(const id of ids) {
+    try {
+      const order=await readOrder(shop,token,id,call,binding);
+      positions+=store.receive(shop,order,binding);
+    } catch { unverified.push(id); }
+  }
+  return {orders:ids.size,positions,...(unverified.length?{unverified}:{})};
+}
+
+export async function downloadShopifyFile(store,shop,token,order,line,format,call=fetch,f02) {
+  async function confirmedPosition() {
+    const snapshot=await readOrder(shop,token,order,call,f02);
+    store.receive(shop,snapshot,f02);
+    if(snapshot.cancelled || snapshot.status!=='PAID')
+      throw Object.assign(Error('Die Fertigungsdatei erfordert eine aktive, bezahlte Bestellposition.'),{status:409});
+    const position=store.paidPosition(shop,order,line);
+    return {updated:snapshot.updatedAt,job:position.id,quantity:position.qty};
+  }
+  const before=await confirmedPosition();
+  const file=await store.download(shop,order,line,format);
+  const after=await confirmedPosition();
+  if(before.updated!==after.updated || before.job!==after.job || before.quantity!==after.quantity)
+    throw Object.assign(Error('Bestellposition während der Dateierstellung geändert. Bitte erneut abrufen.'),{status:409});
+  return file;
 }

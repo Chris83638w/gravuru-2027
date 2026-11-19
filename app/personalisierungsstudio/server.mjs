@@ -4,7 +4,7 @@ import {randomBytes,timingSafeEqual} from 'node:crypto';
 import {gzipSync} from 'node:zlib';
 import {hash,here} from './catalog.mjs';
 import {DEMO_SHOP} from './store.mjs';
-import {proxyShop,readOrder,downloadShopifyFile} from './shopify.mjs';
+import {proxyShop,readOrder,downloadShopifyFile,syncF02Orders} from './shopify.mjs';
 import {merchantPage,merchantImport} from './merchant-server.mjs';
 
 export {DEMO_SHOP};
@@ -25,7 +25,7 @@ async function body(req,limit=100_000){
   return JSON.parse(Buffer.concat(parts).toString());
 }
 export function createServer(store, options={}) {
-  const {demo=false,secret,shop,opsToken,shopifyToken,shopifyFetch=fetch}=options;
+  const {demo=false,secret,shop,opsToken,shopifyToken,shopifyFetch=fetch,f02}=options;
   const carts=new Map(),encoded=new Map();let orderNumber=1000;
   const files=new Map();
   if(demo) orderNumber=Math.max(orderNumber,...store.orders(DEMO_SHOP).map(o=>Number(o.id)).filter(Number.isSafeInteger));
@@ -52,7 +52,7 @@ export function createServer(store, options={}) {
         if(method==='POST' && req.headers.origin && req.headers.origin!=='http://'+req.headers.host) return json({error:'Fremder Ursprung.'},403);
       }
       let tenant;
-      if((p==='/verwaltung' && demo || !demo && (p==='/werkstatt' || p==='/')) && method==='GET')return html(merchantPage(demo));
+      if((p==='/verwaltung' && demo || !demo && (p==='/werkstatt' || p==='/')) && method==='GET')return html(merchantPage(demo,!demo && !!f02));
       if(method==='GET' && ['/merchant/merchant.mjs','/merchant/studio.css'].includes(p))return send(200,p.endsWith('.mjs')?'text/javascript':'text/css',fs.readFileSync(here(p.split('/').pop())));
       if(p.startsWith('/studio/')) tenant=demo?DEMO_SHOP:proxyShop(url.searchParams,secret);
       if(p.startsWith('/studio/files/') && method==='GET'){
@@ -90,12 +90,14 @@ export function createServer(store, options={}) {
         }
         const sync=/^\/orders\/(\d+)\/sync$/.exec(route);
         const dl=/^\/orders\/(\d+)\/lines\/(\d+)\/(svg|pdf|json|original)$/.exec(route);
-        if(!local && sync && method==='POST') return json({positions:store.receive(shop,await readOrder(shop,shopifyToken,sync[1],shopifyFetch))});
+        if(!local && f02 && route==='/orders/f02/sync' && method==='POST')
+          return json(await syncF02Orders(store,shop,shopifyToken,f02,shopifyFetch));
+        if(!local && sync && method==='POST') return json({positions:store.receive(shop,await readOrder(shop,shopifyToken,sync[1],shopifyFetch,f02),f02)});
         if(route==='/orders' && method==='GET') return json(store.orders(owner));
         if(dl && method==='GET'){
           const file=local
             ? await store.download(owner,dl[1],dl[2],dl[3],{localDemo:true})
-            : await downloadShopifyFile(store,owner,shopifyToken,dl[1],dl[2],dl[3],shopifyFetch);
+            : await downloadShopifyFile(store,owner,shopifyToken,dl[1],dl[2],dl[3],shopifyFetch,f02);
           res.setHeader('Content-Disposition','attachment; filename="'+dl[1]+'-'+dl[2]+'.'+(dl[3]==='original' ? file.type.split('/')[1] : dl[3])+'"');
           return send(200,file.type,file.bytes);
         }

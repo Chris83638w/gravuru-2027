@@ -3,6 +3,7 @@ const local=document.body.dataset.local==='true';
 let token='';
 const base=local?'/demo/manage':'/api';
 const status=(s)=>{q('#status').textContent=s;};
+let unverifiedOrders=new Set();
 async function api(route,options={}){
   const headers={...options.headers};
   if(!local)headers.Authorization='Bearer '+token;
@@ -17,8 +18,9 @@ async function list(){
   for(const o of orders){
     const item=document.createElement('article'),title=document.createElement('h3');
     title.textContent=o.name+' · Position '+o.line;item.append(title);
-    const text=document.createElement('p');text.textContent=o.qty+' Stück · '+(o.cancelled?'Storniert':o.status);item.append(text);
-    if(!o.cancelled && o.qty>0)for(const type of ['svg','pdf','json']){
+    const unverified=unverifiedOrders.has(o.id);
+    const text=document.createElement('p');text.textContent=o.qty+' Stück · '+(unverified?'Shopify-Abgleich ausstehend':o.cancelled?'Storniert':o.status);item.append(text);
+    if(!unverified && !o.cancelled && o.qty>0 && (o.status==='PAID' || local && o.status==='TEST'))for(const type of ['svg','pdf','json']){
       const a=document.createElement('button');a.type='button';a.className='gs-download';a.textContent=type.toUpperCase();
       a.onclick=run(async()=>{const r=await api('/orders/'+o.id+'/lines/'+o.line+'/'+type);
         const href=URL.createObjectURL(await r.blob()),link=document.createElement('a');link.href=href;link.download=o.id+'-'+o.line+'.'+type;link.click();setTimeout(()=>URL.revokeObjectURL(href),3000);});
@@ -27,7 +29,22 @@ async function list(){
     table.append(item);
   }
 }
-q('#login').onsubmit=run(async()=>{token=q('#key').value;await list();q('#key').value='';q('#login').hidden=true;q('#tools').hidden=false;status('');});
+const syncF02=q('#sync-f02');
+async function refreshF02(){
+  status('Testbestellungen werden bei Shopify abgeglichen …');
+  const summary=await (await api('/orders/f02/sync',{method:'POST'})).json();
+  unverifiedOrders=new Set(summary.unverified||[]);
+  await list();
+  const outstanding=unverifiedOrders.size?' Bei '+unverifiedOrders.size+' Bestellungen steht der Abgleich aus.':'';
+  status(summary.orders+' Testbestellungen erfasst, '+summary.positions+' Positionen zugeordnet.'+outstanding);
+}
+if(syncF02) syncF02.onclick=run(refreshF02);
+q('#login').onsubmit=run(async()=>{
+  token=q('#key').value;
+  if(syncF02) await refreshF02();
+  else {await list();status('');}
+  q('#key').value='';q('#login').hidden=true;q('#tools').hidden=false;
+});
 q('#sync').onsubmit=run(async()=>{const id=q('#orderid').value;const r=await (await api('/orders/'+encodeURIComponent(id)+'/sync',{method:'POST'})).json();await list();status(r.positions+' Positionen übernommen.');});
 let checked=null;
 q('#file').onchange=()=>{checked=null;q('#publish').disabled=true;};

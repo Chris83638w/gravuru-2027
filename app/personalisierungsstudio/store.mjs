@@ -2,6 +2,7 @@ import {DatabaseSync} from 'node:sqlite';
 import {randomUUID} from 'node:crypto';
 import {hash,worker} from './catalog.mjs';
 import {scene,svg} from './render.mjs';
+import {f02Binding} from './f02-line.mjs';
 
 export const DEMO_SHOP='studio-probe.myshopify.com';
 export const shopName=s=>typeof s==='string' && /^[a-z0-9][a-z0-9-]*\.myshopify\.com$/.test(s);
@@ -47,14 +48,20 @@ export function openStore(file) {
   const bootstrap=(shop,rev)=>db.prepare('SELECT raw FROM bootstraps WHERE shop=? AND rev=?').get(shop,rev)?.raw||'{}';
   function getDesign(shop,revision,id,choices={}){
     const row=db.prepare('SELECT catalog FROM releases WHERE shop=? AND rev=?').get(shop,revision);
-    const entry=row && JSON.parse(row.catalog).find(d=>d.id===id);
+    demand(row && hash(row.catalog)===revision,'Vorlagenstand fehlt oder seine Prüfsumme weicht ab.');
+    const entry=JSON.parse(row.catalog).find(d=>d.id===id);
     demand(entry,'Vorlagenstand fehlt.');
-    const {design,faces}=JSON.parse(asset(shop,entry.key));
+    function original(key) {
+      const raw=asset(shop,key);
+      demand(hash(raw)===key,'Die Prüfsumme der Originalressource weicht ab.');
+      return JSON.parse(raw);
+    }
+    const {design,faces}=original(entry.key);
     for(const selected of Object.values(choices||{})){
       const m=design.motifs?.find(o=>o.id===selected?.choice);
-      if(m && !m.paths)m.paths=JSON.parse(asset(shop,m.key));
+      if(m && !m.paths)m.paths=original(m.key);
     }
-    const fonts=Object.fromEntries(Object.entries(faces).map(([name,styles])=>[name,Object.fromEntries(Object.entries(styles).map(([k,v])=>[k,JSON.parse(asset(shop,typeof v==='string'?v:v.full))]))]));
+    const fonts=Object.fromEntries(Object.entries(faces).map(([name,styles])=>[name,Object.fromEntries(Object.entries(styles).map(([k,v])=>[k,original(typeof v==='string'?v:v.full)]))]));
     return {design,fonts};
   }
   async function upload(shop,data) {
@@ -74,28 +81,49 @@ export function openStore(file) {
     demand(row,'Das Foto gehört nicht zu dieser Variante und Revision.');
     return row.pixels;
   }
+  const existingJob=db.prepare('SELECT id,fingerprint FROM jobs WHERE shop=? AND request=?');
+  function writeJob(shop,product,variant,revision,request,data,fingerprint) {
+    const {design,fonts}=getDesign(shop,revision,data.design,data.motifs);
+    demand(!data.photo || design.objects.some(o=>o.type==='photo'),'Die Vorlage hat kein Fotofeld.');
+    if(data.photo) pixelsFor(shop,data.photo,variant,revision);
+    const drawing=scene(design,fonts,data.edits,data.photo,data.motifs);
+    const key=randomUUID();
+    db.prepare('INSERT INTO jobs VALUES(?,?,?,?,?,?,?,?)').run(shop,key,variant,product,revision,JSON.stringify(data),fingerprint,request);
+    db.prepare('INSERT INTO drawings VALUES(?,?,?)').run(shop,key,JSON.stringify(drawing));
+    return key;
+  }
   function save(shop,data) {
     const {variant,revision,design:id,edits,photo=null,motifs={},request}=data;
     demand(uuid(request) && shopId(variant) && typeof revision==='string' && typeof id==='string','Ungültiger Entwurf.');
-    const payload=JSON.stringify({design:id,edits,photo,motifs});
-    const fingerprint=hash(JSON.stringify([variant,revision,payload]));
+    const payload={design:id,edits,photo,motifs};
+    const fingerprint=hash(JSON.stringify([variant,revision,JSON.stringify(payload)]));
     return tx(()=>{
-      const previous=db.prepare('SELECT id,fingerprint FROM jobs WHERE shop=? AND request=?').get(shop,request);
+      const previous=existingJob.get(shop,request);
       if(previous) {demand(previous.fingerprint===fingerprint,'Entwurfskennung bereits belegt.');return {id:previous.id};}
       const current=binding(shop,variant);
       demand(current.revision===revision,'Der Händler hat die Vorlage aktualisiert. Bitte die Seite neu laden.');
-      const {design,fonts}=getDesign(shop,revision,id,motifs);
-      demand(!photo || design.objects.some(o=>o.type==='photo'),'Die Vorlage hat kein Fotofeld.');
-      if(photo) pixelsFor(shop,photo,variant,revision);
-      const drawing=scene(design,fonts,edits,photo,motifs);
-      const key=randomUUID();
-      db.prepare('INSERT INTO jobs VALUES(?,?,?,?,?,?,?,?)').run(shop,key,variant,current.product,revision,payload,fingerprint,request);
-      db.prepare('INSERT INTO drawings VALUES(?,?,?)').run(shop,key,JSON.stringify(drawing));
-      return {id:key};
+      return {id:writeJob(shop,current.product,variant,revision,request,payload,fingerprint)};
     });
   }
-  function receive(shop,order) {
+  function purchasedJob(shop,order,line,approved,paid) {
+    const {reference,revision,design,edits,motifs}=line.inline;
+    demand(order.test===true && approved && line.product===approved.product && line.variant===approved.variant
+      && revision===approved.revision && uuid(reference),'Keine passende F02-Freigabe für die Bestellposition.');
+    const request='f02:'+order.id+':'+line.id;
+    const previous=existingJob.get(shop,request);
+    if(!paid || line.quantity===0) return previous?.id;
+    const payload={design,edits,photo:null,motifs,reference};
+    const fingerprint=hash(JSON.stringify([line.product,line.variant,revision,payload]));
+    if(previous){
+      demand(previous.fingerprint===fingerprint,'Die gespeicherte Gestaltung der Bestellposition weicht ab.');
+      return previous.id;
+    }
+    // The paid position may first be read after the merchant has published a new revision.
+    return writeJob(shop,line.product,line.variant,revision,request,payload,fingerprint);
+  }
+  function receive(shop,order,f02) {
     demand(shopId(order.id) && Array.isArray(order.lines),'Ungültige Bestellreferenz.');
+    const approved=f02 && f02Binding(shop,f02);
     return tx(()=>{
       let status=String(order.status||'UNKNOWN'),cancelled=Number(!!order.cancelled);
       const last=db.prepare('SELECT v.updated,o.status,o.cancelled FROM order_versions v JOIN orders o ON o.shop=v.shop AND o.id=v.id WHERE v.shop=? AND v.id=?').get(shop,order.id);
@@ -112,14 +140,21 @@ export function openStore(file) {
       }
       const selected=[];
       for(const line of order.lines) {
-        if(!line.job) continue;
-        demand(uuid(line.job) && shopId(line.id) && Number.isSafeInteger(line.quantity) && line.quantity>=0,'Ungültige Bestellposition.');
-        const job=db.prepare('SELECT variant,product FROM jobs WHERE shop=? AND id=?').get(shop,line.job);
-        demand(job && job.variant===line.variant && job.product===line.product,'Bestellposition und gesicherte Gestaltung passen nicht zusammen.');
-        selected.push(line);
+        if(!line.job && !line.inline) continue;
+        demand(shopId(line.id) && Number.isSafeInteger(line.quantity) && line.quantity>=0,'Ungültige Bestellposition.');
+        const id=line.inline ? purchasedJob(shop,order,line,approved,status==='PAID' && !cancelled) : line.job;
+        if(!id) continue;
+        demand(uuid(id),'Ungültige Bestellposition.');
+        const job=db.prepare('SELECT variant,product,rev FROM jobs WHERE shop=? AND id=?').get(shop,id);
+        demand(job && job.variant===line.variant && job.product===line.product && (!approved||job.rev===approved.revision),
+          'Bestellposition und gesicherte Gestaltung passen nicht zusammen.');
+        selected.push({...line,job:id});
       }
       db.prepare('INSERT OR REPLACE INTO orders VALUES(?,?,?,?,?)').run(shop,order.id,String(order.name),status,cancelled);
-      db.prepare('DELETE FROM lines WHERE shop=? AND order_id=?').run(shop,order.id);
+      if(approved){
+        db.prepare('DELETE FROM lines WHERE shop=? AND order_id=? AND job IN (SELECT id FROM jobs WHERE shop=? AND product=? AND variant=?)')
+          .run(shop,order.id,shop,approved.product,approved.variant);
+      } else db.prepare('DELETE FROM lines WHERE shop=? AND order_id=?').run(shop,order.id);
       for(const line of selected) db.prepare('INSERT INTO lines VALUES(?,?,?,?,?)').run(shop,order.id,line.id,line.job,line.quantity);
       return selected.length;
     });
@@ -127,9 +162,12 @@ export function openStore(file) {
   function orders(shop) {
     return db.prepare('SELECT o.id,o.name,o.status,o.cancelled,l.id AS line,l.qty FROM orders o JOIN lines l ON l.shop=o.shop AND l.order_id=o.id WHERE o.shop=? ORDER BY length(o.id) DESC,o.id DESC,l.id').all(shop);
   }
+  function knownProductOrders(shop,product,variant) {
+    return db.prepare('SELECT DISTINCT l.order_id FROM lines l JOIN jobs j ON j.shop=l.shop AND j.id=l.job WHERE l.shop=? AND j.product=? AND j.variant=?')
+      .all(shop,product,variant).map(row=>row.order_id);
+  }
   const position=db.prepare('SELECT j.*,l.qty,o.cancelled,o.status FROM lines l JOIN jobs j ON j.shop=l.shop AND j.id=l.job JOIN orders o ON o.shop=l.shop AND o.id=l.order_id WHERE l.shop=? AND l.order_id=? AND l.id=?');
-  async function download(shop,order,line,format,{localDemo=false}={}) {
-    function releasedPosition(){
+  function releasedPosition(shop,order,line,localDemo=false){
       const row=position.get(shop,order,line);
       demand(row && !row.cancelled && row.qty>0,'Keine aktive zugeordnete Bestellposition.');
       const simulated=localDemo && shop===DEMO_SHOP && row.status==='TEST';
@@ -137,14 +175,19 @@ export function openStore(file) {
         throw Object.assign(Error('Die Fertigungsdatei erfordert den bestätigten Zahlungsstatus PAID.'),{status:409});
       }
       return row;
-    }
-    const row=releasedPosition();
+  }
+  function paidPosition(shop,order,line) {
+    const {id,qty}=releasedPosition(shop,order,line);
+    return {id,qty};
+  }
+  async function download(shop,order,line,format,{localDemo=false}={}) {
+    const row=releasedPosition(shop,order,line,localDemo);
     const data=JSON.parse(row.payload);
     if(format==='original' && data.photo){
       const original=db.prepare('SELECT original FROM photos WHERE shop=? AND id=?').get(shop,data.photo).original;
       return {type:original.split(';')[0].slice(5),bytes:Buffer.from(original.split(',')[1],'base64')};
     }
-    if(format==='json') return {type:'application/json',bytes:Buffer.from(JSON.stringify({order,line,variant:row.variant,design:data.design,revision:row.rev,quantity:row.qty,edits:data.edits,photo:data.photo,motifs:data.motifs||{}},null,2))};
+    if(format==='json') return {type:'application/json',bytes:Buffer.from(JSON.stringify({order,line,product:row.product,variant:row.variant,design:data.design,revision:row.rev,quantity:row.qty,edits:data.edits,photo:data.photo,motifs:data.motifs||{},...(data.reference?{positionReference:data.reference}:{})},null,2))};
     const type=({svg:'image/svg+xml',pdf:'application/pdf'})[format];
     demand(type,'Dateiformat nicht verfügbar.');
     const saved=db.prepare('SELECT bytes FROM files WHERE shop=? AND job=? AND format=?');
@@ -160,11 +203,11 @@ export function openStore(file) {
     for(const p of geometry.paths) if(p.image) p.image=pixelsFor(shop,p.image,row.variant,row.rev);
     const bytes=format==='svg'?Buffer.from(svg(geometry)):await worker('pdf',geometry);
     if(format==='pdf'){
-      const current=releasedPosition();
+      const current=releasedPosition(shop,order,line,localDemo);
       demand(current.id===row.id && current.qty===row.qty,'Die Bestellposition wurde während der Dateierstellung geändert.');
     }
     db.prepare('INSERT OR IGNORE INTO files VALUES(?,?,?,?)').run(shop,row.id,format,bytes);
     return {type,bytes:Buffer.from(saved.get(shop,row.id,format).bytes)};
   }
-  return {publish,binding,bootstrap,asset,save,upload,receive,orders,download,close:()=>db.close()};
+  return {publish,binding,bootstrap,asset,save,upload,receive,orders,knownProductOrders,paidPosition,download,close:()=>db.close()};
 }

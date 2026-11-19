@@ -59,6 +59,20 @@ node cli.mjs export --shop beispiel.myshopify.com --order 123456789 --line 98765
 
 Die GraphQL-Anbindung verwendet Version 2026-10, `currentQuantity` und `customAttributes`. Werkstatt-API und CLI lesen bei jedem Dateidownload den Zahlungsstatus und die Position bei Shopify, auch für bereits erzeugte Dateien. Der Pilot gibt Dateien bei `PAID`, positiver aktueller Menge, korrekter Zuordnung und aktiver Bestellung aus. Ein anderer Zahlungsstatus oder widersprüchliche Zahlungsstände mit gleichem Zeitstempel führen zu HTTP 409. Bei fehlendem API-Zugang oder fehlgeschlagenem Abruf bleibt die Datei gesperrt. Teilzahlungen, offene Rechnungen und Teilrückzahlungen benötigen vor einer Betriebsfreigabe eine ausdrückliche Regel für die betroffenen Positionen. Der Download erteilt keine Maschinenfreigabe. Nur der lokale Demoweg verarbeitet seine simulierten Bestellungen mit Status `TEST`. [Shopify-Zahlungsstatus](https://shopify.dev/docs/api/admin-graphql/2026-10/enums/OrderDisplayFinancialStatus) · [Shopify-Bestellposition](https://shopify.dev/docs/api/admin-graphql/2026-10/objects/LineItem)
 
+### F02-Testbestellungen automatisch in der Werkstatt finden
+
+Der F02-Entwurf speichert eine Positionsreferenz und die Gestaltung auf der gekauften Shopify-Zeile. Studio kann diese Form ebenso wie die serverseitige Gestaltungs-ID lesen. Die Werkstatt benötigt den zum Kauf freigegebenen Originalkatalog in ihrer Datenbank.
+
+Für diesen Testshop verweist `STUDIO_F02_BINDING` auf eine private JSON-Datei. Sie enthält `shop` (gravuru-f02-test.myshopify.com), `product` und `variant` als dezimale ID-Zeichenketten, die genaue Test-`sku`, `revision` als SHA-256 des freigegebenen Katalogindex und `unitCents` gleich 1099. Den Lesetoken der installierten F02-App als `SHOPIFY_ADMIN_TOKEN` an die freigegebene Werkstattumgebung übergeben. Der Werkstattserver verwendet zusätzlich `STUDIO_OPS_TOKEN`. Für den reinen F02-Werkstattmodus genügt die Leseanbindung.
+
+~~~sh
+node cli.mjs sync-f02 --shop gravuru-f02-test.myshopify.com --db pfad/zur/werkstatt.sqlite
+~~~
+
+Beim Anmelden an der so konfigurierten Werkstatt läuft derselbe Abgleich. Er sucht Testbestellungen anhand der vorgesehenen Artikelnummer, folgt allen Ergebnisseiten und überprüft eine bereits bekannte Zuordnung auch dann, wenn die Position aus der Trefferliste verschwindet. Ein erneuter Lauf verwendet dieselben Gestaltungen. Bei einem teilweise fehlgeschlagenen Abgleich enthält die Antwort die ungeprüften Bestell-IDs in `unverified`. Der CLI-Aufruf liefert dann einen Fehlerstatus. Der nächste erfolgreiche Abgleich kann diese Bestellungen nachholen.
+
+Jeder Dateiabruf liest den Shopify-Auftrag vor der Berechnung und direkt vor der Rückgabe erneut, auch bei gespeicherten Dateien. Variante, Revision, Preis und Freigabe der F02-Zeile sowie ihr Bezug zur bezahlten Position werden geprüft. Ein Wechsel von Status, Auftragsstand, Menge oder Gestaltung sowie ein fehlgeschlagener Abruf sperren die Ausgabe. [Shopify-Bestellfilter](https://shopify.dev/docs/api/admin-graphql/2026-10/queries/orders) · [Wiederholbare P1-Prüfung](../../docs/handoffs/2026-11-19-studio-f02-werkstatt.md)
+
 ## Fertigung und Prüfung
 
 Die Vorschau und die Vektordateien nutzen dieselbe Geometrie. Die Materialtextur gehört ausschließlich zur Vorschau. Texte werden aus den Originalglyphen zu Pfaden. Das SVG führt die Schnittlinie in einer eigenen Gruppe `CutContour`. Das PDF führt sie als überdruckende Sonderfarbe `CutContour` mit 0,1 mm Strichbreite. Ein optionales Foto bleibt als Bild eingebettet. Seine Originalbytes sind über die zugehörige Position abrufbar. Eine spätere Vorlagenrevision verändert die gesicherte Bestellung nicht. Für Gravur, UV-Druck, Weißkanäle, Sonderkonturen und Maschinenprofile ist die jeweilige Werkstattabnahme maßgeblich.

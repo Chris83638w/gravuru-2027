@@ -115,7 +115,7 @@ test('Die Werkstatt prüft Shopify vor jedem Dateidownload einschließlich zwisc
     if(!available) return new Response(null,{status:503});
     return Response.json({data:{order:{
       id:'gid://shopify/Order/101',name:'#101',cancelledAt:null,
-      displayFinancialStatus:financial,updatedAt:new Date(Date.UTC(2026,10,18,12,0,calls)).toISOString(),
+      displayFinancialStatus:financial,updatedAt:financial==='PAID'?'2026-11-18T12:00:00Z':'2026-11-18T12:01:00Z',
       lineItems:{nodes:[{id:'gid://shopify/LineItem/11',currentQuantity:1,
         product:{id:'gid://shopify/Product/'+DEMO_PRODUCT},variant:{id:'gid://shopify/ProductVariant/'+variant},
         customAttributes:[{key:'_gravuru_studio',value:job}]}],pageInfo:{hasNextPage:false}}
@@ -140,7 +140,7 @@ test('Die Werkstatt prüft Shopify vor jedem Dateidownload einschließlich zwisc
   const unavailable=await fetch(url,options);
   assert.ok(unavailable.status>=400);
   assert.equal(unavailable.headers.get('content-disposition'),null);
-  assert.equal(calls,3);
+  assert.equal(calls,4);
 });
 
 test('Zehn lokale Bestellpositionen behalten nach paralleler PDF-Ausgabe und Neustart ihren Shop und Entwurf',async()=>{
@@ -211,7 +211,7 @@ test('GraphQL paginiert, prüft Revisionen und schreibt erst nach einem vollstä
     const vars=JSON.parse(options.body).variables;
     assert.equal(url,'https://'+shop+'/admin/api/2026-10/graphql.json');assert.equal(vars.after,n?'next':null);
     const id=String(++n);
-    return Response.json({data:{order:{id:gid('Order','101'),name:'#101',updatedAt:'v1',cancelledAt:null,displayFinancialStatus:'PAID',lineItems:{nodes:[{id:gid('LineItem',id),currentQuantity:2,product:{id:gid('Product',DEMO_PRODUCT)},variant:{id:gid('ProductVariant',variant)},customAttributes:[{key:'_gravuru_studio',value:'design'+id}]}],pageInfo:{hasNextPage:n===1,endCursor:n===1?'next':'last'}}}}});
+    return Response.json({data:{order:{id:gid('Order','101'),name:'#101',updatedAt:'2026-11-18T12:00:00Z',cancelledAt:null,displayFinancialStatus:'PAID',lineItems:{nodes:[{id:gid('LineItem',id),currentQuantity:2,product:{id:gid('Product',DEMO_PRODUCT)},variant:{id:gid('ProductVariant',variant)},customAttributes:[{key:'_gravuru_studio',value:'design'+id}]}],pageInfo:{hasNextPage:n===1,endCursor:n===1?'next':'last'}}}}});
   };
   const result=await readOrder(shop,'test','101',call);assert.deepEqual(result.lines.map(x=>x.job),['design1','design2']);
   await assert.rejects(readOrder(shop,'test','101',async()=>Response.json({errors:[{}]})),/Abfragefehler/);

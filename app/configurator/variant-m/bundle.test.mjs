@@ -102,7 +102,19 @@ test('Gebündelte Module verknüpfen sich als echte ES-Module und verhalten sich
 test('product chunk retains common module identities and contains only the missing static dependency closure',async()=>{
  const directory=fs.mkdtempSync(path.join(os.tmpdir(),'gravuru-product-bundle-'));
  try{
+  const bundleDir=path.join(directory,'bundle');
+  fs.mkdirSync(bundleDir);
+  const published='editor-1111111111111111.mjs',orphan='editor-2222222222222222.mjs';
+  for(const name of [published,orphan]){
+   fs.writeFileSync(path.join(bundleDir,name),'previous module');
+   fs.writeFileSync(path.join(bundleDir,name+'.gz'),'previous compressed module');
+  }
+  fs.writeFileSync(path.join(bundleDir,published+'.keep'),'');
   const result=buildProductEditorBundles(directory),common=new Set(result.modules);
+  assert.equal(fs.readFileSync(path.join(bundleDir,published),'utf8'),'previous module');
+  assert.equal(fs.readFileSync(path.join(bundleDir,published+'.gz'),'utf8'),'previous compressed module');
+  assert.equal(fs.existsSync(path.join(bundleDir,orphan)),false);
+  assert.equal(fs.existsSync(path.join(bundleDir,orphan+'.gz')),false);
   const chunk=JSON.parse(fs.readFileSync(result.device.file,'utf8').match(/^const MODULES=(.*);$/m)[1]);
   const device=new Set(chunk.map(m=>m.url));
   for(const entry of DEVICE_ENTRIES)assert.ok(device.has(entry),entry);

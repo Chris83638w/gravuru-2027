@@ -46,5 +46,21 @@ export function scenePreview(svg,url){
  if(!box||box.length!==4||!box.every(Number.isFinite))throw Error('Szenenvorschau: Maße fehlen.');
  return svg.replace(/(<svg\b[^>]*>)/,'$1<image data-scene-background="true" href="'+url+'" x="'+box[0]+'" y="'+box[1]+'" width="'+box[2]+'" height="'+box[3]+'" preserveAspectRatio="xMidYMid slice" pointer-events="none"/>');
 }
-export async function embedSurface(svg,url){if(!url||!validSurface(url)||url.startsWith('data:'))return svg;const response=await fetch(url);if(!response.ok)throw Error('Rohlingbild konnte nicht geladen werden.');const blob=await response.blob();const data=await new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result);reader.onerror=reject;reader.readAsDataURL(blob);});return svg.replaceAll('href="'+url+'"','href="'+data+'"');}
+export async function embedSurface(svg,url,devicePhoto){
+ const sources=[];
+ if(url && validSurface(url) && !url.startsWith('data:'))sources.push(url);
+ // A rasterized SVG cannot load external images. Use only the camera selected by the Ring profile.
+ if(/^\/doorbell-assets\/[a-f0-9]{64}\.webp$/.test(devicePhoto) && svg.includes('href="'+devicePhoto+'"'))sources.push(devicePhoto);
+ const embedded=await Promise.all(sources.map(async source=>{
+  const response=await fetch(source);
+  if(!response.ok)throw Error(source===devicePhoto?'Das Ring-Gerätefoto konnte nicht geladen werden.':'Rohlingbild konnte nicht geladen werden.');
+  const blob=await response.blob();
+  const data=await new Promise((resolve,reject)=>{
+   const reader=new FileReader();reader.onload=()=>resolve(reader.result);reader.onerror=reject;reader.readAsDataURL(blob);
+  });
+  return [source,data];
+ }));
+ for(const [source,data] of embedded)svg=svg.replaceAll('href="'+source+'"','href="'+data+'"');
+ return svg;
+}
 

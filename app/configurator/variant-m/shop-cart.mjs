@@ -11,7 +11,10 @@ import {logoMediaPayload} from './logo-upload.mjs';
 
 // Customer preview for the cart: WebP keeps the upload small (PNG with material texture ≈3 MB);
 // browsers without WebP encoding return PNG, which the server accepts unchanged.
-export async function customerPreviewBlob(el){const blob=await el.png({type:'image/webp',quality:.9});return blob?.type==='image/webp'||blob?.type==='image/png'?blob:el.png();}
+export async function customerPreviewBlob(el){
+ const blob=await el.png({type:'image/webp',quality:.9,cartPreview:true});
+ return blob?.type==='image/webp'||blob?.type==='image/png'?blob:el.png({cartPreview:true});
+}
 const base64=blob=>new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result.split(',')[1]);reader.onerror=()=>reject(Error('Die Bilddatei konnte nicht gelesen werden.'));reader.readAsDataURL(blob);});
 async function referencePng(svg,geometry){
  const canvas=document.createElement('canvas');canvas.height=900;canvas.width=Math.round(900*geometry.width/geometry.height);

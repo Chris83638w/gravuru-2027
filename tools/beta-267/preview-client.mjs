@@ -24,6 +24,12 @@ try {
     ...binding, ...(parameters.get('ansicht') === 'nativ' ? {} : {presentation: 'prio-r15'}),
     productName: model.name, cartMode: 'theme', request, csrfToken: session.csrfToken, backUrl: '/',
     async submitCart(body, {draftToken}) {
+      if(product==='ring'&&parameters.get('warenkorb')!=='dateien'){
+        const response=await fetch('/beta-warenkorb/daten',{method:'POST',headers:{'Content-Type':'application/json','X-Gravuru-Draft':draftToken},body:JSON.stringify(body)});
+        if(!response.ok){const result=await response.json();throw Error(result.error||'Warenkorb konnte nicht bestätigt werden.');}
+        location.assign('/beta-warenkorb');
+        return;
+      }
       const response = await request('/api/workshop/acrylic-drafts/' + encodeURIComponent(body.draftId), {headers: {'X-Gravuru-Draft': draftToken}});
       if (!response.ok) throw Error('Der lokale Entwurf konnte nicht bestätigt werden.');
       const {draft,review} = await response.json();
@@ -32,7 +38,7 @@ try {
       downloads.querySelector('[data-format=druck]').hidden = review.product.method !== 'print';
       downloads.hidden = false;
       status.textContent = 'Prüfstand ' + draft.revision + ' gesichert. Die Dateien stehen zum Download bereit.';
-      throw Error('Lokaler Prüfstand gesichert. Die Dateien stehen über dem Editor bereit. Der Shopify-Warenkorb benötigt die F02-Anbindung.');
+      throw Error('Lokaler Prüfstand gesichert. Die Dateien stehen über dem Editor bereit.');
     }
   });
   for (const link of document.querySelectorAll('nav a')) {
@@ -42,7 +48,7 @@ try {
   frame.title = model.name;
   window.addEventListener('message', event => {
     if (event.origin !== location.origin || event.source !== frame.contentWindow) return;
-    if (event.data?.type === 'gravuru-ux-ready') status.textContent = 'Warenkorb sichert hier einen lokalen Prüfstand. Nur Testdaten verwenden.';
+    if (event.data?.type === 'gravuru-ux-ready') status.textContent = product==='ring'?'Ring-Gestaltungen werden in diesem Prüfwarenkorb mit persönlicher Vorschau abgelegt.':'Warenkorb sichert hier einen lokalen Prüfstand. Nur Testdaten verwenden.';
     if (event.data?.type === 'gravuru-ux-failed') status.textContent = 'Der Editor konnte nicht geladen werden.';
   });
   frame.src = '/editor.html';

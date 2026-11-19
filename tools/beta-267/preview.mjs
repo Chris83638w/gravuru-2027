@@ -2,6 +2,7 @@
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
+import {randomBytes} from 'node:crypto';
 import {build} from '../../app/configurator/variant-m/build.mjs';
 import {createPreviewServer} from '../../app/configurator/variant-m/server.mjs';
 import {createWorkshop} from '../../app/workshop/http.mjs';
@@ -10,8 +11,9 @@ import {steelSpecimen} from '../../app/workshop/specimen-product.mjs';
 import {workshopResources} from '../../app/workshop/catalog.mjs';
 import {acrylicArtwork} from '../../app/workshop/acrylic-artwork.mjs';
 import {acrylicContourProof,createAcrylicPrintProof} from '../../app/workshop/acrylic-print-proof.mjs';
-import {loadDoorbellCatalog, importDecorations, buildDoorbellConfig, resourceCrosswalk} from '../../scripts/import-doorbell-catalog.mjs';
+import {catalogPath,loadDoorbellCatalog, importDecorations, buildDoorbellConfig, resourceCrosswalk} from '../../scripts/import-doorbell-catalog.mjs';
 import {loadSlateRegister} from './slate-register.mjs';
+import {cartShopDomain,createPreviewCart} from './preview-cart.mjs';
 
 const port = Number(process.argv[2] || 18267);
 if (!Number.isInteger(port) || port < 1024 || port > 65535) throw Error('Ungültiger lokaler Port.');
@@ -22,7 +24,9 @@ const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'gravuru-beta267-'));
 const origin = 'http://127.0.0.1:' + port;
 build({outputDirectory: directory});
 const [seed] = JSON.parse(fs.readFileSync(path.join(directory, 'models.json')));
-const workshop = createWorkshop({filename: ':memory:', seedConfig: seed.universal, legacy: seed.legacy, katalogDir: null});
+const temporarySecret=randomBytes(32).toString('hex');
+const workshop = createWorkshop({filename: ':memory:', seedConfig: seed.universal, legacy: seed.legacy, katalogDir: null,
+  orderWebhook:{shopDomain:cartShopDomain,secret:temporarySecret,apiVersion:'2026-07',mode:'test-only'}});
 const catalog = loadDoorbellCatalog(path.join(catalogRoot, 'migrationen/funkklingeln-42x3-20261027'));
 const entry = catalog.entries.find(item => item.modelKey === modelKey && item.formatKey === '16x28');
 const model = catalog.manifest.models.find(item => item.key === modelKey);
@@ -50,6 +54,10 @@ server.removeListener('request', serveWorkshop);
 const betaPage = fs.readFileSync(new URL('./preview.html', import.meta.url),'utf8')
   .replace('<!--slate-link-->', products.has('schiefer') ? '<a href="/?produkt=schiefer">Schiefer-Rohling</a>' : '');
 const betaClient = fs.readFileSync(new URL('./preview-client.mjs', import.meta.url));
+const cartPage=fs.readFileSync(new URL('./preview-cart.html',import.meta.url));
+const cartClient=fs.readFileSync(new URL('./preview-cart-client.mjs',import.meta.url));
+const variantRows=JSON.parse(fs.readFileSync(catalogPath(catalog.root,entry.variantMatrixRef),'utf8')).variants;
+const cartHandler=createPreviewCart({workshop,record:workshop.repository.get(products.get('ring').id),entry,variants:variantRows,origin,secret:temporarySecret});
 server.on('request', async (req, res) => {
   const send = (status, type, bytes) => {
     res.writeHead(status, {'Content-Type': type, 'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff',
@@ -60,6 +68,9 @@ server.on('request', async (req, res) => {
     return send(403, 'text/plain', 'Lokaler Prüfzugang erforderlich.');
   }
   const url = new URL(req.url, origin);
+  if(req.method==='GET'&&url.pathname==='/beta-warenkorb')return send(200,'text/html; charset=utf-8',cartPage);
+  if(req.method==='GET'&&url.pathname==='/beta-warenkorb.mjs')return send(200,'text/javascript; charset=utf-8',cartClient);
+  if(url.pathname.startsWith('/beta-warenkorb/daten')||url.pathname.startsWith('/gestaltung/'))return cartHandler(req,res,url.pathname,send);
   if (req.method === 'GET' && url.pathname === '/') return send(200, 'text/html; charset=utf-8', betaPage);
   if (req.method === 'GET' && url.pathname === '/favicon.ico') return send(204, 'image/x-icon', '');
   if (req.method === 'GET' && url.pathname === '/beta-client.mjs') return send(200, 'text/javascript; charset=utf-8', betaClient);

@@ -7,7 +7,7 @@ import {NATIVE_REVIEW_SCHEMAS} from './native-review-schema.mjs';
 import {cartLineInput} from './storefront-cart.mjs';
 import {cartTimingStep} from './shop-cart-timing.mjs';
 const fail=(status,code,message)=>{throw Object.assign(Error(message),{status,code});};
-export function prepareThemeCart({workshop,registry,shopDomain,proxyPath,customerImageUrl,presentation},binding,input,{draftToken}={}){
+export function prepareThemeCart({workshop,registry,shopDomain,proxyPath,customerImageUrl,checkoutImageSource,presentation},binding,input,{draftToken}={}){
  const {cartRevision,...offerInput}=input;
  const prepared=cartTimingStep('bound_offer',()=>prepareBoundCartOffer({workshop,registry,shopDomain},binding,offerInput,{draftToken}));
  const {draft,manifest,offer,resolve}=prepared,ledger=workshop.customerDrafts.cartConfigurations;
@@ -37,7 +37,11 @@ export function prepareThemeCart({workshop,registry,shopDomain,proxyPath,custome
  if(customerImageUrl)properties._gravuru_bild=cartTimingStep('customer_image_url',()=>customerImageUrl(offer.id));
  // The edit link identifies the actual cart revision, not the last prepared offer.
  const previousRevision=input.configId?cartRevision:null;
+ // Only the Shopify media job uses this immutable source. Old offers keep their existing image URL.
+ let imageSource;
+ try{imageSource=checkoutImageSource?.(manifest.id,manifest.packageSha256);}catch{}
  return {
+  checkoutImageSource:imageSource,
   offerId:offer.id,resolve,claim:nonce=>{resolve();return ledger.claimThemeTransfer(offer.id,nonce);},
   payload:{schema:'gravuru-theme-cart/v1',shopDomain,variantId:offer.variantId,productId:binding.shopifyProductId.split('/').at(-1),quantity:offer.quantity,unitCents:offer.unitCents,totalCents:offer.unitCents*offer.quantity,currency:offer.currency,
    configuration,mode:input.configId?'update':'create',previousRevision,properties,preview:{name:'gravuru-gestaltung.png',type:'image/png',base64:preview.toString('base64')},paymentConfirmed:false,productionReady:false}

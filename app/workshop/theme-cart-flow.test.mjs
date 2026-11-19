@@ -75,8 +75,8 @@ test('theme cart: signed entry, immutable design, edit, quantity 1 to 4 and sign
  };
  const store={storeId:'acryl',registry,workshop:w,apiPrefix:'/api/workshop/',nativeEditorPath:'/_merchant-editor.html',formEditorPath:'/_merchant-form-editor.html',cart:createBoundTestCart({workshop:w,registry,shopDomain,transportOptions:{fetchImpl}})};
  const registeredImage='https://cdn.shopify.com/s/files/1/0920/5550/3228/files/gravuru-gestaltung-'+'c'.repeat(64)+'.png';let imageCalls=0,imagePending=false;
- const timingEvents=[];
- let now=1_800_000_000_000;const entry=createShopEntry({origin,shopDomain,secret,stores:[store],proxyPath,clock:()=>now,logger:event=>timingEvents.push(event),modelSlimmer:null,checkoutImage:async source=>{assert.ok(source.startsWith(origin+'/gestaltung/'));if(imagePending)throw Object.assign(Error('Bild wird vorbereitet.'),{status:502,code:'checkout_image_pending'});imageCalls++;return registeredImage;}});
+ const timingEvents=[],sources=[];let warmAccess=0;
+ let now=1_800_000_000_000;const entry=createShopEntry({origin,shopDomain,secret,stores:[store],proxyPath,clock:()=>now,logger:event=>timingEvents.push(event),modelSlimmer:null,warmCheckoutAccess:async()=>{warmAccess++;throw Error('test cold login');},checkoutImage:async (source,options)=>{sources.push({source,options});assert.ok(source.startsWith(origin+'/gestaltung/'));if(imagePending)throw Object.assign(Error('Bild wird vorbereitet.'),{status:502,code:'checkout_image_pending'});imageCalls++;return registeredImage;}});
  const webhook=createOrderWebhookHandler({intake:w.orderIntake,config:webhookConfig});
  const server=http.createServer((req,res)=>req.url===ORDER_WEBHOOK_PATH?webhook(req,res):entry.handle(req,res,new URL(req.url,origin)));server.listen(0,'127.0.0.1');await once(server,'listening');
  t.after(async()=>{server.closeAllConnections();await new Promise(r=>server.close(r));});
@@ -106,9 +106,14 @@ test('theme cart: signed entry, immutable design, edit, quantity 1 to 4 and sign
  assert.equal(draftTiming.route,'acrylic-drafts');assert.equal(draftTiming.status,201);
  assert.equal(draftTiming.counts.request_bytes,Buffer.byteLength(JSON.stringify({input})));
  assert.equal(draftTiming.counts.response_bytes,created.body.length);
- for(const step of ['body_read','body_json','session_binding','model_build','review_validate','customer_preview','reference_preview','review_zip','draft_persist','response_json']){
+ for(const step of ['body_read','body_json','session_binding','model_build','review_validate','preview_pair','review_zip','draft_persist','response_json']){
   assert.equal(draftTiming.steps[step].calls,1,step);assert.ok(draftTiming.steps[step].durationMs>=0);assert.ok(created.headers['server-timing'].includes(step+';dur='));
  }
+ assert.equal(warmAccess,1);
+ assert.equal(sources.length,1);
+ assert.match(new URL(sources[0].source).pathname,/\/proof_/);
+ assert.deepEqual(sources[0].options,{justSaved:true});
+ const firstSource=sources[0].source;
  const draft=created.data;assert.match(draft.id,/^adraft_/);assert.match(draft.token,/^[a-f0-9]{64}$/);assert.equal(draft.revision,1);
  const manifest=w.customerDrafts.review(draft.snapshotId).manifest;assert.deepEqual(manifest.selection.options,chosen.options);assert.equal(manifest.selection.price.quantity,2);assert.equal(manifest.productionReady,false);
  const storedCustomerPng=readReviewPackage(w.customerDrafts.downloadSnapshot(draft.snapshotId,'package'),manifest.packageSha256,NATIVE_REVIEW_SCHEMAS).files.get('gestaltung-kundenansicht.png');
@@ -148,7 +153,7 @@ test('theme cart: signed entry, immutable design, edit, quantity 1 to 4 and sign
  assert.equal(prepared.data.mode,'theme');assert.equal(sent.length,0,'no separate Storefront cart is created');
  const transferToken=new URLSearchParams(new URL(prepared.data.handoffUrl).hash.slice(1)).get('handoff');assert.match(transferToken,/^[a-f0-9]{64}$/);
  // V2: Shopify-Checkout-Bild startet bereits mit der Übergabe (nicht erst mit /cart/data).
- assert.ok(imageCalls>=1,'checkout image starts with the theme-cart handoff');imageCalls=0;
+ assert.ok(imageCalls>=2);assert.equal(sources.at(-1).source,firstSource,'handoff must reuse the image of this revision');imageCalls=0;
  function signed(){const q=new URLSearchParams({shop:shopDomain,path_prefix:proxyPath,timestamp:String(Math.floor(now/1000)),logged_in_customer_id:''});q.set('signature',appProxySignature(q,secret));return q;}
  const proxyRequest=(part,method='GET',token=transferToken,extra={})=>request(proxyPath+part+'?'+signed(),method,undefined,{'X-Gravuru-Cart-Handoff':token,...(method==='POST'?{Origin:'https://'+shopDomain}:{}),...extra});
  const hosted={'X-Gravuru-Cart-Preview':'hosted'};// #252: der neue Client meldet, dass er die gehostete Vorschau verarbeitet
@@ -177,7 +182,7 @@ test('theme cart: signed entry, immutable design, edit, quantity 1 to 4 and sign
  assert.equal(p.preview,undefined,'with a READY Shopify file no PNG travels to the customer device');assert.ok(JSON.stringify(p).length<64*1024,'handoff stays small');
  assert.ok(!JSON.stringify(p).includes(draft.token));assert.ok(!JSON.stringify(p).includes(token));assert.equal(new URL(p.properties._gravuru_bearbeiten).searchParams.get('line'),'theme');
  assert.equal(p.properties.Bearbeiten,undefined);
- assert.equal(p.properties._gravuru_checkout_image,registeredImage);assert.equal(imageCalls,1);
+ assert.equal(sources.at(-1).source,firstSource);assert.match(p.properties._gravuru_bild,/\/offer_/);assert.equal(p.properties._gravuru_checkout_image,registeredImage);assert.equal(imageCalls,1);
  // #252 Versionswechsel: Tabs mit älterem, zwischengespeichertem Client fragen ohne Kennzeichen und erhalten weiter das PNG.
  const olderTab=await proxyRequest('/cart/data');assert.equal(olderTab.status,200);assert.equal(olderTab.data.preview.type,'image/png');assert.match(olderTab.data.preview.base64,/^iVBORw0KGgo/);
  assert.equal(olderTab.data.properties._gravuru_checkout_image,registeredImage);assert.deepEqual({...olderTab.data,preview:undefined},{...p,preview:undefined},'same handoff apart from the PNG');

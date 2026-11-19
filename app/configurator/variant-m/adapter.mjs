@@ -39,6 +39,12 @@ export function projectOnce(cache,active,options,select){
  if(cache.key!==key){cache.profile=select(options);cache.key=key;cache.builds=(cache.builds||0)+1;}
  return cache.profile;
 }
+// Cards that show the customer's own letters must redraw when the full font
+// replaces the preview pack. The key follows that font state.
+export function thumbnailCacheKey(options,signature,faces){
+ const fonts=Object.keys(faces||{}).sort().map(name=>{const font=faces[name],glyphs=font?.regular?.glyphs;return name+':'+(font?.previewSubset?'pack':'full')+':'+(glyphs?Object.keys(glyphs).length:0);}).join(',');
+ return JSON.stringify(options)+'|'+String(signature||'')+'|'+fonts;
+}
 const svgDocument = svg => new DOMParser().parseFromString(svg, 'image/svg+xml');
 const pendingThumbnail='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 160" role="img" aria-label="Designvorschau wird geladen"></svg>';
 
@@ -313,17 +319,18 @@ export function installUniversal(configInput) {
     for(const type of ['pointerup','pointercancel'])r.addEventListener(type,()=>{if(!dragging)return;dragging=el.uxDragging=false;setTimeout(()=>renderThumbnails(),0);},true);
     function renderThumbnails(){
       if(dragging||!el.isConnected||!el.uxLayoutReady)return 0;
-      const thumbnailKey=JSON.stringify(options)+'|'+(el.uxThumbnailSignature?.()||'');
+      const faces=cardFonts();
+      const thumbnailKey=thumbnailCacheKey(options,el.uxThumbnailSignature?.()||'',faces);
       let budget=Number.isFinite(el.uxThumbnailBudget)?el.uxThumbnailBudget:Infinity,deferred=0;
       const thumbnailProfile=dynamicFormats?profile():p;
       for(const card of r.querySelectorAll('[data-c-design]')){
         const design=thumbnailProfile.designs.find(d=>d.id===card.dataset.cDesign);if(!design)continue;
-        const faces=cardFonts();
-        if(dynamicDoorbell&&!designResourcesReady(design,faces,el.motifs))continue;
+        const shown=el.uxThumbnailDesign?.(design)||design;
+        if(dynamicDoorbell&&!designResourcesReady(shown,faces,el.motifs))continue;
         let thumbnail=thumbnails.get(card);
         if(!thumbnail||thumbnail.key!==thumbnailKey){
           if(card.hidden||budget<=0||el.uxThumbnailDeferred?.(card)===true){if(!card.hidden&&budget<=0)deferred++;if(!thumbnail)continue;}
-          else{budget--;const shown=el.uxThumbnailDesign?.(design)||design;
+          else{budget--;
             // Chris 21.10.2026: Miniaturen zeigen das Musterfoto wie die Vorschau, nicht den Schriftzug „Dein Foto“.
             let markup=svg(shown,{screen:true,fonts:faces});try{if(shown.objects.some(o=>o.type==='photoSlot')){const doc=svgDocument(markup);decorateEmptyPhotoSlots(doc,shown.objects,processing.ink,profile().material.color,config.localResources?.photoPlaceholders||[],design.id,config.localResources?.photoExamples||[],shown.objects.filter(o=>o.type==='photoSlot').map(o=>({designId:design.id,slotId:o.id,enabled:false})),{blendMode:profile().material.kind==='slate'?'lighten':undefined,grayscale:profile().material.kind==='slate'});for(const g of doc.querySelectorAll('[data-ux-empty-photo-slot]')){g.removeAttribute('data-ux-empty-photo-slot');g.removeAttribute('role');g.removeAttribute('tabindex');g.removeAttribute('aria-label');g.style.removeProperty('cursor');}markup=doc.documentElement.outerHTML;}}catch{}
             thumbnail={key:thumbnailKey,markup};}

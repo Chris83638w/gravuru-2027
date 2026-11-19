@@ -11,6 +11,8 @@ const {
 // Durchläuft das veröffentlichte Ring-Produkt mit zwei eigenen Testgestaltungen.
 const [phase, mode, roundsArg = '3', outputRoot] = process.argv.slice(2);
 const rounds = Number(roundsArg);
+const contextPauseMs = Number(process.env.R15_CONTEXT_PAUSE_MS || 0);
+assert(Number.isSafeInteger(contextPauseMs) && contextPauseMs >= 0 && contextPauseMs <= 120000);
 assert(
   /^[a-z0-9-]+$/.test(phase) &&
     ['cart', 'editor'].includes(mode) &&
@@ -194,12 +196,25 @@ function network(page, row) {
         'cart_prepare',
         'registry_document_digest',
         'review_validate',
+        'customer_preview',
+        'reference_preview',
+        'preview_pair',
       ]);
       item.serverMs = Object.fromEntries(
         [...header.matchAll(/([a-z_]+);dur=([0-9.]+)/g)]
           .filter((x) => allowed.has(x[1]))
           .map((x) => [x[1], Number(x[2])]),
       );
+      if (route === 'speichern' && resp.status() === 201 && privateEvidence &&
+          process.env.R15_CAPTURE_PAIR === '1' && row.round === 1 && row.device === 'PC') {
+        const { input } = req.postDataJSON();
+        const ownText = row.position === 1 ? 'Haus Nord 12' : 'Haus Süd 27';
+        assert(input.objects.some((object) => object.text === ownText));
+        assert(typeof input.customerPreview === 'string' && typeof input.preview === 'string');
+        fs.writeFileSync(path.join(dir, 'privat-bildpaar-' + row.position + '.json'),
+          JSON.stringify({ customer: input.customerPreview, reference: input.preview }),
+          { flag: 'wx', mode: 0o600 });
+      }
       if (endError) item.networkError = true;
       row.requests.push(item);
       if (route === 'speichern' && resp.status() === 201) {
@@ -232,6 +247,18 @@ function network(page, row) {
     page.off('response', onResponse);
     await Promise.all(pending);
   };
+}
+// These are read-only image checks after the visible-cart timer has stopped.
+async function readEvidenceImage(request, url) {
+  for (let attempt = 1; ; attempt++) {
+    try {
+      const response = await request.get(url, { timeout: 15000 });
+      return { status: response.status(), headers: response.headers(), body: await response.body() };
+    } catch (error) {
+      if (attempt >= 3 || !/aborted|ECONNRESET|ETIMEDOUT|timeout|socket hang up/i.test(error.message)) throw error;
+      await new Promise(resolve => setTimeout(resolve, 300 * attempt));
+    }
+  }
 }
 async function cart(page, f, row, firstLine) {
   const photoPoints =
@@ -309,9 +336,9 @@ async function cart(page, f, row, firstLine) {
     ids.add(attrs._gravuru_config);
     const u = new URL(personal);
     assert(u.hostname === appHost && u.pathname.startsWith('/gestaltung/'));
-    const bytes = await page.request.get(personal);
-    assert.equal(bytes.status(), 200);
-    const original = await bytes.body();
+    const bytes = await readEvidenceImage(page.request, personal);
+    assert.equal(bytes.status, 200);
+    const original = bytes.body;
     const sha = digest(original);
     let photoCheck;
     if (photoPoints) {
@@ -355,9 +382,9 @@ async function cart(page, f, row, firstLine) {
           saved: personal,
         }),
       );
-    const remote = await page.request.get(check);
-    assert.equal(remote.status(), 200);
-    assert((remote.headers()['content-type'] || '').startsWith('image/'));
+    const remote = await readEvidenceImage(page.request, check);
+    assert.equal(remote.status, 200);
+    assert((remote.headers['content-type'] || '').startsWith('image/'));
     const servedWidth =
       Number(new URL(matching.url).searchParams.get('width')) || null;
     if (process.env.R15_SMALL === '1')
@@ -374,8 +401,8 @@ async function cart(page, f, row, firstLine) {
       visibleWidth: Math.round(matching.width),
       cdnWidth: servedWidth,
       browserEncodedBytes: matching.bodyBytes,
-      shopifyImageHttp: remote.status(),
-      shopifyImageBytes: (await remote.body()).length,
+      shopifyImageHttp: remote.status,
+      shopifyImageBytes: remote.body.length,
     });
   }
   assert.equal(names.size, row.position);
@@ -469,6 +496,8 @@ async function cart(page, f, row, firstLine) {
         } finally {
           await ctx.close();
         }
+        if (contextPauseMs)
+          await new Promise(resolve => setTimeout(resolve, contextPauseMs));
       }
   } finally {
     await browser.close();

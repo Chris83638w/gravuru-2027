@@ -1,0 +1,216 @@
+[
+  {
+    "number": "#1033",
+    "phase": "ring-vor-kasse",
+    "test": true,
+    "financial": "PAID",
+    "fulfillment": "UNFULFILLED",
+    "paymentGateway": "bogus",
+    "lines": [
+      {
+        "name": "Süd",
+        "propertiesMatched": 15,
+        "unitCents": 4999,
+        "quantity": 1
+      },
+      {
+        "name": "Nord",
+        "propertiesMatched": 15,
+        "unitCents": 4999,
+        "quantity": 1
+      }
+    ],
+    "visibleCheckoutImages": [
+      [
+        38,
+        64
+      ],
+      [
+        38,
+        64
+      ]
+    ],
+    "customerImageFromOrder": {
+      "testOrder": "#1033",
+      "checkedAt": "2026-11-19T20:52:39.797956+00:00",
+      "images": [
+        {
+          "label": "Süd",
+          "size": [
+            952,
+            1600
+          ],
+          "matchingPixels": 1523200,
+          "rgbaSha256": "988ba10563ea90cdb73d0713e8a9b39ce6eb19651c54708772d4385d938f99fa"
+        },
+        {
+          "label": "Nord",
+          "size": [
+            952,
+            1600
+          ],
+          "matchingPixels": 1523200,
+          "rgbaSha256": "1641f5ed3653cf20885f8ce93fe0d65cd852623e1be1ff33cbc36d7b30916e9f"
+        }
+      ]
+    },
+    "workshop": {
+      "at": "2026-11-19T20:35:16.694708+00:00",
+      "errorCount": 0,
+      "accepted": [
+        {
+          "label": "Süd",
+          "test": true,
+          "status": "test-paid-event-recorded",
+          "productionReady": false,
+          "priceCents": 4999,
+          "packageSha256": "91d5349bcfa0af4fa15a83a858320c7a34fa8fb089c11c6c0ddbae93ec49f271",
+          "checkedFiles": 7
+        },
+        {
+          "label": "Nord",
+          "test": true,
+          "status": "test-paid-event-recorded",
+          "productionReady": false,
+          "priceCents": 4999,
+          "packageSha256": "abd31005543f6972fd5359f11a7bf804f4bd1ffdd32d04ee63f7c496e9d29d7a",
+          "checkedFiles": 5
+        }
+      ]
+    },
+    "customerOrderStatus": {
+      "number": "#1033",
+      "http": 200,
+      "host": "shopify.com",
+      "rendered": [],
+      "lineLabels": {
+        "Haus Nord 12": true,
+        "Haus Süd 27": true
+      },
+      "loginRequested": false,
+      "storeApiLineImages": [
+        {
+          "label": "Süd",
+          "shopifyLineImageMatches": false,
+          "width": 1600,
+          "height": 1600
+        },
+        {
+          "label": "Nord",
+          "shopifyLineImageMatches": false,
+          "width": 1600,
+          "height": 1600
+        }
+      ],
+      "orderView": true,
+      "at": "2026-11-19T20:40:34.959Z"
+    }
+  },
+  {
+    "number": "#1034",
+    "phase": "shopify-final",
+    "test": true,
+    "financial": "PAID",
+    "fulfillment": "UNFULFILLED",
+    "paymentGateway": "bogus",
+    "lines": [
+      {
+        "name": "Süd",
+        "propertiesMatched": 15,
+        "unitCents": 4999,
+        "quantity": 1
+      },
+      {
+        "name": "Nord",
+        "propertiesMatched": 15,
+        "unitCents": 4999,
+        "quantity": 1
+      }
+    ],
+    "visibleCheckoutImages": [
+      [
+        38,
+        64
+      ],
+      [
+        38,
+        64
+      ]
+    ],
+    "customerImageFromOrder": {
+      "testOrder": "#1034",
+      "checkedAt": "2026-11-19T20:52:39.761720+00:00",
+      "images": [
+        {
+          "label": "Süd",
+          "size": [
+            952,
+            1600
+          ],
+          "matchingPixels": 1523200,
+          "rgbaSha256": "988ba10563ea90cdb73d0713e8a9b39ce6eb19651c54708772d4385d938f99fa"
+        },
+        {
+          "label": "Nord",
+          "size": [
+            952,
+            1600
+          ],
+          "matchingPixels": 1523200,
+          "rgbaSha256": "1641f5ed3653cf20885f8ce93fe0d65cd852623e1be1ff33cbc36d7b30916e9f"
+        }
+      ]
+    },
+    "workshop": {
+      "at": "2026-11-19T20:37:50.291854+00:00",
+      "errorCount": 0,
+      "accepted": [
+        {
+          "label": "Süd",
+          "test": true,
+          "status": "test-paid-event-recorded",
+          "productionReady": false,
+          "priceCents": 4999,
+          "packageSha256": "4f3ce47647ba34edcaf935e347853551903f5c4ab118daf64f5a80ba38fc23d7",
+          "checkedFiles": 7
+        },
+        {
+          "label": "Nord",
+          "test": true,
+          "status": "test-paid-event-recorded",
+          "productionReady": false,
+          "priceCents": 4999,
+          "packageSha256": "ca467ca5094db3b4058a7fd3477aa054a2cf8ae5efaa66d584e82ed0a0522d90",
+          "checkedFiles": 5
+        }
+      ]
+    },
+    "customerOrderStatus": {
+      "number": "#1034",
+      "http": 200,
+      "host": "shopify.com",
+      "rendered": [],
+      "lineLabels": {
+        "Haus Nord 12": true,
+        "Haus Süd 27": true
+      },
+      "loginRequested": false,
+      "storeApiLineImages": [
+        {
+          "label": "Süd",
+          "shopifyLineImageMatches": false,
+          "width": 1600,
+          "height": 1600
+        },
+        {
+          "label": "Nord",
+          "shopifyLineImageMatches": false,
+          "width": 1600,
+          "height": 1600
+        }
+      ],
+      "orderView": true,
+      "at": "2026-11-19T20:40:35.383Z"
+    }
+  }
+]

@@ -1,0 +1,32 @@
+{
+  "PC": {
+    "zoomPixels": [
+      952,
+      1600
+    ],
+    "personalRows": 2,
+    "thumbWidth": 160,
+    "editButtons": 0,
+    "matchedDrawerImages": 2,
+    "eachCents": 4999,
+    "removeClicked": true,
+    "remaining": "Süd",
+    "remainingCents": 4999,
+    "drawerReadAt": "2026-11-19T20:53:53.863Z"
+  },
+  "Mobil": {
+    "zoomPixels": [
+      952,
+      1600
+    ],
+    "personalRows": 2,
+    "thumbWidth": 480,
+    "editButtons": 0,
+    "matchedDrawerImages": 2,
+    "eachCents": 4999,
+    "removeClicked": true,
+    "remaining": "Süd",
+    "remainingCents": 4999,
+    "drawerReadAt": "2026-11-19T20:53:57.966Z"
+  }
+}

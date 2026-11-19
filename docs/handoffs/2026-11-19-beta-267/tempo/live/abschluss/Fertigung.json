@@ -1,0 +1,637 @@
+{
+  "referenceMedia": {
+    "1": {
+      "gestaltung-kundenansicht.png": "b1ed0cd08c5b530a6d278f73532d610aac6cc4bc17376d08726ebe998749bc9e",
+      "gestaltung-referenz.png": "08e5e8b01107bb6a8ff3e3a7d3b984cc6491f04e668b4ac18945c1ee8537b0e9"
+    },
+    "2": {
+      "quellen/994bd7bd51d4cf21c6275f0812657089a131bd872fea4469d55ed84f48fe96dd-original.svg": "d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8",
+      "quellen/994bd7bd51d4cf21c6275f0812657089a131bd872fea4469d55ed84f48fe96dd-vorschau.svg": "ead6e79ae6969c6012c9df9cd4b191e559df01aa31e880d8d982b22b1974f0f1",
+      "gestaltung-kundenansicht.png": "fc31ce9cb9e6887b3fe26d11662cfe785a6039f403122ae04beb20954fc67e32",
+      "gestaltung-referenz.png": "5e015d3a692b9a0d92e2715f05920309c0226699b7eac151cdea3410208dc57c"
+    }
+  },
+  "referenceExports": [
+    {
+      "position": 1,
+      "name": "Nord",
+      "engravingSvg": "b52755637ed13379e8a40a0fb3eb1d4c9093f75c9f8134673105551afae39d83",
+      "cutSteelSvg": "2f7fc44a99f85230e496fea0103a015b611df1586df4069eb46cbdfef2ad71e0",
+      "cutAcrylicSvg": "5b696850a2834c2f6b296f3bfb422b8edc0475f6176fb64d3763e022fa6cba9a",
+      "widthMm": 160,
+      "heightMm": 280,
+      "textFields": 3,
+      "cutSteelPdfWithoutCreationDate": "82ef3d88c0e5b6e780baa42ba2011692ec39674018e0afae20554d1c0d6b2bd9",
+      "cutAcrylicPdfWithoutCreationDate": "92b401460e98eaa59be2cae43c929f7035de6d7697f3a49654a4748d6caefb50"
+    },
+    {
+      "position": 2,
+      "name": "Süd",
+      "engravingSvg": "7037bd5d30cce9a53a29a0fcbc2727d67670cdcd557cd049e957f1cd6d4a574b",
+      "cutSteelSvg": "2f7fc44a99f85230e496fea0103a015b611df1586df4069eb46cbdfef2ad71e0",
+      "cutAcrylicSvg": "5b696850a2834c2f6b296f3bfb422b8edc0475f6176fb64d3763e022fa6cba9a",
+      "widthMm": 160,
+      "heightMm": 280,
+      "textFields": 3,
+      "cutSteelPdfWithoutCreationDate": "82ef3d88c0e5b6e780baa42ba2011692ec39674018e0afae20554d1c0d6b2bd9",
+      "cutAcrylicPdfWithoutCreationDate": "92b401460e98eaa59be2cae43c929f7035de6d7697f3a49654a4748d6caefb50"
+    }
+  ],
+  "archives": {
+    "zusatz-karten": {
+      "archives": [
+        {
+          "round": 1,
+          "device": "PC",
+          "position": 1,
+          "archiveHash": "52951377d366a953d62b2122be20b9d4fd0f6fd4782186a111f19f260d222770",
+          "checkedFiles": 5,
+          "archiveBytes": 1449937
+        },
+        {
+          "round": 1,
+          "device": "PC",
+          "position": 2,
+          "archiveHash": "1742bd82021d0a6d1a08d82b5685975fca7131cc03aff52f4ce5c27ec56b055f",
+          "checkedFiles": 7,
+          "archiveBytes": 1455809
+        },
+        {
+          "round": 1,
+          "device": "Mobil",
+          "position": 1,
+          "archiveHash": "2579de63edb5667d12594405d691b4e70a4cafceb31f5ee02f92f8dbb74889dd",
+          "checkedFiles": 5,
+          "archiveBytes": 1449937
+        },
+        {
+          "round": 1,
+          "device": "Mobil",
+          "position": 2,
+          "archiveHash": "92ecba3d8d356d36b5603545a591cdcce2e9878cba2a61b37a67c45de203f196",
+          "checkedFiles": 7,
+          "archiveBytes": 1455809
+        },
+        {
+          "round": 2,
+          "device": "Mobil",
+          "position": 1,
+          "archiveHash": "4edb3e87e51e09a9a83c014abce64abae3cc0caf718ecedaecea8ea83331c7a5",
+          "checkedFiles": 5,
+          "archiveBytes": 1449937
+        },
+        {
+          "round": 2,
+          "device": "Mobil",
+          "position": 2,
+          "archiveHash": "73dc0829b459fd3f77f0f0932507dc1db52705f710dfb38578870837c4424c90",
+          "checkedFiles": 7,
+          "archiveBytes": 1455809
+        },
+        {
+          "round": 2,
+          "device": "PC",
+          "position": 1,
+          "archiveHash": "c7b2377f8ab65b9a45688a079f7879c22659d15263f34d87b192a42fd3ea9a46",
+          "checkedFiles": 5,
+          "archiveBytes": 1449937
+        },
+        {
+          "round": 2,
+          "device": "PC",
+          "position": 2,
+          "archiveHash": "7ca39f43e7392601a91843321f43144e90a143d77fe12064f75a8be4fe21bd00",
+          "checkedFiles": 7,
+          "archiveBytes": 1455809
+        },
+        {
+          "round": 3,
+          "device": "PC",
+          "position": 1,
+          "archiveHash": "945e1420bc9aca032484d5b31f5b49ad1ca5e5d2916c2457469b0d8c6806488c",
+          "checkedFiles": 5,
+          "archiveBytes": 1449937
+        },
+        {
+          "round": 3,
+          "device": "PC",
+          "position": 2,
+          "archiveHash": "393152e8e7fa5648b0afee0096ed5e7e8571870c78fdfc254bb361abe222d870",
+          "checkedFiles": 7,
+          "archiveBytes": 1455809
+        },
+        {
+          "round": 3,
+          "device": "Mobil",
+          "position": 1,
+          "archiveHash": "2ce27419c714693dcfb6ebfe1f89cc522cc46f91ed11bbebdb302e5abbf73520",
+          "checkedFiles": 5,
+          "archiveBytes": 1449937
+        },
+        {
+          "round": 3,
+          "device": "Mobil",
+          "position": 2,
+          "archiveHash": "1062bd0bb6dd6782c3672603c392a070963e0898b02922e6f8bd616ae0ed09e5",
+          "checkedFiles": 7,
+          "archiveBytes": 1455809
+        }
+      ],
+      "allMediaMatchReference": true
+    },
+    "zusatz-speichern": {
+      "archives": [
+        {
+          "round": 1,
+          "device": "PC",
+          "position": 1,
+          "archiveHash": "6019e2d8dcea16a0763efe23bba63beef41e3de7619ce88ddf7f227770a6a1c3",
+          "checkedFiles": 5,
+          "archiveBytes": 1449937
+        },
+        {
+          "round": 1,
+          "device": "PC",
+          "position": 2,
+          "archiveHash": "e1dd65e057c63678c76420bf51cc4a0fb3fc61dd3f335b215e461d33c11ae634",
+          "checkedFiles": 7,
+          "archiveBytes": 1455809
+        },
+        {
+          "round": 1,
+          "device": "Mobil",
+          "position": 1,
+          "archiveHash": "2b0e2d287725601eb8892847f6aa891217bc3b0da10773f59dd2d2046f165239",
+          "checkedFiles": 5,
+          "archiveBytes": 1449937
+        },
+        {
+          "round": 1,
+          "device": "Mobil",
+          "position": 2,
+          "archiveHash": "a3ec81d0fdd199d798a1fb0344f9995c57fee37ccd9ff543deb44786c2d4a571",
+          "checkedFiles": 7,
+          "archiveBytes": 1455809
+        },
+        {
+          "round": 2,
+          "device": "Mobil",
+          "position": 1,
+          "archiveHash": "3bae7abcbff64a144b3b0cefd7560b3c8f09ec8dbb114b22f6008fd6f5e33217",
+          "checkedFiles": 5,
+          "archiveBytes": 1449937
+        },
+        {
+          "round": 2,
+          "device": "Mobil",
+          "position": 2,
+          "archiveHash": "aea0494855e0b48a414aae12d4adbffc71560c9510bb1550b6c5bc2a14e1b6b8",
+          "checkedFiles": 7,
+          "archiveBytes": 1455809
+        },
+        {
+          "round": 2,
+          "device": "PC",
+          "position": 1,
+          "archiveHash": "3b04f8863cfdcf6a7835fb6263f4e150b94188bfe8e76c71c421c5ea97b7ef48",
+          "checkedFiles": 5,
+          "archiveBytes": 1449937
+        },
+        {
+          "round": 2,
+          "device": "PC",
+          "position": 2,
+          "archiveHash": "255de938fd8f501db5e31819f26f2d1d6622293fbc621732f93fad723f3091f8",
+          "checkedFiles": 7,
+          "archiveBytes": 1455809
+        },
+        {
+          "round": 3,
+          "device": "PC",
+          "position": 1,
+          "archiveHash": "0a327834ffe42ccf55df6724e2045954997ef91884561d6afa869e78109aa49a",
+          "checkedFiles": 5,
+          "archiveBytes": 1449937
+        },
+        {
+          "round": 3,
+          "device": "PC",
+          "position": 2,
+          "archiveHash": "fbfdedf2af8536dc5d9bb16de032ae2e27258c5c292fa5838165f2a3c61cf59a",
+          "checkedFiles": 7,
+          "archiveBytes": 1455809
+        },
+        {
+          "round": 3,
+          "device": "Mobil",
+          "position": 1,
+          "archiveHash": "27e98e0dead1cfd4ce458c1ddf80994673aa7cae3afadc42e48192680bcd0454",
+          "checkedFiles": 5,
+          "archiveBytes": 1449937
+        },
+        {
+          "round": 3,
+          "device": "Mobil",
+          "position": 2,
+          "archiveHash": "18baeab41037c5cbdd0a403bc32afa41d64b976f1ce1fe7a2d50ed94646d123e",
+          "checkedFiles": 7,
+          "archiveBytes": 1455809
+        }
+      ],
+      "allMediaMatchReference": true
+    },
+    "zusatz-endstand": {
+      "archives": [
+        {
+          "round": 1,
+          "device": "PC",
+          "position": 1,
+          "archiveHash": "8e83a7cbc424b6f8a37a9c70cee83f328f05479fddc010c6156d3667a0ee4800",
+          "checkedFiles": 5,
+          "archiveBytes": 1449937
+        },
+        {
+          "round": 1,
+          "device": "PC",
+          "position": 2,
+          "archiveHash": "fd42898bebc7ed3e71cd4cfc099bd3e96cd586ef426cc73b4ad4e339cfefef9f",
+          "checkedFiles": 7,
+          "archiveBytes": 1455809
+        },
+        {
+          "round": 1,
+          "device": "Mobil",
+          "position": 1,
+          "archiveHash": "b1b34a31feb13b2e4872203b8f51a1ccec1c8f042756e75a108022cbcbb9d995",
+          "checkedFiles": 5,
+          "archiveBytes": 1449937
+        },
+        {
+          "round": 1,
+          "device": "Mobil",
+          "position": 2,
+          "archiveHash": "dde7fd2e57b2fc3101ab03859af331eea4f81a57971db5ec39e792ddfe9cb735",
+          "checkedFiles": 7,
+          "archiveBytes": 1455809
+        },
+        {
+          "round": 2,
+          "device": "Mobil",
+          "position": 1,
+          "archiveHash": "a4adb3a71d62a58055cac7fd834009efeebdcd766538598ebfc3a61250077049",
+          "checkedFiles": 5,
+          "archiveBytes": 1449937
+        },
+        {
+          "round": 2,
+          "device": "Mobil",
+          "position": 2,
+          "archiveHash": "7ee37189ccdd91bf8b1cef5998885158a3a784cb2193fde525c1ebe0035aa00a",
+          "checkedFiles": 7,
+          "archiveBytes": 1455809
+        },
+        {
+          "round": 2,
+          "device": "PC",
+          "position": 1,
+          "archiveHash": "498df42c7e12d512701bc4ba52dba68c9ba0da13b095c1558561fd5bd1b5032c",
+          "checkedFiles": 5,
+          "archiveBytes": 1449937
+        },
+        {
+          "round": 2,
+          "device": "PC",
+          "position": 2,
+          "archiveHash": "d54729ca8796b10e6aeced893ffc3e196d3e1ee11ad1d6cc847ff94b6362d17b",
+          "checkedFiles": 7,
+          "archiveBytes": 1455809
+        },
+        {
+          "round": 3,
+          "device": "PC",
+          "position": 1,
+          "archiveHash": "bdc286056b00a15c4f420d769b8e0703838b57ef668ac398280203d459da6122",
+          "checkedFiles": 5,
+          "archiveBytes": 1449937
+        },
+        {
+          "round": 3,
+          "device": "PC",
+          "position": 2,
+          "archiveHash": "1de5aa67694750ddf431c9e4c3eecfb74b535684b27b56447e5644748cf6ee24",
+          "checkedFiles": 7,
+          "archiveBytes": 1455809
+        },
+        {
+          "round": 3,
+          "device": "Mobil",
+          "position": 1,
+          "archiveHash": "1905b3c62a750148bcee11a86f5be008f7d02809decb03ed2ca6497121659283",
+          "checkedFiles": 5,
+          "archiveBytes": 1449937
+        },
+        {
+          "round": 3,
+          "device": "Mobil",
+          "position": 2,
+          "archiveHash": "596dc71425438e209928423263ab09e98469d8dbe18ac63b84abe903c88b7d7e",
+          "checkedFiles": 7,
+          "archiveBytes": 1455809
+        }
+      ],
+      "allMediaMatchReference": true
+    },
+    "ring-vor-kasse": {
+      "archives": [
+        {
+          "round": 1,
+          "device": "PC",
+          "position": 1,
+          "archiveHash": "abd31005543f6972fd5359f11a7bf804f4bd1ffdd32d04ee63f7c496e9d29d7a",
+          "checkedFiles": 5,
+          "archiveBytes": 1449937
+        },
+        {
+          "round": 1,
+          "device": "PC",
+          "position": 2,
+          "archiveHash": "91d5349bcfa0af4fa15a83a858320c7a34fa8fb089c11c6c0ddbae93ec49f271",
+          "checkedFiles": 7,
+          "archiveBytes": 1455809
+        },
+        {
+          "round": 1,
+          "device": "Mobil",
+          "position": 1,
+          "archiveHash": "a2f3f8b29fb14ddbbbf719a8a1c17350a2069ddc361958937a182e9373668a96",
+          "checkedFiles": 5,
+          "archiveBytes": 1449937
+        },
+        {
+          "round": 1,
+          "device": "Mobil",
+          "position": 2,
+          "archiveHash": "83b6f812623a293f7ecf81f7a5d03fc272569189ebe6cd2bc152a29048482842",
+          "checkedFiles": 7,
+          "archiveBytes": 1455809
+        },
+        {
+          "round": 2,
+          "device": "Mobil",
+          "position": 1,
+          "archiveHash": "9ad6e68422c2f51f96f88b02ccdb39bfcc1a2f5ddb5d197f0f84d6514caaa412",
+          "checkedFiles": 5,
+          "archiveBytes": 1449937
+        },
+        {
+          "round": 2,
+          "device": "Mobil",
+          "position": 2,
+          "archiveHash": "0792018c3039f3aa1d0fbd3d03ed22602d6d32414bd637f8932d41073bfb730a",
+          "checkedFiles": 7,
+          "archiveBytes": 1455809
+        },
+        {
+          "round": 2,
+          "device": "PC",
+          "position": 1,
+          "archiveHash": "69d39eb20f74131b26470078a2301b9abfb167f97bf1f295202a04d9529a32c3",
+          "checkedFiles": 5,
+          "archiveBytes": 1449937
+        },
+        {
+          "round": 2,
+          "device": "PC",
+          "position": 2,
+          "archiveHash": "96df2c3aa79869fb8681f892f89fdd4b4098c5cd69d6c06e9bd0a3d0f1986add",
+          "checkedFiles": 7,
+          "archiveBytes": 1455809
+        },
+        {
+          "round": 3,
+          "device": "PC",
+          "position": 1,
+          "archiveHash": "74b310571a69cc5efe1dc17fc34bedf045c31c69bb2b29a8cf978422d9ec83f1",
+          "checkedFiles": 5,
+          "archiveBytes": 1449937
+        },
+        {
+          "round": 3,
+          "device": "PC",
+          "position": 2,
+          "archiveHash": "7b8743f88151f2ff7058998b091e90f124507f90a68bc4b84dafb3073a51ba7a",
+          "checkedFiles": 7,
+          "archiveBytes": 1455809
+        },
+        {
+          "round": 3,
+          "device": "Mobil",
+          "position": 1,
+          "archiveHash": "0b5e703b17416ba4f1e844db857638fbf835153c237422fc7a4b80f9c138f1a4",
+          "checkedFiles": 5,
+          "archiveBytes": 1449937
+        },
+        {
+          "round": 3,
+          "device": "Mobil",
+          "position": 2,
+          "archiveHash": "2addb84f302c796540360c8f26d8ae7181796e5dcec92f466212ee0b54bbfc6c",
+          "checkedFiles": 7,
+          "archiveBytes": 1455809
+        }
+      ],
+      "allMediaMatchReference": true
+    },
+    "shopify-final": {
+      "archives": [
+        {
+          "round": 1,
+          "device": "PC",
+          "position": 1,
+          "archiveHash": "ca467ca5094db3b4058a7fd3477aa054a2cf8ae5efaa66d584e82ed0a0522d90",
+          "checkedFiles": 5,
+          "archiveBytes": 1449937
+        },
+        {
+          "round": 1,
+          "device": "PC",
+          "position": 2,
+          "archiveHash": "4f3ce47647ba34edcaf935e347853551903f5c4ab118daf64f5a80ba38fc23d7",
+          "checkedFiles": 7,
+          "archiveBytes": 1455809
+        },
+        {
+          "round": 1,
+          "device": "Mobil",
+          "position": 1,
+          "archiveHash": "8890882e414c279c1ccbd7f7d1eebfcb22ef0f18c2f0e1f94ad8258670c647d8",
+          "checkedFiles": 5,
+          "archiveBytes": 1449937
+        },
+        {
+          "round": 1,
+          "device": "Mobil",
+          "position": 2,
+          "archiveHash": "82f53e8b22f9b70ee889968b17c771261d61a71be160abf6545b99dcbf4dc8dc",
+          "checkedFiles": 7,
+          "archiveBytes": 1455809
+        },
+        {
+          "round": 2,
+          "device": "Mobil",
+          "position": 1,
+          "archiveHash": "e9c5e0d7a4c8d37fd411f765267516cfefc3d560338bc9fbf8bb319f7b0ddf18",
+          "checkedFiles": 5,
+          "archiveBytes": 1449937
+        },
+        {
+          "round": 2,
+          "device": "Mobil",
+          "position": 2,
+          "archiveHash": "a2ae5b0011945a6c2b2f46298563ebcb80de7f9f89789e0096a979ddc2a74698",
+          "checkedFiles": 7,
+          "archiveBytes": 1455809
+        },
+        {
+          "round": 2,
+          "device": "PC",
+          "position": 1,
+          "archiveHash": "800506a1aa55ef3f719a7b06a228d7aa8733ad81475b695406ad1f9ad6b3b6b9",
+          "checkedFiles": 5,
+          "archiveBytes": 1449937
+        },
+        {
+          "round": 2,
+          "device": "PC",
+          "position": 2,
+          "archiveHash": "7bc21fbdd6ca726c38a60811ba7e140f57bec044f5673932faf47557597edf9a",
+          "checkedFiles": 7,
+          "archiveBytes": 1455809
+        },
+        {
+          "round": 3,
+          "device": "PC",
+          "position": 1,
+          "archiveHash": "f0753eccaa216053cfe2ac5c68c54ba2ed9921140c23bbdbcbed648e68bee125",
+          "checkedFiles": 5,
+          "archiveBytes": 1449937
+        },
+        {
+          "round": 3,
+          "device": "PC",
+          "position": 2,
+          "archiveHash": "fbccdc6a77bbd5ed19f8f395c8eb599347d0441b7137c37446f5488d2b0060e2",
+          "checkedFiles": 7,
+          "archiveBytes": 1455809
+        },
+        {
+          "round": 3,
+          "device": "Mobil",
+          "position": 1,
+          "archiveHash": "87b0fc3a649d871c23f7a96bf1bfb08c77ec59d6ee1c0e34720c1dbe63878baf",
+          "checkedFiles": 5,
+          "archiveBytes": 1449937
+        },
+        {
+          "round": 3,
+          "device": "Mobil",
+          "position": 2,
+          "archiveHash": "4eab1c59c4bb821c779e28a0f4aefd43fce07633a8e5f8c7dc8e0d7bbab07dc8",
+          "checkedFiles": 7,
+          "archiveBytes": 1455809
+        }
+      ],
+      "allMediaMatchReference": true
+    }
+  },
+  "exports": {
+    "zusatz-karten": {
+      "checkedAt": "2026-11-19T19:57:05.327Z",
+      "rendererHashes": null,
+      "pdfWithCreationDate": [
+        {
+          "name": "Nord",
+          "steel": "09554d9b6113537d04695e3918122b0bfb6455e1ebadb9fbca8d786df9e3f227",
+          "acrylic": "98ebaeb84c8cd6b6bb40cac7ecc0b973586ed570f78dd87e7aa797521b1568dd"
+        },
+        {
+          "name": "Süd",
+          "steel": "4da41676eccc8423b43a852564f9f84bba84016a77fc962a68e2350b0a1f340e",
+          "acrylic": "c25bd5b89ec37200d51758b5ad195495ef048c615f9d0d6d1413d5621f96fd3e"
+        }
+      ],
+      "sameNormalizedFiles": true
+    },
+    "zusatz-speichern": {
+      "checkedAt": "2026-11-19T20:00:53.831Z",
+      "rendererHashes": null,
+      "pdfWithCreationDate": [
+        {
+          "name": "Nord",
+          "steel": "11defde4aa8278ae030b3c268efbe76327b0fc5455e607688bd7ba0ffdb9ed00",
+          "acrylic": "91fd2e6ad141fb04a8133e036092a7409df4cb5edc17d864e9a2e828574dd25b"
+        },
+        {
+          "name": "Süd",
+          "steel": "11defde4aa8278ae030b3c268efbe76327b0fc5455e607688bd7ba0ffdb9ed00",
+          "acrylic": "91fd2e6ad141fb04a8133e036092a7409df4cb5edc17d864e9a2e828574dd25b"
+        }
+      ],
+      "sameNormalizedFiles": true
+    },
+    "zusatz-endstand": {
+      "checkedAt": "2026-11-19T20:14:32.534Z",
+      "rendererHashes": null,
+      "pdfWithCreationDate": [
+        {
+          "name": "Nord",
+          "steel": "ad9409bcc7f0ac019cd85d88d899a4dbf5862387227ed990717059d588c85875",
+          "acrylic": "393c9b71ced680aeb826b564e3c029b9ebd7bf91c9adab7226918ec8eef993ad"
+        },
+        {
+          "name": "Süd",
+          "steel": "b1953990e18e5dace7b1519282166f357a54dbe7e9b59b333f199073b7d69aae",
+          "acrylic": "e359c4c6d6d64f01c4a8bf7f825f339e9421b216928188b8e78d092ea14bb19b"
+        }
+      ],
+      "sameNormalizedFiles": true
+    },
+    "ring-vor-kasse": {
+      "checkedAt": "2026-11-19T20:35:17.807Z",
+      "rendererHashes": null,
+      "pdfWithCreationDate": [
+        {
+          "name": "Nord",
+          "steel": "5e8746c88a96d8ca4c2d879c86819000245955d9509dad557703c8eaf0894289",
+          "acrylic": "c1da57f985c32cefebfa376b86ad95b9b1f1ae26a134df5361beab61711be78e"
+        },
+        {
+          "name": "Süd",
+          "steel": "5e8746c88a96d8ca4c2d879c86819000245955d9509dad557703c8eaf0894289",
+          "acrylic": "c1da57f985c32cefebfa376b86ad95b9b1f1ae26a134df5361beab61711be78e"
+        }
+      ],
+      "sameNormalizedFiles": true
+    },
+    "shopify-final": {
+      "checkedAt": "2026-11-19T20:48:20.464Z",
+      "rendererHashes": {
+        "acrylic-artwork.mjs": "32db3356b435dcc4269cb2558e52673df26773ca0c9471256b11efa0bc7c3580",
+        "doorbell-artwork.mjs": "1805eb3307884c03ce8d5117b4b800fe4a51503cf4c1daf0f482c70cca3f58a6"
+      },
+      "pdfWithCreationDate": [
+        {
+          "name": "Nord",
+          "steel": "de21582a4154782b1a44fcbe8cba0551f60f3824b712980fccc29427dbacd848",
+          "acrylic": "04911d382bd89deec42ae5d4987a05dba46371ae91b296eab54dbdfe1cb853a1"
+        },
+        {
+          "name": "Süd",
+          "steel": "de21582a4154782b1a44fcbe8cba0551f60f3824b712980fccc29427dbacd848",
+          "acrylic": "04911d382bd89deec42ae5d4987a05dba46371ae91b296eab54dbdfe1cb853a1"
+        }
+      ],
+      "sameNormalizedFiles": true
+    }
+  }
+}

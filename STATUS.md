@@ -1,3 +1,7 @@
+## 19.11.2026 · Astra · R15-Übergabe und Ring-Kassenprüfung live (#267)
+
+Die Testbestellungen #1033 und #1034 bestätigten vor und nach der letzten Auslieferung je zwei richtige Gestaltungen, Preise und Werkstattrevisionen. Der Warenkorb erreichte die sichtbaren persönlichen Bilder auf dem veröffentlichten R15 im Median in 5,57 s, vorher in 6,59 s. Die Zuordnung der 120 vorhandenen Variantenpreise behebt die Kassenablehnung dieses Ring-Artikels. Der aktuelle Produktionscode liegt auf `b36a8eef`. [Messungen, Fertigungsdateien und Bestellnachweis](docs/handoffs/2026-11-19-beta-267/tempo/live/abschluss/README.md)
+
 ## 19.11.2026 · Astra · Prio-Konfi R15 im veröffentlichten Shop (#267)
 
 Die geprüfte Designkarte erschien im Datensparmodus in 8/8 Versuchen nach 26 ms bis 113 ms. Vorher blieb sie in 8/8 Versuchen mindestens drei Sekunden leer. Der Designwechsel sank von 977 auf 191 ms. Neue Ring-Entwürfe zeigen das gebundene Gerätefoto im persönlichen Kundenbild (24/24 Bildmerkmale je Gestaltung). Am PC übertrug das kleine Bild rund 78 % weniger Daten als das zugehörige Original. Bis zu allen sichtbaren Warenkorbbildern vergingen vorher 6,59 s und zuletzt 6,06 s. Alle 72 regulären Testpositionen erreichten Shopify. Vergrößern, Entfernen, die Kassenbilder und die Fertigung aus festen Revisionen sind geprüft. Für Änderungen an der Shopify-Übergabe stehen die Bestellansicht mit Werkstattübergabe und die gesonderte Freigabe aus. [Live-Messungen, Screenshots, verwendete Commits und Rückweg](docs/handoffs/2026-11-19-beta-267/tempo/live/README.md)

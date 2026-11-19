@@ -1,0 +1,2969 @@
+[
+  {
+    "phase": "referenz",
+    "start": "2026-11-19T18:10:10.264Z",
+    "finish": "2026-11-19T18:14:23.665Z",
+    "browser": "157.0.8103.78",
+    "errors": [],
+    "timedCarts": 12,
+    "switchMs": {
+      "n": 12,
+      "median": 976.5,
+      "min": 397,
+      "max": 1840
+    },
+    "cartMs": {
+      "n": 12,
+      "median": 6594.5,
+      "min": 5685,
+      "max": 8760
+    },
+    "belowFiveSeconds": 0,
+    "cartByDevice": {
+      "PC": {
+        "n": 6,
+        "median": 6549.5,
+        "min": 5922,
+        "max": 8760
+      },
+      "Mobil": {
+        "n": 6,
+        "median": 6662.0,
+        "min": 5685,
+        "max": 7056
+      }
+    },
+    "cartByDeviceAndCache": {
+      "PC kalt": {
+        "n": 3,
+        "median": 6844,
+        "min": 6661,
+        "max": 8760
+      },
+      "PC warm": {
+        "n": 3,
+        "median": 6325,
+        "min": 5922,
+        "max": 6438
+      },
+      "Mobil kalt": {
+        "n": 3,
+        "median": 6796,
+        "min": 6511,
+        "max": 7036
+      },
+      "Mobil warm": {
+        "n": 3,
+        "median": 6528,
+        "min": 5685,
+        "max": 7056
+      }
+    },
+    "reviewMs": {
+      "n": 12,
+      "median": 513.175,
+      "min": 443.48,
+      "max": 569.4
+    },
+    "persistMs": {
+      "n": 12,
+      "median": 9.805,
+      "min": 7.97,
+      "max": 26.56
+    },
+    "shopifyImageWaitMs": {
+      "n": 12,
+      "median": 2027.965,
+      "min": 1129.67,
+      "max": 2703.9
+    },
+    "saveDataVisible": {
+      "n": 0
+    },
+    "saveDataAttempts": 8,
+    "rows": [
+      {
+        "round": 1,
+        "device": "PC",
+        "position": 1,
+        "saveData": true,
+        "cache": "kalt",
+        "editorMs": 5753,
+        "cardMs": null,
+        "switchMs": 966,
+        "cartMs": 8760,
+        "picturesIndependentlyRead": 1,
+        "allPositionChecks": false,
+        "reviewMs": 550.75,
+        "persistMs": 26.08,
+        "shopifyImageWaitMs": 2139.06,
+        "cameraChecks": [],
+        "browserImageBytes": [
+          null
+        ]
+      },
+      {
+        "round": 1,
+        "device": "PC",
+        "position": 2,
+        "saveData": true,
+        "cache": "warm",
+        "editorMs": 4349,
+        "cardMs": null,
+        "switchMs": 994,
+        "cartMs": 6438,
+        "picturesIndependentlyRead": 2,
+        "allPositionChecks": false,
+        "reviewMs": 521.69,
+        "persistMs": 12.04,
+        "shopifyImageWaitMs": 1295.54,
+        "cameraChecks": [],
+        "browserImageBytes": [
+          null,
+          null
+        ]
+      },
+      {
+        "round": 1,
+        "device": "Mobil",
+        "position": 1,
+        "saveData": true,
+        "cache": "kalt",
+        "editorMs": 6433,
+        "cardMs": null,
+        "switchMs": 987,
+        "cartMs": 7036,
+        "picturesIndependentlyRead": 1,
+        "allPositionChecks": false,
+        "reviewMs": 520.28,
+        "persistMs": 8.79,
+        "shopifyImageWaitMs": 1311.07,
+        "cameraChecks": [],
+        "browserImageBytes": [
+          null
+        ]
+      },
+      {
+        "round": 1,
+        "device": "Mobil",
+        "position": 2,
+        "saveData": true,
+        "cache": "warm",
+        "editorMs": 4613,
+        "cardMs": null,
+        "switchMs": 944,
+        "cartMs": 6528,
+        "picturesIndependentlyRead": 2,
+        "allPositionChecks": false,
+        "reviewMs": 443.48,
+        "persistMs": 22.57,
+        "shopifyImageWaitMs": 1398.34,
+        "cameraChecks": [],
+        "browserImageBytes": [
+          null,
+          null
+        ]
+      },
+      {
+        "round": 2,
+        "device": "Mobil",
+        "position": 1,
+        "saveData": false,
+        "cache": "kalt",
+        "editorMs": 5892,
+        "cardMs": 2653,
+        "switchMs": 1297,
+        "cartMs": 6511,
+        "picturesIndependentlyRead": 1,
+        "allPositionChecks": false,
+        "reviewMs": 518.12,
+        "persistMs": 7.97,
+        "shopifyImageWaitMs": 1129.67,
+        "cameraChecks": [],
+        "browserImageBytes": [
+          null
+        ]
+      },
+      {
+        "round": 2,
+        "device": "Mobil",
+        "position": 2,
+        "saveData": false,
+        "cache": "warm",
+        "editorMs": 5115,
+        "cardMs": 48,
+        "switchMs": 1240,
+        "cartMs": 7056,
+        "picturesIndependentlyRead": 2,
+        "allPositionChecks": false,
+        "reviewMs": 459.95,
+        "persistMs": 10.27,
+        "shopifyImageWaitMs": 2259.72,
+        "cameraChecks": [],
+        "browserImageBytes": [
+          null,
+          null
+        ]
+      },
+      {
+        "round": 2,
+        "device": "PC",
+        "position": 1,
+        "saveData": false,
+        "cache": "kalt",
+        "editorMs": 5440,
+        "cardMs": 3001,
+        "switchMs": 1386,
+        "cartMs": 6661,
+        "picturesIndependentlyRead": 1,
+        "allPositionChecks": false,
+        "reviewMs": 467.38,
+        "persistMs": 26.56,
+        "shopifyImageWaitMs": 2019,
+        "cameraChecks": [],
+        "browserImageBytes": [
+          null
+        ]
+      },
+      {
+        "round": 2,
+        "device": "PC",
+        "position": 2,
+        "saveData": false,
+        "cache": "warm",
+        "editorMs": 4879,
+        "cardMs": 435,
+        "switchMs": 1840,
+        "cartMs": 6325,
+        "picturesIndependentlyRead": 2,
+        "allPositionChecks": false,
+        "reviewMs": 569.4,
+        "persistMs": 9.08,
+        "shopifyImageWaitMs": 1885.87,
+        "cameraChecks": [],
+        "browserImageBytes": [
+          null,
+          null
+        ]
+      },
+      {
+        "round": 3,
+        "device": "PC",
+        "position": 1,
+        "saveData": true,
+        "cache": "kalt",
+        "editorMs": 4266,
+        "cardMs": null,
+        "switchMs": 410,
+        "cartMs": 6844,
+        "picturesIndependentlyRead": 1,
+        "allPositionChecks": false,
+        "reviewMs": 512.2,
+        "persistMs": 9.34,
+        "shopifyImageWaitMs": 2703.9,
+        "cameraChecks": [],
+        "browserImageBytes": [
+          null
+        ]
+      },
+      {
+        "round": 3,
+        "device": "PC",
+        "position": 2,
+        "saveData": true,
+        "cache": "warm",
+        "editorMs": 2696,
+        "cardMs": null,
+        "switchMs": 412,
+        "cartMs": 5922,
+        "picturesIndependentlyRead": 2,
+        "allPositionChecks": false,
+        "reviewMs": 514.15,
+        "persistMs": 24.75,
+        "shopifyImageWaitMs": 2036.93,
+        "cameraChecks": [],
+        "browserImageBytes": [
+          null,
+          null
+        ]
+      },
+      {
+        "round": 3,
+        "device": "Mobil",
+        "position": 1,
+        "saveData": true,
+        "cache": "kalt",
+        "editorMs": 4758,
+        "cardMs": null,
+        "switchMs": 572,
+        "cartMs": 6796,
+        "picturesIndependentlyRead": 1,
+        "allPositionChecks": false,
+        "reviewMs": 449.45,
+        "persistMs": 9.07,
+        "shopifyImageWaitMs": 2529.61,
+        "cameraChecks": [],
+        "browserImageBytes": [
+          null
+        ]
+      },
+      {
+        "round": 3,
+        "device": "Mobil",
+        "position": 2,
+        "saveData": true,
+        "cache": "warm",
+        "editorMs": 3261,
+        "cardMs": null,
+        "switchMs": 397,
+        "cartMs": 5685,
+        "picturesIndependentlyRead": 2,
+        "allPositionChecks": false,
+        "reviewMs": 496.44,
+        "persistMs": 8.66,
+        "shopifyImageWaitMs": 2101.94,
+        "cameraChecks": [],
+        "browserImageBytes": [
+          null,
+          null
+        ]
+      }
+    ]
+  },
+  {
+    "phase": "stufe5",
+    "start": "2026-11-19T18:58:02.876Z",
+    "finish": "2026-11-19T19:00:50.987Z",
+    "browser": "157.0.8103.78",
+    "errors": [],
+    "timedCarts": 12,
+    "switchMs": {
+      "n": 12,
+      "median": 191.0,
+      "min": 152,
+      "max": 216
+    },
+    "cartMs": {
+      "n": 12,
+      "median": 6059.5,
+      "min": 5655,
+      "max": 6651
+    },
+    "belowFiveSeconds": 0,
+    "cartByDevice": {
+      "PC": {
+        "n": 6,
+        "median": 6175.0,
+        "min": 5693,
+        "max": 6413
+      },
+      "Mobil": {
+        "n": 6,
+        "median": 6025.0,
+        "min": 5655,
+        "max": 6651
+      }
+    },
+    "cartByDeviceAndCache": {
+      "PC kalt": {
+        "n": 3,
+        "median": 6335,
+        "min": 6278,
+        "max": 6413
+      },
+      "PC warm": {
+        "n": 3,
+        "median": 5944,
+        "min": 5693,
+        "max": 6072
+      },
+      "Mobil kalt": {
+        "n": 3,
+        "median": 6003,
+        "min": 5979,
+        "max": 6047
+      },
+      "Mobil warm": {
+        "n": 3,
+        "median": 6137,
+        "min": 5655,
+        "max": 6651
+      }
+    },
+    "reviewMs": {
+      "n": 12,
+      "median": 479.83,
+      "min": 454.82,
+      "max": 546.71
+    },
+    "persistMs": {
+      "n": 12,
+      "median": 10.94,
+      "min": 8.5,
+      "max": 23.07
+    },
+    "shopifyImageWaitMs": {
+      "n": 12,
+      "median": 1785.76,
+      "min": 1091.23,
+      "max": 2495.06
+    },
+    "saveDataVisible": {
+      "n": 8,
+      "median": 28.0,
+      "min": 26,
+      "max": 113
+    },
+    "saveDataAttempts": 8,
+    "rows": [
+      {
+        "round": 1,
+        "device": "PC",
+        "position": 1,
+        "saveData": true,
+        "cache": "kalt",
+        "editorMs": 4365,
+        "cardMs": 111,
+        "switchMs": 152,
+        "cartMs": 6278,
+        "picturesIndependentlyRead": 1,
+        "allPositionChecks": true,
+        "reviewMs": 485.76,
+        "persistMs": 9.24,
+        "shopifyImageWaitMs": 1873.58,
+        "cameraChecks": [
+          24
+        ],
+        "browserImageBytes": [
+          4691
+        ]
+      },
+      {
+        "round": 1,
+        "device": "PC",
+        "position": 2,
+        "saveData": true,
+        "cache": "warm",
+        "editorMs": 1958,
+        "cardMs": 27,
+        "switchMs": 198,
+        "cartMs": 5693,
+        "picturesIndependentlyRead": 2,
+        "allPositionChecks": true,
+        "reviewMs": 470.6,
+        "persistMs": 22.38,
+        "shopifyImageWaitMs": 1472.54,
+        "cameraChecks": [
+          24,
+          24
+        ],
+        "browserImageBytes": [
+          4663,
+          4691
+        ]
+      },
+      {
+        "round": 1,
+        "device": "Mobil",
+        "position": 1,
+        "saveData": true,
+        "cache": "kalt",
+        "editorMs": 4856,
+        "cardMs": 110,
+        "switchMs": 194,
+        "cartMs": 6047,
+        "picturesIndependentlyRead": 1,
+        "allPositionChecks": true,
+        "reviewMs": 517.12,
+        "persistMs": 8.5,
+        "shopifyImageWaitMs": 1786.71,
+        "cameraChecks": [
+          24
+        ],
+        "browserImageBytes": [
+          4691
+        ]
+      },
+      {
+        "round": 1,
+        "device": "Mobil",
+        "position": 2,
+        "saveData": true,
+        "cache": "warm",
+        "editorMs": 2442,
+        "cardMs": 29,
+        "switchMs": 165,
+        "cartMs": 5655,
+        "picturesIndependentlyRead": 2,
+        "allPositionChecks": true,
+        "reviewMs": 469.14,
+        "persistMs": 8.95,
+        "shopifyImageWaitMs": 1762.84,
+        "cameraChecks": [
+          24,
+          24
+        ],
+        "browserImageBytes": [
+          4663,
+          4691
+        ]
+      },
+      {
+        "round": 2,
+        "device": "Mobil",
+        "position": 1,
+        "saveData": false,
+        "cache": "kalt",
+        "editorMs": 4701,
+        "cardMs": 28,
+        "switchMs": 180,
+        "cartMs": 5979,
+        "picturesIndependentlyRead": 1,
+        "allPositionChecks": true,
+        "reviewMs": 465.56,
+        "persistMs": 23.07,
+        "shopifyImageWaitMs": 1741.48,
+        "cameraChecks": [
+          24
+        ],
+        "browserImageBytes": [
+          4691
+        ]
+      },
+      {
+        "round": 2,
+        "device": "Mobil",
+        "position": 2,
+        "saveData": false,
+        "cache": "warm",
+        "editorMs": 2398,
+        "cardMs": 29,
+        "switchMs": 201,
+        "cartMs": 6137,
+        "picturesIndependentlyRead": 2,
+        "allPositionChecks": true,
+        "reviewMs": 473.9,
+        "persistMs": 9.31,
+        "shopifyImageWaitMs": 1784.81,
+        "cameraChecks": [
+          24,
+          24
+        ],
+        "browserImageBytes": [
+          4663,
+          4691
+        ]
+      },
+      {
+        "round": 2,
+        "device": "PC",
+        "position": 1,
+        "saveData": false,
+        "cache": "kalt",
+        "editorMs": 3794,
+        "cardMs": 28,
+        "switchMs": 203,
+        "cartMs": 6335,
+        "picturesIndependentlyRead": 1,
+        "allPositionChecks": true,
+        "reviewMs": 546.71,
+        "persistMs": 11.31,
+        "shopifyImageWaitMs": 1091.23,
+        "cameraChecks": [
+          24
+        ],
+        "browserImageBytes": [
+          4691
+        ]
+      },
+      {
+        "round": 2,
+        "device": "PC",
+        "position": 2,
+        "saveData": false,
+        "cache": "warm",
+        "editorMs": 2247,
+        "cardMs": 23,
+        "switchMs": 202,
+        "cartMs": 5944,
+        "picturesIndependentlyRead": 2,
+        "allPositionChecks": true,
+        "reviewMs": 472.76,
+        "persistMs": 22.55,
+        "shopifyImageWaitMs": 1850.65,
+        "cameraChecks": [
+          24,
+          24
+        ],
+        "browserImageBytes": [
+          4663,
+          4691
+        ]
+      },
+      {
+        "round": 3,
+        "device": "PC",
+        "position": 1,
+        "saveData": true,
+        "cache": "kalt",
+        "editorMs": 4048,
+        "cardMs": 113,
+        "switchMs": 163,
+        "cartMs": 6413,
+        "picturesIndependentlyRead": 1,
+        "allPositionChecks": true,
+        "reviewMs": 535.56,
+        "persistMs": 17.64,
+        "shopifyImageWaitMs": 2031.16,
+        "cameraChecks": [
+          24
+        ],
+        "browserImageBytes": [
+          4691
+        ]
+      },
+      {
+        "round": 3,
+        "device": "PC",
+        "position": 2,
+        "saveData": true,
+        "cache": "warm",
+        "editorMs": 2224,
+        "cardMs": 27,
+        "switchMs": 216,
+        "cartMs": 6072,
+        "picturesIndependentlyRead": 2,
+        "allPositionChecks": true,
+        "reviewMs": 523.55,
+        "persistMs": 9.67,
+        "shopifyImageWaitMs": 1729.87,
+        "cameraChecks": [
+          24,
+          24
+        ],
+        "browserImageBytes": [
+          4663,
+          4691
+        ]
+      },
+      {
+        "round": 3,
+        "device": "Mobil",
+        "position": 1,
+        "saveData": true,
+        "cache": "kalt",
+        "editorMs": 4223,
+        "cardMs": 26,
+        "switchMs": 188,
+        "cartMs": 6003,
+        "picturesIndependentlyRead": 1,
+        "allPositionChecks": true,
+        "reviewMs": 454.82,
+        "persistMs": 21,
+        "shopifyImageWaitMs": 1840.94,
+        "cameraChecks": [
+          24
+        ],
+        "browserImageBytes": [
+          4691
+        ]
+      },
+      {
+        "round": 3,
+        "device": "Mobil",
+        "position": 2,
+        "saveData": true,
+        "cache": "warm",
+        "editorMs": 2115,
+        "cardMs": 27,
+        "switchMs": 162,
+        "cartMs": 6651,
+        "picturesIndependentlyRead": 2,
+        "allPositionChecks": true,
+        "reviewMs": 509.88,
+        "persistMs": 10.57,
+        "shopifyImageWaitMs": 2495.06,
+        "cameraChecks": [
+          24,
+          24
+        ],
+        "browserImageBytes": [
+          4663,
+          4691
+        ]
+      }
+    ]
+  },
+  {
+    "phase": "zusatz-karten",
+    "start": "2026-11-19T19:53:35.221Z",
+    "finish": "2026-11-19T19:56:44.254Z",
+    "browser": "157.0.8103.78",
+    "errors": [],
+    "timedCarts": 12,
+    "switchMs": {
+      "n": 12,
+      "median": 191.5,
+      "min": 137,
+      "max": 273
+    },
+    "cartMs": {
+      "n": 12,
+      "median": 6445.0,
+      "min": 6004,
+      "max": 12635
+    },
+    "belowFiveSeconds": 0,
+    "cartByDevice": {
+      "PC": {
+        "n": 6,
+        "median": 6491.0,
+        "min": 6004,
+        "max": 12635
+      },
+      "Mobil": {
+        "n": 6,
+        "median": 6445.0,
+        "min": 6114,
+        "max": 7395
+      }
+    },
+    "cartByDeviceAndCache": {
+      "PC kalt": {
+        "n": 3,
+        "median": 6222,
+        "min": 6192,
+        "max": 12635
+      },
+      "PC warm": {
+        "n": 3,
+        "median": 6760,
+        "min": 6004,
+        "max": 9641
+      },
+      "Mobil kalt": {
+        "n": 3,
+        "median": 6476,
+        "min": 6114,
+        "max": 7395
+      },
+      "Mobil warm": {
+        "n": 3,
+        "median": 6414,
+        "min": 6140,
+        "max": 6896
+      }
+    },
+    "reviewMs": {
+      "n": 12,
+      "median": 544.36,
+      "min": 462.16,
+      "max": 658.81
+    },
+    "persistMs": {
+      "n": 12,
+      "median": 11.085,
+      "min": 7.87,
+      "max": 26.28
+    },
+    "shopifyImageWaitMs": {
+      "n": 12,
+      "median": 1906.51,
+      "min": 1729.34,
+      "max": 8136.26
+    },
+    "saveDataVisible": {
+      "n": 8,
+      "median": 25.0,
+      "min": 23,
+      "max": 56
+    },
+    "saveDataAttempts": 8,
+    "rows": [
+      {
+        "round": 1,
+        "device": "PC",
+        "position": 1,
+        "saveData": true,
+        "cache": "kalt",
+        "editorMs": 4152,
+        "cardMs": 23,
+        "switchMs": 137,
+        "cartMs": 12635,
+        "picturesIndependentlyRead": 1,
+        "allPositionChecks": true,
+        "reviewMs": 467.89,
+        "persistMs": 7.87,
+        "shopifyImageWaitMs": 8136.26,
+        "cameraChecks": [
+          24
+        ],
+        "browserImageBytes": [
+          4691
+        ]
+      },
+      {
+        "round": 1,
+        "device": "PC",
+        "position": 2,
+        "saveData": true,
+        "cache": "warm",
+        "editorMs": 2357,
+        "cardMs": 23,
+        "switchMs": 236,
+        "cartMs": 9641,
+        "picturesIndependentlyRead": 2,
+        "allPositionChecks": true,
+        "reviewMs": 658.81,
+        "persistMs": 22.09,
+        "shopifyImageWaitMs": 5562.52,
+        "cameraChecks": [
+          24,
+          24
+        ],
+        "browserImageBytes": [
+          4663,
+          4691
+        ]
+      },
+      {
+        "round": 1,
+        "device": "Mobil",
+        "position": 1,
+        "saveData": true,
+        "cache": "kalt",
+        "editorMs": 4422,
+        "cardMs": 26,
+        "switchMs": 158,
+        "cartMs": 6114,
+        "picturesIndependentlyRead": 1,
+        "allPositionChecks": true,
+        "reviewMs": 462.16,
+        "persistMs": 21.28,
+        "shopifyImageWaitMs": 1822.81,
+        "cameraChecks": [
+          24
+        ],
+        "browserImageBytes": [
+          4691
+        ]
+      },
+      {
+        "round": 1,
+        "device": "Mobil",
+        "position": 2,
+        "saveData": true,
+        "cache": "warm",
+        "editorMs": 2462,
+        "cardMs": 24,
+        "switchMs": 188,
+        "cartMs": 6896,
+        "picturesIndependentlyRead": 2,
+        "allPositionChecks": true,
+        "reviewMs": 551.7,
+        "persistMs": 8.29,
+        "shopifyImageWaitMs": 1875.82,
+        "cameraChecks": [
+          24,
+          24
+        ],
+        "browserImageBytes": [
+          4663,
+          4691
+        ]
+      },
+      {
+        "round": 2,
+        "device": "Mobil",
+        "position": 1,
+        "saveData": false,
+        "cache": "kalt",
+        "editorMs": 4701,
+        "cardMs": 35,
+        "switchMs": 210,
+        "cartMs": 6476,
+        "picturesIndependentlyRead": 1,
+        "allPositionChecks": true,
+        "reviewMs": 547.98,
+        "persistMs": 9.65,
+        "shopifyImageWaitMs": 1766.96,
+        "cameraChecks": [
+          24
+        ],
+        "browserImageBytes": [
+          4691
+        ]
+      },
+      {
+        "round": 2,
+        "device": "Mobil",
+        "position": 2,
+        "saveData": false,
+        "cache": "warm",
+        "editorMs": 2967,
+        "cardMs": 32,
+        "switchMs": 258,
+        "cartMs": 6414,
+        "picturesIndependentlyRead": 2,
+        "allPositionChecks": true,
+        "reviewMs": 499.41,
+        "persistMs": 24.92,
+        "shopifyImageWaitMs": 1729.34,
+        "cameraChecks": [
+          24,
+          24
+        ],
+        "browserImageBytes": [
+          4663,
+          4691
+        ]
+      },
+      {
+        "round": 2,
+        "device": "PC",
+        "position": 1,
+        "saveData": false,
+        "cache": "kalt",
+        "editorMs": 4053,
+        "cardMs": 25,
+        "switchMs": 160,
+        "cartMs": 6192,
+        "picturesIndependentlyRead": 1,
+        "allPositionChecks": true,
+        "reviewMs": 545.59,
+        "persistMs": 10.13,
+        "shopifyImageWaitMs": 1769.66,
+        "cameraChecks": [
+          24
+        ],
+        "browserImageBytes": [
+          4691
+        ]
+      },
+      {
+        "round": 2,
+        "device": "PC",
+        "position": 2,
+        "saveData": false,
+        "cache": "warm",
+        "editorMs": 2502,
+        "cardMs": 46,
+        "switchMs": 273,
+        "cartMs": 6760,
+        "picturesIndependentlyRead": 2,
+        "allPositionChecks": true,
+        "reviewMs": 517.94,
+        "persistMs": 9.63,
+        "shopifyImageWaitMs": 2540.28,
+        "cameraChecks": [
+          24,
+          24
+        ],
+        "browserImageBytes": [
+          4663,
+          4691
+        ]
+      },
+      {
+        "round": 3,
+        "device": "PC",
+        "position": 1,
+        "saveData": true,
+        "cache": "kalt",
+        "editorMs": 4114,
+        "cardMs": 30,
+        "switchMs": 195,
+        "cartMs": 6222,
+        "picturesIndependentlyRead": 1,
+        "allPositionChecks": true,
+        "reviewMs": 572.75,
+        "persistMs": 26.28,
+        "shopifyImageWaitMs": 1827.4,
+        "cameraChecks": [
+          24
+        ],
+        "browserImageBytes": [
+          4691
+        ]
+      },
+      {
+        "round": 3,
+        "device": "PC",
+        "position": 2,
+        "saveData": true,
+        "cache": "warm",
+        "editorMs": 2319,
+        "cardMs": 29,
+        "switchMs": 223,
+        "cartMs": 6004,
+        "picturesIndependentlyRead": 2,
+        "allPositionChecks": true,
+        "reviewMs": 634.65,
+        "persistMs": 9.3,
+        "shopifyImageWaitMs": 1937.2,
+        "cameraChecks": [
+          24,
+          24
+        ],
+        "browserImageBytes": [
+          4663,
+          4691
+        ]
+      },
+      {
+        "round": 3,
+        "device": "Mobil",
+        "position": 1,
+        "saveData": true,
+        "cache": "kalt",
+        "editorMs": 4749,
+        "cardMs": 56,
+        "switchMs": 171,
+        "cartMs": 7395,
+        "picturesIndependentlyRead": 1,
+        "allPositionChecks": true,
+        "reviewMs": 543.13,
+        "persistMs": 12.04,
+        "shopifyImageWaitMs": 2822.19,
+        "cameraChecks": [
+          24
+        ],
+        "browserImageBytes": [
+          4691
+        ]
+      },
+      {
+        "round": 3,
+        "device": "Mobil",
+        "position": 2,
+        "saveData": true,
+        "cache": "warm",
+        "editorMs": 2925,
+        "cardMs": 23,
+        "switchMs": 181,
+        "cartMs": 6140,
+        "picturesIndependentlyRead": 2,
+        "allPositionChecks": true,
+        "reviewMs": 483.61,
+        "persistMs": 23.39,
+        "shopifyImageWaitMs": 2145.31,
+        "cameraChecks": [
+          24,
+          24
+        ],
+        "browserImageBytes": [
+          4663,
+          4691
+        ]
+      }
+    ]
+  },
+  {
+    "phase": "zusatz-speichern",
+    "start": "2026-11-19T19:57:16.846Z",
+    "finish": "2026-11-19T20:00:34.673Z",
+    "browser": "157.0.8103.78",
+    "errors": [],
+    "timedCarts": 12,
+    "switchMs": {
+      "n": 12,
+      "median": 184.5,
+      "min": 139,
+      "max": 241
+    },
+    "cartMs": {
+      "n": 12,
+      "median": 6362.5,
+      "min": 5672,
+      "max": 8576
+    },
+    "belowFiveSeconds": 0,
+    "cartByDevice": {
+      "PC": {
+        "n": 6,
+        "median": 6362.0,
+        "min": 6200,
+        "max": 7958
+      },
+      "Mobil": {
+        "n": 6,
+        "median": 6387.5,
+        "min": 5672,
+        "max": 8576
+      }
+    },
+    "cartByDeviceAndCache": {
+      "PC kalt": {
+        "n": 3,
+        "median": 6212,
+        "min": 6200,
+        "max": 7958
+      },
+      "PC warm": {
+        "n": 3,
+        "median": 6416,
+        "min": 6308,
+        "max": 6647
+      },
+      "Mobil kalt": {
+        "n": 3,
+        "median": 6256,
+        "min": 5672,
+        "max": 6309
+      },
+      "Mobil warm": {
+        "n": 3,
+        "median": 6709,
+        "min": 6466,
+        "max": 8576
+      }
+    },
+    "reviewMs": {
+      "n": 12,
+      "median": 441.345,
+      "min": 391,
+      "max": 563.52
+    },
+    "persistMs": {
+      "n": 12,
+      "median": 10.045,
+      "min": 8.41,
+      "max": 32.06
+    },
+    "shopifyImageWaitMs": {
+      "n": 12,
+      "median": 2037.24,
+      "min": 1315.21,
+      "max": 4479.09
+    },
+    "saveDataVisible": {
+      "n": 8,
+      "median": 28.0,
+      "min": 23,
+      "max": 113
+    },
+    "saveDataAttempts": 8,
+    "rows": [
+      {
+        "round": 1,
+        "device": "PC",
+        "position": 1,
+        "saveData": true,
+        "cache": "kalt",
+        "editorMs": 3666,
+        "cardMs": 32,
+        "switchMs": 177,
+        "cartMs": 7958,
+        "picturesIndependentlyRead": 1,
+        "allPositionChecks": true,
+        "reviewMs": 557.26,
+        "persistMs": 9.41,
+        "shopifyImageWaitMs": 2009.66,
+        "cameraChecks": [
+          24
+        ],
+        "browserImageBytes": [
+          4691
+        ]
+      },
+      {
+        "round": 1,
+        "device": "PC",
+        "position": 2,
+        "saveData": true,
+        "cache": "warm",
+        "editorMs": 2275,
+        "cardMs": 23,
+        "switchMs": 193,
+        "cartMs": 6416,
+        "picturesIndependentlyRead": 2,
+        "allPositionChecks": true,
+        "reviewMs": 483.23,
+        "persistMs": 12.71,
+        "shopifyImageWaitMs": 1315.21,
+        "cameraChecks": [
+          24,
+          24
+        ],
+        "browserImageBytes": [
+          4663,
+          4691
+        ]
+      },
+      {
+        "round": 1,
+        "device": "Mobil",
+        "position": 1,
+        "saveData": true,
+        "cache": "kalt",
+        "editorMs": 4643,
+        "cardMs": 76,
+        "switchMs": 163,
+        "cartMs": 6309,
+        "picturesIndependentlyRead": 1,
+        "allPositionChecks": true,
+        "reviewMs": 440.01,
+        "persistMs": 24.85,
+        "shopifyImageWaitMs": 1932.69,
+        "cameraChecks": [
+          24
+        ],
+        "browserImageBytes": [
+          4691
+        ]
+      },
+      {
+        "round": 1,
+        "device": "Mobil",
+        "position": 2,
+        "saveData": true,
+        "cache": "warm",
+        "editorMs": 2605,
+        "cardMs": 27,
+        "switchMs": 168,
+        "cartMs": 6709,
+        "picturesIndependentlyRead": 2,
+        "allPositionChecks": true,
+        "reviewMs": 563.52,
+        "persistMs": 8.78,
+        "shopifyImageWaitMs": 1634.6,
+        "cameraChecks": [
+          24,
+          24
+        ],
+        "browserImageBytes": [
+          4663,
+          4691
+        ]
+      },
+      {
+        "round": 2,
+        "device": "Mobil",
+        "position": 1,
+        "saveData": false,
+        "cache": "kalt",
+        "editorMs": 3748,
+        "cardMs": 29,
+        "switchMs": 170,
+        "cartMs": 5672,
+        "picturesIndependentlyRead": 1,
+        "allPositionChecks": true,
+        "reviewMs": 391,
+        "persistMs": 9.58,
+        "shopifyImageWaitMs": 1949.79,
+        "cameraChecks": [
+          24
+        ],
+        "browserImageBytes": [
+          4691
+        ]
+      },
+      {
+        "round": 2,
+        "device": "Mobil",
+        "position": 2,
+        "saveData": false,
+        "cache": "warm",
+        "editorMs": 2407,
+        "cardMs": 51,
+        "switchMs": 192,
+        "cartMs": 6466,
+        "picturesIndependentlyRead": 2,
+        "allPositionChecks": true,
+        "reviewMs": 474.05,
+        "persistMs": 32.06,
+        "shopifyImageWaitMs": 2681.44,
+        "cameraChecks": [
+          24,
+          24
+        ],
+        "browserImageBytes": [
+          4663,
+          4691
+        ]
+      },
+      {
+        "round": 2,
+        "device": "PC",
+        "position": 1,
+        "saveData": false,
+        "cache": "kalt",
+        "editorMs": 3614,
+        "cardMs": 32,
+        "switchMs": 192,
+        "cartMs": 6212,
+        "picturesIndependentlyRead": 1,
+        "allPositionChecks": true,
+        "reviewMs": 426.6,
+        "persistMs": 8.41,
+        "shopifyImageWaitMs": 2064.82,
+        "cameraChecks": [
+          24
+        ],
+        "browserImageBytes": [
+          4691
+        ]
+      },
+      {
+        "round": 2,
+        "device": "PC",
+        "position": 2,
+        "saveData": false,
+        "cache": "warm",
+        "editorMs": 2251,
+        "cardMs": 33,
+        "switchMs": 221,
+        "cartMs": 6647,
+        "picturesIndependentlyRead": 2,
+        "allPositionChecks": true,
+        "reviewMs": 505.23,
+        "persistMs": 10.51,
+        "shopifyImageWaitMs": 2940.49,
+        "cameraChecks": [
+          24,
+          24
+        ],
+        "browserImageBytes": [
+          4663,
+          4691
+        ]
+      },
+      {
+        "round": 3,
+        "device": "PC",
+        "position": 1,
+        "saveData": true,
+        "cache": "kalt",
+        "editorMs": 3748,
+        "cardMs": 113,
+        "switchMs": 139,
+        "cartMs": 6200,
+        "picturesIndependentlyRead": 1,
+        "allPositionChecks": true,
+        "reviewMs": 425.18,
+        "persistMs": 23.21,
+        "shopifyImageWaitMs": 1961.14,
+        "cameraChecks": [
+          24
+        ],
+        "browserImageBytes": [
+          4691
+        ]
+      },
+      {
+        "round": 3,
+        "device": "PC",
+        "position": 2,
+        "saveData": true,
+        "cache": "warm",
+        "editorMs": 2633,
+        "cardMs": 24,
+        "switchMs": 241,
+        "cartMs": 6308,
+        "picturesIndependentlyRead": 2,
+        "allPositionChecks": true,
+        "reviewMs": 392.23,
+        "persistMs": 8.66,
+        "shopifyImageWaitMs": 2705.36,
+        "cameraChecks": [
+          24,
+          24
+        ],
+        "browserImageBytes": [
+          4663,
+          4691
+        ]
+      },
+      {
+        "round": 3,
+        "device": "Mobil",
+        "position": 1,
+        "saveData": true,
+        "cache": "kalt",
+        "editorMs": 4088,
+        "cardMs": 29,
+        "switchMs": 205,
+        "cartMs": 6256,
+        "picturesIndependentlyRead": 1,
+        "allPositionChecks": true,
+        "reviewMs": 442.68,
+        "persistMs": 9.28,
+        "shopifyImageWaitMs": 2074.25,
+        "cameraChecks": [
+          24
+        ],
+        "browserImageBytes": [
+          4691
+        ]
+      },
+      {
+        "round": 3,
+        "device": "Mobil",
+        "position": 2,
+        "saveData": true,
+        "cache": "warm",
+        "editorMs": 3009,
+        "cardMs": 25,
+        "switchMs": 169,
+        "cartMs": 8576,
+        "picturesIndependentlyRead": 2,
+        "allPositionChecks": true,
+        "reviewMs": 418.56,
+        "persistMs": 24.18,
+        "shopifyImageWaitMs": 4479.09,
+        "cameraChecks": [
+          24,
+          24
+        ],
+        "browserImageBytes": [
+          4663,
+          4691
+        ]
+      }
+    ]
+  },
+  {
+    "phase": "zusatz-endstand",
+    "start": "2026-11-19T20:09:59.061Z",
+    "finish": "2026-11-19T20:12:52.786Z",
+    "browser": "157.0.8103.78",
+    "errors": [],
+    "timedCarts": 12,
+    "switchMs": {
+      "n": 12,
+      "median": 141.5,
+      "min": 114,
+      "max": 255
+    },
+    "cartMs": {
+      "n": 12,
+      "median": 5689.5,
+      "min": 5353,
+      "max": 6628
+    },
+    "belowFiveSeconds": 0,
+    "cartByDevice": {
+      "PC": {
+        "n": 6,
+        "median": 5984.5,
+        "min": 5637,
+        "max": 6628
+      },
+      "Mobil": {
+        "n": 6,
+        "median": 5643.0,
+        "min": 5353,
+        "max": 6318
+      }
+    },
+    "cartByDeviceAndCache": {
+      "PC kalt": {
+        "n": 3,
+        "median": 6408,
+        "min": 6268,
+        "max": 6628
+      },
+      "PC warm": {
+        "n": 3,
+        "median": 5657,
+        "min": 5637,
+        "max": 5701
+      },
+      "Mobil kalt": {
+        "n": 3,
+        "median": 5997,
+        "min": 5678,
+        "max": 6318
+      },
+      "Mobil warm": {
+        "n": 3,
+        "median": 5531,
+        "min": 5353,
+        "max": 5608
+      }
+    },
+    "reviewMs": {
+      "n": 12,
+      "median": 461.045,
+      "min": 363.02,
+      "max": 489.71
+    },
+    "persistMs": {
+      "n": 12,
+      "median": 9.76,
+      "min": 8.17,
+      "max": 26.15
+    },
+    "shopifyImageWaitMs": {
+      "n": 12,
+      "median": 1834.255,
+      "min": 1390.74,
+      "max": 2507.74
+    },
+    "saveDataVisible": {
+      "n": 8,
+      "median": 28.0,
+      "min": 26,
+      "max": 29
+    },
+    "saveDataAttempts": 8,
+    "rows": [
+      {
+        "round": 1,
+        "device": "PC",
+        "position": 1,
+        "saveData": true,
+        "cache": "kalt",
+        "editorMs": 3790,
+        "cardMs": 26,
+        "switchMs": 154,
+        "cartMs": 6628,
+        "picturesIndependentlyRead": 1,
+        "allPositionChecks": true,
+        "reviewMs": 465.24,
+        "persistMs": 12.17,
+        "shopifyImageWaitMs": 2507.74,
+        "cameraChecks": [
+          24
+        ],
+        "browserImageBytes": [
+          4691
+        ]
+      },
+      {
+        "round": 1,
+        "device": "PC",
+        "position": 2,
+        "saveData": true,
+        "cache": "warm",
+        "editorMs": 2038,
+        "cardMs": 27,
+        "switchMs": 139,
+        "cartMs": 5701,
+        "picturesIndependentlyRead": 2,
+        "allPositionChecks": true,
+        "reviewMs": 477.28,
+        "persistMs": 9.37,
+        "shopifyImageWaitMs": 2177.34,
+        "cameraChecks": [
+          24,
+          24
+        ],
+        "browserImageBytes": [
+          4663,
+          4691
+        ]
+      },
+      {
+        "round": 1,
+        "device": "Mobil",
+        "position": 1,
+        "saveData": true,
+        "cache": "kalt",
+        "editorMs": 3302,
+        "cardMs": 28,
+        "switchMs": 114,
+        "cartMs": 5678,
+        "picturesIndependentlyRead": 1,
+        "allPositionChecks": true,
+        "reviewMs": 402.69,
+        "persistMs": 26.15,
+        "shopifyImageWaitMs": 2220.8,
+        "cameraChecks": [
+          24
+        ],
+        "browserImageBytes": [
+          4691
+        ]
+      },
+      {
+        "round": 1,
+        "device": "Mobil",
+        "position": 2,
+        "saveData": true,
+        "cache": "warm",
+        "editorMs": 1880,
+        "cardMs": 28,
+        "switchMs": 115,
+        "cartMs": 5353,
+        "picturesIndependentlyRead": 2,
+        "allPositionChecks": true,
+        "reviewMs": 473.72,
+        "persistMs": 8.43,
+        "shopifyImageWaitMs": 1390.74,
+        "cameraChecks": [
+          24,
+          24
+        ],
+        "browserImageBytes": [
+          4663,
+          4691
+        ]
+      },
+      {
+        "round": 2,
+        "device": "Mobil",
+        "position": 1,
+        "saveData": false,
+        "cache": "kalt",
+        "editorMs": 5134,
+        "cardMs": 28,
+        "switchMs": 143,
+        "cartMs": 6318,
+        "picturesIndependentlyRead": 1,
+        "allPositionChecks": true,
+        "reviewMs": 467.57,
+        "persistMs": 9.32,
+        "shopifyImageWaitMs": 1757.6,
+        "cameraChecks": [
+          24
+        ],
+        "browserImageBytes": [
+          4691
+        ]
+      },
+      {
+        "round": 2,
+        "device": "Mobil",
+        "position": 2,
+        "saveData": false,
+        "cache": "warm",
+        "editorMs": 2414,
+        "cardMs": 24,
+        "switchMs": 255,
+        "cartMs": 5608,
+        "picturesIndependentlyRead": 2,
+        "allPositionChecks": true,
+        "reviewMs": 435.66,
+        "persistMs": 22.74,
+        "shopifyImageWaitMs": 1823.44,
+        "cameraChecks": [
+          24,
+          24
+        ],
+        "browserImageBytes": [
+          4663,
+          4691
+        ]
+      },
+      {
+        "round": 2,
+        "device": "PC",
+        "position": 1,
+        "saveData": false,
+        "cache": "kalt",
+        "editorMs": 4793,
+        "cardMs": 27,
+        "switchMs": 123,
+        "cartMs": 6408,
+        "picturesIndependentlyRead": 1,
+        "allPositionChecks": true,
+        "reviewMs": 474.76,
+        "persistMs": 8.95,
+        "shopifyImageWaitMs": 1845.07,
+        "cameraChecks": [
+          24
+        ],
+        "browserImageBytes": [
+          4691
+        ]
+      },
+      {
+        "round": 2,
+        "device": "PC",
+        "position": 2,
+        "saveData": false,
+        "cache": "warm",
+        "editorMs": 2188,
+        "cardMs": 28,
+        "switchMs": 148,
+        "cartMs": 5657,
+        "picturesIndependentlyRead": 2,
+        "allPositionChecks": true,
+        "reviewMs": 428.85,
+        "persistMs": 8.17,
+        "shopifyImageWaitMs": 1550.2,
+        "cameraChecks": [
+          24,
+          24
+        ],
+        "browserImageBytes": [
+          4663,
+          4691
+        ]
+      },
+      {
+        "round": 3,
+        "device": "PC",
+        "position": 1,
+        "saveData": true,
+        "cache": "kalt",
+        "editorMs": 4652,
+        "cardMs": 29,
+        "switchMs": 114,
+        "cartMs": 6268,
+        "picturesIndependentlyRead": 1,
+        "allPositionChecks": true,
+        "reviewMs": 363.02,
+        "persistMs": 22.66,
+        "shopifyImageWaitMs": 1605,
+        "cameraChecks": [
+          24
+        ],
+        "browserImageBytes": [
+          4691
+        ]
+      },
+      {
+        "round": 3,
+        "device": "PC",
+        "position": 2,
+        "saveData": true,
+        "cache": "warm",
+        "editorMs": 2491,
+        "cardMs": 28,
+        "switchMs": 153,
+        "cartMs": 5637,
+        "picturesIndependentlyRead": 2,
+        "allPositionChecks": true,
+        "reviewMs": 421.57,
+        "persistMs": 9.66,
+        "shopifyImageWaitMs": 1926.38,
+        "cameraChecks": [
+          24,
+          24
+        ],
+        "browserImageBytes": [
+          4663,
+          4691
+        ]
+      },
+      {
+        "round": 3,
+        "device": "Mobil",
+        "position": 1,
+        "saveData": true,
+        "cache": "kalt",
+        "editorMs": 4097,
+        "cardMs": 28,
+        "switchMs": 140,
+        "cartMs": 5997,
+        "picturesIndependentlyRead": 1,
+        "allPositionChecks": true,
+        "reviewMs": 456.85,
+        "persistMs": 9.86,
+        "shopifyImageWaitMs": 1823.03,
+        "cameraChecks": [
+          24
+        ],
+        "browserImageBytes": [
+          4691
+        ]
+      },
+      {
+        "round": 3,
+        "device": "Mobil",
+        "position": 2,
+        "saveData": true,
+        "cache": "warm",
+        "editorMs": 2608,
+        "cardMs": 29,
+        "switchMs": 148,
+        "cartMs": 5531,
+        "picturesIndependentlyRead": 2,
+        "allPositionChecks": true,
+        "reviewMs": 489.71,
+        "persistMs": 20.97,
+        "shopifyImageWaitMs": 1921.17,
+        "cameraChecks": [
+          24,
+          24
+        ],
+        "browserImageBytes": [
+          4663,
+          4691
+        ]
+      }
+    ]
+  },
+  {
+    "phase": "ring-vor-kasse",
+    "start": "2026-11-19T20:31:41.254Z",
+    "finish": "2026-11-19T20:34:50.483Z",
+    "browser": "157.0.8103.78",
+    "errors": [],
+    "timedCarts": 12,
+    "switchMs": {
+      "n": 12,
+      "median": 173.5,
+      "min": 125,
+      "max": 284
+    },
+    "cartMs": {
+      "n": 12,
+      "median": 6594.5,
+      "min": 5759,
+      "max": 7907
+    },
+    "belowFiveSeconds": 0,
+    "cartByDevice": {
+      "PC": {
+        "n": 6,
+        "median": 6263.0,
+        "min": 5759,
+        "max": 7905
+      },
+      "Mobil": {
+        "n": 6,
+        "median": 6756.0,
+        "min": 6194,
+        "max": 7907
+      }
+    },
+    "cartByDeviceAndCache": {
+      "PC kalt": {
+        "n": 3,
+        "median": 6133,
+        "min": 5759,
+        "max": 6393
+      },
+      "PC warm": {
+        "n": 3,
+        "median": 7558,
+        "min": 5902,
+        "max": 7905
+      },
+      "Mobil kalt": {
+        "n": 3,
+        "median": 6856,
+        "min": 6194,
+        "max": 7907
+      },
+      "Mobil warm": {
+        "n": 3,
+        "median": 6656,
+        "min": 6533,
+        "max": 7272
+      }
+    },
+    "reviewMs": {
+      "n": 12,
+      "median": 423.335,
+      "min": 348.89,
+      "max": 487.91
+    },
+    "persistMs": {
+      "n": 12,
+      "median": 9.465,
+      "min": 7.49,
+      "max": 28.63
+    },
+    "shopifyImageWaitMs": {
+      "n": 12,
+      "median": 2137.125,
+      "min": 1512.74,
+      "max": 3107.98
+    },
+    "saveDataVisible": {
+      "n": 8,
+      "median": 28.0,
+      "min": 22,
+      "max": 192
+    },
+    "saveDataAttempts": 8,
+    "rows": [
+      {
+        "round": 1,
+        "device": "PC",
+        "position": 1,
+        "saveData": true,
+        "cache": "kalt",
+        "editorMs": 3348,
+        "cardMs": 27,
+        "switchMs": 125,
+        "cartMs": 6393,
+        "picturesIndependentlyRead": 1,
+        "allPositionChecks": true,
+        "reviewMs": 348.89,
+        "persistMs": 8.9,
+        "shopifyImageWaitMs": 2173.21,
+        "cameraChecks": [
+          24
+        ],
+        "browserImageBytes": [
+          4691
+        ]
+      },
+      {
+        "round": 1,
+        "device": "PC",
+        "position": 2,
+        "saveData": true,
+        "cache": "warm",
+        "editorMs": 1938,
+        "cardMs": 28,
+        "switchMs": 150,
+        "cartMs": 7905,
+        "picturesIndependentlyRead": 2,
+        "allPositionChecks": true,
+        "reviewMs": 487.91,
+        "persistMs": 8.27,
+        "shopifyImageWaitMs": 1512.74,
+        "cameraChecks": [
+          24,
+          24
+        ],
+        "browserImageBytes": [
+          4663,
+          4691
+        ]
+      },
+      {
+        "round": 1,
+        "device": "Mobil",
+        "position": 1,
+        "saveData": true,
+        "cache": "kalt",
+        "editorMs": 4102,
+        "cardMs": 28,
+        "switchMs": 129,
+        "cartMs": 6856,
+        "picturesIndependentlyRead": 1,
+        "allPositionChecks": true,
+        "reviewMs": 387.12,
+        "persistMs": 24.05,
+        "shopifyImageWaitMs": 2855.85,
+        "cameraChecks": [
+          24
+        ],
+        "browserImageBytes": [
+          4691
+        ]
+      },
+      {
+        "round": 1,
+        "device": "Mobil",
+        "position": 2,
+        "saveData": true,
+        "cache": "warm",
+        "editorMs": 2345,
+        "cardMs": 35,
+        "switchMs": 133,
+        "cartMs": 6533,
+        "picturesIndependentlyRead": 2,
+        "allPositionChecks": true,
+        "reviewMs": 416.91,
+        "persistMs": 8.65,
+        "shopifyImageWaitMs": 2691.8,
+        "cameraChecks": [
+          24,
+          24
+        ],
+        "browserImageBytes": [
+          4663,
+          4691
+        ]
+      },
+      {
+        "round": 2,
+        "device": "Mobil",
+        "position": 1,
+        "saveData": false,
+        "cache": "kalt",
+        "editorMs": 4367,
+        "cardMs": 26,
+        "switchMs": 284,
+        "cartMs": 7907,
+        "picturesIndependentlyRead": 1,
+        "allPositionChecks": true,
+        "reviewMs": 424.45,
+        "persistMs": 8.74,
+        "shopifyImageWaitMs": 2640.49,
+        "cameraChecks": [
+          24
+        ],
+        "browserImageBytes": [
+          4691
+        ]
+      },
+      {
+        "round": 2,
+        "device": "Mobil",
+        "position": 2,
+        "saveData": false,
+        "cache": "warm",
+        "editorMs": 2483,
+        "cardMs": 26,
+        "switchMs": 163,
+        "cartMs": 7272,
+        "picturesIndependentlyRead": 2,
+        "allPositionChecks": true,
+        "reviewMs": 446.95,
+        "persistMs": 24.02,
+        "shopifyImageWaitMs": 3107.98,
+        "cameraChecks": [
+          24,
+          24
+        ],
+        "browserImageBytes": [
+          4663,
+          4691
+        ]
+      },
+      {
+        "round": 2,
+        "device": "PC",
+        "position": 1,
+        "saveData": false,
+        "cache": "kalt",
+        "editorMs": 3909,
+        "cardMs": 25,
+        "switchMs": 180,
+        "cartMs": 6133,
+        "picturesIndependentlyRead": 1,
+        "allPositionChecks": true,
+        "reviewMs": 422.22,
+        "persistMs": 7.49,
+        "shopifyImageWaitMs": 1999.82,
+        "cameraChecks": [
+          24
+        ],
+        "browserImageBytes": [
+          4691
+        ]
+      },
+      {
+        "round": 2,
+        "device": "PC",
+        "position": 2,
+        "saveData": false,
+        "cache": "warm",
+        "editorMs": 2141,
+        "cardMs": 24,
+        "switchMs": 179,
+        "cartMs": 5902,
+        "picturesIndependentlyRead": 2,
+        "allPositionChecks": true,
+        "reviewMs": 429.42,
+        "persistMs": 9.22,
+        "shopifyImageWaitMs": 2101.04,
+        "cameraChecks": [
+          24,
+          24
+        ],
+        "browserImageBytes": [
+          4663,
+          4691
+        ]
+      },
+      {
+        "round": 3,
+        "device": "PC",
+        "position": 1,
+        "saveData": true,
+        "cache": "kalt",
+        "editorMs": 4011,
+        "cardMs": 31,
+        "switchMs": 182,
+        "cartMs": 5759,
+        "picturesIndependentlyRead": 1,
+        "allPositionChecks": true,
+        "reviewMs": 443.42,
+        "persistMs": 28.63,
+        "shopifyImageWaitMs": 1801.31,
+        "cameraChecks": [
+          24
+        ],
+        "browserImageBytes": [
+          4691
+        ]
+      },
+      {
+        "round": 3,
+        "device": "PC",
+        "position": 2,
+        "saveData": true,
+        "cache": "warm",
+        "editorMs": 2171,
+        "cardMs": 22,
+        "switchMs": 199,
+        "cartMs": 7558,
+        "picturesIndependentlyRead": 2,
+        "allPositionChecks": true,
+        "reviewMs": 459.5,
+        "persistMs": 10.35,
+        "shopifyImageWaitMs": 2701.4,
+        "cameraChecks": [
+          24,
+          24
+        ],
+        "browserImageBytes": [
+          4663,
+          4691
+        ]
+      },
+      {
+        "round": 3,
+        "device": "Mobil",
+        "position": 1,
+        "saveData": true,
+        "cache": "kalt",
+        "editorMs": 5450,
+        "cardMs": 192,
+        "switchMs": 168,
+        "cartMs": 6194,
+        "picturesIndependentlyRead": 1,
+        "allPositionChecks": true,
+        "reviewMs": 409.33,
+        "persistMs": 9.71,
+        "shopifyImageWaitMs": 1780.97,
+        "cameraChecks": [
+          24
+        ],
+        "browserImageBytes": [
+          4691
+        ]
+      },
+      {
+        "round": 3,
+        "device": "Mobil",
+        "position": 2,
+        "saveData": true,
+        "cache": "warm",
+        "editorMs": 2788,
+        "cardMs": 22,
+        "switchMs": 208,
+        "cartMs": 6656,
+        "picturesIndependentlyRead": 2,
+        "allPositionChecks": true,
+        "reviewMs": 410.87,
+        "persistMs": 23.2,
+        "shopifyImageWaitMs": 1818.77,
+        "cameraChecks": [
+          24,
+          24
+        ],
+        "browserImageBytes": [
+          4663,
+          4691
+        ]
+      }
+    ]
+  },
+  {
+    "phase": "shopify-final",
+    "start": "2026-11-19T20:36:15.187Z",
+    "finish": "2026-11-19T20:39:20.161Z",
+    "browser": "157.0.8103.78",
+    "errors": [
+      "apiRequestContext.get: aborted"
+    ],
+    "timedCarts": 12,
+    "switchMs": {
+      "n": 12,
+      "median": 190.5,
+      "min": 156,
+      "max": 516
+    },
+    "cartMs": {
+      "n": 12,
+      "median": 5567.0,
+      "min": 5427,
+      "max": 6497
+    },
+    "belowFiveSeconds": 0,
+    "cartByDevice": {
+      "PC": {
+        "n": 6,
+        "median": 5495.5,
+        "min": 5432,
+        "max": 5642
+      },
+      "Mobil": {
+        "n": 6,
+        "median": 5739.0,
+        "min": 5427,
+        "max": 6497
+      }
+    },
+    "cartByDeviceAndCache": {
+      "PC kalt": {
+        "n": 3,
+        "median": 5522,
+        "min": 5432,
+        "max": 5582
+      },
+      "PC warm": {
+        "n": 3,
+        "median": 5469,
+        "min": 5451,
+        "max": 5642
+      },
+      "Mobil kalt": {
+        "n": 3,
+        "median": 5813,
+        "min": 5665,
+        "max": 6497
+      },
+      "Mobil warm": {
+        "n": 3,
+        "median": 5552,
+        "min": 5427,
+        "max": 6030
+      }
+    },
+    "reviewMs": {
+      "n": 12,
+      "median": 438.525,
+      "min": 368.89,
+      "max": 545.31
+    },
+    "persistMs": {
+      "n": 12,
+      "median": 10.32,
+      "min": 7.82,
+      "max": 30.72
+    },
+    "shopifyImageWaitMs": {
+      "n": 12,
+      "median": 1422.76,
+      "min": 1330.98,
+      "max": 2236.43
+    },
+    "saveDataVisible": {
+      "n": 8,
+      "median": 25.5,
+      "min": 19,
+      "max": 73
+    },
+    "saveDataAttempts": 8,
+    "rows": [
+      {
+        "round": 1,
+        "device": "PC",
+        "position": 1,
+        "saveData": true,
+        "cache": "kalt",
+        "editorMs": 4032,
+        "cardMs": 22,
+        "switchMs": 170,
+        "cartMs": 5522,
+        "picturesIndependentlyRead": 1,
+        "allPositionChecks": true,
+        "reviewMs": 460.51,
+        "persistMs": 9.28,
+        "shopifyImageWaitMs": 1422.39,
+        "cameraChecks": [
+          24
+        ],
+        "browserImageBytes": [
+          4691
+        ]
+      },
+      {
+        "round": 1,
+        "device": "PC",
+        "position": 2,
+        "saveData": true,
+        "cache": "warm",
+        "editorMs": 2341,
+        "cardMs": 23,
+        "switchMs": 184,
+        "cartMs": 5469,
+        "picturesIndependentlyRead": 2,
+        "allPositionChecks": true,
+        "reviewMs": 408.24,
+        "persistMs": 11.04,
+        "shopifyImageWaitMs": 1455.11,
+        "cameraChecks": [
+          24,
+          24
+        ],
+        "browserImageBytes": [
+          4663,
+          4691
+        ]
+      },
+      {
+        "round": 1,
+        "device": "Mobil",
+        "position": 1,
+        "saveData": true,
+        "cache": "kalt",
+        "editorMs": 4159,
+        "cardMs": 32,
+        "switchMs": 192,
+        "cartMs": 6497,
+        "picturesIndependentlyRead": 1,
+        "allPositionChecks": true,
+        "reviewMs": 480.98,
+        "persistMs": 30.72,
+        "shopifyImageWaitMs": 2236.43,
+        "cameraChecks": [
+          24
+        ],
+        "browserImageBytes": [
+          4691
+        ]
+      },
+      {
+        "round": 1,
+        "device": "Mobil",
+        "position": 2,
+        "saveData": true,
+        "cache": "warm",
+        "editorMs": 2355,
+        "cardMs": 33,
+        "switchMs": 189,
+        "cartMs": 5552,
+        "picturesIndependentlyRead": 2,
+        "allPositionChecks": true,
+        "reviewMs": 446.34,
+        "persistMs": 9.84,
+        "shopifyImageWaitMs": 1413.42,
+        "cameraChecks": [
+          24,
+          24
+        ],
+        "browserImageBytes": [
+          4663,
+          4691
+        ]
+      },
+      {
+        "round": 2,
+        "device": "Mobil",
+        "position": 1,
+        "saveData": false,
+        "cache": "kalt",
+        "editorMs": 4217,
+        "cardMs": 27,
+        "switchMs": 516,
+        "cartMs": 5813,
+        "picturesIndependentlyRead": 1,
+        "allPositionChecks": true,
+        "reviewMs": 436.14,
+        "persistMs": 8.3,
+        "shopifyImageWaitMs": 1423.13,
+        "cameraChecks": [
+          24
+        ],
+        "browserImageBytes": [
+          4691
+        ]
+      },
+      {
+        "round": 2,
+        "device": "Mobil",
+        "position": 2,
+        "saveData": false,
+        "cache": "warm",
+        "editorMs": 3000,
+        "cardMs": 26,
+        "switchMs": 252,
+        "cartMs": 6030,
+        "picturesIndependentlyRead": 2,
+        "allPositionChecks": true,
+        "reviewMs": 440.91,
+        "persistMs": 26.48,
+        "shopifyImageWaitMs": 1450.01,
+        "cameraChecks": [
+          24,
+          24
+        ],
+        "browserImageBytes": [
+          4663,
+          4691
+        ]
+      },
+      {
+        "round": 2,
+        "device": "PC",
+        "position": 1,
+        "saveData": false,
+        "cache": "kalt",
+        "editorMs": 4414,
+        "cardMs": 33,
+        "switchMs": 288,
+        "cartMs": 5582,
+        "picturesIndependentlyRead": 1,
+        "allPositionChecks": true,
+        "reviewMs": 425.92,
+        "persistMs": 7.82,
+        "shopifyImageWaitMs": 1471.71,
+        "cameraChecks": [
+          24
+        ],
+        "browserImageBytes": [
+          4691
+        ]
+      },
+      {
+        "round": 2,
+        "device": "PC",
+        "position": 2,
+        "saveData": false,
+        "cache": "warm",
+        "editorMs": 2689,
+        "cardMs": 17,
+        "switchMs": 206,
+        "cartMs": 5642,
+        "picturesIndependentlyRead": 2,
+        "allPositionChecks": true,
+        "reviewMs": 396.79,
+        "persistMs": 10.24,
+        "shopifyImageWaitMs": 1398.16,
+        "cameraChecks": [
+          24,
+          24
+        ],
+        "browserImageBytes": [
+          4663,
+          4691
+        ]
+      },
+      {
+        "round": 3,
+        "device": "PC",
+        "position": 1,
+        "saveData": true,
+        "cache": "kalt",
+        "editorMs": 4203,
+        "cardMs": 24,
+        "switchMs": 179,
+        "cartMs": 5432,
+        "picturesIndependentlyRead": 1,
+        "allPositionChecks": true,
+        "reviewMs": 386.82,
+        "persistMs": 29.58,
+        "shopifyImageWaitMs": 1401.83,
+        "cameraChecks": [
+          24
+        ],
+        "browserImageBytes": [
+          4691
+        ]
+      },
+      {
+        "round": 3,
+        "device": "PC",
+        "position": 2,
+        "saveData": true,
+        "cache": "warm",
+        "editorMs": 2725,
+        "cardMs": 19,
+        "switchMs": 248,
+        "cartMs": 5451,
+        "picturesIndependentlyRead": 2,
+        "allPositionChecks": true,
+        "reviewMs": 545.31,
+        "persistMs": 9.97,
+        "shopifyImageWaitMs": 1418.89,
+        "cameraChecks": [
+          24,
+          24
+        ],
+        "browserImageBytes": [
+          4663,
+          4691
+        ]
+      },
+      {
+        "round": 3,
+        "device": "Mobil",
+        "position": 1,
+        "saveData": true,
+        "cache": "kalt",
+        "editorMs": 4782,
+        "cardMs": 73,
+        "switchMs": 189,
+        "cartMs": 5665,
+        "picturesIndependentlyRead": 1,
+        "allPositionChecks": true,
+        "reviewMs": 368.89,
+        "persistMs": 10.4,
+        "shopifyImageWaitMs": 1445.47,
+        "cameraChecks": [
+          24
+        ],
+        "browserImageBytes": [
+          4691
+        ]
+      },
+      {
+        "round": 3,
+        "device": "Mobil",
+        "position": 2,
+        "saveData": true,
+        "cache": "warm",
+        "editorMs": 3033,
+        "cardMs": 27,
+        "switchMs": 156,
+        "cartMs": 5427,
+        "picturesIndependentlyRead": 1,
+        "allPositionChecks": false,
+        "reviewMs": 456.41,
+        "persistMs": 23.59,
+        "shopifyImageWaitMs": 1330.98,
+        "cameraChecks": [
+          24
+        ],
+        "browserImageBytes": [
+          4663
+        ]
+      }
+    ]
+  },
+  {
+    "phase": "shopify-bedienung",
+    "start": "2026-11-19T20:40:12.222Z",
+    "finish": "2026-11-19T20:41:21.972Z",
+    "browser": "157.0.8103.78",
+    "errors": [],
+    "timedCarts": 4,
+    "switchMs": {
+      "n": 4,
+      "median": 266.5,
+      "min": 171,
+      "max": 293
+    },
+    "cartMs": {
+      "n": 4,
+      "median": 5753.5,
+      "min": 5310,
+      "max": 6170
+    },
+    "belowFiveSeconds": 0,
+    "cartByDevice": {
+      "PC": {
+        "n": 2,
+        "median": 5740.0,
+        "min": 5310,
+        "max": 6170
+      },
+      "Mobil": {
+        "n": 2,
+        "median": 5753.5,
+        "min": 5608,
+        "max": 5899
+      }
+    },
+    "cartByDeviceAndCache": {
+      "PC kalt": {
+        "n": 1,
+        "median": 6170,
+        "min": 6170,
+        "max": 6170
+      },
+      "PC warm": {
+        "n": 1,
+        "median": 5310,
+        "min": 5310,
+        "max": 5310
+      },
+      "Mobil kalt": {
+        "n": 1,
+        "median": 5899,
+        "min": 5899,
+        "max": 5899
+      },
+      "Mobil warm": {
+        "n": 1,
+        "median": 5608,
+        "min": 5608,
+        "max": 5608
+      }
+    },
+    "reviewMs": {
+      "n": 4,
+      "median": 422.97,
+      "min": 381.27,
+      "max": 453.42
+    },
+    "persistMs": {
+      "n": 4,
+      "median": 9.24,
+      "min": 8.29,
+      "max": 25.02
+    },
+    "shopifyImageWaitMs": {
+      "n": 4,
+      "median": 1419.935,
+      "min": 1416.95,
+      "max": 1743.54
+    },
+    "saveDataVisible": {
+      "n": 4,
+      "median": 28.0,
+      "min": 22,
+      "max": 33
+    },
+    "saveDataAttempts": 4,
+    "rows": [
+      {
+        "round": 1,
+        "device": "PC",
+        "position": 1,
+        "saveData": true,
+        "cache": "kalt",
+        "editorMs": 4520,
+        "cardMs": 33,
+        "switchMs": 244,
+        "cartMs": 6170,
+        "picturesIndependentlyRead": 1,
+        "allPositionChecks": true,
+        "reviewMs": 381.27,
+        "persistMs": 9.21,
+        "shopifyImageWaitMs": 1743.54,
+        "cameraChecks": [
+          24
+        ],
+        "browserImageBytes": [
+          4691
+        ]
+      },
+      {
+        "round": 1,
+        "device": "PC",
+        "position": 2,
+        "saveData": true,
+        "cache": "warm",
+        "editorMs": 2488,
+        "cardMs": 27,
+        "switchMs": 293,
+        "cartMs": 5310,
+        "picturesIndependentlyRead": 2,
+        "allPositionChecks": true,
+        "reviewMs": 453.42,
+        "persistMs": 9.27,
+        "shopifyImageWaitMs": 1420.05,
+        "cameraChecks": [
+          24,
+          24
+        ],
+        "browserImageBytes": [
+          4663,
+          4691
+        ]
+      },
+      {
+        "round": 1,
+        "device": "Mobil",
+        "position": 1,
+        "saveData": true,
+        "cache": "kalt",
+        "editorMs": 5134,
+        "cardMs": 22,
+        "switchMs": 171,
+        "cartMs": 5899,
+        "picturesIndependentlyRead": 1,
+        "allPositionChecks": true,
+        "reviewMs": 448.39,
+        "persistMs": 25.02,
+        "shopifyImageWaitMs": 1419.82,
+        "cameraChecks": [
+          24
+        ],
+        "browserImageBytes": [
+          4691
+        ]
+      },
+      {
+        "round": 1,
+        "device": "Mobil",
+        "position": 2,
+        "saveData": true,
+        "cache": "warm",
+        "editorMs": 3091,
+        "cardMs": 29,
+        "switchMs": 289,
+        "cartMs": 5608,
+        "picturesIndependentlyRead": 2,
+        "allPositionChecks": true,
+        "reviewMs": 397.55,
+        "persistMs": 8.29,
+        "shopifyImageWaitMs": 1416.95,
+        "cameraChecks": [
+          24,
+          24
+        ],
+        "browserImageBytes": [
+          4663,
+          4691
+        ]
+      }
+    ]
+  },
+  {
+    "phase": "shopify-abschluss",
+    "start": "2026-11-19T20:41:05.826Z",
+    "finish": "2026-11-19T20:42:41.314Z",
+    "browser": "157.0.8103.78",
+    "errors": [
+      "locator.click: Timeout 30000ms exceeded."
+    ],
+    "timedCarts": 4,
+    "switchMs": {
+      "n": 4,
+      "median": 304.0,
+      "min": 231,
+      "max": 383
+    },
+    "cartMs": {
+      "n": 4,
+      "median": 5825.5,
+      "min": 5559,
+      "max": 6902
+    },
+    "belowFiveSeconds": 0,
+    "cartByDevice": {
+      "PC": {
+        "n": 2,
+        "median": 6245.0,
+        "min": 5588,
+        "max": 6902
+      },
+      "Mobil": {
+        "n": 2,
+        "median": 5811.0,
+        "min": 5559,
+        "max": 6063
+      }
+    },
+    "cartByDeviceAndCache": {
+      "PC kalt": {
+        "n": 1,
+        "median": 6902,
+        "min": 6902,
+        "max": 6902
+      },
+      "PC warm": {
+        "n": 1,
+        "median": 5588,
+        "min": 5588,
+        "max": 5588
+      },
+      "Mobil kalt": {
+        "n": 1,
+        "median": 5559,
+        "min": 5559,
+        "max": 5559
+      },
+      "Mobil warm": {
+        "n": 1,
+        "median": 6063,
+        "min": 6063,
+        "max": 6063
+      }
+    },
+    "reviewMs": {
+      "n": 4,
+      "median": 425.74,
+      "min": 378.51,
+      "max": 483.54
+    },
+    "persistMs": {
+      "n": 4,
+      "median": 9.69,
+      "min": 9.31,
+      "max": 27.08
+    },
+    "shopifyImageWaitMs": {
+      "n": 4,
+      "median": 1411.805,
+      "min": 1325.94,
+      "max": 2294.12
+    },
+    "saveDataVisible": {
+      "n": 4,
+      "median": 25.5,
+      "min": 19,
+      "max": 32
+    },
+    "saveDataAttempts": 4,
+    "rows": [
+      {
+        "round": 1,
+        "device": "PC",
+        "position": 1,
+        "saveData": true,
+        "cache": "kalt",
+        "editorMs": 4692,
+        "cardMs": 19,
+        "switchMs": 316,
+        "cartMs": 6902,
+        "picturesIndependentlyRead": 1,
+        "allPositionChecks": true,
+        "reviewMs": 380.77,
+        "persistMs": 10.04,
+        "shopifyImageWaitMs": 2294.12,
+        "cameraChecks": [
+          24
+        ],
+        "browserImageBytes": [
+          4691
+        ]
+      },
+      {
+        "round": 1,
+        "device": "PC",
+        "position": 2,
+        "saveData": true,
+        "cache": "warm",
+        "editorMs": 2337,
+        "cardMs": 24,
+        "switchMs": 292,
+        "cartMs": 5588,
+        "picturesIndependentlyRead": 2,
+        "allPositionChecks": true,
+        "reviewMs": 470.71,
+        "persistMs": 27.08,
+        "shopifyImageWaitMs": 1415.79,
+        "cameraChecks": [
+          24,
+          24
+        ],
+        "browserImageBytes": [
+          4663,
+          4691
+        ]
+      },
+      {
+        "round": 1,
+        "device": "Mobil",
+        "position": 1,
+        "saveData": true,
+        "cache": "kalt",
+        "editorMs": 5020,
+        "cardMs": 27,
+        "switchMs": 231,
+        "cartMs": 5559,
+        "picturesIndependentlyRead": 1,
+        "allPositionChecks": true,
+        "reviewMs": 378.51,
+        "persistMs": 9.34,
+        "shopifyImageWaitMs": 1325.94,
+        "cameraChecks": [
+          24
+        ],
+        "browserImageBytes": [
+          4691
+        ]
+      },
+      {
+        "round": 1,
+        "device": "Mobil",
+        "position": 2,
+        "saveData": true,
+        "cache": "warm",
+        "editorMs": 2820,
+        "cardMs": 32,
+        "switchMs": 383,
+        "cartMs": 6063,
+        "picturesIndependentlyRead": 2,
+        "allPositionChecks": true,
+        "reviewMs": 483.54,
+        "persistMs": 9.31,
+        "shopifyImageWaitMs": 1407.82,
+        "cameraChecks": [
+          24,
+          24
+        ],
+        "browserImageBytes": [
+          4663,
+          4691
+        ]
+      },
+      {
+        "round": 2,
+        "device": "Mobil",
+        "position": 1,
+        "saveData": false,
+        "cache": "kalt",
+        "editorMs": null,
+        "cardMs": null,
+        "switchMs": null,
+        "cartMs": null,
+        "picturesIndependentlyRead": 0,
+        "allPositionChecks": false,
+        "reviewMs": null,
+        "persistMs": null,
+        "shopifyImageWaitMs": null,
+        "cameraChecks": [],
+        "browserImageBytes": []
+      }
+    ]
+  },
+  {
+    "phase": "shopify-ruhe",
+    "start": "2026-11-19T20:43:28.341Z",
+    "finish": "2026-11-19T20:44:00.914Z",
+    "browser": "157.0.8103.78",
+    "errors": [
+      "locator.click: Timeout 30000ms exceeded."
+    ],
+    "timedCarts": 0,
+    "switchMs": {
+      "n": 0
+    },
+    "cartMs": {
+      "n": 0
+    },
+    "belowFiveSeconds": 0,
+    "cartByDevice": {
+      "PC": {
+        "n": 0
+      },
+      "Mobil": {
+        "n": 0
+      }
+    },
+    "cartByDeviceAndCache": {
+      "PC kalt": {
+        "n": 0
+      },
+      "PC warm": {
+        "n": 0
+      },
+      "Mobil kalt": {
+        "n": 0
+      },
+      "Mobil warm": {
+        "n": 0
+      }
+    },
+    "reviewMs": {
+      "n": 0
+    },
+    "persistMs": {
+      "n": 0
+    },
+    "shopifyImageWaitMs": {
+      "n": 0
+    },
+    "saveDataVisible": {
+      "n": 0
+    },
+    "saveDataAttempts": 0,
+    "rows": [
+      {
+        "round": 1,
+        "device": "PC",
+        "position": 1,
+        "saveData": true,
+        "cache": "kalt",
+        "editorMs": null,
+        "cardMs": null,
+        "switchMs": null,
+        "cartMs": null,
+        "picturesIndependentlyRead": 0,
+        "allPositionChecks": false,
+        "reviewMs": null,
+        "persistMs": null,
+        "shopifyImageWaitMs": null,
+        "cameraChecks": [],
+        "browserImageBytes": []
+      }
+    ]
+  }
+]

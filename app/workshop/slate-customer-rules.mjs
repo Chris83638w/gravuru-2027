@@ -1,5 +1,7 @@
-// The catalogue supplies prices and choices. On 18 November Chris confirmed
-// a rectangular/square blank up to 400 × 300 mm for the two acrylic stands.
+// Mikail, 04.11.2026: additional motifs cost 1.69 EUR; acrylic stands are exclusive to memorial plaques.
+// Chris, 18.11.2026: only rectangular/square blanks up to 400 × 300 mm accept those stands.
+// https://github.com/Chris83638w/gravuru-2027/issues/260#issuecomment-6976844579
+// The catalogue supplies the original prices, mounting geometry and artwork.
 // The catalogue uses these explicit theme IDs (themen.json, 43fe1f23).
 // `gedenken` is the older shared theme; its audience is assigned by the importer.
 // Do not classify unrelated products by a substring in their display name.

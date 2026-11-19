@@ -79,8 +79,9 @@ test('theme cart: signed entry, immutable design, edit, quantity 1 to 4 and sign
  };
  const store={storeId:'acryl',registry,workshop:w,apiPrefix:'/api/workshop/',nativeEditorPath:'/_merchant-editor.html',formEditorPath:'/_merchant-form-editor.html',cart:createBoundTestCart({workshop:w,registry,shopDomain,transportOptions:{fetchImpl}})};
  const registeredImage='https://cdn.shopify.com/s/files/1/0920/5550/3228/files/gravuru-gestaltung-'+'c'.repeat(64)+'.png';let imageCalls=0,imagePending=false;
- const timingEvents=[],imageSources=[];let afterImage=null;
- let now=1_800_000_000_000;const entry=createShopEntry({origin,shopDomain,secret,stores:[store],proxyPath,clock:()=>now,logger:event=>timingEvents.push(event),modelSlimmer:null,checkoutImage:async source=>{assert.ok(source.startsWith(origin+'/gestaltung/'));imageSources.push(source);if(imagePending)throw Object.assign(Error('Bild wird vorbereitet.'),{status:502,code:'checkout_image_pending'});imageCalls++;await Promise.resolve();afterImage?.();return registeredImage;}});
+ const timingEvents=[],imageSources=[],imageSteps=[];let afterImage=null;
+ const warmCheckoutAccess=async()=>{imageSteps.push('access');throw Error('Synthetic cold login failure');};
+ let now=1_800_000_000_000;const entry=createShopEntry({origin,shopDomain,secret,stores:[store],proxyPath,clock:()=>now,logger:event=>timingEvents.push(event),modelSlimmer:null,warmCheckoutAccess,checkoutImage:async source=>{imageSteps.push('saved image');assert.ok(source.startsWith(origin+'/gestaltung/'));imageSources.push(source);if(imagePending)throw Object.assign(Error('Bild wird vorbereitet.'),{status:502,code:'checkout_image_pending'});imageCalls++;await Promise.resolve();afterImage?.();return registeredImage;}});
  const webhook=createOrderWebhookHandler({intake:w.orderIntake,config:webhookConfig});
  const server=http.createServer((req,res)=>req.url===ORDER_WEBHOOK_PATH?webhook(req,res):entry.handle(req,res,new URL(req.url,origin)));server.listen(0,'127.0.0.1');await once(server,'listening');
  t.after(async()=>{server.closeAllConnections();await new Promise(r=>server.close(r));});
@@ -98,6 +99,7 @@ test('theme cart: signed entry, immutable design, edit, quantity 1 to 4 and sign
  const session={'X-Gravuru-Shop-Session':token};
  // 2. Modell: echtes Werkstattmodell der festen Revision, Ausführung der Seitenvariante vorausgewählt.
  const model=await request('/api/shop-entry/model',undefined,undefined,session);assert.equal(model.status,200,JSON.stringify(model.data));
+ assert.equal(model.data.savedCartImage,true);
  const config=model.data.model.universal;assert.equal(model.data.model.configuration.id,record.id);assert.equal(model.data.model.configuration.revision,record.revision);
  for(const group of config.profile.optionGroups)assert.equal(group.defaultValueId,variants[1].options[group.id]);
  assert.ok(!JSON.stringify(model.data).includes(secret));
@@ -106,11 +108,12 @@ test('theme cart: signed entry, immutable design, edit, quantity 1 to 4 and sign
  const input={productId:record.id,productRevision:record.revision,designId:source.id,objects:structuredClone(source.objects),options:structuredClone(chosen.options),quantity:2,media:[{id:'kundenfoto',original:png}],preview:png,customerPreview:webp};
  Object.assign(input.objects.find(o=>o.type==='photoSlot'),{uxUploadId:'kundenfoto',uxUploadKind:'photo'});
  const created=await request('/api/shop-entry/acrylic-drafts','POST',{input},session);assert.equal(created.status,201,JSON.stringify(created.data));
+ assert.deepEqual(imageSteps,['access','saved image'],'a failed early login lets the saved-image path try again');
  const draftTiming=timingEvents.find(e=>e.traceId===created.headers['x-gravuru-timing-id']);
  assert.equal(draftTiming.route,'acrylic-drafts');assert.equal(draftTiming.status,201);
  assert.equal(draftTiming.counts.request_bytes,Buffer.byteLength(JSON.stringify({input})));
  assert.equal(draftTiming.counts.response_bytes,created.body.length);
- for(const step of ['body_read','body_json','session_binding','model_build','review_validate','customer_preview','reference_preview','review_zip','draft_persist','response_json']){
+ for(const step of ['body_read','body_json','session_binding','model_build','review_validate','preview_pair','review_zip','draft_persist','response_json']){
   assert.equal(draftTiming.steps[step].calls,1,step);assert.ok(draftTiming.steps[step].durationMs>=0);assert.ok(created.headers['server-timing'].includes(step+';dur='));
  }
  const draft=created.data;assert.match(draft.id,/^adraft_/);assert.match(draft.token,/^[a-f0-9]{64}$/);assert.equal(draft.revision,1);

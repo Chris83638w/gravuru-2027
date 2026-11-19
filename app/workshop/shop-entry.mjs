@@ -75,7 +75,7 @@ function createWindowLimiter(perMinute,clock){
  return key=>{const minute=Math.floor(clock()/60000);if(windows.size>4096)windows.clear();const entry=windows.get(key);if(!entry||entry.minute!==minute){windows.set(key,{minute,count:1});return true;}entry.count++;return entry.count<=perMinute;};
 }
 
-export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=null,proxyPath,pagePath='/konfigurator/shop/',clock=Date.now,ttlMs,maxAgeSeconds=300,limits={},modelSlimmer,publicPreviewDirectory=null,publicPreviewPrepare=null,modelResponseCache=null,preSaveOnReview=false,logger=event=>console.warn(JSON.stringify(event))}){
+export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=null,warmCheckoutAccess=null,proxyPath,pagePath='/konfigurator/shop/',clock=Date.now,ttlMs,maxAgeSeconds=300,limits={},modelSlimmer,publicPreviewDirectory=null,publicPreviewPrepare=null,modelResponseCache=null,preSaveOnReview=false,logger=event=>console.warn(JSON.stringify(event))}){
  let address;try{address=new URL(origin);}catch{}
  if(typeof preSaveOnReview!=='boolean')fail(503,'shop_entry_config','Der Konfigurator-Einstieg ist nicht eingerichtet.');
  if(!address||address.origin!==origin||address.protocol!=='https:'||address.username||address.password||!/^[-a-z0-9]+\.myshopify\.com$/.test(shopDomain||'')||typeof secret!=='string'||secret.length<16||!Array.isArray(stores)||!stores.length||stores.length>8||
@@ -108,11 +108,11 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
  const PAGE_CSP=pageCsp(shopDomain);
  // Shop-seitige Module über den App-Proxy; shop-embed.mjs kennt Konfigurator-Host und Proxy-Pfad fest.
  const customerImages=createCustomerDesignImages({origin,shopDomain,secret,stores:fixed});
- function warmCheckoutImage(source){
+ function warmCheckoutImage(source,options){
   // Opportunistic work must never change a successful draft response. Only a
   // signed immutable image URL crosses into the job, never the request/session.
   if(!checkoutImage||!source)return;
-  try{const url=typeof source==='function'?source():source;if(url)Promise.resolve(checkoutImage(url)).catch(()=>{});}catch{}
+  try{const url=typeof source==='function'?source():source;if(url)Promise.resolve(checkoutImage(url,options)).catch(()=>{});}catch{}
  }
  const cartEditAccess=createCartEditAccess({secret,clock});
  const themeFiles=new Map(['theme-cart-ui.mjs','theme-cart-client.mjs','shop-embed.mjs'].map(name=>[proxyPath+'/'+name,name==='shop-embed.mjs'?Buffer.from(fs.readFileSync(ui(name),'utf8').replaceAll('__EDITOR_ORIGIN__',origin).replaceAll('__PROXY_PATH__',proxyPath)):fs.readFileSync(ui(name))]));
@@ -229,7 +229,8 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
   try{let at=performance.now();startPreview=designGallery.start(context,model,designId,cardModel?{cardModel}:undefined);at=lap('msStartGallery',at);if(publicPreviews&&startPreview){const {previewUrl:oldPublicUrl,...privateStart}=startPreview;const prepared=publicPreviews.attach({items:[{...publicBinding(context.binding),designId,...privateStart}]},held?{modelFor:(store,binding)=>heldModelFor(store,binding,model)}:null).items[0];startPreview={...privateStart,...(prepared.previewUrl?{previewUrl:prepared.previewUrl}:{})};lap('msStartPublic',at);}}catch{/* Products without a gallery still open normally. */threw=true;}
   return {startPreview,threw};
  }
- const modelRest=(context,startPreview)=>({startPreview,binding:publicBinding(context.binding),editorPath:context.store.nativeEditorPath,shopDomain,themeCartPath:themePath,expiresAt:context.session.expiresAt,customerId:context.session.customerId,productionReady:false,...(preSaveOnReview?{preSaveOnReview:true}:{})});
+ const hasSavedCartImage=store=>typeof store.workshop.orderIntake?.imageSnapshot==='function';
+ const modelRest=(context,startPreview)=>({startPreview,binding:publicBinding(context.binding),editorPath:context.store.nativeEditorPath,shopDomain,themeCartPath:themePath,expiresAt:context.session.expiresAt,customerId:context.session.customerId,productionReady:false,savedCartImage:hasSavedCartImage(context.store),...(preSaveOnReview?{preSaveOnReview:true}:{})});
  // Antwortspeicher: nur für Stores, die den Stand des einen Produkts (revisionState), den Datenbankstand (readEpoch, nur für
  // „während des Aufbaus wurde geschrieben“) und die Pause lesend nachweisen können (sonst wie bisher ohne Speicher).
  function cacheCapable(store){
@@ -395,7 +396,7 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
     if(themeTransfers.size>=limit.maxContexts)fail(429,'shop_entry_busy','Bitte kurz warten und erneut versuchen.');
     // Nur Darstellungswahl für den Bearbeiten-Link; kein Teil des Preis-/Gestaltungsstands.
     const {presentation,...themeInput}=data;
-    const args={workshop:store.workshop,registry:store.registry,shopDomain,proxyPath,...(presentation?{presentation}:{}),...(typeof store.workshop.orderIntake.imageSnapshot==='function'?{customerImageUrl:id=>customerImages.url(store.storeId,id),checkoutImageSource:(id,hash)=>customerImages.snapshotUrl(store.storeId,id,hash)}:{})};
+    const args={workshop:store.workshop,registry:store.registry,shopDomain,proxyPath,...(presentation?{presentation}:{}),...(hasSavedCartImage(store)?{customerImageUrl:id=>customerImages.url(store.storeId,id),checkoutImageSource:(id,hash)=>customerImages.snapshotUrl(store.storeId,id,hash)}:{})};
     const prepared=cartTimingStep('cart_prepare',()=>prepareThemeCart(args,binding,themeInput,{draftToken})),token=randomBytes(32).toString('hex');
     themeTransfers.set(token,{args,binding:structuredClone(binding),input:structuredClone(themeInput),draftToken,sessionToken:req.headers['x-gravuru-shop-session'],customerId:session.customerId,expiresAt:clock()+limit.contextTtlMs});
     // Shopify fileCreate + polling runs while the browser opens the cart handoff; /cart/data reuses the pending task.
@@ -438,10 +439,12 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
    if(draft&&(input.productId!==draft.productId||input.productRevision!==draft.productRevision||input.designId!==draft.designId))fail(409,'acrylic_draft_identity','Produktstand und Design gehören zu diesem festen Entwurf.');
    const repository=store.workshop.repository,record=cartTimingStep('product_read',()=>repository.get(session.productId,{revision:session.productRevision}));
    if(record.status==='archived'||repository.get(record.id).status==='archived')fail(422,'acrylic_required','Dieses Produkt ist nicht mehr verfügbar.');
+   // A cold Shopify login can run alongside review preparation. File creation still waits for persistence.
+   if(warmCheckoutAccess && checkoutImage && hasSavedCartImage(store))void Promise.resolve().then(warmCheckoutAccess).catch(()=>{});
    const config=cartTimingStep('model_build',()=>modelFor(store,context.binding)).universal;
    let bundle;try{bundle=await cartTimingStep('review_prepare',()=>prepareAcrylicReview({record,config,input,assets:store.workshop.assets}));}catch(error){if(error.status===422&&!error.code)error.code='shop_entry_draft';throw error;}
    const saved=cartTimingStep('draft_persist',()=>draft?drafts.acrylicDrafts.save(draft.id,token,data.expectedRevision,bundle):drafts.acrylicDrafts.create(bundle));
-   if(checkoutImage&&typeof store.workshop.orderIntake.imageSnapshot==='function')warmCheckoutImage(()=>customerImages.snapshotUrl(store.storeId,saved.snapshotId,bundle.manifest.packageSha256));
+   if(checkoutImage&&hasSavedCartImage(store))warmCheckoutImage(()=>customerImages.snapshotUrl(store.storeId,saved.snapshotId,bundle.manifest.packageSha256),{justSaved:true});
    return json(res,draft?200:201,{...saved,photoHints:bundle.manifest.photoHints||[],photoResolution:(bundle.manifest.photoResolution||[]).map(p=>({objectId:p.objectId,grade:p.grade,effectiveDpi:p.effectiveDpi,targetDpi:p.targetDpi}))});
    });
   }finally{reviewJobs.delete(job);}

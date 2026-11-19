@@ -25,6 +25,20 @@ test('immutable preview is registered as IMAGE, awaited until READY, and reused 
 test('restart reuses existing READY MediaImage without overwriting or creating it again',async()=>{
  const f=fixture([{data:{files:{nodes:[ready]}}}]);assert.equal(await f.service(source),url);assert.equal(f.calls.length,1);
 });
+test('a new saved snapshot creates its exact image first, waits for READY and recovers a duplicate',async()=>{
+ const snapshot=origin+'/gestaltung/acryl/proof_aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa/'+'c'.repeat(64)+'/'+'d'.repeat(64)+'.png';
+ const name='gravuru-gestaltung-'+createHash('sha256').update(snapshot).digest('hex')+'.png';
+ const approved={...ready,image:{url:url.replace(filename,name)}};
+ const pending={id:ready.id,fileStatus:'PROCESSING'};
+ const original=fixture([{data:{files:{nodes:[]}}},{data:{fileCreate:{files:[pending],userErrors:[]}}},{data:{node:approved}}]);
+ const fresh=fixture([{data:{fileCreate:{files:[pending],userErrors:[]}}},{data:{node:approved}}]);
+ assert.equal(await original.service(snapshot),await fresh.service(snapshot,{justSaved:true}));
+ assert.equal(original.calls.length,3);assert.equal(fresh.calls.length,2);
+ assert.equal(fresh.calls[0].variables.files[0].duplicateResolutionMode,'RAISE_ERROR');
+ const duplicate=fixture([{data:{fileCreate:{files:[],userErrors:[{message:'duplicate'}]}}},{data:{files:{nodes:[approved]}}}]);
+ assert.equal(await duplicate.service(snapshot,{justSaved:true}),approved.image.url);
+ assert.equal(duplicate.calls.length,2);
+});
 test('foreign or mutable sources never reach Shopify',async()=>{
  const f=fixture([]);
  for(const s of [source.replace(origin,'https://evil.example'),source+'?x=1',source+'#x',origin+'/api/private',undefined])await assert.rejects(f.service(s),e=>e.code==='checkout_image_pending');

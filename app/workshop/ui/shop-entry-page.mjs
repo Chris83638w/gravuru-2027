@@ -37,12 +37,14 @@ try{
     window.GravuruLoadPreviewResources=entry.loadRemaining;
     window.GravuruPreviewResources=resources;window.GravuruModelProfile=model.legacy;window.UniversalConfig=model.universal;
     window.GravuruWorkshopReview={productId:model.configuration.id,productRevision:model.configuration.revision};window.GravuruMerchantRequest=client.request;
-    const surface=model.universal?.materialSurface||null,small=surfaceThumbnail(surface);
-    const image=()=>previewJpeg(entry.frame?.contentDocument?.querySelector('gravuru-configurator'),{surface,small});
+    const surface=model.universal?.materialSurface||null;
+    const needsBrowserImage=embedded && data.savedCartImage!==true;
+    const small=needsBrowserImage?surfaceThumbnail(surface):null;
+    const image=needsBrowserImage?()=>previewJpeg(entry.frame?.contentDocument?.querySelector('gravuru-configurator'),{surface,small}):null;
     const submitCart=embedded?embeddedCart(client.submitThemeCart,shopOrigin,{image}):client.submitThemeCart;
     window.GravuruShopEntry=Object.freeze({productId:model.configuration.id,productRevision:model.configuration.revision,shopDomain:data.shopDomain,shopifyProductId:data.binding?.shopifyProductId||null,shopifyVariantId:data.binding?.shopifyVariantId||null,expiresAt:data.expiresAt,csrfToken:'shop-entry',request:client.request,cartRevision:client.cartRevision,submitCart,cartMode:'theme',themeCartPath:data.themeCartPath,backUrl,embedded,designGallery,productName:model.name,preSaveOnReview:data.preSaveOnReview===true,...(fragment.getAll('ui').length===1&&fragment.get('ui')==='prio-r15'?{presentation:'prio-r15'}:{})});
     title.textContent=model.name;document.title=model.name+' · Jetzt personalisieren';back.href=backUrl;
-    if(embedded&&surface)setTimeout(small,4000);
+    if(small&&surface)setTimeout(small,4000);
   }
   // K8: Bearbeiten-Verweis aus dem Warenkorb (config, rev, line) unverändert an den Editor weiterreichen.
   const edit=new URLSearchParams();for(const key of ['config','rev','line'])if(fragment.has(key))edit.set(key,fragment.get(key));

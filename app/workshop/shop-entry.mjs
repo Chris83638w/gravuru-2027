@@ -76,9 +76,9 @@ function createWindowLimiter(perMinute,clock){
  return key=>{const minute=Math.floor(clock()/60000);if(windows.size>4096)windows.clear();const entry=windows.get(key);if(!entry||entry.minute!==minute){windows.set(key,{minute,count:1});return true;}entry.count++;return entry.count<=perMinute;};
 }
 
-export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=null,proxyPath,pagePath='/konfigurator/shop/',clock=Date.now,ttlMs,maxAgeSeconds=300,limits={},modelSlimmer,publicPreviewDirectory=null,publicPreviewPrepare=null,modelResponseCache=null,preSaveOnReview=false,logger=event=>console.warn(JSON.stringify(event))}){
+export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=null,checkoutImageWaitMs=4000,proxyPath,pagePath='/konfigurator/shop/',clock=Date.now,ttlMs,maxAgeSeconds=300,limits={},modelSlimmer,publicPreviewDirectory=null,publicPreviewPrepare=null,modelResponseCache=null,preSaveOnReview=false,logger=event=>console.warn(JSON.stringify(event))}){
  let address;try{address=new URL(origin);}catch{}
- if(typeof preSaveOnReview!=='boolean')fail(503,'shop_entry_config','Der Konfigurator-Einstieg ist nicht eingerichtet.');
+ if(typeof preSaveOnReview!=='boolean'||!Number.isSafeInteger(checkoutImageWaitMs)||checkoutImageWaitMs<0||checkoutImageWaitMs>15000)fail(503,'shop_entry_config','Der Konfigurator-Einstieg ist nicht eingerichtet.');
  if(!address||address.origin!==origin||address.protocol!=='https:'||address.username||address.password||!/^[-a-z0-9]+\.myshopify\.com$/.test(shopDomain||'')||typeof secret!=='string'||secret.length<16||!Array.isArray(stores)||!stores.length||stores.length>8||
    typeof proxyPath!=='string'||!/^\/[A-Za-z0-9_-]+(?:\/[A-Za-z0-9_-]+)*$/.test(proxyPath)||typeof pagePath!=='string'||!/^\/[A-Za-z0-9_-]+(?:\/[A-Za-z0-9_-]+)*\/$/.test(pagePath)||pagePath.startsWith('/api/')||proxyPath.startsWith('/api/')||proxyPath+'/'===pagePath)
   fail(503,'shop_entry_config','Der Konfigurator-Einstieg ist nicht eingerichtet.');
@@ -472,14 +472,19 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
   // the offer read. Price and revision are checked again before the response.
   const prepared=transfer.prepared||cartTimingStep('cart_prepare',()=>prepareThemeCart(transfer.args,transfer.binding,transfer.input,{draftToken:transfer.draftToken}));
   if(url.pathname===themePath+'/data'&&req.method==='GET'){
+   const hosted=req.headers['x-gravuru-cart-preview']==='hosted';
+   const source=prepared.checkoutImageSource||prepared.payload.properties._gravuru_bild;
+   // Price check and the already started Shopify file run together. A hosted
+   // client only receives the cart once the checkout file is ready, so the
+   // browser does not upload the PNG itself.
+   const imageTask=checkoutImage?attachRevisionPreview({checkoutImage,source,payload:prepared.payload,waitMs:hosted?checkoutImageWaitMs:0}):null;
    withCustomerReadScope(()=>{active({headers:{'x-gravuru-shop-session':transfer.sessionToken}});cartTimingStep('cart_revalidate',()=>prepared.resolve());});
-   if(checkoutImage){
-    const source=prepared.checkoutImageSource||prepared.payload.properties._gravuru_bild;
-    // The saved revision image is enough for the cart. Shopify fileCreate keeps
-    // running from the earlier warm-up and is attached only when it is already ready.
-    const resolved=await cartTimingStep('checkout_image_wait',()=>attachRevisionPreview({checkoutImage,source,payload:prepared.payload}));
-    if(resolved.hosted&&req.headers['x-gravuru-cart-preview']==='hosted'){
-     const body={...prepared.payload};delete body.preview;return json(res,200,body);
+   if(imageTask){
+    const resolved=await cartTimingStep('checkout_image_wait',()=>imageTask);
+    if(hosted&&resolved.pending)fail(503,'checkout_image_pending','Die Gestaltungsvorschau wird noch für den Warenkorb vorbereitet. Bitte erneut versuchen.');
+    if(resolved.hosted&&hosted){
+     const body={...prepared.payload,properties:{...prepared.payload.properties}};
+     delete body.preview;return json(res,200,body);
     }
    }
    return json(res,200,prepared.payload);

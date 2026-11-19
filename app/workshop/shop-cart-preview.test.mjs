@@ -3,28 +3,49 @@ import assert from 'node:assert/strict';
 import {attachRevisionPreview} from './shop-cart-preview.mjs';
 
 const wait=ms=>new Promise(resolve=>setTimeout(resolve,ms));
+const cdn='https://cdn.shopify.com/s/files/1/0920/5550/3228/files/gravuru-gestaltung-'+'a'.repeat(64)+'.png';
 
-test('a secured revision preview returns without the recorded Shopify file wait',async()=>{
- const delays=[2200,3400,2200];
- const fast=[],slow=[];
- for(const delay of delays){
-  const payload={properties:{_gravuru_bild:'https://app.example/gestaltung/x.png'},preview:{base64:'abc',type:'image/png'}};
-  const started=performance.now();
-  const resolved=await attachRevisionPreview({checkoutImage:()=>wait(delay).then(()=>'https://cdn.shopify.com/s/files/a.png'),source:'https://app.example/gestaltung/x.png',payload});
-  fast.push(performance.now()-started);
-  assert.equal(resolved.status,'persoenlich_gesichert');
-  assert.equal(payload.properties._gravuru_checkout_image,undefined);
-  const blocking=performance.now();
-  await attachRevisionPreview({checkoutImage:async()=>'https://cdn.shopify.com/s/files/ready.png',source:'https://app.example/gestaltung/x.png',payload:{properties:{},preview:{base64:'abc'}}});
-  slow.push(performance.now()-blocking);
- }
- assert.ok(Math.max(...fast)<100,fast.join(','));
- assert.ok(fast.length===3);
+test('an old client still receives the saved preview when the Shopify file is not ready',async()=>{
+ const payload={properties:{_gravuru_bild:'https://app.example/gestaltung/x.png'},preview:{base64:'abc',type:'image/png'}};
+ const started=performance.now();
+ const resolved=await attachRevisionPreview({checkoutImage:()=>wait(2200).then(()=>cdn),source:'https://app.example/gestaltung/x.png',payload,waitMs:0});
+ assert.ok(performance.now()-started<100);
+ assert.equal(resolved.status,'persoenlich_gesichert');
+ assert.equal(payload.properties._gravuru_checkout_image,undefined);
+ assert.equal(payload.preview.base64,'abc');
+});
+
+test('a hosted client waits inside the recorded file budget and does not keep the PNG when the file is late',async()=>{
+ const late={properties:{_gravuru_bild:'https://app.example/gestaltung/x.png'},preview:{base64:'iVBORw0KGgo=',type:'image/png'}};
+ const pending=await attachRevisionPreview({checkoutImage:()=>wait(500).then(()=>cdn),source:'https://app.example/gestaltung/x.png',payload:late,waitMs:40});
+ assert.equal(pending.pending,true);
+ assert.equal(late.properties._gravuru_checkout_image,undefined);
+ assert.equal(late.preview.base64,'iVBORw0KGgo=');
+ const ready={properties:{_gravuru_bild:'https://app.example/gestaltung/x.png'},preview:{base64:'iVBORw0KGgo=',type:'image/png'}};
+ const started=performance.now();
+ const resolved=await attachRevisionPreview({checkoutImage:()=>wait(120).then(()=>cdn),source:'https://app.example/gestaltung/x.png',payload:ready,waitMs:4000});
+ assert.equal(resolved.hosted,cdn);
+ assert.equal(ready.properties._gravuru_checkout_image,cdn);
+ assert.ok(performance.now()-started<1000);
+});
+
+test('the remaining Shopify file wait overlaps the price check',async()=>{
+ // Recorded in live-sanitized.json, cart/data at 14:32:38 UTC: token 1950 ms, poll 2251 ms, revalidate 1081 ms.
+ const tokenMs=1950,pollMs=2251,revalidateMs=1081;
+ const payload={properties:{_gravuru_bild:'https://app.example/gestaltung/x.png'},preview:{base64:'abc',type:'image/png'}};
+ const started=performance.now();
+ const image=attachRevisionPreview({checkoutImage:()=>wait(tokenMs+pollMs).then(()=>cdn),source:'https://app.example/gestaltung/x.png',payload,waitMs:8000});
+ await wait(revalidateMs);
+ const resolved=await image;
+ const elapsed=performance.now()-started;
+ assert.equal(resolved.status,'shopify_bereit');
+ assert.ok(elapsed<tokenMs+pollMs+revalidateMs-700,String(elapsed));
+ assert.ok(elapsed>=tokenMs+pollMs-80);
 });
 
 test('a ready Shopify file is still used, and a missing preview stays an error',async()=>{
  const payload={properties:{},preview:{base64:'abc'}};
- const ready=await attachRevisionPreview({checkoutImage:async()=>'https://cdn.shopify.com/s/files/ready.png',source:'x',payload});
- assert.equal(ready.hosted,'https://cdn.shopify.com/s/files/ready.png');
- await assert.rejects(()=>attachRevisionPreview({checkoutImage:()=>wait(30).then(()=>{throw Object.assign(Error('später'),{code:'checkout_image_pending'});}),source:'x',payload:{properties:{}}}),error=>error.code==='checkout_image_pending');
+ const ready=await attachRevisionPreview({checkoutImage:async()=>cdn,source:'x',payload});
+ assert.equal(ready.hosted,cdn);
+ await assert.rejects(()=>attachRevisionPreview({checkoutImage:()=>wait(30).then(()=>{throw Object.assign(Error('später'),{code:'checkout_image_pending'});}),source:'x',payload:{properties:{}},waitMs:0}),error=>error.code==='checkout_image_pending');
 });

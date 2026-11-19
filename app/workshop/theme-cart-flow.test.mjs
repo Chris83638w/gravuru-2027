@@ -77,7 +77,8 @@ test('theme cart: signed entry, immutable design, edit, quantity 1 to 4 and sign
  const store={storeId:'acryl',registry,workshop:w,apiPrefix:'/api/workshop/',nativeEditorPath:'/_merchant-editor.html',formEditorPath:'/_merchant-form-editor.html',cart:createBoundTestCart({workshop:w,registry,shopDomain,transportOptions:{fetchImpl}})};
  const registeredImage='https://cdn.shopify.com/s/files/1/0920/5550/3228/files/gravuru-gestaltung-'+'c'.repeat(64)+'.png';let imageCalls=0,imagePending=false;
  const timingEvents=[],imageSources=[];let afterImage=null;
- let now=1_800_000_000_000;const entry=createShopEntry({origin,shopDomain,secret,stores:[store],proxyPath,clock:()=>now,logger:event=>timingEvents.push(event),modelSlimmer:null,checkoutImage:async source=>{assert.ok(source.startsWith(origin+'/gestaltung/'));imageSources.push(source);if(imagePending)throw Object.assign(Error('Bild wird vorbereitet.'),{status:502,code:'checkout_image_pending'});imageCalls++;await Promise.resolve();afterImage?.();return registeredImage;}});
+ let imageHold=false,releaseImage=null;
+ let now=1_800_000_000_000;const entry=createShopEntry({origin,shopDomain,secret,stores:[store],proxyPath,clock:()=>now,logger:event=>timingEvents.push(event),modelSlimmer:null,checkoutImageWaitMs:80,checkoutImage:async source=>{assert.ok(source.startsWith(origin+'/gestaltung/'));imageSources.push(source);if(imagePending)throw Object.assign(Error('Bild wird vorbereitet.'),{status:502,code:'checkout_image_pending'});if(imageHold)await new Promise(resolve=>{releaseImage=resolve;});imageCalls++;await Promise.resolve();afterImage?.();return registeredImage;}});
  const webhook=createOrderWebhookHandler({intake:w.orderIntake,config:webhookConfig});
  const server=http.createServer((req,res)=>req.url===ORDER_WEBHOOK_PATH?webhook(req,res):entry.handle(req,res,new URL(req.url,origin)));server.listen(0,'127.0.0.1');await once(server,'listening');
  t.after(async()=>{server.closeAllConnections();await new Promise(r=>server.close(r));});
@@ -186,6 +187,7 @@ test('theme cart: signed entry, immutable design, edit, quantity 1 to 4 and sign
   const logged=JSON.stringify(timingEvents);
   for(const privateValue of [secret,token,draft.token,draft.id,transferToken,png,webp])assert.ok(!logged.includes(privateValue),'private value in timing log');
  });
+ imageHold=true;const unfinished=await proxyRequest('/cart/data','GET',transferToken,hosted);assert.equal(unfinished.status,503);assert.equal(unfinished.data.error.code,'checkout_image_pending');assert.equal(unfinished.data.preview,undefined);assert.ok(!JSON.stringify(unfinished.data).includes('iVBORw0KGgo'),'an unfinished checkout file does not send the PNG to the device');imageHold=false;releaseImage?.();
  imagePending=false;
  // Every await starts a fresh validation phase; changed revision, assignment,
  // or price must still reject the transfer and its later claim.

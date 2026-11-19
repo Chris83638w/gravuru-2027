@@ -1,3 +1,7 @@
+## 19.11.2026 · Grok/Cursor · Team B · Kassenbild ohne Geräte-Upload, V1 und V2
+
+Gehostetes `cart/data` wartet begrenzt und parallel zur Preisprüfung auf die Shopify-Datei. Ohne fertige Datei kommt keine PNG-Antwort (503), der Browser lädt nichts hoch, `_Entwurf` bleibt für den fertigen CDN-Fall. Abhängigkeiten und Testshop-Messplan: `docs/handoffs/2026-11-19-grok-r15-tempo/`. V1 nutzt ein Profil je Optionsschlüssel. V2 lädt sichtbare Karten auch im Datensparmodus. V3 und V4 sind in diesem Lauf nicht im Branch. Kein Shop-Schreiben.
+
 ## 19.11.2026 · Grok/Cursor · Team B · R15-Warenkorb wartet nicht mehr auf Shopify
 
 Kurskorrektur: Fixture-Warenkorb entfernt, nur der bestehende Pfad. `cart/data` prüft Preis und Revision und gibt die gesicherte Vorschau zurück, ohne `fileCreate` abzuwarten. Die zweite Angebotsaufbereitung entfällt. Profil-Memo zurückgenommen. Variante C, Kacheln, FPD/Zakeke und Astras Speicher-Importe in [der Tabelle](docs/handoffs/2026-11-19-grok-r15-tempo/README.md). Live-Beleg vorher: `checkout_image_wait` 3811 ms von 6664 ms in `docs/measurements/2026-11-17-konfi-tempo-p1-1b/live-sanitized.json`. Nachher lokal unter 100 ms bei 2200/3400 ms simuliertem Bild. Kein Shop-Schreiben.

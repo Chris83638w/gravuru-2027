@@ -57,23 +57,43 @@ export function installUniversal(configInput) {
   const motifs = () => customerMotifs(config, el.motifs, el.catalog);
   const svg = (design, {guides=false, selected='', handles=false, keepout=false, surface='front', screen=false, bare=false} = {}) => {
     const visible={...design,textOnTop:true,objects:design.objects.filter(o=>!o.uxHidden&&objectSurface(o)===surface)};
-    let result=surfacePreview(studioSvg(profile(surface), visible, el.fontData,{frameKey:options.frame,color:options.color,mountingKey:options.mounting,motifs:motifs(),media:[],guides,selected,handles,id:'customer-'+(++renderId)}),bare?'':screen?previewSurfaceUrl(config.materialSurface):config.materialSurface,profile(surface).geometry);
-    if(dynamicFamily&&screen&&!bare)result=plateDepthPreview(result,profile(surface).geometry,'customer-'+renderId);
-    if(config.reviewOnly){const doc=svgDocument(result);for(const o of visible.objects.filter(o=>o.type==='photoSlot'&&!o.uxUploadId)){const group=doc.querySelector('[data-object="'+CSS.escape(o.id)+'"]');if(group){for(const rect of group.querySelectorAll('rect:not([fill="transparent"])')){rect.setAttribute('fill','none');rect.setAttribute('stroke-dasharray','2 2');}for(const text of group.querySelectorAll('text'))text.setAttribute('fill',processing.ink);}}result=doc.documentElement.outerHTML;}
-    if(el.uxObjectSVG){const doc=svgDocument(result);for(const o of visible.objects){const replacement=el.uxObjectSVG(o);if(replacement!==undefined){const group=doc.querySelector('[data-object="'+CSS.escape(o.id)+'"]');if(group)group.outerHTML=replacement;}}result=doc.documentElement.outerHTML;}
+    const shownProfile=profile(surface);
+    let result=surfacePreview(studioSvg(shownProfile, visible, el.fontData,{frameKey:options.frame,color:options.color,mountingKey:options.mounting,motifs:motifs(),media:[],guides,selected,handles,id:'customer-'+(++renderId)}),bare?'':screen?previewSurfaceUrl(config.materialSurface):config.materialSurface,shownProfile.geometry);
+    if(dynamicFamily&&screen&&!bare)result=plateDepthPreview(result,shownProfile.geometry,'customer-'+renderId);
+    const doc=(config.reviewOnly || el.uxObjectSVG || !bare) ? svgDocument(result) : null;
+    if(config.reviewOnly){
+      for(const object of visible.objects.filter(o=>o.type==='photoSlot'&&!o.uxUploadId)){
+        const group=doc.querySelector('[data-object="'+CSS.escape(object.id)+'"]');
+        if(!group)continue;
+        for(const rect of group.querySelectorAll('rect:not([fill="transparent"])')){
+          rect.setAttribute('fill','none');
+          rect.setAttribute('stroke-dasharray','2 2');
+        }
+        for(const text of group.querySelectorAll('text'))text.setAttribute('fill',processing.ink);
+      }
+    }
+    if(el.uxObjectSVG){
+      for(const object of visible.objects){
+        const replacement=el.uxObjectSVG(object);
+        if(replacement===undefined)continue;
+        const group=doc.querySelector('[data-object="'+CSS.escape(object.id)+'"]');
+        if(group)group.outerHTML=replacement;
+      }
+    }
     // Clip artwork to the real plate for every universal shape; external edit handles remain outside.
     // This is visual containment only. The shared placement and server validation still reject overflow.
-    if(!bare){const doc=svgDocument(result),root=doc.documentElement,clipId='customer-artwork-'+renderId,ns='http://www.w3.org/2000/svg';
-      const acrylic=dynamicDoorbell?doorbellTextSurface(profile(surface)):null;
-      const outline=acrylic?'<rect x="'+acrylic.x+'" y="'+acrylic.y+'" width="'+acrylic.width+'" height="'+acrylic.height+'"/>':plateClipMarkup(profile(surface).geometry);
+    if(!bare){const root=doc.documentElement,clipId='customer-artwork-'+renderId,ns='http://www.w3.org/2000/svg';
+      const acrylic=dynamicDoorbell?doorbellTextSurface(shownProfile):null;
+      const outline=acrylic?'<rect x="'+acrylic.x+'" y="'+acrylic.y+'" width="'+acrylic.width+'" height="'+acrylic.height+'"/>':plateClipMarkup(shownProfile.geometry);
       const defs=doc.createElementNS(ns,'defs');defs.innerHTML='<clipPath id="'+clipId+'">'+outline+'</clipPath>';root.prepend(defs);
-      for(const group of [...root.querySelectorAll('[data-object]')]){const wrapper=doc.createElementNS(ns,'g');wrapper.setAttribute('clip-path','url(#'+clipId+')');group.before(wrapper);wrapper.append(group);}result=root.outerHTML;
+      for(const group of [...root.querySelectorAll('[data-object]')]){const wrapper=doc.createElementNS(ns,'g');wrapper.setAttribute('clip-path','url(#'+clipId+')');group.before(wrapper);wrapper.append(group);}
     }
+    if(doc)result=doc.documentElement.outerHTML;
     // Design boundary and drill-hole zones are preview layers only (keepout flag = editor preview); el.svg() for the order carries neither.
     // Rote Schutzringe um die Bohrlöcher zeigt der Kundeneditor nicht mehr (Chris 20.10.2026), und seit 22./23.10.2026
     // auch keinen Hinweis zu Texten nahe an Löchern (nur noch mechanische Prüfung). Schrauben/Abstandshalter
     // erscheinen, wenn die Befestigung sie enthält.
-    return scenePreview(designAreaPreview(keepoutPreview(screwPreview(spacerPreview(result,profile(surface)),profile(surface)),profile(surface),{show:false,emphasis:guides}),config,profile(surface),{show:keepout}),config.sceneBackground);
+    return scenePreview(designAreaPreview(keepoutPreview(screwPreview(spacerPreview(result,shownProfile),shownProfile),shownProfile,{show:false,emphasis:guides}),config,shownProfile,{show:keepout}),config.sceneBackground);
   };
   const locked = o => !!o?.uxLocked;
 

@@ -36,6 +36,26 @@ Ein zusätzlicher kleiner Produktabruf während eines langsamen Speichervorgangs
 
 In der lokalen Datenbank der zwölf Ring-Proben belegt der feste Entwurf von „Nord“ **1.623.121 Bytes**, der von „Süd“ **1.631.069 Bytes** bei einer Übertragung von jeweils unter 96.000 Bytes. Darin stecken rund 0,78 MB Konfiguratorquellen, 0,32 MB Produkt und Gestaltung sowie 0,49 MB persönliches PNG. Die verbliebene Position im Prüfwarenkorb hält ihr PNG zusätzlich (488.927 Bytes). Die Beträge sind Nutzdaten der bestehenden Tabellen. Physische Schreibmenge und Zeitpunkt der SQLite-Sicherung werden vom Dateisystem mitbestimmt. Das erklärt, weshalb die gemeldete I/O-Grenze für diesen Weg relevant ist. Der bestehende Fertigungspaketleser verlangt explizit unkomprimierte ZIP-Einträge. Eine Umstellung des Dateiformats würde ältere Leser und den Rückweg betreffen. [Messwerte aus der lokalen Prüfdatenbank](Speichervolumen.json) · [Vorhandener Paketleser](../../../../app/workshop/review-package.mjs)
 
+## Speicherpausen bei jedem dritten Entwurf
+
+Die Testreihe mit dem bestehenden Beta-Limit von 1 MB/s enthielt beim neuen R15-Stand vier langsame Entwurfsantworten. In zeitlicher Reihenfolge waren das die Nummern **3, 6, 9 und 12** von zwölf. Beim früheren Stand waren es **2, 5, 8 und 11**. Die Wartezeit bis zum ersten Antwortbyte betrug dann rund sechs Sekunden. Die folgenden Gegenproben fanden ausschließlich mit Kopien der zwölf synthetischen Ring-Gestaltungen auf einem Windows-PC statt. [Vorhandene HTTPS-Einzelwerte](HTTPS-Vergleich.json)
+
+| Lokaler Schreibversuch im nativen R15-Entwurfsspeicher | Während welcher Entwürfe wuchs die Hauptdatei? | Beobachtetes Wachstum je Spitze |
+| --- | --- | ---: |
+| Bestehender R15 und unveränderte Fertigungspakete | 3, 6, 9 und 12 | 4.886.528–4.894.720 Bytes |
+| Dieselben Pakete, Datenbankübernahme im Prüfskript nach jedem abgeschlossenen Speichern | Bei keinem der zwölf Speichervorgänge. Die Hauptdatei wuchs zwischen den Vorgängen. | 0 Bytes während des Speicherns |
+| Nur die zwei großen JSON-Dateien im Prüfpaket ohne Einrückung geschrieben | 4, 8 und 12 | 5.242.880–5.251.072 Bytes |
+
+Der normale R15-Schreibvorgang lief über `acrylicDrafts.create`. Nach jeweils drei Entwürfen meldete SQLite 1.229 bis 1.231 vollständig übernommene Journalseiten. Eine Seite hat 4.096 Bytes, der lokale Standard-Schwellenwert liegt bei 1.000 Seiten. Die Beobachtung nach dem Speichern verwendete `wal_checkpoint(NOOP)`, das selbst keine Seiten übernimmt. Das Dateiwachstum misst die logische Dateigröße. Die physisch vom Hosting abgerechnete Schreibmenge kann davon abweichen. [SQLite-Dokumentation](https://sqlite.org/pragma.html#pragma_wal_checkpoint)
+
+Beide lokalen Wiederholungen ergaben dieselben Positionen und Bytebeträge. In allen drei Versuchsarten ließen sich nach einem Neustart alle zwölf Pakete mit ihrem jeweiligen SHA-256-Wert wieder auslesen. Die kompakte JSON-Schreibweise sparte rund 20 Prozent Paketgröße, verlegte die Spitze aber lediglich auf jeden vierten Entwurf und vergrößerte ihr Maximum. Beide Kontrollvarianten blieben im Prüfskript. Der Abgleich mit dem HTTPS-Lauf macht die periodische Datenbankübernahme zur plausiblen Erklärung für das Dreiervorkommen. Der genaue Anteil an einer einzelnen Serverantwort ist weiter ungemessen. [Schreibprotokoll](Schreibvorgaenge.json) · [Reproduzierbarer Test](../../../../tools/beta-267/measure-snapshot-writes.mjs)
+
+Für die Wiederholung die lokale Datenbank mit den synthetischen Ring-Gestaltungen des obigen Warenkorbvergleichs verwenden. Der Test liest die Quelle, legt eigene temporäre Datenbanken an und prüft die gespeicherten Pakete nach dem Wiederöffnen.
+
+```sh
+node tools/beta-267/measure-snapshot-writes.mjs /pfad/zur/ring-pruefdatenbank/workshop.sqlite ./schreibvorgaenge.json
+```
+
 ## Vergleich mit den Originalen und mit dem nativen Shopify-Pfad
 
 Für die originale Funkklingel C/v3 wurden die archivierte HTML-Datei und deren Originalressourcen unverändert lokal bedient. Chrome fand 16 gezeichnete Karten sowie 54–55 Ressourcen-Einträge beim Einstieg, darunter Cachetreffer. Während 24 echten Designwechseln kamen null abgeschlossene HTTP-Ressourceneinträge hinzu. Der R15-Prüflauf erfasste während der Wechsel vier bis fünf beginnende Motivabrufe. Das bestehende Nachladen sichtbarer Motive läuft zeitgleich. Ein neuer Produktprofilabruf wurde in diesen Zeitfenstern nicht beobachtet. Auf dem PC wechselte die alte Funkklingel in 886 ms, der R15 in 252 bzw. 190 ms. Im gedrosselten Handyprofil waren es 6,03 s für C, 1,51 bzw. 1,09 s für R15. Das C-Archiv verwendet ein anderes Profil. Die Ergebnisse zeigen den Nutzen der lokal vorhandenen Konturen und die tatsächlichen Zeichenkosten der jeweiligen Seite. [C-Einzelmessung](Funkklingel-C-v3.json) · [A/B, Edelstahl-C, M, FPD und Zakeke](ALTQUELLEN.md)

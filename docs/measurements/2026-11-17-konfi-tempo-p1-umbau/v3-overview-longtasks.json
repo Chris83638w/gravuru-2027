@@ -1,0 +1,334 @@
+{
+  "schema": "gravuru-p1-overview-longtasks/v1",
+  "profile": {
+    "windowMs": 5000,
+    "notes": "Controlled local browser measurements with normal UI actions; includes automation/overview rendering; not physical-phone INP or end-to-end cart",
+    "measuredRuns": 3,
+    "saveMockMs": 1000,
+    "network": "loopback without throttling",
+    "browser": "Chrome",
+    "cpuThrottle": 4,
+    "source": "d7b0075 plus pending V3-1/V3-2 corrections",
+    "warmupRuns": 1,
+    "fixture": "Unser Anfang, nine objects, no customer upload",
+    "viewport": "390x844"
+  },
+  "off": {
+    "enabled": false,
+    "saves": 0,
+    "carts": 0,
+    "observations": [
+      {
+        "kind": "overview",
+        "start": 27688.80000001192,
+        "windowMs": 5000,
+        "scrolls": [
+          3340.5
+        ],
+        "longTasks": [
+          {
+            "start": 694.7999999821186,
+            "duration": 97
+          },
+          {
+            "start": 792.5,
+            "duration": 64
+          },
+          {
+            "start": 857.5999999940395,
+            "duration": 54
+          },
+          {
+            "start": 912.5,
+            "duration": 64
+          },
+          {
+            "start": 1022.5999999940395,
+            "duration": 54
+          },
+          {
+            "start": 1077.5,
+            "duration": 511
+          }
+        ]
+      },
+      {
+        "kind": "overview",
+        "start": 29562.5,
+        "windowMs": 5000,
+        "scrolls": [
+          3363.0999999940395
+        ],
+        "longTasks": [
+          {
+            "start": 616.8999999761581,
+            "duration": 63
+          },
+          {
+            "start": 680.3999999761581,
+            "duration": 61
+          },
+          {
+            "start": 742.5999999940395,
+            "duration": 53
+          },
+          {
+            "start": 796.5999999940395,
+            "duration": 104
+          },
+          {
+            "start": 901.7999999821186,
+            "duration": 79
+          },
+          {
+            "start": 981.6999999880791,
+            "duration": 51
+          },
+          {
+            "start": 1073.5999999940395,
+            "duration": 505
+          }
+        ]
+      },
+      {
+        "kind": "overview",
+        "start": 31042.20000001788,
+        "windowMs": 5000,
+        "scrolls": [
+          3365
+        ],
+        "longTasks": [
+          {
+            "start": 628.7999999821186,
+            "duration": 73
+          },
+          {
+            "start": 937.6999999880791,
+            "duration": 451
+          },
+          {
+            "start": 1389.5,
+            "duration": 65
+          }
+        ]
+      },
+      {
+        "kind": "overview",
+        "start": 25510,
+        "windowMs": 5000,
+        "scrolls": [
+          3334.199999988079
+        ],
+        "longTasks": [
+          {
+            "start": 687.6999999880791,
+            "duration": 59
+          },
+          {
+            "start": 747.6999999880791,
+            "duration": 106
+          },
+          {
+            "start": 854.3000000119209,
+            "duration": 77
+          },
+          {
+            "start": 932.4000000059605,
+            "duration": 64
+          },
+          {
+            "start": 997.9000000059605,
+            "duration": 55
+          },
+          {
+            "start": 1096.800000011921,
+            "duration": 515
+          }
+        ]
+      }
+    ]
+  },
+  "on": {
+    "enabled": true,
+    "saves": 4,
+    "carts": 0,
+    "observations": [
+      {
+        "kind": "overview",
+        "start": 36706.40000000596,
+        "windowMs": 5000,
+        "scrolls": [
+          3384.7999999821186
+        ],
+        "longTasks": [
+          {
+            "start": 651.7999999821186,
+            "duration": 72
+          },
+          {
+            "start": 724.9000000059605,
+            "duration": 71
+          },
+          {
+            "start": 797.1999999880791,
+            "duration": 68
+          },
+          {
+            "start": 879.5,
+            "duration": 66
+          },
+          {
+            "start": 1032.699999988079,
+            "duration": 605
+          },
+          {
+            "start": 1738.5999999940395,
+            "duration": 65
+          },
+          {
+            "start": 1826,
+            "duration": 116
+          }
+        ]
+      },
+      {
+        "kind": "overview",
+        "start": 38529.79999998212,
+        "windowMs": 5000,
+        "scrolls": [
+          3350.300000011921
+        ],
+        "longTasks": [
+          {
+            "start": 644.4000000059605,
+            "duration": 58
+          },
+          {
+            "start": 703.5,
+            "duration": 62
+          },
+          {
+            "start": 766.7000000178814,
+            "duration": 68
+          },
+          {
+            "start": 835.9000000059605,
+            "duration": 63
+          },
+          {
+            "start": 899.5,
+            "duration": 58
+          },
+          {
+            "start": 958.5999999940395,
+            "duration": 557
+          },
+          {
+            "start": 1516.2000000178814,
+            "duration": 66
+          },
+          {
+            "start": 1671.0999999940395,
+            "duration": 60
+          },
+          {
+            "start": 1755.9000000059605,
+            "duration": 129
+          }
+        ]
+      },
+      {
+        "kind": "overview",
+        "start": 39971.79999998212,
+        "windowMs": 5000,
+        "scrolls": [
+          4379.5999999940395
+        ],
+        "longTasks": [
+          {
+            "start": 687.3000000119209,
+            "duration": 57
+          },
+          {
+            "start": 745.7000000178814,
+            "duration": 74
+          },
+          {
+            "start": 821,
+            "duration": 50
+          },
+          {
+            "start": 872,
+            "duration": 83
+          },
+          {
+            "start": 956.0999999940395,
+            "duration": 69
+          },
+          {
+            "start": 1074.0999999940395,
+            "duration": 51
+          },
+          {
+            "start": 1126,
+            "duration": 601
+          },
+          {
+            "start": 1848.2000000178814,
+            "duration": 63
+          },
+          {
+            "start": 1940.800000011921,
+            "duration": 119
+          }
+        ]
+      },
+      {
+        "kind": "overview",
+        "start": 34767,
+        "windowMs": 5000,
+        "scrolls": [
+          3332.800000011921
+        ],
+        "longTasks": [
+          {
+            "start": 602,
+            "duration": 59
+          },
+          {
+            "start": 661.5,
+            "duration": 59
+          },
+          {
+            "start": 721,
+            "duration": 78
+          },
+          {
+            "start": 799.7000000178814,
+            "duration": 56
+          },
+          {
+            "start": 856.8000000119209,
+            "duration": 54
+          },
+          {
+            "start": 961.7000000178814,
+            "duration": 512
+          },
+          {
+            "start": 1474.5,
+            "duration": 60
+          },
+          {
+            "start": 1643,
+            "duration": 65
+          },
+          {
+            "start": 1735.7000000178814,
+            "duration": 126
+          }
+        ]
+      }
+    ]
+  }
+}

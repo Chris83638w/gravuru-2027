@@ -1,0 +1,228 @@
+{
+  "schema": "gravuru-shop-cart-timing-benchmark/v1",
+  "commit": "be163c5d598dfe1c680b483adee645d63a3bdc26",
+  "profile": {
+    "kind": "local-synthetic-http",
+    "platform": "win32",
+    "cpu": "Intel(R) Core(TM) Ultra 5 235",
+    "node": "v24.22.1",
+    "runs": 7,
+    "warmupRuns": 1,
+    "parallelSessions": 1,
+    "network": "loopback, no throttling",
+    "shopifyMockMs": {
+      "lookup": 60,
+      "create": 100,
+      "pollWait": 25,
+      "poll": 40
+    },
+    "data": "bundled native acrylic sample, 40x60 PNG photo and WebP customer preview, in-memory database"
+  },
+  "summary": {
+    "acrylic-drafts": {
+      "medianMs": 848.63,
+      "minMs": 835.19,
+      "maxMs": 861.77
+    },
+    "theme-cart": {
+      "medianMs": 6.44,
+      "minMs": 6.11,
+      "maxMs": 7.48
+    },
+    "cart/data": {
+      "medianMs": 261.96,
+      "minMs": 250.05,
+      "maxMs": 278.85
+    },
+    "cart/claim": {
+      "medianMs": 6.8,
+      "minMs": 6.65,
+      "maxMs": 7.02
+    }
+  },
+  "samples": [
+    {
+      "acrylic-drafts": {
+        "elapsedMs": 848.63,
+        "requestBytes": 2926,
+        "responseBytes": 512,
+        "timing": null
+      },
+      "theme-cart": {
+        "elapsedMs": 7.05,
+        "requestBytes": 91,
+        "responseBytes": 602,
+        "timing": null
+      },
+      "cart/data": {
+        "elapsedMs": 278.85,
+        "requestBytes": 0,
+        "responseBytes": 1259,
+        "timing": null
+      },
+      "cart/claim": {
+        "elapsedMs": 7,
+        "requestBytes": 0,
+        "responseBytes": 16,
+        "timing": null
+      }
+    },
+    {
+      "acrylic-drafts": {
+        "elapsedMs": 861.77,
+        "requestBytes": 2926,
+        "responseBytes": 512,
+        "timing": null
+      },
+      "theme-cart": {
+        "elapsedMs": 7.48,
+        "requestBytes": 91,
+        "responseBytes": 602,
+        "timing": null
+      },
+      "cart/data": {
+        "elapsedMs": 263.18,
+        "requestBytes": 0,
+        "responseBytes": 1259,
+        "timing": null
+      },
+      "cart/claim": {
+        "elapsedMs": 6.8,
+        "requestBytes": 0,
+        "responseBytes": 16,
+        "timing": null
+      }
+    },
+    {
+      "acrylic-drafts": {
+        "elapsedMs": 860.58,
+        "requestBytes": 2926,
+        "responseBytes": 512,
+        "timing": null
+      },
+      "theme-cart": {
+        "elapsedMs": 6.63,
+        "requestBytes": 91,
+        "responseBytes": 602,
+        "timing": null
+      },
+      "cart/data": {
+        "elapsedMs": 250.05,
+        "requestBytes": 0,
+        "responseBytes": 1259,
+        "timing": null
+      },
+      "cart/claim": {
+        "elapsedMs": 7.02,
+        "requestBytes": 0,
+        "responseBytes": 16,
+        "timing": null
+      }
+    },
+    {
+      "acrylic-drafts": {
+        "elapsedMs": 858.72,
+        "requestBytes": 2926,
+        "responseBytes": 512,
+        "timing": null
+      },
+      "theme-cart": {
+        "elapsedMs": 6.19,
+        "requestBytes": 91,
+        "responseBytes": 602,
+        "timing": null
+      },
+      "cart/data": {
+        "elapsedMs": 255.65,
+        "requestBytes": 0,
+        "responseBytes": 1259,
+        "timing": null
+      },
+      "cart/claim": {
+        "elapsedMs": 6.72,
+        "requestBytes": 0,
+        "responseBytes": 16,
+        "timing": null
+      }
+    },
+    {
+      "acrylic-drafts": {
+        "elapsedMs": 839.11,
+        "requestBytes": 2926,
+        "responseBytes": 512,
+        "timing": null
+      },
+      "theme-cart": {
+        "elapsedMs": 6.11,
+        "requestBytes": 91,
+        "responseBytes": 602,
+        "timing": null
+      },
+      "cart/data": {
+        "elapsedMs": 257.86,
+        "requestBytes": 0,
+        "responseBytes": 1259,
+        "timing": null
+      },
+      "cart/claim": {
+        "elapsedMs": 6.91,
+        "requestBytes": 0,
+        "responseBytes": 16,
+        "timing": null
+      }
+    },
+    {
+      "acrylic-drafts": {
+        "elapsedMs": 836.89,
+        "requestBytes": 2926,
+        "responseBytes": 512,
+        "timing": null
+      },
+      "theme-cart": {
+        "elapsedMs": 6.18,
+        "requestBytes": 91,
+        "responseBytes": 602,
+        "timing": null
+      },
+      "cart/data": {
+        "elapsedMs": 276.34,
+        "requestBytes": 0,
+        "responseBytes": 1259,
+        "timing": null
+      },
+      "cart/claim": {
+        "elapsedMs": 6.73,
+        "requestBytes": 0,
+        "responseBytes": 16,
+        "timing": null
+      }
+    },
+    {
+      "acrylic-drafts": {
+        "elapsedMs": 835.19,
+        "requestBytes": 2926,
+        "responseBytes": 512,
+        "timing": null
+      },
+      "theme-cart": {
+        "elapsedMs": 6.44,
+        "requestBytes": 91,
+        "responseBytes": 602,
+        "timing": null
+      },
+      "cart/data": {
+        "elapsedMs": 261.96,
+        "requestBytes": 0,
+        "responseBytes": 1259,
+        "timing": null
+      },
+      "cart/claim": {
+        "elapsedMs": 6.65,
+        "requestBytes": 0,
+        "responseBytes": 16,
+        "timing": null
+      }
+    }
+  ],
+  "backgroundEvents": []
+}

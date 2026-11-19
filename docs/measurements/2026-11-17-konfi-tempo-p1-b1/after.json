@@ -1,0 +1,3355 @@
+{
+  "schema": "gravuru-shop-cart-timing-benchmark/v1",
+  "commit": "7054b89e5fbfb87995d95a11cb6e87d75cfd163d",
+  "profile": {
+    "kind": "local-synthetic-http",
+    "platform": "win32",
+    "cpu": "Intel(R) Core(TM) Ultra 5 235",
+    "node": "v24.22.1",
+    "runs": 7,
+    "warmupRuns": 1,
+    "parallelSessions": 1,
+    "network": "loopback, no throttling",
+    "shopifyMockMs": {
+      "lookup": 60,
+      "create": 100,
+      "pollWait": 25,
+      "poll": 40
+    },
+    "data": "bundled native acrylic sample, 40x60 PNG photo and WebP customer preview, in-memory database"
+  },
+  "summary": {
+    "acrylic-drafts": {
+      "medianMs": 858.57,
+      "minMs": 835.5,
+      "maxMs": 878.01
+    },
+    "theme-cart": {
+      "medianMs": 7.29,
+      "minMs": 6.66,
+      "maxMs": 8.47
+    },
+    "cart/data": {
+      "medianMs": 259.08,
+      "minMs": 248.1,
+      "maxMs": 264.22
+    },
+    "cart/claim": {
+      "medianMs": 7.4,
+      "minMs": 6.94,
+      "maxMs": 7.63
+    }
+  },
+  "samples": [
+    {
+      "acrylic-drafts": {
+        "elapsedMs": 867.04,
+        "requestBytes": 2926,
+        "responseBytes": 512,
+        "timing": {
+          "event": "shop_cart_timing",
+          "version": 1,
+          "startedAt": "2026-11-17T12:50:34.012Z",
+          "traceId": "9cb7fd43-0a7c-4c06-9211-0073574bb218",
+          "route": "acrylic-drafts",
+          "status": 201,
+          "totalMs": 866.18,
+          "steps": {
+            "session_binding": {
+              "durationMs": 0.84,
+              "calls": 1,
+              "failures": 0
+            },
+            "body_read": {
+              "durationMs": 0.11,
+              "calls": 1,
+              "failures": 0
+            },
+            "body_json": {
+              "durationMs": 0.02,
+              "calls": 1,
+              "failures": 0
+            },
+            "product_read": {
+              "durationMs": 0.62,
+              "calls": 1,
+              "failures": 0
+            },
+            "model_build": {
+              "durationMs": 1.08,
+              "calls": 1,
+              "failures": 0
+            },
+            "review_config": {
+              "durationMs": 0.36,
+              "calls": 1,
+              "failures": 0
+            },
+            "review_validate": {
+              "durationMs": 17.64,
+              "calls": 1,
+              "failures": 0
+            },
+            "review_sources": {
+              "durationMs": 0.43,
+              "calls": 1,
+              "failures": 0
+            },
+            "photo_original": {
+              "durationMs": 260.89,
+              "calls": 1,
+              "failures": 0
+            },
+            "customer_preview": {
+              "durationMs": 302.62,
+              "calls": 1,
+              "failures": 0
+            },
+            "reference_preview": {
+              "durationMs": 259.49,
+              "calls": 1,
+              "failures": 0
+            },
+            "review_zip": {
+              "durationMs": 15.96,
+              "calls": 1,
+              "failures": 0
+            },
+            "originals_zip": {
+              "durationMs": 0.07,
+              "calls": 1,
+              "failures": 0
+            },
+            "review_prepare": {
+              "durationMs": 861.62,
+              "calls": 1,
+              "failures": 0
+            },
+            "draft_persist": {
+              "durationMs": 1.15,
+              "calls": 1,
+              "failures": 0
+            },
+            "response_json": {
+              "durationMs": 0,
+              "calls": 1,
+              "failures": 0
+            }
+          },
+          "counts": {
+            "request_bytes": 2926,
+            "response_bytes": 512
+          },
+          "eventLoop": {
+            "resolutionMs": 20,
+            "beforeHandler": {
+              "windowMs": 1000,
+              "samples": 34,
+              "maxMs": 15.26,
+              "p99Ms": 15.26
+            },
+            "duringHandler": {
+              "windowMs": 866.1874,
+              "samples": 29,
+              "maxMs": 17.37,
+              "p99Ms": 17.37
+            }
+          }
+        }
+      },
+      "theme-cart": {
+        "elapsedMs": 6.66,
+        "requestBytes": 91,
+        "responseBytes": 602,
+        "timing": {
+          "event": "shop_cart_timing",
+          "version": 1,
+          "startedAt": "2026-11-17T12:50:34.879Z",
+          "traceId": "b04fec29-7b02-4ad0-ad43-bfd2f5013a2e",
+          "route": "theme-cart",
+          "status": 200,
+          "totalMs": 6.02,
+          "steps": {
+            "session_binding": {
+              "durationMs": 0.89,
+              "calls": 1,
+              "failures": 0
+            },
+            "body_read": {
+              "durationMs": 0.1,
+              "calls": 1,
+              "failures": 0
+            },
+            "body_json": {
+              "durationMs": 0.01,
+              "calls": 1,
+              "failures": 0
+            },
+            "draft_read": {
+              "durationMs": 0.04,
+              "calls": 1,
+              "failures": 0
+            },
+            "review_read": {
+              "durationMs": 0.07,
+              "calls": 1,
+              "failures": 0
+            },
+            "variant_candidates": {
+              "durationMs": 0.05,
+              "calls": 1,
+              "failures": 0
+            },
+            "variant_binding": {
+              "durationMs": 0.01,
+              "calls": 1,
+              "failures": 0
+            },
+            "offer_resolve": {
+              "durationMs": 1.28,
+              "calls": 1,
+              "failures": 0
+            },
+            "offer_create": {
+              "durationMs": 0.12,
+              "calls": 1,
+              "failures": 0
+            },
+            "bound_offer": {
+              "durationMs": 1.45,
+              "calls": 1,
+              "failures": 0
+            },
+            "review_package": {
+              "durationMs": 0.84,
+              "calls": 1,
+              "failures": 0
+            },
+            "cart_assign": {
+              "durationMs": 0.12,
+              "calls": 1,
+              "failures": 0
+            },
+            "customer_image_url": {
+              "durationMs": 0.03,
+              "calls": 1,
+              "failures": 0
+            },
+            "cart_prepare": {
+              "durationMs": 3.84,
+              "calls": 1,
+              "failures": 0
+            },
+            "response_json": {
+              "durationMs": 0,
+              "calls": 1,
+              "failures": 0
+            }
+          },
+          "counts": {
+            "request_bytes": 91,
+            "checkout_image_started": 1,
+            "response_bytes": 602
+          },
+          "eventLoop": {
+            "resolutionMs": 20,
+            "beforeHandler": {
+              "windowMs": 1000,
+              "samples": 34,
+              "maxMs": 17.76,
+              "p99Ms": 17.76
+            },
+            "duringHandler": {
+              "windowMs": 6.028400000000147,
+              "samples": 0,
+              "maxMs": 0,
+              "p99Ms": 0
+            }
+          }
+        }
+      },
+      "cart/data": {
+        "elapsedMs": 259.08,
+        "requestBytes": 0,
+        "responseBytes": 1259,
+        "timing": {
+          "event": "shop_cart_timing",
+          "version": 1,
+          "startedAt": "2026-11-17T12:50:34.886Z",
+          "traceId": "c8b72d45-f6e8-45ae-bf0b-065f39d4b85a",
+          "route": "cart/data",
+          "status": 200,
+          "totalMs": 258.48,
+          "steps": {
+            "proxy_verify": {
+              "durationMs": 0.05,
+              "calls": 1,
+              "failures": 0
+            },
+            "session_binding": {
+              "durationMs": 1.75,
+              "calls": 2,
+              "failures": 0
+            },
+            "offer_resolve": {
+              "durationMs": 1.32,
+              "calls": 1,
+              "failures": 0
+            },
+            "offer_create": {
+              "durationMs": 0.19,
+              "calls": 1,
+              "failures": 0
+            },
+            "bound_offer": {
+              "durationMs": 1.55,
+              "calls": 1,
+              "failures": 0
+            },
+            "review_package": {
+              "durationMs": 0.92,
+              "calls": 1,
+              "failures": 0
+            },
+            "cart_assign": {
+              "durationMs": 0.04,
+              "calls": 1,
+              "failures": 0
+            },
+            "customer_image_url": {
+              "durationMs": 0.02,
+              "calls": 1,
+              "failures": 0
+            },
+            "cart_prepare": {
+              "durationMs": 3.94,
+              "calls": 1,
+              "failures": 0
+            },
+            "checkout_image_wait": {
+              "durationMs": 250.03,
+              "calls": 1,
+              "failures": 0
+            },
+            "cart_revalidate": {
+              "durationMs": 1.81,
+              "calls": 1,
+              "failures": 0
+            },
+            "response_json": {
+              "durationMs": 0.02,
+              "calls": 1,
+              "failures": 0
+            }
+          },
+          "counts": {
+            "checkout_image_pending": 1,
+            "response_bytes": 1259
+          },
+          "eventLoop": {
+            "resolutionMs": 20,
+            "beforeHandler": {
+              "windowMs": 1000,
+              "samples": 34,
+              "maxMs": 17.76,
+              "p99Ms": 17.76
+            },
+            "duringHandler": {
+              "windowMs": 258.4850000000001,
+              "samples": 8,
+              "maxMs": 14.64,
+              "p99Ms": 14.64
+            }
+          }
+        }
+      },
+      "cart/claim": {
+        "elapsedMs": 7.6,
+        "requestBytes": 0,
+        "responseBytes": 16,
+        "timing": {
+          "event": "shop_cart_timing",
+          "version": 1,
+          "startedAt": "2026-11-17T12:50:35.145Z",
+          "traceId": "f8b49786-75f1-4b3e-984e-5977a116bb8c",
+          "route": "cart/claim",
+          "status": 200,
+          "totalMs": 7.07,
+          "steps": {
+            "proxy_verify": {
+              "durationMs": 0.05,
+              "calls": 1,
+              "failures": 0
+            },
+            "session_binding": {
+              "durationMs": 0.73,
+              "calls": 1,
+              "failures": 0
+            },
+            "offer_resolve": {
+              "durationMs": 1.4,
+              "calls": 1,
+              "failures": 0
+            },
+            "offer_create": {
+              "durationMs": 0.21,
+              "calls": 1,
+              "failures": 0
+            },
+            "bound_offer": {
+              "durationMs": 1.66,
+              "calls": 1,
+              "failures": 0
+            },
+            "review_package": {
+              "durationMs": 0.88,
+              "calls": 1,
+              "failures": 0
+            },
+            "cart_assign": {
+              "durationMs": 0.05,
+              "calls": 1,
+              "failures": 0
+            },
+            "customer_image_url": {
+              "durationMs": 0.03,
+              "calls": 1,
+              "failures": 0
+            },
+            "cart_prepare": {
+              "durationMs": 4.04,
+              "calls": 1,
+              "failures": 0
+            },
+            "cart_claim": {
+              "durationMs": 1.55,
+              "calls": 1,
+              "failures": 0
+            },
+            "response_json": {
+              "durationMs": 0.01,
+              "calls": 1,
+              "failures": 0
+            }
+          },
+          "counts": {
+            "response_bytes": 16
+          },
+          "eventLoop": {
+            "resolutionMs": 20,
+            "beforeHandler": {
+              "windowMs": 1000,
+              "samples": 33,
+              "maxMs": 17.76,
+              "p99Ms": 17.76
+            },
+            "duringHandler": {
+              "windowMs": 7.081299999999828,
+              "samples": 0,
+              "maxMs": 0,
+              "p99Ms": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "acrylic-drafts": {
+        "elapsedMs": 858.57,
+        "requestBytes": 2926,
+        "responseBytes": 512,
+        "timing": {
+          "event": "shop_cart_timing",
+          "version": 1,
+          "startedAt": "2026-11-17T12:50:35.160Z",
+          "traceId": "c7984434-f1d2-4784-84d7-3bf45637d66b",
+          "route": "acrylic-drafts",
+          "status": 201,
+          "totalMs": 853.71,
+          "steps": {
+            "session_binding": {
+              "durationMs": 0.89,
+              "calls": 1,
+              "failures": 0
+            },
+            "body_read": {
+              "durationMs": 0.11,
+              "calls": 1,
+              "failures": 0
+            },
+            "body_json": {
+              "durationMs": 0.02,
+              "calls": 1,
+              "failures": 0
+            },
+            "product_read": {
+              "durationMs": 0.63,
+              "calls": 1,
+              "failures": 0
+            },
+            "model_build": {
+              "durationMs": 1.26,
+              "calls": 1,
+              "failures": 0
+            },
+            "review_config": {
+              "durationMs": 0.36,
+              "calls": 1,
+              "failures": 0
+            },
+            "review_validate": {
+              "durationMs": 17.98,
+              "calls": 1,
+              "failures": 0
+            },
+            "review_sources": {
+              "durationMs": 0.42,
+              "calls": 1,
+              "failures": 0
+            },
+            "photo_original": {
+              "durationMs": 260.98,
+              "calls": 1,
+              "failures": 0
+            },
+            "customer_preview": {
+              "durationMs": 299.87,
+              "calls": 1,
+              "failures": 0
+            },
+            "reference_preview": {
+              "durationMs": 258.73,
+              "calls": 1,
+              "failures": 0
+            },
+            "review_zip": {
+              "durationMs": 6.38,
+              "calls": 1,
+              "failures": 0
+            },
+            "originals_zip": {
+              "durationMs": 0.06,
+              "calls": 1,
+              "failures": 0
+            },
+            "review_prepare": {
+              "durationMs": 848.83,
+              "calls": 1,
+              "failures": 0
+            },
+            "draft_persist": {
+              "durationMs": 1.12,
+              "calls": 1,
+              "failures": 0
+            },
+            "response_json": {
+              "durationMs": 0,
+              "calls": 1,
+              "failures": 0
+            }
+          },
+          "counts": {
+            "request_bytes": 2926,
+            "response_bytes": 512
+          },
+          "eventLoop": {
+            "resolutionMs": 20,
+            "beforeHandler": {
+              "windowMs": 1000,
+              "samples": 33,
+              "maxMs": 17.76,
+              "p99Ms": 17.76
+            },
+            "duringHandler": {
+              "windowMs": 853.7222999999999,
+              "samples": 29,
+              "maxMs": 27.05,
+              "p99Ms": 27.05
+            }
+          }
+        }
+      },
+      "theme-cart": {
+        "elapsedMs": 8.15,
+        "requestBytes": 91,
+        "responseBytes": 602,
+        "timing": {
+          "event": "shop_cart_timing",
+          "version": 1,
+          "startedAt": "2026-11-17T12:50:36.019Z",
+          "traceId": "a00c633a-7ca1-4c18-ad3b-678c59f8aeff",
+          "route": "theme-cart",
+          "status": 200,
+          "totalMs": 7.52,
+          "steps": {
+            "session_binding": {
+              "durationMs": 0.88,
+              "calls": 1,
+              "failures": 0
+            },
+            "body_read": {
+              "durationMs": 0.09,
+              "calls": 1,
+              "failures": 0
+            },
+            "body_json": {
+              "durationMs": 0.01,
+              "calls": 1,
+              "failures": 0
+            },
+            "draft_read": {
+              "durationMs": 0.04,
+              "calls": 1,
+              "failures": 0
+            },
+            "review_read": {
+              "durationMs": 0.08,
+              "calls": 1,
+              "failures": 0
+            },
+            "variant_candidates": {
+              "durationMs": 0.05,
+              "calls": 1,
+              "failures": 0
+            },
+            "variant_binding": {
+              "durationMs": 0.01,
+              "calls": 1,
+              "failures": 0
+            },
+            "offer_resolve": {
+              "durationMs": 1.31,
+              "calls": 1,
+              "failures": 0
+            },
+            "offer_create": {
+              "durationMs": 0.15,
+              "calls": 1,
+              "failures": 0
+            },
+            "bound_offer": {
+              "durationMs": 1.52,
+              "calls": 1,
+              "failures": 0
+            },
+            "review_package": {
+              "durationMs": 1.21,
+              "calls": 1,
+              "failures": 0
+            },
+            "cart_assign": {
+              "durationMs": 0.26,
+              "calls": 1,
+              "failures": 0
+            },
+            "customer_image_url": {
+              "durationMs": 0.05,
+              "calls": 1,
+              "failures": 0
+            },
+            "cart_prepare": {
+              "durationMs": 4.78,
+              "calls": 1,
+              "failures": 0
+            },
+            "response_json": {
+              "durationMs": 0.01,
+              "calls": 1,
+              "failures": 0
+            }
+          },
+          "counts": {
+            "request_bytes": 91,
+            "checkout_image_started": 1,
+            "response_bytes": 602
+          },
+          "eventLoop": {
+            "resolutionMs": 20,
+            "beforeHandler": {
+              "windowMs": 1000,
+              "samples": 33,
+              "maxMs": 27.05,
+              "p99Ms": 27.05
+            },
+            "duringHandler": {
+              "windowMs": 7.533700000000408,
+              "samples": 0,
+              "maxMs": 0,
+              "p99Ms": 0
+            }
+          }
+        }
+      },
+      "cart/data": {
+        "elapsedMs": 264.2,
+        "requestBytes": 0,
+        "responseBytes": 1259,
+        "timing": {
+          "event": "shop_cart_timing",
+          "version": 1,
+          "startedAt": "2026-11-17T12:50:36.027Z",
+          "traceId": "3776b23d-8418-4dd1-965a-66a2164c07f4",
+          "route": "cart/data",
+          "status": 200,
+          "totalMs": 263.71,
+          "steps": {
+            "proxy_verify": {
+              "durationMs": 0.05,
+              "calls": 1,
+              "failures": 0
+            },
+            "session_binding": {
+              "durationMs": 1.69,
+              "calls": 2,
+              "failures": 0
+            },
+            "offer_resolve": {
+              "durationMs": 1.29,
+              "calls": 1,
+              "failures": 0
+            },
+            "offer_create": {
+              "durationMs": 0.21,
+              "calls": 1,
+              "failures": 0
+            },
+            "bound_offer": {
+              "durationMs": 1.54,
+              "calls": 1,
+              "failures": 0
+            },
+            "review_package": {
+              "durationMs": 0.79,
+              "calls": 1,
+              "failures": 0
+            },
+            "cart_assign": {
+              "durationMs": 0.04,
+              "calls": 1,
+              "failures": 0
+            },
+            "customer_image_url": {
+              "durationMs": 0.02,
+              "calls": 1,
+              "failures": 0
+            },
+            "cart_prepare": {
+              "durationMs": 3.77,
+              "calls": 1,
+              "failures": 0
+            },
+            "checkout_image_wait": {
+              "durationMs": 255.94,
+              "calls": 1,
+              "failures": 0
+            },
+            "cart_revalidate": {
+              "durationMs": 1.4,
+              "calls": 1,
+              "failures": 0
+            },
+            "response_json": {
+              "durationMs": 0.02,
+              "calls": 1,
+              "failures": 0
+            }
+          },
+          "counts": {
+            "checkout_image_pending": 1,
+            "response_bytes": 1259
+          },
+          "eventLoop": {
+            "resolutionMs": 20,
+            "beforeHandler": {
+              "windowMs": 1000,
+              "samples": 33,
+              "maxMs": 27.05,
+              "p99Ms": 27.05
+            },
+            "duringHandler": {
+              "windowMs": 263.71959999999945,
+              "samples": 8,
+              "maxMs": 15.42,
+              "p99Ms": 15.42
+            }
+          }
+        }
+      },
+      "cart/claim": {
+        "elapsedMs": 7.63,
+        "requestBytes": 0,
+        "responseBytes": 16,
+        "timing": {
+          "event": "shop_cart_timing",
+          "version": 1,
+          "startedAt": "2026-11-17T12:50:36.292Z",
+          "traceId": "a8a7bea9-ed5e-400e-bf8a-63a925dc3991",
+          "route": "cart/claim",
+          "status": 200,
+          "totalMs": 6.98,
+          "steps": {
+            "proxy_verify": {
+              "durationMs": 0.06,
+              "calls": 1,
+              "failures": 0
+            },
+            "session_binding": {
+              "durationMs": 0.82,
+              "calls": 1,
+              "failures": 0
+            },
+            "offer_resolve": {
+              "durationMs": 1.32,
+              "calls": 1,
+              "failures": 0
+            },
+            "offer_create": {
+              "durationMs": 0.21,
+              "calls": 1,
+              "failures": 0
+            },
+            "bound_offer": {
+              "durationMs": 1.6,
+              "calls": 1,
+              "failures": 0
+            },
+            "review_package": {
+              "durationMs": 0.78,
+              "calls": 1,
+              "failures": 0
+            },
+            "cart_assign": {
+              "durationMs": 0.06,
+              "calls": 1,
+              "failures": 0
+            },
+            "customer_image_url": {
+              "durationMs": 0.03,
+              "calls": 1,
+              "failures": 0
+            },
+            "cart_prepare": {
+              "durationMs": 3.92,
+              "calls": 1,
+              "failures": 0
+            },
+            "cart_claim": {
+              "durationMs": 1.37,
+              "calls": 1,
+              "failures": 0
+            },
+            "response_json": {
+              "durationMs": 0,
+              "calls": 1,
+              "failures": 0
+            }
+          },
+          "counts": {
+            "response_bytes": 16
+          },
+          "eventLoop": {
+            "resolutionMs": 20,
+            "beforeHandler": {
+              "windowMs": 1000,
+              "samples": 33,
+              "maxMs": 15.42,
+              "p99Ms": 15.42
+            },
+            "duringHandler": {
+              "windowMs": 6.986699999999473,
+              "samples": 1,
+              "maxMs": 5.72,
+              "p99Ms": 5.72
+            }
+          }
+        }
+      }
+    },
+    {
+      "acrylic-drafts": {
+        "elapsedMs": 878.01,
+        "requestBytes": 2926,
+        "responseBytes": 512,
+        "timing": {
+          "event": "shop_cart_timing",
+          "version": 1,
+          "startedAt": "2026-11-17T12:50:36.306Z",
+          "traceId": "4db68f3e-92ad-4363-bf47-6f09278c9279",
+          "route": "acrylic-drafts",
+          "status": 201,
+          "totalMs": 872.99,
+          "steps": {
+            "session_binding": {
+              "durationMs": 0.68,
+              "calls": 1,
+              "failures": 0
+            },
+            "body_read": {
+              "durationMs": 0.08,
+              "calls": 1,
+              "failures": 0
+            },
+            "body_json": {
+              "durationMs": 0.02,
+              "calls": 1,
+              "failures": 0
+            },
+            "product_read": {
+              "durationMs": 0.61,
+              "calls": 1,
+              "failures": 0
+            },
+            "model_build": {
+              "durationMs": 1.55,
+              "calls": 1,
+              "failures": 0
+            },
+            "review_config": {
+              "durationMs": 0.38,
+              "calls": 1,
+              "failures": 0
+            },
+            "review_validate": {
+              "durationMs": 16.91,
+              "calls": 1,
+              "failures": 0
+            },
+            "review_sources": {
+              "durationMs": 0.49,
+              "calls": 1,
+              "failures": 0
+            },
+            "photo_original": {
+              "durationMs": 260.29,
+              "calls": 1,
+              "failures": 0
+            },
+            "customer_preview": {
+              "durationMs": 307.49,
+              "calls": 1,
+              "failures": 0
+            },
+            "reference_preview": {
+              "durationMs": 269.94,
+              "calls": 1,
+              "failures": 0
+            },
+            "review_zip": {
+              "durationMs": 8.38,
+              "calls": 1,
+              "failures": 0
+            },
+            "originals_zip": {
+              "durationMs": 0.06,
+              "calls": 1,
+              "failures": 0
+            },
+            "review_prepare": {
+              "durationMs": 868.14,
+              "calls": 1,
+              "failures": 0
+            },
+            "draft_persist": {
+              "durationMs": 1.14,
+              "calls": 1,
+              "failures": 0
+            },
+            "response_json": {
+              "durationMs": 0,
+              "calls": 1,
+              "failures": 0
+            }
+          },
+          "counts": {
+            "request_bytes": 2926,
+            "response_bytes": 512
+          },
+          "eventLoop": {
+            "resolutionMs": 20,
+            "beforeHandler": {
+              "windowMs": 1000,
+              "samples": 33,
+              "maxMs": 15.42,
+              "p99Ms": 15.42
+            },
+            "duringHandler": {
+              "windowMs": 873.0020999999997,
+              "samples": 30,
+              "maxMs": 15.46,
+              "p99Ms": 15.46
+            }
+          }
+        }
+      },
+      "theme-cart": {
+        "elapsedMs": 8.47,
+        "requestBytes": 91,
+        "responseBytes": 602,
+        "timing": {
+          "event": "shop_cart_timing",
+          "version": 1,
+          "startedAt": "2026-11-17T12:50:37.184Z",
+          "traceId": "9c2c403a-d6bd-4e62-a0a4-d98bc5510153",
+          "route": "theme-cart",
+          "status": 200,
+          "totalMs": 7.66,
+          "steps": {
+            "session_binding": {
+              "durationMs": 1.08,
+              "calls": 1,
+              "failures": 0
+            },
+            "body_read": {
+              "durationMs": 0.22,
+              "calls": 1,
+              "failures": 0
+            },
+            "body_json": {
+              "durationMs": 0.01,
+              "calls": 1,
+              "failures": 0
+            },
+            "draft_read": {
+              "durationMs": 0.1,
+              "calls": 1,
+              "failures": 0
+            },
+            "review_read": {
+              "durationMs": 0.11,
+              "calls": 1,
+              "failures": 0
+            },
+            "variant_candidates": {
+              "durationMs": 0.07,
+              "calls": 1,
+              "failures": 0
+            },
+            "variant_binding": {
+              "durationMs": 0.02,
+              "calls": 1,
+              "failures": 0
+            },
+            "offer_resolve": {
+              "durationMs": 1.58,
+              "calls": 1,
+              "failures": 0
+            },
+            "offer_create": {
+              "durationMs": 0.19,
+              "calls": 1,
+              "failures": 0
+            },
+            "bound_offer": {
+              "durationMs": 1.84,
+              "calls": 1,
+              "failures": 0
+            },
+            "review_package": {
+              "durationMs": 0.93,
+              "calls": 1,
+              "failures": 0
+            },
+            "cart_assign": {
+              "durationMs": 0.17,
+              "calls": 1,
+              "failures": 0
+            },
+            "customer_image_url": {
+              "durationMs": 0.05,
+              "calls": 1,
+              "failures": 0
+            },
+            "cart_prepare": {
+              "durationMs": 4.57,
+              "calls": 1,
+              "failures": 0
+            },
+            "response_json": {
+              "durationMs": 0.01,
+              "calls": 1,
+              "failures": 0
+            }
+          },
+          "counts": {
+            "request_bytes": 91,
+            "checkout_image_started": 1,
+            "response_bytes": 602
+          },
+          "eventLoop": {
+            "resolutionMs": 20,
+            "beforeHandler": {
+              "windowMs": 1000,
+              "samples": 34,
+              "maxMs": 15.46,
+              "p99Ms": 15.46
+            },
+            "duringHandler": {
+              "windowMs": 7.654100000000653,
+              "samples": 1,
+              "maxMs": 3.53,
+              "p99Ms": 3.53
+            }
+          }
+        }
+      },
+      "cart/data": {
+        "elapsedMs": 254.73,
+        "requestBytes": 0,
+        "responseBytes": 1259,
+        "timing": {
+          "event": "shop_cart_timing",
+          "version": 1,
+          "startedAt": "2026-11-17T12:50:37.192Z",
+          "traceId": "1da3306d-0826-48bb-8b3a-42e69bba58d3",
+          "route": "cart/data",
+          "status": 200,
+          "totalMs": 254.05,
+          "steps": {
+            "proxy_verify": {
+              "durationMs": 0.14,
+              "calls": 1,
+              "failures": 0
+            },
+            "session_binding": {
+              "durationMs": 2.09,
+              "calls": 2,
+              "failures": 0
+            },
+            "offer_resolve": {
+              "durationMs": 1.69,
+              "calls": 1,
+              "failures": 0
+            },
+            "offer_create": {
+              "durationMs": 0.26,
+              "calls": 1,
+              "failures": 0
+            },
+            "bound_offer": {
+              "durationMs": 2.01,
+              "calls": 1,
+              "failures": 0
+            },
+            "review_package": {
+              "durationMs": 0.83,
+              "calls": 1,
+              "failures": 0
+            },
+            "cart_assign": {
+              "durationMs": 0.08,
+              "calls": 1,
+              "failures": 0
+            },
+            "customer_image_url": {
+              "durationMs": 0.03,
+              "calls": 1,
+              "failures": 0
+            },
+            "cart_prepare": {
+              "durationMs": 4.4,
+              "calls": 1,
+              "failures": 0
+            },
+            "checkout_image_wait": {
+              "durationMs": 244.88,
+              "calls": 1,
+              "failures": 0
+            },
+            "cart_revalidate": {
+              "durationMs": 1.46,
+              "calls": 1,
+              "failures": 0
+            },
+            "response_json": {
+              "durationMs": 0.01,
+              "calls": 1,
+              "failures": 0
+            }
+          },
+          "counts": {
+            "checkout_image_pending": 1,
+            "response_bytes": 1259
+          },
+          "eventLoop": {
+            "resolutionMs": 20,
+            "beforeHandler": {
+              "windowMs": 1000,
+              "samples": 35,
+              "maxMs": 15.46,
+              "p99Ms": 15.46
+            },
+            "duringHandler": {
+              "windowMs": 254.04930000000058,
+              "samples": 8,
+              "maxMs": 14.94,
+              "p99Ms": 14.94
+            }
+          }
+        }
+      },
+      "cart/claim": {
+        "elapsedMs": 6.94,
+        "requestBytes": 0,
+        "responseBytes": 16,
+        "timing": {
+          "event": "shop_cart_timing",
+          "version": 1,
+          "startedAt": "2026-11-17T12:50:37.447Z",
+          "traceId": "cdccfc83-517b-4bd9-8e30-5164559c688d",
+          "route": "cart/claim",
+          "status": 200,
+          "totalMs": 6.47,
+          "steps": {
+            "proxy_verify": {
+              "durationMs": 0.04,
+              "calls": 1,
+              "failures": 0
+            },
+            "session_binding": {
+              "durationMs": 0.73,
+              "calls": 1,
+              "failures": 0
+            },
+            "offer_resolve": {
+              "durationMs": 1.25,
+              "calls": 1,
+              "failures": 0
+            },
+            "offer_create": {
+              "durationMs": 0.2,
+              "calls": 1,
+              "failures": 0
+            },
+            "bound_offer": {
+              "durationMs": 1.47,
+              "calls": 1,
+              "failures": 0
+            },
+            "review_package": {
+              "durationMs": 0.73,
+              "calls": 1,
+              "failures": 0
+            },
+            "cart_assign": {
+              "durationMs": 0.05,
+              "calls": 1,
+              "failures": 0
+            },
+            "customer_image_url": {
+              "durationMs": 0.02,
+              "calls": 1,
+              "failures": 0
+            },
+            "cart_prepare": {
+              "durationMs": 3.6,
+              "calls": 1,
+              "failures": 0
+            },
+            "cart_claim": {
+              "durationMs": 1.34,
+              "calls": 1,
+              "failures": 0
+            },
+            "response_json": {
+              "durationMs": 0,
+              "calls": 1,
+              "failures": 0
+            }
+          },
+          "counts": {
+            "response_bytes": 16
+          },
+          "eventLoop": {
+            "resolutionMs": 20,
+            "beforeHandler": {
+              "windowMs": 1000,
+              "samples": 34,
+              "maxMs": 15.46,
+              "p99Ms": 15.46
+            },
+            "duringHandler": {
+              "windowMs": 6.468899999999849,
+              "samples": 1,
+              "maxMs": 5.58,
+              "p99Ms": 5.58
+            }
+          }
+        }
+      }
+    },
+    {
+      "acrylic-drafts": {
+        "elapsedMs": 846.13,
+        "requestBytes": 2926,
+        "responseBytes": 512,
+        "timing": {
+          "event": "shop_cart_timing",
+          "version": 1,
+          "startedAt": "2026-11-17T12:50:37.478Z",
+          "traceId": "fe46a873-611b-4b80-ac59-200a2f54b148",
+          "route": "acrylic-drafts",
+          "status": 201,
+          "totalMs": 841.78,
+          "steps": {
+            "session_binding": {
+              "durationMs": 0.83,
+              "calls": 1,
+              "failures": 0
+            },
+            "body_read": {
+              "durationMs": 0.11,
+              "calls": 1,
+              "failures": 0
+            },
+            "body_json": {
+              "durationMs": 0.02,
+              "calls": 1,
+              "failures": 0
+            },
+            "product_read": {
+              "durationMs": 0.62,
+              "calls": 1,
+              "failures": 0
+            },
+            "model_build": {
+              "durationMs": 1.15,
+              "calls": 1,
+              "failures": 0
+            },
+            "review_config": {
+              "durationMs": 0.36,
+              "calls": 1,
+              "failures": 0
+            },
+            "review_validate": {
+              "durationMs": 16.71,
+              "calls": 1,
+              "failures": 0
+            },
+            "review_sources": {
+              "durationMs": 0.53,
+              "calls": 1,
+              "failures": 0
+            },
+            "photo_original": {
+              "durationMs": 258.15,
+              "calls": 1,
+              "failures": 0
+            },
+            "customer_preview": {
+              "durationMs": 295.27,
+              "calls": 1,
+              "failures": 0
+            },
+            "reference_preview": {
+              "durationMs": 253.54,
+              "calls": 1,
+              "failures": 0
+            },
+            "review_zip": {
+              "durationMs": 8.2,
+              "calls": 1,
+              "failures": 0
+            },
+            "originals_zip": {
+              "durationMs": 0.05,
+              "calls": 1,
+              "failures": 0
+            },
+            "review_prepare": {
+              "durationMs": 837.11,
+              "calls": 1,
+              "failures": 0
+            },
+            "draft_persist": {
+              "durationMs": 1.16,
+              "calls": 1,
+              "failures": 0
+            },
+            "response_json": {
+              "durationMs": 0,
+              "calls": 1,
+              "failures": 0
+            }
+          },
+          "counts": {
+            "request_bytes": 2926,
+            "response_bytes": 512
+          },
+          "eventLoop": {
+            "resolutionMs": 20,
+            "beforeHandler": {
+              "windowMs": 1000,
+              "samples": 35,
+              "maxMs": 15.46,
+              "p99Ms": 15.46
+            },
+            "duringHandler": {
+              "windowMs": 841.7806999999993,
+              "samples": 29,
+              "maxMs": 14.97,
+              "p99Ms": 14.97
+            }
+          }
+        }
+      },
+      "theme-cart": {
+        "elapsedMs": 7.56,
+        "requestBytes": 91,
+        "responseBytes": 602,
+        "timing": {
+          "event": "shop_cart_timing",
+          "version": 1,
+          "startedAt": "2026-11-17T12:50:38.324Z",
+          "traceId": "b9494b2b-4880-4f88-98a7-94e99379af78",
+          "route": "theme-cart",
+          "status": 200,
+          "totalMs": 6.83,
+          "steps": {
+            "session_binding": {
+              "durationMs": 0.87,
+              "calls": 1,
+              "failures": 0
+            },
+            "body_read": {
+              "durationMs": 0.08,
+              "calls": 1,
+              "failures": 0
+            },
+            "body_json": {
+              "durationMs": 0.01,
+              "calls": 1,
+              "failures": 0
+            },
+            "draft_read": {
+              "durationMs": 0.04,
+              "calls": 1,
+              "failures": 0
+            },
+            "review_read": {
+              "durationMs": 0.07,
+              "calls": 1,
+              "failures": 0
+            },
+            "variant_candidates": {
+              "durationMs": 0.05,
+              "calls": 1,
+              "failures": 0
+            },
+            "variant_binding": {
+              "durationMs": 0.01,
+              "calls": 1,
+              "failures": 0
+            },
+            "offer_resolve": {
+              "durationMs": 1.29,
+              "calls": 1,
+              "failures": 0
+            },
+            "offer_create": {
+              "durationMs": 0.15,
+              "calls": 1,
+              "failures": 0
+            },
+            "bound_offer": {
+              "durationMs": 1.48,
+              "calls": 1,
+              "failures": 0
+            },
+            "review_package": {
+              "durationMs": 1.24,
+              "calls": 1,
+              "failures": 0
+            },
+            "cart_assign": {
+              "durationMs": 0.15,
+              "calls": 1,
+              "failures": 0
+            },
+            "customer_image_url": {
+              "durationMs": 0.04,
+              "calls": 1,
+              "failures": 0
+            },
+            "cart_prepare": {
+              "durationMs": 4.44,
+              "calls": 1,
+              "failures": 0
+            },
+            "response_json": {
+              "durationMs": 0,
+              "calls": 1,
+              "failures": 0
+            }
+          },
+          "counts": {
+            "request_bytes": 91,
+            "checkout_image_started": 1,
+            "response_bytes": 602
+          },
+          "eventLoop": {
+            "resolutionMs": 20,
+            "beforeHandler": {
+              "windowMs": 1000,
+              "samples": 35,
+              "maxMs": 14.97,
+              "p99Ms": 14.97
+            },
+            "duringHandler": {
+              "windowMs": 6.8312000000005355,
+              "samples": 0,
+              "maxMs": 0,
+              "p99Ms": 0
+            }
+          }
+        }
+      },
+      "cart/data": {
+        "elapsedMs": 264.22,
+        "requestBytes": 0,
+        "responseBytes": 1259,
+        "timing": {
+          "event": "shop_cart_timing",
+          "version": 1,
+          "startedAt": "2026-11-17T12:50:38.331Z",
+          "traceId": "39bfe166-fe8b-4c67-b08d-a4a2aff75231",
+          "route": "cart/data",
+          "status": 200,
+          "totalMs": 263.58,
+          "steps": {
+            "proxy_verify": {
+              "durationMs": 0.04,
+              "calls": 1,
+              "failures": 0
+            },
+            "session_binding": {
+              "durationMs": 2.03,
+              "calls": 2,
+              "failures": 0
+            },
+            "offer_resolve": {
+              "durationMs": 1.26,
+              "calls": 1,
+              "failures": 0
+            },
+            "offer_create": {
+              "durationMs": 0.21,
+              "calls": 1,
+              "failures": 0
+            },
+            "bound_offer": {
+              "durationMs": 1.5,
+              "calls": 1,
+              "failures": 0
+            },
+            "review_package": {
+              "durationMs": 0.73,
+              "calls": 1,
+              "failures": 0
+            },
+            "cart_assign": {
+              "durationMs": 0.04,
+              "calls": 1,
+              "failures": 0
+            },
+            "customer_image_url": {
+              "durationMs": 0.02,
+              "calls": 1,
+              "failures": 0
+            },
+            "cart_prepare": {
+              "durationMs": 3.52,
+              "calls": 1,
+              "failures": 0
+            },
+            "checkout_image_wait": {
+              "durationMs": 254.99,
+              "calls": 1,
+              "failures": 0
+            },
+            "cart_revalidate": {
+              "durationMs": 2.13,
+              "calls": 1,
+              "failures": 0
+            },
+            "response_json": {
+              "durationMs": 0.02,
+              "calls": 1,
+              "failures": 0
+            }
+          },
+          "counts": {
+            "checkout_image_pending": 1,
+            "response_bytes": 1259
+          },
+          "eventLoop": {
+            "resolutionMs": 20,
+            "beforeHandler": {
+              "windowMs": 1000,
+              "samples": 35,
+              "maxMs": 14.97,
+              "p99Ms": 14.97
+            },
+            "duringHandler": {
+              "windowMs": 263.58799999999974,
+              "samples": 9,
+              "maxMs": 14.21,
+              "p99Ms": 14.21
+            }
+          }
+        }
+      },
+      "cart/claim": {
+        "elapsedMs": 7.4,
+        "requestBytes": 0,
+        "responseBytes": 16,
+        "timing": {
+          "event": "shop_cart_timing",
+          "version": 1,
+          "startedAt": "2026-11-17T12:50:38.596Z",
+          "traceId": "f9d6d185-b839-4fc9-af42-aa1a5e4beb53",
+          "route": "cart/claim",
+          "status": 200,
+          "totalMs": 6.85,
+          "steps": {
+            "proxy_verify": {
+              "durationMs": 0.06,
+              "calls": 1,
+              "failures": 0
+            },
+            "session_binding": {
+              "durationMs": 0.8,
+              "calls": 1,
+              "failures": 0
+            },
+            "offer_resolve": {
+              "durationMs": 1.29,
+              "calls": 1,
+              "failures": 0
+            },
+            "offer_create": {
+              "durationMs": 0.2,
+              "calls": 1,
+              "failures": 0
+            },
+            "bound_offer": {
+              "durationMs": 1.53,
+              "calls": 1,
+              "failures": 0
+            },
+            "review_package": {
+              "durationMs": 0.76,
+              "calls": 1,
+              "failures": 0
+            },
+            "cart_assign": {
+              "durationMs": 0.05,
+              "calls": 1,
+              "failures": 0
+            },
+            "customer_image_url": {
+              "durationMs": 0.02,
+              "calls": 1,
+              "failures": 0
+            },
+            "cart_prepare": {
+              "durationMs": 3.69,
+              "calls": 1,
+              "failures": 0
+            },
+            "cart_claim": {
+              "durationMs": 1.47,
+              "calls": 1,
+              "failures": 0
+            },
+            "response_json": {
+              "durationMs": 0.01,
+              "calls": 1,
+              "failures": 0
+            }
+          },
+          "counts": {
+            "response_bytes": 16
+          },
+          "eventLoop": {
+            "resolutionMs": 20,
+            "beforeHandler": {
+              "windowMs": 1000,
+              "samples": 34,
+              "maxMs": 14.97,
+              "p99Ms": 14.97
+            },
+            "duringHandler": {
+              "windowMs": 6.850099999999657,
+              "samples": 0,
+              "maxMs": 0,
+              "p99Ms": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "acrylic-drafts": {
+        "elapsedMs": 835.5,
+        "requestBytes": 2926,
+        "responseBytes": 512,
+        "timing": {
+          "event": "shop_cart_timing",
+          "version": 1,
+          "startedAt": "2026-11-17T12:50:38.611Z",
+          "traceId": "fef8c862-be84-4098-b4d7-2a8338e3ee76",
+          "route": "acrylic-drafts",
+          "status": 201,
+          "totalMs": 829.93,
+          "steps": {
+            "session_binding": {
+              "durationMs": 0.85,
+              "calls": 1,
+              "failures": 0
+            },
+            "body_read": {
+              "durationMs": 0.08,
+              "calls": 1,
+              "failures": 0
+            },
+            "body_json": {
+              "durationMs": 0.02,
+              "calls": 1,
+              "failures": 0
+            },
+            "product_read": {
+              "durationMs": 0.61,
+              "calls": 1,
+              "failures": 0
+            },
+            "model_build": {
+              "durationMs": 1.25,
+              "calls": 1,
+              "failures": 0
+            },
+            "review_config": {
+              "durationMs": 0.35,
+              "calls": 1,
+              "failures": 0
+            },
+            "review_validate": {
+              "durationMs": 16.54,
+              "calls": 1,
+              "failures": 0
+            },
+            "review_sources": {
+              "durationMs": 0.5,
+              "calls": 1,
+              "failures": 0
+            },
+            "photo_original": {
+              "durationMs": 255.48,
+              "calls": 1,
+              "failures": 0
+            },
+            "customer_preview": {
+              "durationMs": 292.02,
+              "calls": 1,
+              "failures": 0
+            },
+            "reference_preview": {
+              "durationMs": 247.65,
+              "calls": 1,
+              "failures": 0
+            },
+            "review_zip": {
+              "durationMs": 8.2,
+              "calls": 1,
+              "failures": 0
+            },
+            "originals_zip": {
+              "durationMs": 0.04,
+              "calls": 1,
+              "failures": 0
+            },
+            "review_prepare": {
+              "durationMs": 825.03,
+              "calls": 1,
+              "failures": 0
+            },
+            "draft_persist": {
+              "durationMs": 1.06,
+              "calls": 1,
+              "failures": 0
+            },
+            "response_json": {
+              "durationMs": 0,
+              "calls": 1,
+              "failures": 0
+            }
+          },
+          "counts": {
+            "request_bytes": 2926,
+            "response_bytes": 512
+          },
+          "eventLoop": {
+            "resolutionMs": 20,
+            "beforeHandler": {
+              "windowMs": 1000,
+              "samples": 35,
+              "maxMs": 14.97,
+              "p99Ms": 14.97
+            },
+            "duringHandler": {
+              "windowMs": 829.9263000000001,
+              "samples": 28,
+              "maxMs": 14.87,
+              "p99Ms": 14.87
+            }
+          }
+        }
+      },
+      "theme-cart": {
+        "elapsedMs": 7.29,
+        "requestBytes": 91,
+        "responseBytes": 602,
+        "timing": {
+          "event": "shop_cart_timing",
+          "version": 1,
+          "startedAt": "2026-11-17T12:50:39.446Z",
+          "traceId": "40b10aa9-706e-40d5-8241-b0ecfe7bf98b",
+          "route": "theme-cart",
+          "status": 200,
+          "totalMs": 6.68,
+          "steps": {
+            "session_binding": {
+              "durationMs": 0.91,
+              "calls": 1,
+              "failures": 0
+            },
+            "body_read": {
+              "durationMs": 0.09,
+              "calls": 1,
+              "failures": 0
+            },
+            "body_json": {
+              "durationMs": 0.01,
+              "calls": 1,
+              "failures": 0
+            },
+            "draft_read": {
+              "durationMs": 0.06,
+              "calls": 1,
+              "failures": 0
+            },
+            "review_read": {
+              "durationMs": 0.13,
+              "calls": 1,
+              "failures": 0
+            },
+            "variant_candidates": {
+              "durationMs": 0.07,
+              "calls": 1,
+              "failures": 0
+            },
+            "variant_binding": {
+              "durationMs": 0.01,
+              "calls": 1,
+              "failures": 0
+            },
+            "offer_resolve": {
+              "durationMs": 1.24,
+              "calls": 1,
+              "failures": 0
+            },
+            "offer_create": {
+              "durationMs": 0.12,
+              "calls": 1,
+              "failures": 0
+            },
+            "bound_offer": {
+              "durationMs": 1.4,
+              "calls": 1,
+              "failures": 0
+            },
+            "review_package": {
+              "durationMs": 1.1,
+              "calls": 1,
+              "failures": 0
+            },
+            "cart_assign": {
+              "durationMs": 0.12,
+              "calls": 1,
+              "failures": 0
+            },
+            "customer_image_url": {
+              "durationMs": 0.02,
+              "calls": 1,
+              "failures": 0
+            },
+            "cart_prepare": {
+              "durationMs": 4.03,
+              "calls": 1,
+              "failures": 0
+            },
+            "response_json": {
+              "durationMs": 0,
+              "calls": 1,
+              "failures": 0
+            }
+          },
+          "counts": {
+            "request_bytes": 91,
+            "checkout_image_started": 1,
+            "response_bytes": 602
+          },
+          "eventLoop": {
+            "resolutionMs": 20,
+            "beforeHandler": {
+              "windowMs": 1000,
+              "samples": 34,
+              "maxMs": 14.87,
+              "p99Ms": 14.87
+            },
+            "duringHandler": {
+              "windowMs": 6.675099999999475,
+              "samples": 1,
+              "maxMs": 2.31,
+              "p99Ms": 2.31
+            }
+          }
+        }
+      },
+      "cart/data": {
+        "elapsedMs": 259.82,
+        "requestBytes": 0,
+        "responseBytes": 1259,
+        "timing": {
+          "event": "shop_cart_timing",
+          "version": 1,
+          "startedAt": "2026-11-17T12:50:39.454Z",
+          "traceId": "36ca4adb-e74b-4a20-afbc-74c41ed6e015",
+          "route": "cart/data",
+          "status": 200,
+          "totalMs": 259.32,
+          "steps": {
+            "proxy_verify": {
+              "durationMs": 0.04,
+              "calls": 1,
+              "failures": 0
+            },
+            "session_binding": {
+              "durationMs": 2.34,
+              "calls": 2,
+              "failures": 0
+            },
+            "offer_resolve": {
+              "durationMs": 1.26,
+              "calls": 1,
+              "failures": 0
+            },
+            "offer_create": {
+              "durationMs": 0.18,
+              "calls": 1,
+              "failures": 0
+            },
+            "bound_offer": {
+              "durationMs": 1.48,
+              "calls": 1,
+              "failures": 0
+            },
+            "review_package": {
+              "durationMs": 0.73,
+              "calls": 1,
+              "failures": 0
+            },
+            "cart_assign": {
+              "durationMs": 0.05,
+              "calls": 1,
+              "failures": 0
+            },
+            "customer_image_url": {
+              "durationMs": 0.02,
+              "calls": 1,
+              "failures": 0
+            },
+            "cart_prepare": {
+              "durationMs": 3.44,
+              "calls": 1,
+              "failures": 0
+            },
+            "checkout_image_wait": {
+              "durationMs": 250.84,
+              "calls": 1,
+              "failures": 0
+            },
+            "cart_revalidate": {
+              "durationMs": 1.84,
+              "calls": 1,
+              "failures": 0
+            },
+            "response_json": {
+              "durationMs": 0.01,
+              "calls": 1,
+              "failures": 0
+            }
+          },
+          "counts": {
+            "checkout_image_pending": 1,
+            "response_bytes": 1259
+          },
+          "eventLoop": {
+            "resolutionMs": 20,
+            "beforeHandler": {
+              "windowMs": 1000,
+              "samples": 35,
+              "maxMs": 14.87,
+              "p99Ms": 14.87
+            },
+            "duringHandler": {
+              "windowMs": 259.3265000000001,
+              "samples": 9,
+              "maxMs": 13.68,
+              "p99Ms": 13.68
+            }
+          }
+        }
+      },
+      "cart/claim": {
+        "elapsedMs": 7.05,
+        "requestBytes": 0,
+        "responseBytes": 16,
+        "timing": {
+          "event": "shop_cart_timing",
+          "version": 1,
+          "startedAt": "2026-11-17T12:50:39.713Z",
+          "traceId": "97d35bec-f99b-4f94-b2a7-dfda6e74b11c",
+          "route": "cart/claim",
+          "status": 200,
+          "totalMs": 6.59,
+          "steps": {
+            "proxy_verify": {
+              "durationMs": 0.04,
+              "calls": 1,
+              "failures": 0
+            },
+            "session_binding": {
+              "durationMs": 0.79,
+              "calls": 1,
+              "failures": 0
+            },
+            "offer_resolve": {
+              "durationMs": 1.26,
+              "calls": 1,
+              "failures": 0
+            },
+            "offer_create": {
+              "durationMs": 0.18,
+              "calls": 1,
+              "failures": 0
+            },
+            "bound_offer": {
+              "durationMs": 1.48,
+              "calls": 1,
+              "failures": 0
+            },
+            "review_package": {
+              "durationMs": 0.76,
+              "calls": 1,
+              "failures": 0
+            },
+            "cart_assign": {
+              "durationMs": 0.04,
+              "calls": 1,
+              "failures": 0
+            },
+            "customer_image_url": {
+              "durationMs": 0.02,
+              "calls": 1,
+              "failures": 0
+            },
+            "cart_prepare": {
+              "durationMs": 3.68,
+              "calls": 1,
+              "failures": 0
+            },
+            "cart_claim": {
+              "durationMs": 1.31,
+              "calls": 1,
+              "failures": 0
+            },
+            "response_json": {
+              "durationMs": 0,
+              "calls": 1,
+              "failures": 0
+            }
+          },
+          "counts": {
+            "response_bytes": 16
+          },
+          "eventLoop": {
+            "resolutionMs": 20,
+            "beforeHandler": {
+              "windowMs": 1000,
+              "samples": 35,
+              "maxMs": 14.87,
+              "p99Ms": 14.87
+            },
+            "duringHandler": {
+              "windowMs": 6.588999999999942,
+              "samples": 0,
+              "maxMs": 0,
+              "p99Ms": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "acrylic-drafts": {
+        "elapsedMs": 845.87,
+        "requestBytes": 2926,
+        "responseBytes": 512,
+        "timing": {
+          "event": "shop_cart_timing",
+          "version": 1,
+          "startedAt": "2026-11-17T12:50:39.728Z",
+          "traceId": "c73bddfd-6cb7-4faa-9eeb-9e571cb7bb08",
+          "route": "acrylic-drafts",
+          "status": 201,
+          "totalMs": 840.95,
+          "steps": {
+            "session_binding": {
+              "durationMs": 0.9,
+              "calls": 1,
+              "failures": 0
+            },
+            "body_read": {
+              "durationMs": 0.07,
+              "calls": 1,
+              "failures": 0
+            },
+            "body_json": {
+              "durationMs": 0.02,
+              "calls": 1,
+              "failures": 0
+            },
+            "product_read": {
+              "durationMs": 0.6,
+              "calls": 1,
+              "failures": 0
+            },
+            "model_build": {
+              "durationMs": 1.14,
+              "calls": 1,
+              "failures": 0
+            },
+            "review_config": {
+              "durationMs": 0.38,
+              "calls": 1,
+              "failures": 0
+            },
+            "review_validate": {
+              "durationMs": 16.85,
+              "calls": 1,
+              "failures": 0
+            },
+            "review_sources": {
+              "durationMs": 0.46,
+              "calls": 1,
+              "failures": 0
+            },
+            "photo_original": {
+              "durationMs": 251.91,
+              "calls": 1,
+              "failures": 0
+            },
+            "customer_preview": {
+              "durationMs": 296.5,
+              "calls": 1,
+              "failures": 0
+            },
+            "reference_preview": {
+              "durationMs": 257.84,
+              "calls": 1,
+              "failures": 0
+            },
+            "review_zip": {
+              "durationMs": 8.23,
+              "calls": 1,
+              "failures": 0
+            },
+            "originals_zip": {
+              "durationMs": 0.06,
+              "calls": 1,
+              "failures": 0
+            },
+            "review_prepare": {
+              "durationMs": 835.98,
+              "calls": 1,
+              "failures": 0
+            },
+            "draft_persist": {
+              "durationMs": 1.02,
+              "calls": 1,
+              "failures": 0
+            },
+            "response_json": {
+              "durationMs": 0,
+              "calls": 1,
+              "failures": 0
+            }
+          },
+          "counts": {
+            "request_bytes": 2926,
+            "response_bytes": 512
+          },
+          "eventLoop": {
+            "resolutionMs": 20,
+            "beforeHandler": {
+              "windowMs": 1000,
+              "samples": 34,
+              "maxMs": 14.87,
+              "p99Ms": 14.87
+            },
+            "duringHandler": {
+              "windowMs": 840.9584999999997,
+              "samples": 29,
+              "maxMs": 21.28,
+              "p99Ms": 21.28
+            }
+          }
+        }
+      },
+      "theme-cart": {
+        "elapsedMs": 7.14,
+        "requestBytes": 91,
+        "responseBytes": 602,
+        "timing": {
+          "event": "shop_cart_timing",
+          "version": 1,
+          "startedAt": "2026-11-17T12:50:40.574Z",
+          "traceId": "736c2b28-c98d-4c34-9e06-68e796ad1ef0",
+          "route": "theme-cart",
+          "status": 200,
+          "totalMs": 6.53,
+          "steps": {
+            "session_binding": {
+              "durationMs": 0.86,
+              "calls": 1,
+              "failures": 0
+            },
+            "body_read": {
+              "durationMs": 0.07,
+              "calls": 1,
+              "failures": 0
+            },
+            "body_json": {
+              "durationMs": 0.01,
+              "calls": 1,
+              "failures": 0
+            },
+            "draft_read": {
+              "durationMs": 0.04,
+              "calls": 1,
+              "failures": 0
+            },
+            "review_read": {
+              "durationMs": 0.08,
+              "calls": 1,
+              "failures": 0
+            },
+            "variant_candidates": {
+              "durationMs": 0.06,
+              "calls": 1,
+              "failures": 0
+            },
+            "variant_binding": {
+              "durationMs": 0.01,
+              "calls": 1,
+              "failures": 0
+            },
+            "offer_resolve": {
+              "durationMs": 1.36,
+              "calls": 1,
+              "failures": 0
+            },
+            "offer_create": {
+              "durationMs": 0.14,
+              "calls": 1,
+              "failures": 0
+            },
+            "bound_offer": {
+              "durationMs": 1.57,
+              "calls": 1,
+              "failures": 0
+            },
+            "review_package": {
+              "durationMs": 0.91,
+              "calls": 1,
+              "failures": 0
+            },
+            "cart_assign": {
+              "durationMs": 0.13,
+              "calls": 1,
+              "failures": 0
+            },
+            "customer_image_url": {
+              "durationMs": 0.03,
+              "calls": 1,
+              "failures": 0
+            },
+            "cart_prepare": {
+              "durationMs": 4.06,
+              "calls": 1,
+              "failures": 0
+            },
+            "response_json": {
+              "durationMs": 0,
+              "calls": 1,
+              "failures": 0
+            }
+          },
+          "counts": {
+            "request_bytes": 91,
+            "checkout_image_started": 1,
+            "response_bytes": 602
+          },
+          "eventLoop": {
+            "resolutionMs": 20,
+            "beforeHandler": {
+              "windowMs": 1000,
+              "samples": 35,
+              "maxMs": 21.28,
+              "p99Ms": 21.28
+            },
+            "duringHandler": {
+              "windowMs": 6.52809999999954,
+              "samples": 0,
+              "maxMs": 0,
+              "p99Ms": 0
+            }
+          }
+        }
+      },
+      "cart/data": {
+        "elapsedMs": 248.1,
+        "requestBytes": 0,
+        "responseBytes": 1259,
+        "timing": {
+          "event": "shop_cart_timing",
+          "version": 1,
+          "startedAt": "2026-11-17T12:50:40.581Z",
+          "traceId": "3fd072bf-25cb-46b4-81ab-5159b2f886e3",
+          "route": "cart/data",
+          "status": 200,
+          "totalMs": 247.53,
+          "steps": {
+            "proxy_verify": {
+              "durationMs": 0.04,
+              "calls": 1,
+              "failures": 0
+            },
+            "session_binding": {
+              "durationMs": 2.6,
+              "calls": 2,
+              "failures": 0
+            },
+            "offer_resolve": {
+              "durationMs": 1.25,
+              "calls": 1,
+              "failures": 0
+            },
+            "offer_create": {
+              "durationMs": 0.18,
+              "calls": 1,
+              "failures": 0
+            },
+            "bound_offer": {
+              "durationMs": 1.46,
+              "calls": 1,
+              "failures": 0
+            },
+            "review_package": {
+              "durationMs": 0.86,
+              "calls": 1,
+              "failures": 0
+            },
+            "cart_assign": {
+              "durationMs": 0.04,
+              "calls": 1,
+              "failures": 0
+            },
+            "customer_image_url": {
+              "durationMs": 0.02,
+              "calls": 1,
+              "failures": 0
+            },
+            "cart_prepare": {
+              "durationMs": 3.56,
+              "calls": 1,
+              "failures": 0
+            },
+            "checkout_image_wait": {
+              "durationMs": 238.24,
+              "calls": 1,
+              "failures": 0
+            },
+            "cart_revalidate": {
+              "durationMs": 2.2,
+              "calls": 1,
+              "failures": 0
+            },
+            "response_json": {
+              "durationMs": 0.05,
+              "calls": 1,
+              "failures": 0
+            }
+          },
+          "counts": {
+            "checkout_image_pending": 1,
+            "response_bytes": 1259
+          },
+          "eventLoop": {
+            "resolutionMs": 20,
+            "beforeHandler": {
+              "windowMs": 1000,
+              "samples": 34,
+              "maxMs": 21.28,
+              "p99Ms": 21.28
+            },
+            "duringHandler": {
+              "windowMs": 247.54050000000097,
+              "samples": 8,
+              "maxMs": 14.27,
+              "p99Ms": 14.27
+            }
+          }
+        }
+      },
+      "cart/claim": {
+        "elapsedMs": 7.4,
+        "requestBytes": 0,
+        "responseBytes": 16,
+        "timing": {
+          "event": "shop_cart_timing",
+          "version": 1,
+          "startedAt": "2026-11-17T12:50:40.829Z",
+          "traceId": "4cdfdc60-dd2b-45d1-9537-33b7fffdc659",
+          "route": "cart/claim",
+          "status": 200,
+          "totalMs": 6.88,
+          "steps": {
+            "proxy_verify": {
+              "durationMs": 0.04,
+              "calls": 1,
+              "failures": 0
+            },
+            "session_binding": {
+              "durationMs": 0.67,
+              "calls": 1,
+              "failures": 0
+            },
+            "offer_resolve": {
+              "durationMs": 1.42,
+              "calls": 1,
+              "failures": 0
+            },
+            "offer_create": {
+              "durationMs": 0.43,
+              "calls": 1,
+              "failures": 0
+            },
+            "bound_offer": {
+              "durationMs": 1.89,
+              "calls": 1,
+              "failures": 0
+            },
+            "review_package": {
+              "durationMs": 0.75,
+              "calls": 1,
+              "failures": 0
+            },
+            "cart_assign": {
+              "durationMs": 0.05,
+              "calls": 1,
+              "failures": 0
+            },
+            "customer_image_url": {
+              "durationMs": 0.02,
+              "calls": 1,
+              "failures": 0
+            },
+            "cart_prepare": {
+              "durationMs": 4.14,
+              "calls": 1,
+              "failures": 0
+            },
+            "cart_claim": {
+              "durationMs": 1.34,
+              "calls": 1,
+              "failures": 0
+            },
+            "response_json": {
+              "durationMs": 0,
+              "calls": 1,
+              "failures": 0
+            }
+          },
+          "counts": {
+            "response_bytes": 16
+          },
+          "eventLoop": {
+            "resolutionMs": 20,
+            "beforeHandler": {
+              "windowMs": 1000,
+              "samples": 34,
+              "maxMs": 14.93,
+              "p99Ms": 14.93
+            },
+            "duringHandler": {
+              "windowMs": 6.886699999999109,
+              "samples": 0,
+              "maxMs": 0,
+              "p99Ms": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "acrylic-drafts": {
+        "elapsedMs": 868.68,
+        "requestBytes": 2926,
+        "responseBytes": 512,
+        "timing": {
+          "event": "shop_cart_timing",
+          "version": 1,
+          "startedAt": "2026-11-17T12:50:40.844Z",
+          "traceId": "2fe3b275-c70c-43d0-b54e-3b4c4f095c3d",
+          "route": "acrylic-drafts",
+          "status": 201,
+          "totalMs": 863.34,
+          "steps": {
+            "session_binding": {
+              "durationMs": 0.83,
+              "calls": 1,
+              "failures": 0
+            },
+            "body_read": {
+              "durationMs": 0.07,
+              "calls": 1,
+              "failures": 0
+            },
+            "body_json": {
+              "durationMs": 0.03,
+              "calls": 1,
+              "failures": 0
+            },
+            "product_read": {
+              "durationMs": 0.62,
+              "calls": 1,
+              "failures": 0
+            },
+            "model_build": {
+              "durationMs": 1.3,
+              "calls": 1,
+              "failures": 0
+            },
+            "review_config": {
+              "durationMs": 0.42,
+              "calls": 1,
+              "failures": 0
+            },
+            "review_validate": {
+              "durationMs": 17.36,
+              "calls": 1,
+              "failures": 0
+            },
+            "review_sources": {
+              "durationMs": 0.48,
+              "calls": 1,
+              "failures": 0
+            },
+            "photo_original": {
+              "durationMs": 259.97,
+              "calls": 1,
+              "failures": 0
+            },
+            "customer_preview": {
+              "durationMs": 307.34,
+              "calls": 1,
+              "failures": 0
+            },
+            "reference_preview": {
+              "durationMs": 260.53,
+              "calls": 1,
+              "failures": 0
+            },
+            "review_zip": {
+              "durationMs": 8.29,
+              "calls": 1,
+              "failures": 0
+            },
+            "originals_zip": {
+              "durationMs": 0.04,
+              "calls": 1,
+              "failures": 0
+            },
+            "review_prepare": {
+              "durationMs": 858.68,
+              "calls": 1,
+              "failures": 0
+            },
+            "draft_persist": {
+              "durationMs": 1.12,
+              "calls": 1,
+              "failures": 0
+            },
+            "response_json": {
+              "durationMs": 0,
+              "calls": 1,
+              "failures": 0
+            }
+          },
+          "counts": {
+            "request_bytes": 2926,
+            "response_bytes": 512
+          },
+          "eventLoop": {
+            "resolutionMs": 20,
+            "beforeHandler": {
+              "windowMs": 1000,
+              "samples": 34,
+              "maxMs": 14.93,
+              "p99Ms": 14.93
+            },
+            "duringHandler": {
+              "windowMs": 863.3451000000005,
+              "samples": 29,
+              "maxMs": 14.6,
+              "p99Ms": 14.6
+            }
+          }
+        }
+      },
+      "theme-cart": {
+        "elapsedMs": 6.91,
+        "requestBytes": 91,
+        "responseBytes": 602,
+        "timing": {
+          "event": "shop_cart_timing",
+          "version": 1,
+          "startedAt": "2026-11-17T12:50:41.713Z",
+          "traceId": "607e4984-916d-4f76-ad52-76797b438b98",
+          "route": "theme-cart",
+          "status": 200,
+          "totalMs": 6.29,
+          "steps": {
+            "session_binding": {
+              "durationMs": 0.88,
+              "calls": 1,
+              "failures": 0
+            },
+            "body_read": {
+              "durationMs": 0.09,
+              "calls": 1,
+              "failures": 0
+            },
+            "body_json": {
+              "durationMs": 0.01,
+              "calls": 1,
+              "failures": 0
+            },
+            "draft_read": {
+              "durationMs": 0.05,
+              "calls": 1,
+              "failures": 0
+            },
+            "review_read": {
+              "durationMs": 0.1,
+              "calls": 1,
+              "failures": 0
+            },
+            "variant_candidates": {
+              "durationMs": 0.06,
+              "calls": 1,
+              "failures": 0
+            },
+            "variant_binding": {
+              "durationMs": 0.01,
+              "calls": 1,
+              "failures": 0
+            },
+            "offer_resolve": {
+              "durationMs": 1.23,
+              "calls": 1,
+              "failures": 0
+            },
+            "offer_create": {
+              "durationMs": 0.13,
+              "calls": 1,
+              "failures": 0
+            },
+            "bound_offer": {
+              "durationMs": 1.4,
+              "calls": 1,
+              "failures": 0
+            },
+            "review_package": {
+              "durationMs": 0.96,
+              "calls": 1,
+              "failures": 0
+            },
+            "cart_assign": {
+              "durationMs": 0.14,
+              "calls": 1,
+              "failures": 0
+            },
+            "customer_image_url": {
+              "durationMs": 0.02,
+              "calls": 1,
+              "failures": 0
+            },
+            "cart_prepare": {
+              "durationMs": 3.94,
+              "calls": 1,
+              "failures": 0
+            },
+            "response_json": {
+              "durationMs": 0,
+              "calls": 1,
+              "failures": 0
+            }
+          },
+          "counts": {
+            "request_bytes": 91,
+            "checkout_image_started": 1,
+            "response_bytes": 602
+          },
+          "eventLoop": {
+            "resolutionMs": 20,
+            "beforeHandler": {
+              "windowMs": 1000,
+              "samples": 34,
+              "maxMs": 14.6,
+              "p99Ms": 14.6
+            },
+            "duringHandler": {
+              "windowMs": 6.287099999999555,
+              "samples": 1,
+              "maxMs": 2.09,
+              "p99Ms": 2.09
+            }
+          }
+        }
+      },
+      "cart/data": {
+        "elapsedMs": 258.5,
+        "requestBytes": 0,
+        "responseBytes": 1259,
+        "timing": {
+          "event": "shop_cart_timing",
+          "version": 1,
+          "startedAt": "2026-11-17T12:50:41.720Z",
+          "traceId": "a447444e-ed23-47a7-bc53-4b4fefe14bfd",
+          "route": "cart/data",
+          "status": 200,
+          "totalMs": 257.94,
+          "steps": {
+            "proxy_verify": {
+              "durationMs": 0.04,
+              "calls": 1,
+              "failures": 0
+            },
+            "session_binding": {
+              "durationMs": 1.81,
+              "calls": 2,
+              "failures": 0
+            },
+            "offer_resolve": {
+              "durationMs": 1.25,
+              "calls": 1,
+              "failures": 0
+            },
+            "offer_create": {
+              "durationMs": 0.17,
+              "calls": 1,
+              "failures": 0
+            },
+            "bound_offer": {
+              "durationMs": 1.45,
+              "calls": 1,
+              "failures": 0
+            },
+            "review_package": {
+              "durationMs": 0.73,
+              "calls": 1,
+              "failures": 0
+            },
+            "cart_assign": {
+              "durationMs": 0.08,
+              "calls": 1,
+              "failures": 0
+            },
+            "customer_image_url": {
+              "durationMs": 0.04,
+              "calls": 1,
+              "failures": 0
+            },
+            "cart_prepare": {
+              "durationMs": 4.75,
+              "calls": 1,
+              "failures": 0
+            },
+            "checkout_image_wait": {
+              "durationMs": 249.05,
+              "calls": 1,
+              "failures": 0
+            },
+            "cart_revalidate": {
+              "durationMs": 1.47,
+              "calls": 1,
+              "failures": 0
+            },
+            "response_json": {
+              "durationMs": 0.02,
+              "calls": 1,
+              "failures": 0
+            }
+          },
+          "counts": {
+            "checkout_image_pending": 1,
+            "response_bytes": 1259
+          },
+          "eventLoop": {
+            "resolutionMs": 20,
+            "beforeHandler": {
+              "windowMs": 1000,
+              "samples": 35,
+              "maxMs": 14.6,
+              "p99Ms": 14.6
+            },
+            "duringHandler": {
+              "windowMs": 257.9449999999997,
+              "samples": 9,
+              "maxMs": 14.17,
+              "p99Ms": 14.17
+            }
+          }
+        }
+      },
+      "cart/claim": {
+        "elapsedMs": 7.33,
+        "requestBytes": 0,
+        "responseBytes": 16,
+        "timing": {
+          "event": "shop_cart_timing",
+          "version": 1,
+          "startedAt": "2026-11-17T12:50:41.979Z",
+          "traceId": "92248afc-e448-4fa4-bec5-c727aefa8e7e",
+          "route": "cart/claim",
+          "status": 200,
+          "totalMs": 6.73,
+          "steps": {
+            "proxy_verify": {
+              "durationMs": 0.07,
+              "calls": 1,
+              "failures": 0
+            },
+            "session_binding": {
+              "durationMs": 0.83,
+              "calls": 1,
+              "failures": 0
+            },
+            "offer_resolve": {
+              "durationMs": 1.3,
+              "calls": 1,
+              "failures": 0
+            },
+            "offer_create": {
+              "durationMs": 0.19,
+              "calls": 1,
+              "failures": 0
+            },
+            "bound_offer": {
+              "durationMs": 1.52,
+              "calls": 1,
+              "failures": 0
+            },
+            "review_package": {
+              "durationMs": 0.68,
+              "calls": 1,
+              "failures": 0
+            },
+            "cart_assign": {
+              "durationMs": 0.04,
+              "calls": 1,
+              "failures": 0
+            },
+            "customer_image_url": {
+              "durationMs": 0.02,
+              "calls": 1,
+              "failures": 0
+            },
+            "cart_prepare": {
+              "durationMs": 3.66,
+              "calls": 1,
+              "failures": 0
+            },
+            "cart_claim": {
+              "durationMs": 1.4,
+              "calls": 1,
+              "failures": 0
+            },
+            "response_json": {
+              "durationMs": 0,
+              "calls": 1,
+              "failures": 0
+            }
+          },
+          "counts": {
+            "response_bytes": 16
+          },
+          "eventLoop": {
+            "resolutionMs": 20,
+            "beforeHandler": {
+              "windowMs": 1000,
+              "samples": 35,
+              "maxMs": 14.6,
+              "p99Ms": 14.6
+            },
+            "duringHandler": {
+              "windowMs": 6.760200000000623,
+              "samples": 0,
+              "maxMs": 0,
+              "p99Ms": 0
+            }
+          }
+        }
+      }
+    }
+  ],
+  "backgroundEvents": [
+    {
+      "event": "shop_cart_timing",
+      "version": 1,
+      "startedAt": "2026-11-17T12:50:33.718Z",
+      "traceId": "c71c4655-28f0-43ef-8186-eb82e9c5c7aa",
+      "route": "checkout-image",
+      "status": 200,
+      "totalMs": 273.97,
+      "steps": {
+        "access_token": {
+          "durationMs": 0.53,
+          "calls": 3,
+          "failures": 0
+        },
+        "shopify_lookup": {
+          "durationMs": 76.11,
+          "calls": 1,
+          "failures": 0
+        },
+        "shopify_create": {
+          "durationMs": 113.34,
+          "calls": 1,
+          "failures": 0
+        },
+        "shopify_poll_wait": {
+          "durationMs": 33.82,
+          "calls": 1,
+          "failures": 0
+        },
+        "shopify_poll": {
+          "durationMs": 49.68,
+          "calls": 1,
+          "failures": 0
+        }
+      },
+      "counts": {},
+      "eventLoop": {
+        "resolutionMs": 20,
+        "beforeHandler": {
+          "windowMs": 1000,
+          "samples": 31,
+          "maxMs": 514.85,
+          "p99Ms": 514.85
+        },
+        "duringHandler": {
+          "windowMs": 273.9939999999999,
+          "samples": 9,
+          "maxMs": 14.66,
+          "p99Ms": 14.66
+        }
+      },
+      "parentTraceId": "b8cf2fc8-a86c-4679-94f0-74136bff627a"
+    },
+    {
+      "event": "shop_cart_timing",
+      "version": 1,
+      "startedAt": "2026-11-17T12:50:34.885Z",
+      "traceId": "9049eb7e-71ce-445c-923d-11fc80cdc645",
+      "route": "checkout-image",
+      "status": 200,
+      "totalMs": 256.38,
+      "steps": {
+        "access_token": {
+          "durationMs": 0.27,
+          "calls": 3,
+          "failures": 0
+        },
+        "shopify_lookup": {
+          "durationMs": 71.7,
+          "calls": 1,
+          "failures": 0
+        },
+        "shopify_create": {
+          "durationMs": 101.16,
+          "calls": 1,
+          "failures": 0
+        },
+        "shopify_poll_wait": {
+          "durationMs": 32.69,
+          "calls": 1,
+          "failures": 0
+        },
+        "shopify_poll": {
+          "durationMs": 50.36,
+          "calls": 1,
+          "failures": 0
+        }
+      },
+      "counts": {},
+      "eventLoop": {
+        "resolutionMs": 20,
+        "beforeHandler": {
+          "windowMs": 1000,
+          "samples": 34,
+          "maxMs": 17.76,
+          "p99Ms": 17.76
+        },
+        "duringHandler": {
+          "windowMs": 256.3910000000001,
+          "samples": 8,
+          "maxMs": 14.64,
+          "p99Ms": 14.64
+        }
+      },
+      "parentTraceId": "b04fec29-7b02-4ad0-ad43-bfd2f5013a2e"
+    },
+    {
+      "event": "shop_cart_timing",
+      "version": 1,
+      "startedAt": "2026-11-17T12:50:36.026Z",
+      "traceId": "1c864cd2-711a-48a1-8ecd-ff3dc56a52f7",
+      "route": "checkout-image",
+      "status": 200,
+      "totalMs": 262.31,
+      "steps": {
+        "access_token": {
+          "durationMs": 0.31,
+          "calls": 3,
+          "failures": 0
+        },
+        "shopify_lookup": {
+          "durationMs": 65.51,
+          "calls": 1,
+          "failures": 0
+        },
+        "shopify_create": {
+          "durationMs": 115.79,
+          "calls": 1,
+          "failures": 0
+        },
+        "shopify_poll_wait": {
+          "durationMs": 33.96,
+          "calls": 1,
+          "failures": 0
+        },
+        "shopify_poll": {
+          "durationMs": 46.34,
+          "calls": 1,
+          "failures": 0
+        }
+      },
+      "counts": {},
+      "eventLoop": {
+        "resolutionMs": 20,
+        "beforeHandler": {
+          "windowMs": 1000,
+          "samples": 33,
+          "maxMs": 27.05,
+          "p99Ms": 27.05
+        },
+        "duringHandler": {
+          "windowMs": 262.3144999999995,
+          "samples": 8,
+          "maxMs": 15.42,
+          "p99Ms": 15.42
+        }
+      },
+      "parentTraceId": "a00c633a-7ca1-4c18-ad3b-678c59f8aeff"
+    },
+    {
+      "event": "shop_cart_timing",
+      "version": 1,
+      "startedAt": "2026-11-17T12:50:37.191Z",
+      "traceId": "82829d96-bd81-467c-aac1-cced9622ddf3",
+      "route": "checkout-image",
+      "status": 200,
+      "totalMs": 252.32,
+      "steps": {
+        "access_token": {
+          "durationMs": 0.3,
+          "calls": 3,
+          "failures": 0
+        },
+        "shopify_lookup": {
+          "durationMs": 67.42,
+          "calls": 1,
+          "failures": 0
+        },
+        "shopify_create": {
+          "durationMs": 100.12,
+          "calls": 1,
+          "failures": 0
+        },
+        "shopify_poll_wait": {
+          "durationMs": 31.84,
+          "calls": 1,
+          "failures": 0
+        },
+        "shopify_poll": {
+          "durationMs": 52.39,
+          "calls": 1,
+          "failures": 0
+        }
+      },
+      "counts": {},
+      "eventLoop": {
+        "resolutionMs": 20,
+        "beforeHandler": {
+          "windowMs": 1000,
+          "samples": 35,
+          "maxMs": 15.46,
+          "p99Ms": 15.46
+        },
+        "duringHandler": {
+          "windowMs": 252.32710000000043,
+          "samples": 9,
+          "maxMs": 14.94,
+          "p99Ms": 14.94
+        }
+      },
+      "parentTraceId": "9c2c403a-d6bd-4e62-a0a4-d98bc5510153"
+    },
+    {
+      "event": "shop_cart_timing",
+      "version": 1,
+      "startedAt": "2026-11-17T12:50:38.330Z",
+      "traceId": "e74b8796-cc9f-47d2-8205-524546b31dd4",
+      "route": "checkout-image",
+      "status": 200,
+      "totalMs": 261.1,
+      "steps": {
+        "access_token": {
+          "durationMs": 0.37,
+          "calls": 3,
+          "failures": 0
+        },
+        "shopify_lookup": {
+          "durationMs": 61.82,
+          "calls": 1,
+          "failures": 0
+        },
+        "shopify_create": {
+          "durationMs": 115.19,
+          "calls": 1,
+          "failures": 0
+        },
+        "shopify_poll_wait": {
+          "durationMs": 31.65,
+          "calls": 1,
+          "failures": 0
+        },
+        "shopify_poll": {
+          "durationMs": 51.81,
+          "calls": 1,
+          "failures": 0
+        }
+      },
+      "counts": {},
+      "eventLoop": {
+        "resolutionMs": 20,
+        "beforeHandler": {
+          "windowMs": 1000,
+          "samples": 35,
+          "maxMs": 14.97,
+          "p99Ms": 14.97
+        },
+        "duringHandler": {
+          "windowMs": 261.10490000000027,
+          "samples": 9,
+          "maxMs": 14.21,
+          "p99Ms": 14.21
+        }
+      },
+      "parentTraceId": "b9494b2b-4880-4f88-98a7-94e99379af78"
+    },
+    {
+      "event": "shop_cart_timing",
+      "version": 1,
+      "startedAt": "2026-11-17T12:50:39.453Z",
+      "traceId": "294c7e95-e967-4ff8-b88c-1517fdfd741f",
+      "route": "checkout-image",
+      "status": 200,
+      "totalMs": 256.48,
+      "steps": {
+        "access_token": {
+          "durationMs": 0.3,
+          "calls": 3,
+          "failures": 0
+        },
+        "shopify_lookup": {
+          "durationMs": 72.72,
+          "calls": 1,
+          "failures": 0
+        },
+        "shopify_create": {
+          "durationMs": 100.93,
+          "calls": 1,
+          "failures": 0
+        },
+        "shopify_poll_wait": {
+          "durationMs": 31.69,
+          "calls": 1,
+          "failures": 0
+        },
+        "shopify_poll": {
+          "durationMs": 50.54,
+          "calls": 1,
+          "failures": 0
+        }
+      },
+      "counts": {},
+      "eventLoop": {
+        "resolutionMs": 20,
+        "beforeHandler": {
+          "windowMs": 1000,
+          "samples": 35,
+          "maxMs": 14.87,
+          "p99Ms": 14.87
+        },
+        "duringHandler": {
+          "windowMs": 256.4940999999999,
+          "samples": 9,
+          "maxMs": 13.68,
+          "p99Ms": 13.68
+        }
+      },
+      "parentTraceId": "40b10aa9-706e-40d5-8241-b0ecfe7bf98b"
+    },
+    {
+      "event": "shop_cart_timing",
+      "version": 1,
+      "startedAt": "2026-11-17T12:50:40.580Z",
+      "traceId": "188beed5-74a3-4598-8d43-8fa75d04b0de",
+      "route": "checkout-image",
+      "status": 200,
+      "totalMs": 244.09,
+      "steps": {
+        "access_token": {
+          "durationMs": 0.26,
+          "calls": 3,
+          "failures": 0
+        },
+        "shopify_lookup": {
+          "durationMs": 60.94,
+          "calls": 1,
+          "failures": 0
+        },
+        "shopify_create": {
+          "durationMs": 100.82,
+          "calls": 1,
+          "failures": 0
+        },
+        "shopify_poll_wait": {
+          "durationMs": 32.54,
+          "calls": 1,
+          "failures": 0
+        },
+        "shopify_poll": {
+          "durationMs": 49.3,
+          "calls": 1,
+          "failures": 0
+        }
+      },
+      "counts": {},
+      "eventLoop": {
+        "resolutionMs": 20,
+        "beforeHandler": {
+          "windowMs": 1000,
+          "samples": 34,
+          "maxMs": 21.28,
+          "p99Ms": 21.28
+        },
+        "duringHandler": {
+          "windowMs": 244.10059999999976,
+          "samples": 8,
+          "maxMs": 14.27,
+          "p99Ms": 14.27
+        }
+      },
+      "parentTraceId": "736c2b28-c98d-4c34-9e06-68e796ad1ef0"
+    },
+    {
+      "event": "shop_cart_timing",
+      "version": 1,
+      "startedAt": "2026-11-17T12:50:41.719Z",
+      "traceId": "30d4b93e-ff2f-4067-9768-c145ee539301",
+      "route": "checkout-image",
+      "status": 200,
+      "totalMs": 256.02,
+      "steps": {
+        "access_token": {
+          "durationMs": 0.28,
+          "calls": 3,
+          "failures": 0
+        },
+        "shopify_lookup": {
+          "durationMs": 72.07,
+          "calls": 1,
+          "failures": 0
+        },
+        "shopify_create": {
+          "durationMs": 100.78,
+          "calls": 1,
+          "failures": 0
+        },
+        "shopify_poll_wait": {
+          "durationMs": 31.79,
+          "calls": 1,
+          "failures": 0
+        },
+        "shopify_poll": {
+          "durationMs": 50.9,
+          "calls": 1,
+          "failures": 0
+        }
+      },
+      "counts": {},
+      "eventLoop": {
+        "resolutionMs": 20,
+        "beforeHandler": {
+          "windowMs": 1000,
+          "samples": 35,
+          "maxMs": 14.6,
+          "p99Ms": 14.6
+        },
+        "duringHandler": {
+          "windowMs": 256.02510000000075,
+          "samples": 9,
+          "maxMs": 14.17,
+          "p99Ms": 14.17
+        }
+      },
+      "parentTraceId": "607e4984-916d-4f76-ad52-76797b438b98"
+    }
+  ]
+}

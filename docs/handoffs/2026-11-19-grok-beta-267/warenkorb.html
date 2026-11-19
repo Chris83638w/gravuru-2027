@@ -1,0 +1,52 @@
+<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Warenkorb</title><style>
+  body{margin:0;background:#f4f1ea;color:#1d2422;font:16px/1.45 system-ui,sans-serif}
+  main{max-width:980px;margin:0 auto;padding:24px 16px 48px}
+  h1{font-size:28px;margin:0 0 4px} .note{color:#5c675f;margin:0 0 20px}
+  article{display:grid;grid-template-columns:180px 1fr;gap:16px;background:#fff;border-radius:12px;padding:16px;margin:0 0 12px;box-shadow:0 1px 0 #e4ddd0}
+  img{width:100%;height:auto;background:#111;border-radius:8px;display:block}
+  button.zoom{padding:0;border:0;background:transparent;cursor:zoom-in;border-radius:8px}
+  h2{font-size:18px;margin:0} .design,.text{margin:4px 0} ul{margin:8px 0;padding:0;list-style:none} li{margin:2px 0} li span{color:#5c675f}
+  .meta{display:flex;gap:16px;font-weight:600} .remove{min-height:44px;padding:8px 14px;border:1px solid #b9b2a4;background:#fff;border-radius:8px;cursor:pointer}
+  .sum{display:flex;justify-content:space-between;font-size:18px;font-weight:700;margin-top:8px}
+  .preview-state{min-height:120px;display:grid;place-items:center;text-align:center;background:#f7f4ee;border:1px dashed #b9b2a4;border-radius:8px;padding:12px}
+  dialog{border:0;border-radius:12px;padding:12px;max-width:min(960px,96vw)} dialog img{max-height:80vh;background:#111} dialog::backdrop{background:#0008}
+  dialog button{min-height:44px;margin-top:8px}
+  @media(max-width:700px){article{grid-template-columns:1fr} main{padding:16px 12px 32px}}
+ </style></head><body><main>
+  <p class="note">Lokaler Prüfstand · persönliche Vorschau je Position · keine Bearbeitung aus dem Warenkorb</p>
+  <h1>Warenkorb</h1>
+  <div id="lines"><article class="line" data-line="cfg_0001" data-variant="fixture-16x28-FK-RUNDUM-schwarz-SIL" data-rev="1" data-config="cfg_0001" data-cents="5498" data-qty="1">
+    <button type="button" class="zoom" data-enlarge data-src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAUAAAADcCAIAAACOIe9xAAADZklEQVR4nO3VsY3bQBBAUZXhQhy5/wpcw0XGJQe4AGcOLhDA5VKaLz3gJYTE3ZGAj7n9/foDRN2ePgGwTMAQJmAIEzCECRjCBAxhAoYwAUOYgCFMwBAmYAgTMIQJGMIEDGEChrDDAf/49RO4iIAhTMAQJmAIEzCECRjCBAxhAoYwAUOYgCFMwBAmYAgTMIQJGMIEDGEChjABQ5iAIUzAECZgCBMwhAkYwgQMYQKGMAFDmIAhTMAQJmAIEzCECRjCBAxhAoYwAUOYgCFMwBAmYAgTMIQJGMIEDGEChjABQ5iAIUzAECZgCBMwhAkYwgQMYQKGMAFDmIAhTMAQJmAIEzCECRjCBAxhAoYwAUOYgCFMwBAmYAgTMIQJGMJGBPz58fu/oz/g0Lvfvnz/ceNRzxryOhvHSPzesQQs4BUCHkLAAl4h4CEELOAVAh5iRMDAmhEBb9xXhz59gZMftqA2LsZnvfuSBNw+WcBvTsDtkwX85gTcPlnAb25EwMCaEQGf2UhD9uShxzP3XvfukIs2rvp3IOA9Uwn4opMFfJ+A90wl4ItOFvB9At4zlYAvOlnA940IGFgzIuAzC2rIBn7YvRsvOmPjvXbsGQJenErAAp5AwItTCVjAEwh4cSoBC3iCEQEDa0YE/Kx9dWiZP2zmjUNudN1fd+YRAQt4ZWYBDyFgAa/MLOAhBCzglZkFPMSIgIE1AoYwAUOYgCFMwBAmYAgTMIQJGMIEDGEChjABQ5iAIUzAECZgCBMwhAkYwgQMYQKGMAFDmIAhTMAQJmAIEzCECRjCBAxhAoYwAUOYgCFMwBAmYAgTMIQJGMIEDGEChjABQ5iAIUzAECZgCBMwhAkYwgQMYQKGMAFDmIAhTMAQJmAIEzCECRjCBAxhAoYwAUOYgCFMwBAmYAgTMIQJGMIEDGEChjABQ5iAIUzAECZgCBMwhAkYwgQMYQKGMAFDmIAhTMAQJmAIEzCECRjCBAxhAoYwAUOYgCFMwBAmYAgTMIQJGMIEDGEChjABQ5iAIUzAECZgCBMwhAkYwgQMYQKGMAFDmIAhTMAQJmAIEzCECRjCBAxhAoYwAUOYgCFMwBAmYAi7PGBgDgFDmIAhTMAQJmAIEzCECRjCBAxhAoYwAUOYgCFMwBAmYAgTMIQJGMIEDGH/AG+QnPdgASGAAAAAAElFTkSuQmCC" data-label="Funkklingel Fixture"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAUAAAADcCAIAAACOIe9xAAADZklEQVR4nO3VsY3bQBBAUZXhQhy5/wpcw0XGJQe4AGcOLhDA5VKaLz3gJYTE3ZGAj7n9/foDRN2ePgGwTMAQJmAIEzCECRjCBAxhAoYwAUOYgCFMwBAmYAgTMIQJGMIEDGEChrDDAf/49RO4iIAhTMAQJmAIEzCECRjCBAxhAoYwAUOYgCFMwBAmYAgTMIQJGMIEDGEChjABQ5iAIUzAECZgCBMwhAkYwgQMYQKGMAFDmIAhTMAQJmAIEzCECRjCBAxhAoYwAUOYgCFMwBAmYAgTMIQJGMIEDGEChjABQ5iAIUzAECZgCBMwhAkYwgQMYQKGMAFDmIAhTMAQJmAIEzCECRjCBAxhAoYwAUOYgCFMwBAmYAgTMIQJGMJGBPz58fu/oz/g0Lvfvnz/ceNRzxryOhvHSPzesQQs4BUCHkLAAl4h4CEELOAVAh5iRMDAmhEBb9xXhz59gZMftqA2LsZnvfuSBNw+WcBvTsDtkwX85gTcPlnAb25EwMCaEQGf2UhD9uShxzP3XvfukIs2rvp3IOA9Uwn4opMFfJ+A90wl4ItOFvB9At4zlYAvOlnA940IGFgzIuAzC2rIBn7YvRsvOmPjvXbsGQJenErAAp5AwItTCVjAEwh4cSoBC3iCEQEDa0YE/Kx9dWiZP2zmjUNudN1fd+YRAQt4ZWYBDyFgAa/MLOAhBCzglZkFPMSIgIE1AoYwAUOYgCFMwBAmYAgTMIQJGMIEDGEChjABQ5iAIUzAECZgCBMwhAkYwgQMYQKGMAFDmIAhTMAQJmAIEzCECRjCBAxhAoYwAUOYgCFMwBAmYAgTMIQJGMIEDGEChjABQ5iAIUzAECZgCBMwhAkYwgQMYQKGMAFDmIAhTMAQJmAIEzCECRjCBAxhAoYwAUOYgCFMwBAmYAgTMIQJGMIEDGEChjABQ5iAIUzAECZgCBMwhAkYwgQMYQKGMAFDmIAhTMAQJmAIEzCECRjCBAxhAoYwAUOYgCFMwBAmYAgTMIQJGMIEDGEChjABQ5iAIUzAECZgCBMwhAkYwgQMYQKGMAFDmIAhTMAQJmAIEzCECRjCBAxhAoYwAUOYgCFMwBAmYAi7PGBgDgFDmIAhTMAQJmAIEzCECRjCBAxhAoYwAUOYgCFMwBAmYAgTMIQJGMIEDGH/AG+QnPdgASGAAAAAAElFTkSuQmCC" alt="Persönliche Gestaltung: Haus Nord 12" width="320" height="240"></button>
+    <div class="info">
+      <h2>Funkklingel Fixture</h2>
+      <p class="design">Beispiel</p>
+      <ul><li><span>Format</span> 16×28 cm</li><li><span>Rahmen</span> FK-RUNDUM</li><li><span>Farbe</span> Schwarz</li><li><span>Befestigung</span> SIL</li></ul>
+      <p class="text">Haus Nord 12</p>
+      <p class="meta"><span>Einzelpreis 54,98 €</span><span>Menge 1</span></p>
+      <button type="button" class="remove" data-remove="cfg_0001">Entfernen</button>
+    </div>
+  </article><article class="line" data-line="cfg_0002" data-variant="fixture-16x28-FK-RUNDUM-schwarz-SIL" data-rev="1" data-config="cfg_0002" data-cents="5498" data-qty="1">
+    <button type="button" class="zoom" data-enlarge data-src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAUAAAADcCAIAAACOIe9xAAADjUlEQVR4nO3ZsZHbMBBA0SvFJbggV+0aHHku8YwLcOZQI5IitB/3Zl5yAYClhH8M9PH3z28g6uPtEwCnCRjCBAxhAoYwAUOYgCFMwBAmYAgTMIQJGMIEDGEChjABQ5iAIUzAEHY44B/fvwE3ETCECRjCBAxhAoYwAUOYgCFMwBAmYAgTMIQJGMIEDGEChjABQ5iAIUzAECZgCBMwhAkYwgQMYQKGMAFDmIAhTMAQJmAIEzCECRjCBAxhAoYwAUOYgCFMwBAmYAgTMIQJGMIEDGEChjABQ5iAIUzAECZgCBMwhAkYwgQMYQKGMAFDmIAhTMAQJmAIEzCECRjCBAxhAoYwAUOYgCFMwBAmYAgTMIQJGMIEDGEChjABQ9jEgD9//fzv6J+Pt7oyxguHfOHOy7xwqvs+ui9IwM+OsewWzrzBAp5JwM+OsewWzrzBAp5JwM+OsewWzrzBAp5pYsDAk0YEfN+/1WVv4HfNPGSMxFRbEvDJtUNmHjJGYqotCfjk2iEzDxkjMdWWBHxy7ZCZh4yRmGpLIwIGzpkY8At/SFj2Bk7M/EJXHnDmE0UJ+ORaAQt4AgGfXCtgAU8g4JNrBSzgCSYGDDwpH/Ch9+SQna+cu2yM7Q/ag4DfsPOVc5eNsf1BexDwG3a+cu6yMbY/aA8CfsPOV85dNsb2B+0hHzB8ZSMCvu8nmSsH3TfzoXf7Cx//vs/qvu+IxwQs4NUPeOhcHhOwgFc/4KFzeUzAAl79gIfO5bERAQPnCBjCBAxhAoYwAUOYgCFMwBAmYAgTMIQJGMIEDGEChjABQ5iAIUzAECZgCBMwhAkYwgQMYQKGMAFDmIAhTMAQJmAIEzCECRjCBAxhAoYwAUOYgCFMwBAmYAgTMIQJGMIEDGEChjABQ5iAIUzAECZgCBMwhAkYwgQMYQKGMAFDmIAhTMAQJmAIEzCECRjCBAxhAoYwAUOYgCFMwBAmYAgTMIQJGMIEDGEChjABQ5iAIUzAECZgCBMwhAkYwgQMYQKGMAFDmIAhTMAQJmAIEzCECRjCBAxhAoYwAUOYgCFMwBAmYAgTMIQJGMIEDGEChjABQ5iAIUzAECZgCBMwhAkYwgQMYQKGMAFDmIAhTMAQJmAIEzCECRjCBAxhAoYwAUOYgCHs9oCBOQQMYQKGMAFDmIAhTMAQJmAIEzCECRjCBAxhAoYwAUOYgCFMwBAmYAgTMIT9A5HBl4gxf6WcAAAAAElFTkSuQmCC" data-label="Funkklingel Fixture"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAUAAAADcCAIAAACOIe9xAAADjUlEQVR4nO3ZsZHbMBBA0SvFJbggV+0aHHku8YwLcOZQI5IitB/3Zl5yAYClhH8M9PH3z28g6uPtEwCnCRjCBAxhAoYwAUOYgCFMwBAmYAgTMIQJGMIEDGEChjABQ5iAIUzAEHY44B/fvwE3ETCECRjCBAxhAoYwAUOYgCFMwBAmYAgTMIQJGMIEDGEChjABQ5iAIUzAECZgCBMwhAkYwgQMYQKGMAFDmIAhTMAQJmAIEzCECRjCBAxhAoYwAUOYgCFMwBAmYAgTMIQJGMIEDGEChjABQ5iAIUzAECZgCBMwhAkYwgQMYQKGMAFDmIAhTMAQJmAIEzCECRjCBAxhAoYwAUOYgCFMwBAmYAgTMIQJGMIEDGEChjABQ9jEgD9//fzv6J+Pt7oyxguHfOHOy7xwqvs+ui9IwM+OsewWzrzBAp5JwM+OsewWzrzBAp5JwM+OsewWzrzBAp5pYsDAk0YEfN+/1WVv4HfNPGSMxFRbEvDJtUNmHjJGYqotCfjk2iEzDxkjMdWWBHxy7ZCZh4yRmGpLIwIGzpkY8At/SFj2Bk7M/EJXHnDmE0UJ+ORaAQt4AgGfXCtgAU8g4JNrBSzgCSYGDDwpH/Ch9+SQna+cu2yM7Q/ag4DfsPOVc5eNsf1BexDwG3a+cu6yMbY/aA8CfsPOV85dNsb2B+0hHzB8ZSMCvu8nmSsH3TfzoXf7Cx//vs/qvu+IxwQs4NUPeOhcHhOwgFc/4KFzeUzAAl79gIfO5bERAQPnCBjCBAxhAoYwAUOYgCFMwBAmYAgTMIQJGMIEDGEChjABQ5iAIUzAECZgCBMwhAkYwgQMYQKGMAFDmIAhTMAQJmAIEzCECRjCBAxhAoYwAUOYgCFMwBAmYAgTMIQJGMIEDGEChjABQ5iAIUzAECZgCBMwhAkYwgQMYQKGMAFDmIAhTMAQJmAIEzCECRjCBAxhAoYwAUOYgCFMwBAmYAgTMIQJGMIEDGEChjABQ5iAIUzAECZgCBMwhAkYwgQMYQKGMAFDmIAhTMAQJmAIEzCECRjCBAxhAoYwAUOYgCFMwBAmYAgTMIQJGMIEDGEChjABQ5iAIUzAECZgCBMwhAkYwgQMYQKGMAFDmIAhTMAQJmAIEzCECRjCBAxhAoYwAUOYgCHs9oCBOQQMYQKGMAFDmIAhTMAQJmAIEzCECRjCBAxhAoYwAUOYgCFMwBAmYAgTMIT9A5HBl4gxf6WcAAAAAElFTkSuQmCC" alt="Persönliche Gestaltung: Haus Süd 27" width="320" height="240"></button>
+    <div class="info">
+      <h2>Funkklingel Fixture</h2>
+      <p class="design">Beispiel</p>
+      <ul><li><span>Format</span> 16×28 cm</li><li><span>Rahmen</span> FK-RUNDUM</li><li><span>Farbe</span> Schwarz</li><li><span>Befestigung</span> SIL</li></ul>
+      <p class="text">Haus Süd 27</p>
+      <p class="meta"><span>Einzelpreis 54,98 €</span><span>Menge 1</span></p>
+      <button type="button" class="remove" data-remove="cfg_0002">Entfernen</button>
+    </div>
+  </article></div>
+  <p class="sum"><span>Summe</span><span id="sum">109,96 €</span></p>
+  <dialog id="zoom"><img alt=""><button type="button" id="close-zoom">Schließen</button></dialog>
+ </main><script>
+  const sum=document.querySelector('#sum'),dialog=document.querySelector('#zoom'),img=dialog.querySelector('img');
+  const money=cents=>{const sign=cents<0?'−':'',abs=Math.abs(cents);return sign+Math.floor(abs/100).toLocaleString('de-DE')+','+String(abs%100).padStart(2,'0')+' €';};
+  function recount(){let total=0;for(const line of document.querySelectorAll('article.line'))total+=Number(line.dataset.cents)*Number(line.dataset.qty);sum.textContent=money(total);}
+  document.querySelector('#lines').addEventListener('click',event=>{
+   const zoom=event.target.closest('[data-enlarge]');
+   if(zoom){img.src=zoom.dataset.src;img.alt=zoom.dataset.label;dialog.showModal();return;}
+   const remove=event.target.closest('[data-remove]');
+   if(remove){remove.closest('article').remove();recount();}
+  });
+  document.querySelector('#close-zoom').addEventListener('click',()=>dialog.close());
+ </script></body></html>

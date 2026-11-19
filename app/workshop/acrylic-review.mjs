@@ -1,3 +1,4 @@
+import {cartTimingStep,cartTimingDetail} from './shop-cart-timing.mjs';
 import {isFamilyFormats} from '../configurator/variant-m/family-formats.mjs';
 import {doorbellSeparations} from './doorbell-artwork.mjs';
 import {isLayeredDoorbell} from '../configurator/variant-m/doorbell-selection.mjs';
@@ -15,16 +16,16 @@ import {cleanObject,isGuideObject,choiceOptions,optionFieldEntries} from '../con
 import {commercePrice} from '../configurator/variant-m/commerce-model.mjs';
 import {prepareCustomerPhoto} from './customer-photo.mjs';
 import {verifyCustomerVectorLogoMedia,vectorLogoMetadata} from './customer-vector-logo-media.mjs';
-import {zipFiles} from '../configurator/variant-m/print-export-model.mjs';
+import {reviewZip} from './review-zip.mjs';
 import {textsNearHoles} from '../platform/sources/app/shared/models/hole-proximity.mjs';
 import {selectedProfile} from '../configurator/variant-m/contract.mjs';
 import {editorUi} from '../configurator/variant-m/toolbar-placement-model.mjs';
 
 export const ACRYLIC_REVIEW='gravuru-acrylic-review/v1';
 const fail=message=>{throw Object.assign(Error(message),{status:422});};
-const sha=bytes=>createHash('sha256').update(bytes).digest('hex');
-const json=value=>Buffer.from(JSON.stringify(value,null,2)+'\n');
-const zip=async files=>Buffer.from(await (await zipFiles(files.map(f=>({name:f.path,blob:new Blob([f.bytes])})))).arrayBuffer());
+const sha=bytes=>cartTimingDetail('review_sha256',()=>createHash('sha256').update(bytes).digest('hex'));
+const json=value=>cartTimingDetail('review_json',()=>Buffer.from(JSON.stringify(value,null,2)+'\n'));
+const zip=reviewZip;
 const keys=(o,allowed)=>{if(!o||typeof o!=='object'||Array.isArray(o)||Object.keys(o).some(k=>!allowed.includes(k)))fail('Unbekannte Felder in der Acryl-Übergabe.');};
 
 // Native Konfi state, not a conversion into a form product. All prices and rights
@@ -40,9 +41,9 @@ export function validateAcrylicReview(record,config,input){
  // Schriften, die nativeReviewConfig für dieses Produkt freigegeben und mit Pfaden geladen hat (z. B. importierte
  // Profilschriften „Lato Regular · …“), gelten bei der Inhaltsprüfung als vorhanden – nur in diesem Prüfpfad.
  const document={...record.document,config:{...record.document.config,localResources:{...record.document.config.localResources,fonts:{...record.document.config.localResources?.fonts,...config.localResources.fonts}}}};
- const design=validateProductDesign(document,{...structuredClone(source),...(input.textOnTop!==undefined?{textOnTop:input.textOnTop}:{}),objects:input.objects.map(cleanObject)},{options:input.options,fonts:config.localResources.fonts,motifs:config.localResources.motifs});
- const resolved=resolveProduct(record.document,{options:input.options,designId:source.id});
- const price=commercePrice(config,{objects:design.objects,designId:design.id,mOptions:resolved.resolvedOptions},input.quantity);
+ const design=cartTimingDetail('review_design_validate',()=>validateProductDesign(document,{...structuredClone(source),...(input.textOnTop!==undefined?{textOnTop:input.textOnTop}:{}),objects:input.objects.map(cleanObject)},{options:input.options,fonts:config.localResources.fonts,motifs:config.localResources.motifs}));
+ const resolved=cartTimingDetail('review_product_resolve',()=>resolveProduct(record.document,{options:input.options,designId:source.id}));
+ const price=cartTimingDetail('review_price',()=>commercePrice(config,{objects:design.objects,designId:design.id,mOptions:resolved.resolvedOptions},input.quantity));
  // Hidden layers remain editable; their originals belong to this immutable revision.
  const used=new Set(design.objects.filter(o=>!isGuideObject(o)&&o.uxUploadId).map(o=>o.uxUploadId));
  if(!Array.isArray(input.media)||input.media.length!==used.size||used.size>4)fail('Alle verwendeten Originalbilder müssen mitgesichert werden.');
@@ -80,13 +81,13 @@ export function reviewSources(config,design){
 }
 
 export async function prepareAcrylicReview({record,config,input,assets,preparePhoto=prepareCustomerPhoto}){
- config=nativeReviewConfig(config,input);
+ config=cartTimingStep('review_config',()=>nativeReviewConfig(config,input));
  const layered=isLayeredDoorbell(config);
- let state;try{state=validateAcrylicReview(record,config,input);}catch(error){if(error.constructor===Error&&error.status===undefined)Object.assign(error,{status:422,code:'acrylic_review_invalid'});throw error;}
+ let state;try{state=cartTimingStep('review_validate',()=>validateAcrylicReview(record,config,input));}catch(error){if(error.constructor===Error&&error.status===undefined)Object.assign(error,{status:422,code:'acrylic_review_invalid'});throw error;}
  const files=[],photos=[];
  let total=0;const add=(path,bytes,purpose)=>{const b=Buffer.from(bytes);total+=b.length;if(total>100*1024*1024)fail('Prüfstand ist größer als 100 MB.');files.push({path,bytes:b,purpose});return {path,bytes:b.length,sha256:sha(b)};};
  if(layered)add('funkklingel-fertigung.json',json(doorbellSeparations(config,state.options)),'Feste getrennte Materialkonturen und Originalausschnitte, gleiche Revision wie Gestaltung und Preis.');
- const frozen=reviewSources(config,state.design),ref=record.document.productionProfile,productionProfile=record.metadata?.productionProfile||null;
+ const frozen=cartTimingStep('review_sources',()=>reviewSources(config,state.design)),ref=record.document.productionProfile,productionProfile=record.metadata?.productionProfile||null;
  if(ref?(!productionProfile||productionProfile.id!==ref.id||productionProfile.revision!==ref.revision):!!productionProfile)fail('Der gesicherte Fertigungsprofilstand fehlt oder passt nicht zur Produktrevision.');
  if(productionProfile)add('fertigungsprofil.json',json(productionProfile),'Unveränderlicher Fertigungsprofilstand; keine Maschinenfreigabe.');
  // No ephemeral upload URLs or tokens are accepted from the browser.
@@ -94,15 +95,15 @@ export async function prepareAcrylicReview({record,config,input,assets,preparePh
  add('konfigurator-quellen.json',json(frozen),'Feste Konfiguratorrevision mit Schriftpfaden und Motivquellen.');
  for(const [i,m] of input.media.entries()){
   if(m.vectorLogo!==undefined){
-   const object=state.design.objects.find(o=>o.uxUploadId===m.id),logo=await verifyCustomerVectorLogoMedia(config,object,m);
+   const object=state.design.objects.find(o=>o.uxUploadId===m.id),logo=await cartTimingStep('logo_verify',()=>verifyCustomerVectorLogoMedia(config,object,m));
    const source=add(`logos/${i+1}-original.svg`,logo.original,'Byteidentisches privates Vektorlogo-Original.');
    const edited={...add(`logos/${i+1}-gravur.svg`,logo.svg,'Vom Kunden bestätigte und serverseitig erneut geprüfte schwarze Vektorgravur.'),width:logo.width,height:logo.height};
    photos.push({uploadId:m.id,kind:'vector-logo',name:typeof m.name==='string'?m.name:'logo.svg',...source,width:logo.width,height:logo.height,edited,vectorLogo:logo.vectorLogo,detailCheck:'manual-required',minFeatureUnits:null,warnings:logo.warnings});
    continue;
   }
-  const original=await preparePhoto(m.original),extension=original.original.subarray(0,3).equals(Buffer.from([255,216,255]))?'jpg':original.original.subarray(1,4).toString()==='PNG'?'png':'webp';
+  const original=await cartTimingStep('photo_original',()=>preparePhoto(m.original)),extension=original.original.subarray(0,3).equals(Buffer.from([255,216,255]))?'jpg':original.original.subarray(1,4).toString()==='PNG'?'png':'webp';
   const source=add(`fotos/${i+1}-original.${extension}`,original.original,'Byteidentisches privates Originalbild.');
-  let edited=null;if(m.edited){const photo=await preparePhoto(m.edited);const ext=photo.original.subarray(0,3).equals(Buffer.from([255,216,255]))?'jpg':photo.original.subarray(1,4).toString()==='PNG'?'png':'webp';edited={...add(`fotos/${i+1}-bearbeitet.${ext}`,photo.original,'Geprüfte Darstellung der angewendeten Bildbearbeitung.'),width:photo.width,height:photo.height};}
+  let edited=null;if(m.edited){const photo=await cartTimingStep('photo_edited',()=>preparePhoto(m.edited));const ext=photo.original.subarray(0,3).equals(Buffer.from([255,216,255]))?'jpg':photo.original.subarray(1,4).toString()==='PNG'?'png':'webp';edited={...add(`fotos/${i+1}-bearbeitet.${ext}`,photo.original,'Geprüfte Darstellung der angewendeten Bildbearbeitung.'),width:photo.width,height:photo.height};}
   photos.push({uploadId:m.id,...source,width:original.width,height:original.height,edited});
  }
  const viewport=artworkViewport(config,{mOptions:state.options});
@@ -125,11 +126,12 @@ export async function prepareAcrylicReview({record,config,input,assets,preparePh
  if(typeof input.preview!=='string'||input.preview.length>3*1024*1024)fail('Die Gestaltungsvorschau fehlt oder ist zu groß.');
  if(input.customerPreview!==undefined){
   if(typeof input.customerPreview!=='string'||input.customerPreview.length>8*1024*1024)fail('Die Kundenvorschau fehlt oder ist zu groß.');
-  const customer=await preparePhoto(input.customerPreview),png=customer.original;
+  // Shop editor sends compact WebP (upload over mobile networks); the package keeps a PNG as before.
+  const customer=await cartTimingStep('customer_preview',()=>preparePhoto(input.customerPreview)),webp=customer.original.subarray(0,4).toString('latin1')==='RIFF'&&customer.original.subarray(8,12).toString('latin1')==='WEBP',png=webp?customer.preview:customer.original;
   if(!png.subarray(0,8).equals(Buffer.from([137,80,78,71,13,10,26,10]))||customer.width>4096||customer.height>4096)fail('Die Kundenvorschau muss ein PNG bis 4096 Pixel sein.');
-  add('gestaltung-kundenansicht.png',png,'Verlustfreie Kundenvorschau desselben gesicherten Gestaltungsstands; kein Fertigungsnachweis.');
+  add('gestaltung-kundenansicht.png',png,(webp?'Kundenvorschau (vom Browser als WebP gesendet, serverseitig als PNG gespeichert)':'Verlustfreie Kundenvorschau')+' desselben gesicherten Gestaltungsstands; kein Fertigungsnachweis.');
  }
- const image=await preparePhoto(input.preview);add('gestaltung-referenz.png',image.preview,'Vom Browser übermittelte Gestaltungsvorschau; kein serverseitiger Fertigungsnachweis.');
+ const image=await cartTimingStep('reference_preview',()=>preparePhoto(input.preview));add('gestaltung-referenz.png',image.preview,'Vom Browser übermittelte Gestaltungsvorschau; kein serverseitiger Fertigungsnachweis.');
  const preview=Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${image.width} ${image.height}"><image width="${image.width}" height="${image.height}" href="data:image/png;base64,${image.preview.toString('base64')}"/></svg>`);
  const chosen=selectedProfile(config,state.options);
  const method=getProcessingProfile(chosen).method;
@@ -137,5 +139,5 @@ export async function prepareAcrylicReview({record,config,input,assets,preparePh
  const holeWarnings=config.acrylic?[]:textsNearHoles(state.design,selectedProfile(config,state.options),config.localResources.fonts).map(n=>'Prüfvermerk Bohrloch: Text „'+String(n.text).trim().slice(0,60)+'“ liegt im Schutzbereich des Bohrlochs bei '+n.hole.x+' | '+n.hole.y+' mm. Kunde wurde vor der Bestellung darauf hingewiesen.');
  const id='proof_'+randomUUID(),manifest={schema:config.acrylic?ACRYLIC_REVIEW:NATIVE_REVIEW,id,createdAt:new Date().toISOString(),source:{draftId:'acrylic_'+randomUUID(),draftRevision:1,designId:state.design.id},product:{id:record.id,revision:record.revision,name:record.document.name,basePriceCents:state.price.unitCents,currency:'EUR',material:chosen.material,method,processingProfileId:process.id,...(config.profile.material.engravingSide?{engravingSide:config.profile.material.engravingSide}:{}),widthMm:state.geometry.widthMm,heightMm:state.geometry.heightMm},selection:{options:choiceOptions(config,state.options),labels:config.profile.optionGroups.filter(g=>state.options[g.id]!==undefined).map(g=>({label:g.name,value:g.values.find(v=>v.id===state.options[g.id]).label})),...(config.profile.optionFields===undefined?{}:{fields:optionFieldEntries(config,state.options)}),geometry:state.geometry,price:state.price},status:'review-only',order:null,payment:null,productionProfile,productionReady:false,photoHints,capabilities:{contour:!config.doorbell||layered,print:!config.doorbell&&method==='print',engraving:(!config.doorbell||layered)&&method==='engraving',...(layered?{layered:true}:{}),cart:false},blockers:[...(config.doorbell&&!layered?['Die getrennte Fertigungsausgabe für Edelstahlträger und Acrylglasauflage ist noch nicht angebunden.']:[]),method==='print'?'Gemessenes ICC-Profil und Maschinenabnahme fehlen.':'Gravurparameter und Probegravur sind nicht freigegeben.','Shopify-Bestellbindung und echte Maschinenabnahme sind nicht bestätigt.'],photoResolution,warnings:[...photoWarnings,...holeWarnings,'Die PNG-Vorschau stammt aus dem Browser. Geprüft wurden Produktrevision, Elementrechte, Maße, Preis und Bilddateien; die Vorschau ist kein Fertigungsnachweis.'],photos,files:files.map(({path,bytes,purpose})=>({path,bytes:bytes.length,sha256:sha(bytes),purpose}))};
  add('manifest.json',json(manifest),'Prüfsummen und Geltungsgrenzen.');
- const archive=await zip(files);return {manifest:{...manifest,packageSha256:sha(archive)},preview,contourPdf:Buffer.alloc(0),package:archive,photos:await zip(files.filter(f=>(f.path.startsWith('fotos/')||f.path.startsWith('logos/'))&&f.path.includes('-original.')))};
+ const archive=await cartTimingStep('review_zip',()=>zip(files));return {manifest:{...manifest,packageSha256:sha(archive)},preview,contourPdf:Buffer.alloc(0),package:archive,photos:await cartTimingStep('originals_zip',()=>zip(files.filter(f=>(f.path.startsWith('fotos/')||f.path.startsWith('logos/'))&&f.path.includes('-original.'))))};
 }

@@ -1,0 +1,29 @@
+{
+  "desktop": {
+    "before": 2,
+    "open": true,
+    "alt": "Funkklingel Fixture",
+    "after": 1,
+    "texts": [
+      "Haus Süd 27"
+    ],
+    "edit": false
+  },
+  "mobile": {
+    "lines": 2,
+    "images": [
+      320,
+      320,
+      0
+    ],
+    "edit": [
+      "",
+      "Entfernen",
+      "",
+      "Entfernen",
+      "Schließen"
+    ]
+  },
+  "price": 5498,
+  "variantId": "fixture-16x28-FK-RUNDUM-schwarz-SIL"
+}

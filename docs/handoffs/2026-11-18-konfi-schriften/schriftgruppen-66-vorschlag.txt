@@ -1,0 +1,92 @@
+GRAVURU – SCHRIFTGRUPPEN (VORSCHLAG)
+Stand: 18.11.2026 · 66 bleiben / 27 abgewählt · nichts aktiviert
+
+ANDENKEN – 25 Schriften
+Klassisch und persönlich: ruhige Serifenschriften, feine Schreibschriften und traditionelle Akzente.
+02 Alex Brush
+04 Allura
+06 Antic Slab
+09 Ashley [Umlaute ohne Punkte; Fehlende Zeichen: ß €]
+16 Bellefair
+17 Bernardo Moda Contrast
+18 Betsy Bailey
+22 Cinzel
+27 Cormorant Garamond
+30 Dancing Script
+36 Fineliner Script
+40 Great Vibes
+42 Homage [Fehlende Zeichen: ß €]
+47 Lato
+51 Magnolia Script
+53 Michroma
+59 Parisienne
+62 Playfair Display
+69 Rochester
+73 Sacramento
+74 Satisfy
+79 Stylish
+81 Sweetie [Umlaute ohne Punkte; Fehlende Zeichen: ß]
+82 Tangerine
+84 Zentenar Fraktur
+
+GESCHENKE – 25 Schriften
+Locker und vielseitig: Handschriften, kräftige Pinselzüge und verspielte Formen.
+04 Allura
+05 Amatic SC
+10 Ashley Marie [Originaldatei fehlt; Zuordnung vorläufig]
+13 Bad Script
+19 Caveat
+21 Chewy
+25 Comic Neue
+26 Cookie
+28 Courgette
+30 Dancing Script
+31 Daniel
+32 Daniel Black [Originaldatei fehlt; Zuordnung vorläufig]
+34 Desyrel
+38 Fredoka
+40 Great Vibes
+46 Kaushan Script
+47 Lato
+49 Lobster
+53 Michroma
+58 Pacifico
+61 Permanent Marker
+62 Playfair Display
+70 Rock Salt
+75 Soulmate [Originaldatei fehlt; Zuordnung vorläufig]
+80 Sunflower [Umlaute ohne Punkte; Fehlende Zeichen: ß]
+
+SCHILDER – 25 Schriften
+Von sachlich bis rustikal: klare Buchstaben, markante Titel und besondere Schriften für Namen oder Hofschilder.
+01 Aldrich
+07 Archivo Black
+11 Audiowide
+15 Bebas Neue
+20 Caviar Dreams
+22 Cinzel
+24 Comfortaa
+33 Days One
+35 Dream Orphans
+47 Lato
+52 MedievalSharp
+53 Michroma
+54 Minimalist [Umlaute ohne Punkte; Fehlende Zeichen: ß]
+55 Montserrat
+57 Oswald
+65 Raleway
+66 Righteous
+67 Roboto Condensed
+68 Roboto Slab
+71 Rounded Elegance
+72 Rye
+85 Cutive Mono
+90 Poppins
+91 Roboto Mono
+93 Ubuntu
+
+Alle 66 ausgewählten Schriften bleiben berücksichtigt. Überschneidungen sind beabsichtigt.
+Lato und Michroma sind in den 25 bereits enthalten, entsprechend den vorhandenen Katalog-Sets.
+Die Gruppierung begrenzt künftig neue Schriftwahlen; vorhandene Designs und ihre benötigten Schriften bleiben erhalten.
+Fehlende Dateien und Zeichenprobleme bleiben kenntlich. Die Aufnahme in den Vorschlag ist keine technische Freigabe.
+Noch keine Zuordnung zu Live-Produkten, keine Runtime- oder Katalogänderung.

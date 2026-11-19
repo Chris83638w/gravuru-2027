@@ -1,0 +1,236 @@
+{
+  "measuredAt": "2026-11-19",
+  "candidate": "B local",
+  "conditions": "Chrome headless, 1365x900 and 390x844. Primary series without network or CPU throttle, matching the protected candidate A note. A separate mobile series uses CPU 4x and Slow-4G (150 ms, 1.6/0.75 Mbit/s). Cold is the first navigation of a fresh target; warm is the next navigation in the same target. This is the local candidate, not the live shop and not the full R15 editor bundle.",
+  "price": {
+    "unitCents": 4999,
+    "sku": "FK-AV2A-16x28-1441",
+    "variantId": "57471227756924"
+  },
+  "runs": [
+    {
+      "viewport": "pc",
+      "throttle": false,
+      "index": 1,
+      "warm": false,
+      "elapsedMs": 302.341182,
+      "marks": [],
+      "decoded": {
+        "count": 2,
+        "widths": [
+          800,
+          800
+        ],
+        "texts": [
+          "Haus Nord 12",
+          "Haus S\u00fcd 27"
+        ],
+        "edit": false
+      }
+    },
+    {
+      "viewport": "pc",
+      "throttle": false,
+      "index": 2,
+      "warm": true,
+      "elapsedMs": 267.4574919999999,
+      "marks": [],
+      "decoded": {
+        "count": 2,
+        "widths": [
+          800,
+          800
+        ],
+        "texts": [
+          "Haus Nord 12",
+          "Haus S\u00fcd 27"
+        ],
+        "edit": false
+      }
+    },
+    {
+      "viewport": "pc",
+      "throttle": false,
+      "index": 3,
+      "warm": true,
+      "elapsedMs": 264.9617660000001,
+      "marks": [],
+      "decoded": {
+        "count": 2,
+        "widths": [
+          800,
+          800
+        ],
+        "texts": [
+          "Haus Nord 12",
+          "Haus S\u00fcd 27"
+        ],
+        "edit": false
+      }
+    },
+    {
+      "viewport": "mobile",
+      "throttle": false,
+      "index": 1,
+      "warm": false,
+      "elapsedMs": 108.61552800000004,
+      "marks": [],
+      "decoded": {
+        "count": 2,
+        "widths": [
+          800,
+          800
+        ],
+        "texts": [
+          "Haus Nord 12",
+          "Haus S\u00fcd 27"
+        ],
+        "edit": false
+      }
+    },
+    {
+      "viewport": "mobile",
+      "throttle": false,
+      "index": 2,
+      "warm": true,
+      "elapsedMs": 267.9120859999998,
+      "marks": [],
+      "decoded": {
+        "count": 2,
+        "widths": [
+          800,
+          800
+        ],
+        "texts": [
+          "Haus Nord 12",
+          "Haus S\u00fcd 27"
+        ],
+        "edit": false
+      }
+    },
+    {
+      "viewport": "mobile",
+      "throttle": false,
+      "index": 3,
+      "warm": true,
+      "elapsedMs": 266.836454,
+      "marks": [],
+      "decoded": {
+        "count": 2,
+        "widths": [
+          800,
+          800
+        ],
+        "texts": [
+          "Haus Nord 12",
+          "Haus S\u00fcd 27"
+        ],
+        "edit": false
+      }
+    },
+    {
+      "viewport": "mobile",
+      "throttle": true,
+      "index": 1,
+      "warm": false,
+      "elapsedMs": 5634.363165000001,
+      "marks": [],
+      "decoded": {
+        "count": 2,
+        "widths": [
+          800,
+          800
+        ],
+        "texts": [
+          "Haus Nord 12",
+          "Haus S\u00fcd 27"
+        ],
+        "edit": false
+      }
+    },
+    {
+      "viewport": "mobile",
+      "throttle": true,
+      "index": 2,
+      "warm": true,
+      "elapsedMs": 5616.679753,
+      "marks": [],
+      "decoded": {
+        "count": 2,
+        "widths": [
+          800,
+          800
+        ],
+        "texts": [
+          "Haus Nord 12",
+          "Haus S\u00fcd 27"
+        ],
+        "edit": false
+      }
+    },
+    {
+      "viewport": "mobile",
+      "throttle": true,
+      "index": 3,
+      "warm": true,
+      "elapsedMs": 5616.708617999999,
+      "marks": [],
+      "decoded": {
+        "count": 2,
+        "widths": [
+          800,
+          800
+        ],
+        "texts": [
+          "Haus Nord 12",
+          "Haus S\u00fcd 27"
+        ],
+        "edit": false
+      }
+    }
+  ],
+  "brake": [
+    {
+      "fastMs": 1.1927809999979218,
+      "slowMs": 2000.9430810000013,
+      "unitCents": 4999,
+      "revision": 1
+    },
+    {
+      "fastMs": 1.2386699999988195,
+      "slowMs": 2001.3091590000004,
+      "unitCents": 4999,
+      "revision": 1
+    },
+    {
+      "fastMs": 1.1241090000003169,
+      "slowMs": 1999.4627419999997,
+      "unitCents": 4999,
+      "revision": 1
+    }
+  ],
+  "fiveSecondTarget": "Ziel, in dieser lokalen Reihe nicht als Erfolg gewertet.",
+  "publicProductPageGet": {
+    "note": "Nur GET der \u00f6ffentlichen Produktseite. Kein Klick, kein Warenkorb, kein Editor.",
+    "runs": [
+      {
+        "index": 1,
+        "status": 200,
+        "bytes": 1227120,
+        "ms": 601.1
+      },
+      {
+        "index": 2,
+        "status": 200,
+        "bytes": 1227120,
+        "ms": 363.0
+      },
+      {
+        "index": 3,
+        "status": 200,
+        "bytes": 1227120,
+        "ms": 134.6
+      }
+    ]
+  }
+}

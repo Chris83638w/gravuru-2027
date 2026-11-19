@@ -3,6 +3,7 @@ import {isDeepStrictEqual} from 'node:util';
 import {createDraftCartHandoff} from './draft-cart-handoff.mjs';
 import {isNativeReviewSchema} from './native-review-schema.mjs';
 import {isLayeredDoorbell} from '../configurator/variant-m/doorbell-selection.mjs';
+import {cartTimingStep,cartTimingDetail,cartTimingCount} from './shop-cart-timing.mjs';
 
 const fail=(status,code,message)=>{throw Object.assign(Error(message),{status,code,retryable:false,paymentConfirmed:false});};
 const positive=n=>Number.isSafeInteger(n)&&n>0;
@@ -35,25 +36,26 @@ export function prepareBoundCartOffer({workshop,registry,shopDomain},binding,inp
   if(!input||Array.isArray(input)||Object.keys(input).some(k=>!['draftId','expectedRevision','quantity','configId','cartLineId'].includes(k))||!/^(?:adraft|draft)_[a-f0-9-]{36}$/.test(input.draftId||'')||!positive(input.expectedRevision)||!quantity(input.quantity)||(input.configId!==undefined&&typeof input.configId!=='string')||(input.cartLineId!==undefined&&typeof input.cartLineId!=='string')||typeof draftToken!=='string'||!/^[a-f0-9]{64}$/.test(draftToken))fail(422,'bound_test_fields','Privaten Entwurf, festen Stand und Menge angeben.');
   const fixed=structuredClone(input),native=fixed.draftId.startsWith('adraft_');
   function resolve(){
-   const active=registry.resolve({shopifyProductId:binding.shopifyProductId,shopifyVariantId:binding.shopifyVariantId});
+   cartTimingCount('offer_resolution_calls');
+   const active=cartTimingDetail('resolve_registry',()=>registry.resolve({shopifyProductId:binding.shopifyProductId,shopifyVariantId:binding.shopifyVariantId}));
    if(!equal(active,binding)||active.shopDomain!==shopDomain||active.tenantId!==workshop.tenantId)fail(409,'bound_test_binding','Die Shop-Zuordnung wurde geändert. Bitte neu öffnen.');
-   const draft=native?drafts.acrylicDrafts.get(fixed.draftId,draftToken):drafts.get(fixed.draftId,draftToken);
+   const draft=cartTimingDetail('resolve_draft',()=>native?drafts.acrylicDrafts.get(fixed.draftId,draftToken):drafts.get(fixed.draftId,draftToken));
    if(draft.revision!==fixed.expectedRevision||draft.productId!==binding.productId||draft.productRevision!==binding.productRevision)fail(409,'bound_test_draft','Der Entwurf gehört nicht zu dieser Ausführung oder wurde geändert.');
-   const record=workshop.repository.get(draft.productId,{revision:draft.productRevision});
-   if(record.status==='archived'||workshop.repository.get(draft.productId).status==='archived')fail(409,'bound_test_archived','Dieses Produkt ist nicht mehr verfügbar.');
-   const proof=native?{id:draft.snapshotId}:drafts.findSnapshot(draft.id,draft.revision);
+   const record=cartTimingDetail('resolve_product_fixed',()=>workshop.repository.get(draft.productId,{revision:draft.productRevision}));
+   if(record.status==='archived'||cartTimingDetail('resolve_product_current',()=>workshop.repository.get(draft.productId)).status==='archived')fail(409,'bound_test_archived','Dieses Produkt ist nicht mehr verfügbar.');
+   const proof=native?{id:draft.snapshotId}:cartTimingDetail('resolve_snapshot',()=>drafts.findSnapshot(draft.id,draft.revision));
    if(!proof?.id)fail(409,'bound_test_snapshot','Bitte die Gestaltung zuerst als Prüfstand sichern.');
-   const {manifest}=drafts.review(proof.id);assertBoundTestReview(manifest,record,binding);
+   const {manifest}=cartTimingDetail('resolve_review',()=>drafts.review(proof.id));cartTimingDetail('resolve_assert_review',()=>assertBoundTestReview(manifest,record,binding));
    // Native drafts own an immutable snapshot by its ID. Its original source
    // identity deliberately predates the draft and must never be rewritten.
    if((!native&&(manifest.source?.draftId!==draft.id||manifest.source.draftRevision!==draft.revision))||manifest.source?.designId!==draft.designId)fail(409,'bound_test_snapshot','Prüfstand und private Entwurfrevision stimmen nicht überein.');
    if(native&&manifest.selection.price.quantity!==fixed.quantity)fail(409,'bound_test_quantity','Bitte den Prüfstand mit der gewählten Menge erneut sichern.');
    return {draft,manifest,record,snapshotId:proof.id};
   }
-  const current=resolve();
+  const current=cartTimingStep('offer_resolve',()=>resolve());
   const reviewPolicy=m=>assertBoundTestReview(m,current.record,binding);
   const stableToken=createHmac('sha256',draftToken).update(JSON.stringify(['gravuru-bound-test-cart/v1',binding.storeId,binding.tenantId,binding.bindingId,binding.assignmentRevision,current.draft.id,current.draft.revision,current.snapshotId,fixed.quantity])).digest('hex');
-  const offer=drafts.orderIntake.offer({bindingId:binding.bindingId,snapshotId:current.snapshotId,quantity:fixed.quantity},{stableToken});
+  const offer=cartTimingStep('offer_create',()=>drafts.orderIntake.offer({bindingId:binding.bindingId,snapshotId:current.snapshotId,quantity:fixed.quantity},{stableToken}));
  return {...current,offer,reviewPolicy,resolve,fixed};
 }
 

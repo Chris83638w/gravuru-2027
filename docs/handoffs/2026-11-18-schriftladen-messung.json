@@ -1,0 +1,182 @@
+{
+  "profile": "Desktop Chrome, localhost, 29 real library fonts, text tab open, normal initial warmup completed, one new text, one run per version",
+  "before": {
+    "type": "font-fixture-result",
+    "clickToTextMs": 738.1,
+    "phase": 1,
+    "fontRequests": 27,
+    "fontResponseBytes": 3950428,
+    "requests": [
+      {
+        "url": "/_runtime/lazy/schriften/allura.json",
+        "bytes": 219435,
+        "start": 72586.7207,
+        "ms": 27.96
+      },
+      {
+        "url": "/_runtime/lazy/schriften/amatic-sc.json",
+        "bytes": 136529,
+        "start": 72588.3725,
+        "ms": 13.39
+      },
+      {
+        "url": "/_runtime/lazy/schriften/caveat.json",
+        "bytes": 262235,
+        "start": 72589.4977,
+        "ms": 28.67
+      },
+      {
+        "url": "/_runtime/lazy/schriften/cinzel.json",
+        "bytes": 119588,
+        "start": 72590.7449,
+        "ms": 11.39
+      },
+      {
+        "url": "/_runtime/lazy/schriften/cormorant-garamond.json",
+        "bytes": 143567,
+        "start": 72591.6714,
+        "ms": 19.94
+      },
+      {
+        "url": "/_runtime/lazy/schriften/cutive-mono.json",
+        "bytes": 127607,
+        "start": 72592.5938,
+        "ms": 10.07
+      },
+      {
+        "url": "/_runtime/lazy/schriften/dancing-script.json",
+        "bytes": 301491,
+        "start": 72603.4072,
+        "ms": 46.66
+      },
+      {
+        "url": "/_runtime/lazy/schriften/great-vibes.json",
+        "bytes": 206993,
+        "start": 72606.2947,
+        "ms": 19.97
+      },
+      {
+        "url": "/_runtime/lazy/schriften/josefin-sans.json",
+        "bytes": 75598,
+        "start": 72608.2457,
+        "ms": 10.49
+      },
+      {
+        "url": "/_runtime/lazy/schriften/kalam.json",
+        "bytes": 111743,
+        "start": 72613.2537,
+        "ms": 10.45
+      },
+      {
+        "url": "/_runtime/lazy/schriften/libre-baskerville.json",
+        "bytes": 102539,
+        "start": 72616.6935,
+        "ms": 9.74
+      },
+      {
+        "url": "/_runtime/lazy/schriften/lobster.json",
+        "bytes": 84915,
+        "start": 72620.0846,
+        "ms": 6.83
+      },
+      {
+        "url": "/_runtime/lazy/schriften/lora.json",
+        "bytes": 179449,
+        "start": 72621.2066,
+        "ms": 25.07
+      },
+      {
+        "url": "/_runtime/lazy/schriften/lora-italic.json",
+        "bytes": 206665,
+        "start": 72624.8255,
+        "ms": 27.27
+      },
+      {
+        "url": "/_runtime/lazy/schriften/merriweather.json",
+        "bytes": 151270,
+        "start": 72627.992,
+        "ms": 14.61
+      },
+      {
+        "url": "/_runtime/lazy/schriften/open-sans.json",
+        "bytes": 84744,
+        "start": 72629.0472,
+        "ms": 10.67
+      },
+      {
+        "url": "/_runtime/lazy/schriften/oswald.json",
+        "bytes": 58963,
+        "start": 72630.0226,
+        "ms": 6.87
+      },
+      {
+        "url": "/_runtime/lazy/schriften/pacifico.json",
+        "bytes": 138096,
+        "start": 72638.1796,
+        "ms": 12.23
+      },
+      {
+        "url": "/_runtime/lazy/schriften/parisienne.json",
+        "bytes": 234417,
+        "start": 72640.9188,
+        "ms": 22.83
+      },
+      {
+        "url": "/_runtime/lazy/schriften/patrick-hand.json",
+        "bytes": 109677,
+        "start": 72644.0023,
+        "ms": 13.03
+      },
+      {
+        "url": "/_runtime/lazy/schriften/playfair-display.json",
+        "bytes": 130809,
+        "start": 72648.2519,
+        "ms": 18.24
+      },
+      {
+        "url": "/_runtime/lazy/schriften/poppins.json",
+        "bytes": 49812,
+        "start": 72652.4781,
+        "ms": 9.8
+      },
+      {
+        "url": "/_runtime/lazy/schriften/raleway.json",
+        "bytes": 95463,
+        "start": 72654.0711,
+        "ms": 12.22
+      },
+      {
+        "url": "/_runtime/lazy/schriften/roboto-condensed.json",
+        "bytes": 104667,
+        "start": 72655.1461,
+        "ms": 13.01
+      },
+      {
+        "url": "/_runtime/lazy/schriften/roboto-mono.json",
+        "bytes": 100798,
+        "start": 72658.8189,
+        "ms": 9.85
+      },
+      {
+        "url": "/_runtime/lazy/schriften/sacramento.json",
+        "bytes": 270641,
+        "start": 72664.2287,
+        "ms": 20.15
+      },
+      {
+        "url": "/_runtime/lazy/schriften/source-code-pro.json",
+        "bytes": 142717,
+        "start": 72666.6538,
+        "ms": 10.41
+      }
+    ]
+  },
+  "after": {
+    "type": "font-fixture-result",
+    "clickToTextMs": 246.7,
+    "phase": 1,
+    "fontRequests": 0,
+    "fontResponseBytes": 0,
+    "requests": []
+  }
+}

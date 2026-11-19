@@ -5,6 +5,7 @@ import { dirname } from 'node:path';
 import {createProductCatalog} from './product-catalog.mjs';
 import {tenantOption,ensureTenantColumn,TENANT_COLUMN} from './tenant.mjs';
 import {customerDatabaseRead,databaseEpoch} from './customer-read-scope.mjs';
+import {cartTimingRead,cartTimingDetail,cartTimingBytes} from './shop-cart-timing.mjs';
 
 const OWNED_FIELDS = ['id', 'revision', 'publishedRevision', 'status', 'createdAt', 'updatedAt', 'metadata'];
 
@@ -97,14 +98,15 @@ export function createProductRepository({ filename, validateDocument = (value) =
 
   const catalog=transact(()=>createProductCatalog(db,catalogOverview,tenant));
   function product(id) {
-    const row = typeof id === 'string' ? db.prepare('SELECT * FROM products WHERE id = ? AND tenant_id = ?').get(id, tenant) : null;
+    const row = typeof id === 'string' ? cartTimingRead('product_row_read',()=>db.prepare('SELECT * FROM products WHERE id = ? AND tenant_id = ?').get(id, tenant)) : null;
     if (!row) throw failure(404, 'not_found', 'Konfiguration nicht gefunden.');
     return row;
   }
 
   function snapshot(id, revision) {
-    const row = db.prepare('SELECT * FROM product_revisions WHERE product_id = ? AND revision = ? AND tenant_id = ?').get(id, revision, tenant);
+    const row = cartTimingRead('product_revision_read',()=>db.prepare('SELECT * FROM product_revisions WHERE product_id = ? AND revision = ? AND tenant_id = ?').get(id, revision, tenant));
     if (!row) throw failure(404, 'revision_not_found', 'Revision nicht gefunden.');
+    cartTimingBytes('product_document_bytes',row.document);cartTimingBytes('product_metadata_bytes',row.metadata);
     return row;
   }
 
@@ -162,7 +164,7 @@ export function createProductRepository({ filename, validateDocument = (value) =
     const snap = snapshot(row.id, revision);
     return {
       id: row.id, revision: snap.revision, publishedRevision: snap.published_revision,
-      status: snap.status, document: JSON.parse(snap.document), metadata: JSON.parse(snap.metadata),
+      status: snap.status, document: cartTimingDetail('product_document_json',()=>JSON.parse(snap.document)), metadata: cartTimingDetail('product_metadata_json',()=>JSON.parse(snap.metadata)),
       createdAt: row.created_at, updatedAt: snap.created_at,
     };
     });

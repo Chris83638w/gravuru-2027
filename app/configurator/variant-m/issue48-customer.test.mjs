@@ -80,3 +80,11 @@ test('cart image preparation runs independent tasks concurrently and propagates 
  assert.deepEqual(await job,{art:'svg',media:['photo'],preview:'svg-reference',customerPreview:'png'});
  await assert.rejects(prepareCartImages({artwork:async()=>{throw Error('Missing font');},media:async()=>[],customer:async()=>'',reference:async()=>''}),/Missing font/);
 });
+
+test('cart customer preview is requested as WebP and falls back to PNG when the browser cannot encode WebP', async () => {
+ const {customerPreviewBlob}=await import('./shop-cart.mjs');
+ const calls=[];const el=type=>({png:async(o)=>{calls.push(o?.type??'image/png');return new Blob(['x'],{type:o?.type==='image/webp'?type:'image/png'});}});
+ assert.equal((await customerPreviewBlob(el('image/webp'))).type,'image/webp');
+ assert.deepEqual(calls,['image/webp']);
+ assert.equal((await customerPreviewBlob(el('image/png'))).type,'image/png','browser without WebP encoder returns PNG');
+});

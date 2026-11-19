@@ -1,0 +1,111 @@
+{
+  "measuredAt": "2026-11-19",
+  "host": "local cloud VM, not Chris device, not the live shop",
+  "definition": {
+    "technicalWait": "Sum of caused waits on the customer path. Free editing time is excluded. This run measures the two code waits that were changed, plus repeat loading of a static page module.",
+    "notIncluded": "Live network, Shopify fileCreate, real phone, full editor start. Those remain the earlier issue comment figures."
+  },
+  "profileCache": {
+    "note": "Synthetic enlargement of the doorbell fixture (2500 extra template objects) so the clone cost is visible. The live ring profile was not loaded.",
+    "runs": [
+      {
+        "coldMs": 11.785077000000001,
+        "warmMs": 3.939222000000001
+      },
+      {
+        "coldMs": 8.805893999999995,
+        "warmMs": 2.8410340000000076
+      },
+      {
+        "coldMs": 9.762222000000008,
+        "warmMs": 3.3893710000000112
+      }
+    ],
+    "medianColdMs": 9.76,
+    "medianWarmMs": 3.39
+  },
+  "checkoutPreview": {
+    "note": "Simulated Shopify image that takes 2000 ms. Preview-first returns the secured personal preview. The blocking path waits for the image. No Shopify call.",
+    "runs": [
+      {
+        "fastMs": 2.9088899999999853,
+        "slowMs": 2000.394107,
+        "fastStatus": "persoenlich_gesichert",
+        "slowStatus": "shopify_bereit"
+      },
+      {
+        "fastMs": 1.4826820000002954,
+        "slowMs": 2001.1136510000001,
+        "fastStatus": "persoenlich_gesichert",
+        "slowStatus": "shopify_bereit"
+      },
+      {
+        "fastMs": 1.1637209999998959,
+        "slowMs": 2000.0877220000002,
+        "fastStatus": "persoenlich_gesichert",
+        "slowStatus": "shopify_bereit"
+      }
+    ],
+    "medianPreviewFirstMs": 1.48,
+    "medianBlockingMs": 2000.39
+  },
+  "pageModule": {
+    "note": "shop-entry-page.mjs over local HTTP. First response is the full file. The next request sends the ETag and should be 304.",
+    "runs": [
+      {
+        "full": {
+          "status": 200,
+          "bytes": 7155,
+          "etag": "\"c97c0039641b94aa94ded9777753c859\"",
+          "cache": "public, max-age=300",
+          "ms": 7.13212299999941
+        },
+        "again": {
+          "status": 304,
+          "bytes": 0,
+          "etag": "\"c97c0039641b94aa94ded9777753c859\"",
+          "cache": "public, max-age=300",
+          "ms": 0.7351120000002993
+        }
+      },
+      {
+        "full": {
+          "status": 200,
+          "bytes": 7155,
+          "etag": "\"c97c0039641b94aa94ded9777753c859\"",
+          "cache": "public, max-age=300",
+          "ms": 1.329240000000027
+        },
+        "again": {
+          "status": 304,
+          "bytes": 0,
+          "etag": "\"c97c0039641b94aa94ded9777753c859\"",
+          "cache": "public, max-age=300",
+          "ms": 0.565005999999812
+        }
+      },
+      {
+        "full": {
+          "status": 200,
+          "bytes": 7155,
+          "etag": "\"c97c0039641b94aa94ded9777753c859\"",
+          "cache": "public, max-age=300",
+          "ms": 1.0960430000004635
+        },
+        "again": {
+          "status": 304,
+          "bytes": 0,
+          "etag": "\"c97c0039641b94aa94ded9777753c859\"",
+          "cache": "public, max-age=300",
+          "ms": 0.4887410000001182
+        }
+      }
+    ],
+    "medianFullMs": 1.33,
+    "medianRevalidatedMs": 0.57,
+    "fullBytes": 7155,
+    "revalidatedBytes": 0,
+    "revalidatedStatus": 304,
+    "cache": "public, max-age=300"
+  }
+}

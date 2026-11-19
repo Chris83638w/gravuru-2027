@@ -18,3 +18,8 @@
 
 /* Shop-Einstieg (shop-cart.mjs): echte Kaufaktion im Abschlussdialog, farblich wie „Gestaltung fertig“. */
 .completion-review-footer .completion-cart{flex:1 1 100%;background:#175b42!important;color:#fff!important;border:1px solid #175b42!important;border-radius:10px!important;font-weight:700!important;min-height:46px}.completion-review-footer .completion-cart:disabled{opacity:.7}.completion-review-footer [data-shop-cart-status]{width:100%;font-size:13px;color:#2e4a3c;margin:0}.completion-review-footer [data-shop-cart-status][hidden]{display:none}
+
+/* V4 Warenkorb-Fortschritt: Ladesymbol, solange ein Schritt läuft. */
+[data-shop-cart-status][data-busy]::before{content:'';display:inline-block;width:14px;height:14px;margin-right:8px;vertical-align:-2px;border:2px solid #c9d3cf;border-top-color:#175b42;border-radius:50%;animation:gv-cart-spin .8s linear infinite}
+@keyframes gv-cart-spin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){[data-shop-cart-status][data-busy]::before{animation:none;border-top-color:#c9d3cf}}

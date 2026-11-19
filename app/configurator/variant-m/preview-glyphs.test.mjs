@@ -1,0 +1,117 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import zlib from 'node:zlib';
+import os from 'node:os';
+import path from 'node:path';
+import {createPreviewGlyphRecovery,previewGlyphFromModels,previewGlyphPack,prunePreviewGlyphPacks,readPreviewGlyphPack,rememberPreviewGlyphSource,writePreviewGlyphPack} from './preview-glyphs.mjs';
+import {designResourcesReady} from './doorbell-lazy-designs.mjs';
+import {studioSvg} from '../../platform/sources/app/shared/models/studio-svg.mjs';
+import {textPaths} from '../../platform/sources/app/shared/models/text-paths.mjs';
+import {doorbellFixture} from '../../workshop/test-fixtures/doorbell-config.mjs';
+import {createModelSlimmer} from '../../workshop/shop-model-slim.mjs';
+import {acrylCacheControl} from '../../workshop/acryl-employee-host.mjs';
+import {attach} from './lazy-resources.mjs';
+import {shopWarmManifest} from '../../workshop/shop-warm-manifest.mjs';
+import {validWarmManifest,warmShopAssets} from '../../workshop/ui/shop-warm.mjs';
+
+const alphabet='Familie?';
+function face(mark){
+ const glyphs={};
+ for(const char of alphabet+'Q')glyphs[char]={a:400,d:'M0 0H'+char.codePointAt(0)+mark+'V8H0Z'};
+ for(let index=0;index<80;index++)glyphs[String.fromCodePoint(0x100+index)]={a:100,d:('M0 0H'+index+'V9H0Z').repeat(30)};
+ return {units:1000,glyphs};
+}
+function model(){
+ const config=doorbellFixture();
+ for(const format of config.doorbell.formats)format.profile.designs=Array.from({length:16},(_,index)=>({id:format.key+'-'+index,name:'V'+index,marks:[],objects:[{id:'t',type:'text',text:'Familie',font:'Probe',x:30,y:30,w:40,h:8,size:8,rotation:0,color:'#fff'}]}));
+ config.localResources.fonts={Probe:{regular:face('A'),bold:face('B')}};
+ return config;
+}
+test('card markup with the preview pack matches the full font, and the export font is untouched',()=>{
+ const config=model();
+ const pack=previewGlyphPack(config);
+ assert.equal(pack.body.length<JSON.stringify(config.localResources.fonts).length/2,true);
+ const parsed=JSON.parse(pack.body);
+ assert.deepEqual(parsed.fonts.Probe.regular.glyphs.F,config.localResources.fonts.Probe.regular.glyphs.F);
+ assert.equal(parsed.fonts.Probe.regular.glyphs.Q,undefined);
+ const full=config.localResources.fonts;
+ const subset={Probe:{...parsed.fonts.Probe,previewSubset:true}};
+ let cards=0;
+ for(const format of config.doorbell.formats)for(const design of format.profile.designs){
+  const profile={...config.profile,...format.profile,material:config.profile.material};
+  assert.equal(studioSvg(profile,design,subset,{id:'karte',handles:false,guides:false}),studioSvg(profile,design,full,{id:'karte',handles:false,guides:false}));
+  cards++;
+ }
+ assert.equal(cards,48);
+ const text={type:'text',text:'Familie',font:'Probe',size:8,x:0,y:0,w:40,h:8};
+ assert.equal(textPaths(text,full),textPaths(text,subset));
+ assert.equal(designResourcesReady(config.doorbell.formats[0].profile.designs[0],subset,{}),true);
+ const outside={objects:[{type:'text',text:'Q',font:'Probe'}]};
+ assert.equal(designResourcesReady(outside,subset,{}),false);
+ assert.equal(designResourcesReady(outside,full,{}),true);
+ const changed=previewGlyphPack({...config,localResources:{fonts:{Probe:{regular:face('Z')}}}});
+ assert.notEqual(changed.hash,pack.hash);
+ assert.equal(acrylCacheControl(pack.url,200),'public, max-age=31536000, immutable');
+ assert.ok(zlib.gzipSync(pack.body).length<pack.body.length);
+});
+test('the loader stores the pack beside the stage font and data saving does not warm it',async()=>{
+ const config=model();
+ const slimmer=createModelSlimmer();
+ const pack=slimmer.attachPreviewGlyphs(config);
+ const body=slimmer.previewGlyphFile(pack.hash);
+ assert.equal(body.toString(),pack.body.toString());
+ const el={fontData:{Probe:config.localResources.fonts.Probe},motifs:{},catalog:{motifs:{},motif_bounds:{}},shadowRoot:{querySelectorAll:()=>[]},dataset:{},dispatchEvent(){}};
+ let asked=0;
+ attach(el,{catalog:{font_index:[],motif_index:[]},entries:[],prepare(){},previewGlyphs:pack.url,get:async()=>{asked++;return JSON.parse(pack.body);}});
+ await new Promise(resolve=>setImmediate(resolve));
+ assert.equal(asked,1);
+ assert.equal(el.fontData.Probe,config.localResources.fonts.Probe);
+ assert.equal(el.uxPreviewFonts.Probe.previewSubset,true);
+ assert.equal(Object.hasOwn(el.fontData.Probe,'previewSubset'),false);
+ const manifest=shopWarmManifest(config,{editorPath:'/_merchant-acryl-editor.html'});
+ assert.equal(manifest.previewGlyphs,pack.url);
+ assert.equal(validWarmManifest(manifest),true);
+ const cold=await warmShopAssets(manifest,{connection:{saveData:true},fetchImpl:async()=>{throw Error('darf nicht laden');}});
+ assert.equal(cold.skipped,true);
+ const directory=fs.mkdtempSync(path.join(os.tmpdir(),'glyphen-'));
+ writePreviewGlyphPack(directory,pack);
+ const again=createModelSlimmer({previewGlyphDirectory:directory});
+ assert.equal(again.previewGlyphFile(pack.hash).toString(),pack.body.toString());
+ assert.equal(readPreviewGlyphPack(directory,pack.hash).toString(),pack.body.toString());
+ fs.rmSync(directory,{recursive:true,force:true});
+ const missing=fs.mkdtempSync(path.join(os.tmpdir(),'glyphen-neu-'));
+ const rebuilt=previewGlyphFromModels([config,{doorbell:null}],pack.hash,missing,{keep:2});
+ assert.equal(rebuilt.toString(),pack.body.toString());
+ for(let index=0;index<4;index++)writePreviewGlyphPack(missing,{hash:String(index).padStart(64,'a'),body:Buffer.from('{"n":'+index+'}')});
+ const removed=prunePreviewGlyphPacks(missing,{keep:2});
+ assert.equal(removed,3);
+ assert.equal(fs.readdirSync(missing).filter(name=>name.endsWith('.json')).length,2);
+ fs.rmSync(missing,{recursive:true,force:true});
+});
+test('a missing pack rebuilds only its published doorbell revision, and an unknown hash builds nothing',()=>{
+ const directory=fs.mkdtempSync(path.join(os.tmpdir(),'glyphen-index-'));
+ const published=model(),head=model();
+ head.doorbell.formats[0].profile.designs[0].objects[0].text='Andere';
+ const pack=previewGlyphPack(published),other=previewGlyphPack(head);
+ const products=new Map([['ring:2',published],['ring:9',head],['platte:1',{profile:{designs:[]}}]]);
+ for(let n=0;n<20;n++)products.set('andere-'+n+':1',{profile:{}});
+ let now=0;const loads=[];
+ const recover=createPreviewGlyphRecovery({directory,now:()=>now,negativeMs:30000,load(source){loads.push(source.productId+':'+source.revision);return products.get(source.productId+':'+source.revision)??null;}});
+ const unknown='c'.repeat(64);
+ assert.equal(recover(unknown),null);assert.equal(recover(unknown),null);assert.deepEqual(loads,[]);
+ now=30000;assert.equal(recover(unknown),null);assert.deepEqual(loads,[]);
+ rememberPreviewGlyphSource(directory,pack.hash,{storeId:'acryl',productId:'ring',revision:2});
+ const serve=hash=>readPreviewGlyphPack(directory,hash)||recover(hash);
+ assert.equal(serve(pack.hash).toString(),pack.body.toString());
+ assert.deepEqual(loads,['ring:2']);
+ assert.equal(serve(pack.hash).toString(),pack.body.toString());
+ assert.deepEqual(loads,['ring:2'],'a file that is already there does not build the model again');
+ rememberPreviewGlyphSource(directory,other.hash,{storeId:'acryl',productId:'platte',revision:1});
+ const before=loads.length;
+ assert.equal(recover(other.hash),null);
+ assert.equal(loads.length,before+1);
+ assert.equal(recover(other.hash),null);
+ assert.equal(loads.length,before+1,'a failed rebuild stays cached');
+ fs.rmSync(directory,{recursive:true,force:true});
+});

@@ -3,7 +3,13 @@
 // meldet nur die einmalige Übergabekennung herauf; diese Seite holt die geprüften Werte über den App-Proxy und
 // legt sie wie die bisherige Zwischenseite (theme-cart-ui.mjs) in den normalen Warenkorb. Ohne JavaScript
 // oder bei Strg-/Mittelklick bleibt der normale Link (ganze Seite) unverändert.
-import {createThemeCartClient,cartImage} from './theme-cart-client.mjs';
+import * as themeCart from './theme-cart-client.mjs';
+// #252 Versionswechsel: Shop-Module haben feste URLs (max-age=300); offene Tabs behalten ihre geladenen Module.
+// Namespace-Import statt benannter Importe: ein älteres theme-cart-client.mjs ohne neue Exporte bricht das Laden nicht ab.
+// Die kleine JSON-Übergabe (ohne PNG) wird nur angefordert, wenn der tatsächlich geladene Client sie verarbeiten kann.
+const {createThemeCartClient,cartImage,readCartDataUntilReady,CHECKOUT_WAIT_TEXT}=themeCart,HOSTED_CART_PREVIEW=typeof themeCart.hostedPreview==='function';
+export {readCartDataUntilReady,CHECKOUT_WAIT_TEXT};
+export function cartRequestHeaders(token,path){return {'X-Gravuru-Cart-Handoff':token,...(path==='data'&&HOSTED_CART_PREVIEW?{'X-Gravuru-Cart-Preview':'hosted'}:{})};}
 
 const EDITOR_ORIGIN='__EDITOR_ORIGIN__',PROXY='__PROXY_PATH__';
 const TOKEN=/^[a-f0-9]{64}$/;
@@ -17,6 +23,10 @@ const STYLE=`.gv-embed{position:fixed;inset:0;z-index:2147483000;background:#fff
 .gv-embed__status{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.94);padding:24px;text-align:center}
 .gv-embed__status[hidden]{display:none}
 .gv-embed__box{max-width:420px;font-size:17px;line-height:1.5;color:#243238}
+.gv-embed__box[data-busy]::before{content:'';display:block;width:28px;height:28px;margin:0 auto 14px;border:3px solid #c9d3cf;border-top-color:#175b42;border-radius:50%;animation:gv-embed-spin .8s linear infinite}
+@keyframes gv-embed-spin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.gv-embed__box[data-busy]::before{animation:none}}
+.gv-embed__hint{display:block;margin-top:10px;font-size:14px;color:#55646a}
 .gv-embed__box button,.gv-embed__box a{display:inline-block;margin:12px 6px 0;min-height:44px;padding:10px 16px;border-radius:8px;font:inherit;font-size:15px;cursor:pointer;text-decoration:none}
 .gv-embed__box button{border:1px solid #c9d3cf;background:#fff;color:#243238}
 .gv-embed__box a{background:#5fa372;color:#fff}
@@ -202,7 +212,10 @@ export function install({root=window.Shopify?.routes?.root||'/'}={}){
  const box=document.createElement('div');box.className='gv-embed__box';status.append(box);
  shell.append(bar,status);document.body.append(shell);
  let frame=null,frameKey=null,busy=false,lastFocus=null,watchdog=null,frameReady=false;
- const say=(text,{error=false}={})=>{box.replaceChildren(document.createTextNode(text));status.hidden=false;
+ let slow=null;
+ // V4: Schritt 4 von 4 mit Ladesymbol; nach 15 s ein beruhigender Hinweis statt scheinbarem Stillstand.
+ const say=(text,{error=false,busy:running=false}={})=>{clearTimeout(slow);box.replaceChildren(document.createTextNode(text));status.hidden=false;box.toggleAttribute('data-busy',running);
+  if(running)slow=setTimeout(()=>{if(!box.hasAttribute('data-busy'))return;const hint=document.createElement('span');hint.className='gv-embed__hint';hint.textContent='Bei langsamer Verbindung dauert das etwas länger – bitte das Fenster geöffnet lassen.';box.append(hint);},15000);
   if(error){const again=document.createElement('button');again.type='button';again.textContent='Zurück zur Gestaltung';again.addEventListener('click',()=>{status.hidden=true;});
    const cart=document.createElement('a');cart.href=root+'cart';cart.textContent='Warenkorb öffnen';box.append(document.createElement('br'),again,cart);}};
  // `key` = Startadresse über den App-Proxy; geöffnet wird ggf. die Startkarte (direkt). Gleicher Schlüssel = gleiches Fenster.
@@ -213,7 +226,7 @@ export function install({root=window.Shopify?.routes?.root||'/'}={}){
  // Hinweis mit Ausweg, falls der Konfigurator nicht kommt (Netz, Browser-Einstellungen, Sperren im Fenster).
  function trouble(text){
   if(!frameKey)return;
-  box.replaceChildren(document.createTextNode(text));status.hidden=false;
+  clearTimeout(slow);box.removeAttribute('data-busy');box.replaceChildren(document.createTextNode(text));status.hidden=false;
   const wait=document.createElement('button');wait.type='button';wait.textContent='Weiter warten';wait.addEventListener('click',()=>{status.hidden=true;arm(20000);});
   const again=document.createElement('button');again.type='button';again.textContent='Neu laden';again.addEventListener('click',()=>{status.hidden=true;const key=frameKey;load(key,key);arm();});
   const page=document.createElement('a');page.href=cartEdit?.href||pageStartUrl(frameKey)||frameKey;page.target='_top';page.rel='nofollow';page.textContent='Ohne Fenster öffnen';
@@ -236,18 +249,20 @@ export function install({root=window.Shopify?.routes?.root||'/'}={}){
  function hide(){if(busy)return;if(cartEdit){location.assign(root+'cart');return;}shell.hidden=true;status.hidden=true;document.documentElement.classList.remove('gv-embed-open');lastFocus?.focus?.();}
  close.addEventListener('click',hide);
  document.addEventListener('keydown',event=>{if(event.key==='Escape'&&!shell.hidden)hide();});
- async function request(token,path,method='GET'){
-  const r=await fetch(PROXY+'/cart/'+path,{method,credentials:'same-origin',cache:'no-store',headers:{'X-Gravuru-Cart-Handoff':token}});
-  const data=await r.json().catch(()=>({}));if(!r.ok)throw Error(data.error?.message||'Die Warenkorbübergabe konnte nicht geladen werden.');return data;
+ async function request(token,path,method='GET',extra){
+  const r=await fetch(PROXY+'/cart/'+path,{method,credentials:'same-origin',cache:'no-store',headers:{...cartRequestHeaders(token,path),...extra}});
+  const data=await r.json().catch(()=>({}));
+  if(!r.ok){const error=Error(data.error?.message||'Die Warenkorbübergabe konnte nicht geladen werden.');error.code=data.error?.code;throw error;}
+  return data;
  }
  async function handoff(token,source,image){
-  if(busy)return;busy=true;say('Deine Gestaltung wird in den Warenkorb gelegt …');
+  if(busy)return;busy=true;say('4 von 4 · '+CHECKOUT_WAIT_TEXT,{busy:true});
   try{
-   const payload=await request(token,'data');
+   const payload=await readCartDataUntilReady(attempt=>request(token,'data','GET',attempt?{'X-Gravuru-Cart-Retry':'1'}:{}),{onWait:()=>say('4 von 4 · '+CHECKOUT_WAIT_TEXT,{busy:true})});
    if(location.hostname!==payload.shopDomain)throw Error('Diese Übergabe gehört zu einem anderen Shop.');
-   const client=createThemeCartClient({root,claim:()=>request(token,'claim','POST'),onProgress:text=>say(text)});
+   const client=createThemeCartClient({root,claim:()=>request(token,'claim','POST'),onProgress:text=>say('4 von 4 · '+text,{busy:true})});
    const submit=()=>client.submit(payload,{image}),result=navigator.locks?await navigator.locks.request('gravuru-theme-cart',submit):await submit();
-   say('Im Warenkorb – einen Moment …');location.assign(result.cartUrl);
+   say('Im Warenkorb – einen Moment …',{busy:true});location.assign(result.cartUrl);
   }catch(error){
    const message=error?.message||'Die Übertragung konnte nicht bestätigt werden. Bitte den Warenkorb prüfen.';
    busy=false;say(message,{error:true});

@@ -236,8 +236,19 @@ export function createShopEntryClient({token,fetchImpl=globalThis.fetch,editStor
     }));
     return resources;
   }
+  function seedInlinePreviews(universal,resources){
+    const inline=universal?.localResources?.inlinePreviews;
+    if(!inline||typeof inline!=='object')return;
+    for(const [hash,value] of Object.entries(inline)){
+      if(!/^[a-f0-9]{64}$/.test(hash)||typeof value!=='string'||!value.startsWith('data:image/svg+xml;base64,'))continue;
+      const url=WORKSHOP+'design-assets/'+hash+'/preview.svg';
+      resources[url]=value;resources[url.replace(WORKSHOP,ACRYL)]=value;
+    }
+  }
   function loadResources(universal,toDataUrl){
-    return loadPreviewPaths(allPreviewPaths(universal),toDataUrl,Object.create(null));
+    const resources=Object.create(null);
+    seedInlinePreviews(universal,resources);
+    return loadPreviewPaths([...allPreviewPaths(universal)].filter(url=>resources[url]===undefined),toDataUrl,resources);
   }
   function prepareDoorbellResources(universal,toDataUrl){
     if(universal.doorbell?.schema!=='gravuru-doorbell/v1')return null;
@@ -248,11 +259,13 @@ export function createShopEntryClient({token,fetchImpl=globalThis.fetch,editStor
     const first=previewPaths([design,...motifs]),all=allPreviewPaths(universal);
     addPhotoMaskPaths(first,[design]);
     const resources=Object.create(null);
-    const start=loadPreviewPaths(first,toDataUrl,resources,{priority:'high'});
+    seedInlinePreviews(universal,resources);
+    const missing=urls=>[...urls].filter(url=>resources[url]===undefined);
+    const start=loadPreviewPaths(missing(first),toDataUrl,resources,{priority:'high'});
     start.catch(()=>{}); // The child handles the error once its HTML has arrived.
     let complete;
     return {resources,loadRemaining:()=>complete??=Promise.all([
-      start,loadPreviewPaths([...all].filter(path=>!first.has(path)),toDataUrl,resources,{priority:'low'})
+      start,loadPreviewPaths(missing(all).filter(url=>!first.has(url)),toDataUrl,resources,{priority:'low'})
     ])};
   }
   async function submitCart(input,{draftToken}={}){

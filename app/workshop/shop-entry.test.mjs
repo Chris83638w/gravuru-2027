@@ -57,6 +57,14 @@ async function run(fn,mutate=()=>{}){
 }
 const session=t=>({'X-Gravuru-Shop-Session':t});
 
+test('pre-save capability is absent by default and appears only with the explicit host switch',async()=>{
+ for(const enabled of [undefined,false,true])await run(async(f,request,{token})=>{
+  const issued=await token();const response=await request('/api/shop-entry/model','GET',undefined,session(issued.token));
+  assert.equal(response.status,200);assert.equal(response.data.preSaveOnReview,enabled===true?true:undefined);
+ },f=>{if(enabled!==undefined)f.options.preSaveOnReview=enabled;});
+ for(const bad of ['true','enabled',1,null,{}])assert.throws(()=>createShopEntry({...fixture().options,preSaveOnReview:bad}),{code:'shop_entry_config'});
+});
+
 test('a disabled design module keeps the pinned default and refuses explicit customer design overrides',()=>run(async(f,request,{token})=>{
  const issued=await token(),headers=session(issued.token);
  for(const route of ['/api/shop-entry/model','/api/shop-entry/model?design=d1']){
@@ -154,8 +162,9 @@ test('page and script are served with a strict policy and nothing else leaks',()
  const warm=await request('/konfigurator/shop/warm/');assert.equal(warm.status,200);assert.match(warm.headers['content-security-policy'],/frame-ancestors https:\/\//);assert.match(warm.body.toString(),/shop-warm\.mjs/);assert.doesNotMatch(warm.body.toString(),/shop-entry-page|api\/|iframe|UniversalConfig/);
  assert.equal((await request('/konfigurator/shop/warm/?model=1')).status,404);assert.equal((await request('/konfigurator/shop/warm/','POST',{})).status,405);
  assert.equal((await request('/konfigurator/shop/shop-warm.mjs','GET',undefined,{'Sec-Fetch-Site':'cross-site'})).status,403);
- const page=await request('/konfigurator/shop/');assert.equal(page.status,200);assert.match(page.headers['content-type'],/text\/html/);assert.ok(page.body.toString().includes('/konfigurator/shop/shop-entry-page.mjs'));assert.match(page.headers['content-security-policy'],/frame-src 'self'/);
- const script=await request('/konfigurator/shop/shop-entry-page.mjs',undefined,undefined,{'Sec-Fetch-Site':'same-origin'});assert.equal(script.status,200);assert.match(script.headers['content-type'],/text\/javascript/);assert.ok(script.body.toString().includes('./shop-entry-client.mjs'));
+ const page=await request('/konfigurator/shop/');assert.equal(page.status,200);assert.match(page.headers['content-type'],/text\/html/);assert.ok(page.body.toString().includes('/konfigurator/shop/shop-entry-page.mjs'));assert.match(page.headers['content-security-policy'],/frame-src 'self'/);assert.equal(page.headers['cache-control'],'private, no-store');
+ const script=await request('/konfigurator/shop/shop-entry-page.mjs',undefined,undefined,{'Sec-Fetch-Site':'same-origin'});assert.equal(script.status,200);assert.match(script.headers['content-type'],/text\/javascript/);assert.ok(script.body.toString().includes('./shop-entry-client.mjs'));assert.equal(script.headers['cache-control'],'public, max-age=300');assert.ok(script.headers.etag);
+ const cached=await request('/konfigurator/shop/shop-entry-page.mjs',undefined,undefined,{'Sec-Fetch-Site':'same-origin','If-None-Match':script.headers.etag});assert.equal(cached.status,304);assert.equal(cached.body.length,0);
  const client=await request('/konfigurator/shop/shop-entry-client.mjs',undefined,undefined,{'Sec-Fetch-Site':'same-origin'});assert.equal(client.status,200);assert.ok(client.body.toString().includes('/api/shop-entry/'));
  assert.equal((await request('/konfigurator/shop/shop-entry-page.mjs',undefined,undefined,{'Sec-Fetch-Site':'cross-site'})).status,403);
  assert.equal((await request('/konfigurator/shop/?x=1')).status,404);

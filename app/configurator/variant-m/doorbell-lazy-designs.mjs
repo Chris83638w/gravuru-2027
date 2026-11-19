@@ -1,12 +1,37 @@
 import {isLayeredDoorbell} from './doorbell-selection.mjs';
+import {observeVisibleResources} from './visible-resource-loader.mjs';
+function textReady(object,fonts){
+ const font=fonts?.[object.font];
+ if(!font)return false;
+ if(!font.previewSubset)return true;
+ const glyphs=font.regular?.glyphs;
+ return !!glyphs&&[...String(object.text??'').replace(/\n/g,'')].every(char=>Object.hasOwn(glyphs,char));
+}
 export function designResourcesReady(design,fonts={},motifs={}){
- return (design?.objects||[]).every(o=>o.type==='text'?!!fonts[o.font]:o.type==='motif'?typeof motifs[o.motif]==='string'||o.motif?.startsWith('ux-line-'):true);
+ return (design?.objects||[]).every(o=>o.type==='text'?textReady(o,fonts):o.type==='motif'?typeof motifs[o.motif]==='string'||o.motif?.startsWith('ux-line-'):true);
 }
 // Installed after the synchronous design/transfer wrappers. The current design
 // stays intact until every requested outline is present; stale clicks cannot win.
 export function installDoorbellDesignLoading(el,config,say=()=>{}){
  if(!isLayeredDoorbell(config)||typeof el.uxEnsureDesignResources!=='function')return null;
  const designs=()=>el.uxSelectedProfile?.().designs||config.profile.designs;
+ const gallery=el.shadowRoot?.querySelector('.c-gallery');
+ if(gallery&&Array.isArray(config.doorbell?.formats)){
+  const templates=new Map();
+  for(const format of config.doorbell.formats)for(const design of format.profile?.designs||[])templates.set(format.key+'/'+design.id,design);
+  const view=gallery.ownerDocument?.defaultView;
+  const faces=()=>({...(el.uxPreviewFonts||{}),...(el.fontData||{})});
+  const shown=design=>el.uxThumbnailDesign?.(design)||design;
+  const covered=design=>!!design&&designResourcesReady(shown(design),faces(),el.motifs);
+  const visible=observeVisibleResources({
+   root:gallery,win:view,selector:'[data-c-design]',rootMargin:'0px',
+   key:card=>(el.state?.mOptions?.format||config.doorbell.defaultFormatKey)+'/'+card.dataset.cDesign,
+   ready:key=>covered(templates.get(key)),
+   load:async key=>{if(el.uxPreviewGlyphsReady)await el.uxPreviewGlyphsReady;const design=templates.get(key);if(!design||covered(design))return;return el.uxEnsureDesignResources(design,{priority:'low'});},
+   changed:()=>el.uxRefreshThumbnails?.()
+  });
+  view?.addEventListener?.('pagehide',event=>{if(!event.persisted)visible.disconnect();});
+ }
  const choose=el.chooseDesign;let sequence=0,foreground=null;
  el.chooseDesign=function(id,...args){
   const request=++sequence,design=designs().find(d=>d.id===id);
@@ -20,8 +45,17 @@ export function installDoorbellDesignLoading(el,config,say=()=>{}){
   return foreground;
  };
  return async()=>{
+  if(el.uxPreviewGlyphsReady)await el.uxPreviewGlyphsReady;
+  // Cards already painted from the pack. Full fonts follow in idle, and only
+  // when data saving is off: the preload queue skips this task in that mode.
+  await new Promise(resolve=>{
+   const view=el.ownerDocument?.defaultView||globalThis;
+   if(typeof view.requestIdleCallback==='function')view.requestIdleCallback(()=>resolve(),{timeout:2000});
+   else setTimeout(resolve,0);
+  });
   for(const design of designs()){
    while(foreground)await foreground;
+   if(designResourcesReady(design,el.fontData,el.motifs))continue;
    try{await el.uxEnsureDesignResources(design,{priority:'low'});}catch{/* One unavailable preview must not stop the other cards. */}
   }
   el.uxRefreshThumbnails?.();el.sync();

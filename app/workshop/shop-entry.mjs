@@ -4,6 +4,8 @@ import {shopWarmManifest} from './shop-warm-manifest.mjs';
 import {createPublicDesignPreviewCache} from './public-design-preview-cache.mjs';
 import {createPublicDesignPreviews} from './public-design-previews.mjs';
 import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
 import {createModelSlimmer,surfaceSwapsFrom,DEFAULT_SURFACE_DIR} from './shop-model-slim.mjs';
 import {createHash,randomBytes} from 'node:crypto';
 import {prepareThemeCart} from './theme-cart.mjs';
@@ -25,6 +27,10 @@ import {createRevisionDerivationMemo} from './revision-derivation-memo.mjs';
 import {isLayeredDoorbell} from '../configurator/variant-m/doorbell-selection.mjs';
 import {moduleEnabled} from '../configurator/variant-m/module-profile.mjs';
 import {selectedProfile} from '../configurator/variant-m/contract.mjs';
+import {withCartTiming,cartTimingStep,cartTimingCount,cartTimingHeaders} from './shop-cart-timing.mjs';
+import {attachRevisionPreview} from './shop-cart-preview.mjs';
+import {inlineDesignPreviews} from './design-preview-inline.mjs';
+import {createPreviewGlyphRecovery} from '../configurator/variant-m/preview-glyphs.mjs';
 
 // Öffentlicher Kundeneinstieg „Jetzt personalisieren“ (SHOP-ENTRY.txt). Shopify ruft über den App-Proxy
 // `GET <proxyPath>/start?product=&variant=…&signature=…` auf; die Zuordnung läuft ausschließlich über die
@@ -43,8 +49,8 @@ const optionKey=o=>JSON.stringify(Object.entries(o||{}).sort());
 const NOT_BOUND='Dieses Produkt ist noch nicht für den Konfigurator eingerichtet.';
 const ERROR_STATUSES=[400,401,403,404,405,409,413,415,422,423,429,502,503];
 const headersFor=(type,extra={})=>({'Content-Type':type,'Cache-Control':'private, no-store','X-Content-Type-Options':'nosniff','Referrer-Policy':'no-referrer','X-Robots-Tag':'noindex, nofollow, noarchive',...extra});
-const sendJson=(res,status,bytes)=>{res.writeHead(status,headersFor('application/json; charset=utf-8',{'Content-Length':bytes.length}));res.end(bytes);};
-const json=(res,status,value)=>sendJson(res,status,Buffer.from(JSON.stringify(value)));
+const sendJson=(res,status,bytes)=>{cartTimingCount('response_bytes',bytes.length);res.writeHead(status,headersFor('application/json; charset=utf-8',{'Content-Length':bytes.length,...cartTimingHeaders(status)}));res.end(bytes);};
+const json=(res,status,value)=>sendJson(res,status,cartTimingStep('response_json',()=>Buffer.from(JSON.stringify(value))));
 // Antwort mit bereits serialisiertem Modell: dieselben Bytes wie `json(res,200,{model,...rest})`, `model` als erstes Feld.
 const MODEL_MARK='@@gravuru-model-json@@';
 function modelBytes(modelJson,rest){
@@ -62,8 +68,8 @@ async function body(req,limit){
  const declared=req.headers['content-length'];
  if(declared!==undefined&&(!/^[0-9]+$/.test(declared)||Number(declared)>limit))fail(413,'shop_entry_size','Diese Anfrage ist zu groß.');
  let size=0;const chunks=[];
- for await(const chunk of req){size+=chunk.length;if(size>limit)fail(413,'shop_entry_size','Diese Anfrage ist zu groß.');chunks.push(chunk);}
- try{const data=JSON.parse(Buffer.concat(chunks));if(!data||typeof data!=='object'||Array.isArray(data))throw Error();return data;}catch{fail(400,'shop_entry_json','Die Anfrage ist ungültig.');}
+ await cartTimingStep('body_read',async()=>{for await(const chunk of req){size+=chunk.length;cartTimingCount('request_bytes',chunk.length);if(size>limit)fail(413,'shop_entry_size','Diese Anfrage ist zu groß.');chunks.push(chunk);}});
+ try{return cartTimingStep('body_json',()=>{const data=JSON.parse(Buffer.concat(chunks));if(!data||typeof data!=='object'||Array.isArray(data))throw Error();return data;});}catch{fail(400,'shop_entry_json','Die Anfrage ist ungültig.');}
 }
 function simplePage(title,text,{link}={}){
  return '<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>'+esc(title)+'</title>'+(link?'<meta http-equiv="refresh" content="0;url='+esc(link)+'">':'')+'<style>body{margin:0;padding:32px 20px;font:16px/1.5 system-ui,sans-serif;color:#243238;background:#fff}main{max-width:560px;margin:0 auto}h1{font-size:20px}a{color:#086354}</style></head><body><main><h1>'+esc(title)+'</h1><p>'+esc(text)+'</p>'+(link?'<p><a href="'+esc(link)+'">Weiter zum Konfigurator</a></p>':'')+'</main></body></html>';
@@ -74,8 +80,9 @@ function createWindowLimiter(perMinute,clock){
  return key=>{const minute=Math.floor(clock()/60000);if(windows.size>4096)windows.clear();const entry=windows.get(key);if(!entry||entry.minute!==minute){windows.set(key,{minute,count:1});return true;}entry.count++;return entry.count<=perMinute;};
 }
 
-export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=null,proxyPath,pagePath='/konfigurator/shop/',clock=Date.now,ttlMs,maxAgeSeconds=300,limits={},modelSlimmer,publicPreviewDirectory=null,publicPreviewPrepare=null,modelResponseCache=null,logger=event=>console.warn(JSON.stringify(event))}){
+export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=null,checkoutImageWaitMs=4000,proxyPath,pagePath='/konfigurator/shop/',clock=Date.now,ttlMs,maxAgeSeconds=300,limits={},modelSlimmer,publicPreviewDirectory=null,publicPreviewPrepare=null,modelResponseCache=null,preSaveOnReview=false,logger=event=>console.warn(JSON.stringify(event))}){
  let address;try{address=new URL(origin);}catch{}
+ if(typeof preSaveOnReview!=='boolean'||!Number.isSafeInteger(checkoutImageWaitMs)||checkoutImageWaitMs<0||checkoutImageWaitMs>15000)fail(503,'shop_entry_config','Der Konfigurator-Einstieg ist nicht eingerichtet.');
  if(!address||address.origin!==origin||address.protocol!=='https:'||address.username||address.password||!/^[-a-z0-9]+\.myshopify\.com$/.test(shopDomain||'')||typeof secret!=='string'||secret.length<16||!Array.isArray(stores)||!stores.length||stores.length>8||
    typeof proxyPath!=='string'||!/^\/[A-Za-z0-9_-]+(?:\/[A-Za-z0-9_-]+)*$/.test(proxyPath)||typeof pagePath!=='string'||!/^\/[A-Za-z0-9_-]+(?:\/[A-Za-z0-9_-]+)*\/$/.test(pagePath)||pagePath.startsWith('/api/')||proxyPath.startsWith('/api/')||proxyPath+'/'===pagePath)
   fail(503,'shop_entry_config','Der Konfigurator-Einstieg ist nicht eingerichtet.');
@@ -106,6 +113,12 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
  const PAGE_CSP=pageCsp(shopDomain);
  // Shop-seitige Module über den App-Proxy; shop-embed.mjs kennt Konfigurator-Host und Proxy-Pfad fest.
  const customerImages=createCustomerDesignImages({origin,shopDomain,secret,stores:fixed});
+ function warmCheckoutImage(source){
+  // Opportunistic work must never change a successful draft response. Only a
+  // signed immutable image URL crosses into the job, never the request/session.
+  if(!checkoutImage||!source)return;
+  try{const url=typeof source==='function'?source():source;if(url)Promise.resolve(checkoutImage(url)).catch(()=>{});}catch{}
+ }
  const cartEditAccess=createCartEditAccess({secret,clock});
  const themeFiles=new Map(['theme-cart-ui.mjs','theme-cart-client.mjs','shop-embed.mjs'].map(name=>[proxyPath+'/'+name,name==='shop-embed.mjs'?Buffer.from(fs.readFileSync(ui(name),'utf8').replaceAll('__EDITOR_ORIGIN__',origin).replaceAll('__PROXY_PATH__',proxyPath)):fs.readFileSync(ui(name))]));
  const themeTransfers=new Map(),themePath=proxyPath+'/cart';
@@ -166,9 +179,11 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
  // Sitzung prüfen und die Zuordnung erneut auflösen: eine zwischenzeitlich geänderte aktive Zuordnung
  // oder ein anderer Store beenden die Sitzung (wie `active()` im Händlertest-Gateway).
  function active(req){
-  const context=activeContext(req);
-  requireDoorbellApproval(context.store,context.binding);
-  return context;
+  return cartTimingStep('session_binding',()=>{
+   const context=activeContext(req);
+   requireDoorbellApproval(context.store,context.binding);
+   return context;
+  });
  }
  // Sitzung, Anfragebegrenzung und frische Zuordnung ohne Freigabeprüfung (der Modellzweig prüft sie selbst, siehe dort).
  function activeContext(req){
@@ -198,8 +213,11 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
  // Schlankes Kundenmodell (shop-model-slim.mjs): Katalog des ausgelieferten Editors einmal über den eigenen Host laden.
  // Eigene Schriften ohne Designbezug liefert der Shop-Einstieg als inhaltsadressierte Datei (unveränderlich, lange zwischenspeicherbar).
  const fontRoute=new RegExp('^'+pagePath+'schriften/([a-f0-9]{64})\\.json$');
+ const previewGlyphRoute=/^\/_acryl-runtime\/lazy\/vorschau-glyphen\/([a-f0-9]{64})\.json$/;
  const previewRoute=new RegExp('^'+pagePath+'vorschauen/([a-f0-9]{64})\\.svg$');
- const slimmer=modelSlimmer===undefined?createModelSlimmer({fetchJson:async p=>{const r=await fetch(origin+p,{signal:AbortSignal.timeout(15000)});if(!r.ok)throw Error('http '+r.status);return r.json();},surfaceSwaps:surfaceSwapsFrom(DEFAULT_SURFACE_DIR),fontUrl:hash=>pagePath+'schriften/'+hash+'.json'}):modelSlimmer;
+ const previewGlyphDirectory=path.join(os.tmpdir(),'gravuru-vorschau-glyphen');
+ const recoverPreviewGlyph=createPreviewGlyphRecovery({directory:previewGlyphDirectory,load(source){const store=fixed.find(item=>item.storeId===source.storeId);if(!store)return null;return store.workshop.model(source.productId,source.revision)?.universal??null;}});
+ const slimmer=modelSlimmer===undefined?createModelSlimmer({fetchJson:async p=>{const r=await fetch(origin+p,{signal:AbortSignal.timeout(15000)});if(!r.ok)throw Error('http '+r.status);return r.json();},surfaceSwaps:surfaceSwapsFrom(DEFAULT_SURFACE_DIR),fontUrl:hash=>pagePath+'schriften/'+hash+'.json',previewGlyphDirectory}):modelSlimmer;
  function presentedModel(model,binding,store,designId=null){
   if(designId&&!moduleEnabled(model.universal,'designs')){
    const profile=selectedProfile(model.universal,binding.options);
@@ -207,6 +225,8 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
   }
   const copy=shopStartModel(model,designId,{deferFonts:!!slimmer&&!model.universal.doorbell,options:binding.options});
   // `source`: ausgelagerte Schriften lassen sich nach Verdrängung aus dem gespeicherten Modell nachliefern.
+  if(slimmer?.attachPreviewGlyphs)slimmer.attachPreviewGlyphs(copy.universal,{storeId:store.storeId,productId:binding.productId,revision:binding.productRevision});
+  try{inlineDesignPreviews(copy.universal,allowedAssets(store,binding,model),hash=>store.workshop.assets.read(hash));}catch{/* A missing graphic stays a separate request. */}
   if(slimmer){if(copy.universal.doorbell&&!slimmer.ready())slimmer.load();slimmer.slim(copy.universal,{deferAll:!copy.universal.doorbell,key:copy.configuration?.id&&copy.configuration?.revision?copy.configuration.id+':'+copy.configuration.revision+':fonts':null,source:()=>modelFor(store,binding).universal?.localResources?.fonts});}
   for(const group of copy.universal.profile?.optionGroups||[]){const chosen=binding.options?.[group.id];if(typeof chosen==='string'&&group.values?.some(v=>v.id===chosen))group.defaultValueId=chosen;}
   return copy;
@@ -219,7 +239,7 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
   try{let at=performance.now();startPreview=designGallery.start(context,model,designId,cardModel?{cardModel}:undefined);at=lap('msStartGallery',at);if(publicPreviews&&startPreview){const {previewUrl:oldPublicUrl,...privateStart}=startPreview;const prepared=publicPreviews.attach({items:[{...publicBinding(context.binding),designId,...privateStart}]},held?{modelFor:(store,binding)=>heldModelFor(store,binding,model)}:null).items[0];startPreview={...privateStart,...(prepared.previewUrl?{previewUrl:prepared.previewUrl}:{})};lap('msStartPublic',at);}}catch{/* Products without a gallery still open normally. */threw=true;}
   return {startPreview,threw};
  }
- const modelRest=(context,startPreview)=>({startPreview,binding:publicBinding(context.binding),editorPath:context.store.nativeEditorPath,shopDomain,themeCartPath:themePath,expiresAt:context.session.expiresAt,customerId:context.session.customerId,productionReady:false});
+ const modelRest=(context,startPreview)=>({startPreview,binding:publicBinding(context.binding),editorPath:context.store.nativeEditorPath,shopDomain,themeCartPath:themePath,expiresAt:context.session.expiresAt,customerId:context.session.customerId,productionReady:false,...(preSaveOnReview?{preSaveOnReview:true}:{})});
  // Antwortspeicher: nur für Stores, die den Stand des einen Produkts (revisionState), den Datenbankstand (readEpoch, nur für
  // „während des Aufbaus wurde geschrieben“) und die Pause lesend nachweisen können (sonst wie bisher ohne Speicher).
  function cacheCapable(store){
@@ -357,20 +377,22 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
   let usedExisting=null;
   try{
    const data=await body(req,limit.cartBytes),draftToken=req.headers['x-gravuru-draft'];
+   // A fresh synchronous phase after body I/O; never retain cached reads across await.
+   return await withCustomerReadScope(async()=>{
    const fields=['draftId','expectedRevision','quantity','configId','cartLineId',...(theme?['cartRevision','presentation']:[])];
    if(Object.keys(data).some(k=>!fields.includes(k))||!/^adraft_[a-f0-9-]{36}$/.test(data.draftId||'')||!Number.isSafeInteger(data.expectedRevision)||data.expectedRevision<1||!Number.isSafeInteger(data.quantity)||data.quantity<1||data.quantity>99||
      (data.presentation!==undefined&&data.presentation!=='prio-r15')||
      (data.configId!==undefined&&(typeof data.configId!=='string'||!CART_CONFIG_ID.test(data.configId)))||(data.cartLineId!==undefined&&(typeof data.cartLineId!=='string'||!(theme&&data.cartLineId==='theme')&&!CART_LINE_ID.test(data.cartLineId)))||(data.cartLineId!==undefined&&data.configId===undefined)||(data.cartRevision!==undefined&&(!Number.isSafeInteger(data.cartRevision)||data.cartRevision<1||data.configId===undefined))||typeof draftToken!=='string'||!/^[a-f0-9]{64}$/.test(draftToken))fail(422,'shop_entry_cart_fields','Bitte die gesicherte Gestaltung, ihren Stand und die Menge angeben.');
-   const drafts=store.workshop.customerDrafts,draft=drafts.acrylicDrafts.get(data.draftId,draftToken);
+   const drafts=store.workshop.customerDrafts,draft=cartTimingStep('draft_read',()=>drafts.acrylicDrafts.get(data.draftId,draftToken));
    if(draft.productId!==session.productId||draft.productRevision!==session.productRevision)fail(409,'shop_entry_product','Die gesicherte Gestaltung gehört nicht zu diesem Produkt.');
-   const manifest=drafts.review(draft.snapshotId).manifest,options=manifest.selection?.options;
+   const manifest=cartTimingStep('review_read',()=>drafts.review(draft.snapshotId)).manifest,options=manifest.selection?.options;
    if(!options||typeof options!=='object')fail(409,'shop_entry_variant','Die gesicherte Ausführung ist nicht bestätigt.');
    // Die im Editor gewählte Ausführung (z. B. Befestigung) bestimmt die Shopify-Variante – ausschließlich über
    // eine aktive Registry-Zuordnung {dieses Shopify-Produkt, Variante}. Ohne genau einen Treffer kein Warenkorb.
-   const candidates=store.workshop.orderIntake.bindings().filter(b=>b.shopDomain===shopDomain&&b.productId===session.productId&&b.productRevision===session.productRevision&&optionKey(b.options)===optionKey(options));
+   const candidates=cartTimingStep('variant_candidates',()=>{const all=store.workshop.orderIntake.bindings();cartTimingCount('binding_candidates_examined',all.length);return all.filter(b=>b.shopDomain===shopDomain&&b.productId===session.productId&&b.productRevision===session.productRevision&&optionKey(b.options)===optionKey(options));});
    const bindings=[];
    for(const variantId of new Set(candidates.map(b=>b.variantId))){
-    let found;try{found=store.registry.resolve({shopifyProductId:session.shopifyProductId,shopifyVariantId:'gid://shopify/ProductVariant/'+variantId});}catch(error){if(error.code==='shop_binding_active_not_found'&&error.status===404)continue;throw error;}
+    let found;try{found=cartTimingStep('variant_binding',()=>store.registry.resolve({shopifyProductId:session.shopifyProductId,shopifyVariantId:'gid://shopify/ProductVariant/'+variantId}));}catch(error){if(error.code==='shop_binding_active_not_found'&&error.status===404)continue;throw error;}
     if(found&&found.storeId===store.storeId&&found.shopDomain===shopDomain&&found.productId===session.productId&&found.productRevision===session.productRevision&&isDeepStrictEqual(found.options??{},options))bindings.push(structuredClone(found));
    }
    if(bindings.length!==1)fail(bindings.length?409:404,bindings.length?'shop_entry_variant_duplicate':'shop_entry_variant_unbound',bindings.length?'Diese Ausführung ist im Shop mehrfach zugeordnet.':'Diese Ausführung ist im Shop noch nicht angebunden. Bitte eine andere Ausführung wählen.');
@@ -383,9 +405,11 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
     if(themeTransfers.size>=limit.maxContexts)fail(429,'shop_entry_busy','Bitte kurz warten und erneut versuchen.');
     // Nur Darstellungswahl für den Bearbeiten-Link; kein Teil des Preis-/Gestaltungsstands.
     const {presentation,...themeInput}=data;
-    const args={workshop:store.workshop,registry:store.registry,shopDomain,proxyPath,...(presentation?{presentation}:{}),...(typeof store.workshop.orderIntake.imageSnapshot==='function'?{customerImageUrl:id=>customerImages.url(store.storeId,id)}:{})};
-    const prepared=prepareThemeCart(args,binding,themeInput,{draftToken}),token=randomBytes(32).toString('hex');
-    themeTransfers.set(token,{args,binding:structuredClone(binding),input:structuredClone(themeInput),draftToken,sessionToken:req.headers['x-gravuru-shop-session'],customerId:session.customerId,expiresAt:clock()+limit.contextTtlMs});
+    const args={workshop:store.workshop,registry:store.registry,shopDomain,proxyPath,...(presentation?{presentation}:{}),...(typeof store.workshop.orderIntake.imageSnapshot==='function'?{customerImageUrl:id=>customerImages.url(store.storeId,id),checkoutImageSource:(id,hash)=>customerImages.snapshotUrl(store.storeId,id,hash)}:{})};
+    const prepared=cartTimingStep('cart_prepare',()=>prepareThemeCart(args,binding,themeInput,{draftToken})),token=randomBytes(32).toString('hex');
+    themeTransfers.set(token,{args,binding:structuredClone(binding),input:structuredClone(themeInput),draftToken,prepared,sessionToken:req.headers['x-gravuru-shop-session'],customerId:session.customerId,expiresAt:clock()+limit.contextTtlMs});
+    // Shopify fileCreate + polling runs while the browser opens the cart handoff; /cart/data reuses the pending task.
+    warmCheckoutImage(prepared.checkoutImageSource||prepared.payload.properties._gravuru_bild);
     const {id:configId,rev}=prepared.payload.configuration;
     const editAccess=cartEditAccess.issue(draftToken,{configId,rev,binding,customerId:session.customerId});
     return json(res,200,{handoffUrl:'https://'+shopDomain+themePath+'#handoff='+token,shopDomain,configuration:prepared.payload.configuration,editAccess,quantity:prepared.payload.quantity,totalCents:prepared.payload.totalCents,mode:'theme',paymentConfirmed:false,productionReady:false});
@@ -395,11 +419,12 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
    if(!operation){if(cartContext.operations.size>=256)fail(429,'shop_entry_busy','Bitte den vorhandenen Warenkorb abschließen.');operation={existingCart:!data.cartLineId&&cartContext.cartId?Object.freeze({cartId:cartContext.cartId}):undefined,completed:false};cartContext.operations.set(key,operation);}
    usedExisting=operation.existingCart||null;
    const result=await store.cart(binding,{draftId:data.draftId,expectedRevision:data.expectedRevision,quantity:data.quantity,...(data.configId===undefined?{}:{configId:data.configId}),...(data.cartLineId===undefined?{}:{cartLineId:data.cartLineId})},{draftToken,signal:controller.signal,...(operation.existingCart?{existingCart:operation.existingCart}:{})});
-   active(req);
+   withCustomerReadScope(()=>active(req));
    let checkout;try{checkout=new URL(result.checkoutUrl);}catch{}
    if(typeof result.cartId!=='string'||!result.cartId.startsWith('gid://shopify/Cart/')||result.cartId.length>2048||/[\x00-\x20\x7f]/.test(result.cartId)||!checkout||checkout.protocol!=='https:'||checkout.hostname!==shopDomain||checkout.username||checkout.password||result.paymentConfirmed!==false)fail(503,'shop_entry_cart_result','Der Warenkorb konnte nicht bestätigt werden.');
    if(!operation.completed){cartContext.cartId=result.cartId;operation.completed=true;cartContext.expiresAt=clock()+limit.contextTtlMs;}
    return json(res,200,{cartId:result.cartId,checkoutUrl:checkout.href,lineId:result.lineId,...(result.previousLineId?{previousLineId:result.previousLineId}:{}),configuration:result.configuration,quantity:result.quantity,unitCents:result.unitCents,totalCents:result.totalCents,currency:result.currency,mode:result.mode,duplicate:result.duplicate===true,shopifyVariantId:binding.shopifyVariantId,shopDomain,paymentConfirmed:false,productionReady:false});
+   });
   }catch(error){
    // Ein nicht mehr gültiger gemerkter Warenkorb (z. B. bereits bestellt) darf den nächsten Versuch nicht blockieren.
    if(usedExisting&&cartContext.cartId===usedExisting.cartId)cartContext.cartId=null;
@@ -413,23 +438,27 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
   if(reviewJobs.size>=limit.concurrentReviews)fail(409,'review_busy','Eine Gestaltung wird gerade gesichert. Bitte kurz warten.');
   const job=Symbol('review');reviewJobs.add(job);
   try{
-   const data=await body(req,limit.draftBytes),draft=draftId?drafts.acrylicDrafts.get(draftId,token):null,allowed=draft?['input','expectedRevision']:['input'];
+   const data=await body(req,limit.draftBytes);
+   return await withCustomerReadScope(async()=>{
+   const draft=draftId?drafts.acrylicDrafts.get(draftId,token):null,allowed=draft?['input','expectedRevision']:['input'];
    if(Object.keys(data).some(k=>!allowed.includes(k))||!data.input||typeof data.input!=='object'||Array.isArray(data.input))fail(422,'acrylic_draft_fields','Bitte die vollständige Gestaltung übergeben.');
    if(draft&&data.expectedRevision!==draft.revision)fail(409,'stale_customer_draft','Die Gestaltung wurde inzwischen geändert. Bitte erneut sichern.');
    const input=data.input;
    if(input.productId!==session.productId||input.productRevision!==session.productRevision)fail(409,'shop_entry_product','Die Gestaltung gehört nicht zu diesem Produkt.');
    if(draft&&(input.productId!==draft.productId||input.productRevision!==draft.productRevision||input.designId!==draft.designId))fail(409,'acrylic_draft_identity','Produktstand und Design gehören zu diesem festen Entwurf.');
-   const repository=store.workshop.repository,record=repository.get(session.productId,{revision:session.productRevision});
+   const repository=store.workshop.repository,record=cartTimingStep('product_read',()=>repository.get(session.productId,{revision:session.productRevision}));
    if(record.status==='archived'||repository.get(record.id).status==='archived')fail(422,'acrylic_required','Dieses Produkt ist nicht mehr verfügbar.');
-   const config=modelFor(store,context.binding).universal;
-   let bundle;try{bundle=await prepareAcrylicReview({record,config,input,assets:store.workshop.assets});}catch(error){if(error.status===422&&!error.code)error.code='shop_entry_draft';throw error;}
-   const saved=draft?drafts.acrylicDrafts.save(draft.id,token,data.expectedRevision,bundle):drafts.acrylicDrafts.create(bundle);
+   const config=cartTimingStep('model_build',()=>modelFor(store,context.binding)).universal;
+   let bundle;try{bundle=await cartTimingStep('review_prepare',()=>prepareAcrylicReview({record,config,input,assets:store.workshop.assets}));}catch(error){if(error.status===422&&!error.code)error.code='shop_entry_draft';throw error;}
+   const saved=cartTimingStep('draft_persist',()=>draft?drafts.acrylicDrafts.save(draft.id,token,data.expectedRevision,bundle):drafts.acrylicDrafts.create(bundle));
+   if(checkoutImage&&typeof store.workshop.orderIntake.imageSnapshot==='function')warmCheckoutImage(()=>customerImages.snapshotUrl(store.storeId,saved.snapshotId,bundle.manifest.packageSha256));
    return json(res,draft?200:201,{...saved,photoHints:bundle.manifest.photoHints||[],photoResolution:(bundle.manifest.photoResolution||[]).map(p=>({objectId:p.objectId,grade:p.grade,effectiveDpi:p.effectiveDpi,targetDpi:p.targetDpi}))});
+   });
   }finally{reviewJobs.delete(job);}
  }
 
  async function themeProxy(req,res,url){
-  const proxy=verifyProxy(url.searchParams);
+  const proxy=cartTimingStep('proxy_verify',()=>verifyProxy(url.searchParams));
   // Skriptdateien sind öffentlicher, für alle gleicher Code und werden auf jeder Produktseite geladen:
   // nicht auf das Warenkorb-Limit anrechnen (sonst blockieren Seitenaufrufe zahlende Kunden) und kurz zwischenspeichern.
   if(themeFiles.has(url.pathname)){
@@ -448,17 +477,34 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
   const context=active({headers:{'x-gravuru-shop-session':transfer.sessionToken}});
   if((proxy.customerId??null)!==(context.session.customerId??null))fail(403,'theme_cart_customer','Bitte die Produktseite erneut öffnen.');
   requireDoorbellApproval(context.store,transfer.binding);
-  const prepared=prepareThemeCart(transfer.args,transfer.binding,transfer.input,{draftToken:transfer.draftToken});
+  // The handoff already prepared this exact draft. Rebuilding it here repeated
+  // the offer read. Price and revision are checked again before the response.
+  const prepared=transfer.prepared||cartTimingStep('cart_prepare',()=>prepareThemeCart(transfer.args,transfer.binding,transfer.input,{draftToken:transfer.draftToken}));
   if(url.pathname===themePath+'/data'&&req.method==='GET'){
-   if(checkoutImage){
-    prepared.payload.properties._gravuru_checkout_image=await checkoutImage(prepared.payload.properties._gravuru_bild);
-    active({headers:{'x-gravuru-shop-session':transfer.sessionToken}});prepared.resolve();
+   const hosted=req.headers['x-gravuru-cart-preview']==='hosted';
+   const source=prepared.checkoutImageSource||prepared.payload.properties._gravuru_bild;
+   // Price check and the already started Shopify file run together. A hosted
+   // client only receives the cart once the checkout file is ready, so the
+   // browser does not upload the PNG itself.
+   const imageTask=checkoutImage?attachRevisionPreview({checkoutImage,source,payload:prepared.payload,waitMs:hosted?checkoutImageWaitMs:0}):null;
+   if(!(req.headers['x-gravuru-cart-retry']==='1'&&transfer.checkedRevision===prepared.payload?.configuration?.rev)){
+    withCustomerReadScope(()=>{active({headers:{'x-gravuru-shop-session':transfer.sessionToken}});cartTimingStep('cart_revalidate',()=>prepared.resolve());});
+    transfer.checkedRevision=prepared.payload?.configuration?.rev;
+   }
+   if(imageTask){
+    const resolved=await cartTimingStep('checkout_image_wait',()=>imageTask);
+    if(hosted&&resolved.failed)fail(502,'checkout_image_failed','Die Vorschau für die Kasse konnte nicht erstellt werden. Es wurde nichts in den Warenkorb gelegt.');
+    if(hosted&&resolved.pending)fail(503,'checkout_image_pending','Die Gestaltungsvorschau wird noch für den Warenkorb vorbereitet. Bitte erneut versuchen.');
+    if(resolved.hosted&&hosted){
+     const body={...prepared.payload,properties:{...prepared.payload.properties}};
+     delete body.preview;return json(res,200,body);
+    }
    }
    return json(res,200,prepared.payload);
   }
   if(url.pathname===themePath+'/claim'&&req.method==='POST'){
    if(req.headers.origin!=='https://'+shopDomain)fail(403,'shop_entry_origin','Diese Anfrage ist nicht zulässig.');
-   return json(res,200,prepared.claim(token));
+   return json(res,200,cartTimingStep('cart_claim',()=>prepared.claim(token)));
   }
   fail(405,'shop_entry_method','Diese Anfrageart ist nicht verfügbar.');
  }
@@ -469,8 +515,10 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
  }
  return Object.freeze({
   pagePath,startPath,preparePublicDesignPreviews,publicPreviewPreparation,
-  matches:pathname=>customerImages.matches(pathname)||fontRoute.test(pathname)||previewRoute.test(pathname)||pathname===themePath||pathname===themePath+'/data'||pathname===themePath+'/claim'||themeFiles.has(pathname)||pathname===startPath||pathname===pagePath||pathname===warmPath||pageFiles.has(pathname)||pathname.startsWith(API),
+  matches:pathname=>customerImages.matches(pathname)||fontRoute.test(pathname)||previewGlyphRoute.test(pathname)||previewRoute.test(pathname)||pathname===themePath||pathname===themePath+'/data'||pathname===themePath+'/claim'||themeFiles.has(pathname)||pathname===startPath||pathname===pagePath||pathname===warmPath||pageFiles.has(pathname)||pathname.startsWith(API),
   handle(req,res,url){
+   const timedRoute=/^\/api\/shop-entry\/acrylic-drafts(?:\/adraft_[a-f0-9-]{36})?$/.test(url.pathname)?'acrylic-drafts':url.pathname===API+'theme-cart'?'theme-cart':url.pathname===themePath+'/data'?'cart/data':url.pathname===themePath+'/claim'?'cart/claim':null;
+   if(timedRoute)return withCartTiming(timedRoute,logger,()=>withCustomerReadScope(()=>handle(req,res,url)));
    const read=url.pathname===startPath||previewRoute.test(url.pathname)||['model','design-gallery','design-gallery-preview'].some(action=>url.pathname===API+action);
    return read?withCustomerReadScope(()=>handle(req,res,url)):handle(req,res,url);
   }
@@ -492,6 +540,15 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
     }
     if(pathname===startPath)return start(req,res,url);
     if(pathname===themePath||pathname===themePath+'/data'||pathname===themePath+'/claim'||themeFiles.has(pathname))return await themeProxy(req,res,url);
+    const glyphFile=pathname.match(previewGlyphRoute);
+    if(glyphFile){
+     if(!['GET','HEAD'].includes(req.method)||url.search)fail(404,'shop_entry_route','Diese Datei gibt es hier nicht.');
+     checkOrigin(req,{mutating:false});
+     let bytes=typeof slimmer?.previewGlyphFile==='function'?slimmer.previewGlyphFile(glyphFile[1]):null;
+     if(!bytes)bytes=recoverPreviewGlyph(glyphFile[1]);
+     if(!bytes)fail(404,'shop_entry_route','Diese Datei gibt es hier nicht.');
+     res.writeHead(200,headersFor('application/json; charset=utf-8',{'Content-Length':bytes.length,'Cache-Control':'public, max-age=31536000, immutable'}));return res.end(req.method==='HEAD'?undefined:bytes);
+    }
     const fontFile=pathname.match(fontRoute);
     if(fontFile){
      if(!['GET','HEAD'].includes(req.method))fail(405,'shop_entry_method','Diese Anfrageart ist nicht verfügbar.');
@@ -507,7 +564,16 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
      const script=pageFiles.has(pathname);
      if(script)checkOrigin(req,{mutating:false});
      const bytes=script?pageFiles.get(pathname):pathname===warmPath?warmHtml:pageHtml;
-     res.writeHead(200,headersFor(script?'text/javascript; charset=utf-8':'text/html; charset=utf-8',{'Content-Length':bytes.length,'Content-Security-Policy':PAGE_CSP}));return res.end(req.method==='HEAD'?undefined:bytes);
+     // Page modules are identical for every customer. Revalidate with an ETag
+     // instead of private no-store, so a repeat open can answer 304. The HTML
+     // document stays no-store because it embeds the warm manifest.
+     if(script){
+      const etag='"'+createHash('sha256').update(bytes).digest('hex').slice(0,32)+'"';
+      const cache={'Cache-Control':'public, max-age=300','ETag':etag,'Content-Security-Policy':PAGE_CSP};
+      if(req.headers['if-none-match']===etag){res.writeHead(304,headersFor('text/javascript; charset=utf-8',cache));return res.end();}
+      res.writeHead(200,headersFor('text/javascript; charset=utf-8',{'Content-Length':bytes.length,...cache}));return res.end(req.method==='HEAD'?undefined:bytes);
+     }
+     res.writeHead(200,headersFor('text/html; charset=utf-8',{'Content-Length':bytes.length,'Content-Security-Policy':PAGE_CSP}));return res.end(req.method==='HEAD'?undefined:bytes);
     }
     const action=pathname.slice(API.length);
     if(url.hash)fail(404,'shop_entry_route','Diese Funktion ist nicht verfügbar.');

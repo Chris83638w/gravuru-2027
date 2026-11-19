@@ -8,7 +8,11 @@ import {printArtwork} from './print-export.mjs';
 import {createAcrylicDraftClient} from './acrylic-draft-client.mjs';
 import {editorUi} from './toolbar-placement-model.mjs';
 import {logoMediaPayload} from './logo-upload.mjs';
+import {canonicalCartDraft,createCartDraftPreparation,changedCartDraft} from './cart-draft-preparation.mjs';
 
+// Customer preview for the cart: WebP keeps the upload small (PNG with material texture ≈3 MB);
+// browsers without WebP encoding return PNG, which the server accepts unchanged.
+export async function customerPreviewBlob(el){const blob=await el.png({type:'image/webp',quality:.9});return blob?.type==='image/webp'||blob?.type==='image/png'?blob:el.png();}
 const base64=blob=>new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result.split(',')[1]);reader.onerror=()=>reject(Error('Die Bilddatei konnte nicht gelesen werden.'));reader.readAsDataURL(blob);});
 async function referencePng(svg,geometry){
  const canvas=document.createElement('canvas');canvas.height=900;canvas.width=Math.round(900*geometry.width/geometry.height);
@@ -16,6 +20,9 @@ async function referencePng(svg,geometry){
  try{image.src=url;await image.decode();canvas.getContext('2d').drawImage(image,0,0,canvas.width,canvas.height);return canvas.toDataURL('image/png').split(',')[1];}finally{URL.revokeObjectURL(url);}
 }
 const euro=cents=>new Intl.NumberFormat('de-DE',{style:'currency',currency:'EUR'}).format(cents/100);
+// Include the complete renderer state: new state fields cannot silently escape
+// invalidation. Even cosmetic changes may conservatively require another save.
+export const cartDraftKey=({binding,state,quantity,cartEdit,media})=>canonicalCartDraft({binding,state,quantity,cartEdit,media});
 // K8: Nur die Warenkorbzeile desselben Entwurfs wird ersetzt; eine andere Gestaltung wird neu hinzugefügt.
 export function shopCartRequest({saved,cartEdit,quantity,cartMode,presentation}){
  const edit=cartEdit&&cartEdit.draftId===saved.draftId?cartEdit:null;
@@ -44,10 +51,40 @@ export function installShopCart(api,footer,gate){
  footer.append(button,status);
  let busy=false,save=null;
  const quantity=()=>Number(api.r.querySelector('[data-fk-quantity]')?.value||1);
- const say=text=>{status.textContent=text;status.hidden=!text;};
+ // V4: laufende Schritte zeigen ein Ladesymbol; dauert ein Schritt länger, erscheint ein Hinweis statt Stillstand.
+ let slow=null;
+ const say=(text,{busy:running=false}={})=>{clearTimeout(slow);status.textContent=text;status.hidden=!text;if(running)status.dataset.busy='';else delete status.dataset.busy;
+  if(running)slow=setTimeout(()=>{if('busy' in status.dataset)status.textContent=text+' Bei langsamer Verbindung dauert das etwas länger – bitte das Fenster geöffnet lassen.';},12000);};
  const label=()=>{button.textContent=busy?'Bitte warten …':api.el.cartEdit?.cartLineId?'Warenkorb aktualisieren':'Jetzt in den Warenkorb';button.disabled=busy;};
+ const preSave=gate.preSaveOnReview===true&&gate.presentation==='prio-r15';
+ const mediaIds=new WeakMap();let nextMediaId=0;
+ const mediaId=value=>{if(!value||typeof value!=='object')return null;if(!mediaIds.has(value))mediaIds.set(value,++nextMediaId);return mediaIds.get(value);};
+ const usedMedia=()=>[...new Set(api.el.state.objects.filter(o=>o.uxUploadId).map(o=>o.uxUploadId))];
+ const draftKey=()=>cartDraftKey({binding,state:api.el.state,quantity:quantity(),cartEdit:api.el.cartEdit||null,
+  media:usedMedia().sort().map(id=>{const asset=api.files.get(id);return {id,file:mediaId(asset?.file),edited:mediaId(asset?.blob),vectorLogo:asset?.vectorLogo};})});
+ async function prepareDraft(expected){
+  if(api.pending?.())throw Error('Bitte warten, bis das Foto vollständig geladen ist.');
+  const count=quantity(),cartEdit=api.el.cartEdit;
+  if(!Number.isSafeInteger(count)||count<1||count>99)throw Error('Bitte eine Menge zwischen 1 und 99 wählen.');
+  if(busy)say('1 von 4 · Vorschau wird erstellt …',{busy:true});
+  await api.el.uxEnsureDraftResources?.({design:{objects:api.el.state.objects}});
+  const prepared=await prepareCartImages({artwork:()=>printArtwork(api),media:()=>Promise.all(usedMedia().map(id=>logoMediaPayload(api.files.get(id),id))),reference:art=>referencePng(art.svg,art.geometry),customer:async()=>base64(await customerPreviewBlob(api.el))});
+  const ui=editorUi(api.el.state.ui);
+  const payload={...binding,textOnTop:true,designId:api.el.state.designId,objects:api.el.state.objects.map(cleanObject),options:api.el.state.mOptions,quantity:count,media:prepared.media,preview:prepared.preview,customerPreview:prepared.customerPreview,...(ui?{ui}:{})};
+  if(expected!==draftKey())throw changedCartDraft();
+  save??=createAcrylicDraftClient({storage:cartEdit?null:sessionStorage,fetchImpl:gate.request});
+  if(busy)say('2 von 4 · Gestaltung wird gesichert …',{busy:true});
+  return save(payload,gate.csrfToken||'shop-entry',cartEdit);
+ }
+ const preparation=preSave?createCartDraftPreparation({key:draftKey,prepare:prepareDraft}):null;
+ if(preparation){
+  // Called only after the existing overview has passed its visible checks.
+  // No status/button mutation and no cart/offer request on this path.
+  api.el.uxPrepareShopCart=()=>{if(!busy&&!api.pending?.()&&!api.el.uxTextIssues?.().length&&(!gate.expiresAt||Date.now()<gate.expiresAt))preparation.prefetch();};
+  window.addEventListener?.('pagehide',event=>{if(!event.persisted)preparation.close();});
+ }
  button.addEventListener('click',async()=>{
-  if(busy)return;busy=true;label();
+  if(busy)return;busy=true;label();let receivedSave=false;
   try{
    api.el.uxAttemptTextValidation?.();api.el.sync();
    const issue=api.el.uxTextIssues?.()[0];
@@ -56,30 +93,21 @@ export function installShopCart(api,footer,gate){
    if(api.pending?.())throw Error('Bitte warten, bis das Foto vollständig geladen ist.');
    const fingerprint=JSON.stringify(api.el.state),count=quantity();
    if(!Number.isSafeInteger(count)||count<1||count>99)throw Error('Bitte eine Menge zwischen 1 und 99 wählen.');
-   say('1 von 3 · Bilder werden vorbereitet …');
-   await api.el.uxEnsureDraftResources?.({design:{objects:api.el.state.objects}});
-   const used=[...new Set(api.el.state.objects.filter(o=>o.uxUploadId).map(o=>o.uxUploadId))];
-   const prepared=await prepareCartImages({
-    artwork:()=>printArtwork(api),
-    media:()=>Promise.all(used.map(id=>logoMediaPayload(api.files.get(id),id))),
-    reference:art=>referencePng(art.svg,art.geometry),customer:async()=>base64(await api.el.png())
-   });
-   const ui=editorUi(api.el.state.ui);
-   const payload={...binding,textOnTop:true,designId:api.el.state.designId,objects:api.el.state.objects.map(cleanObject),options:api.el.state.mOptions,quantity:count,media:prepared.media,preview:prepared.preview,customerPreview:prepared.customerPreview,...(ui?{ui}:{})};
-   if(fingerprint!==JSON.stringify(api.el.state))throw Error('Die Gestaltung wurde während der Sicherung geändert. Bitte erneut in den Warenkorb legen.');
    const cartEdit=api.el.cartEdit;
-   save??=createAcrylicDraftClient({storage:cartEdit?null:sessionStorage,fetchImpl:gate.request});
-   say('2 von 3 · Gestaltung wird gesichert …');
-   const saved=await save(payload,gate.csrfToken||'shop-entry',cartEdit);
+   const expected=draftKey();
+   say('1 von 4 · Vorschau wird erstellt …',{busy:true});
+   const saved=await (preparation?preparation.get():prepareDraft(expected));
+   receivedSave=true;
+   if(expected!==draftKey())throw changedCartDraft();
    const body=shopCartRequest({saved,cartEdit,quantity:count,cartMode:gate.cartMode,presentation:gate.presentation});
-   say('3 von 3 · Warenkorb wird geprüft …');
+   say('3 von 4 · Warenkorb wird vorbereitet …',{busy:true});
    const result=await gate.submitCart(body,{draftToken:saved.draftToken});
    if(fingerprint!==JSON.stringify(api.el.state)||count!==quantity())throw Error('Die Gestaltung wurde während der Übergabe geändert. Bitte erneut in den Warenkorb legen.');
    const target=gate.cartMode==='theme'?themeCartTarget(result,gate.shopDomain,gate.themeCartPath):checkoutTarget(result,gate.shopDomain);
    if(result.configuration?.id&&result.lineId)api.el.cartEdit={configId:result.configuration.id,rev:result.configuration.rev,cartLineId:result.lineId,draftId:saved.draftId,draftToken:saved.draftToken,draftRevision:saved.revision};
-   say(gate.cartMode==='theme'?'Deine Gestaltung ist gesichert. Der Shop-Warenkorb wird geprüft …':(result.mode==='update'?'Warenkorbposition aktualisiert: ':'Im Warenkorb: ')+euro(result.totalCents)+'. Weiter zu Shopify …');
+   say(gate.cartMode==='theme'?'4 von 4 · Deine Gestaltung ist gesichert und wird in den Warenkorb gelegt …':(result.mode==='update'?'Warenkorbposition aktualisiert: ':'Im Warenkorb: ')+euro(result.totalCents)+'. Weiter zu Shopify …',{busy:true});
    window.top.location.assign(target);
-  }catch(error){say(error.message||'Der Warenkorb konnte nicht vorbereitet werden.');}
+  }catch(error){if(receivedSave)preparation?.invalidate();say(error.message||'Der Warenkorb konnte nicht vorbereitet werden.');}
   finally{busy=false;label();}
  });
  const sync=api.el.sync;api.el.sync=function(...args){const result=sync.apply(this,args);label();return result;};label();

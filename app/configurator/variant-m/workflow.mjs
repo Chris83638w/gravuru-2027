@@ -186,9 +186,9 @@ export async function installWorkflow(api){
   const order=galleryOrder(profile.designs,config?.designSelection==='all-approved'?null:productTheme(profile)),cards=new Map(all('.c-gallery [data-c-design]').map(c=>[c.dataset.cDesign,c]));
   const ordered=[...order.primary,...order.more].map(id=>cards.get(id)).filter(Boolean);
   if(ordered.some((card,i)=>gallery.children[i]!==card))for(const card of ordered)gallery.append(card);
-  const more=new Set(order.more);let hiddenMore=0;
+  const more=new Set(order.more),designs=chosenProfile().designs;let hiddenMore=0;
   for(const [id,card] of cards){
-   const design=chosenProfile().designs.find(d=>d.id===id),bestseller=design?.bestseller===true;
+   const design=designs.find(d=>d.id===id),bestseller=design?.bestseller===true;
    card.classList.toggle('is-bestseller',bestseller);
    if(bestseller&&!card.querySelector('[data-design-bestseller]')){const badge=document.createElement('span');badge.dataset.designBestseller='';badge.textContent='Bestseller';card.prepend(badge);}
    const tucked=more.has(id)&&!moreExpanded&&id!==el.state.designId;
@@ -208,7 +208,8 @@ export async function installWorkflow(api){
  let committed=thumbnailSignature(sourceTexts());
  el.uxThumbnailSignature=()=>{const live=thumbnailSignature(sourceTexts());if(live!==committed){clearTimeout(commitTimer);commitTimer=setTimeout(()=>{committed=live;refreshThumbnails();},250);}return committed;};
  el.uxThumbnailBudget=THUMBNAIL_BATCH;
- el.uxThumbnailDesign=design=>thumbnailDesign(design,sourceTexts(),o=>{measureText(o,el.fontData);try{const size=fitText(o,bounds(o),surface(),config?.workbench?.embedded?1:4/(el.uxTextScale?.()||1),el.fontData);if(size!==null&&size<o.size){setTextSize(o,size);measureText(o,el.fontData);}}catch{}});
+ const cardFonts=()=>({...(el.uxPreviewFonts||{}),...(el.fontData||{})});
+ el.uxThumbnailDesign=design=>thumbnailDesign(design,sourceTexts(),o=>{const faces=cardFonts();measureText(o,faces);try{const size=fitText(o,bounds(o),surface(),config?.workbench?.embedded?1:4/(el.uxTextScale?.()||1),faces);if(size!==null&&size<o.size){setTextSize(o,size);measureText(o,faces);}}catch{}});
  el.uxThumbnailDeferred=card=>!seen.has(card);
  const watcher=typeof IntersectionObserver==='function'?new IntersectionObserver(entries=>{let due=false;for(const entry of entries){if(entry.isIntersecting){seen.add(entry.target);due=true;}else seen.delete(entry.target);}if(due)refreshThumbnails();},{rootMargin:'160px'}):null;
  function watchCards(){for(const card of all('[data-c-design]')){if(watcher){if(!card.dataset.thumbWatched){card.dataset.thumbWatched='';watcher.observe(card);}}else seen.add(card);}}

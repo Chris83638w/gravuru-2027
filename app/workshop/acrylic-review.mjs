@@ -14,7 +14,7 @@ import {cleanObject,isGuideObject,choiceOptions,optionFieldEntries} from '../con
 // K14 / Ü12.1: Ausführung (Gruppen) und Zusatzfelder getrennt im Manifest; der Gestaltungsstand
 // (produkt-und-gestaltung.json, state.options) behält beide für Bearbeiten und Fertigung.
 import {commercePrice} from '../configurator/variant-m/commerce-model.mjs';
-import {prepareCustomerPhoto} from './customer-photo.mjs';
+import {prepareCustomerPhoto,prepareReviewPreviewPair} from './customer-photo.mjs';
 import {verifyCustomerVectorLogoMedia,vectorLogoMetadata} from './customer-vector-logo-media.mjs';
 import {zipFiles} from '../configurator/variant-m/print-export-model.mjs';
 import {textsNearHoles} from '../platform/sources/app/shared/models/hole-proximity.mjs';
@@ -124,14 +124,21 @@ export async function prepareAcrylicReview({record,config,input,assets,preparePh
  }
  for(const id of referenced){const a=assets.get(id);add('quellen/'+id+'-original.'+a.format,assets.read(id,true),'Byteidentische importierte Designquelle.');add('quellen/'+id+'-vorschau.svg',assets.read(id),'Geprüfte Designvorschau.');}
  if(typeof input.preview!=='string'||input.preview.length>3*1024*1024)fail('Die Gestaltungsvorschau fehlt oder ist zu groß.');
+ let image;
  if(input.customerPreview!==undefined){
   if(typeof input.customerPreview!=='string'||input.customerPreview.length>8*1024*1024)fail('Die Kundenvorschau fehlt oder ist zu groß.');
   // Shop editor sends compact WebP (upload over mobile networks); the package keeps a PNG as before.
-  const customer=await cartTimingStep('customer_preview',()=>preparePhoto(input.customerPreview)),webp=customer.original.subarray(0,4).toString('latin1')==='RIFF'&&customer.original.subarray(8,12).toString('latin1')==='WEBP',png=webp?customer.preview:customer.original;
+  let customer;
+  if(preparePhoto===prepareCustomerPhoto){
+   const pair=await cartTimingStep('preview_pair',()=>prepareReviewPreviewPair(input.customerPreview,input.preview));
+   customer=pair.customer;image=pair.reference;
+  }else customer=await cartTimingStep('customer_preview',()=>preparePhoto(input.customerPreview));
+  const webp=customer.original.subarray(0,4).toString('latin1')==='RIFF'&&customer.original.subarray(8,12).toString('latin1')==='WEBP',png=webp?customer.preview:customer.original;
   if(!png.subarray(0,8).equals(Buffer.from([137,80,78,71,13,10,26,10]))||customer.width>4096||customer.height>4096)fail('Die Kundenvorschau muss ein PNG bis 4096 Pixel sein.');
   add('gestaltung-kundenansicht.png',png,(webp?'Kundenvorschau (vom Browser als WebP gesendet, serverseitig als PNG gespeichert)':'Verlustfreie Kundenvorschau')+' desselben gesicherten Gestaltungsstands; kein Fertigungsnachweis.');
  }
- const image=await cartTimingStep('reference_preview',()=>preparePhoto(input.preview));add('gestaltung-referenz.png',image.preview,'Vom Browser übermittelte Gestaltungsvorschau; kein serverseitiger Fertigungsnachweis.');
+ image??=await cartTimingStep('reference_preview',()=>preparePhoto(input.preview));
+ add('gestaltung-referenz.png',image.preview,'Vom Browser übermittelte Gestaltungsvorschau; kein serverseitiger Fertigungsnachweis.');
  const preview=Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${image.width} ${image.height}"><image width="${image.width}" height="${image.height}" href="data:image/png;base64,${image.preview.toString('base64')}"/></svg>`);
  const chosen=selectedProfile(config,state.options);
  const method=getProcessingProfile(chosen).method;

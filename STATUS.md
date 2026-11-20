@@ -1,3 +1,14 @@
+## 20.11.2026 · Claude (Operator, technische Gesamtverantwortung) · #265/#267: Rand frei außer bei Edelstahl
+
+- Entscheidung von Chris, 19:26 Uhr und Rückfrage (ENTSCHEIDUNGEN 3.45): Der Kunde darf über den Rand gestalten, nur beim Edelstahl nicht; Randsperre weg, kurzer neutraler Hinweis, keine Sperre, kein Dialog. Ersetzt für diese Produkte seine Regel vom 20.10. D808-Vorlage bleibt („Ok“). Danach Vorab-Start, dann Warenkorb („Ja“).
+- Zum Aufspielen (Zweig `dev/claude-rand-kunde-20261120`, Auftrag an Astra in #267): `6fe9408a`. Eine Regel `edgeFree` wirkt beim Ziehen, im Hinweis, in der Prüfung vor dem Warenkorb und in der Kundenprüfung im Editor und am Server. Edelstahl, Klingelschilder und alle Prüfungen der Werkstatt für Vorlagen bleiben, wie sie sind.
+- Festlegungen von mir, Chris mitgeteilt: Klingelschilder vorerst unverändert; die Mitte eines Elements bleibt auf dem Schild.
+- Prüfungen: 8 neue Tests, ein bestehender angepasst, betroffene Gruppen 422 von 422, Handy-Layout 202 von 202, Paket-Tests 9 von 9; Gesamtlauf im Auftrag an Astra. Am echten Shop mit ersetztem Paket: Acrylglas am PC und in Handy-Größe über den Rand gezogen, Vorschau schneidet ab, Hinweis neutral, Weg zum Warenkorb frei; Edelstahl wie live.
+- Nicht geprüft: Warenkorb am echten Server (prüft bis zum Aufspielen nach der alten Regel), eine echte Fertigungsdatei mit überstehendem Element, andere Materialien als Acrylglas am echten Shop, echte Geräte.
+- Befund am Live-Shop, unabhängig davon: Beim Edelstahl-Türschild messen Randsperre (nach Buchstaben) und Prüfung vor dem Warenkorb (Textkasten) verschieden; wer den Namen ganz an den Rand zieht, bekommt „Bitte Gestaltung prüfen“. Frage an Chris, ob ich das beheben soll.
+- Nächster Schritt: Astra spielt den Stand auf; danach prüfe ich den Warenkorb mit einem überstehenden Element am echten Server (ohne Kasse). Dann Vorab-Start.
+- Übergabe: `docs/handoffs/2026-11-20-prio-c-technik-claude.md`, Abschnitt „Rand frei außer bei Edelstahl“. Der [Design-Master](https://github.com/Chris83638w/gravuru-katalog./blob/main/designs/DESIGN-MASTER.md) gilt unverändert.
+
 ## 20.11.2026 · Claude (Operator, technische Gesamtverantwortung) · #265/#267: Rand-Regel, schnellerer Abruf, Vollbild-Korrektur
 
 - **Live seit 19:16 Uhr: `0a536870`** (Astra, #267), Rückweg `94cd4282`. Astras Messung beim ersten Aufruf nach dem Neustart: alle 40 Karten nach 5,66 s (PC) und 5,14 s (Handy-Ansicht), zuvor 12,94 s und 9,84 s.

@@ -456,10 +456,45 @@ Meine Nachprüfung am echten Shop ohne Ersatz, 19:25 bis 19:40 Uhr, nur lesend (
 
 **Was das zeigt:** Der Abruf der Design-Teile ist nicht mehr der Engpass. Es bleibt die Dauer des Vorab-Starts: Start 1,4 s; bis zum Modell 1 bis 3 s Wartezeit der Produktseite; Modell 1,1 bis 1,9 s; Editor und Designliste 3,8 bis 5,5 s (die Designliste kostet am Server je Abruf rund 1,0 bis 1,2 s und fällt zweimal an); danach die Design-Teile, die hinter der Designliste warten (0,3 bis 2,3 s). Nicht gebaut; Vorschlag für danach: Der Start liefert die Kennungen der ersten Seite mit, damit die Design-Teile nicht auf die Designliste warten.
 
+### Chris' Antworten (20.11.2026, 19:26 Uhr)
+
+1. Rand beim Kunden: „Doch soll können, aber nicht beim Edelstahl“ → Abschnitt „Rand frei außer bei Edelstahl“ unten.
+2. D808-Vorlage unverändert lassen: „Ok“.
+3. Als Nächstes den Vorab-Start verkürzen, danach den Warenkorb: „Ja“.
+
+## Rand frei außer bei Edelstahl (20.11.2026, ab 19:26 Uhr)
+
+Zweig `dev/claude-rand-kunde-20261120` auf `63adf8bd` (live ist `0a536870`). Code: `6fe9408a`. Entscheidung: ENTSCHEIDUNGEN 3.45.
+
+**Entscheidung von Chris.** Auf meine Rückfrage mit zwei Auswahlfragen: „Randsperre weg“ (Elemente lassen sich über den Rand schieben und vergrößern; die Vorschau zeigt sie abgeschnitten, genau so wird gefertigt) und „Kurzer Hinweis“ (ein neutraler Satz, keine Sperre, kein Dialog). Die Rückfrage war nötig, weil die Randsperre auf seine eigene Regel vom 20.10. zurückgeht („bis an den Rand …, aber nicht weiter“).
+
+**Gebaut.** Eine Regel `edgeFree(profile)` in `design-content.mjs`: frei bei jedem Material außer Edelstahl, nicht bei Klingelschildern. Sie wirkt an vier Stellen:
+
+| Stelle | Datei | Bei freiem Rand |
+|---|---|---|
+| Ziehen, Skalieren, Drehen | `edge-clamp.mjs` (`keepCentreOnPlate`) | keine Sperre am Rand; nur die Mitte des Elements bleibt auf dem Schild |
+| Hinweis | `usability.mjs` (`cutOffObjects`, `EDGE_NOTE`) | „Teile außerhalb des Schilds werden abgeschnitten.“, neutral, ohne roten Rahmen; am Text bleibt „Text passend verkleinern“ |
+| Prüfung vor dem Warenkorb | `layout-review.mjs` | kein Dialog für ein Element über dem Rand |
+| Kundenprüfung im Editor und am Server | `contract.mjs` (`customerBlockingIssue`, `validateDesign`) | angenommen, solange die Mitte auf dem Schild liegt; sonst „Element liegt nicht mehr auf dem Schild.“ |
+
+**Unverändert.** Die Vorschau schnitt schon am Schildumriss ab (`adapter.mjs`), die Gravur-Ausgabe am Außenumriss (`acrylic-artwork.mjs`), der Druck endet an der Seite. Vorlagen prüft die Werkstatt weiter streng (`validateStudio`, `validateDesign` mit `template`, `katalog-convert`). Edelstahl und Klingelschilder verhalten sich wie bisher. Das automatische Einpassen bei Überlagerung nimmt weiter nur Lagen auf dem Schild an.
+
+**Festlegungen von mir, Chris mitgeteilt:** Klingelschilder bleiben vorerst unverändert (eigene Flächenregel wegen der Klingel). Die Mitte eines Elements bleibt auf dem Schild, damit keines ganz verschwindet und sich nicht mehr greifen lässt.
+
+**Geprüft.**
+- 8 neue Tests (`app/workshop/customer-edge.test.mjs`). Ein bestehender Test an die Regel angepasst (`contract.test.mjs`: Text weit neben dem Schild wird weiter abgelehnt, jetzt mit dem neuen Befund). Betroffene Gruppen 422 von 422, Handy-Layout 202 von 202, Paket-Tests 9 von 9. Gesamtlauf: Ergebnis im Auftrag an Astra in #267.
+- Am echten Shop, Paket nur in meinem Browser ersetzt (`editor-394ed504e794424e`, Skript `korb/rand.mjs`, `rohwerte/rand-*.json`): Beim Acrylglas-Schild den Namen am PC mit der Maus und in Handy-Größe mit dem Finger über den rechten Rand gezogen. Er bleibt dort (rechte Kante bis 31 mm neben dem Schild), die Vorschau schneidet am Schild ab, der Hinweis ist neutral, die Prüfung vor dem Warenkorb gibt frei, kein Dialog (`bilder/17-rand-frei-acryl-handy.png`, `bilder/18-rand-frei-acryl-pc.png`). Ganz neben das Schild gesetzt, kommt die Mitte auf den Rand zurück. Edelstahl mit demselben Paket: wie live.
+
+**Nicht geprüft.**
+- Warenkorb am echten Server. Der Server prüft bis zum Aufspielen nach der alten Regel und würde ablehnen; die Annahme ist nur in den Tests belegt.
+- Eine echte Fertigungsdatei mit überstehendem Element. Dass Gravur am Außenumriss und Druck an der Seite enden, habe ich im Code gelesen, nicht an einer Ausgabe geprüft. Vor dem ersten echten Auftrag mit überstehendem Element sollte die Werkstatt eine Datei ansehen.
+- Andere Materialien als Acrylglas am echten Shop (im Shop gibt es nur Acrylglas, Edelstahl und Klingelschilder).
+- Echte Geräte.
+
+**Befund am Live-Shop, unabhängig von dieser Änderung (Edelstahl):** Zieht man beim Edelstahl-Türschild den Namen ganz an den Rand, lässt die Randsperre das nach den Buchstaben zu (Regel vom 21.10.); der Textkasten steht dann 0,9 mm über. Die Prüfung vor dem Warenkorb meldet darauf „Bitte Gestaltung prüfen – Dieses Element ragt über den Gestaltungsrand.“ mit „Automatisch einpassen“ und „Weiter bearbeiten“ (`bilder/19-edelstahl-live-dialog-am-rand.png`). Sperre und Prüfung messen also verschieden. Ursache nicht untersucht; Frage an Chris, ob ich das beheben soll.
+
 ### Offene Fragen an Chris
 
-1. Rand-Regel: Soll auch das, was der Kunde selbst über den Rand schiebt, ohne Hinweis und ohne Prüfung vor dem Warenkorb durchgehen?
-2. D808: Vorlage unverändert lassen (Buchstaben liegen innerhalb)?
-3. Warenkorb 9 bis 12 s (Ziel unter 3 s, ENTSCHEIDUNGEN 2.11) als nächstes Thema?
+1. Edelstahl: Sperre und Prüfung vor dem Warenkorb messen am Rand verschieden (Befund oben). Beheben?
 
 Der [Design-Master](https://github.com/Chris83638w/gravuru-katalog./blob/main/designs/DESIGN-MASTER.md) gilt unverändert; an Designs wurde nichts geändert.

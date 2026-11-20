@@ -2,11 +2,13 @@ import assert from 'node:assert/strict';
 import {DatabaseSync} from 'node:sqlite';
 import test from 'node:test';
 import {createOrderIntake} from './order-intake.mjs';
-import {fixedDoorbellProducts,hasFixedDoorbellCheckout} from './fixed-doorbell-checkout-products.mjs';
+import {fixedDoorbellProducts,directDoorbellProducts,hasFixedDoorbellCheckout} from './fixed-doorbell-checkout-products.mjs';
 
 test('only confirmed doorbell profiles at their verified revision receive fixed checkout fields',()=>{
- const rows=Object.entries(fixedDoorbellProducts);
- assert.equal(rows.length,85);assert.equal(new Set(Object.values(fixedDoorbellProducts)).size,85);
+ assert.equal(Object.keys(fixedDoorbellProducts).length,85);
+ assert.equal(Object.keys(directDoorbellProducts).length,41);
+ const rows=Object.entries({...fixedDoorbellProducts,...directDoorbellProducts});
+ assert.equal(rows.length,126);assert.equal(new Set(rows.map(([,profile])=>profile)).size,126);
  for(const [shopifyProduct,profile] of rows){
   assert.match(shopifyProduct,/^gid:\/\/shopify\/Product\/[0-9]+$/);
   assert.equal(hasFixedDoorbellCheckout(profile,2),true);
@@ -17,11 +19,12 @@ test('only confirmed doorbell profiles at their verified revision receive fixed 
 });
 
 for(const [label,shopifyProduct,variant,format,cents] of [
- ['Ring','16126387257724','57471227756924','16x28',4999],['AOSU','16182701621628','58046739054972','24x20',5999]]){
+ ['Ring','16126387257724','57471227756924','16x28',4999],['AOSU','16182701621628','58046739054972','24x20',5999],
+ ['AOSU Hochformat über Direktlink','16124413084028','57465408291196','16x28',4999]]){
 test(label+' fixed price follows the saved revision through offer creation and resolution',()=>{
  const database=new DatabaseSync(':memory:');
  try{
-  const shop='gravuru-design.myshopify.com',product=fixedDoorbellProducts['gid://shopify/Product/'+shopifyProduct];
+  const shop='gravuru-design.myshopify.com',product=(fixedDoorbellProducts['gid://shopify/Product/'+shopifyProduct]||directDoorbellProducts['gid://shopify/Product/'+shopifyProduct]);
   const selections={format,frame:'FK-RUNDUM',color:'schwarz',mounting:'K00'};
   const manifest={schema:'gravuru-native-review/v1',id:'proof_first',packageSha256:'a'.repeat(64),
    product:{id:product,revision:2,currency:'EUR',basePriceCents:cents},

@@ -9,20 +9,18 @@ import {isNativeReviewSchema} from './native-review-schema.mjs';
 import {capturePersonalization,personalizationForSnapshot,personalizationAttributes,tierUnitCents} from './cart-personalization.mjs';
 import {tenantOption,ensureTenantColumns,TENANT_COLUMN} from './tenant.mjs';
 import {createShopProductBindingStore} from './shop-product-binding-store.mjs';
+import {hasFixedDoorbellCheckout} from './fixed-doorbell-checkout-products.mjs';
 import {SURCHARGE_UNAVAILABLE_MESSAGE} from '../configurator/variant-m/surcharge-availability.mjs';
 const fail=(status,message)=>{throw Object.assign(Error(message),{status,code:'order_intake'});};
 const OFFER_MISMATCH='Shop-Variante, Menge oder Preis weichen vom gesicherten Entwurf ab.';
-// This Ring revision has 120 approved, fixed-price variant bindings. Its v1
-// Shopify contract mirrors those bindings. Existing offers keep their IDs and
-// original price. Derive checkout evidence from the same immutable snapshot.
-const ringProduct='cfg_d9fb1702-b41e-49f0-9eda-117be91f436a';
+// Approved fixed-price revisions use their unchanged variant price and snapshot.
 function checkoutPriceFields(binding,manifest,stored){
  if(stored)return {personalization:stored.personalization};
  if(binding.tenant_id!=='gravuru'||binding.shop!=='gravuru-design.myshopify.com'||
-    binding.product_id!==ringProduct||binding.product_revision!==2)return {};
- if(manifest.product?.id!==ringProduct||manifest.product.revision!==2||manifest.product.currency!=='EUR')
+    !hasFixedDoorbellCheckout(binding.product_id,binding.product_revision))return {};
+ if(manifest.product?.id!==binding.product_id||manifest.product.revision!==binding.product_revision||manifest.product.currency!=='EUR')
   fail(422,OFFER_MISMATCH);
- const contract={revision:'2',baseCents:binding.unit_cents,extraMotifCents:0,extraPhotoCents:0};
+ const contract={revision:String(binding.product_revision),baseCents:binding.unit_cents,extraMotifCents:0,extraPhotoCents:0};
  return {personalization:personalizationForSnapshot(contract,manifest).personalization};
 }
 const optionKey=o=>JSON.stringify(Object.entries(o||{}).sort());

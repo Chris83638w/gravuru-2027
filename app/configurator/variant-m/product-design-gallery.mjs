@@ -8,6 +8,7 @@ import {isLayeredDoorbell} from './product-model-module.mjs';
 import {isFamilyFormats,isAllSizesFamily} from './family-formats.mjs';
 import {installDesignSearchControl} from './design-search-control.mjs';
 import {installNativeDesignSearch} from './native-design-search.mjs';
+import {adoptDesignModel} from './design-adoption.mjs';
 
 const money=cents=>new Intl.NumberFormat('de-DE',{style:'currency',currency:'EUR'}).format(cents/100);
 export const productChoiceInfo=item=>`${item.widthMm/10} × ${item.heightMm/10} cm · ${money(item.unitCents)}`;
@@ -72,7 +73,22 @@ export async function installProductDesignGallery({el,r,config,files,say,dialog,
  const search=installDesignSearchControl({container:section,before:themeLabel,onChange:()=>load(),onInvalidate:()=>invalidate()});
  async function choose(item){
   if(switching)return;
-  if(item.current&&profile().designs.some(d=>d.id===item.designId)){if(item.designId!==el.state.designId)el.chooseDesign(item.designId);return;}
+  const known=()=>item.current?profile().designs.find(d=>d.id===item.designId):undefined;
+  // Auftrag #265 (Weg A): Ein weiteres Design desselben Produktstands wird nachgeholt und im laufenden Editor
+  // gewählt. Sitzung, Produktzuordnung und Preis bleiben dieselben. Scheitert das Nachholen, greift der bisherige Wechsel.
+  if(item.current&&!known()&&allSizes&&api.loadDesign&&el.uxAdoptDesignModel){
+   const note=status.textContent;switching=true;grid.inert=true;status.textContent='Design wird übernommen …';
+   try{const loaded=structuredClone((await api.loadDesign(item.designId)).universal);adoptDesignModel(config,loaded,item.designId);el.uxAdoptDesignModel(loaded,item.designId);}
+   catch{/* Der bisherige Wechsel über den Server bleibt der Rückweg. */}
+   finally{switching=false;grid.inert=false;status.textContent=note;}
+  }
+  const template=known();
+  if(template){
+   if(item.designId===el.state.designId)return;
+   try{await el.uxEnsureDesignResources?.(template);el.chooseDesign(item.designId);}
+   catch(error){status.textContent=error.message;say(error.message);}
+   return;
+  }
   switching=true;if(!api.onPreviewActivity)setPreviewActivity(false);grid.inert=true;back.disabled=true;status.textContent='Design wird übernommen …';
   const send=content=>api.choose(item.target,{selection:{options:structuredClone(el.state.mOptions||{}),quantity:Number(r.querySelector('[data-fk-quantity]')?.value||1)},content,photoFiles:capturePhotoFiles(content,files),sizeLabel:productChoiceInfo(item)});
   try{const content=captureDesignContent(el.state.objects,design());

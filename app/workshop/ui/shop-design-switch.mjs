@@ -49,6 +49,13 @@ export function createDesignSwitch({initial,fragment,container,activate,toDataUr
   onPreviewActivity:listener=>{let listeners=previewListeners.get(entry);if(!listeners){listeners=new Set();previewListeners.set(entry,listeners);}listeners.add(listener);listener(previewActive(entry));return ()=>listeners.delete(listener);},
   hasPendingTransfer:()=>!!entry.pending,
   takeTransfer:()=>{const value=entry.pending;entry.pending=null;return value;},
+  // Auftrag #265 (Weg A): Modell eines weiteren Designs derselben Sitzung nur lesen. Sitzung, Rahmen und Adresse bleiben unverändert.
+  loadDesign:async designId=>{
+   checkRead(entry);const loaded=await entry.client.loadModel(designId);checkRead(entry);
+   for(const key of ['productId','productRevision','shopifyProductId','shopifyVariantId'])if(loaded.binding?.[key]===undefined||loaded.binding[key]!==entry.data.binding?.[key])throw Error('Die Produktzuordnung wurde geändert. Bitte die Designauswahl neu öffnen.');
+   if(loaded.model.configuration.id!==entry.data.model.configuration.id||loaded.model.configuration.revision!==entry.data.model.configuration.revision||!loaded.model.universal.profile.designs.some(d=>d.id===designId))throw Error('Dieses Design gehört nicht zum gewählten Produkt.');
+   return {universal:loaded.model.universal};
+  },
   canGoBack:()=>history.length>0||!!entry.previous,
   back:()=>{check(entry);const previous=history.pop();if(!previous)return false;current=previous;notifyPreviews(entry);entry.frame.remove();activate(previous,api(previous));show(previous);setFragment(previous);notifyPreviews(previous);return true;},
   choose:async(target,transfer)=>{

@@ -20,6 +20,10 @@ export async function installProductDesignGallery({el,r,config,files,say,dialog,
  // Türschild-Konfi mit allen Größen lädt nur das Startdesign; weitere Designs kommen über diese Auswahl.
  if(isLayeredDoorbell(config)||(isFamilyFormats(config)&&!config.familyFormats.fixedSize&&!isAllSizesFamily(config)))return installNativeDesignSearch({el,r,config});
  const allSizes=isAllSizesFamily(config),galleryOptions=()=>allSizes?structuredClone(el.state.mOptions||{}):undefined;
+ // Nur das Startdesign liegt im Gerät, alle weiteren Designs gehören zum selben Produktstand: Türschild mit allen Größen
+ // und Familie mit fester Größe (z. B. Acrylglas 12 × 8 cm). Für beide gelten der Wechsel im Gerät, das Vorladen der
+ // Design-Teile und die im Gerät gezeichneten Karten. Ob der Server Teile liefert, entscheidet er selbst (designBase).
+ const lazyDesigns=allSizes||(isFamilyFormats(config)&&config.familyFormats.fixedSize!==undefined);
  let api;try{api=window.parent.GravuruShopEntry?.designGallery;}catch{}if(!api)return installNativeDesignSearch({el,r,config});
  el.uxHasProductDesignGallery=true;
  const profile=()=>el.uxSelectedProfile?.()||config.profile;
@@ -77,7 +81,7 @@ export async function installProductDesignGallery({el,r,config,files,say,dialog,
   const known=()=>item.current?profile().designs.find(d=>d.id===item.designId):undefined;
   // Auftrag #265 (Weg A): Ein weiteres Design desselben Produktstands wird nachgeholt und im laufenden Editor
   // gewählt. Sitzung, Produktzuordnung und Preis bleiben dieselben. Scheitert das Nachholen, greift der bisherige Wechsel.
-  if(item.current&&!known()&&allSizes&&api.loadDesign&&el.uxAdoptDesignModel){
+  if(item.current&&!known()&&lazyDesigns&&api.loadDesign&&el.uxAdoptDesignModel){
    const note=status.textContent;switching=true;grid.inert=true;status.textContent='Design wird übernommen …';
    try{
     const loaded=structuredClone((await api.loadDesign(item.designId)).universal);
@@ -127,7 +131,7 @@ export async function installProductDesignGallery({el,r,config,files,say,dialog,
  const resourcesReady=design=>(design?.objects||[]).every(o=>o.type==='text'?!!el.fontData?.[o.font]:o.type==='motif'?typeof el.motifs?.[o.motif]==='string'||o.motif?.startsWith('ux-line-'):true);
  function drawCard(request){
   const {item,img}=request;
-  if(!allSizes||!item.current||request.drawn||img.src||!img.parentNode||!el.isConnected||!el.uxLayoutReady)return false;
+  if(!lazyDesigns||!item.current||request.drawn||img.src||!img.parentNode||!el.isConnected||!el.uxLayoutReady)return false;
   const template=profile().designs.find(d=>d.id===item.designId);
   if(!template||!resourcesReady(template))return false;
   let svg=null;
@@ -148,7 +152,7 @@ export async function installProductDesignGallery({el,r,config,files,say,dialog,
  };
  const PREPARE_GROUP=6;
  function prepareDesigns(items,version){
-  if(!allSizes||!api.loadDesigns||!el.uxAdoptDesignModel||saveDataActive(window.navigator?.connection))return;
+  if(!lazyDesigns||!api.loadDesigns||!el.uxAdoptDesignModel||saveDataActive(window.navigator?.connection))return;
   const wanted=items.filter(item=>item.current&&typeof item.designId==='string').map(item=>item.designId);
   if(!wanted.length)return;
   const groups=[];for(let at=0;at<wanted.length;at+=PREPARE_GROUP)groups.push(wanted.slice(at,at+PREPARE_GROUP));
@@ -163,16 +167,33 @@ export async function installProductDesignGallery({el,r,config,files,say,dialog,
    const loaded=await api.loadDesigns(group);if(!loaded?.designIds?.length)return;
    // Kurz Luft lassen, damit Eingaben des Kunden zuerst drankommen; die Aufnahme selbst läuft in einem Zug.
    await new Promise(resolve=>setTimeout(resolve,0));
-   while(switching)await new Promise(resolve=>setTimeout(resolve,120));
+   // Nimmt die angebotenen Designs in einem Zug auf oder lässt alles unverändert.
+   const adopt=async offered=>{
+    while(switching)await new Promise(resolve=>setTimeout(resolve,120));
+    if(version!==epoch)return false;
+    const started=performance.now(),source=structuredClone(offered.universal);if(!unambiguous(config,source))return false;
+    // Erst vollständig prüfen (beide Kopien), dann schreiben, wie beim Antippen.
+    const updateGallery=planDesignAdoption(config,source,offered.designIds[0]);
+    el.uxAdoptDesignModel(source,offered.designIds[0]);updateGallery();
+    prepareLog.push({designs:offered.designIds.length,ms:Math.round(performance.now()-started)});return true;
+   };
+   let adopted=loaded.designIds;
+   try{if(!await adopt(loaded))adopted=null;}catch{adopted=null;}
    if(version!==epoch)return;
-   const started=performance.now(),source=structuredClone(loaded.universal);if(!unambiguous(config,source))return;
-   // Erst vollständig prüfen (beide Kopien), dann schreiben, wie beim Antippen.
-   const updateGallery=planDesignAdoption(config,source,loaded.designIds[0]);
-   el.uxAdoptDesignModel(source,loaded.designIds[0]);updateGallery();
-   prepareLog.push({designs:loaded.designIds.length,ms:Math.round(performance.now()-started)});
+   if(!adopted){
+    // Besteht ein Design der Gruppe die Prüfung des Editors nicht (am echten Acrylglas-Schild 12 × 8 cm eins von 208),
+    // werden die übrigen einzeln aufgenommen. Nur das betroffene behält Vorschau und Wechsel über den Server.
+    adopted=[];
+    for(const id of loaded.designIds){
+     if(version!==epoch)return;
+     try{const single=await api.loadDesigns([id]);if(single?.designIds?.length&&await adopt(single))adopted.push(id);else prepareLog.refused=(prepareLog.refused||0)+1;}
+     catch{prepareLog.refused=(prepareLog.refused||0)+1;}
+    }
+    if(!adopted.length)return;
+   }
    drawCards();
    // Schriften und Motive gleichzeitig holen; jede Karte erscheint, sobald ihr Design vollständig ist.
-   await Promise.all(loaded.designIds.map(async id=>{
+   await Promise.all(adopted.map(async id=>{
     const template=profile().designs.find(d=>d.id===id);
     if(template)try{await el.uxEnsureDesignResources?.(template,{priority:'low'});}catch{/* Eine fehlende Schrift lädt beim Antippen erneut. */}
     drawCards();
@@ -205,7 +226,8 @@ export async function installProductDesignGallery({el,r,config,files,say,dialog,
     if(previewsActive){if(observer)observer.observe(img);else queue.push(img.previewRequest);}
    }
    warmPreviews();
-   if(!query)prepareDesigns(result.items,version);
+   // Auch Suchtreffer: Bei 208 Designs liegt ein Treffer meist auf einer Seite, die noch nicht geladen wurde.
+   prepareDesigns(result.items,version);
    if(!observer)pump();status.textContent=query?(result.total===1?'1 Design gefunden':result.total?result.total+' Designs gefunden':'Keine passenden Designs gefunden. Versuche einen anderen Begriff oder leere die Suche.'):(result.total?designGalleryCount(result.total):'Für dieses Produkt sind noch keine weiteren Designs verfügbar.');more.hidden=pager.next===null;
    if(firstPage&&query)el.uxReportDesignSearch?.(query,result.total);
   }catch(error){status.textContent=error.message||'Die Designauswahl ist gerade nicht erreichbar. Bitte erneut versuchen.';more.textContent='Erneut versuchen';more.hidden=false;}

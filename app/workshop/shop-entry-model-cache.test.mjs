@@ -9,6 +9,7 @@ import {MODULE_PROFILE_SCHEMA} from '../configurator/variant-m/module-profile.mj
 import {quote} from '../configurator/variant-m/contract.mjs';
 import {syntheticBank} from '../../scripts/customer-model-benchmark.mjs';
 import {universalWithDesignParts} from './ui/shop-design-switch.mjs';
+import {fixedSignConfig} from './test-fixtures/door-sign-all-sizes.mjs';
 
 // Paket 1a, Teil 1: Antwortspeicher des Kundenmodells mit einer synthetischen Werkstatt, deren Datenbankstand,
 // Pause, Freigaben und Zuordnung der Test steuert. Je Test laufen ZWEI Einstiege über dieselbe Werkstatt und
@@ -455,3 +456,30 @@ test('Stufe 2: nur gültige Anfragen; Produkte ohne Größenwahl im Konfi haben 
   const r=await designParts(on,headers,'?designs=d2');assert.equal(r.status,404);assert.equal(r.data.error.code,'shop_entry_design_parts');
  },{flavor:'plain'});
 });
+
+// Familie mit fester Größe (wie Acrylglas 12 × 8 cm im Shop): ein Format, vier Designs, dieselbe Sitzung und Zuordnung.
+const fixedSetup=s=>{
+ const config=fixedSignConfig(4),options={mounting:'K00'};
+ s.docConfig=config;
+ s.model=()=>({key:'acryl',name:'Familienschild feste Größe',configuration:{id:PRODUCT,revision:3},galleryCategoryIds:[],legacy:{designs:[]},universal:{...structuredClone(config),...s.modelExtra}});
+ for(const binding of s.bindings.values()){binding.options=options;binding.unitCents=quote(config,[],'fs-1',options).unitCents;}
+};
+test('Stufe 2 gilt auch für die Familie mit fester Größe: Fingerabdruck in der Startantwort, Design-Teile je Design',()=>run(async({s,on,off,open,both})=>{
+ const headers=await open();
+ const start=await both(headers);assert.match(start.data.designBase,/^[a-f0-9]{64}$/);
+ assert.notEqual(start.data.model.universal.familyFormats.fixedSize,undefined);
+ // Der Start schickt weiter nur das Startdesign.
+ assert.deepEqual(start.data.model.universal.profile.designs.map(d=>d.id),['fs-1']);
+ const third=await both(headers,'?design=fs-3');assert.equal(third.data.designBase,start.data.designBase);
+ const query='?designs=fs-3,fs-2,gibt-es-nicht';
+ const a=await designParts(on,headers,query),b=await designParts(off,headers,query);
+ assert.equal(a.status,200,a.body.toString().slice(0,200));assert.ok(a.body.equals(b.body),'mit und ohne Speicher bytegleich');
+ assert.deepEqual(a.data.designs.map(d=>d.id),['fs-3','fs-2']);
+ for(const d of a.data.designs)assert.equal(d.base,start.data.designBase);
+ assert.deepEqual(universalWithDesignParts(start.data.model.universal,a.data.designs[0].parts,'fs-3'),third.data.model.universal);
+ assert.equal(/basePriceCents|priceCents|quantityTiers|unitCents/.test(a.body.toString()),false);
+ // Zweiter Abruf aus dem Speicher; Pause gilt weiter bei jedem Abruf.
+ const {calls:again}=await calls(s,()=>designParts(on,headers,query));assert.equal(again,0);
+ s.paused=true;const paused=await designParts(on,headers,query);assert.equal(paused.status,423);assert.equal(paused.data.error.code,'konfi_paused');
+},{setup:fixedSetup}));
+

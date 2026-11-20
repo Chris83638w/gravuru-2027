@@ -1,5 +1,5 @@
 import {createCustomerDesignImages} from './customer-design-image.mjs';
-import {shopStartModel,isAllSizesFamily,shopDesignParts,shopDesignBase} from './shop-start-model.mjs';
+import {shopStartModel,isAllSizesFamily,shopDesignParts,shopDesignBase,hasDesignParts} from './shop-start-model.mjs';
 import {shopWarmManifest} from './shop-warm-manifest.mjs';
 import {createPublicDesignPreviewCache} from './public-design-preview-cache.mjs';
 import {createPublicDesignPreviews} from './public-design-previews.mjs';
@@ -87,7 +87,8 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
  if(modelResponseCache!==null&&modelResponseCache!==undefined&&modelResponseCache!==false&&modelResponseCache!==true&&(typeof modelResponseCache!=='object'||Array.isArray(modelResponseCache)||Object.keys(modelResponseCache).some(k=>!['maxEntries','maxBytes','maxModels'].includes(k))))fail(503,'shop_entry_config','Der Konfigurator-Einstieg ist nicht eingerichtet.');
  let modelCache;try{modelCache=modelResponseCache===null||modelResponseCache===undefined||modelResponseCache===false?null:createModelResponseCache(modelResponseCache===true?{}:modelResponseCache);}catch{fail(503,'shop_entry_config','Der Konfigurator-Einstieg ist nicht eingerichtet.');}
  // Auftrag #265, Stufe 2: eigener kleiner Speicher für die Design-Teile. Einträge, Grenzen und Zähler des Modellspeichers bleiben unberührt.
- const DESIGN_PARTS_MAX=48,partsCache=modelCache?createModelResponseCache({maxEntries:64,maxBytes:32*1024*1024,maxModels:1}):null;
+ // 256 Einträge: Eine Familie mit fester Größe fragt je Seite der Designauswahl (40 Designs) sieben Gruppen ab; die Grenze nach Bytes bleibt.
+ const DESIGN_PARTS_MAX=48,partsCache=modelCache?createModelResponseCache({maxEntries:256,maxBytes:32*1024*1024,maxModels:1}):null;
  const ids=new Set(),fixed=stores.map(s=>{
   const w=s?.workshop;
   if(!s||!/^[-a-zA-Z0-9_]{1,100}$/.test(s.storeId||'')||ids.has(s.storeId)||typeof s.registry?.resolve!=='function'||typeof s.cart!=='function'||typeof w?.model!=='function'||!w.tenantId||w.sessionContext?.shopDomain!==shopDomain||
@@ -577,7 +578,7 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
      const presented=presentedModel(model,context.binding,context.store,designParam);
      const designId=presented.universal.profile.defaultDesignId||presented.universal.profile.designs[0]?.id;
      // Stufe 2: Fingerabdruck des designunabhängigen Rests; nur damit übernimmt der Browser später Design-Teile.
-     const baseRest=isAllSizesFamily(presented.universal)?{designBase:shopDesignBase(presented.universal)}:{};
+     const baseRest=hasDesignParts(presented.universal)?{designBase:shopDesignBase(presented.universal)}:{};
      if(key===null||epoch===null){
       const {startPreview}=startPreviewFor(context,model,designId);
       lap('msBuild',at);return json(res,200,{model:presented,...modelRest(context,startPreview),...baseRest});
@@ -620,7 +621,7 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
      const epoch=key===null?null:writeEpoch(context.store);
      requireDoorbellApproval(context.store,context.binding);
      const model=modelFor(context.store,context.binding);
-     if(!isAllSizesFamily(model.universal)||!moduleEnabled(model.universal,'designs'))fail(404,'shop_entry_design_parts','Für dieses Produkt gibt es keine einzelnen Design-Teile.');
+     if(!hasDesignParts(model.universal)||!moduleEnabled(model.universal,'designs'))fail(404,'shop_entry_design_parts','Für dieses Produkt gibt es keine einzelnen Design-Teile.');
      allowedAssets(context.store,context.binding,model);
      const designs=[];
      for(const id of ids){

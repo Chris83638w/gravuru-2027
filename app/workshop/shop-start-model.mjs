@@ -6,7 +6,8 @@ export {isAllSizesFamily};
 // Türschild-Konfi (Chris 03.11.2026, ENTSCHEIDUNGEN 4.42): ein Produkt mit allen Formen und Größen
 // (Produktschnitt groessenWahl:"alle"). Der Start schickt alle Formate (Form → Größe → Befestigung),
 // aber nur das Startdesign und je Format die eine Vorlage, die ein Größenwechsel im Konfi nehmen würde.
-// Alle übrigen Designs kommen erst über die Designauswahl (Vorschaubild, Laden beim Klick).
+// Alle übrigen Designs kommen über die Designauswahl: seit Auftrag #265 als Design-Teile (shopDesignParts), die der
+// Editor im Gerät aufnimmt und deren Karten er selbst zeichnet; das vollständige Modell je Design bleibt der Rückweg.
 
 const unavailable=()=>{throw Object.assign(Error('Dieses Design ist nicht verfügbar.'),{status:404,code:'shop_entry_design'});};
 const usable=d=>d&&d.hidden!==true&&d.released!==false&&d.katalog?.fit!=='passt nicht';
@@ -101,3 +102,9 @@ function designRest(universal){
   localResources:localResources?{...localResources,motifs:(localResources.motifs||[]).filter(motif=>motif.embeddedOnly!==true)}:null};
 }
 export const shopDesignBase=universal=>createHash('sha256').update(JSON.stringify(designRest(universal))).digest('hex');
+// Produkte, deren Start nur das Startdesign schickt und deren weitere Designs denselben Produktstand teilen: das Türschild
+// mit allen Größen und, seit 20.11.2026, die Familie mit fester Größe (z. B. Acrylglas 12 × 8 cm mit 208 Designs). Dort
+// zeichnete der Server jede Karte der Designauswahl weiter einzeln (am echten Shop gemessen: nach 10 s 6 von 40 Karten).
+// Grundlage: Chris, 20.11.2026, 13:30 Uhr: „Ich möchte den prio Konfi exakt so gebaut haben“ (wie Variante C), und zu den
+// Karten 14:43 Uhr: „das sehe ich sofort alles“.
+export const hasDesignParts=universal=>isAllSizesFamily(universal)||(isFamilyFormats(universal)&&universal.familyFormats.fixedSize!==undefined);

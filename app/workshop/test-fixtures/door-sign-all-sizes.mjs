@@ -29,3 +29,21 @@ export function doorSignModel(){
  const full=doorSignConfig();
  return {key:'acryl',name:'Türschild Edelstahl',configuration:{id:'cfg_ts',revision:1},universal:full,legacy:{designs:structuredClone(full.profile.designs),defaultDesignId:full.profile.defaultDesignId}};
 }
+
+// Familie mit fester Größe (Auftrag #265, 20.11.2026): ein Format, `count` freigegebene Designs, wie das Acrylglas-Schild
+// 12 × 8 cm im Shop. Aus derselben Katalogvorlage wie oben abgeleitet, damit Maße, Preis und Befestigung echt bleiben.
+export function fixedSignConfig(count=4){
+ const c=structuredClone(doorSignConfig()),f=c.familyFormats,format=f.formats.find(s=>s.key===f.defaultSize),variant=format.variants[0];
+ const template=f.designs.find(d=>d.id===variant.designIds[0]),designs=[];
+ for(let k=1;k<=count;k++){const d=structuredClone(template);d.id='fs-'+k;d.name='Design '+k;d.katalog={...d.katalog,designId:'FS-D'+k};d.objects[0].text='Name '+k;measureText(d.objects[0],c.localResources?.fonts||{});designs.push(d);}
+ variant.designIds=designs.map(d=>d.id);
+ c.familyFormats={...f,fixedSize:format.key,defaultSize:format.key,formats:[format],designs,source:{shopProduct:{sizeKey:variant.sizeKey,themeId:'familienschilder',defaultDesignId:'FS-D1'}}};
+ c.profile.designs=structuredClone(designs);c.profile.defaultDesignId='fs-1';c.profile.themeId='familienschilder';
+ c.profile.optionGroups=c.profile.optionGroups.filter(g=>g.id!=='size');
+ c.workshopElementRights=Object.fromEntries(designs.map(d=>[d.id,{[d.objects[0].id]:{content:true,move:true,scale:true,delete:true}}]));
+ return prepareConfig(c);
+}
+export function fixedSignModel(count=4){
+ const full=fixedSignConfig(count);
+ return {key:'acryl',name:'Familienschild feste Größe',configuration:{id:'cfg_fs',revision:1},universal:full,legacy:{designs:structuredClone(full.profile.designs),defaultDesignId:full.profile.defaultDesignId}};
+}

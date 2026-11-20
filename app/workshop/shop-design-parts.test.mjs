@@ -2,11 +2,11 @@
 // Im Browser in das eigene Startmodell eingesetzt, muss genau das Modell entstehen, das `model?design=` liefert.
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {shopStartModel,shopDesignParts,shopDesignBase} from './shop-start-model.mjs';
-import {universalWithDesignParts} from './ui/shop-design-switch.mjs';
+import {shopStartModel,shopDesignParts,shopDesignBase,hasDesignParts} from './shop-start-model.mjs';
+import {universalWithDesignParts,mergeDesignParts} from './ui/shop-design-switch.mjs';
 import {prepareConfig} from '../configurator/variant-m/contract.mjs';
 import {adoptDesignModel} from '../configurator/variant-m/design-adoption.mjs';
-import {doorSignModel} from './test-fixtures/door-sign-all-sizes.mjs';
+import {doorSignModel,fixedSignModel} from './test-fixtures/door-sign-all-sizes.mjs';
 
 function setup(change=()=>{}){
  const model=doorSignModel();change(model);
@@ -93,3 +93,37 @@ test('unvollständige oder fremde Teile werden nicht eingesetzt',()=>{
  // Das eigene Modell bleibt dabei unverändert.
  const own=structuredClone(s.a),before=JSON.stringify(own);universalWithDesignParts(own,good,s.second);assert.equal(JSON.stringify(own),before);
 });
+
+// Familie mit fester Größe (20.11.2026): wie das Acrylglas-Schild 12 × 8 cm mit vielen Designs in einem Format.
+test('feste Größe: Design-Teile ergeben genau das Modell des anderen Designs; der Fingerabdruck ist für alle Designs gleich',()=>{
+ const model=fixedSignModel(6),start=shopStartModel(model,'fs-1').universal,base=shopDesignBase(start);
+ assert.equal(hasDesignParts(model.universal),true);assert.equal(hasDesignParts(start),true);
+ assert.deepEqual(start.profile.designs.map(d=>d.id),['fs-1']);
+ for(const id of ['fs-2','fs-4','fs-6']){
+  const other=shopStartModel(model,id).universal;
+  assert.equal(shopDesignBase(other),base,id);
+  assert.deepEqual(universalWithDesignParts(structuredClone(start),sent(other),id),other);
+  assert.deepEqual(universalWithDesignParts(structuredClone(other),sent(start),'fs-1'),start);
+ }
+});
+
+test('feste Größe: mehrere Designs werden in einem Zug im Editor aufgenommen, wie mit den vollständigen Modellen',()=>{
+ const model=fixedSignModel(6),start=shopStartModel(model,'fs-1').universal,ids=['fs-2','fs-3','fs-5'];
+ const full=prepareConfig(structuredClone(start)),slim=prepareConfig(structuredClone(start));
+ for(const id of ids)assert.equal(adoptDesignModel(full,prepareConfig(shopStartModel(model,id).universal),id),true);
+ const merged=mergeDesignParts(ids.map(id=>sent(shopStartModel(model,id).universal)));
+ assert.equal(adoptDesignModel(slim,prepareConfig(universalWithDesignParts(structuredClone(start),merged,ids[0])),ids[0]),true);
+ assert.deepEqual(slim.profile.designs.map(d=>d.id).sort(),['fs-1',...ids].sort());
+ assert.deepEqual(slim.familyFormats,full.familyFormats);assert.deepEqual(slim.workshopElementRights,full.workshopElementRights);
+ assert.deepEqual([...slim.profile.designs].sort((a,b)=>a.id.localeCompare(b.id)),[...full.profile.designs].sort((a,b)=>a.id.localeCompare(b.id)));
+ // Preis, Format und Befestigung bleiben die des Startmodells.
+ assert.deepEqual(slim.familyFormats.formats.map(({variants,...rest})=>rest),start.familyFormats.formats.map(({variants,...rest})=>rest));
+});
+
+test('Design-Teile gibt es nur für das Türschild mit allen Größen und die Familie mit fester Größe',()=>{
+ assert.equal(hasDesignParts(doorSignModel().universal),true);
+ const free=structuredClone(doorSignModel().universal);delete free.familyFormats.source.shopProduct.groessenWahl;
+ assert.equal(hasDesignParts(free),false,'Familie mit Größenwahl im Konfi hat alle Designs schon im Gerät');
+ assert.equal(hasDesignParts({profile:{designs:[]}}),false);
+});
+

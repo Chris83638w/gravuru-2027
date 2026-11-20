@@ -128,9 +128,10 @@ for(const cache of [false,true])test('theme cart: signed entry, immutable design
  const firstSource=sources[0].source;
  const draft=created.data;assert.match(draft.id,/^adraft_/);assert.match(draft.token,/^[a-f0-9]{64}$/);assert.equal(draft.revision,1);
  const manifest=w.customerDrafts.review(draft.snapshotId).manifest;assert.deepEqual(manifest.selection.options,chosen.options);assert.equal(manifest.selection.price.quantity,2);assert.equal(manifest.productionReady,false);
- // ENTSCHEIDUNGEN 3.47: Der Kundeneinstieg sichert das kleine Paket – Verweis auf den Produktstand statt des Produktstands selbst.
+ // ENTSCHEIDUNGEN 3.47: Den Verweis auf den Produktstand bekommen nur native Produkte (Familien, Klingelschilder). Das
+ // Musterprodukt dieses Durchlaufs ist ein Acryl-Aufsteller alter Art (`config.acrylic`); sein Paket bleibt, wie es war.
  {const stored=JSON.parse(readReviewPackage(w.customerDrafts.downloadSnapshot(draft.snapshotId,'package'),manifest.packageSha256,NATIVE_REVIEW_SCHEMAS).files.get('produkt-und-gestaltung.json'));
-  assert.equal(stored.schema,'gravuru-native-review-input/v2');assert.equal(stored.product,undefined);assert.deepEqual(Object.keys(stored.productRef).sort(),['id','revision','sha256']);assert.equal(stored.productRef.id,manifest.product.id);assert.equal(stored.productRef.revision,manifest.product.revision);}
+  assert.equal(stored.schema,'gravuru-acrylic-review-input/v1');assert.ok(stored.product&&stored.productRef===undefined);}
  const storedCustomerPng=readReviewPackage(w.customerDrafts.downloadSnapshot(draft.snapshotId,'package'),manifest.packageSha256,NATIVE_REVIEW_SCHEMAS).files.get('gestaltung-kundenansicht.png');
  assert.ok(storedCustomerPng.subarray(0,8).equals(Buffer.from([137,80,78,71,13,10,26,10])),'WebP customer preview is stored as PNG');assert.deepEqual([storedCustomerPng.readUInt32BE(16),storedCustomerPng.readUInt32BE(20)],[40,60]);
  // Ohne Entwurfstoken ist der Entwurf nicht fortschreibbar; fremder Produktstand wird abgewiesen.

@@ -47,6 +47,23 @@ test('das Paket mit Verweis ist klein und nennt genau den Produktstand; das bish
  await assert.rejects(()=>prepareAcrylicReview({record,config:record.document.config,input:{productId:record.id,productRevision:1,designId:record.document.config.profile.designs[0].id,objects:[],options:{},quantity:1,media:[],preview:pair.preview},productSha256:'abc'}),/Prüfsumme des Produktstands/);
 });
 
+test('außer dem Produktstand ist das Paket Datei für Datei gleich; alle anderen Leser sehen dasselbe wie bisher',async()=>{
+ const {embedded,reference}=await pair('ss');
+ const files=bundle=>readReviewPackage(bundle.package,bundle.manifest.packageSha256,NATIVE_REVIEW_SCHEMAS).files,a=files(embedded),b=files(reference);
+ assert.deepEqual([...b.keys()].sort(),[...a.keys()].sort(),'dieselben Dateien');
+ // Nur die Datei mit dem Produktstand und das Manifest (Kennungen, Zeit, Prüfsummen der Dateien) unterscheiden sich.
+ for(const name of a.keys())if(!['produkt-und-gestaltung.json','manifest.json'].includes(name))assert.ok(Buffer.from(b.get(name)).equals(Buffer.from(a.get(name))),name);
+ const {product,schema:oldSchema,...rest}=JSON.parse(a.get('produkt-und-gestaltung.json')),{productRef,schema:newSchema,...slimRest}=JSON.parse(b.get('produkt-und-gestaltung.json'));
+ assert.deepEqual(slimRest,rest,'Kundenwerte, Preis, Profilstand');assert.ok(product&&productRef);assert.equal(oldSchema,NATIVE_INPUT_EMBEDDED);assert.equal(newSchema,NATIVE_INPUT_REFERENCE);
+ // Wer das Paket sonst liest (Warenkorb, Bearbeiten aus dem Warenkorb, Zusammenfassung), nimmt nur diese gleichen Teile. Kommt ein
+ // weiterer Leser der Datei dazu, schlägt dieser Test fehl: Dann ist zu prüfen, ob er den Produktstand braucht.
+ const dir=new URL('./',import.meta.url),readers=fs.readdirSync(dir).filter(n=>n.endsWith('.mjs')&&!n.endsWith('.test.mjs')&&fs.readFileSync(new URL(n,dir),'utf8').includes('produkt-und-gestaltung.json')).sort();
+ assert.deepEqual(readers,['acrylic-artwork.mjs','acrylic-order-product.mjs','acrylic-review.mjs','cart-edit-revision.mjs','form-engraving-proof.mjs','form-print-proof.mjs','form-review-snapshot.mjs','order-product-draft.mjs','production-summary.mjs','theme-cart.mjs']);
+ // theme-cart.mjs liest nur die Gestaltung; die native Zusammenfassung nur Kundenwerte und Konfiguration.
+ assert.match(fs.readFileSync(new URL('theme-cart.mjs',dir),'utf8'),/const source=JSON\.parse\(saved\.files\.get\('produkt-und-gestaltung\.json'\)\),design=source\.state\.design;/);
+ assert.equal(/source\.product\b/.test(fs.readFileSync(new URL('theme-cart.mjs',dir),'utf8')),false);
+});
+
 test('die Fertigungsdatei aus dem Paket mit Verweis ist dieselbe wie aus dem bisherigen Paket',async()=>{
  for(const k of ['aa','ss']){
   const {embedded,reference,resolve}=await pair(k);

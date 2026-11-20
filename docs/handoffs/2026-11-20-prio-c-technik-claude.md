@@ -712,7 +712,7 @@ Damit ist das kleine Paket (Stufe 1, `5ad10b05`) **nicht** überholt, sondern di
 4. Prüfung der Gestaltung an den Bestelleingang (3.49); die Fertigung prüft ohnehin noch einmal (`acrylic-artwork.mjs`).
 5. Kleiner Entwurf als Datei an die Warenkorbzeile.
 6. Bestelleingang: Paket und Fertigungsdateien automatisch (3.48).
-7. Kundenfotos beim Auswählen hochladen (Frage an Chris offen).
+7. Kundenfotos als Datei an die Warenkorbzeile (ENTSCHEIDUNGEN 3.50); der Server holt sie beim Bestelleingang von dort. Fertigungsdateien nach dem Bestelleingang an die Shopify-Bestellung.
 
 Rechnung, nicht gemessen: nach den Schritten 1 bis 4 rund 3 s vom Klick bis zum Warenkorb (Browser 0,7 s, ein bis zwei kurze Abrufe rund 1 s, Shopify 0,7 bis 1,0 s, Laden der Warenkorbseite).
 
@@ -726,7 +726,7 @@ Befund im Code: Das Prinzip ist an drei Stellen schon umgesetzt (Rohlingbilder i
 
 ### Offene Fragen an Chris
 
-1. Schlägt die Prüfung nach dem Kauf fehl: Die Bestellung bekommt im Backend „Bitte prüfen“ und wird nicht automatisch gefertigt. Empfehlung: Ja. Rückfragen von Chris, 22:25 und 22:26 Uhr („Was meinst du ?“, „Warum muss was kontrolliert werden ?“), beantwortet: kein Mitarbeiter prüft normale Bestellungen; es geht um das Nachrechnen des Preises und um Gestaltungen, aus denen sich keine Fertigungsdatei bauen lässt. Antwort steht aus.
-2. Kundenfotos und -logos: schon beim Auswählen im Hintergrund auf unseren Server laden, nicht an Shopify; nicht bestellte Bilder nach 30 Tagen löschen. Empfehlung: Ja. Rückfrage von Chris, 22:25 Uhr („Warum nicht nach Shopify ?“), beantwortet: Shopify nimmt Dateien erst beim Einlegen an (der Upload läge im Klick), und die Adressen dort sind öffentlich. Antwort steht aus.
+1. Schlägt die Prüfung nach dem Kauf fehl: Die Bestellung bekommt im Backend „Bitte prüfen“ und wird nicht automatisch gefertigt. Empfehlung: Ja. Rückfragen von Chris, 22:25, 22:26 und 22:32 Uhr („Was meinst du ?“, „Warum muss was kontrolliert werden ?“, „Wie hich ist die Wahrscheinlichkeit.  Wir sehen es ja auch im Büro. Wie viel Ladezeit haben wir dadurch ?“), beantwortet: kein Mitarbeiter prüft normale Bestellungen; es geht um das Nachrechnen des Preises und um Gestaltungen, aus denen sich keine Fertigungsdatei bauen lässt; Ladezeit null, weil nach dem Kauf; Wahrscheinlichkeit gering, keine Zahl; der Preisvergleich besteht im Bestelleingang schon. Antwort steht aus.
+2. Erledigt, 22:34 Uhr (ENTSCHEIDUNGEN 3.50): **abgelehnt.** Die ganze Bestellung muss bei Shopify sein, auch das Kundenfoto. Das Foto geht beim Klick als Datei an die Warenkorbzeile; der Server holt es beim Bestelleingang von dort; „Bearbeiten“ lädt es von der Zeile zurück (so macht es der ältere Bestellweg in `gravuru-legacy-cart.js`). Die Fertigungsdateien kommen nach dem Bestelleingang an die Shopify-Bestellung; Berechtigung der App dafür prüfen. Der Foto-Upload lässt sich damit nicht vor den Klick ziehen.
 
 Der [Design-Master](https://github.com/Chris83638w/gravuru-katalog./blob/main/designs/DESIGN-MASTER.md) gilt unverändert; an Designs wurde nichts geändert.

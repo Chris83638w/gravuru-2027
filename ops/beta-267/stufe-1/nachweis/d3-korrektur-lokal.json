@@ -187,6 +187,14 @@
         "fingerprint",
         "examplePhotos"
       ]
+    },
+    "nativeUndoRedo": {
+      "original": "Schäfer",
+      "after": "Neumann",
+      "undo": "Schäfer",
+      "redo": "Neumann",
+      "retainsOriginalPath": true,
+      "sameDesign": true
     }
   }
 ]

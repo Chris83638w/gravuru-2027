@@ -2,7 +2,7 @@
 
 - Live: `94cd4282` seit 16:53 Uhr (Astra), Rückweg `6c8a951a`. Acrylglas-Schilder 12 × 8 cm: alle 40 Karten 0,1 s nach dem Öffnen, wenn die Produktseite rund 10 s offen war. Chris, 17:52 Uhr, Handy: „Ladezeit sehr gut“.
 - Zum Aufspielen, ein Stand (Zweig `dev/claude-prio-c-rand-20261120`, Auftrag an Astra in #267):
-  - `ea2c9670` Rand-Regel: Vorlagen mit überstehendem Element laden ohne Fehlermeldung (Chris 16:49 Uhr, ENTSCHEIDUNGEN 3.43). D808 öffnet; bei D808 ragt nur der Textkasten über den Rand, nicht die Buchstaben.
+  - `ea2c9670` + `4db475ad` Rand-Regel: Der Editor öffnet Vorlagen mit überstehendem Element ohne Fehlermeldung (Chris 16:49 Uhr, ENTSCHEIDUNGEN 3.43). D808 öffnet; bei D808 ragt nur der Textkasten über den Rand, nicht die Buchstaben. Mein Fehler: Die erste Fassung lockerte auch drei Prüfungen der Werkstatt (Speichern, Produktanlage aus Familien, Katalog-Umrechnung); der Gesamtlauf zeigte es, `4db475ad` begrenzt die Regel auf den Editor. Nie live.
   - `d1a3d95e` Abruf der Design-Teile: ein Speichereintrag je Design, Modell und Freigabe-Art vom Start. Wirkung am echten Server noch nicht gemessen.
   - `8e78b680` Vollbild auf Handy und Tablet: „Gestaltung zurücksetzen“ schob das Schild aus dem Bild (Chris 17:52 Uhr mit Bildern, „Ja“ zur Lage unten links um 18:05 Uhr, ENTSCHEIDUNGEN 3.44). Fehler des Handy-Layouts, auch beim Edelstahl-Türschild, unabhängig von der schnellen Technik.
   - `f1948a8b` Test: jeder Produktschnitt des Katalogs hat alle Designs im Gerät oder bekommt Design-Teile (Chris 17:10 Uhr, ENTSCHEIDUNGEN 2.18). Lücke: Produkte ohne Familie, keines im Shop.

@@ -398,7 +398,7 @@ Mit `4c508463` bleibt es dabei: D808 behält Vorschau und Wechsel über den Serv
 
 ## Stand zum Aufspielen: Rand-Regel, schnellerer Abruf, Vollbild (20.11.2026, ab 16:49 Uhr)
 
-Zweig `dev/claude-prio-c-rand-20261120` auf `2d54697a`. Ein Aufspielen für alles: `ea2c9670` (Rand-Regel), `d1a3d95e` (Abruf der Design-Teile), `8e78b680` (Vollbild), `f1948a8b` (Test zur Abdeckung). Gegenüber live ändern sich zwei Paket-Teile: `editor-0cfc01ffabb9d596` → `editor-3649af23fd45302f` und `editor-8a0b6bac286faad0` → `editor-d6521828989e096a`; dazu der Server (`shop-entry.mjs`). Das Ergebnis des Gesamtlaufs steht im Auftrag an Astra in #267.
+Zweig `dev/claude-prio-c-rand-20261120` auf `2d54697a`. Ein Aufspielen für alles: `ea2c9670` und `4db475ad` (Rand-Regel), `d1a3d95e` (Abruf der Design-Teile), `8e78b680` (Vollbild), `f1948a8b` (Test zur Abdeckung). Gegenüber live ändern sich zwei Paket-Teile: `editor-0cfc01ffabb9d596` → `editor-ae2260b297a473fa` und `editor-8a0b6bac286faad0` → `editor-d6521828989e096a`; dazu der Server (`shop-entry.mjs`). Das Ergebnis des Gesamtlaufs steht im Auftrag an Astra in #267.
 
 ### Live seit 16:53 Uhr: `94cd4282` (Astra), Rückweg `6c8a951a`
 
@@ -406,14 +406,15 @@ Zweig `dev/claude-prio-c-rand-20261120` auf `2d54697a`. Ein Aufspielen für alle
 - Meine Messung am echten Shop gegen 17:05 Uhr, ohne Ersatz: Nach 10 s auf der Produktseite stehen alle 40 Karten 0,1 s nach dem Öffnen, alle im Gerät gezeichnet. Die Abrufe der ersten Seite warten 250 bis 1628 ms; eine noch nicht gesehene Gruppe kostet rund 0,6 s, gleich ob 1 oder 6 Designs. Der Vorab-Start braucht rund 9 bis 10 s (Start 1,3 s, Modell 1,3 s, Editor rund 2,5 s, Designliste 1,0 s, danach Design-Teile und Schriften).
 - Chris, 17:52 Uhr, Handy, Acrylglas-Schild: „Ladezeit sehr gut“.
 
-### Rand-Regel (`ea2c9670`)
+### Rand-Regel (`ea2c9670`, eingegrenzt mit `4db475ad`)
 
 Chris, 16:49 Uhr, zu D808: „Ja korrigieren. Allerdings muss das generell nöglich sein. Es darf keine Fehlermeldung kommen. Beim export kann es dann beschnitten sein“ (ENTSCHEIDUNGEN 3.43).
 
 - Berichtigung zum Befund oben: Bei D808 ragt nur der Kasten des Namens 1,3 mm über die Oberkante; die Buchstaben liegen 2,7 mm innerhalb. Der Editor prüft die Buchstabenformen nur mit geladener Schrift; im Shop kommen die Schriften nach, also blieb der Kasten und die Vorlage wurde abgelehnt. Die Vorlage selbst habe ich nicht geändert.
-- Änderung: Die vier Befunde „ragt über die Gestaltungsfläche“ sind beim Laden einer Vorlage kein Fehler mehr (`validateStudio`). Alle anderen Befunde bleiben Fehler.
+- Änderung: Der Editor öffnet eine veröffentlichte Vorlage auch dann, wenn ein Element über die Gestaltungsfläche ragt (`templateBoundary:'allow'`, gesetzt nur in `adapter.mjs` beim Start und beim Aufnehmen eines weiteren Designs). Alle anderen Befunde bleiben Fehler.
+- **Mein Fehler in der ersten Fassung:** `ea2c9670` lockerte `validateStudio` für alle Aufrufer. Diese Prüfung entscheidet auch beim Speichern in der Werkstatt, bei der Produktanlage aus Familien und bei der Katalog-Umrechnung („passt nicht“), welche Designs in ein Produkt kommen. Der Gesamtlauf auf `671dec47` zeigte das an drei neuen Fehlschlägen (`contour-surfaces`, `katalog-convert`, `product-families`). `4db475ad` begrenzt die Regel auf den Editor; diese drei Prüfungen arbeiten wieder streng wie zuvor. Live war die erste Fassung nie. Die gezielten Tests vor `ea2c9670` hatten diese drei Gruppen nicht enthalten.
 - Unverändert: Hinweis, „Text passend verkleinern“, Randsperre und die Prüfung vor dem Warenkorb für das, was der Kunde selbst ändert; ebenso die Prüfung am Server. Ob das auch entfallen soll, ist offen (Frage an Chris).
-- Geprüft: 4 neue Tests. Am echten Shop mit ersetztem Paket: D808 wird im Gerät gezeichnet, öffnet in 0,28 s ohne Hinweis; Warenkorb am echten Server angenommen (14,99 €, Design und Bild richtig, 11,7 s). Dabei entstand ein vierter Testentwurf „Claudetest“; gelöscht habe ich nichts.
+- Geprüft: 5 Tests (darunter: die Werkstatt bleibt streng, nur der Editor setzt die Angabe), die drei Gruppen 51 von 51. Am echten Shop mit ersetztem Paket `editor-ae2260b297a473fa`: D808 wird im Gerät gezeichnet und öffnet in 0,29 s ohne Hinweis. Mit der ersten Fassung zusätzlich: Warenkorb am echten Server angenommen (14,99 €, Design und Bild richtig, 11,7 s); dabei entstand ein vierter Testentwurf „Claudetest“; gelöscht habe ich nichts. Den Warenkorb-Test habe ich mit der eingegrenzten Fassung nicht wiederholt.
 
 ### Abruf der Design-Teile (`d1a3d95e`)
 

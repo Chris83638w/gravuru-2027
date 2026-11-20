@@ -1,0 +1,76 @@
+{
+  "commit": "921928f41a7d61e73b504400728f2f6f629e8ade",
+  "bundle": "editor-6c00a8d0e08b6e0d.js",
+  "remote": {
+    "entry": "189d1e64e67e5290c038ac603c0b25f66819067a24f2a79bb6902df42e6a40e1",
+    "previous": "189d1e64e67e5290c038ac603c0b25f66819067a24f2a79bb6902df42e6a40e1",
+    "operation": "stage"
+  },
+  "checks": [
+    {
+      "path": "/konfi-demo/prio-claude-stufe1-267/r921928f4/editor-6ee9bdee5f9ebc6b.js",
+      "sha256": "7282c84e66085a6cf5051590319fdabe20b80308bb8bc88ecd0fbede9c1e0ceb",
+      "bytes": 8108
+    },
+    {
+      "path": "/konfi-demo/prio-claude-stufe1-267/r921928f4/editor-bbd6f79f32ce9680.js",
+      "sha256": "e62ee4916cedcd2d965494e27a9b75941be5a0366c7560eceb786358e905c202",
+      "bytes": 39412
+    },
+    {
+      "path": "/konfi-demo/prio-claude-stufe1-267/r921928f4/editor-69eb9880b804359a.js",
+      "sha256": "ae30b048f0955960ec763e83c62eb1ae455c6514885f813eadbed49a4d5b4672",
+      "bytes": 3378
+    },
+    {
+      "path": "/konfi-demo/prio-claude-stufe1-267/r921928f4/editor-e1e24f0ee6b66daf.js",
+      "sha256": "24a2611031b0e6a37efddec5a3ec332d92802345a323c49521b350b37dbb9c67",
+      "bytes": 10974
+    },
+    {
+      "path": "/konfi-demo/prio-claude-stufe1-267/r921928f4/editor-8a0b6bac286faad0.js",
+      "sha256": "0cbe29ba6dce8d8270f9ab270f23e2f15313b319cf014ae2333119a52bca3da2",
+      "bytes": 136857
+    },
+    {
+      "path": "/konfi-demo/prio-claude-stufe1-267/r921928f4/editor-6c00a8d0e08b6e0d.js",
+      "sha256": "762a181de7b75c82c4f289e0cbf93a4e199d6e453c836122abb454d4e9e44f45",
+      "bytes": 1416006
+    },
+    {
+      "path": "/konfi-demo/prio-claude-stufe1-267/r921928f4/editor.html",
+      "sha256": "984dad0f748724a4569f8598d227847b8ca8c38b8d208fc09e0d51d258de2a27",
+      "bytes": 376926
+    },
+    {
+      "path": "/konfi-demo/prio-claude-stufe1-267/r921928f4/shop-design-switch.js",
+      "sha256": "0b7b0fd4f3a1e18f5af00ac0c17a765e61936af19fe5c1d109652a175645ca2e",
+      "bytes": 8446
+    },
+    {
+      "path": "/konfi-demo/prio-claude-stufe1-267/r921928f4/shop-entry-page.js",
+      "sha256": "6624a0168a9aef90efd7f5e9c1b8eca3d3ec76b4ec465471da9b0a1286b85207",
+      "bytes": 7380
+    },
+    {
+      "path": "/konfi-demo/prio-claude-stufe1-267/r921928f4/pilot.js",
+      "sha256": "71b9d97b6a2ca1886410ed6bf81816ae4a245cc7ade38a3b49926d0f32af8157",
+      "bytes": 1846
+    },
+    {
+      "path": "/konfi-demo/prio-claude-stufe1-267/r921928f4/prio.html",
+      "sha256": "1b4a818feca89b109adcdc27efd9d3b5479dd9371eed168fd556b4ed4f3b7a88",
+      "bytes": 2721
+    },
+    {
+      "path": "/konfi-demo/prio-claude-stufe1-267/prio.html",
+      "sha256": "189d1e64e67e5290c038ac603c0b25f66819067a24f2a79bb6902df42e6a40e1",
+      "bytes": 2701
+    },
+    {
+      "path": "/konfi-demo/prio-claude-stufe1-267/editor-d64f43ea13aaac6a.js",
+      "sha256": "c34f6c53d4df300f002cae525c260ceff8b82cce8d2ffa4f9bde148c26f01511",
+      "bytes": 1413467
+    }
+  ]
+}

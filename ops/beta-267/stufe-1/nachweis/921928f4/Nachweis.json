@@ -1,0 +1,86 @@
+{
+  "commit": "921928f4",
+  "entry": "https://konfi-beta.gravuru-designwerkstatt.de/prio-stufe-1/",
+  "started": "2026-11-20T11:12:15.904Z",
+  "viewport": "390 × 844",
+  "privateContext": true,
+  "errors": [],
+  "browser": "157.0.8103.78",
+  "writes": {
+    "drafts": 1,
+    "offers": 1,
+    "claims": 1,
+    "cartAdds": 1,
+    "orderRoutes": 0
+  },
+  "initialCartItems": 0,
+  "mainSha256": "762a181de7b75c82c4f289e0cbf93a4e199d6e453c836122abb454d4e9e44f45",
+  "editorPath": "/konfi-demo/prio-claude-stufe1-267/r921928f4/editor.html",
+  "main": "editor-6c00a8d0e08b6e0d.js",
+  "switch": {
+    "after": "katalog-TAE-V2A-8x5-D3",
+    "title": "Zwei Zeilen mit Trennlinie",
+    "start": "katalog-TAE-V2A-8x5-D1",
+    "addedFrames": 0,
+    "addedEditors": 0,
+    "sameDocument": true,
+    "sameEditor": true,
+    "sameFrame": true,
+    "width": 120,
+    "height": 80,
+    "design": "katalog-TAE-V2A-8x5-D3",
+    "modelReads": 1,
+    "serverSwitches": 0
+  },
+  "transfer": {
+    "text": "Deine Texte und Fotos wurden übernommen. Bitte die neue Anordnung prüfen.",
+    "cssVisible": true,
+    "beforeScrollTop": 130,
+    "inFirstViewport": true
+  },
+  "dividerBeforeSave": {
+    "personalName": "Neumann",
+    "key": "katalog-TAE-V2A-8x5-D3-motiv-1",
+    "path": "<path d=\"M 7.000 24.552 L 73.000 24.552 L 73.000 24.931 L 7.000 24.931 Z\" fill=\"currentColor\" fill-rule=\"evenodd\"/>",
+    "bounds": [
+      7,
+      24.552,
+      66,
+      0.379
+    ]
+  },
+  "cart": {
+    "name": "Neumann",
+    "design": "Zwei Zeilen mit Trennlinie",
+    "sku": "156-GR-ES-AB-120X80-T15-K00",
+    "unitCents": 1999,
+    "totalCents": 1999,
+    "configurationDigest": "a15029e63c15c79f68153b3820f4840fdacc4fcc57f90a2cf5ffce923b8b7e49",
+    "savedRevision": "1",
+    "zoom": true
+  },
+  "decodedImage": {
+    "name": "Neumann",
+    "width": 1600,
+    "height": 1102,
+    "pixelHash": "d94262a1d134ab8378e59e9653124d9db524ded82cb7ba8c9004d8420134b1cc",
+    "identicalToSavedCustomerPicture": true
+  },
+  "confirmation": "Bei Shopify bestätigt.",
+  "downloadedPngSha256": "bbd2f2ca362e6bfd23f5aef83d0db72a682db00acc4ffff970300c1a4ac98d17",
+  "dividerPixels": {
+    "found": true,
+    "width": 1600,
+    "height": 1102,
+    "y": 515,
+    "startX": 183,
+    "endX": 1416,
+    "heightPixels": 7,
+    "consecutivePixels": 1234,
+    "coverage": 100,
+    "meanGreyContrast": 169,
+    "offsetPixels": 13
+  },
+  "passed": true,
+  "ended": "2026-11-20T11:12:38.272Z"
+}

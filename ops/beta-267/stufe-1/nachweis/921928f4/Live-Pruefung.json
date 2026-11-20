@@ -1,0 +1,35 @@
+{
+  "product": "https://gravuru-design.myshopify.com/products/tuerschild-edelstahl-form-und-groesse-selbst-waehlen",
+  "commit": "921928f41a7d61e73b504400728f2f6f629e8ade",
+  "started": "2026-11-20T11:15:15.986Z",
+  "viewport": "390 × 844",
+  "bundles": [
+    "editor-8a0b6bac286faad0.mjs",
+    "editor-6c00a8d0e08b6e0d.mjs",
+    "editor-6ee9bdee5f9ebc6b.mjs"
+  ],
+  "serverSwitches": 0,
+  "cartAdds": 0,
+  "checkouts": 0,
+  "button": "Jetzt personalisieren",
+  "notice": "Deine Texte und Fotos wurden übernommen. Bitte die neue Anordnung prüfen.",
+  "editor": {
+    "sameElement": true,
+    "sameFrame": true,
+    "sameDocument": true,
+    "newFrames": 0,
+    "newEditors": 0,
+    "framesInContainer": 1
+  },
+  "line": {
+    "design": "katalog-TAE-V2A-8x5-D3",
+    "motif": "katalog-TAE-V2A-8x5-D3-motiv-1",
+    "found": true,
+    "originalPath": "M 7.000 24.552 L 73.000 24.552 L 73.000 24.931 L 7.000 24.931 Z",
+    "widthPx": 275.54,
+    "heightPx": 1.58,
+    "visible": true
+  },
+  "passed": true,
+  "finished": "2026-11-20T11:15:27.174Z"
+}

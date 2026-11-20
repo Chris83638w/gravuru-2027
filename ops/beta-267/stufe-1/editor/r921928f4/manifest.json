@@ -1,0 +1,87 @@
+{
+  "commit": "921928f41a7d61e73b504400728f2f6f629e8ade",
+  "base": "2bd7bd8e4b556955fbbbe28b585ecdaa4bfc7179",
+  "origin": "https://app-2027.gravuru-designwerkstatt.de",
+  "path": "/konfi-demo/prio-claude-stufe1-267/r921928f4/",
+  "files": {
+    "editor-6ee9bdee5f9ebc6b.js": {
+      "bytes": 8108,
+      "sha256": "7282c84e66085a6cf5051590319fdabe20b80308bb8bc88ecd0fbede9c1e0ceb"
+    },
+    "editor-bbd6f79f32ce9680.js": {
+      "bytes": 39412,
+      "sha256": "e62ee4916cedcd2d965494e27a9b75941be5a0366c7560eceb786358e905c202"
+    },
+    "editor-69eb9880b804359a.js": {
+      "bytes": 3378,
+      "sha256": "ae30b048f0955960ec763e83c62eb1ae455c6514885f813eadbed49a4d5b4672"
+    },
+    "editor-e1e24f0ee6b66daf.js": {
+      "bytes": 10974,
+      "sha256": "24a2611031b0e6a37efddec5a3ec332d92802345a323c49521b350b37dbb9c67"
+    },
+    "editor-8a0b6bac286faad0.js": {
+      "bytes": 136857,
+      "sha256": "0cbe29ba6dce8d8270f9ab270f23e2f15313b319cf014ae2333119a52bca3da2"
+    },
+    "editor-6c00a8d0e08b6e0d.js": {
+      "bytes": 1416006,
+      "sha256": "762a181de7b75c82c4f289e0cbf93a4e199d6e453c836122abb454d4e9e44f45"
+    },
+    "editor.html": {
+      "bytes": 376926,
+      "sha256": "984dad0f748724a4569f8598d227847b8ca8c38b8d208fc09e0d51d258de2a27"
+    },
+    "shop-design-switch.js": {
+      "bytes": 8446,
+      "sha256": "0b7b0fd4f3a1e18f5af00ac0c17a765e61936af19fe5c1d109652a175645ca2e"
+    },
+    "shop-entry-page.js": {
+      "bytes": 7380,
+      "sha256": "6624a0168a9aef90efd7f5e9c1b8eca3d3ec76b4ec465471da9b0a1286b85207"
+    },
+    "pilot.js": {
+      "bytes": 1846,
+      "sha256": "71b9d97b6a2ca1886410ed6bf81816ae4a245cc7ade38a3b49926d0f32af8157"
+    },
+    "prio.html": {
+      "bytes": 2721,
+      "sha256": "1b4a818feca89b109adcdc27efd9d3b5479dd9371eed168fd556b4ed4f3b7a88"
+    }
+  },
+  "baseline": {
+    "family-formats-ui": {
+      "original": "/_acryl-bundle/editor-6ee9bdee5f9ebc6b.mjs",
+      "sha256": "7282c84e66085a6cf5051590319fdabe20b80308bb8bc88ecd0fbede9c1e0ceb"
+    },
+    "device": {
+      "original": "/_acryl-bundle/editor-bbd6f79f32ce9680.mjs",
+      "sha256": "e62ee4916cedcd2d965494e27a9b75941be5a0366c7560eceb786358e905c202"
+    },
+    "stake-execution": {
+      "original": "/_acryl-bundle/editor-69eb9880b804359a.mjs",
+      "sha256": "ae30b048f0955960ec763e83c62eb1ae455c6514885f813eadbed49a4d5b4672"
+    },
+    "memorial-execution": {
+      "original": "/_acryl-bundle/editor-e1e24f0ee6b66daf.mjs",
+      "sha256": "24a2611031b0e6a37efddec5a3ec332d92802345a323c49521b350b37dbb9c67"
+    },
+    "presentation": {
+      "original": "/_acryl-bundle/editor-8a0b6bac286faad0.mjs",
+      "sha256": "0cbe29ba6dce8d8270f9ab270f23e2f15313b319cf014ae2333119a52bca3da2"
+    },
+    "core": {
+      "original": "/_acryl-bundle/editor-03848a8822ea9589.mjs",
+      "sha256": "42151ec1a59a9ea265e2a2892aaaa4f55358e172f0a98b0557ab564d6cec6075"
+    },
+    "editorHtml": "0d7ebc5556f3b201da834a3d29098f6b1ed933ea2433b0b0a18b1edbf9210999"
+  },
+  "bundleNames": {
+    "family-formats-ui": "editor-6ee9bdee5f9ebc6b.js",
+    "device": "editor-bbd6f79f32ce9680.js",
+    "stake-execution": "editor-69eb9880b804359a.js",
+    "memorial-execution": "editor-e1e24f0ee6b66daf.js",
+    "presentation": "editor-8a0b6bac286faad0.js",
+    "core": "editor-6c00a8d0e08b6e0d.js"
+  }
+}

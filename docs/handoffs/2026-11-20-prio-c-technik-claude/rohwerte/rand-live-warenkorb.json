@@ -1,0 +1,123 @@
+{
+ "lauf": "Claude, 20.11.2026, 20:18 Uhr (UTC+2), echter Shop, Stand 44f9bdcf live, ohne Ersatz; Skript korb/korb.mjs mit UEBER_RAND=1; keine Kasse, keine Bestellung",
+ "produkt": "familienschild-acryl-baum-12x8-personalisiert",
+ "ueberRand": {
+  "id": "text-1",
+  "schildBreite": 120,
+  "vorher": {
+   "x": 60.78,
+   "w": 49.6
+  },
+  "danach": {
+   "x": 117.52,
+   "w": 49.6,
+   "mitteX": 117.52,
+   "ragtUeberMm": 22.32,
+   "material": "acrylic",
+   "hinweis": {
+    "sichtbar": true,
+    "text": "Teile außerhalb des Schilds werden abgeschnitten.",
+    "neutral": true
+   },
+   "roteMarken": 0
+  }
+ },
+ "imKorbNachMs": 12032,
+ "fehler": [],
+ "korb": {
+  "item_count": 1,
+  "total_price": 1499,
+  "titel": "Familien-Namensschild mit Baum – Acrylglas 12 × 8 cm - Schwarz / Ohne Bohrung",
+  "design": "Zwei Vornamen und Nachname mit Laubbaum und Spruch"
+ },
+ "eigeneAbrufe": [
+  {
+   "weg": "acrylic-drafts",
+   "methode": "POST",
+   "status": 201,
+   "dauerMs": 4855,
+   "serverMs": {
+    "total": 4181.47,
+    "session_binding": 154.79,
+    "body_read": 10.08,
+    "body_json": 0.54,
+    "product_read": 282.44,
+    "model_build": 224.55,
+    "review_config": 81.21,
+    "review_validate": 1081.49,
+    "review_sources": 7.04,
+    "preview_pair": 451.77,
+    "review_zip": 791.95,
+    "originals_zip": 0.18,
+    "review_prepare": 2843.68,
+    "draft_persist": 542.33,
+    "response_json": 0.01
+   }
+  },
+  {
+   "weg": "theme-cart",
+   "methode": "POST",
+   "status": 200,
+   "dauerMs": 996,
+   "serverMs": {
+    "total": 850.74,
+    "session_binding": 163.79,
+    "body_read": 0.22,
+    "body_json": 0.02,
+    "draft_read": 0.18,
+    "review_read": 16.89,
+    "variant_candidates": 159.38,
+    "variant_binding": 14.96,
+    "offer_resolve": 31.29,
+    "offer_create": 18.82,
+    "bound_offer": 50.55,
+    "review_package": 132.87,
+    "cart_assign": 2.15,
+    "customer_image_url": 0.13,
+    "cart_prepare": 300.57,
+    "response_json": 0.01
+   }
+  },
+  {
+   "weg": "cart/data",
+   "methode": "GET",
+   "status": 200,
+   "dauerMs": 3099,
+   "serverMs": {
+    "total": 2734.46,
+    "proxy_verify": 0.21,
+    "session_binding": 393.54,
+    "offer_resolve": 24.83,
+    "offer_create": 30.39,
+    "bound_offer": 55.39,
+    "review_package": 128.48,
+    "cart_assign": 0.33,
+    "customer_image_url": 0.09,
+    "cart_prepare": 303.79,
+    "checkout_image_wait": 2010.98,
+    "cart_revalidate": 25.24,
+    "response_json": 0.03
+   }
+  },
+  {
+   "weg": "cart/claim",
+   "methode": "POST",
+   "status": 200,
+   "dauerMs": 794,
+   "serverMs": {
+    "total": 539.4,
+    "proxy_verify": 0.16,
+    "session_binding": 198.27,
+    "offer_resolve": 29.39,
+    "offer_create": 26.41,
+    "bound_offer": 55.99,
+    "review_package": 146.26,
+    "cart_assign": 0.28,
+    "customer_image_url": 0.07,
+    "cart_prepare": 290.24,
+    "cart_claim": 50.1,
+    "response_json": 0.01
+   }
+  }
+ ]
+}

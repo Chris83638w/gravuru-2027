@@ -464,7 +464,7 @@ Meine Nachprüfung am echten Shop ohne Ersatz, 19:25 bis 19:40 Uhr, nur lesend (
 
 ## Rand frei außer bei Edelstahl (20.11.2026, ab 19:26 Uhr)
 
-Zweig `dev/claude-rand-kunde-20261120` auf `63adf8bd` (live ist `0a536870`). Code: `6fe9408a`. Entscheidung: ENTSCHEIDUNGEN 3.45.
+Zweig `dev/claude-rand-kunde-20261120` auf `63adf8bd`. Code: `6fe9408a`. Entscheidung: ENTSCHEIDUNGEN 3.45. **Live seit 20:11 Uhr als `44f9bdcf`** (Abschnitt „Live seit 20:11 Uhr“ unten).
 
 **Entscheidung von Chris.** Auf meine Rückfrage mit zwei Auswahlfragen: „Randsperre weg“ (Elemente lassen sich über den Rand schieben und vergrößern; die Vorschau zeigt sie abgeschnitten, genau so wird gefertigt) und „Kurzer Hinweis“ (ein neutraler Satz, keine Sperre, kein Dialog). Die Rückfrage war nötig, weil die Randsperre auf seine eigene Regel vom 20.10. zurückgeht („bis an den Rand …, aber nicht weiter“).
 
@@ -483,15 +483,28 @@ Zweig `dev/claude-rand-kunde-20261120` auf `63adf8bd` (live ist `0a536870`). Cod
 
 **Geprüft.**
 - 8 neue Tests (`app/workshop/customer-edge.test.mjs`). Ein bestehender Test an die Regel angepasst (`contract.test.mjs`: Text weit neben dem Schild wird weiter abgelehnt, jetzt mit dem neuen Befund). Betroffene Gruppen 422 von 422, Handy-Layout 202 von 202, Paket-Tests 9 von 9. Gesamtlauf: Ergebnis im Auftrag an Astra in #267.
-- Am echten Shop, Paket nur in meinem Browser ersetzt (`editor-394ed504e794424e`, Skript `korb/rand.mjs`, `rohwerte/rand-*.json`): Beim Acrylglas-Schild den Namen am PC mit der Maus und in Handy-Größe mit dem Finger über den rechten Rand gezogen. Er bleibt dort (rechte Kante bis 31 mm neben dem Schild), die Vorschau schneidet am Schild ab, der Hinweis ist neutral, die Prüfung vor dem Warenkorb gibt frei, kein Dialog (`bilder/17-rand-frei-acryl-handy.png`, `bilder/18-rand-frei-acryl-pc.png`). Ganz neben das Schild gesetzt, kommt die Mitte auf den Rand zurück. Edelstahl mit demselben Paket: wie live.
+- Am echten Shop, Paket nur in meinem Browser ersetzt (Prüfstand `editor-394ed504e794424e`; das Paket des fertigen Stands heißt `editor-6928e91ac4b786bf`, weil danach noch ein Kommentar dazukam, in Handy-Größe damit wiederholt; Skript `korb/rand.mjs`, `rohwerte/rand-*.json`): Beim Acrylglas-Schild den Namen am PC mit der Maus und in Handy-Größe mit dem Finger über den rechten Rand gezogen. Er bleibt dort (rechte Kante bis 31 mm neben dem Schild), die Vorschau schneidet am Schild ab, der Hinweis ist neutral, die Prüfung vor dem Warenkorb gibt frei, kein Dialog (`bilder/17-rand-frei-acryl-handy.png`, `bilder/18-rand-frei-acryl-pc.png`). Ganz neben das Schild gesetzt, kommt die Mitte auf den Rand zurück. Edelstahl mit demselben Paket: wie live.
 
 **Nicht geprüft.**
-- Warenkorb am echten Server. Der Server prüft bis zum Aufspielen nach der alten Regel und würde ablehnen; die Annahme ist nur in den Tests belegt.
+- Warenkorb am echten Server: bis zum Aufspielen nicht prüfbar, seit 20:11 Uhr geprüft (Abschnitt „Live seit 20:11 Uhr“ unten).
 - Eine echte Fertigungsdatei mit überstehendem Element. Dass Gravur am Außenumriss und Druck an der Seite enden, habe ich im Code gelesen, nicht an einer Ausgabe geprüft. Vor dem ersten echten Auftrag mit überstehendem Element sollte die Werkstatt eine Datei ansehen.
 - Andere Materialien als Acrylglas am echten Shop (im Shop gibt es nur Acrylglas, Edelstahl und Klingelschilder).
 - Echte Geräte.
 
 **Befund am Live-Shop, unabhängig von dieser Änderung (Edelstahl):** Zieht man beim Edelstahl-Türschild den Namen ganz an den Rand, lässt die Randsperre das nach den Buchstaben zu (Regel vom 21.10.); der Textkasten steht dann 0,9 mm über. Die Prüfung vor dem Warenkorb meldet darauf „Bitte Gestaltung prüfen – Dieses Element ragt über den Gestaltungsrand.“ mit „Automatisch einpassen“ und „Weiter bearbeiten“ (`bilder/19-edelstahl-live-dialog-am-rand.png`). Sperre und Prüfung messen also verschieden. Ursache nicht untersucht; Frage an Chris, ob ich das beheben soll.
+
+### Live seit 20:11 Uhr: `44f9bdcf` (Astra), Rückweg `0a536870`
+
+Astra, #267: Am 20.11.2026 um 20:11:01 Uhr (Bukarest) Editor und Server gemeinsam umgeschaltet und neu gestartet; um 20:11:26 Uhr lieferte der öffentliche Editor `editor-6928e91ac4b786bf.mjs`, dazu unverändert `editor-d6521828989e096a.mjs`.
+
+Meine Prüfung am echten Shop ohne Ersatz, 20:18 bis 20:24 Uhr (`rohwerte/rand-live-warenkorb.json`, Skript `korb/korb.mjs` mit `UEBER_RAND=1`, `korb/rand.mjs`):
+
+- **Acrylglas-Familienschild „Baum“, Warenkorb:** Namen „Claudetest“ so gesetzt, dass er 22,3 mm über den rechten Rand ragt (Mitte bei 117,5 von 120 mm). Er bleibt dort, die Vorschau schneidet am Schild ab, der Hinweis „Teile außerhalb des Schilds werden abgeschnitten.“ erscheint neutral, keine rote Markierung (`bilder/20-rand-live-konfigurator.png`). Der Server nimmt den Entwurf an (201), das Schild liegt im Warenkorb (1 Stück, 14,99 €, kein Fehler). Das Warenkorbbild zeigt den Namen am Rand abgeschnitten (`bilder/21-rand-live-warenkorbbild.png`). Keine Kasse, keine Bestellung.
+- **Edelstahl-Türschild, nur lesend:** Der Name lässt sich nicht über den Rand ziehen, kein Hinweis; der Befund am Rand (Dialog „Bitte Gestaltung prüfen“) besteht unverändert.
+- Ein erster Lauf setzte den Namen nur bis an den Rand (x ist die Mitte des Elements, nicht die linke Kante); er belegt nichts zum Überstand und ist nicht gewertet. Aus beiden Läufen stammen zwei weitere Testentwürfe „Claudetest“ (jetzt sechs); gelöscht habe ich nichts.
+- Dauer bis das Schild im Warenkorb liegt: 12,0 s. Serverzeiten aus dem Lauf: Entwurf sichern 4,2 s (davon Prüfung 1,1 s, Prüfpaket 0,8 s, Vorschaubilder 0,5 s, Speichern 0,5 s), Warenkorb vorbereiten 0,9 s, Warenkorbdaten 2,7 s (davon 2,0 s Warten auf das Kassenbild), Übernahme 0,5 s. Ein Lauf, kein Mittelwert; Grundlage für den Punkt „Warenkorb“.
+
+Weiter nicht geprüft: eine echte Fertigungsdatei mit überstehendem Element, echte Geräte.
 
 ### Offene Fragen an Chris
 

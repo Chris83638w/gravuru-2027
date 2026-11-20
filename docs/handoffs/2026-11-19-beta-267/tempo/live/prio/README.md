@@ -8,6 +8,23 @@ Auf der normalen Produktseite „Jetzt personalisieren“ antippen, einen eigene
 
 Die 22×14-Demo ist die von Chris bestimmte visuelle Referenz. Der veröffentlichte Edelstahlartikel nutzte die Prio-Bedienung bereits. Beim Ring wurde zuerst der reguläre Einstieg einzeln umgestellt, anschließend die zentrale Darstellungswahl im bestehenden signierten R15-Einstieg für die gebundenen Produkte. Jeder Artikel lädt sein eigenes Profil. Claude bestätigte die Produktdaten der Ring-Ansicht und las die beiden einzelnen Positionen von Testauftrag #1035 in Shopify zurück. [Originalansicht](https://app-2027.gravuru-designwerkstatt.de/konfi-demo/mobil-20261107-r15/22x14.html?fresh=1) · [PC-Ansichten](Oberflaeche-PC.png) · [Handyansichten](Oberflaeche-Mobil.png) · [Claudes Befund](https://github.com/Chris83638w/gravuru-2027/issues/267#issuecomment-7032020259)
 
+## Motive ohne Scrollen
+
+Seit dem 20. November 2026 hat die offene Motivauswahl im Prio R15 eine gemeinsame Zeile für die vier Schnellkategorien und das Kategorienmenü. Das Infosymbol steht neben der Suche. Beim Schließen mit „Fertig“ erhält die Schildvorschau ihre bisherige Größe zurück. Zum Ausprobieren auf der Produktseite „Jetzt personalisieren“ und anschließend „Motive“ öffnen. [Edelstahl-Türschild im Shop](https://gravuru-design.myshopify.com/products/tuerschild-edelstahl-form-und-groesse-selbst-waehlen)
+
+| Browserfenster | Vollständige, geladene und auswählbare Motive vorher | Live |
+|---|---:|---:|
+| 320 × 568 | 0 | 3 |
+| 360 × 640 | 0 | 3 |
+| 390 × 844 | 3 | 6 |
+| 1440 × 900 | 3 | 12 |
+
+Gemessen über die normale Produktseite in neu geöffneten Chrome-Sitzungen mit den angegebenen Fenstergrößen. Eine Kachel zählt, sobald das Bild geladen, die Auswahl aktiv und die Karte oben, mittig und unten vor der festen Navigation erreichbar ist. Die Liste stand bei allen Messungen ganz oben. Ab dem ersten sichtbaren Raster benötigten die Bilder in den vier Live-Durchläufen bis zu 1,54 Sekunden. [360 Pixel vorher](Motive-360-vorher.png) · [360 Pixel live](Motive-360-live.png) · [390 Pixel live](Motive-390-live.png) · [Messwerte](Motive-Sichtpruefung.json)
+
+Bei Edelstahl und Ring wurden Suche, Info, Schnellwahl, alle 48 Kategorien, Tastaturauswahl, Motivübernahme und erneutes Öffnen über den öffentlichen Shop geprüft. Das Edelstahl-Türschild zu 19,99 € mit dem zusätzlichen Motiv „Haus“ kam vor und nach der Änderung mit 21,68 € und eigenem Bild bis in die Shopify-Kasse. Der ausschließlich für die offene Motivauswahl geänderte Stil lässt sich einzeln zurücknehmen. [Änderung](https://github.com/Chris83638w/gravuru-2027/commit/2bd7bd8e4b556955fbbbe28b585ecdaa4bfc7179)
+
+Für eine Wiederholung am Shop `node tools/beta-267/check-visible-motifs.cjs ./motivpruefung` mit Playwright und Chrome ausführen. Das Programm speichert für jede Fenstergröße den Bildschirm und die Messwerte. [Browserprüfung](../../../../../../tools/beta-267/check-visible-motifs.cjs)
+
 ## Bestellungen, persönliche Bilder und Werkstatt
 
 | Artikel | Geprüfter Kundenweg | Ergebnis |

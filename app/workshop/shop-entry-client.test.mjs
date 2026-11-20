@@ -355,6 +355,94 @@ test('start ticket: fetched once per start address through the proxy, only edito
  assert.equal(await tickets.load(null),null);
 });
 
+// Stufe 3 (Chris 20.11.2026: Prio „exakt so“ wie Variante C): Der Konfigurator startet nach der Startkarte einmal unsichtbar.
+test('Vorab-Start: einmal je Seitenaufruf, nur mit gültiger Startkarte, nie im Datensparmodus, bei 2G oder auf verborgener Seite',async t=>{
+ const fs=await import('node:fs'),os=await import('node:os'),path=await import('node:path');
+ const dir=fs.mkdtempSync(path.join(os.tmpdir(),'g27-embed-preboot-'));t.after(()=>fs.rmSync(dir,{recursive:true,force:true}));
+ const source=fs.readFileSync(new URL('./ui/shop-embed.mjs',import.meta.url),'utf8').replaceAll('__EDITOR_ORIGIN__','https://app.example').replaceAll('__PROXY_PATH__','/apps/konfigurator');
+ fs.writeFileSync(path.join(dir,'shop-embed.mjs'),source);fs.copyFileSync(new URL('./ui/theme-cart-client.mjs',import.meta.url),path.join(dir,'theme-cart-client.mjs'));
+ globalThis.GRAVURU_SHOP_EMBED_NO_AUTO=true;t.after(()=>{delete globalThis.GRAVURU_SHOP_EMBED_NO_AUTO;});
+ const {createPrebootControl,prebootUrl}=await import(pathToFileURL(path.join(dir,'shop-embed.mjs')).href);
+ const key='https://shop.example/apps/konfigurator/start?product=5&variant=11&embed=1',other=key.replace('variant=11','variant=12'),card='https://app.example/konfigurator/shop/#s=gse1.x&embed=1';
+ assert.equal(prebootUrl(card),card+'&vorab=1');assert.equal(prebootUrl('https://app.example/x'),'https://app.example/x#vorab=1');
+ function setup({valid={[key]:card},connection=null,hidden=false,preload=()=>true}={}){
+  const calls=[],state={valid:{...valid},connection,hidden};
+  const control=createPrebootControl({tickets:{get:k=>state.valid[k]||null},preload:(url,k)=>{calls.push(['preload',url,k]);return preload();},discard:()=>calls.push(['discard']),connection:()=>state.connection,hidden:()=>state.hidden});
+  return {control,calls,state};
+ }
+ // Regelfall: unsichtbar starten, beim Tippen nur noch übernehmen.
+ const a=setup();
+ assert.equal(a.control.active(),false);assert.equal(a.control.start(key),true);assert.equal(a.control.active(),true);
+ assert.deepEqual(a.calls,[['preload',card+'&vorab=1',key]]);
+ assert.equal(a.control.start(key),false,'höchstens einer');assert.equal(a.control.start(other),false);assert.equal(a.calls.length,1);
+ assert.equal(a.control.claim(key),true);assert.equal(a.control.active(),false);assert.deepEqual(a.calls.length,1,'nichts verworfen');
+ assert.equal(a.control.claim(key),false,'ein zweites Tippen ist ein normales Öffnen');
+ assert.equal(a.control.start(key),false,'auch nach dem Öffnen kein zweiter Vorab-Start auf dieser Seite');
+ // Ohne Startkarte, im Datensparmodus, bei 2G und auf verborgener Seite: kein Vorab-Start, kein Fenster.
+ for(const options of [{valid:{}},{connection:{saveData:true}},{connection:{effectiveType:'2g'}},{connection:{effectiveType:'slow-2g'}},{hidden:true}]){
+  const f=setup(options);assert.equal(f.control.start(key),false,JSON.stringify(options));assert.deepEqual(f.calls,[]);assert.equal(f.control.active(),false);
+  assert.equal(f.control.claim(key),false);assert.equal(f.control.failed(),false);assert.deepEqual(f.calls,[]);
+ }
+ for(const type of ['3g','4g'])assert.equal(setup({connection:{effectiveType:type}}).control.start(key),true);
+ assert.equal(setup().control.start(null),false);
+ // Das Fenster ließ sich nicht anlegen (es gibt schon eines) oder der Aufbau wirft: kein Vorab-Start, später ein neuer Versuch möglich.
+ const busy=setup({preload:()=>false});assert.equal(busy.control.start(key),false);assert.equal(busy.control.active(),false);
+ const broken=setup({preload:()=>{throw Error('kein Fenster');}});assert.equal(broken.control.start(key),false);assert.equal(broken.control.claim(key),false);
+});
+
+test('Vorab-Start wird verworfen: andere Variante, abgelaufene Startkarte oder Fehler im unsichtbaren Fenster; danach normaler Start',async t=>{
+ const fs=await import('node:fs'),os=await import('node:os'),path=await import('node:path');
+ const dir=fs.mkdtempSync(path.join(os.tmpdir(),'g27-embed-preboot2-'));t.after(()=>fs.rmSync(dir,{recursive:true,force:true}));
+ const source=fs.readFileSync(new URL('./ui/shop-embed.mjs',import.meta.url),'utf8').replaceAll('__EDITOR_ORIGIN__','https://app.example').replaceAll('__PROXY_PATH__','/apps/konfigurator');
+ fs.writeFileSync(path.join(dir,'shop-embed.mjs'),source);fs.copyFileSync(new URL('./ui/theme-cart-client.mjs',import.meta.url),path.join(dir,'theme-cart-client.mjs'));
+ globalThis.GRAVURU_SHOP_EMBED_NO_AUTO=true;t.after(()=>{delete globalThis.GRAVURU_SHOP_EMBED_NO_AUTO;});
+ const {createPrebootControl,createStartTickets}=await import(pathToFileURL(path.join(dir,'shop-embed.mjs')).href);
+ const key='https://shop.example/apps/konfigurator/start?product=5&variant=11&embed=1',other=key.replace('variant=11','variant=12');
+ let time=Date.parse('2026-11-20T10:00:00Z');
+ const make=()=>{const calls=[],tickets=createStartTickets({now:()=>time,fetchImpl:async()=>({ok:true,json:async()=>({url:'https://app.example/konfigurator/shop/#s=gse1.x&embed=1',expiresAt:'2026-11-20T14:00:00.000Z'})})});
+  return {calls,tickets,control:createPrebootControl({tickets,preload:(url,k)=>{calls.push(['preload',k]);return true;},discard:()=>calls.push(['discard']),connection:()=>null,hidden:()=>false})};};
+ // Kunde wählt vor dem Tippen eine andere Variante.
+ const a=make();await a.tickets.load(key);assert.equal(a.control.start(key),true);
+ assert.equal(a.control.claim(other),false);assert.deepEqual(a.calls,[['preload',key],['discard']]);assert.equal(a.control.active(),false);
+ assert.equal(a.control.start(other),false,'kein zweiter Vorab-Start; der normale Start läuft');
+ // Startkarte läuft ab, bevor getippt wird (höchstens 30 min nach Abruf).
+ time=Date.parse('2026-11-20T10:00:00Z');const b=make();await b.tickets.load(key);assert.equal(b.control.start(key),true);
+ time=Date.parse('2026-11-20T10:29:00Z');assert.equal(b.tickets.get(key)!==null,true);
+ time=Date.parse('2026-11-20T10:31:00Z');assert.equal(b.control.claim(key),false);assert.deepEqual(b.calls,[['preload',key],['discard']]);
+ // Fehler im unsichtbaren Fenster: still verwerfen, genau einmal.
+ time=Date.parse('2026-11-20T10:00:00Z');const c=make();await c.tickets.load(key);assert.equal(c.control.start(key),true);
+ assert.equal(c.control.failed(),true);assert.equal(c.control.failed(),false);assert.deepEqual(c.calls,[['preload',key],['discard']]);
+ assert.equal(c.control.claim(key),false);assert.equal(c.calls.length,2);
+ // Ein Fehler beim Verwerfen selbst stört das Tippen nicht.
+ const d=createPrebootControl({tickets:{get:()=>'https://app.example/y'},preload:()=>true,discard:()=>{throw Error('schon entfernt');},connection:()=>null,hidden:()=>false});
+ assert.equal(d.start(key),true);assert.equal(d.claim(other),false);assert.equal(d.active(),false);
+});
+
+test('Vorab-Start in der Einbettung: unsichtbar und unbedienbar, Schließen/Escape greifen nicht, das Tippen blendet nur ein und meldet es dem Konfigurator',async t=>{
+ const fs=await import('node:fs');
+ const source=fs.readFileSync(new URL('./ui/shop-embed.mjs',import.meta.url),'utf8');
+ // Unsichtbar in voller Größe (sonst misst der Editor 0 px), nicht bedienbar, für Vorleseprogramme verborgen.
+ assert.match(source,/\.gv-embed\.gv-embed--preload\{visibility:hidden;pointer-events:none\}/);
+ assert.match(source,/function preload\(url,key=url\)\{\s*if\(frame\|\|!url\)return false;\s*shell\.classList\.add\('gv-embed--preload'\);shell\.setAttribute\('aria-hidden','true'\);shell\.hidden=false;load\(url,key\);return true;/);
+ // Schließen und Escape verbergen ein noch nie gezeigtes Fenster nicht (display:none würde den Start anhalten).
+ assert.match(source,/function hide\(\)\{if\(busy\|\|shell\.classList\.contains\('gv-embed--preload'\)\)return;/);
+ // Tippen: erst prüfen, ob der Vorab-Start passt, dann dasselbe open() wie bisher; open() meldet die Sichtbarkeit.
+ assert.match(source,/preboot\.claim\(url\);\s*try\{open\(tickets\.get\(url\)\|\|url,url\);event\.preventDefault\(\);event\.stopPropagation\(\);\}/);
+ // Ist der Konfigurator schon fertig (Fensterleiste ausgeblendet), geht der Fokus in den Konfigurator statt auf den verborgenen Schließen-Knopf.
+ assert.match(source,/document\.documentElement\.classList\.add\('gv-embed-open'\);\(bar\.hidden\?frame:close\)\?\.focus\?\.\(\);notifyShown\(\);/);
+ // Fehler im unsichtbaren Fenster: verwerfen, bevor irgendein Hinweis gezeigt wird.
+ assert.match(source,/else if\(message\.type==='failed'\)\{\s*if\(preboot\.failed\(\)\)return;/);
+ // Nur auf Produktseiten mit Konfigurator-Daten; Bearbeiten aus dem Warenkorb kehrt vorher zurück und startet nie vorab.
+ assert.ok(source.indexOf("if(cartEdit){open(cartEdit.dataset.gravuruCartEdit);return;}")<source.indexOf('if(config)preboot=createPrebootControl('));
+ // Ohne Vorab-Start bleibt das bisherige Vorwärmen.
+ assert.match(source,/if\(!preboot\.start\(key\)\)warmAssets\(key\);/);
+ // Die Start-Seite wartet nur bei `vorab=1` und nur auf die Meldung der eigenen Shop-Seite.
+ const page=fs.readFileSync(new URL('./ui/shop-entry-page.mjs',import.meta.url),'utf8');
+ assert.match(page,/const shown=embedded&&fragment\.get\('vorab'\)==='1'\?new Promise\(resolve=>\{markShown=resolve;\}\):Promise\.resolve\(\);/);
+ assert.match(page,/event\.origin===shopOrigin&&event\.source===window\.parent&&event\.data\?\.type==='gravuru-embed-shown'/);
+ assert.match(page,/whenShown:\(\)=>shown/);
+});
+
 test('shop embed safety net: own start link is always usable, ready/failed messages only from the frame, page fallback without window',async t=>{
  const fs=await import('node:fs'),os=await import('node:os'),path=await import('node:path');
  const dir=fs.mkdtempSync(path.join(os.tmpdir(),'g27-embed-safe-'));t.after(()=>fs.rmSync(dir,{recursive:true,force:true}));

@@ -146,6 +146,25 @@ test('Save-Data preloads no optional font/motif/image; explicit visible request 
  await q.request('motifs');assert.deepEqual(f.requests.map(r=>r.url),['/l/motive/import-a.json']);
 });
 
+test('Vorab-Start auf der Produktseite: die Ladefolge beginnt erst, wenn die Shop-Seite das Fenster als sichtbar meldet',async()=>{
+ const f=await fakeEditor('preboot-gate');let show;f.win.parent={GravuruShopEntry:{whenShown:()=>new Promise(resolve=>{show=resolve;})}};
+ const q=installBackgroundLoading({el:f.el,r:f.r,config:{profile:{optionGroups:[]}},win:f.win});
+ for(let i=0;i<20;i++)await new Promise(r=>setTimeout(r,5));
+ assert.equal(f.requests.length,0,'unsichtbar: nichts wird nachgeladen');assert.equal(f.images.length,0);
+ show();await f.run();
+ assert.equal(q.state('motifs'),'done');assert.deepEqual(f.requests.filter(r=>r.url.includes('/schriften/')).map(r=>r.url),['/l/schriften/montserrat.json']);
+ // Vom Kunden ausgelöst geht es auch vor der Meldung sofort.
+ const waiting=await fakeEditor('preboot-gate-request');waiting.win.parent={GravuruShopEntry:{whenShown:()=>new Promise(()=>{})}};
+ const direct=installBackgroundLoading({el:waiting.el,r:waiting.r,config:{profile:{optionGroups:[]}},win:waiting.win});
+ await direct.request('motifs');assert.deepEqual(waiting.requests.map(r=>r.url),['/l/motive/import-a.json']);
+ // Ohne Shop-Seite, ohne Meldefunktion oder bei gesperrtem Zugriff auf das Elternfenster startet sie wie bisher sofort.
+ for(const [index,parent] of [undefined,{},{GravuruShopEntry:{}},new Proxy({},{get(){throw Error('fremder Ursprung');}})].entries()){
+  const g=await fakeEditor('preboot-none-'+index);if(parent!==undefined)g.win.parent=parent;
+  installBackgroundLoading({el:g.el,r:g.r,config:{profile:{optionGroups:[]}},win:g.win});await g.run();
+  assert.deepEqual(g.requests.filter(r=>r.url.includes('/schriften/')).map(r=>r.url),['/l/schriften/montserrat.json']);
+ }
+});
+
 test('Kundenoberfläche startet die Ladefolge erst am Ende von installUX',()=>{
   const ux=fs.readFileSync(path.join(HERE,'ux.mjs'),'utf8');
   const ready=ux.indexOf("window.parent.postMessage({type:'gravuru-ux-ready'},location.origin);"),install=ux.indexOf('const background=config?installBackgroundLoading({el,r,config}):null;');

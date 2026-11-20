@@ -28,6 +28,12 @@ try{
   const backUrl=shopUrl(data.shopDomain,fragment.get('back'));
   // Fenster über der Produktseite (shop-embed.mjs): Übergabe und Schließen gehen an die Shop-Seite, kein Seitenwechsel.
   const embedded=fragment.get('embed')==='1'&&window.parent!==window,shopOrigin='https://'+data.shopDomain;
+  // Vorab-Start (shop-embed.mjs, Chris 20.11.2026): Die Produktseite hat dieses Fenster unsichtbar gestartet (`vorab=1`).
+  // Weitere Designs, Schriften und Motive holt der Editor erst, wenn die Produktseite meldet, dass der Kunde es sieht.
+  // Ohne `vorab` (normaler Start, eigene Seite, Bearbeiten aus dem Warenkorb) gilt das Fenster sofort als sichtbar.
+  let markShown=()=>{};
+  const shown=embedded&&fragment.get('vorab')==='1'?new Promise(resolve=>{markShown=resolve;}):Promise.resolve();
+  if(embedded)window.addEventListener('message',event=>{if(event.origin===shopOrigin&&event.source===window.parent&&event.data?.type==='gravuru-embed-shown')markShown();});
   // Warenkorbbild: die Platte mit Material aus dem Konfigurator selbst (gleiches Fenster, gleicher Origin).
   let frame=null;
   const leave=()=>embedded?window.parent.postMessage({type:'gravuru-shop-close'},shopOrigin):location.assign(backUrl);
@@ -42,7 +48,7 @@ try{
     const small=needsBrowserImage?surfaceThumbnail(surface):null;
     const image=needsBrowserImage?()=>previewJpeg(entry.frame?.contentDocument?.querySelector('gravuru-configurator'),{surface,small}):null;
     const submitCart=embedded?embeddedCart(client.submitThemeCart,shopOrigin,{image}):client.submitThemeCart;
-    window.GravuruShopEntry=Object.freeze({productId:model.configuration.id,productRevision:model.configuration.revision,shopDomain:data.shopDomain,shopifyProductId:data.binding?.shopifyProductId||null,shopifyVariantId:data.binding?.shopifyVariantId||null,expiresAt:data.expiresAt,csrfToken:'shop-entry',request:client.request,cartRevision:client.cartRevision,submitCart,cartMode:'theme',themeCartPath:data.themeCartPath,backUrl,embedded,designGallery,productName:model.name,...(fragment.getAll('ui').length===1&&fragment.get('ui')==='prio-r15'?{presentation:'prio-r15'}:{})});
+    window.GravuruShopEntry=Object.freeze({productId:model.configuration.id,productRevision:model.configuration.revision,shopDomain:data.shopDomain,shopifyProductId:data.binding?.shopifyProductId||null,shopifyVariantId:data.binding?.shopifyVariantId||null,expiresAt:data.expiresAt,csrfToken:'shop-entry',request:client.request,cartRevision:client.cartRevision,submitCart,cartMode:'theme',themeCartPath:data.themeCartPath,backUrl,embedded,designGallery,whenShown:()=>shown,productName:model.name,...(fragment.getAll('ui').length===1&&fragment.get('ui')==='prio-r15'?{presentation:'prio-r15'}:{})});
     title.textContent=model.name;document.title=model.name+' · Jetzt personalisieren';back.href=backUrl;
     if(small&&surface)setTimeout(small,4000);
   }

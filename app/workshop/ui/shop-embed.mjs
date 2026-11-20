@@ -200,6 +200,39 @@ export function connectOnIntent(doc=globalThis.document,origin=EDITOR_ORIGIN,onI
  for(const type of ['pointerover','focusin','touchstart'])doc.addEventListener(type,handler,{passive:true,capture:true});
  return handler;
 }
+// Vorab-Start (Chris 20.11.2026: „Ich möchte den prio Konfi exakt so gebaut haben“ wie Variante C; 27.10.2026: „wenn die
+// seite geladen ist, kann der konfi bereits laden“). Am 27.10. wurde das Vorladen gebaut und mit Chris' Zustimmung wieder
+// abgeschaltet, weil das Modell damals 11 MB hatte und im unsichtbaren Fenster nach 10 s noch nicht geladen war (STATUS
+// 27.10., ENTSCHEIDUNGEN 2.3). Heute ist das Modell klein und die Dateien sind vorgewärmt. Der Konfigurator startet
+// deshalb nach der Startkarte einmal unsichtbar; das Tippen blendet ihn nur noch ein.
+// Regeln: nie im Datensparmodus oder bei 2G, nie auf verborgener Seite, höchstens ein Vorab-Start je Seitenaufruf, nur mit
+// gültiger Startkarte. Passt beim Tippen die Variante nicht mehr oder ist die Startkarte abgelaufen, wird er verworfen und
+// der normale Start läuft. Ein Fehler im unsichtbaren Fenster verwirft ihn ebenfalls, ohne Meldung.
+export const prebootUrl=url=>url+(url.includes('#')?'&':'#')+'vorab=1';
+export function createPrebootControl({tickets,preload,discard,connection=()=>globalThis.navigator?.connection,hidden=()=>globalThis.document?.visibilityState==='hidden'}){
+ let key=null,used=false;
+ const saving=()=>{const c=connection();return c?.saveData===true||/(^|-)2g$/.test(String(c?.effectiveType||''));};
+ return Object.freeze({
+  // Nach geladener Startkarte. Liefert true, wenn das unsichtbare Fenster gestartet wurde.
+  start(startKey){
+   if(key||used||!startKey||saving()||hidden())return false;
+   const url=tickets.get(startKey);if(!url)return false;
+   let started=false;try{started=preload(prebootUrl(url),startKey)===true;}catch{started=false;}
+   if(!started)return false;
+   key=startKey;used=true;return true;
+  },
+  // Beim Tippen: true = das vorab gestartete Fenster gehört zu genau dieser Startadresse und seine Startkarte gilt noch.
+  claim(startKey){
+   if(!key)return false;
+   const fits=key===startKey&&!!tickets.get(startKey);key=null;
+   if(!fits)try{discard();}catch{/* Der normale Start läuft in jedem Fall. */}
+   return fits;
+  },
+  // Fehlermeldung aus dem noch nie gezeigten Fenster: still verwerfen. true = es war der Vorab-Start.
+  failed(){if(!key)return false;key=null;try{discard();}catch{}return true;},
+  active:()=>key!==null
+ });
+}
 export function install({root=window.Shopify?.routes?.root||'/'}={}){
  if(window.__gravuruShopEmbed)return window.__gravuruShopEmbed;
  const cartEdit=location.pathname===PROXY+'/start'?document.querySelector('a[data-gravuru-cart-edit]'):null;
@@ -211,6 +244,7 @@ export function install({root=window.Shopify?.routes?.root||'/'}={}){
  const box=document.createElement('div');box.className='gv-embed__box';status.append(box);
  shell.append(bar,status);document.body.append(shell);
  let frame=null,frameKey=null,busy=false,lastFocus=null,watchdog=null,frameReady=false;
+ const tickets=createStartTickets();let preboot={active:()=>false,failed:()=>false,claim:()=>false,start:()=>false};
  let slow=null;
  // V4: Schritt 4 von 4 mit Ladesymbol; nach 15 s ein beruhigender Hinweis statt scheinbarem Stillstand.
  const say=(text,{error=false,busy:running=false}={})=>{clearTimeout(slow);box.replaceChildren(document.createTextNode(text));status.hidden=false;box.toggleAttribute('data-busy',running);
@@ -233,19 +267,26 @@ export function install({root=window.Shopify?.routes?.root||'/'}={}){
  }
  function arm(ms=15000){clearTimeout(watchdog);watchdog=setTimeout(()=>{if(!frameReady&&!shell.hidden)trouble('Der Konfigurator braucht gerade ungewöhnlich lange. Du kannst weiter warten, neu laden oder ihn ohne Fenster öffnen.');},ms);}
  // Vorgeladen: unsichtbar, aber in voller Größe aufgebaut (sonst misst der Editor 0 px); nicht bedienbar, nicht fokussierbar.
- function preload(url){
-  if(frame||!url)return;
-  shell.classList.add('gv-embed--preload');shell.setAttribute('aria-hidden','true');shell.hidden=false;load(url);
+ function preload(url,key=url){
+  if(frame||!url)return false;
+  shell.classList.add('gv-embed--preload');shell.setAttribute('aria-hidden','true');shell.hidden=false;load(url,key);return true;
  }
+ // Vorab gestartetes, noch nie gezeigtes Fenster wieder entfernen; danach ist alles wie vor dem Vorab-Start.
+ function discardPreload(){
+  frame?.remove();frame=null;frameKey=null;frameReady=false;
+  shell.classList.remove('gv-embed--preload');shell.removeAttribute('aria-hidden');shell.hidden=true;status.hidden=true;bar.hidden=false;
+ }
+ // Dem Konfigurator sagen, dass der Kunde ihn jetzt sieht (er holt weitere Designs und Schriften erst dann).
+ const notifyShown=()=>{try{frame?.contentWindow?.postMessage({type:'gravuru-embed-shown'},EDITOR_ORIGIN);}catch{/* Ohne Meldung lädt er beim Antippen. */}};
  function open(url,key=url){
   lastFocus=document.activeElement;status.hidden=true;
   if(!frame||frameKey!==key)load(url,key);
   if(!frameReady)arm();
   shell.classList.remove('gv-embed--preload');shell.removeAttribute('aria-hidden');shell.hidden=false;
-  document.documentElement.classList.add('gv-embed-open');close.focus();
+  document.documentElement.classList.add('gv-embed-open');(bar.hidden?frame:close)?.focus?.();notifyShown();
  }
  // Schließen behält das geladene Fenster: erneutes Öffnen ist sofort da (gleicher Stand).
- function hide(){if(busy)return;if(cartEdit){location.assign(root+'cart');return;}shell.hidden=true;status.hidden=true;document.documentElement.classList.remove('gv-embed-open');lastFocus?.focus?.();}
+ function hide(){if(busy||shell.classList.contains('gv-embed--preload'))return;if(cartEdit){location.assign(root+'cart');return;}shell.hidden=true;status.hidden=true;document.documentElement.classList.remove('gv-embed-open');lastFocus?.focus?.();}
  close.addEventListener('click',hide);
  document.addEventListener('keydown',event=>{if(event.key==='Escape'&&!shell.hidden)hide();});
  async function request(token,path,method='GET'){
@@ -270,9 +311,10 @@ export function install({root=window.Shopify?.routes?.root||'/'}={}){
  window.addEventListener('message',event=>{
   const message=acceptedMessage(event,frame);if(!message)return;
   if(message.type==='close')hide();
-  else if(message.type==='loaded'){frameReady=true;clearTimeout(watchdog);if(!busy)status.hidden=true;}
-  else if(message.type==='ready'){frameReady=true;clearTimeout(watchdog);if(!busy)status.hidden=true;bar.hidden=true;}
+  else if(message.type==='loaded'){frameReady=true;clearTimeout(watchdog);if(!busy)status.hidden=true;if(!preboot.active())notifyShown();}
+  else if(message.type==='ready'){frameReady=true;clearTimeout(watchdog);if(!busy)status.hidden=true;bar.hidden=true;if(!preboot.active())notifyShown();}
   else if(message.type==='failed'){
+   if(preboot.failed())return;
    if(cartEdit&&message.cartAccessMissing){location.replace(cartEdit.href);return;}
    frameReady=false;clearTimeout(watchdog);bar.hidden=false;trouble((message.message?message.message+' ':'')+'Bitte neu laden oder den Konfigurator ohne Fenster öffnen.');
   }
@@ -288,9 +330,8 @@ export function install({root=window.Shopify?.routes?.root||'/'}={}){
   // Sperrt das Theme den Knopf nachträglich (Klasse, Stil, disabled), sofort wieder freigeben.
   new MutationObserver(records=>{for(const r of records)if(r.target?.matches?.('[data-gravuru-personalisieren] a[data-gravuru-start]'))unlockStartLink(r.target);}).observe(document.body,{attributes:true,subtree:true,attributeFilter:['class','style','disabled','aria-disabled','tabindex']});
  }
- // Keep full-editor preloading off. A tiny separate app-origin frame warms only
- // the server's bounded public asset manifest in the same browser cache partition.
- const tickets=createStartTickets();
+ // Ohne Vorab-Start (Datensparmodus, keine Startkarte …) wärmt wie bisher ein kleiner eigener Rahmen des Konfigurator-Hosts
+ // nur die begrenzte öffentliche Dateiliste des Servers vor. Läuft der Vorab-Start, entfällt er (warmAssets prüft `frame`).
  let warmFrame=null,warmSignature=null;
  function warmAssets(key){
   const connection=navigator.connection;if(connection?.saveData||/(^|-)2g$/.test(String(connection?.effectiveType||''))||document.visibilityState==='hidden'||frame)return;
@@ -298,7 +339,11 @@ export function install({root=window.Shopify?.routes?.root||'/'}={}){
   warmFrame?.remove();warmFrame=document.createElement('iframe');warmFrame.hidden=true;warmFrame.tabIndex=-1;warmFrame.setAttribute('aria-hidden','true');warmFrame.title='Konfigurator vorbereiten';warmFrame.referrerPolicy='no-referrer';warmFrame.src=data.url+'#'+encodeURIComponent(JSON.stringify(data.manifest));document.body.append(warmFrame);
  }
  const ownLink=()=>{const link=document.querySelector('[data-gravuru-personalisieren] a[data-gravuru-start]');if(link&&config)link.href=startHref(config,currentVariant(config,document));return link;};
- const fetchTicket=()=>{const link=ownLink();if(link&&!frame){const key=startUrl(link);tickets.load(key).then(()=>{const current=ownLink();if(current&&startUrl(current)===key)warmAssets(key);});}};
+ // Nur auf Produktseiten mit Konfigurator-Daten; die Ruhephase lässt der Produktseite den Vortritt.
+ if(config)preboot=createPrebootControl({tickets,preload,discard:discardPreload});
+ const whenIdle=run=>{if(window.requestIdleCallback)window.requestIdleCallback(run,{timeout:2000});else setTimeout(run,200);};
+ const fetchTicket=()=>{const link=ownLink();if(link&&!frame){const key=startUrl(link);tickets.load(key).then(()=>{const current=ownLink();if(!current||startUrl(current)!==key)return;
+  whenIdle(()=>{const now=ownLink();if(!now||startUrl(now)!==key||frame)return;if(!preboot.start(key))warmAssets(key);});});}};
  connectOnIntent(document,EDITOR_ORIGIN,fetchTicket);
  if(config)scheduleProductWarmup(document,window,fetchTicket);
  // Klick in der Einfangphase: Theme-Skripte (Kaufleiste, Akkordeons …) können ihn nicht vorher schlucken.
@@ -310,6 +355,8 @@ export function install({root=window.Shopify?.routes?.root||'/'}={}){
   if(config)link.href=startHref(config,currentVariant(config,document));
   if(event.button!==0||event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;
   const url=startUrl(link);if(!url)return;
+  // Vorab gestartetes Fenster nur zeigen, wenn es zu genau dieser Variante gehört und seine Startkarte noch gilt.
+  preboot.claim(url);
   try{open(tickets.get(url)||url,url);event.preventDefault();event.stopPropagation();}catch{shell.hidden=true;document.documentElement.classList.remove('gv-embed-open');}
  },true);
  return (window.__gravuruShopEmbed=Object.freeze({open,hide,preload}));

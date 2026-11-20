@@ -1,4 +1,4 @@
-import {NATIVE_INPUT_EMBEDDED,NATIVE_INPUT_REFERENCE,savedProductDocument} from './review-product.mjs';
+import {NATIVE_INPUT_EMBEDDED,NATIVE_INPUT_REFERENCE,REVIEW_SOURCES_FILE,reviewSourcesJson,savedProductDocument,savedReviewSources} from './review-product.mjs';
 import {isFamilyFormats} from '../configurator/variant-m/family-formats.mjs';
 import {designPaintOrder} from '../platform/sources/app/shared/models/design-layer-order.mjs';
 import {doorbellSeparations} from './doorbell-artwork.mjs';
@@ -42,7 +42,8 @@ export function nativeContour(g){
 // `productDocument`: holt bei Paketen mit Verweis den Produktstand aus der Werkstatt (review-product.mjs); bei Paketen mit
 // eingebettetem Produktstand wird er nicht gebraucht.
 export async function acrylicArtwork(archive,archiveHash,{engraving=false,surfaceId='front',productDocument=null}={}){
- const {files,manifest}=readReviewPackage(archive,archiveHash,NATIVE_REVIEW_SCHEMAS),saved=JSON.parse(files.get('produkt-und-gestaltung.json')),config=JSON.parse(files.get('konfigurator-quellen.json')),state=saved.state;
+ const read=readReviewPackage(archive,archiveHash,NATIVE_REVIEW_SCHEMAS),manifest=read.manifest,saved=JSON.parse(read.files.get('produkt-und-gestaltung.json')),state=saved.state;
+ let files=read.files,config=JSON.parse(files.get(REVIEW_SOURCES_FILE));
  const layered=isLayeredDoorbell(config);
  if(config.doorbell&&!layered)fail('Die getrennte Fertigungsausgabe für Edelstahlträger und Acrylglasauflage ist noch nicht angebunden.');
  const native=manifest.schema===NATIVE_REVIEW;
@@ -51,6 +52,10 @@ export async function acrylicArtwork(archive,archiveHash,{engraving=false,surfac
  // Validate against those hash-verified paths, just like validateAcrylicReview;
  // never resolve a missing font from today's library or the browser.
  const stored=savedProductDocument(saved,manifest,productDocument),product=stored.document;
+ // Gekürzte Konfiguration (Paket mit Verweis): aus dem geprüften Produktstand vollständig wiederherstellen, bevor irgendetwas
+ // daraus gelesen wird. Alle folgenden Leser und das Fertigungspaket sehen die Datei Byte für Byte wie bisher.
+ const sources=savedReviewSources(config,product);
+ if(sources.restored){config=sources.config;files=new Map(files);files.set(REVIEW_SOURCES_FILE,reviewSourcesJson(config));}
  const document={...product,config:{...product.config,localResources:{...product.config.localResources,fonts:{...product.config.localResources?.fonts,...config.localResources.fonts}}}};
  const design=validateProductDesign(document,state.design,{options:state.options,fonts:config.localResources.fonts,motifs:config.localResources.motifs});
  if(surfaceId!=='front'&&!(surfaceId==='back'&&hasBack(config.profile)))fail('Dieses Produkt hat keine solche Seite.');

@@ -41,3 +41,51 @@ export function savedProductDocument(saved,manifest,resolve){
  if(!document||typeof document!=='object'||productDocumentSha(document)!==ref.sha256)fail('Der Produktstand der Werkstatt passt nicht zur gesicherten Prüfsumme.');
  return {document,reference:{...ref}};
 }
+
+// --- Gesicherte Konfiguration (`konfigurator-quellen.json`) ---------------------------------------------------------------
+// ENTSCHEIDUNGEN 3.47/3.49 (Chris 20.11.2026): Die gesicherte Konfiguration enthielt alle Designs der Familie (bei 208 Designs
+// rund 9 MB je Entwurf), obwohl dieselben Listen unverändert im unveränderlichen Produktstand stehen. Ein Paket mit Verweis
+// behält in diesen Listen nur das gewählte Design und nennt für jede gekürzte Liste Anzahl und Prüfsumme. Gekürzt wird nur,
+// was beim Sichern nachweislich Zeichen für Zeichen im Produktstand steht; alles andere bleibt eingebettet.
+// Die Fertigung stellt die vollständige Konfiguration aus dem Produktstand wieder her und prüft die Prüfsumme, bevor sie
+// irgendetwas daraus liest. Ein gekürztes Paket ohne Produktstand ergibt nie eine Fertigungsdatei.
+export const SOURCES_REFERENCE='gravuru-review-sources-ref/v1',REVIEW_SOURCES_FILE='konfigurator-quellen.json';
+const LISTS=[
+ {name:'profile.designs',holder:'profile',key:'designs',source:document=>document?.config?.profile?.designs},
+ {name:'familyFormats.designs',holder:'familyFormats',key:'designs',source:document=>document?.config?.familyFormats?.designs},
+];
+const listSha=list=>createHash('sha256').update(JSON.stringify(list)).digest('hex');
+// Dieselbe Textform wie acrylic-review.mjs für die Dateien des Prüfpakets.
+export const reviewSourcesJson=config=>Buffer.from(JSON.stringify(config,null,2)+'\n');
+
+export function slimReviewSources(frozen,document,designId){
+ if(typeof designId!=='string'||!designId||frozen?.sourcesRef!==undefined)return frozen;
+ const out={...frozen},lists={};
+ for(const {name,holder,key,source} of LISTS){
+  const owner=frozen[holder],list=owner?.[key],original=source(document);
+  if(!Array.isArray(list)||!Array.isArray(original)||list.length<2||list.length!==original.length)continue;
+  const sha256=listSha(list);
+  if(listSha(original)!==sha256)continue;
+  // Gleiche Schlüsselreihenfolge wie vorher: die wiederhergestellte Datei ist Byte für Byte die bisherige.
+  out[holder]={...owner,[key]:list.filter(entry=>entry?.id===designId)};
+  lists[name]={count:list.length,sha256};
+ }
+ return Object.keys(lists).length?{...out,sourcesRef:{schema:SOURCES_REFERENCE,designId,lists}}:frozen;
+}
+
+// Vollständige gesicherte Konfiguration: unverändert (bisherige Art) oder aus dem Produktstand wiederhergestellt und geprüft.
+export function savedReviewSources(config,document){
+ const ref=config?.sourcesRef;
+ if(ref===undefined)return {config,restored:false};
+ if(!ref||ref.schema!==SOURCES_REFERENCE||typeof ref.designId!=='string'||!ref.lists||typeof ref.lists!=='object'||Array.isArray(ref.lists)||!Object.keys(ref.lists).length)fail('Der Verweis der gesicherten Konfiguration ist nicht eindeutig.');
+ if(!document||typeof document!=='object')fail('Für diese gesicherte Konfiguration wird der gespeicherte Produktstand der Werkstatt gebraucht.');
+ const {sourcesRef,...full}=config;
+ for(const [name,entry] of Object.entries(ref.lists)){
+  const spec=LISTS.find(list=>list.name===name),kept=full[spec?.holder]?.[spec?.key];
+  if(!spec||!entry||Object.keys(entry).sort().join()!=='count,sha256'||!Number.isSafeInteger(entry.count)||entry.count<2||!/^[a-f0-9]{64}$/.test(String(entry.sha256))||!Array.isArray(kept)||kept.length>1||kept.some(item=>item?.id!==ref.designId))fail('Der Verweis der gesicherten Konfiguration ist nicht eindeutig.');
+  const original=spec.source(document);
+  if(!Array.isArray(original)||original.length!==entry.count||listSha(original)!==entry.sha256)fail('Der Produktstand der Werkstatt passt nicht zur gesicherten Konfiguration.');
+  full[spec.holder]={...full[spec.holder],[spec.key]:structuredClone(original)};
+ }
+ return {config:full,restored:true};
+}

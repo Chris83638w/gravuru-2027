@@ -17,7 +17,7 @@ import {commercePrice} from '../configurator/variant-m/commerce-model.mjs';
 import {prepareCustomerPhoto,prepareReviewPreviewPair} from './customer-photo.mjs';
 import {verifyCustomerVectorLogoMedia,vectorLogoMetadata} from './customer-vector-logo-media.mjs';
 import {zipStored} from './zip-stored.mjs';
-import {NATIVE_INPUT_EMBEDDED,NATIVE_INPUT_REFERENCE} from './review-product.mjs';
+import {NATIVE_INPUT_EMBEDDED,NATIVE_INPUT_REFERENCE,slimReviewSources} from './review-product.mjs';
 import {textsNearHoles} from '../platform/sources/app/shared/models/hole-proximity.mjs';
 import {selectedProfile} from '../configurator/variant-m/contract.mjs';
 import {editorUi} from '../configurator/variant-m/toolbar-placement-model.mjs';
@@ -98,7 +98,9 @@ export async function prepareAcrylicReview({record,config,input,assets,preparePh
  // No ephemeral upload URLs or tokens are accepted from the browser.
  if(productSha256!==undefined&&!config.acrylic)add('produkt-und-gestaltung.json',json({schema:NATIVE_INPUT_REFERENCE,productRef:{id:record.id,revision:record.revision,sha256:productSha256},state,profileRevision:config.profile.revision,profileSelections:config.workshopProfiles}),'Verweis auf den unveränderlichen Produktstand der Werkstatt (Kennung, Revision, Prüfsumme), Kundenwerte und serverberechneter Preis.');
  else add('produkt-und-gestaltung.json',json({schema:config.acrylic?'gravuru-acrylic-review-input/v1':NATIVE_INPUT_EMBEDDED,product:record.document,state,profileRevision:config.profile.revision,profileSelections:config.workshopProfiles}),'Gespeichertes natives Produkt, Kundenwerte und serverberechneter Preis.');
- add('konfigurator-quellen.json',json(frozen),'Feste Konfiguratorrevision mit Schriftpfaden und Motivquellen.');
+ // Paket mit Verweis: Listen, die unverändert im Produktstand stehen, behalten nur das gewählte Design (review-product.mjs).
+ const slim=productSha256!==undefined&&!config.acrylic?cartTimingStep('review_sources_slim',()=>slimReviewSources(frozen,record.document,state.design.id)):frozen;
+ add('konfigurator-quellen.json',json(slim),slim===frozen?'Feste Konfiguratorrevision mit Schriftpfaden und Motivquellen.':'Feste Konfiguratorrevision mit Schriftpfaden und Motivquellen; die übrigen Designs stehen im Produktstand der Werkstatt (Anzahl und Prüfsumme genannt).');
  for(const [i,m] of input.media.entries()){
   if(m.vectorLogo!==undefined){
    const object=state.design.objects.find(o=>o.uxUploadId===m.id),logo=await cartTimingStep('logo_verify',()=>verifyCustomerVectorLogoMedia(config,object,m));

@@ -1,0 +1,350 @@
+{
+ "produkt": "familienschild-acryl-baum-12x8-personali",
+ "geraet": "iPhone 13",
+ "browser": "WebKit 27.2",
+ "meldungen": [],
+ "fehler": [],
+ "absturz": false,
+ "neuGeladen": 1,
+ "verlauf": [
+  {
+   "nachS": 2,
+   "knopf": {
+    "text": "Jetzt personalisieren",
+    "display": "inline-flex",
+    "visibility": "visible",
+    "opacity": "1",
+    "breite": 358,
+    "hoehe": 56,
+    "y": 1125,
+    "schrift": "rgb(255, 255, 255)",
+    "grund": "rgb(95, 163, 114)",
+    "obenauf": "der Knopf selbst"
+   },
+   "huelle": {
+    "hidden": true,
+    "klasse": "gv-embed",
+    "display": "none",
+    "visibility": "visible",
+    "zeiger": "auto",
+    "flaeche": "0x0",
+    "sichtbareKinder": [],
+    "rahmen": false
+   },
+   "kaufen": [
+    {
+     "text": "In den Warenkorb legen",
+     "sichtbar": false
+    },
+    {
+     "text": "",
+     "sichtbar": true
+    }
+   ],
+   "sperre": false,
+   "einbettung": true,
+   "eingebettetGeladen": true,
+   "thema": "62",
+   "titel": "Baum-Familienschild 12×8 aus Acryl – jet"
+  },
+  {
+   "nachS": 7,
+   "knopf": {
+    "text": "Jetzt personalisieren",
+    "display": "inline-flex",
+    "visibility": "visible",
+    "opacity": "1",
+    "breite": 358,
+    "hoehe": 56,
+    "y": 1053,
+    "schrift": "rgb(255, 255, 255)",
+    "grund": "rgb(95, 163, 114)",
+    "obenauf": "der Knopf selbst"
+   },
+   "huelle": {
+    "hidden": false,
+    "klasse": "gv-embed gv-embed--preload",
+    "display": "flex",
+    "visibility": "hidden",
+    "zeiger": "none",
+    "flaeche": "390x664",
+    "sichtbareKinder": [],
+    "rahmen": true
+   },
+   "kaufen": [
+    {
+     "text": "In den Warenkorb legen",
+     "sichtbar": false
+    },
+    {
+     "text": "",
+     "sichtbar": true
+    }
+   ],
+   "sperre": false,
+   "einbettung": true,
+   "eingebettetGeladen": true,
+   "thema": "62",
+   "titel": "Baum-Familienschild 12×8 aus Acryl – jet"
+  }
+ ],
+ "status": 200,
+ "tipp": {
+  "fensterOffen": true,
+  "rahmen": true,
+  "adresse": "/products/familienschild-acryl-baum-12x8-personalisiert"
+ },
+ "fehlgeschlageneAnfragen": []
+}
+{
+ "produkt": "familienschild-acryl-baum-12x8-personali",
+ "geraet": "iPhone 13",
+ "browser": "WebKit 27.2",
+ "meldungen": [],
+ "fehler": [],
+ "absturz": false,
+ "neuGeladen": 1,
+ "verlauf": [
+  {
+   "nachS": 2,
+   "knopf": {
+    "text": "Jetzt personalisieren",
+    "display": "inline-flex",
+    "visibility": "visible",
+    "opacity": "1",
+    "breite": 358,
+    "hoehe": 56,
+    "y": 1125,
+    "schrift": "rgb(255, 255, 255)",
+    "grund": "rgb(95, 163, 114)",
+    "obenauf": "der Knopf selbst"
+   },
+   "huelle": {
+    "hidden": true,
+    "klasse": "gv-embed",
+    "display": "none",
+    "visibility": "visible",
+    "zeiger": "auto",
+    "flaeche": "0x0",
+    "sichtbareKinder": [],
+    "rahmen": false
+   },
+   "kaufen": [
+    {
+     "text": "In den Warenkorb legen",
+     "sichtbar": false
+    },
+    {
+     "text": "",
+     "sichtbar": true
+    }
+   ],
+   "sperre": false,
+   "einbettung": true,
+   "eingebettetGeladen": true,
+   "thema": "61",
+   "titel": "Baum-Familienschild 12×8 aus Acryl – jet"
+  },
+  {
+   "nachS": 7,
+   "knopf": {
+    "text": "Jetzt personalisieren",
+    "display": "inline-flex",
+    "visibility": "visible",
+    "opacity": "1",
+    "breite": 358,
+    "hoehe": 56,
+    "y": 1053,
+    "schrift": "rgb(255, 255, 255)",
+    "grund": "rgb(95, 163, 114)",
+    "obenauf": "der Knopf selbst"
+   },
+   "huelle": {
+    "hidden": false,
+    "klasse": "gv-embed gv-embed--preload",
+    "display": "flex",
+    "visibility": "hidden",
+    "zeiger": "none",
+    "flaeche": "390x664",
+    "sichtbareKinder": [],
+    "rahmen": true
+   },
+   "kaufen": [
+    {
+     "text": "In den Warenkorb legen",
+     "sichtbar": false
+    },
+    {
+     "text": "",
+     "sichtbar": true
+    }
+   ],
+   "sperre": false,
+   "einbettung": true,
+   "eingebettetGeladen": true,
+   "thema": "61",
+   "titel": "Baum-Familienschild 12×8 aus Acryl – jet"
+  }
+ ],
+ "status": 200,
+ "tipp": {
+  "fensterOffen": true,
+  "rahmen": true,
+  "adresse": "/products/familienschild-acryl-baum-12x8-personalisiert"
+ },
+ "fehlgeschlageneAnfragen": []
+}
+{
+ "produkt": "familienschild-acryl-baum-12x8-personali",
+ "geraet": "iPhone 13",
+ "browser": "WebKit 27.2",
+ "meldungen": [],
+ "fehler": [],
+ "absturz": false,
+ "neuGeladen": 1,
+ "verlauf": [
+  {
+   "nachS": 2,
+   "knopf": {
+    "text": "Jetzt personalisieren",
+    "display": "inline-flex",
+    "visibility": "visible",
+    "opacity": "1",
+    "breite": 358,
+    "hoehe": 56,
+    "y": 1125,
+    "schrift": "rgb(255, 255, 255)",
+    "grund": "rgb(95, 163, 114)",
+    "obenauf": "der Knopf selbst"
+   },
+   "huelle": {
+    "hidden": true,
+    "klasse": "gv-embed",
+    "display": "none",
+    "visibility": "visible",
+    "zeiger": "auto",
+    "flaeche": "0x0",
+    "sichtbareKinder": [],
+    "rahmen": false
+   },
+   "kaufen": [
+    {
+     "text": "In den Warenkorb legen",
+     "sichtbar": false
+    },
+    {
+     "text": "",
+     "sichtbar": true
+    }
+   ],
+   "sperre": false,
+   "einbettung": true,
+   "eingebettetGeladen": true,
+   "thema": "18",
+   "titel": "Baum-Familienschild 12×8 aus Acryl – jet"
+  },
+  {
+   "nachS": 7,
+   "knopf": {
+    "text": "Jetzt personalisieren",
+    "display": "inline-flex",
+    "visibility": "visible",
+    "opacity": "1",
+    "breite": 358,
+    "hoehe": 56,
+    "y": 1053,
+    "schrift": "rgb(255, 255, 255)",
+    "grund": "rgb(95, 163, 114)",
+    "obenauf": "der Knopf selbst"
+   },
+   "huelle": {
+    "hidden": false,
+    "klasse": "gv-embed gv-embed--preload",
+    "display": "flex",
+    "visibility": "hidden",
+    "zeiger": "none",
+    "flaeche": "390x664",
+    "sichtbareKinder": [],
+    "rahmen": true
+   },
+   "kaufen": [
+    {
+     "text": "In den Warenkorb legen",
+     "sichtbar": false
+    },
+    {
+     "text": "",
+     "sichtbar": true
+    }
+   ],
+   "sperre": false,
+   "einbettung": true,
+   "eingebettetGeladen": true,
+   "thema": "18",
+   "titel": "Baum-Familienschild 12×8 aus Acryl – jet"
+  }
+ ],
+ "status": 200,
+ "tipp": {
+  "fensterOffen": true,
+  "rahmen": true,
+  "adresse": "/products/familienschild-acryl-baum-12x8-personalisiert"
+ },
+ "fehlgeschlageneAnfragen": []
+}
+{
+ "produkt": "familienschild-acryl-baum-12x8-personali",
+ "geraet": "iPhone 13",
+ "browser": "WebKit 27.2",
+ "meldungen": [],
+ "fehler": [],
+ "absturz": false,
+ "neuGeladen": 1,
+ "verlauf": [
+  {
+   "nachS": 2,
+   "knopf": null,
+   "huelle": null,
+   "kaufen": [
+    {
+     "text": "In den Warenkorb legen",
+     "sichtbar": true
+    },
+    {
+     "text": "",
+     "sichtbar": true
+    }
+   ],
+   "sperre": false,
+   "einbettung": false,
+   "eingebettetGeladen": false,
+   "thema": "54",
+   "titel": "Baum-Familienschild 12×8 aus Acryl – jet"
+  },
+  {
+   "nachS": 7,
+   "knopf": null,
+   "huelle": null,
+   "kaufen": [
+    {
+     "text": "In den Warenkorb legen",
+     "sichtbar": true
+    },
+    {
+     "text": "",
+     "sichtbar": true
+    }
+   ],
+   "sperre": false,
+   "einbettung": false,
+   "eingebettetGeladen": false,
+   "thema": "54",
+   "titel": "Baum-Familienschild 12×8 aus Acryl – jet"
+  }
+ ],
+ "status": 200,
+ "tipp": {
+  "fehler": "locator.scrollIntoViewIfNeeded: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('a[data-gravuru-start]').first()\u001b[22m\n"
+ },
+ "fehlgeschlageneAnfragen": []
+}

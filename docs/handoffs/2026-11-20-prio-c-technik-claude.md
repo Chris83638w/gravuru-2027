@@ -395,3 +395,56 @@ Mit `4c508463` bleibt es dabei: D808 behält Vorschau und Wechsel über den Serv
 2. „Weitere Designs“ lädt die nächste Seite erst beim Antippen; die Karten erscheinen dann über einige Sekunden, weil neue Schriften dazukommen.
 3. Rechenzeit je Änderung wächst leicht mit der Zahl der Designs im Gerät (gemessen rund 0,3 bis 0,6 ms je Design). Bei allen 208 wären das rund 0,06 bis 0,12 s mehr; die Ursache (der Editor führt seine eigene, hier verdeckte Designliste mit) habe ich nicht angefasst.
 4. Start bei sofortigem Tippen (rund 3,5 bis 4 s am PC), Warenkorb (9 bis 12 s) wie beschrieben.
+
+## Stand zum Aufspielen: Rand-Regel, schnellerer Abruf, Vollbild (20.11.2026, ab 16:49 Uhr)
+
+Zweig `dev/claude-prio-c-rand-20261120` auf `2d54697a`. Ein Aufspielen für alles: `ea2c9670` (Rand-Regel), `d1a3d95e` (Abruf der Design-Teile), `8e78b680` (Vollbild), `f1948a8b` (Test zur Abdeckung). Gegenüber live ändern sich zwei Paket-Teile: `editor-0cfc01ffabb9d596` → `editor-3649af23fd45302f` und `editor-8a0b6bac286faad0` → `editor-d6521828989e096a`; dazu der Server (`shop-entry.mjs`). Das Ergebnis des Gesamtlaufs steht im Auftrag an Astra in #267.
+
+### Live seit 16:53 Uhr: `94cd4282` (Astra), Rückweg `6c8a951a`
+
+- Astras Messung nach dem Aufspielen (#267): bis alle 40 Karten standen, 12,94 s (PC) und 9,84 s (Handy-Ansicht) beim ersten Aufruf, 0,09 s beim dritten.
+- Meine Messung am echten Shop gegen 17:05 Uhr, ohne Ersatz: Nach 10 s auf der Produktseite stehen alle 40 Karten 0,1 s nach dem Öffnen, alle im Gerät gezeichnet. Die Abrufe der ersten Seite warten 250 bis 1628 ms; eine noch nicht gesehene Gruppe kostet rund 0,6 s, gleich ob 1 oder 6 Designs. Der Vorab-Start braucht rund 9 bis 10 s (Start 1,3 s, Modell 1,3 s, Editor rund 2,5 s, Designliste 1,0 s, danach Design-Teile und Schriften).
+- Chris, 17:52 Uhr, Handy, Acrylglas-Schild: „Ladezeit sehr gut“.
+
+### Rand-Regel (`ea2c9670`)
+
+Chris, 16:49 Uhr, zu D808: „Ja korrigieren. Allerdings muss das generell nöglich sein. Es darf keine Fehlermeldung kommen. Beim export kann es dann beschnitten sein“ (ENTSCHEIDUNGEN 3.43).
+
+- Berichtigung zum Befund oben: Bei D808 ragt nur der Kasten des Namens 1,3 mm über die Oberkante; die Buchstaben liegen 2,7 mm innerhalb. Der Editor prüft die Buchstabenformen nur mit geladener Schrift; im Shop kommen die Schriften nach, also blieb der Kasten und die Vorlage wurde abgelehnt. Die Vorlage selbst habe ich nicht geändert.
+- Änderung: Die vier Befunde „ragt über die Gestaltungsfläche“ sind beim Laden einer Vorlage kein Fehler mehr (`validateStudio`). Alle anderen Befunde bleiben Fehler.
+- Unverändert: Hinweis, „Text passend verkleinern“, Randsperre und die Prüfung vor dem Warenkorb für das, was der Kunde selbst ändert; ebenso die Prüfung am Server. Ob das auch entfallen soll, ist offen (Frage an Chris).
+- Geprüft: 4 neue Tests. Am echten Shop mit ersetztem Paket: D808 wird im Gerät gezeichnet, öffnet in 0,28 s ohne Hinweis; Warenkorb am echten Server angenommen (14,99 €, Design und Bild richtig, 11,7 s). Dabei entstand ein vierter Testentwurf „Claudetest“; gelöscht habe ich nichts.
+
+### Abruf der Design-Teile (`d1a3d95e`)
+
+Ursache der 0,6 s je Abruf ohne Treffer: zweimal das Dokument lesen (je 0,13 bis 0,2 s) und das Modell neu aufbauen (0,2 bis 0,3 s); der Speichereintrag galt nur für genau eine Zusammenstellung von Designs. Jetzt: ein Eintrag je Design, das Modell kommt aus dem gehaltenen Modell des Starts, die Art der Freigabe aus dem Eintrag. Freigabe und Pause werden weiter bei jedem Abruf frisch geprüft. 3 neue Tests, zwei schlagen mit dem alten Code fehl. **Nicht gemessen:** die Wirkung am echten Server; das geht erst nach dem Aufspielen. Bleibt: Nach einem Neustart baut der Server das Modell je Produkt einmal neu, und der Speicher hält höchstens zwei Modelle (drei Produkte im Shop nutzen ihn).
+
+### Regel für jedes Produkt (`f1948a8b`)
+
+Chris, 17:10 Uhr: „Bei jedem Produkt muss es doch einfach umstellbsar sein.“ (ENTSCHEIDUNGEN 2.18). Mein Fehler war, dass die Technik zuerst nur am Türschild mit allen Größen hing. Seit `4c508463` gilt sie für jeden Schnitt, den der Katalog erzeugt; der neue Test hält das fest und schlägt mit der alten Bedingung fehl. Lücke: Produkte ohne Familie. Davon ist keines im Shop, am echten Shop also nichts prüfbar; nicht gebaut.
+
+### Knopf „Jetzt personalisieren“ (Chris, 16:57, 17:25 und 17:26 Uhr: fehlt auf seinem Gerät)
+
+Am Live-Shop nicht nachstellbar. Der Knopf steht und öffnet den Konfigurator in: Chromium (Handy- und PC-Größe), WebKit mit iPhone-Profil (beide Acrylglas-Schilder, Edelstahl; `bilder/10-knopf-live-iphone-profil.png`), allen 20 Acrylglas-Varianten, als Besucher aus Zypern und Deutschland, bei nicht erreichbarem Konfigurator-Server. Das Theme zeichnet ihn fest ins HTML (`templates/product.konfi.json`), sobald das Produkt eine Konfi-Kennung hat.
+
+Nachstellbar ist das Fehlen nur so: Von 39 Themes im Shop haben 5 die Konfi-Produktseite. Öffnet ein Browser einmal die Vorschau eines der anderen, bleibt sie hängen; der normale Produktlink zeigt dann „In den Warenkorb legen“ statt des Knopfs, unten steht der schwarze Vorschau-Balken (`bilder/11-knopf-fehlt-in-alter-theme-vorschau.png`, Skript `korb/knopf-vorschau-haengt.mjs`). Der Zusatz `?preview_theme_id=` am Link beendet die Vorschau (`korb/knopf-vorschau-loesen.mjs`). **Nicht bestätigt:** dass dies bei Chris die Ursache war. Er war um 17:52 Uhr im Konfigurator; seine Bilder zeigen Chrome auf Android.
+
+Meine einzige Änderung an der Produktseite heute ist der unsichtbare Vorab-Start (`82ef626e`, live seit 14:40 Uhr). In allen Prüfungen bleibt der Knopf dabei stehen. Ein echtes Handy hatte ich nicht.
+
+### Vollbild auf Handy und Tablet (`8e78b680`)
+
+Chris, 17:52 Uhr, zwei Bilder: Nach „Vergrößern“ verrutscht die Vorschau. 17:53 Uhr: „Es wird an dem Button liegen, weil der Button falsch ist. Mit Gestaltung zurücksetzen“. 18:05 Uhr zu meinem Vorschlag mit Bild: „Ja“ (ENTSCHEIDUNGEN 3.44).
+
+- Nachgestellt am echten Shop bei 393 px (`korb/vollbild.mjs`, `bilder/12-vollbild-vorher-live.png`): Im Vollbild hängt `design-reset.mjs` den Knopf im Handy-Layout in die Bühne. Dort fehlte ihm die feste Lage; er stand neben dem Schild und schob es 32 px aus dem Bild. Gleiches Bild beim Edelstahl-Türschild und direkt nach dem Start. Der Fehler steckt im Handy-Layout und hat mit Designwechsel und schneller Technik nichts zu tun; die Dateien sind seit dem Stand vom 17.11. unverändert. Bei 820 px derselbe Fehler (59 px).
+- Korrektur in `mobile-demo/preview-action.mjs`: bis 767 px Knopf fest unten links (124 px) in der Zeile des Reglers „Ansicht“ – Breite und Abstand standen dort schon, es fehlte die Lage. 768 bis 999 px: fest unten links, mit Fotogrößen-Regler eine Zeile darüber. Ab 1000 px bleibt der Knopf im Vollbild ausgeblendet. Funktion und Beschriftung unverändert.
+- Geprüft mit ersetztem Paket am echten Shop: 393 px (Acrylglas nach Start und nach Designwechsel, Edelstahl), 360 px, 820 px; Schild überall ganz sichtbar, Knopf und Regler überlappen nicht (`bilder/13-vollbild-nachher.png`, `bilder/14-vollbild-tablet-nachher.png`, `rohwerte/vollbild-*.json`). 3 neue Tests, Handy-Layout 202 von 202, Paket-Tests 9 von 9.
+- **Nicht geprüft:** Tablet-Breite mit Fotogrößen-Regler am echten Shop (kein Fotoprodukt im Shop); echte Geräte.
+- Diese Korrektur ändert die gemeinsame Prio-Oberfläche. Grundlage ist Chris' Fehlermeldung an mich und sein „Ja“ zum Bild, im Rahmen von #265.
+
+### Offene Fragen an Chris
+
+1. Rand-Regel: Soll auch das, was der Kunde selbst über den Rand schiebt, ohne Hinweis und ohne Prüfung vor dem Warenkorb durchgehen?
+2. D808: Vorlage unverändert lassen (Buchstaben liegen innerhalb)?
+3. Warenkorb 9 bis 12 s (Ziel unter 3 s, ENTSCHEIDUNGEN 2.11) als nächstes Thema?
+
+Der [Design-Master](https://github.com/Chris83638w/gravuru-katalog./blob/main/designs/DESIGN-MASTER.md) gilt unverändert; an Designs wurde nichts geändert.

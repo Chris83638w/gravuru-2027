@@ -1,3 +1,18 @@
+## 20.11.2026 · Claude (Operator, technische Gesamtverantwortung) · #265/#267: Rand-Regel, schnellerer Abruf, Vollbild-Korrektur
+
+- Live: `94cd4282` seit 16:53 Uhr (Astra), Rückweg `6c8a951a`. Acrylglas-Schilder 12 × 8 cm: alle 40 Karten 0,1 s nach dem Öffnen, wenn die Produktseite rund 10 s offen war. Chris, 17:52 Uhr, Handy: „Ladezeit sehr gut“.
+- Zum Aufspielen, ein Stand (Zweig `dev/claude-prio-c-rand-20261120`, Auftrag an Astra in #267):
+  - `ea2c9670` Rand-Regel: Vorlagen mit überstehendem Element laden ohne Fehlermeldung (Chris 16:49 Uhr, ENTSCHEIDUNGEN 3.43). D808 öffnet; bei D808 ragt nur der Textkasten über den Rand, nicht die Buchstaben.
+  - `d1a3d95e` Abruf der Design-Teile: ein Speichereintrag je Design, Modell und Freigabe-Art vom Start. Wirkung am echten Server noch nicht gemessen.
+  - `8e78b680` Vollbild auf Handy und Tablet: „Gestaltung zurücksetzen“ schob das Schild aus dem Bild (Chris 17:52 Uhr mit Bildern, „Ja“ zur Lage unten links um 18:05 Uhr, ENTSCHEIDUNGEN 3.44). Fehler des Handy-Layouts, auch beim Edelstahl-Türschild, unabhängig von der schnellen Technik.
+  - `f1948a8b` Test: jeder Produktschnitt des Katalogs hat alle Designs im Gerät oder bekommt Design-Teile (Chris 17:10 Uhr, ENTSCHEIDUNGEN 2.18). Lücke: Produkte ohne Familie, keines im Shop.
+- Knopf „Jetzt personalisieren“ fehlte auf Chris' Gerät (16:57, 17:25, 17:26 Uhr): am Live-Shop nicht nachstellbar (Chromium, WebKit mit iPhone-Profil, Zypern/Deutschland). Nachstellbar nur mit hängender Vorschau eines Themes ohne Konfi-Produktseite (34 von 39 Themes); `?preview_theme_id=` am Link beendet sie. Nicht bestätigt, dass das bei Chris die Ursache war.
+- Prüfungen: gezielte Tests je Änderung mit Gegenprobe am alten Stand, Paket-Tests 9 von 9, am echten Shop mit ersetztem Paket (nur lesend; ein Warenkorb-Test mit D808 ohne Kasse). Gesamtlauf: Ergebnis im Auftrag an Astra in #267.
+- Nicht geprüft: echte Handys, Safari auf einem Gerät, Tablet-Breite mit Fotogrößen-Regler, der neue Server-Abruf am echten Server.
+- Offen bei Chris: Rand-Regel auch für das, was der Kunde selbst über den Rand schiebt; D808-Vorlage unverändert lassen; Warenkorb 9 bis 12 s als nächstes Thema.
+- Nächster Schritt: Astra spielt den Stand auf; danach messe ich den Abruf der Design-Teile am echten Server und prüfe D808 und das Vollbild nur lesend nach.
+- Übergabe: `docs/handoffs/2026-11-20-prio-c-technik-claude.md`, Abschnitt „Stand zum Aufspielen: Rand-Regel, schnellerer Abruf, Vollbild“. Der [Design-Master](https://github.com/Chris83638w/gravuru-katalog./blob/main/designs/DESIGN-MASTER.md) gilt unverändert.
+
 ## 20.11.2026 · Claude (Operator, technische Gesamtverantwortung) · #265/#267: Designkarten im Gerät, jetzt auch Acrylglas 12 × 8 cm
 
 - Live: `f04200b0` (Stufe 2, 3, 4) seit 14:40 Uhr, `4e764ed5` seit 15:03 Uhr, `6c8a951a` seit 15:22 Uhr (alle Astra, auf Chris' Ansage ohne Beta-Prüfung, ENTSCHEIDUNGEN 2.15). Chris, 15:25 Uhr: „bisher alles sehr gut“.

@@ -118,17 +118,25 @@ Am PC lag das Edelstahl-Türschild beim Warenkorb bei 10,8 s bis zur Position. A
 
 Sobald Astra liefert, prüfe ich in dieser Reihenfolge. Für A und B gelten dieselben Punkte.
 
-1. **Oberfläche.** Ring-Produktseite trägt die Kennung, Start-Adresse enthält `ui=prio-r15`, Editor zeigt die Prio-Leiste auf PC und Handy. Vergleichsbild mit Referenz und Edelstahl. Die drei Abweichungen sind entschieden.
+1. **Oberfläche.** Ring-Produktseite trägt die Kennung, Start-Adresse enthält `ui=prio-r15`, Editor zeigt die Prio-Leiste auf PC und Handy. Vergleichsbild mit Referenz und Edelstahl. Der Knopf unter dem Schild zeigt nur „+“.
 2. **Ring-Daten.** 16 Designs, 3 Formate, 2 Positionen, 4 Rahmen, 5 Befestigungen, 2 Farben, 120 Varianten, Preise wie in Shopify. Texte, Motive frei bewegen und skalieren.
 3. **Warenkorb.** Zwei Gestaltungen derselben Variante als getrennte Positionen, eigene vergrößerbare Bilder, richtiger Preis, Entfernen ja, Bearbeiten nein. Dasselbe Bild in der Kasse.
 4. **Bestellung und Fertigung.** Testbestellung über die Testzahlung, in Shopify gelesen. Revision, Preis, SVG, PDF und Kontur passen zur Position.
 5. **Tempo.** Edelstahl-Prio und Ring getrennt, PC und Handy, kalt und warm, mehrere Läufe. Echte Shop-Messung und Nachstellung getrennt ausgewiesen.
 
+## Entscheidungen von Chris (20.11.2026, 08:15 Uhr, im Chat mit Claude)
+
+1. Zum Knopf unter dem Schild, wörtlich: „nur ein + Zeichen“. Der Knopf zeigt also nur „+“, wie heute in der Prio-Ansicht im Shop. Zur Kopfzeile auf dem Handy und zur Lage der Werkzeuge am PC hat Chris nichts gesagt. Dort wird nichts geändert, solange keine andere Ansage kommt.
+2. Zum unveränderten Beispieltext, wörtlich: „Ja, der Nachname soll geändert werden, der Kunde kann das aber auch übernehmen.“ Mein Verständnis: Steht im Nachnamen-Feld noch der Beispieltext, fragt der Konfi vor dem Warenkorb nach. Der Kunde kann ändern oder den Text ausdrücklich übernehmen. Es gibt keine Sperre.
+
+Nicht entschieden und deshalb nicht einzubauen: dieselbe Rückfrage für die Hausnummer („12a“) und für die erste Zeile („Familie“). Die Frage liegt bei Chris.
+
+Die Rückfrage ist eine Änderung an der gemeinsamen R15-Bedienung. Sie läuft nach `PRIO-KONFI.md` über Mika in Abstimmung mit Mikail und kommt nach der Umstellung des Rings, nicht als Teil der Tempo-Patches.
+
 ## Offen bei Chris
 
-- Entscheidung zu den drei Abweichungen zwischen Referenz und Prio im Shop.
+- Gilt die Rückfrage auch für die Hausnummer und die erste Zeile?
 - Eigene Testwarenkörbe brauche ich vorerst nicht. Astras Testbestellungen lese ich in Shopify gegen und rufe die bestellten Bilder ab.
-- Sollen unveränderte Beispieltexte bestellbar bleiben?
 
 ## Wiederholen
 

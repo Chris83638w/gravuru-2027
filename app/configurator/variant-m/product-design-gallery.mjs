@@ -9,6 +9,7 @@ import {isFamilyFormats,isAllSizesFamily,designNumber} from './family-formats.mj
 import {installDesignSearchControl} from './design-search-control.mjs';
 import {installNativeDesignSearch} from './native-design-search.mjs';
 import {planDesignAdoption} from './design-adoption.mjs';
+import {designResourcesReady} from './doorbell-lazy-designs.mjs';
 
 const money=cents=>new Intl.NumberFormat('de-DE',{style:'currency',currency:'EUR'}).format(cents/100);
 const TRANSFER_NOTE='Deine Texte und Fotos wurden übernommen. Bitte die neue Anordnung prüfen.';
@@ -92,7 +93,7 @@ export async function installProductDesignGallery({el,r,config,files,say,dialog,
   if(template){
    if(item.designId===el.state.designId)return;
    try{
-    await el.uxEnsureDesignResources?.(template);el.chooseDesign(item.designId);
+    await el.uxEnsureDesignResources?.(template);el.chooseDesign(item.designId);drawCards();
     // Derselbe Hinweis wie nach dem bisherigen Wechsel über den Server.
     if(el.state.designId===item.designId){const note=section.querySelector('.ux-product-result');note.hidden=false;note.textContent=TRANSFER_NOTE;say(TRANSFER_NOTE);}
    }
@@ -117,6 +118,24 @@ export async function installProductDesignGallery({el,r,config,files,say,dialog,
  // Start im Gerät, samt Schriften und Motiven. Danach ist jeder Wechsel nur noch ein Neuzeichnen, auch der erste.
  // Schlägt hier etwas fehl, ändert sich nichts: das Design lädt dann beim Antippen wie in Stufe 1.
  let preparing=Promise.resolve();const prepareLog=[];el.uxDesignPreloadLog=prepareLog;
+ // Karten im Gerät zeichnen (Chris 20.11.2026, 14:43 Uhr, mit Bild der Karten „Vorschau wird geladen“: „Das habe ich bei
+ // variante c nicht. das sehe ich sofort alles“). Bisher zeichnete der Server jede Karte einzeln (höchstens zwei
+ // gleichzeitig für alle Besucher zusammen, nur sichtbare Karten). Liegt ein Design samt Schrift und Motiv im Gerät,
+ // zeichnet der Editor seine Karte selbst, mit derselben Zeichenfunktion wie die eigene Designauswahl und Variante C
+ // (window.Funkklingel.thumb). Für alle anderen Karten bleibt die Vorschau vom Server.
+ function drawCard(request){
+  const {item,img}=request;
+  if(!allSizes||!item.current||request.drawn||img.src||!img.parentNode||!el.isConnected||!el.uxLayoutReady)return false;
+  const template=profile().designs.find(d=>d.id===item.designId);
+  if(!template||!designResourcesReady(template,el.fontData,el.motifs))return false;
+  let svg=null;
+  try{const holder=document.createElement('div');holder.innerHTML=window.Funkklingel.thumb(el,template);svg=holder.firstElementChild;}catch{return false;}
+  if(!svg||svg.localName!=='svg'||svg.childElementCount===0)return false;
+  svg.setAttribute('role','img');svg.setAttribute('aria-label',item.designName);svg.classList.add('ux-product-drawn');
+  request.drawn=true;img.previewStarted=true;observer?.unobserve(img);requests.delete(request);
+  img.replaceWith(svg);prepareLog.drawn=(prepareLog.drawn||0)+1;return true;
+ }
+ const drawCards=()=>{for(const request of [...requests])try{drawCard(request);}catch{/* Diese Karte behält die Vorschau vom Server. */}};
  // Bei einem Größenwechsel sucht der Editor dieselbe Vorlage, sonst dieselbe Designnummer. Nur wenn das je Ausführung
  // eindeutig ist, hängt das Ergebnis nicht von der Reihenfolge der Aufnahme ab.
  const unambiguous=source=>{const byId=new Map(source.familyFormats.designs.map(d=>[d.id,d]));
@@ -128,26 +147,31 @@ export async function installProductDesignGallery({el,r,config,files,say,dialog,
   if(!wanted.length)return;
   // In der Reihenfolge der Karten, in kleinen Gruppen: die oberen Designs sind zuerst fertig.
   preparing=preparing.then(async()=>{
-   // Vorab-Start auf der Produktseite: erst holen, wenn der Kunde den Konfigurator wirklich geöffnet hat.
-   try{await window.parent.GravuruShopEntry?.whenShown?.();}catch{/* Ohne Meldung der Shop-Seite sofort. */}
    for(let at=0;at<wanted.length&&version===epoch;at+=PREPARE_GROUP){
+    // Vorab-Start auf der Produktseite: Die erste Gruppe (die oberen Karten) liegt schon bereit, wenn der Kunde öffnet.
+    // Alle weiteren Gruppen erst, wenn er den Konfigurator wirklich sieht.
+    if(at>0)try{await window.parent.GravuruShopEntry?.whenShown?.();}catch{/* Ohne Meldung der Shop-Seite sofort. */}
     const group=wanted.slice(at,at+PREPARE_GROUP).filter(id=>!profile().designs.some(d=>d.id===id));
-    if(!group.length)continue;
+    if(!group.length){drawCards();continue;}
     try{
      const loaded=await api.loadDesigns(group);if(!loaded?.designIds?.length)continue;
-     await new Promise(resolve=>idleScheduler(window,{timeout:1500})(resolve));
+     await new Promise(resolve=>idleScheduler(window,{timeout:at?1500:300})(resolve));
      while(switching)await new Promise(resolve=>setTimeout(resolve,120));
      const started=performance.now(),source=structuredClone(loaded.universal);if(!unambiguous(source))continue;
      // Erst vollständig prüfen (beide Kopien), dann schreiben, wie beim Antippen.
      const updateGallery=planDesignAdoption(config,source,loaded.designIds[0]);
      el.uxAdoptDesignModel(source,loaded.designIds[0]);updateGallery();
      prepareLog.push({designs:loaded.designIds.length,ms:Math.round(performance.now()-started)});
-     for(const id of loaded.designIds){
+     drawCards();
+     // Schriften und Motive der Gruppe gleichzeitig holen; jede Karte erscheint, sobald ihr Design vollständig ist.
+     await Promise.all(loaded.designIds.map(async id=>{
       const template=profile().designs.find(d=>d.id===id);
       if(template)try{await el.uxEnsureDesignResources?.(template,{priority:'low'});}catch{/* Eine fehlende Schrift lädt beim Antippen erneut. */}
-     }
+      drawCards();
+     }));
     }catch{/* Diese Gruppe lädt beim Antippen wie in Stufe 1. */}
    }
+   drawCards();
   });
  }
  async function load(){
@@ -169,6 +193,7 @@ export async function installProductDesignGallery({el,r,config,files,say,dialog,
     const check=document.createElement('span');check.className='completion-check';check.textContent='✓';check.setAttribute('aria-hidden','true');select.append(check);select.onclick=()=>choose(item);
     card.append(select);grid.append(card);
     img.previewRequest={item,img,version,warm:initial&&warmCount++<3};requests.add(img.previewRequest);
+    if(drawCard(img.previewRequest))continue;
     if(previewsActive){if(observer)observer.observe(img);else queue.push(img.previewRequest);}
    }
    warmPreviews();

@@ -154,7 +154,7 @@ export function installUniversal(configInput) {
     el.png = async function({type='image/png',quality,cartPreview=false}={}) {
       const devicePhoto=cartPreview && dynamicDoorbell && config.doorbell.modelKey?.startsWith('ring-')
         ? profile().admin?.imageUrl : undefined;
-      let source=await embedSurface(this.svg(true),config.materialSurface,devicePhoto);
+      let source=await embedSurface(this.svg(true),config.materialSurface,devicePhoto,cartPreview && dynamicDoorbell);
       if(this.uxEmbedPreviewUploads)source=await this.uxEmbedPreviewUploads(source);
       const url = URL.createObjectURL(new Blob([source], {type:'image/svg+xml'}));
       try {

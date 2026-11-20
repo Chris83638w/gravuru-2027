@@ -46,9 +46,13 @@ export function scenePreview(svg,url){
  if(!box||box.length!==4||!box.every(Number.isFinite))throw Error('Szenenvorschau: Maße fehlen.');
  return svg.replace(/(<svg\b[^>]*>)/,'$1<image data-scene-background="true" href="'+url+'" x="'+box[0]+'" y="'+box[1]+'" width="'+box[2]+'" height="'+box[3]+'" preserveAspectRatio="xMidYMid slice" pointer-events="none"/>');
 }
-export async function embedSurface(svg,url,devicePhoto){
+export async function embedSurface(svg,url,devicePhoto,doorbellCartPreview=false){
  const sources=[];
  if(url && validSurface(url) && !url.startsWith('data:'))sources.push(url);
+ if(doorbellCartPreview && svg.includes('data-doorbell-steel="textured"')){
+  const {DOORBELL_STEEL_SURFACE}=await import('../../platform/sources/app/shared/models/doorbell-material-preview.mjs');
+  if(svg.includes('href="'+DOORBELL_STEEL_SURFACE+'"'))sources.push(DOORBELL_STEEL_SURFACE);
+ }
  // A rasterized SVG cannot load external images. Use only the camera selected by the Ring profile.
  if(/^\/doorbell-assets\/[a-f0-9]{64}\.webp$/.test(devicePhoto) && svg.includes('href="'+devicePhoto+'"'))sources.push(devicePhoto);
  const embedded=await Promise.all(sources.map(async source=>{

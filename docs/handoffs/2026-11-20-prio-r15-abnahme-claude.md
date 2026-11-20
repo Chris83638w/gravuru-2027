@@ -118,9 +118,9 @@ Am PC lag das Edelstahl-Türschild beim Warenkorb bei 10,8 s bis zur Position. A
 
 Sobald Astra liefert, prüfe ich in dieser Reihenfolge. Für A und B gelten dieselben Punkte.
 
-1. **Oberfläche.** Ring-Produktseite trägt die Kennung, Start-Adresse enthält `ui=prio-r15`, Editor zeigt die Prio-Leiste auf PC und Handy. Vergleichsbild mit Referenz und Edelstahl. Der Knopf unter dem Schild zeigt nur „+“.
+1. **Oberfläche.** Ring-Produktseite trägt die Kennung, Start-Adresse enthält `ui=prio-r15`, Editor zeigt die Prio-Leiste auf PC und Handy. Vergleichsbild mit Referenz und Edelstahl. Der Knopf unter dem Schild zeigt nur „+“. Die Material-Darstellung im Konfi bleibt wie heute: Edelstahl gebürstet, Acrylglas mit Kante und Glanz (Hinweis von Chris, 20.11., siehe unten).
 2. **Ring-Daten.** 16 Designs, 3 Formate, 2 Positionen, 4 Rahmen, 5 Befestigungen, 2 Farben, 120 Varianten, Preise wie in Shopify. Texte, Motive frei bewegen und skalieren.
-3. **Warenkorb.** Zwei Gestaltungen derselben Variante als getrennte Positionen, eigene vergrößerbare Bilder, richtiger Preis, Entfernen ja, Bearbeiten nein. Dasselbe Bild in der Kasse.
+3. **Warenkorb.** Zwei Gestaltungen derselben Variante als getrennte Positionen, eigene vergrößerbare Bilder, richtiger Preis, Entfernen ja, Bearbeiten nein. Dasselbe Bild in der Kasse. Das bestellte Bild lege ich neben das Konfi-Bild, auch für das Material.
 4. **Bestellung und Fertigung.** Testbestellung über die Testzahlung, in Shopify gelesen. Revision, Preis, SVG, PDF und Kontur passen zur Position.
 5. **Tempo.** Edelstahl-Prio und Ring getrennt, PC und Handy, kalt und warm, mehrere Läufe. Echte Shop-Messung und Nachstellung getrennt ausgewiesen.
 
@@ -135,8 +135,29 @@ Nicht entschieden und deshalb nicht einzubauen: andere Beispielangaben in andere
 
 Die Rückfrage ist eine Änderung an der gemeinsamen R15-Bedienung. Sie läuft nach `PRIO-KONFI.md` über Mika in Abstimmung mit Mikail und kommt nach der Umstellung des Rings, nicht als Teil der Tempo-Patches.
 
+## Hinweis von Chris zur Material-Darstellung (20.11.2026, 08:17 Uhr, im Chat mit Claude)
+
+Chris wörtlich: „aber wir hatten auch mal die die Klingel realistischer gemacht. Das Edelstahl sieht echter aus und vor allem auch das Acrylglas“.
+
+Quelle des damaligen Auftrags: [Übergabe vom 29.10.2026](2026-10-29-funkklingeln-aosu-auswahl-nachtrag.md), dort: „Zusätzlich soll die Edelstahlplatte realistisch erscheinen und Acrylglas mehr Tiefe/Glanz erhalten.“ Umgesetzt in Commit `dc11ca3c` (`doorbell-material-preview.mjs`): Edelstahl-Maserung als Bild hinter dem Acryl, Acrylkante aus der Stärke, Lichtverlauf und Reflex.
+
+Geprüft habe ich drei Dinge.
+
+1. **Im Konfi ist diese Darstellung heute da (S).** In der bisherigen Leiste und in der Prio-Ansicht, in der Vorschau und auf den Designkarten. Beide Ansichten nutzen dieselbe Zeichnung. Im Code ist sie seit dem 29.10. gleich geblieben: Die Farbverläufe für Stahl und Acryl in `studio-svg.mjs` sind zwischen `dc11ca3c` und dem Live-Stand `b36a8eef` zeichengleich. Geändert wurde nur die Datei der Maserung, am 16.11. von PNG (1.440.952 Bytes) auf WebP (97.754 Bytes). Bildvergleich beider Dateien: gleiche Maße 1536 × 1024, mittlere Abweichung 1,7 von 255 je Farbkanal, Kontrast 34,2 gegen 34,3.
+2. **Im bestellten Bild fehlt die Edelstahl-Maserung (S).** Die zwei Bilder der Testbestellung #1035 zeigen den Rahmen glatt grau. Das Acrylglas sieht dort aus wie im Konfi.
+
+   ![Konfi gegen bestelltes Bild](2026-11-20-prio-r15-abnahme-claude/bilder/06-edelstahl-konfi-gegen-bestelltes-bild.png)
+
+   Ursache im Live-Code `b36a8eef` gelesen: Das Bild für den Warenkorb entsteht im Gerät des Kunden aus der Zeichnung. Dabei lädt der Browser keine fremden Bilddateien. `embedSurface` in `app/configurator/variant-m/material-surface.mjs` packt deshalb Bilder vorher in die Zeichnung, aber nur `config.materialSurface` und seit `14b53038` (19.11.) das Ring-Gerätefoto. Funkklingel-Produkte haben kein `materialSurface`. Die Maserung (`/_runtime/images/gravuru-edelstahl-feine-maserung-vorschau.50e74d27e1f6f494.webp`) wird nicht eingepackt, es bleibt der glatte Verlauf darunter.
+3. **Einordnung: schon vorher vorhanden.** Am bisherigen Live-Code `9af3a1ac` packte `embedSurface` ebenfalls nur `config.materialSurface` ein. Kein neuer Fehler durch die Patches, kein Fehler an Daten, Preis oder Fertigung. Kein Blocker für die Ring-Umstellung.
+
+Eigene Korrektur: Im Abschnitt „Testbestellungen in Shopify gelesen“ und in meinem Kommentar von heute Morgen habe ich die bestellten Bilder von #1035 als passend beschrieben. Die fehlende Maserung habe ich dabei nicht bemerkt.
+
+Nicht geprüft (N): das bestellte Bild eines Edelstahl-Türschilds und anderer Funkklingel-Modelle. Nach dem gelesenen Code gilt der Weg für alle Funkklingel-Schilder, gesehen habe ich es nur am Ring.
+
 ## Offen bei Chris
 
+- Soll die Edelstahl-Maserung auch ins bestellte Bild (Warenkorb, Kasse)? Meine Empfehlung: ja, mit Messung von Bildgröße und Zeit vorher und nachher, weil das Bild im Gerät des Kunden entsteht. Bis zur Entscheidung keine Bitte um Umbau.
 - Liste weiterer Beispielangaben je Produkt (Vornamen, Straße, Daten), sobald die Rückfrage gebaut werden soll.
 - Eigene Testwarenkörbe brauche ich vorerst nicht. Astras Testbestellungen lese ich in Shopify gegen und rufe die bestellten Bilder ab.
 

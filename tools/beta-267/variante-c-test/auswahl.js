@@ -1,9 +1,9 @@
 import {createShopEntryClient,createShopResourceLoader} from '/konfigurator/shop/shop-entry-client.mjs';
-import {installCards} from './c-karten.mjs';
+import {installCards} from './c-karten.js';
 
 const shop='gravuru-design.myshopify.com', product='gid://shopify/Product/16190784438652';
 const config='cfg_ac514214-a313-4738-8008-00445ee1befd', revision=4;
-const cartUrl='https://konfi-beta.gravuru-designwerkstatt.de/variante-c/warenkorb';
+const cartUrl='https://'+shop+'/products/tuerschild-edelstahl-form-und-groesse-selbst-waehlen?preview_theme_id=191449661820&view=warenkorb-c267&pb=0';
 const $=s=>document.querySelector(s), note=$('#status'), gallery=$('#designs');
 const shape=$('#form'), size=$('#groesse'), mount=$('#befestigung'), frame=$('iframe');
 const esc=v=>String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -58,9 +58,20 @@ async function start(){
     const sequence=++epoch;
     gallery.hidden=true;note.textContent='Passende Designs werden geladen …';
     const options={size:size.value,mounting:mount.value};
-    const data=await client.loadDesignGallery(0,'all',options);
-    if(sequence!==epoch)return;
-    const cards=data.items.filter(d=>d.shopifyProductId===product&&d.productId===config&&d.productRevision===revision);
+    const cards=[];
+    let page=0, attempts=0;
+    while(page!==null){
+      const data=await client.loadDesignGallery(page,'all',options);
+      if(sequence!==epoch)return;
+      if(data.status==='preparing'){
+        check(++attempts<=8,'Die Designauswahl wird noch vorbereitet. Bitte erneut öffnen.');
+        await new Promise(resolve=>setTimeout(resolve,600));
+        continue;
+      }
+      cards.push(...data.items.filter(d=>d.shopifyProductId===product&&d.productId===config&&d.productRevision===revision));
+      check(data.nextPage==null||data.nextPage===page+1,'Die Designliste konnte nicht vollständig geladen werden.');
+      page=data.nextPage??null;
+    }
     check(cards.length,'Für diese Ausführung ist noch kein Design freigegeben.');
     model.catalog.designs=cards.map(d=>({...d,id:d.designId,name:d.designName}));
     for(const item of links.values())if(item.url)URL.revokeObjectURL(item.url);

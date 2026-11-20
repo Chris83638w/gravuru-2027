@@ -8,7 +8,7 @@ import {createShopifyClient} from '../../scripts/shop-export.mjs';
 import {ADMIN_READONLY_IDENTITY as identity} from '../../app/workshop/shopify-admin-readonly.mjs';
 import {capturePersonalization} from '../../app/workshop/cart-personalization.mjs';
 import {prepareShopProduct} from '../../app/workshop/shop-preparation.mjs';
-import {fixedDoorbellProducts} from '../../app/workshop/fixed-doorbell-checkout-products.mjs';
+import {fixedDoorbellProducts,directDoorbellProducts} from '../../app/workshop/fixed-doorbell-checkout-products.mjs';
 import {cartTransformRun} from '../shopify/einzelsperre-release/preis/src/master-release/cart_transform_run.mjs';
 import {cartValidationsGenerateRun} from '../shopify/einzelsperre-release/pruefung/src/cart_validation_run.mjs';
 
@@ -17,15 +17,17 @@ const digest=value=>createHash('sha256').update(value).digest('hex');
 const optionKey=o=>JSON.stringify(Object.entries(o).sort());
 const inspection=`query RingRead($id:ID!){
  shop{myshopifyDomain currencyCode} currentAppInstallation{app{id} accessScopes{handle}}
- product(id:$id){id status templateSuffix onlineStoreUrl variants(first:120){nodes{id price} pageInfo{hasNextPage}}
+ product(id:$id){id status templateSuffix onlineStoreUrl publishedAt marker:metafield(namespace:"custom",key:"customization_id"){value} variants(first:120){nodes{id price} pageInfo{hasNextPage}}
  pricing:metafield(namespace:"$app",key:"personalization"){id namespace key type value compareDigest}}
 }`;
 const setField=`mutation RingSet($values:[MetafieldsSetInput!]!){metafieldsSet(metafields:$values){metafields{id compareDigest} userErrors{code message}}}`;
 const deleteField=`mutation RingRestore($fields:[MetafieldIdentifierInput!]!){metafieldsDelete(metafields:$fields){deletedMetafields{ownerId key namespace} userErrors{message}}}`;
 const [action,dbFile,receiptDir,scope=ringId]=process.argv.slice(2);
 assert(['plan','apply','readback','rollback'].includes(action)&&path.isAbsolute(dbFile)&&path.isAbsolute(receiptDir));
-const batch=scope==='active-doorbells';
-assert(batch?action!=='rollback':Object.hasOwn(fixedDoorbellProducts,scope));
+const groups={'active-doorbells':fixedDoorbellProducts,'direct-doorbells':directDoorbellProducts};
+const batch=Object.hasOwn(groups,scope);
+const profiles={...fixedDoorbellProducts,...directDoorbellProducts};
+assert(batch?action!=='rollback':Object.hasOwn(profiles,scope));
 process.umask(0o077);
 const cfg=merchantConfig(process.env);
 assert.equal(cfg.host,'app-2027.gravuru-designwerkstatt.de');
@@ -39,8 +41,14 @@ async function inspect(productId){
  assert(data.currentAppInstallation.accessScopes.some(s=>s.handle==='write_products'));
  const product=data.product;
  assert.equal(product.id,productId);
- assert.equal(product.status,'ACTIVE');
- if(productId!==ringId){assert.equal(product.templateSuffix,'funkklingeln-2027');assert(product.onlineStoreUrl);}
+ const direct=Object.hasOwn(directDoorbellProducts,productId);
+ assert.equal(product.status,direct?'UNLISTED':'ACTIVE');
+ assert.equal(product.marker?.value,profiles[productId]);
+ if(direct){
+  assert(product.publishedAt && product.onlineStoreUrl);
+  assert.equal(new URL(product.onlineStoreUrl).hostname,identity.shopDomain);
+  assert(!product.templateSuffix);
+ }else if(productId!==ringId){assert.equal(product.templateSuffix,'funkklingeln-2027');assert(product.onlineStoreUrl);}
  assert.equal(product.variants.pageInfo.hasNextPage,false);
  assert.equal(product.variants.nodes.length,120);
  if(product.pricing){
@@ -50,12 +58,13 @@ async function inspect(productId){
  return product;
 }
 function pricePlan(product){
- const productId=product.id,cfgId=fixedDoorbellProducts[productId];
+ const productId=product.id,cfgId=profiles[productId];
  const db=new DatabaseSync(dbFile,{readOnly:true});
  try{
   const record=db.prepare("SELECT r.document,r.status FROM products p JOIN product_revisions r ON p.id=r.product_id AND r.tenant_id=p.tenant_id AND r.revision=p.revision WHERE p.tenant_id='gravuru' AND p.id=? AND p.revision=2 AND p.archived=0").get(cfgId);
-  const approval=db.prepare("SELECT document_sha256,variants_json FROM doorbell_live_order_approvals WHERE tenant_id='gravuru' AND shop=? AND product_gid=? AND cfg_id=? AND cfg_revision=2").get(identity.shopDomain,productId,cfgId);
+  const approval=db.prepare("SELECT document_sha256,variants_json,approval_id FROM doorbell_live_order_approvals WHERE tenant_id='gravuru' AND shop=? AND product_gid=? AND cfg_id=? AND cfg_revision=2").get(identity.shopDomain,productId,cfgId);
   assert(record&&approval&&digest(record.document)===approval.document_sha256);
+  if(Object.hasOwn(directDoorbellProducts,productId))assert.equal(approval.approval_id,'chris-chat-ui-live-20261029');
   const document=JSON.parse(record.document);
   const prepared=prepareShopProduct({id:cfgId,revision:2,status:record.status,document});
   assert(prepared.sourceReady&&prepared.variants.length===120);
@@ -141,5 +150,5 @@ async function runProduct(productId){
  console.log(JSON.stringify({action,checkedAt:new Date().toISOString(),...stamp,matched:final.pricing?.value===value}));
 }
 
-const targets=batch?Object.keys(fixedDoorbellProducts).filter(id=>id!==ringId):[scope];
+const targets=batch?Object.keys(groups[scope]).filter(id=>id!==ringId):[scope];
 for(const productId of targets)await runProduct(productId);

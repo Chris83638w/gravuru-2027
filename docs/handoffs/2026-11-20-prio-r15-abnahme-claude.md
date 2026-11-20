@@ -129,13 +129,15 @@ Sobald Astra liefert, prüfe ich in dieser Reihenfolge. Für A und B gelten dies
 1. Zum Knopf unter dem Schild, wörtlich: „nur ein + Zeichen“. Der Knopf zeigt also nur „+“, wie heute in der Prio-Ansicht im Shop. Zur Kopfzeile auf dem Handy und zur Lage der Werkzeuge am PC hat Chris nichts gesagt. Dort wird nichts geändert, solange keine andere Ansage kommt.
 2. Zum unveränderten Beispieltext, wörtlich: „Ja, der Nachname soll geändert werden, der Kunde kann das aber auch übernehmen.“ Mein Verständnis: Steht im Nachnamen-Feld noch der Beispieltext, fragt der Konfi vor dem Warenkorb nach. Der Kunde kann ändern oder den Text ausdrücklich übernehmen. Es gibt keine Sperre.
 
-Nicht entschieden und deshalb nicht einzubauen: dieselbe Rückfrage für die Hausnummer („12a“) und für die erste Zeile („Familie“). Die Frage liegt bei Chris.
+3. Nachfrage von mir, ob das auch für Hausnummer und erste Zeile gilt. Chris um 08:17 Uhr, wörtlich: „ja auch da. Nur bei Familie natürlich nicht oder Willkommen, dass ist ja sehr allgemein“. Die Rückfrage gilt also auch für die unveränderte Hausnummer („12a“). Bei allgemeinen Wörtern wie „Familie“ oder „Willkommen“ gibt es keine Rückfrage.
+
+Nicht entschieden und deshalb nicht einzubauen: andere Beispielangaben in anderen Produkten, zum Beispiel Vornamen, Straße oder Daten auf Gedenktafeln. Dafür braucht es vor dem Bau eine Liste der Beispielfelder je Produkt und die Bestätigung von Chris.
 
 Die Rückfrage ist eine Änderung an der gemeinsamen R15-Bedienung. Sie läuft nach `PRIO-KONFI.md` über Mika in Abstimmung mit Mikail und kommt nach der Umstellung des Rings, nicht als Teil der Tempo-Patches.
 
 ## Offen bei Chris
 
-- Gilt die Rückfrage auch für die Hausnummer und die erste Zeile?
+- Liste weiterer Beispielangaben je Produkt (Vornamen, Straße, Daten), sobald die Rückfrage gebaut werden soll.
 - Eigene Testwarenkörbe brauche ich vorerst nicht. Astras Testbestellungen lese ich in Shopify gegen und rufe die bestellten Bilder ab.
 
 ## Wiederholen

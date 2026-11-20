@@ -2,7 +2,7 @@
 // Ein Türschild-Konfi mit allen Größen lädt nur sein Startdesign. Für jedes weitere Design
 // liefert der Server über `model?design=` dasselbe Produkt im selben Produktstand, nur mit
 // den Vorlagen dieses Designs. Zwei solche Modelle unterscheiden sich ausschließlich in
-// den Design-Teilen (geprüft am Live-Stand 2bd7bd8e, Edelstahl-Türschild, Stand 4):
+// den Design-Teilen und den von der Werkstatt darin eingebetteten Motivpfaden:
 //   profile.designs, familyFormats.designs, familyFormats.formats[].variants[].designIds,
 //   workshopElementRights sowie die drei Angaben zum Startdesign.
 // Diese Datei vereinigt genau diese Teile im laufenden Editor. Alles andere muss gleich
@@ -28,9 +28,32 @@ function additions(present,offered,what){
  return added;
 }
 
-/** Nimmt die Vorlagen von `designId` aus `source` in `target` auf. Beide sind Modelle
- * desselben Produkts im selben Produktstand. Gibt true zurück, wenn etwas dazukam. */
-export function adoptDesignModel(target,source,designId){
+// Der klassische Einstieg kann auch Medien mit separaten Freigaben und URLs laden.
+// Im bestehenden Editor können wir eigenständige, eingebettete Pfade direkt registrieren.
+function addedTemplateMotifs(current={},incoming={}){
+ for(const key of new Set([...Object.keys(current),...Object.keys(incoming)])){
+  if(key!=='motifs'&&!same(current[key],incoming[key]))refuse('Ressource '+key+' weicht ab');
+ }
+ const known=new Map((current.motifs||[]).map(m=>[m.key,m])),added=[];
+ for(const m of incoming.motifs||[]){
+  if(known.has(m.key)){
+   if(!same(known.get(m.key),m))refuse('Motivkontur weicht ab');
+   continue;
+  }
+  const b=m.bounds,svg=m.svgFragment;
+  if(typeof m.key!=='string'||!m.key||m.embeddedOnly!==true||m.artwork||
+     !Array.isArray(b)||b.length!==4||!b.every(Number.isFinite)||b[2]<=0||b[3]<=0||
+     typeof svg!=='string'||!/^\s*(?:<path\b(?=[^<>]*\sd=["']\s*[mM])[^<>]*\/>\s*)+$/.test(svg)||
+     /(?:\b(?:href|style|on\w+)\s*=|url\s*\()/i.test(svg))refuse('Motiv benötigt den vollständigen Einstieg');
+  known.set(m.key,m);added.push(m);
+ }
+ // Der bereits montierte Begrenzungsprüfer hält genau dieses Array fest.
+ if(added.length&&!Array.isArray(current.motifs))refuse('Motivregister fehlt');
+ return added;
+}
+
+/** Prüft den kompletten Wechsel, bevor eine der beiden Modellkopien verändert wird. */
+export function planDesignAdoption(target,source,designId){
  if(!canAdoptDesigns(target)||!canAdoptDesigns(source))refuse('kein Produkt mit allen Größen');
  if(typeof designId!=='string'||!source.profile.designs.some(design=>design.id===designId))refuse('Design fehlt im geladenen Modell');
  if(target.profile.id!==source.profile.id)refuse('anderes Profil');
@@ -63,9 +86,19 @@ export function adoptDesignModel(target,source,designId){
  // Jede zugeordnete Vorlage muss danach vorhanden sein.
  const available=new Set([...a.designs,...familyDesigns].map(design=>design.id));
  for(const [,extra] of plan)if(extra.some(id=>!available.has(id)))refuse('Formatvorlage fehlt');
- if(!plan.length&&!familyDesigns.length&&!profileDesigns.length&&!newRights.length)return false;
- for(const [list,extra] of plan)list.push(...extra);
- a.designs.push(...familyDesigns.map(copy));target.profile.designs.push(...profileDesigns.map(copy));
- if(newRights.length){target.workshopElementRights??={};for(const [id,value] of newRights)target.workshopElementRights[id]=copy(value);}
- return true;
+ const motifs=addedTemplateMotifs(target.localResources,source.localResources);
+ return registerMotifs=>{
+  if(!plan.length&&!familyDesigns.length&&!profileDesigns.length&&!newRights.length&&!motifs.length)return false;
+  if(motifs.length){
+   registerMotifs?.(motifs);
+   target.localResources.motifs.push(...motifs.map(copy));
+  }
+  for(const [list,extra] of plan)list.push(...extra);
+  a.designs.push(...familyDesigns.map(copy));target.profile.designs.push(...profileDesigns.map(copy));
+  if(newRights.length){target.workshopElementRights??={};for(const [id,value] of newRights)target.workshopElementRights[id]=copy(value);}
+  return true;
+ };
 }
+
+/** Nimmt die geprüften Vorlagen in ein einzelnes Modell auf. */
+export const adoptDesignModel=(target,source,designId,registerMotifs)=>planDesignAdoption(target,source,designId)(registerMotifs);

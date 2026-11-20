@@ -184,7 +184,10 @@ export function installUniversal(configInput) {
     el.uxSelectedProfile=()=>profile();
     // Auftrag #265 (Weg A): ein weiteres Design desselben Produktstands ohne Neustart des Editors aufnehmen.
     // Das geladene Modell durchläuft dieselbe Prüfung wie beim Start; danach gilt die neue Designliste des Formats.
-    el.uxAdoptDesignModel=(input,designId)=>{const added=adoptDesignModel(config,prepareConfig(input),designId);if(added){projectionKey=null;projectedProfile=null;}return added;};
+    el.uxAdoptDesignModel=(input,designId)=>{
+      const added=adoptDesignModel(config,prepareConfig(input),designId,motifs=>el.uxRegisterTemplateMotifs(motifs));
+      if(added){projectionKey=null;projectedProfile=null;}return added;
+    };
     el.style.setProperty('--m-plate-width',String(p.geometry.width));
     el.style.setProperty('--m-plate-height',String(p.geometry.height));
     if(window.GravuruGuided)window.GravuruGuided=contourGuides(window.GravuruGuided,el.uxProfileGeometry);

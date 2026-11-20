@@ -8,7 +8,10 @@ import {shopStartModel} from './shop-start-model.mjs';
 import {measureText} from '../platform/sources/app/shared/models/doorbell-preview.mjs';
 import {prepareConfig,quote,selectedProfile} from '../configurator/variant-m/contract.mjs';
 import {FAMILY_FORMATS_SCHEMA} from '../configurator/variant-m/family-formats.mjs';
-import {adoptDesignModel,canAdoptDesigns} from '../configurator/variant-m/design-adoption.mjs';
+import {adoptDesignModel,canAdoptDesigns,planDesignAdoption} from '../configurator/variant-m/design-adoption.mjs';
+import {attach} from '../configurator/variant-m/lazy-resources.mjs';
+import {motifChoices} from '../configurator/variant-m/profile-selection.mjs';
+import {customerMotifs} from '../configurator/variant-m/customer-motifs.mjs';
 
 // Gleiche Vorlage wie shop-design-gallery-alle.test.mjs: echte Katalogmaße und -preise, drei Formate, je zwei Designs.
 function doorSignConfig(){
@@ -89,4 +92,60 @@ test('bei jeder anderen Abweichung wird nichts übernommen und das laufende Mode
  const {a,b,second}=setup();
  assert.throws(()=>adoptDesignModel({profile:{id:'p',designs:[]}},b,second),refused);
  assert.throws(()=>adoptDesignModel(a,{profile:b.profile},second),refused);
+});
+
+// Original der Werkstattvorlage „Zwei Zeilen mit Trennlinie“, 80 × 50 mm.
+const divider={
+ key:'katalog-TAE-V2A-8x5-D3-motiv-1',embeddedOnly:true,bounds:[7,24.552,66,0.379],
+ svgFragment:'<path d="M 7.000 24.552 L 73.000 24.552 L 73.000 24.931 L 7.000 24.931 Z" fill="currentColor" fill-rule="evenodd"/>'
+};
+function mountedRegistry(){
+ const entries=[{key:'herz',name:'Herz',category:'Bibliothek'}],excluded=new Set();
+ const el={ownerDocument:{defaultView:{GravuruTemplateOnlyMotifKeys:excluded}},motifs:{},catalog:{motifs:{},motif_bounds:{}},labels:{}};
+ attach(el,{catalog:{motif_index:entries},entries});
+ return {el,entries,excluded};
+}
+
+test('D3 übernimmt Originalpfad und Grenzen in laufenden Renderer und beide Modellkopien; das Motiv bleibt vorlagengebunden',()=>{
+ const {a,b,second}=setup(),editor=prepareConfig(a),{el,entries,excluded}=mountedRegistry();
+ const liveMotifs=a.localResources.motifs,editorMotifs=editor.localResources.motifs;
+ b.localResources.motifs.push(structuredClone(divider));
+ const commitGallery=planDesignAdoption(a,b,second);
+ assert.equal(adoptDesignModel(editor,prepareConfig(b),second,el.uxRegisterTemplateMotifs),true);
+ assert.equal(commitGallery(),true);
+ for(const [model,held] of [[a,liveMotifs],[editor,editorMotifs]]){
+  assert.equal(model.localResources.motifs,held);
+  assert.deepEqual(held.find(m=>m.key===divider.key),divider);
+ }
+ assert.equal(el.motifs[divider.key],divider.svgFragment);
+ assert.equal(el.catalog.motifs[divider.key],divider.svgFragment);
+ assert.deepEqual(el.catalog.motif_bounds[divider.key],divider.bounds);
+ assert.deepEqual(customerMotifs(a,el.motifs,el.catalog),[divider]);
+ assert.deepEqual(motifChoices(entries,null,excluded).map(m=>m.key),['herz']);
+ assert.equal(adoptDesignModel(editor,prepareConfig(b),second,el.uxRegisterTemplateMotifs),false);
+ assert.equal(entries.filter(m=>m.key===divider.key).length,1);
+});
+
+test('ein belegter Rendererschlüssel verwirft die gesamte Übernahme vor jeder Änderung',()=>{
+ const {a,b,second}=setup(),editor=prepareConfig(a),{el,entries,excluded}=mountedRegistry();
+ b.localResources.motifs.push(structuredClone(divider),{...divider,key:'herz'});
+ const initial=structuredClone([a,editor]),updateGallery=planDesignAdoption(a,b,second);
+ assert.throws(()=>{adoptDesignModel(editor,prepareConfig(b),second,el.uxRegisterTemplateMotifs);updateGallery();},/eindeutig registriert/);
+ assert.deepEqual([a,editor],initial);
+ assert.deepEqual(el.catalog.motifs,{});assert.equal(excluded.size,0);assert.equal(entries.length,1);
+});
+
+test('abweichende Quellen, private Bildverweise und fehlende Eingangsregister behalten den bisherigen Wechsel',()=>{
+ const {a,b,second}=setup();
+ const check=(change)=>{
+  const target=structuredClone(a),source=structuredClone(b);
+  source.localResources.motifs.push(structuredClone(divider));change(target.localResources,source.localResources);
+  const initial=structuredClone(target);
+  assert.throws(()=>adoptDesignModel(target,source,second),{code:'design_adoption_refused'});
+  assert.deepEqual(target,initial);
+ };
+ check((current)=>current.motifs.push({...divider,bounds:[0,0,66,1]}));
+ check((current,incoming)=>{incoming.motifs.at(-1).svgFragment='<image href="/intern/quelle.svg"/>';});
+ check((current,incoming)=>{incoming.photoExamples=[{designId:second}];});
+ check(current=>{delete current.motifs;});
 });

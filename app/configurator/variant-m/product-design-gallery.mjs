@@ -8,7 +8,7 @@ import {isLayeredDoorbell} from './product-model-module.mjs';
 import {isFamilyFormats,isAllSizesFamily} from './family-formats.mjs';
 import {installDesignSearchControl} from './design-search-control.mjs';
 import {installNativeDesignSearch} from './native-design-search.mjs';
-import {adoptDesignModel} from './design-adoption.mjs';
+import {planDesignAdoption} from './design-adoption.mjs';
 
 const money=cents=>new Intl.NumberFormat('de-DE',{style:'currency',currency:'EUR'}).format(cents/100);
 export const productChoiceInfo=item=>`${item.widthMm/10} × ${item.heightMm/10} cm · ${money(item.unitCents)}`;
@@ -78,7 +78,12 @@ export async function installProductDesignGallery({el,r,config,files,say,dialog,
   // gewählt. Sitzung, Produktzuordnung und Preis bleiben dieselben. Scheitert das Nachholen, greift der bisherige Wechsel.
   if(item.current&&!known()&&allSizes&&api.loadDesign&&el.uxAdoptDesignModel){
    const note=status.textContent;switching=true;grid.inert=true;status.textContent='Design wird übernommen …';
-   try{const loaded=structuredClone((await api.loadDesign(item.designId)).universal);adoptDesignModel(config,loaded,item.designId);el.uxAdoptDesignModel(loaded,item.designId);}
+   try{
+    const loaded=structuredClone((await api.loadDesign(item.designId)).universal);
+    const updateGallery=planDesignAdoption(config,loaded,item.designId);
+    el.uxAdoptDesignModel(loaded,item.designId);
+    updateGallery();
+   }
    catch{/* Der bisherige Wechsel über den Server bleibt der Rückweg. */}
    finally{switching=false;grid.inert=false;status.textContent=note;}
   }

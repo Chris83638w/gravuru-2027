@@ -62,6 +62,15 @@ export function attach(el,{catalog,entries,prepare,get=fetchJSON,base=LAZY_BASE}
   const addFont=(name,data)=>{catalog.fonts[name]=data;el.fontData[name]=data;if(Array.isArray(el.fontList)&&!el.fontList.includes(name))el.fontList.push(name);};
   const addMotif=m=>{const entry=byKey.get(m.key);if(entry&&entry!==m)Object.assign(entry,{svgFragment:m.svgFragment,bounds:m.bounds});const e=entry||m;
     el.motifs[e.key]=e.svgFragment;el.catalog.motifs[e.key]=e.svgFragment;el.catalog.motif_bounds[e.key]=e.bounds;if(el.labels)el.labels[e.key]=e.name;};
+  el.uxRegisterTemplateMotifs=motifs=>{
+    const excluded=el.ownerDocument.defaultView.GravuruTemplateOnlyMotifKeys;
+    if(!excluded||motifs.some(m=>byKey.has(m.key)||m.key in el.motifs||m.key in el.catalog.motifs||m.key in el.catalog.motif_bounds)){
+      throw Error('Vorlagenmotiv kann nicht eindeutig registriert werden.');
+    }
+    for(const m of structuredClone(motifs)){
+      excluded.add(m.key);entries.push(m);byKey.set(m.key,m);addMotif(m);
+    }
+  };
   async function prepared(list,{background=()=>false}={}){const copy=list.map(m=>structuredClone(m));for(let i=0;i<copy.length;i+=40){prepare(copy.slice(i,i+40));if(copy.length>40)await (background()?idlePause:pause)();}return copy;}
   el.uxKnownFonts=()=>[...new Set([...fontIndex.map(f=>f.name),...Object.keys(el.fontData)])];
   el.uxEnsureFonts=async(names=[],{priority}={})=>{

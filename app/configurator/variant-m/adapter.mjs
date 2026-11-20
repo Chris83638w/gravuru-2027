@@ -36,8 +36,12 @@ const clone = value => structuredClone(value);
 const svgDocument = svg => new DOMParser().parseFromString(svg, 'image/svg+xml');
 const pendingThumbnail='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 160" role="img" aria-label="Designvorschau wird geladen"></svg>';
 
+// Der Editor öffnet jede veröffentlichte Vorlage, auch wenn ein Element über die Gestaltungsfläche ragt
+// (Chris 20.11.2026, 16:49 Uhr: „Es darf keine Fehlermeldung kommen. Beim export kann es dann beschnitten sein“).
+// Im Shop kommen die Schriften nach; ohne sie kennt die Prüfung nur den Kasten eines Textes, nicht die Buchstaben.
+const EDITOR_LOAD={templateBoundary:'allow'};
 export function installUniversal(configInput) {
-  const config = prepareConfig(configInput), p = config.profile, processing = getProcessingProfile(p);
+  const config = prepareConfig(configInput,EDITOR_LOAD), p = config.profile, processing = getProcessingProfile(p);
   const dynamicDoorbell=isLayeredDoorbell(config);
   const dynamicFamily=isFamilyFormats(config),dynamicSizes=isScalableSizes(config),dynamicProfiles=dynamicFamily||dynamicSizes,dynamicFormats=dynamicDoorbell||dynamicProfiles;
   let options = {}, quantity = 1, el, renderId = 0;
@@ -185,7 +189,7 @@ export function installUniversal(configInput) {
     // Auftrag #265 (Weg A): ein weiteres Design desselben Produktstands ohne Neustart des Editors aufnehmen.
     // Das geladene Modell durchläuft dieselbe Prüfung wie beim Start; danach gilt die neue Designliste des Formats.
     el.uxAdoptDesignModel=(input,designId)=>{
-      const added=adoptDesignModel(config,prepareConfig(input),designId,motifs=>el.uxRegisterTemplateMotifs(motifs));
+      const added=adoptDesignModel(config,prepareConfig(input,EDITOR_LOAD),designId,motifs=>el.uxRegisterTemplateMotifs(motifs));
       if(added){projectionKey=null;projectedProfile=null;}return added;
     };
     el.style.setProperty('--m-plate-width',String(p.geometry.width));

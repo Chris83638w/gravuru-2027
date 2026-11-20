@@ -53,12 +53,14 @@ const euroFormat = new Intl.NumberFormat('de-DE', {style:'currency', currency:'E
 export const money = cents => euroFormat.format(cents / 100);
 
 // This adapter consumes the existing native profile. It never grants a runtime release.
-export function prepareConfig(input) {
+// templateBoundary:'allow' setzt nur der Editor beim Laden (adapter.mjs): Eine veröffentlichte Vorlage öffnet auch, wenn ein
+// Element über die Gestaltungsfläche ragt (Chris 20.11.2026, 16:49 Uhr). Alle anderen Aufrufer prüfen streng wie bisher.
+export function prepareConfig(input,{templateBoundary='reject'}={}) {
   const config = input.moduleProfile===undefined?clone(input):applyModuleProfile(input,input.moduleProfile);
   if(config.customerUI?.presentation!==undefined&&config.customerUI.presentation!=='prio-r15')fail('Ungültige Konfiguratoransicht.');
   if(config.scalableSizes){
     validateScalableSizes(config);
-    for(const size of config.scalableSizes.sizes)prepareConfig(sizeConfiguration(config,{size:size.id}));
+    for(const size of config.scalableSizes.sizes)prepareConfig(sizeConfiguration(config,{size:size.id}),{templateBoundary});
     Object.assign(config,sizeConfiguration(config));
   }
   if(config.photoDesignPricing!==undefined&&(config.photoDesignPricing!==true||config.profile?.material?.kind!=='slate'))fail('Ungültige Fotodesign-Preisregel.');
@@ -80,7 +82,7 @@ export function prepareConfig(input) {
   const review=config.reviewOnly===true&&p.binding?.kind==='local-review'&&p.features?.orderEnabled===false;
   if(config.reviewOnly&&!review)fail('Prüfprodukt darf keine Shop-Bestellung freigeben.');
   const catalogDesigns=config.photoDesignPricing===true&&config.designSelection==='all-approved'&&p.designs.every(d=>d.id===p.defaultDesignId||d.katalog?.target?.released===true);
-  validateStudio(p, p, {extraFontIds,motifs:config.localResources?.motifs||[],fonts:config.localResources?.fonts,catalogSizes:isFamilyFormats(config),catalogDesigns});
+  validateStudio(p, p, {extraFontIds,motifs:config.localResources?.motifs||[],fonts:config.localResources?.fonts,catalogSizes:isFamilyFormats(config),catalogDesigns,templateBoundary});
   // Themenlimits und Pflichtkennzeichen der Vorlage sind Produktregeln: ungültige Werte laden nicht.
   for(const d of p.designs||[])for(const o of d.objects||[])if(o.type==='text'){
     if(o.required!==undefined&&typeof o.required!=='boolean')fail('Pflichtfeld für Text ausdrücklich festlegen.');

@@ -131,7 +131,10 @@ export async function installProductDesignGallery({el,r,config,files,say,dialog,
  const resourcesReady=design=>(design?.objects||[]).every(o=>o.type==='text'?!!el.fontData?.[o.font]:o.type==='motif'?typeof el.motifs?.[o.motif]==='string'||o.motif?.startsWith('ux-line-'):true);
  function drawCard(request){
   const {item,img}=request;
-  if(!lazyDesigns||!item.current||request.drawn||img.src||!img.parentNode||!el.isConnected||!el.uxLayoutReady)return false;
+  // Auch eine schon geladene Vorschau vom Server wird ersetzt: Server und Gerät setzen das Schild in der Karte um einige
+  // Pixel verschieden; gemischt in einer Reihe sitzen die Karten sichtbar versetzt (am Acrylglas-Schild die ersten ein bis
+  // zwei Karten, deren öffentliche Vorschau sofort da ist).
+  if(!lazyDesigns||!item.current||request.drawn||!img.parentNode||!el.isConnected||!el.uxLayoutReady)return false;
   const template=profile().designs.find(d=>d.id===item.designId);
   if(!template||!resourcesReady(template))return false;
   let svg=null;

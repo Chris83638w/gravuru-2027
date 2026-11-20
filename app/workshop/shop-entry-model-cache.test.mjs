@@ -8,6 +8,7 @@ import {createModelSlimmer} from './shop-model-slim.mjs';
 import {MODULE_PROFILE_SCHEMA} from '../configurator/variant-m/module-profile.mjs';
 import {quote} from '../configurator/variant-m/contract.mjs';
 import {syntheticBank} from '../../scripts/customer-model-benchmark.mjs';
+import {universalWithDesignParts} from './ui/shop-design-switch.mjs';
 
 // Paket 1a, Teil 1: Antwortspeicher des Kundenmodells mit einer synthetischen Werkstatt, deren Datenbankstand,
 // Pause, Freigaben und Zuordnung der Test steuert. Je Test laufen ZWEI Einstiege über dieselbe Werkstatt und
@@ -392,3 +393,65 @@ test('the asset route answers the same with and without the store after warm mod
  }
  assert.deepEqual(seen,[200,200,404,404],'Grafiken des Modells werden geliefert, fremde abgelehnt');
 },{flavor:'plain'}));
+
+// Auftrag #265, Stufe 2 (Chris 20.11.2026): Design-Teile weiterer Designs desselben Produktstands, nur lesend.
+const designParts=(client,headers,query)=>client.request('/api/shop-entry/design-parts'+query,headers);
+
+test('Stufe 2: die Startantwort trägt den Fingerabdruck; eingesetzte Design-Teile ergeben genau das Modell des Designs',()=>run(async({s,on,off,open,model,both})=>{
+ const headers=await open();
+ const start=await both(headers);assert.match(start.data.designBase,/^[a-f0-9]{64}$/);
+ const second=await both(headers,'?design='+s.designs[1]);assert.equal(second.data.designBase,start.data.designBase);
+ // Auch der Treffer aus dem Antwortspeicher trägt ihn.
+ assert.equal((await model(on,headers)).data.designBase,start.data.designBase);
+ const query='?designs='+[s.designs[1],s.designs[0]].join(',');
+ const a=await designParts(on,headers,query),b=await designParts(off,headers,query);
+ assert.equal(a.status,200,a.body.toString().slice(0,200));assert.ok(a.body.equals(b.body),'mit und ohne Speicher bytegleich');
+ assert.deepEqual(a.data.binding,start.data.binding);assert.deepEqual(a.data.configuration,{id:PRODUCT,revision:3});
+ assert.deepEqual(a.data.designs.map(d=>d.id),[s.designs[1],s.designs[0]]);
+ for(const d of a.data.designs)assert.equal(d.base,start.data.designBase);
+ assert.deepEqual(universalWithDesignParts(start.data.model.universal,a.data.designs[0].parts,s.designs[1]),second.data.model.universal);
+ assert.deepEqual(universalWithDesignParts(second.data.model.universal,a.data.designs[1].parts,s.designs[0]),start.data.model.universal);
+ assert.ok(a.body.length<second.body.length,'zwei Designs zusammen sind kleiner als ein vollständiges Modell');
+ assert.equal(a.headers['cache-control'],'private, no-store');assert.equal(a.headers['content-type'],'application/json; charset=utf-8');
+ // Zweiter Abruf: kein neuer Modellaufbau, dieselben Bytes.
+ const {calls:again,result:hit}=await calls(s,()=>designParts(on,headers,query));
+ assert.equal(again,0);assert.equal(hit.status,200);assert.ok(hit.body.equals(a.body));
+ // Preise, Größen und Befestigungen stehen nicht in der Antwort.
+ assert.equal(/basePriceCents|priceCents|quantityTiers|unitCents/.test(a.body.toString()),false);
+}));
+
+test('Stufe 2: Design-Teile gelten nur für die Ausführung der Sitzung; unbekannte oder dort nicht verfügbare Designs fehlen in der Antwort',()=>run(async({s,on,open})=>{
+ const a=await open(variantGid),b=await open('gid://shopify/ProductVariant/202');
+ const mine=await designParts(on,a,'?designs='+s.designs[1]+',gibt-es-nicht');
+ assert.equal(mine.status,200);assert.deepEqual(mine.data.designs.map(d=>d.id),[s.designs[1]]);
+ // Dieselben Kennungen in der Sitzung einer anderen Größe: dort gehören sie nicht zur gewählten Ausführung.
+ const other=await designParts(on,b,'?designs='+s.designs[1]+','+s.designs[0]);
+ assert.equal(other.status,200);assert.deepEqual(other.data.designs,[]);
+ assert.equal(other.data.binding.shopifyVariantId,'gid://shopify/ProductVariant/202');
+}));
+
+test('Stufe 2: Sitzung, Pause, Freigabe und Produktstand werden bei jedem Abruf der Design-Teile frisch geprüft',()=>run(async({s,on,open,model})=>{
+ const headers=await open(),query='?designs='+s.designs[1];
+ assert.equal((await designParts(on,{},query)).status,(await model(on,{})).status);
+ assert.equal((await designParts(on,headers,query)).status,200);
+ s.paused=true;let r=await designParts(on,headers,query);assert.equal(r.status,423);assert.equal(r.data.error.code,'konfi_paused');s.paused=false;
+ s.catalogApproved=false;r=await designParts(on,headers,query);assert.equal(r.status,404);assert.equal(r.data.error.code,'shop_entry_catalog_release');s.catalogApproved=true;
+ assert.equal((await calls(s,()=>designParts(on,headers,query))).calls,0,'nach bestandener Prüfung wieder aus dem Speicher');
+ // Anderer Stand des Produkts: der Eintrag gilt nicht mehr, die Teile werden neu gebildet.
+ s.product={...s.product,headRevision:4};
+ const rebuilt=await calls(s,()=>designParts(on,headers,query));assert.equal(rebuilt.result.status,200);assert.ok(rebuilt.calls>0);
+}));
+
+test('Stufe 2: nur gültige Anfragen; Produkte ohne Größenwahl im Konfi haben keine einzelnen Design-Teile',async()=>{
+ await run(async({s,on,open})=>{
+  const headers=await open(),many=Array.from({length:49},(_,i)=>'d'+i).join(',');
+  for(const query of ['','?designs=','?designs=a&designs=b','?designs=a,a','?designs=a,,b','?designs=a&x=1','?design=a','?designs='+many,'?designs='+'x'.repeat(201)]){
+   const r=await designParts(on,headers,query);assert.equal(r.status,404,query);assert.equal(r.data.error.code,'shop_entry_route',query);
+  }
+  assert.equal((await designParts(on,headers,'?designs='+Array.from({length:48},(_,i)=>'d'+i).join(','))).status,200);
+ });
+ await run(async({on,open,model})=>{
+  const headers=await open();assert.equal((await model(on,headers)).data.designBase,undefined);
+  const r=await designParts(on,headers,'?designs=d2');assert.equal(r.status,404);assert.equal(r.data.error.code,'shop_entry_design_parts');
+ },{flavor:'plain'});
+});

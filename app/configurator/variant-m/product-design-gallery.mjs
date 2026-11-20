@@ -5,7 +5,7 @@ import {isPhotoUnsupported,createPhotoDropConfirm} from './photo-drop-confirm.mj
 import {preserveProductSelection} from './product-design-transfer.mjs';
 import {designGalleryCount} from './product-design-gallery-label.mjs';
 import {isLayeredDoorbell} from './product-model-module.mjs';
-import {isFamilyFormats,isAllSizesFamily} from './family-formats.mjs';
+import {isFamilyFormats,isAllSizesFamily,designNumber} from './family-formats.mjs';
 import {installDesignSearchControl} from './design-search-control.mjs';
 import {installNativeDesignSearch} from './native-design-search.mjs';
 import {planDesignAdoption} from './design-adoption.mjs';
@@ -113,6 +113,41 @@ export async function installProductDesignGallery({el,r,config,files,say,dialog,
   catch(error){status.textContent=error.message;say(error.message);status.scrollIntoView?.({block:'nearest'});}
   finally{switching=false;if(!api.onPreviewActivity)setPreviewActivity(true);grid.inert=false;back.disabled=false;}
  }
+ // Auftrag #265, Stufe 2 (Chris 20.11.2026: „so wie bei Variante C“): Alle Designs dieser Ausführung liegen kurz nach dem
+ // Start im Gerät, samt Schriften und Motiven. Danach ist jeder Wechsel nur noch ein Neuzeichnen, auch der erste.
+ // Schlägt hier etwas fehl, ändert sich nichts: das Design lädt dann beim Antippen wie in Stufe 1.
+ let preparing=Promise.resolve();const prepareLog=[];el.uxDesignPreloadLog=prepareLog;
+ // Bei einem Größenwechsel sucht der Editor dieselbe Vorlage, sonst dieselbe Designnummer. Nur wenn das je Ausführung
+ // eindeutig ist, hängt das Ergebnis nicht von der Reihenfolge der Aufnahme ab.
+ const unambiguous=source=>{const byId=new Map(source.familyFormats.designs.map(d=>[d.id,d]));
+  return source.familyFormats.formats.every(format=>format.variants.every(variant=>{const numbers=variant.designIds.map(id=>designNumber(byId.get(id)));return numbers.every(n=>n!==null)&&new Set(numbers).size===numbers.length;}));};
+ const PREPARE_GROUP=6;
+ function prepareDesigns(items,version){
+  if(!allSizes||!api.loadDesigns||!el.uxAdoptDesignModel||saveDataActive(window.navigator?.connection))return;
+  const wanted=items.filter(item=>item.current&&typeof item.designId==='string').map(item=>item.designId);
+  if(!wanted.length)return;
+  // In der Reihenfolge der Karten, in kleinen Gruppen: die oberen Designs sind zuerst fertig.
+  preparing=preparing.then(async()=>{
+   for(let at=0;at<wanted.length&&version===epoch;at+=PREPARE_GROUP){
+    const group=wanted.slice(at,at+PREPARE_GROUP).filter(id=>!profile().designs.some(d=>d.id===id));
+    if(!group.length)continue;
+    try{
+     const loaded=await api.loadDesigns(group);if(!loaded?.designIds?.length)continue;
+     await new Promise(resolve=>idleScheduler(window,{timeout:1500})(resolve));
+     while(switching)await new Promise(resolve=>setTimeout(resolve,120));
+     const started=performance.now(),source=structuredClone(loaded.universal);if(!unambiguous(source))continue;
+     // Erst vollständig prüfen (beide Kopien), dann schreiben, wie beim Antippen.
+     const updateGallery=planDesignAdoption(config,source,loaded.designIds[0]);
+     el.uxAdoptDesignModel(source,loaded.designIds[0]);updateGallery();
+     prepareLog.push({designs:loaded.designIds.length,ms:Math.round(performance.now()-started)});
+     for(const id of loaded.designIds){
+      const template=profile().designs.find(d=>d.id===id);
+      if(template)try{await el.uxEnsureDesignResources?.(template,{priority:'low'});}catch{/* Eine fehlende Schrift lädt beim Antippen erneut. */}
+     }
+    }catch{/* Diese Gruppe lädt beim Antippen wie in Stufe 1. */}
+   }
+  });
+ }
  async function load(){
   if(pager.loading||pager.next===null)return;const version=epoch;more.disabled=true;themes.disabled=true;status.textContent='Designs werden geladen …';
   try{
@@ -135,6 +170,7 @@ export async function installProductDesignGallery({el,r,config,files,say,dialog,
     if(previewsActive){if(observer)observer.observe(img);else queue.push(img.previewRequest);}
    }
    warmPreviews();
+   if(!query)prepareDesigns(result.items,version);
    if(!observer)pump();status.textContent=query?(result.total===1?'1 Design gefunden':result.total?result.total+' Designs gefunden':'Keine passenden Designs gefunden. Versuche einen anderen Begriff oder leere die Suche.'):(result.total?designGalleryCount(result.total):'Für dieses Produkt sind noch keine weiteren Designs verfügbar.');more.hidden=pager.next===null;
    if(firstPage&&query)el.uxReportDesignSearch?.(query,result.total);
   }catch(error){status.textContent=error.message||'Die Designauswahl ist gerade nicht erreichbar. Bitte erneut versuchen.';more.textContent='Erneut versuchen';more.hidden=false;}

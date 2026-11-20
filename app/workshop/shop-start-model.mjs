@@ -1,3 +1,4 @@
+import {createHash} from 'node:crypto';
 import {isLayeredDoorbell} from '../configurator/variant-m/doorbell-selection.mjs';
 import {isFamilyFormats,isAllSizesFamily,designNumber,projectFamilyDesign} from '../configurator/variant-m/family-formats.mjs';
 export {isAllSizesFamily};
@@ -73,3 +74,30 @@ export function shopStartModel(model,designId=null,{deferFonts=false,options=nul
  }
  return copy;
 }
+
+// Auftrag #265, Stufe 2 (Chris 20.11.2026: „jetzt alles auf einmal“): Der Designwechsel im Gerät (Stufe 1) holte für
+// jedes weitere Design noch einmal das ganze dargestellte Modell. Zwei solche Modelle desselben Produktstands
+// unterscheiden sich aber nur in den Design-Teilen. `shopDesignParts` liefert genau diese Teile, `shopDesignBase`
+// den Fingerabdruck von allem anderen. Der Einstieg schickt die Teile nur zusammen mit diesem Fingerabdruck; der
+// Browser übernimmt sie nur, wenn er zum Fingerabdruck seines Startmodells passt (shop-design-switch.mjs).
+// Preise, Größen, Materialien, Befestigungen und Regeln stehen im Rest und werden hier nie übertragen.
+export function shopDesignParts(universal){
+ const f=universal.familyFormats,shop=f.source?.shopProduct;
+ return {designId:universal.profile.defaultDesignId,themeId:universal.profile.themeId??null,
+  profileDesigns:universal.profile.designs,familyDesigns:f.designs,
+  shopProduct:{defaultDesignId:shop?.defaultDesignId??null,themeId:shop?.themeId??null},
+  designIds:f.formats.map(format=>format.variants.map(variant=>variant.designIds)),
+  rights:universal.workshopElementRights??null,
+  motifs:(universal.localResources?.motifs||[]).filter(motif=>motif.embeddedOnly===true)};
+}
+function designRest(universal){
+ const {profile,familyFormats,workshopElementRights,localResources,...rest}=universal;
+ const {designs,defaultDesignId,themeId,...profileRest}=profile;
+ const {designs:familyDesigns,formats,source,...familyRest}=familyFormats;
+ const {shopProduct,...sourceRest}=source||{};
+ const {defaultDesignId:shopDesign,themeId:shopTheme,...shopRest}=shopProduct||{};
+ return {...rest,profile:profileRest,
+  familyFormats:{...familyRest,source:{...sourceRest,shopProduct:shopRest},formats:formats.map(format=>({...format,variants:format.variants.map(({designIds,...variant})=>variant)}))},
+  localResources:localResources?{...localResources,motifs:(localResources.motifs||[]).filter(motif=>motif.embeddedOnly!==true)}:null};
+}
+export const shopDesignBase=universal=>createHash('sha256').update(JSON.stringify(designRest(universal))).digest('hex');

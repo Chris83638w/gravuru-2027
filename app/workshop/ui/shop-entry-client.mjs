@@ -178,6 +178,13 @@ export function createShopEntryClient({token,fetchImpl=globalThis.fetch,editStor
     if(model?.key!=='acryl'||!model.universal?.profile||!model.configuration?.id||!EDITORS.test(data.editorPath||'')||typeof data.shopDomain!=='string'||!/^[a-z0-9][a-z0-9-]*\.myshopify\.com$/.test(data.shopDomain))fail('Das Produkt ist für diesen Konfigurator nicht vorbereitet.');
     return data;
   }
+  // Auftrag #265, Stufe 2: nur die Design-Teile weiterer Designs derselben Sitzung lesen (ein Abruf für mehrere Designs).
+  async function loadDesignParts(designIds){
+    if(!Array.isArray(designIds)||!designIds.length||designIds.length>48||designIds.some(id=>typeof id!=='string'||!id||id.length>200||id.includes(',')))fail('Bitte ein Design aus der Auswahl wählen.');
+    const data=await json(await fetchImpl(API+'design-parts?designs='+designIds.map(encodeURIComponent).join(','),{credentials:'omit',cache:'no-store',headers:headers({})}));
+    if(!Array.isArray(data?.designs))fail('Die Designs wurden nicht geliefert.');
+    return data;
+  }
   let loadedCartRevision=null;
   const cartRevision=({configId,rev})=>loadedCartRevision?.configuration?.id===configId&&loadedCartRevision.configuration.rev===rev?loadedCartRevision:null;
   async function loadInitialModel(fragment,storage){
@@ -310,6 +317,6 @@ export function createShopEntryClient({token,fetchImpl=globalThis.fetch,editStor
     const response=await designRequest('design-gallery-preview',target,signal);if(!response.ok)await json(response);return response.blob();
   }
   async function switchDesign(target){return json(await designRequest('design-switch',target));}
-  return Object.freeze({request,loadModel,loadInitialModel,cartRevision,loadResources,prepareDoorbellResources,submitCart,submitThemeCart,loadDesignGallery,loadDesignPreview,switchDesign});
+  return Object.freeze({request,loadModel,loadDesignParts,loadInitialModel,cartRevision,loadResources,prepareDoorbellResources,submitCart,submitThemeCart,loadDesignGallery,loadDesignPreview,switchDesign});
 }
 

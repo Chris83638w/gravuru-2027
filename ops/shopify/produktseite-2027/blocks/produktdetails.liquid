@@ -1,0 +1,13 @@
+{%- assign details_keys = 'material_zusammensetzung,montage,sicherheitshinweise' | split: ',' -%}
+{%- assign details_labels = 'Material und Zusammensetzung,Montage,Sicherheitshinweise' | split: ',' -%}
+{%- if product.description != blank -%}
+  <details class="accordion-details"><summary>Beschreibung</summary><div class="rte">{{ product.description }}</div></details>
+{%- endif -%}
+{%- for key in details_keys -%}
+  {%- assign field = product.metafields.custom[key] -%}
+  {%- if field != blank and field.value != blank -%}
+    <details class="accordion-details"><summary>{{ details_labels[forloop.index0] }}</summary><div class="rte">{{ field | metafield_tag }}</div></details>
+  {%- endif -%}
+{%- endfor -%}
+{%- assign seo = product.metafields.custom.seo_text -%}
+{%- if seo != blank and seo.value != blank -%}<div class="rte">{{ seo | metafield_tag }}</div>{%- endif -%}

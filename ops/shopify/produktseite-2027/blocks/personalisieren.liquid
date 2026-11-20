@@ -1,0 +1,53 @@
+{%- assign profile = product.metafields.custom.customization_id.value -%}
+{%- assign variant = product.selected_or_first_available_variant -%}
+{%- if profile != blank and variant.available and product.available -%}
+  {%- assign back = product.url | split: '?' | first -%}
+  <div data-prio-kaufplatz="{{ section.id }}" data-gravuru-personalisieren data-start="/apps/konfigurator/start" data-product-id="{{ product.id }}" data-variant-id="{{ variant.id }}" data-back="{{ back | escape }}">
+    <a class="btn btn--primary btn--gravuru-primary" data-gravuru-start rel="nofollow"
+       href="/apps/konfigurator/start?product={{ product.id }}&amp;variant={{ variant.id }}&amp;back={{ back | url_encode }}">Jetzt personalisieren</a>
+  </div>
+  <style>
+    [data-prio-kaufplatz] {min-height: 48px}
+    [data-prio-kaufplatz] .btn {width: 100%; min-height: 48px}
+    @media(max-width: 767px) {
+      [data-prio-kaufleiste] {position: fixed; inset: auto 0 0; z-index: 31; margin: 0; padding: 8px 16px calc(8px + env(safe-area-inset-bottom)); background: rgb(var(--color-background, 255 255 255))}
+      [data-prio-kaufleiste] .btn {width: 100%; min-height: 48px}
+    }
+  </style>
+  <script>
+    (() => {
+      const slot = document.currentScript.parentElement.querySelector('[data-prio-kaufplatz]');
+      const link = slot.querySelector('a');
+      if (!link || !('IntersectionObserver' in window)) return;
+      const mobile = matchMedia('(max-width: 767px)');
+      const bar = slot.cloneNode(false);
+      bar.removeAttribute('data-prio-kaufplatz');
+      bar.setAttribute('data-prio-kaufleiste', '');
+      let offscreen = false;
+      function place() {
+        if (mobile.matches && offscreen) {
+          if (!bar.isConnected) document.body.append(bar);
+          if (link.parentElement !== bar) bar.append(link);
+        } else {
+          if (link.parentElement !== slot) slot.append(link);
+          bar.remove();
+        }
+      }
+      const observer = new IntersectionObserver(([entry]) => {
+        offscreen = entry.intersectionRatio < 0.999;
+        place();
+      }, {threshold: [0, 0.999], rootMargin: '-64px 0px -8px 0px'});
+      observer.observe(slot);
+      mobile.addEventListener('change', place);
+      document.addEventListener('shopify:section:unload', function unload(event) {
+        if (!event.target.contains(slot)) return;
+        observer.disconnect();
+        mobile.removeEventListener('change', place);
+        bar.remove();
+        document.removeEventListener('shopify:section:unload', unload);
+      });
+    })();
+  </script>
+{%- else -%}
+  <p role="status">Dieser Artikel ist zurzeit nicht zur Personalisierung verfügbar.</p>
+{%- endif -%}

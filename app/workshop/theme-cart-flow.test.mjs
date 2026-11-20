@@ -35,7 +35,12 @@ const webp='UklGRmoAAABXRUJQVlA4WAoAAAAQAAAAJwAAOwAAQUxQSBMAAAABDzD/ERFCLJj4Sy+F
 const png='iVBORw0KGgoAAAANSUhEUgAAACgAAAA8CAIAAACb22+3AAAAOklEQVR4nO3NIQEAMAgAsPOEaDT9M9ABg9kKLLL6Xfgnq1gsFovFYrFYLBaLxWKxWCwWi8VisVgsXhqq4AGG9djEFQAAAABJRU5ErkJggg==';
 const euro=c=>(c/100).toFixed(2);
 
-test('theme cart: signed entry, immutable design, edit, quantity 1 to 4 and signed order intake',async t=>{
+// Auftrag #265 (Chris 20.11.2026): derselbe Durchlauf auch mit Antwortspeicher (gehaltenes Modell, gemerkte Art der Freigabe).
+// Gezählt wird, wie oft der Kundeneinstieg in diesem Durchlauf das ganze Produktdokument liest. Ohne Antwortspeicher 133-mal.
+// Mit Antwortspeicher: 135-mal auf dem Stand 44f9bdcf, 88-mal mit der gemerkten Art in active() allein, 72-mal, seit auch die
+// Freigabe-Prüfungen des Warenkorbwegs die gemerkte Art nehmen und der Entwurf das gehaltene Modell nutzt. Die Grenze liegt dazwischen.
+const documentReadsByMode={};
+for(const cache of [false,true])test('theme cart: signed entry, immutable design, edit, quantity 1 to 4 and signed order intake'+(cache?' (with model response cache)':''),async t=>{
  const dir=fs.mkdtempSync(path.join(os.tmpdir(),'g27-shop-entry-flow-'));build({outputDirectory:dir});
  const seed=JSON.parse(fs.readFileSync(path.join(dir,'models.json')))[0];
  const quantityTiers=[{minQuantity:3,percentOff:5},{minQuantity:5,percentOff:10},{minQuantity:10,percentOff:15}];
@@ -79,10 +84,11 @@ test('theme cart: signed entry, immutable design, edit, quantity 1 to 4 and sign
   if(update){const i=cart.lines.findIndex(l=>l.id===line.id);assert.ok(i>=0);cart.lines[i]=node;}else cart.lines.push(node);
   return Response.json({data:{[update?'cartLinesUpdate':'cartCreate']:{userErrors:[],warnings:[],cart:{id:cart.id,checkoutUrl:'https://'+shopDomain+'/checkouts/cn/synthetic',lines:{pageInfo:{hasNextPage:false},nodes:update?cart.lines:[node]}}}}});
  };
- const store={storeId:'acryl',registry,workshop:w,apiPrefix:'/api/workshop/',nativeEditorPath:'/_merchant-editor.html',formEditorPath:'/_merchant-form-editor.html',cart:createBoundTestCart({workshop:w,registry,shopDomain,transportOptions:{fetchImpl}})};
+ let documentReads=0;const countingWorkshop={...w,repository:{...w.repository,get:(...a)=>{documentReads++;return w.repository.get(...a);}}};
+ const store={storeId:'acryl',registry,workshop:countingWorkshop,apiPrefix:'/api/workshop/',nativeEditorPath:'/_merchant-editor.html',formEditorPath:'/_merchant-form-editor.html',cart:createBoundTestCart({workshop:w,registry,shopDomain,transportOptions:{fetchImpl}})};
  const registeredImage='https://cdn.shopify.com/s/files/1/0920/5550/3228/files/gravuru-gestaltung-'+'c'.repeat(64)+'.png';let imageCalls=0,imagePending=false;
  const timingEvents=[],sources=[];let warmAccess=0;
- let now=1_800_000_000_000;const entry=createShopEntry({origin,shopDomain,secret,stores:[store],proxyPath,clock:()=>now,logger:event=>timingEvents.push(event),modelSlimmer:null,warmCheckoutAccess:async()=>{warmAccess++;throw Error('test cold login');},checkoutImage:async (source,options)=>{sources.push({source,options});assert.ok(source.startsWith(origin+'/gestaltung/'));if(imagePending)throw Object.assign(Error('Bild wird vorbereitet.'),{status:502,code:'checkout_image_pending'});imageCalls++;return registeredImage;}});
+ let now=1_800_000_000_000;const entry=createShopEntry({origin,shopDomain,secret,stores:[store],proxyPath,clock:()=>now,logger:event=>timingEvents.push(event),modelSlimmer:null,...(cache?{modelResponseCache:true}:{}),warmCheckoutAccess:async()=>{warmAccess++;throw Error('test cold login');},checkoutImage:async (source,options)=>{sources.push({source,options});assert.ok(source.startsWith(origin+'/gestaltung/'));if(imagePending)throw Object.assign(Error('Bild wird vorbereitet.'),{status:502,code:'checkout_image_pending'});imageCalls++;return registeredImage;}});
  const webhook=createOrderWebhookHandler({intake:w.orderIntake,config:webhookConfig});
  const server=http.createServer((req,res)=>req.url===ORDER_WEBHOOK_PATH?webhook(req,res):entry.handle(req,res,new URL(req.url,origin)));server.listen(0,'127.0.0.1');await once(server,'listening');
  t.after(async()=>{server.closeAllConnections();await new Promise(r=>server.close(r));});
@@ -351,4 +357,6 @@ test('theme cart: signed entry, immutable design, edit, quantity 1 to 4 and sign
   assert.deepEqual(w.orderIntake.forSnapshot(started.data.snapshotId),[ordered]);
  });
  now+=31*60*1000;assert.deepEqual((await request(customerImagePath)).body,storedCustomerPng,'immutable image survives draft changes, payment and expired handoff');assert.equal((await proxyRequest('/cart/data','GET',editToken)).status,403);
+ documentReadsByMode[cache]=documentReads;
+ if(cache)assert.ok(documentReadsByMode.true<=documentReadsByMode.false*0.6,'mit Antwortspeicher höchstens 60 % der Dokumentlesungen: '+JSON.stringify(documentReadsByMode));
 });

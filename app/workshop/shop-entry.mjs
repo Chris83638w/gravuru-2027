@@ -431,7 +431,7 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
    }
    if(bindings.length!==1)fail(bindings.length?409:404,bindings.length?'shop_entry_variant_duplicate':'shop_entry_variant_unbound',bindings.length?'Diese Ausführung ist im Shop mehrfach zugeordnet.':'Diese Ausführung ist im Shop noch nicht angebunden. Bitte eine andere Ausführung wählen.');
    const binding=bindings[0];
-   requireDoorbellApproval(store,binding);
+   requireActiveApproval(store,binding);
    if(binding.shopifyVariantId===selected.shopifyVariantId&&!isDeepStrictEqual(binding,selected))fail(409,'shop_entry_changed','Die Produktzuordnung wurde geändert. Bitte die Produktseite neu öffnen.');
 
    if(theme){
@@ -483,7 +483,7 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
    if(draft&&(input.productId!==draft.productId||input.productRevision!==draft.productRevision||input.designId!==draft.designId))fail(409,'acrylic_draft_identity','Produktstand und Design gehören zu diesem festen Entwurf.');
    const repository=store.workshop.repository,record=cartTimingStep('product_read',()=>repository.get(session.productId,{revision:session.productRevision}));
    if(record.status==='archived'||repository.get(record.id).status==='archived')fail(422,'acrylic_required','Dieses Produkt ist nicht mehr verfügbar.');
-   const config=cartTimingStep('model_build',()=>modelFor(store,context.binding)).universal;
+   const config=cartTimingStep('model_build',()=>sharedModelFor(store,context.binding)).universal;
    if(warmCheckoutAccess&&checkoutImage&&hasSavedCartImage(store))void Promise.resolve().then(warmCheckoutAccess).catch(()=>{});
    let bundle;try{bundle=await cartTimingStep('review_prepare',()=>prepareAcrylicReview({record,config,input,assets:store.workshop.assets}));}catch(error){if(error.status===422&&!error.code)error.code='shop_entry_draft';throw error;}
    const saved=cartTimingStep('draft_persist',()=>draft?drafts.acrylicDrafts.save(draft.id,token,data.expectedRevision,bundle):drafts.acrylicDrafts.create(bundle));
@@ -515,7 +515,7 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
   const phase=withCustomerReadScope(()=>{
    const context=active({headers:{'x-gravuru-shop-session':transfer.sessionToken}});
    if((proxy.customerId??null)!==(context.session.customerId??null))fail(403,'theme_cart_customer','Bitte die Produktseite erneut öffnen.');
-   requireDoorbellApproval(context.store,transfer.binding);
+   requireActiveApproval(context.store,transfer.binding);
    const prepared=cartTimingStep('cart_prepare',()=>prepareThemeCart(transfer.args,transfer.binding,transfer.input,{draftToken:transfer.draftToken}));
    if(!claiming)return {prepared};
    if(req.headers.origin!=='https://'+shopDomain)fail(403,'shop_entry_origin','Diese Anfrage ist nicht zulässig.');

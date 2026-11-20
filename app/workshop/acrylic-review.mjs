@@ -16,7 +16,7 @@ import {cleanObject,isGuideObject,choiceOptions,optionFieldEntries} from '../con
 import {commercePrice} from '../configurator/variant-m/commerce-model.mjs';
 import {prepareCustomerPhoto,prepareReviewPreviewPair} from './customer-photo.mjs';
 import {verifyCustomerVectorLogoMedia,vectorLogoMetadata} from './customer-vector-logo-media.mjs';
-import {zipFiles} from '../configurator/variant-m/print-export-model.mjs';
+import {zipStored} from './zip-stored.mjs';
 import {textsNearHoles} from '../platform/sources/app/shared/models/hole-proximity.mjs';
 import {selectedProfile} from '../configurator/variant-m/contract.mjs';
 import {editorUi} from '../configurator/variant-m/toolbar-placement-model.mjs';
@@ -25,7 +25,8 @@ export const ACRYLIC_REVIEW='gravuru-acrylic-review/v1';
 const fail=message=>{throw Object.assign(Error(message),{status:422});};
 const sha=bytes=>createHash('sha256').update(bytes).digest('hex');
 const json=value=>Buffer.from(JSON.stringify(value,null,2)+'\n');
-const zip=async files=>Buffer.from(await (await zipFiles(files.map(f=>({name:f.path,blob:new Blob([f.bytes])})))).arrayBuffer());
+// Gleiches Archiv wie zipFiles, am Server mit nativer Prüfsumme gerechnet (zip-stored.mjs).
+const zip=async files=>zipStored(files.map(f=>({name:f.path,bytes:f.bytes})));
 const keys=(o,allowed)=>{if(!o||typeof o!=='object'||Array.isArray(o)||Object.keys(o).some(k=>!allowed.includes(k)))fail('Unbekannte Felder in der Acryl-Übergabe.');};
 
 // Native Konfi state, not a conversion into a form product. All prices and rights

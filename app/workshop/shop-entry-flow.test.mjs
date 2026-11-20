@@ -22,7 +22,9 @@ const origin='https://app.example',shopDomain=mapping.shopDomain,secret='synthet
 const png='iVBORw0KGgoAAAANSUhEUgAAACgAAAA8CAIAAACb22+3AAAAOklEQVR4nO3NIQEAMAgAsPOEaDT9M9ABg9kKLLL6Xfgnq1gsFovFYrFYLBaLxWKxWCwWi8VisVgsXhqq4AGG9djEFQAAAABJRU5ErkJggg==';
 const euro=c=>(c/100).toFixed(2);
 
-test('customer entry: start, model, saved design, real cart handoff and webhook binding of the order line',async t=>{
+// Auftrag #265 (Chris 20.11.2026): derselbe Durchlauf auch mit Antwortspeicher. Dann nutzt der Entwurf das gehaltene Modell und
+// jede Anfrage die gemerkte Art der Freigabe; Ablauf, Preise, Prüfstand und Bestellbindung müssen dieselben bleiben.
+for(const cache of [false,true])test('customer entry: start, model, saved design, real cart handoff and webhook binding of the order line'+(cache?' (with model response cache)':''),async t=>{
  const dir=fs.mkdtempSync(path.join(os.tmpdir(),'g27-shop-entry-flow-'));build({outputDirectory:dir});
  const seed=JSON.parse(fs.readFileSync(path.join(dir,'models.json')))[0];
  const w=createWorkshop({filename:':memory:',seedConfig:seed.universal,legacy:seed.legacy,shopifySessions:{mode:'test-only',shopDomain,clientId:'synthetic-client',secret}});
@@ -50,7 +52,7 @@ test('customer entry: start, model, saved design, real cart handoff and webhook 
   return Response.json({data:{[update?'cartLinesUpdate':'cartCreate']:{userErrors:[],warnings:[],cart:{id:cart.id,checkoutUrl:'https://'+shopDomain+'/checkouts/cn/synthetic',lines:{pageInfo:{hasNextPage:false},nodes:update?cart.lines:[node]}}}}});
  };
  const store={storeId:'acryl',registry,workshop:w,apiPrefix:'/api/workshop/',nativeEditorPath:'/_merchant-editor.html',formEditorPath:'/_merchant-form-editor.html',cart:createBoundTestCart({workshop:w,registry,shopDomain,transportOptions:{fetchImpl}})};
- let now=1_800_000_000_000;const entry=createShopEntry({origin,shopDomain,secret,stores:[store],proxyPath,clock:()=>now,modelSlimmer:null});
+ let now=1_800_000_000_000;const entry=createShopEntry({origin,shopDomain,secret,stores:[store],proxyPath,clock:()=>now,modelSlimmer:null,...(cache?{modelResponseCache:true}:{})});
  const server=http.createServer((req,res)=>entry.handle(req,res,new URL(req.url,origin)));server.listen(0,'127.0.0.1');await once(server,'listening');
  t.after(async()=>{server.closeAllConnections();await new Promise(r=>server.close(r));});
  const request=(pathname,method='GET',data,extra={})=>new Promise((resolve,reject)=>{

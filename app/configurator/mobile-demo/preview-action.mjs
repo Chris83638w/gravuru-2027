@@ -47,7 +47,12 @@ export function installDemoPreviewAction({el, preview, trigger, plus}) {
       outline:2px solid var(--md-petrol)!important; outline-offset:-3px;
     }
     @media (max-width:767px) {
+      /* Chris 20.11.2026, 17:52 Uhr (Handy, Acrylglas 12 × 8 cm): Nach „Vergrößern“ verrutschte die Vorschau, das Schild war
+         links abgeschnitten. Ursache: Der Knopf „Gestaltung zurücksetzen“ kommt im Vollbild in die Bühne (design-reset.mjs)
+         und stand dort als zweites Element neben dem Schild, weil ihm die feste Lage fehlte. Die Regeln unten rechnen
+         schon mit einer Zeile am unteren Rand (Knopf links 124 px, Regler „Ansicht“ rechts daneben); hier bekommt er sie. */
       :host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) .c-large-preview .stage .ux-design-reset {
+        position:absolute!important; top:auto!important; bottom:5px!important; z-index:35; margin:0!important; padding:0!important;
         left:8px!important; right:auto!important; width:124px!important; transform:none!important;
       }
       :host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) .c-large-preview .stage .ux-design-reset button {
@@ -56,6 +61,18 @@ export function installDemoPreviewAction({el, preview, trigger, plus}) {
       }
       :host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) .c-large-preview .stage .ux-view-zoom {
         left:auto!important; right:8px!important; width:calc(100% - 148px)!important; max-width:none!important;
+      }
+    }
+    /* Derselbe Fehler zwischen 768 und 999 px (Tablet hochkant, am echten Shop bei 820 px nachgestellt: Schild 59 px links
+       abgeschnitten). Ab 1000 px ist der Knopf im Vollbild ausgeblendet (compact-controls.mjs). Unten links in der Zeile
+       des Reglers „Ansicht“; steht dort der Regler für die Fotogröße, eine Zeile darüber. */
+    @media (min-width:768px) and (max-width:999px) {
+      :host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) .c-large-preview .stage .ux-design-reset {
+        position:absolute!important; top:auto!important; bottom:5px!important; left:12px!important; right:auto!important;
+        width:auto!important; z-index:35; margin:0!important; padding:0!important; transform:none!important;
+      }
+      :host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern][data-ux-photo-sizing="true"]) .c-large-preview .stage .ux-design-reset {
+        bottom:54px!important;
       }
     }
   `;

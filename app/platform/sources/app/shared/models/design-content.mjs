@@ -65,6 +65,10 @@ export function objectIssue(o,profile){
  // blocking screw access is a separate mounting/plate-assembly constraint.
  return '';
 }
+// Die vier Meldungen „ragt über die Gestaltungsfläche“ (Rechteck, Oval, Kontur, gerundet). Sie beschreiben nur die Lage
+// eines Elements zum Schildrand, keinen Fehler in den Daten.
+export const BOUNDARY_ISSUES=Object.freeze(['Element ragt über die Gestaltungsfläche hinaus.','Element ragt über die ovale Gestaltungsfläche hinaus.','Element ragt über die Kontur-Gestaltungsfläche hinaus.','Element ragt über die gerundete Gestaltungsfläche hinaus.']);
+export const isBoundaryIssue=issue=>BOUNDARY_ISSUES.includes(issue);
 // Validate an object against the original product profile. Front is unchanged;
 // back uses the same physical reflection as preview and production.
 export function surfaceObjectIssue(object,profile,{motifs=[],fonts}={}){
@@ -72,7 +76,7 @@ export function surfaceObjectIssue(object,profile,{motifs=[],fonts}={}){
  const issue=objectIssue(object,oriented);
  // A passing box remains the cheap prefilter. Only a geometric failure of a
  // text or known embedded motif may be replaced by its actual painted paths.
- if(issue&&profile.kind!=='layered-doorbell'&&profile.doorbellSchema!==DOORBELL_SCHEMA&&['Element ragt über die Gestaltungsfläche hinaus.','Element ragt über die ovale Gestaltungsfläche hinaus.','Element ragt über die Kontur-Gestaltungsfläche hinaus.','Element ragt über die gerundete Gestaltungsfläche hinaus.'].includes(issue)){
+ if(issue&&profile.kind!=='layered-doorbell'&&profile.doorbellSchema!==DOORBELL_SCHEMA&&isBoundaryIssue(issue)){
   const geometry={...oriented.geometry,safeMarginMm:artworkMargin(oriented),holes:[]};
   if(textOutlineFits(object,geometry,fonts)===true)return '';
   const resources=typeof motifs==='function'?motifs():motifs;

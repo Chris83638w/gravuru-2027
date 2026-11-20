@@ -707,7 +707,7 @@ Damit ist das kleine Paket (Stufe 1, `5ad10b05`) **nicht** überholt, sondern di
 
 **Bauschritte, jeder für sich aufspielbar, alle nur am Server und im Editor:**
 1. Paket klein: Stufe 1 (gebaut) und `konfigurator-quellen.json` nur für das gewählte Design.
-2. Kassenbild schon beim Sichern des Entwurfs anmelden statt erst bei den Daten für die Shop-Seite; das Warten überlappt dann mit den folgenden Abrufen.
+2. Kassenbild: Die Anmeldung bei Shopify beginnt schon heute beim Sichern des Entwurfs (`shop-entry.mjs`, `warmCheckoutImage` mit `justSaved`; nachgelesen 23:00 Uhr, mein erster Eintrag hier war falsch). Shopify braucht vom Anlegen bis „bereit“ rund 3,5 s (`shopify-checkout-image.mjs`: Datei anlegen, alle 750 ms nachfragen). Aus dem Klick heraus bekommt man das nur, wenn die Vorschau schon vor dem Klick angemeldet wird (beim Öffnen des Überblicks) oder das Bild nach dem Einlegen an die Zeile nachgetragen wird. Ersteres legt bei Shopify unter „Dateien“ auch Bilder für Kunden an, die danach nicht einlegen; das ist eine Frage an Chris, sobald die Schritte 1, 3 und 4 stehen.
 3. Die drei Abrufe nach dem Sichern rechnen dasselbe dreimal; einmal rechnen, Ergebnis weiterreichen. Produktstand nicht mehr je Abruf lesen.
 4. Prüfung der Gestaltung an den Bestelleingang (3.49); die Fertigung prüft ohnehin noch einmal (`acrylic-artwork.mjs`).
 5. Kleiner Entwurf als Datei an die Warenkorbzeile.

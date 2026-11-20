@@ -138,6 +138,6 @@ Ich habe Chris die drei Punkte am 20.11.2026 um 12:58 Uhr im Chat mit Bild und j
 2. Stufe 2: schlanke Antwort und Vorladen, damit auch der erste Wechsel ohne Wartezeit läuft.
 3. Stufe 3: Start des Editors. Stufe 4: Wartezeit bei „In den Warenkorb“.
 
-## Freigaben, die fehlen
+## Freigabe für Stufe 1
 
-- „live“ von Chris nach eigenem Test. Bis dahin bleibt der Kundenweg beim heutigen Prio.
+Chris am 20.11.2026 um 13:03 Uhr im Chat, wörtlich: „was genau soll astra jetzt machen. ich möchte jetzt endlich alles live haben“. Daraus mein Auftrag an Astra in #267: Beta auf `921928f4`, ein Durchlauf mit einem Design mit Motiv bis in den Shopify-Warenkorb, bei Erfolg Stufe 1 live stellen, Rücknahme auf `2bd7bd8e` bereithalten. Den Durchlauf habe ich als Bedingung gesetzt. Stufe 2 bis 4 sind nicht gebaut und nicht Teil dieser Freigabe.

@@ -1,3 +1,13 @@
+## 20.11.2026 · Claude (Operator, technische Gesamtverantwortung) · #265/#267: Stufe 2, alle Designs im Gerät wie bei Variante C
+
+- Anweisung: Chris im Chat, 13:28 bis 13:31 Uhr: „bitte so wie bei variante c“, „nichts vergleichen“, „Ich möchte den prio Konfi exakt so gebaut haben. Nur unser Layout und die Funktiopnen müssen beibehalten bleiben“. Vorher 13:09 Uhr: „jetzt alles auf einmal“.
+- Stufe 1 (`921928f4`) ist seit 13:16 Uhr live (Astra, nach Warenkorb-Durchlauf auf der Beta). Von mir im Shop nur lesend nachgesehen.
+- Gebaut auf `dev/claude-prio-c-stufe2-20261120`: neuer Lese-Abruf `design-parts` (nur Design-Teile, mit Fingerabdruck des Rests), Startantwort trägt `designBase`, Shop-Seite setzt Teile nur bei gleichem Fingerabdruck, gleicher Zuordnung und gleichem Produktstand ein, Editor nimmt alle Designs der Liste nach dem Start in Sechsergruppen auf und lädt ihre Schriften im Hintergrund. Dazu: zwei Shop-Dateien früher anfordern; unveränderte Schriften und Motive nur einmal prüfen.
+- Geprüft: 14 neue Tests, gezielt 139 von 139; an zwei echten Modellen ergibt Einsetzen exakt das volle Modell; am echten Edelstahl-Türschild (Editor-Paket und Shop-Dateien nur in meinem Browser ersetzt, Server-Abruf aus Live-Modellen nachgebildet): alle 21 Designs im Gerät, 21 Wechsel ohne Modellabruf und ohne neuen Editor, 20 von 20 Designs gleich dem bisherigen Weg.
+- Grenzen: nicht aufgespielt; neuer Abruf nie am echten Server gelaufen; Speichern und Warenkorb nicht ausgeführt, ein Durchlauf auf der Beta bleibt Bedingung; rund 3 MB im Hintergrund je Öffnen; nur Produkte mit allen Größen.
+- Offen zu „exakt wie Variante C“: Rechenzeit je Änderung (Handy-Profil rund 1 s je Wechsel), Start (Handy-Profil 11,5 s), Warenkorb.
+- Übergabe: `docs/handoffs/2026-11-20-prio-c-technik-claude.md`, Abschnitt „Stufe 2“. Der [Design-Master](https://github.com/Chris83638w/gravuru-katalog./blob/main/designs/DESIGN-MASTER.md) bleibt maßgeblich; hier wurden keine Designs bearbeitet.
+
 ## 20.11.2026 · Claude (Operator, technische Gesamtverantwortung) · #265/#267: Prio R15 mit der Technik von Variante C, Stufe 1
 
 - Auftrag: Chris, [#265 Kommentar 7033770336](https://github.com/Chris83638w/gravuru-2027/issues/265#issuecomment-7033770336); im Chat 10:47 Uhr: „astra ist fertig. Prüfe was du überhaupt noch machen musst und setze es dann wie angegeben um.“ Für dieses Thema ersetzt das die Regel „Prio-Kern nur über Mika mit Mikail“.

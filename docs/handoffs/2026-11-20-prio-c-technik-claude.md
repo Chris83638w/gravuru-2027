@@ -141,3 +141,70 @@ Ich habe Chris die drei Punkte am 20.11.2026 um 12:58 Uhr im Chat mit Bild und j
 ## Freigabe für Stufe 1
 
 Chris am 20.11.2026 um 13:03 Uhr im Chat, wörtlich: „was genau soll astra jetzt machen. ich möchte jetzt endlich alles live haben“. Daraus mein Auftrag an Astra in #267: Beta auf `921928f4`, ein Durchlauf mit einem Design mit Motiv bis in den Shopify-Warenkorb, bei Erfolg Stufe 1 live stellen, Rücknahme auf `2bd7bd8e` bereithalten. Den Durchlauf habe ich als Bedingung gesetzt. Stufe 2 bis 4 sind nicht gebaut und nicht Teil dieser Freigabe.
+
+## Stufe 1 ist live (20.11.2026, 13:16 Uhr)
+
+Astra hat `921928f4` nach einem Durchlauf auf der Beta live gestellt (D1 → „Zwei Zeilen mit Trennlinie“, „Neumann“, 19,99 €, Artikelnummer `156-GR-ES-AB-120X80-T15-K00`, Trennlinie im persönlichen Bild; Astras Bericht in #267). Ich habe danach im Shop nur lesend nachgesehen: die drei Shop-Dateien sind zeichengleich mit `921928f4`, der Wechsel bleibt im selben Editor, 0 Serverwechsel, 0 neue Editoren, erster Wechsel 0,6 bis 0,9 s, jeder weitere rund 0,1 s (ein Lauf am PC).
+
+## Stufe 2: alle Designs im Gerät, wie bei Variante C
+
+### Anweisung von Chris (20.11.2026, im Chat mit mir, wörtlich)
+
+- 13:08 Uhr: „ja“ (auf meine Frage, ob ich direkt mit Stufe 2 weitermache), danach: „ich dachte das wäre schon fertig. Bitte macht jetzt alles endlich fertig.“ und 13:09 Uhr: „jetzt alles auf einmal“.
+- 13:27 Uhr, nach seinem eigenen Test von Stufe 1: „bei mir dauert es viel länger beim designwechse“.
+- 13:28 Uhr: „bitte so wie bei variante c […] Das kann doch nicht so schwer sein. Da sind es sogar viel mehr Elemente“, „das ist mein anweisung“, „nichts vergleichen […] ich habe dir gesagt was zu tun ist“.
+- 13:30 Uhr: „Variante C läuft sehr gut und schnell […] Ich möchte den prio Konfi exakt so gebaut haben. Nur unser Layout und die Funktiopnen müssen beibehalten bleiben“, 13:31 Uhr: „also vom Prio das Design und die Funktionen“.
+
+### Was Stufe 1 noch anders machte als Variante C
+
+Stufe 1 holte jedes Design beim ersten Antippen einzeln vom Server, als ganzes Modell (310 kB), dazu seine Schrift. Variante C hat alle Designs von Anfang an im Gerät.
+
+### Gebaut (Zweig `dev/claude-prio-c-stufe2-20261120`, auf `00db4970`)
+
+| Commit | Inhalt |
+| --- | --- |
+| `2c42ea20` | Start-Seite fordert `shop-design-switch.mjs` und `shop-selection-transfer.mjs` gleich mit an (zwei Abrufe weniger in Folge vor dem Modell) |
+| `5aef7425` | Design-Teile statt ganzer Modelle, Aufnahme aller Designs nach dem Start, Schriften im Hintergrund |
+| `29b96b85` | Unveränderte Schriften und Motive nur einmal prüfen (`local-pilot.mjs`) |
+
+Ablauf:
+
+1. **Server, nur lesend, neu:** `GET /api/shop-entry/design-parts?designs=a,b,…` (höchstens 48). Liefert je Design nur die Design-Teile (`shopDesignParts` in `shop-start-model.mjs`: Vorlagen, Zuordnung je Ausführung, Rechte, eingebettete Motive) und den Fingerabdruck von allem anderen (`shopDesignBase`: Preise, Größen, Materialien, Befestigungen, Regeln, Schriftverweise). Dieselben Prüfungen wie beim Modellabruf: Sitzung, Zuordnung, Pause, Freigabe, Produktstand. Eigener kleiner Zwischenspeicher (64 Einträge, 32 MB), der Modellspeicher bleibt unberührt.
+2. **Startantwort:** `model` trägt zusätzlich `designBase` (nur bei Produkten mit allen Größen). Sonst unverändert.
+3. **Shop-Seite (`shop-design-switch.mjs`):** setzt Teile nur dann in das eigene Startmodell ein, wenn Fingerabdruck, Produktzuordnung und Produktstand übereinstimmen. Heraus kommt genau das Modell, das `model?design=` geliefert hätte. Sonst holt sie das vollständige Modell wie in Stufe 1. Beim Bearbeiten aus dem Warenkorb bleibt alles beim bisherigen Weg. Im Datensparmodus wird nichts ungefragt geholt.
+4. **Editor (`product-design-gallery.mjs`):** nimmt nach der Designliste alle Designs desselben Produktstands in Sechsergruppen auf, in der Reihenfolge der Karten, über dieselbe geprüfte Übernahme wie beim Antippen (`design-adoption.mjs`), und lädt ihre Schriften und Motive mit niedriger Priorität. Danach ist jeder Wechsel nur noch ein Neuzeichnen.
+
+Preise, Größen, Materialien und Regeln kommen nie über den neuen Abruf. Warenkorb, Entwurf, Prüfpaket und Bestellung sind nicht angefasst.
+
+### Prüfungen
+
+- Neue Tests: `shop-design-parts.test.mjs` (5), in `shop-entry-model-cache.test.mjs` (4), in `shop-design-switch-adoption.test.mjs` (5). Kern: eingesetzte Teile ergeben exakt das Modell von `model?design=`; die Übernahme endet im selben Zustand wie mit dem vollständigen Modell; anderer Fingerabdruck, andere Zuordnung, anderer Produktstand, Fehler, Warenkorb-Bearbeitung und Datensparmodus nehmen den bisherigen Weg; Pause, Freigabe und Produktstand werden bei jedem Abruf frisch geprüft.
+- Gezielte Tests: 139 von 139. Gesamtlauf: siehe unten.
+- Echte Daten ohne Schreibzugriff: An zwei am 20.11. im Shop gelesenen Modellen ergibt Einsetzen in beide Richtungen exakt das andere Modell; Fingerabdruck gleich (`teile-echt.mjs`).
+- Bedienprüfung am echten Edelstahl-Türschild (`stufe2.mjs`): In meinem Browser ersetzt sind das Editor-Paket und die zwei Shop-Dateien. Den neuen Server-Abruf gibt es live noch nicht; er wird im Prüfbrowser aus den echten Live-Modellen mit denselben Funktionen nachgebildet. Ergebnis: 4 Abrufe für 20 Designs, alle 21 Designs und 22 Schriften im Gerät, bevor die Designauswahl geöffnet wird; die Startgestaltung bleibt dabei unverändert; 21 Wechsel mit 0 Modellabrufen, 0 Serverwechseln, 0 neuen Editoren; jedes der 20 Designs ist in Pfaden, Texten und Motiven gleich dem bisherigen Weg; zurück zu Design 1 ergibt den Startzustand.
+
+### Zahlen (je ein Lauf, kein Mittelwert)
+
+| | PC | Handy-Profil (CPU ×4, 1,6 Mbit/s) |
+| --- | ---: | ---: |
+| Wechsel zu einem beliebigen Design, auch zum ersten Mal | 0,18 bis 0,31 s | 1,0 bis 1,8 s |
+| Rechenzeit der Aufnahme je Gruppe, im Hintergrund | 12 bis 48 ms | 69 bis 235 ms |
+
+Datenmenge im Hintergrund nach dem Start: Design-Teile für 20 Designs zusammen rund 0,4 MB (mit Brotli Stufe 5 gerechnet; unkomprimiert 2,0 MB; eine Gruppe mit aufwendigen Motiven allein rund 0,33 MB), 23 Schriftdateien zusammen rund 2,5 MB.
+
+Die Zeit im Handy-Profil ist reine Rechenzeit des Editors beim Neuzeichnen, ohne Netz. Sie verteilt sich auf viele kleine Schritte (Materialvorschau mit Bildauswertung, SVG-Aufbau, Abfragen im Dokument), keinen einzelnen großen. Das ist der nächste Hebel, siehe unten.
+
+### Grenzen von Stufe 2
+
+- **Nicht aufgespielt, nicht am echten Server gelaufen.** Der neue Abruf ist nur in Tests und im Nachbau geprüft. Die Kosten des ersten Abrufs je Gruppe am Server (Modellkopie von rund 12 MB, je Design eine dargestellte Kopie) habe ich nicht gemessen.
+- **Speichern und Warenkorb nicht ausgeführt** (keine Schreibzugriffe im Shop). Der Zustand im Gerät ist derselbe wie nach einzelnen Übernahmen in Stufe 1 (Test), die Astra auf der Beta bis in den Warenkorb geprüft hat. Ein Durchlauf mit einem Design mit Motiv auf der Beta bleibt Bedingung vor live.
+- Gilt wie Stufe 1 für Produkte mit allen Größen (heute das Edelstahl-Türschild). Nach einem Größenwechsel im Konfi zeigt die Liste Designs einer anderen Shopify-Variante; die nehmen weiter den bisherigen Weg.
+- Rund 3 MB im Hintergrund je Öffnen. Im Datensparmodus und bei 2G wird nichts vorgeladen.
+- Bei einem Größenwechsel sucht der Editor dieselbe Vorlage, sonst dieselbe Designnummer, sonst die erste der Liste. Der letzte Fall hängt von der Reihenfolge der Aufnahme ab und kann vom Server abweichen. Das gilt schon für Stufe 1. Die Aufnahme im Hintergrund hängt neue Vorlagen nur an und läuft nur, wenn die Designnummern je Ausführung eindeutig sind.
+- Beobachtung: Abrufe aus meinem Prüfprogramm (nicht aus dem Browser) kamen heute mehrfach unvollständig an; mit `curl` waren dieselben Dateien vollständig. Ich ordne das meiner Umgebung zu.
+
+### Was zu „exakt wie Variante C“ noch fehlt
+
+1. **Rechenzeit je Änderung.** Jeder Wechsel und jede Eingabe läuft durch dieselbe Kette. Am PC rund 0,15 s, im Handy-Profil rund 1 s.
+2. **Start.** Vom Tippen bis zum bereiten Editor: am PC 3,4 bis 3,9 s (fünf Läufe), im Handy-Profil 11,5 s (ein Lauf, `start.mjs`). Im Handy-Profil bestimmt das Editor-Paket (421 kB komprimiert, 1,4 MB) den Zeitpunkt, danach rund 4,8 s Rechenzeit. Variante C startet als fertige Seite ohne Sitzung und ohne Modellabruf.
+3. **Warenkorb.** Nicht angefasst. Messung bei Astra angefragt (#267).

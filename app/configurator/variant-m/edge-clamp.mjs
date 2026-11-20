@@ -4,10 +4,13 @@
 // Platte, wird das Element auf der Platte zentriert.
 // Chris 21.10.2026: Bei Text zählen die Buchstaben, nicht der Textrahmen mit Zeilenabstand – sonst lässt sich
 // ein Name nicht ganz nach oben setzen.
+// Chris 20.11.2026: Diese Sperre gilt nur noch für Edelstahl (und unverändert für Klingelschilder). Bei allen anderen
+// Produkten darf der Kunde über den Rand gestalten; siehe keepCentreOnPlate unten und edgeFree in design-content.mjs.
 import {transformedCorners,fitsSurface} from './usability-model.mjs';
 import {embeddedMotifFits} from '../../platform/sources/app/shared/models/embedded-motif-fit.mjs';
 import {objectSurface} from './surfaces.mjs';
 import {textOutlineFits} from '../../platform/sources/app/shared/models/text-outline-fit.mjs';
+import {edgeFree,pointOnPlate} from '../../platform/sources/app/shared/models/design-content.mjs';
 
 export function boundingSize(o){
   const a=(Number(o.rotation)||0)*Math.PI/180,w=Math.max(0,Number(o.w)||0),h=Math.max(0,Number(o.h)||0);
@@ -64,6 +67,26 @@ export function clampToContour(o,geometry,bounds=null,previous=null,fonts){
  if(changed){o.x=position.x;o.y=position.y;}return changed;
 }
 
+// Freier Rand (Chris 20.11.2026, außer Edelstahl und Klingelschilder; siehe edgeFree): Das Element darf über den Rand
+// ragen, die Vorschau schneidet es am Schild ab. Nur seine Mitte bleibt auf dem Schild, damit kein Element ganz
+// verschwindet und sich nicht mehr greifen lässt. Liegt die Mitte außerhalb, kommt das Element auf der Linie zur
+// Schildmitte so weit zurück, bis sie wieder aufliegt. Gibt true zurück, wenn das Element verschoben wurde.
+export function keepCentreOnPlate(o,geometry){
+ if(!o||o.uxHidden||o.locked||o.uxLocked||o.role==='guide'||o.uxDecoration&&o.customerEditable===false)return false;
+ if(!Number.isFinite(o.x)||!Number.isFinite(o.y)||!(geometry?.width>0&&geometry?.height>0))return false;
+ if(pointOnPlate(o,geometry))return false;
+ // Zuerst je Achse an die Außenmaße: Wer am Rand entlang zieht, rutscht nicht zur Schildmitte.
+ const target={x:Math.min(geometry.width,Math.max(0,o.x)),y:Math.min(geometry.height,Math.max(0,o.y))};
+ if(pointOnPlate(target,geometry)){o.x=target.x;o.y=target.y;return true;}
+ // Runde Ecke, Oval oder Kontur: von dort auf der Linie zur Schildmitte, bis die Mitte aufliegt.
+ const anchor={x:geometry.width/2,y:geometry.height/2};
+ if(!pointOnPlate(anchor,geometry))return false; // Kontur ohne Fläche in der Mitte: nichts erfinden.
+ const at=t=>({x:anchor.x+(target.x-anchor.x)*t,y:anchor.y+(target.y-anchor.y)*t});
+ let low=0,high=1;
+ for(let i=0;i<30;i++){const mid=(low+high)/2;if(pointOnPlate(at(mid),geometry))low=mid;else high=mid;}
+ const position=at(low);o.x=position.x;o.y=position.y;return true;
+}
+
 export function installEdgeClamp(el,{profile=null,motifs=[]}={}){
   const surfacePositions=new Map(),starts=new Map();
   let choosingTemplate=null;
@@ -104,6 +127,13 @@ export function installEdgeClamp(el,{profile=null,motifs=[]}={}){
       return;
     }
     const geometry=self.uxProfileGeometry?.();
+    if(edgeFree(doorbell||profile)){
+      // uxProfileGeometry zeigt schon zur aktiven Seite; die andere Seite bleibt, wo sie ist.
+      const shaped=geometry&&(geometry.shape==='contour'||geometry.shape==='ellipse'||geometry.cornerRadiusMm>0);
+      const plate=shaped?geometry:{width:s.width,height:s.height,shape:'rect'},active=s.uxSurface==='back'?'back':'front';
+      for(const o of s.objects)if(!shaped||objectSurface(o)===active)keepCentreOnPlate(o,plate);
+      return;
+    }
     if(geometry&&(geometry.shape==='contour'||geometry.shape==='ellipse'||geometry.cornerRadiusMm>0)){
       // uxProfileGeometry already faces the active side. Other surfaces must not move.
       const active=s.uxSurface==='back'?'back':'front',key=JSON.stringify(geometry);

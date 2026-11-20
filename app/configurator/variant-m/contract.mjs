@@ -10,7 +10,7 @@ import {processProfile,processColorIssue} from '../../workshop/process-profiles.
 import {validateOptionPresentation} from './option-media.mjs';
 import {validateStudio} from '../../platform/sources/app/shared/models/studio-validation.mjs';
 import {getProcessingProfile} from '../../platform/sources/app/shared/models/processing-profiles.mjs';
-import {validateDesignContent, surfaceObjectIssue} from '../../platform/sources/app/shared/models/design-content.mjs';
+import {validateDesignContent, surfaceObjectIssue, customerEdgeIssue} from '../../platform/sources/app/shared/models/design-content.mjs';
 import {validateUniversalElements} from '../../platform/sources/app/shared/models/universal-elements.mjs';
 import {measureText,setTextSize} from '../../platform/sources/app/shared/models/text-paths.mjs';
 import {localFontIds} from './local-pilot.mjs';
@@ -30,6 +30,11 @@ const fail = message => { throw Error(message); };
 // to the model-bound plate assembly. Customer artwork may cross every drill
 // hole; the finished preview shows hardware, production drills after artwork.
 export const customerLayoutIssue=(object,profile,resources)=>profile.doorbellSchema===DOORBELL_SCHEMA?doorbellLayoutIssue(object,profile):surfaceObjectIssue(object,{...profile,geometry:{...profile.geometry,holes:[]}},resources);
+// Was die Gestaltung des Kunden sperrt (Prüfung vor dem Warenkorb, Annahme am Server). Außer bei Edelstahl und
+// Klingelschildern darf ein Element über den Rand ragen; es sperrt nur noch, wenn seine Mitte nicht mehr auf dem Schild
+// liegt (Chris 20.11.2026, siehe edgeFree in design-content.mjs). customerLayoutIssue bleibt die strenge Lageprüfung:
+// für den Hinweis, das automatische Einpassen und die Katalog-Umrechnung der Werkstatt.
+export const customerBlockingIssue=(object,profile,resources)=>customerEdgeIssue(object,profile,customerLayoutIssue(object,profile,resources));
 export const DRAFT_SCHEMA = 'gravuru-universal-customer-draft/v1';
 // Ü6.1: Ebenenrolle. 'guide' ist im Editor sichtbar, erscheint aber nie in der
 // Fertigungsausgabe. Standard ohne Angabe ist 'print'. Die Rolle ist ein
@@ -380,7 +385,9 @@ export function validateDesign(config, design, options, fonts, motifs, {template
       if(!raster||raster.pixelWidth<Math.ceil(o.w*600/25.4)||raster.pixelHeight<Math.ceil(o.h*600/25.4))fail('Rastermotiv unterschreitet bei dieser Größe 600 dpi.');
     }
     const measured = o.type === 'text' ? measureText(clone(o), fonts) : o;
-    const issue = customerLayoutIssue(measured, p, {motifs:config.localResources?.motifs||[],fonts}); if (issue) fail(issue);
+    // Vorlagen (template) prüft die Werkstatt streng. Für die Gestaltung des Kunden gilt der freie Rand außer bei Edelstahl.
+    const resources={motifs:config.localResources?.motifs||[],fonts};
+    const issue = template ? customerLayoutIssue(measured, p, resources) : customerBlockingIssue(measured, p, resources); if (issue) fail(issue);
   }
   // Element rights (rights document or legacy flags), fixed template layer order
   // and the product's addition policy, enforced for every server entry point

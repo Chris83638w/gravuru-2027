@@ -69,6 +69,30 @@ export function objectIssue(o,profile){
 // eines Elements zum Schildrand, keinen Fehler in den Daten.
 export const BOUNDARY_ISSUES=Object.freeze(['Element ragt über die Gestaltungsfläche hinaus.','Element ragt über die ovale Gestaltungsfläche hinaus.','Element ragt über die Kontur-Gestaltungsfläche hinaus.','Element ragt über die gerundete Gestaltungsfläche hinaus.']);
 export const isBoundaryIssue=issue=>BOUNDARY_ISSUES.includes(issue);
+// Rand frei außer bei Edelstahl. Chris, 20.11.2026, 19:26 Uhr, auf die Frage, ob auch das, was der Kunde selbst über den
+// Rand schiebt, in den Warenkorb gehen soll: „Doch soll können, aber nicht beim Edelstahl“. Auf Rückfrage gewählt:
+// „Randsperre weg“ (Elemente lassen sich über den Rand schieben und vergrößern; die Vorschau zeigt sie abgeschnitten, so
+// wird gefertigt) und „Kurzer Hinweis“ (neutraler Satz, keine Sperre, kein Dialog). Das ersetzt für diese Produkte seine
+// Regel vom 20.10.2026 („bis an den Rand …, aber nicht weiter“, edge-clamp.mjs); für Edelstahl gilt sie weiter.
+// Festlegungen von Claude dazu, Chris mitgeteilt: Klingelschilder bleiben unverändert (eigene Flächenregel wegen der
+// Klingel), und die Mitte eines Elements bleibt auf dem Schild, damit keines ganz verschwindet.
+// Gilt nur für die Gestaltung des Kunden. Vorlagen prüft die Werkstatt weiter streng (validateStudio, katalog-convert).
+export const edgeFree=profile=>!!profile&&profile.kind!=='layered-doorbell'&&profile.doorbellSchema!==DOORBELL_SCHEMA&&!!profile.material&&profile.material.kind!=='steel';
+export const OFF_PLATE_ISSUE='Element liegt nicht mehr auf dem Schild.';
+// Liegt der Punkt auf dem Schild (ohne Randabstand; Bohrlöcher zählen nicht)? `geometry` zeigt schon zur richtigen Seite.
+export function pointOnPlate(point,geometry){
+ const x=point?.x,y=point?.y,{width,height,shape,cornerRadiusMm=0}=geometry||{};
+ if(![x,y,width,height].every(Number.isFinite))return false;
+ if(shape==='contour')return contourContainsPoint(geometry,x,y,{marginMm:0,holes:false});
+ if(shape==='ellipse')return ((x-width/2)/(width/2))**2+((y-height/2)/(height/2))**2<=1+EPSILON;
+ return inRoundedRect(x,y,width,height,cornerRadiusMm,0);
+}
+// Sperrender Befund für die Gestaltung des Kunden: Bei freiem Rand zählt statt „ragt über die Gestaltungsfläche“ nur noch,
+// ob die Mitte des Elements auf dem Schild liegt. `issue` ist das Ergebnis der unveränderten Prüfung (surfaceObjectIssue).
+export function customerEdgeIssue(object,profile,issue){
+ if(!issue||!edgeFree(profile)||!isBoundaryIssue(issue))return issue;
+ return pointOnPlate(object,object?.surfaceId==='back'?surfaceGeometry(profile.geometry,'back'):profile.geometry)?'':OFF_PLATE_ISSUE;
+}
 // Validate an object against the original product profile. Front is unchanged;
 // back uses the same physical reflection as preview and production.
 export function surfaceObjectIssue(object,profile,{motifs=[],fonts}={}){

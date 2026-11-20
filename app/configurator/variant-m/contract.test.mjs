@@ -79,7 +79,9 @@ test('customer photo placement may move or be deleted; technical geometry stays 
 });
 test('unknown motif, option, malformed quantity and geometry rejected',()=>{
  let s=state();s.objects.find(o=>o.type==='motif').motif='not-in-library';assert.throws(()=>save(s),/Bibliothek/);
- s=state();s.objects.find(o=>o.type==='text').x=1000;assert.throws(()=>save(s),/Gestaltungsfläche/);
+ // Freier Rand außer bei Edelstahl (Chris 20.11.2026, siehe customer-edge.test.mjs): Dieses Produkt ist kein Edelstahl.
+ // Ein Text weit neben dem Schild wird weiter abgelehnt, jetzt weil seine Mitte nicht mehr auf dem Schild liegt.
+ s=state();s.objects.find(o=>o.type==='text').x=1000;assert.throws(()=>save(s),/nicht mehr auf dem Schild/);
  assert.throws(()=>quote(config,[],s.designId,{other:'value'}),/Optionsgruppe/);
  for(const quantity of [0,100,1.5,NaN])assert.throws(()=>quote(config,[],s.designId,{},quantity),/Menge/);
 });

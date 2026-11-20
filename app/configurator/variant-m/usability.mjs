@@ -6,6 +6,7 @@ import {fitsSurface,fittingTextSize,canColorElement,PRINT_PALETTES,paletteGroups
 import {processPalette,processFreeColor} from '../../workshop/process-profiles.mjs';
 import {colorPalettes} from './profile-selection.mjs';
 import {objectSurface} from './surfaces.mjs';
+import {edgeFree} from '../../platform/sources/app/shared/models/design-content.mjs';
 import {motifPriceDescription} from './decision-help.mjs';
 
 // The supplied geometry already faces the displayed side; inactive text is checked on its own side.
@@ -15,6 +16,21 @@ export function surfaceTextIssues(objects,surfaceId,geometry,textBounds){
     try{return fitsSurface(o,textBounds(o),geometry)?[]:[{id:o.id,code:'outside-surface',message:'Text ragt über die Gestaltungsfläche.'}];}
     catch{return [{id:o.id,code:'font-invalid',message:'Die Schrift kann diesen Text nicht vollständig darstellen.'}];}
   });
+}
+
+// Freier Rand (Chris 20.11.2026, außer Edelstahl und Klingelschilder; siehe edgeFree): „Kurzer Hinweis“, ein neutraler
+// Satz, keine Sperre, kein Dialog. Welche sichtbaren Elemente ragen über das Schild und werden dort abgeschnitten?
+// Texte nach ihren Buchstaben, alles andere nach seinem Kasten. Es zählt der Schildrand, nicht der Randabstand.
+// Feste Vorlagenteile, die der Kunde nicht bewegen kann, lösen keinen Hinweis aus.
+export const EDGE_NOTE='Teile außerhalb des Schilds werden abgeschnitten.';
+export function cutOffObjects(objects,surfaceId,geometry,textBounds){
+  const active=surfaceId==='back'?'back':'front',plate={x:0,y:0,...geometry,safeMarginMm:0};
+  return objects.filter(o=>objectSurface(o)===active&&!o.uxHidden&&o.role!=='guide'&&!o.locked&&!o.uxLocked&&!o.acrylicFixed&&!(o.uxDecoration&&o.customerEditable===false)
+    &&['text','motif','image','graphic'].includes(o.type)&&!(o.type==='text'&&!String(o.text??'').trim())&&[o.x,o.y,o.w,o.h].every(Number.isFinite)).filter(o=>{
+    let bounds={x:-o.w/2,y:-o.h/2,width:o.w,height:o.h};
+    if(o.type==='text')try{bounds=textBounds(o)||bounds;}catch{/* ohne Schrift zählt der Kasten */}
+    return !fitsSurface(o,bounds,plate);
+  }).map(o=>o.id);
 }
 
 export async function installUsability(api) {
@@ -187,12 +203,30 @@ export async function installUsability(api) {
   function issues(){return surfaceTextIssues(el.state.objects,el.state.uxSurface,surface(),textBounds);}
   el.uxTextBounds=textBounds; // Randsperre nach Buchstaben (edge-clamp.mjs)
   el.uxValidateDesign=issues; // Same gate can be called by the future trusted order adapter.
+  const freeEdge=()=>!!config&&edgeFree(el.uxSelectedProfile?.()||profile);
   function updateWarnings(){
+    const badge=$('[data-ux-boundary-status]');
+    if(freeEdge()){
+      // Kein Fehlerbild: kein roter Rahmen, kein roter Schein. Ein neutraler Satz an der Vorschau; am Text bleibt das
+      // Angebot „Text passend verkleinern“.
+      const cut=new Set(cutOffObjects(el.state.objects,el.state.uxSurface,surface(),textBounds));
+      for(const row of all('[data-ux-row]')){
+        row.classList.remove('ux-overflow');const id=row.dataset.uxRow,hit=cut.has(id);
+        let message=row.querySelector('[data-ux-overflow-message]');
+        if(hit&&!message){message=document.createElement('div');message.dataset.uxOverflowMessage='';message.setAttribute('role','status');row.append(message);}
+        if(hit){message.dataset.uxEdgeNote='';message.innerHTML=button('fit-text','Text passend verkleinern',`data-id="${esc(id)}"`);}else message?.remove();
+      }
+      for(const group of all('.scene [data-object]')){group.classList.remove('ux-outside');if(group.getAttribute('aria-label')==='Text außerhalb der Gestaltungsfläche')group.removeAttribute('aria-label');}
+      badge.hidden=!cut.size;badge.toggleAttribute('data-ux-edge-note',cut.size>0);badge.textContent=cut.size?EDGE_NOTE:'';
+      return;
+    }
+    badge.removeAttribute('data-ux-edge-note');
     const problem=issues(),ids=new Set(problem.map(p=>p.id));
     for(const row of all('[data-ux-row]')){
       const issue=problem.find(p=>p.id===row.dataset.uxRow);row.classList.toggle('ux-overflow',!!issue);
       let message=row.querySelector('[data-ux-overflow-message]');
       if(issue&&!message){message=document.createElement('div');message.dataset.uxOverflowMessage='';message.setAttribute('role','status');row.append(message);}
+      if(issue)delete message.dataset.uxEdgeNote;
       if(issue)message.innerHTML=`<span>${issue.message}</span>${issue.code==='outside-surface'?button('fit-text','Text passend verkleinern',`data-id="${esc(issue.id)}"`):''}`;
       else message?.remove();
     }
@@ -200,7 +234,7 @@ export async function installUsability(api) {
       const id=group.dataset.object;group.classList.toggle('ux-outside',ids.has(id));
       if(ids.has(id))group.setAttribute('aria-label','Text außerhalb der Gestaltungsfläche');else if(group.getAttribute('aria-label')==='Text außerhalb der Gestaltungsfläche')group.removeAttribute('aria-label');
     }
-    const badge=$('[data-ux-boundary-status]');badge.hidden=!problem.length;
+    badge.hidden=!problem.length;
     badge.textContent=problem.length?'Text passt nicht auf die Fläche':'';
   }
   const warning=document.createElement('p');warning.dataset.uxBoundaryStatus='';warning.className='ux-boundary-status';warning.hidden=true;stage.append(warning);

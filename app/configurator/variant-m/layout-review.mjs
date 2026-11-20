@@ -1,4 +1,4 @@
-import {customerLayoutIssue} from './contract.mjs';
+import {customerBlockingIssue} from './contract.mjs';
 import {overlapHints,showOverlapWarnings,templateOverlap} from './customer-tools-model.mjs';
 import {objectSurface} from './surfaces.mjs';
 // Product-specific mechanical rules can be supplied later. No hole keepout rule.
@@ -6,7 +6,10 @@ export function layoutReviewIssues({config,profile=config.profile,objects,design
  const visible=objects.filter(o=>!o.uxHidden&&!o.uxDecoration&&o.role!=='guide'&&['text','motif'].includes(o.type)&&!(o.type==='text'&&!o.text?.trim()));
  const issues=[];
  for(const o of visible){
-  const message=customerLayoutIssue(o,profile,resources);
+  // Sperrt den Weg in den Warenkorb. Außer bei Edelstahl und Klingelschildern darf ein Element über den Rand ragen
+  // (Chris 20.11.2026: kurzer Hinweis, keine Sperre, kein Dialog); dort sperrt nur noch ein Element, dessen Mitte nicht
+  // mehr auf dem Schild liegt. Die Randsperre lässt das beim Ziehen gar nicht erst zu.
+  const message=customerBlockingIssue(o,profile,resources);
   if(message)issues.push({code:'boundary',ids:[o.id],message:'Dieses Element ragt über den Gestaltungsrand.'});
  }
  if(showOverlapWarnings(profile))for(const issue of overlapHints(visible)){

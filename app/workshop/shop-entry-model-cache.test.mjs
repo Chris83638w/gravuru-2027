@@ -48,7 +48,7 @@ function workshop(s,{withEpoch=true,withPause=true,withState=true}={}){
    if(id!==PRODUCT||rev!==3)throw Object.assign(Error('fehlt'),{status:404});
    s.onModel?.();return structuredClone(s.model());
   },
-  galleryModel:(id,rev)=>{const m=s.model();return {key:m.key,configuration:m.configuration,galleryCategoryIds:m.galleryCategoryIds,universal:m.universal};},
+  galleryModel:(id,rev)=>{s.cardCalls=(s.cardCalls||0)+1;const m=s.model();return {key:m.key,configuration:m.configuration,galleryCategoryIds:m.galleryCategoryIds,universal:m.universal};},
   repository:{get:id=>{s.docReads=(s.docReads||0)+1;if(s.missing)throw Object.assign(Error('Konfiguration nicht gefunden.'),{status:404,code:'not_found'});return {id,revision:3,status:'draft',document:{config:s.docConfig}};},
    ...(withState?{revisionState:(id,{revision}={})=>{
     s.stateReads++;
@@ -82,8 +82,8 @@ async function run(fn,{flavor='bank',setup=()=>{},cache=true,workshopOptions,sli
  const client=entry=>{
   const server=http.createServer((req,res)=>{const url=new URL(req.url,origin);if(!entry.matches(url.pathname)){res.writeHead(404).end();return;}entry.handle(req,res,url);});
   server.listen(0,'127.0.0.1');servers.push(server);
-  return {entry,ready:once(server,'listening'),request:(path,headers={})=>new Promise((resolve,reject)=>{
-   const req=http.request({host:'127.0.0.1',port:server.address().port,path,method:'GET',headers:{Host:'app.example','X-Forwarded-Proto':'https',...headers}},res=>{const chunks=[];res.on('data',c=>chunks.push(c));res.on('end',()=>{const body=Buffer.concat(chunks);let data=null;try{data=JSON.parse(body);}catch{}resolve({status:res.statusCode,headers:res.headers,body,data});});});req.on('error',reject);req.end();
+  return {entry,ready:once(server,'listening'),request:(path,headers={},{method='GET',body=null}={})=>new Promise((resolve,reject)=>{
+   const req=http.request({host:'127.0.0.1',port:server.address().port,path,method,headers:{Host:'app.example','X-Forwarded-Proto':'https',...(body===null?{}:{'Content-Type':'application/json','Content-Length':Buffer.byteLength(body)}),...headers}},res=>{const chunks=[];res.on('data',c=>chunks.push(c));res.on('end',()=>{const body=Buffer.concat(chunks);let data=null;try{data=JSON.parse(body);}catch{}resolve({status:res.statusCode,headers:res.headers,body,data});});});req.on('error',reject);if(body!==null)req.write(body);req.end();
   })};
  };
  const on=client(entries.on),off=client(entries.off);await Promise.all([on.ready,off.ready]);
@@ -523,3 +523,86 @@ test('Design-Teile: Pause, Freigabe und anderer Produktstand greifen auch bei Tr
  assert.equal(r.status,200);assert.ok(s.modelCalls>before.calls,'Modell neu aufgebaut');assert.ok(s.docReads>before.docs,'Dokument neu gelesen');
 },{setup:fixedSetup}));
 
+
+// Auftrag #265, „Vorab-Start verkürzen“ (Chris 20.11.2026: „3. Ja“). Startkarte, Designliste, Vorschau, Designwechsel und
+// Motivgrafiken nutzen das Modell, das der Modellzweig für diesen Produktstand schon hält; jede Anfrage mit Sitzung nimmt die
+// gemerkte Art der Freigabe, statt dafür das ganze Dokument zu lesen. Je Test der Gegenlauf ohne Speicher (`off`): gleiche
+// Antworten, dort aber mit Dokument und Neuaufbau – daran schlägt der Test fehl, wenn der Zähler nichts mehr misst.
+const ticket=(client,s)=>client.request(proxyPath+'/start?'+signed(s,{product:productGid.split('/').at(-1),variant:variantGid.split('/').at(-1),format:'json'}),{Accept:'application/json'});
+const gallery=(client,headers,query='?page=0')=>client.request('/api/shop-entry/design-gallery'+query,{...headers,Origin:origin});
+const preview=(client,headers,target)=>client.request('/api/shop-entry/design-gallery-preview',{...headers,Origin:origin},{method:'POST',body:JSON.stringify({target})});
+// Die Designliste braucht eine Zuordnungsablage, die ihre aktiven Zuordnungen nennen kann (wie im Betrieb).
+const withList=({s,store})=>{store.registry.listActive=()=>[...s.bindings.values()].map(b=>structuredClone(b));};
+const counts=s=>({models:s.modelCalls,cards:s.cardCalls||0,docs:s.docReads||0});
+const delta=(s,before)=>({models:s.modelCalls-before.models,cards:(s.cardCalls||0)-before.cards,docs:(s.docReads||0)-before.docs});
+const NOTHING={models:0,cards:0,docs:0};
+
+test('Vorab-Start: nach dem Modellabruf bauen Startkarte, Designliste und Vorschau nichts neu auf und lesen das Dokument nicht',()=>run(async ctx=>{
+ const {s,on,off,open,model}=ctx;withList(ctx);
+ const headers=await open();assert.equal((await model(on,headers)).status,200);
+ let before=counts(s);
+ const list=await gallery(on,headers);assert.equal(list.status,200,list.body.toString().slice(0,200));assert.equal(list.data.total,4);
+ assert.deepEqual(delta(s,before),NOTHING,'Designliste');
+ const target=list.data.items.find(i=>i.designId==='fs-2').target;before=counts(s);
+ const drawn=await preview(on,headers,target);assert.equal(drawn.status,200,drawn.body.toString().slice(0,200));assert.match(drawn.body.toString(),/^<svg/);
+ assert.deepEqual(delta(s,before),NOTHING,'Vorschau');
+ before=counts(s);
+ const card=await ticket(on,s);assert.equal(card.status,200);assert.ok(card.data.url.startsWith(origin+pagePath+'#'));
+ assert.deepEqual(delta(s,before),NOTHING,'Startkarte');
+ // Gegenlauf ohne Speicher: dieselben Karten, dieselbe Vorschau, dieselbe Vorwärmliste – jeweils mit Dokument und Neuaufbau.
+ before=counts(s);const plain=await gallery(off,headers);let d=delta(s,before);
+ assert.deepEqual(plain.data,list.data);assert.ok(d.docs>0&&d.cards>0,'Designliste ohne Speicher: '+JSON.stringify(d));
+ before=counts(s);const plainDrawn=await preview(off,headers,target);d=delta(s,before);
+ assert.ok(plainDrawn.body.equals(drawn.body));assert.ok(d.docs>0&&d.models>0,'Vorschau ohne Speicher: '+JSON.stringify(d));
+ before=counts(s);const plainCard=await ticket(off,s);d=delta(s,before);
+ assert.deepEqual(plainCard.data.warm,card.data.warm);assert.ok(d.models>0,'Startkarte ohne Speicher: '+JSON.stringify(d));
+},{setup:fixedSetup}));
+
+test('Vorab-Start: Pause, entzogene Freigabe, anderer Produktstand und fehlendes Produkt wirken wie ohne Speicher',()=>run(async ctx=>{
+ const {s,on,off,open,model}=ctx;withList(ctx);
+ const headers=await open();assert.equal((await model(on,headers)).status,200);
+ const target=(await gallery(on,headers)).data.items[1].target;assert.equal((await preview(on,headers,target)).status,200);
+ const same=async label=>{
+  for(const [name,call] of [['Designliste',c=>gallery(c,headers)],['Vorschau',c=>preview(c,headers,target)],['Startkarte',c=>ticket(c,s)]]){
+   const a=await call(on),b=await call(off);
+   assert.equal(a.status,b.status,label+' · '+name);assert.equal(a.data?.error?.code,b.data?.error?.code,label+' · '+name);assert.equal(a.data?.error?.message,b.data?.error?.message,label+' · '+name);
+  }
+ };
+ s.paused=true;await same('Pause');
+ let r=await gallery(on,headers);assert.equal(r.status,423);assert.equal(r.data.error.code,'konfi_paused');
+ r=await preview(on,headers,target);assert.equal(r.status,423);r=await ticket(on,s);assert.equal(r.status,423);s.paused=false;
+ s.catalogApproved=false;await same('Freigabe entzogen');
+ r=await gallery(on,headers);assert.equal(r.status,404);assert.equal(r.data.error.code,'shop_entry_catalog_release');
+ r=await preview(on,headers,target);assert.equal(r.status,404);assert.equal(r.data.error.code,'shop_entry_catalog_release');s.catalogApproved=true;
+ await same('wieder frei');assert.equal((await gallery(on,headers)).status,200);
+ // Anderer Produktstand: weder die gemerkte Art noch das gehaltene Modell gelten weiter.
+ s.product={...s.product,headRevision:4};
+ const before=counts(s);r=await gallery(on,headers);assert.equal(r.status,200);
+ const d=delta(s,before);assert.ok(d.docs>0,'Dokument neu gelesen');assert.ok(d.cards>0,'Kartenmodell neu gebaut');
+ s.missing=true;await same('Produkt fehlt');
+ r=await gallery(on,headers);assert.equal(r.status,404);assert.equal(r.data.error.code,'not_found');
+},{setup:fixedSetup}));
+
+test('Vorab-Start: die Art der Freigabe wird beim ersten Abruf mit Sitzung gemerkt; ein Schreibvorgang währenddessen merkt nichts',()=>run(async ctx=>{
+ const {s,on,open,store}=ctx;withList(ctx);
+ const headers=await open();
+ // Ohne Modellabruf gibt es kein gehaltenes Modell: gebaut wird wie bisher, das Dokument aber nur einmal gelesen.
+ let before=counts(s);assert.equal((await gallery(on,headers)).status,200);
+ assert.equal(delta(s,before).docs,1,'erster Abruf liest das Dokument einmal');
+ before=counts(s);assert.equal((await gallery(on,headers)).status,200);
+ let d=delta(s,before);assert.equal(d.docs,0,'Art der Freigabe gemerkt');assert.ok(d.cards>0,'ohne gehaltenes Modell wird das Kartenmodell gebaut');
+ // Neuer Produktstand; während des Lesens schreibt jemand in die Datenbank: nichts merken, beim nächsten Abruf erneut lesen.
+ s.product={...s.product,headRevision:5};
+ const get=store.workshop.repository.get;store.workshop.repository.get=(...a)=>{s.epoch++;return get(...a);};
+ before=counts(s);assert.equal((await gallery(on,headers)).status,200);assert.ok(delta(s,before).docs>0);
+ before=counts(s);assert.equal((await gallery(on,headers)).status,200);assert.ok(delta(s,before).docs>0,'nach einem Schreibvorgang während des Lesens wurde nichts gemerkt');
+ store.workshop.repository.get=get;
+ before=counts(s);assert.equal((await gallery(on,headers)).status,200);assert.equal(delta(s,before).docs,1);
+ before=counts(s);assert.equal((await gallery(on,headers)).status,200);assert.equal(delta(s,before).docs,0);
+},{setup:fixedSetup}));
+
+test('Vorab-Start: Werkstätten ohne lesbaren Produktstand laufen wie bisher (Dokument bei jeder Anfrage)',()=>run(async ctx=>{
+ const {s,on,open,model}=ctx;withList(ctx);
+ const headers=await open();assert.equal((await model(on,headers)).status,200);
+ for(let i=0;i<2;i++){const before=counts(s);assert.equal((await gallery(on,headers)).status,200);const d=delta(s,before);assert.ok(d.docs>0&&d.cards>0,JSON.stringify(d));}
+},{setup:fixedSetup,workshopOptions:{withState:false}}));

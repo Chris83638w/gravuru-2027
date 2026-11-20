@@ -59,7 +59,8 @@ export function createPublicDesignPreviews({cache,resolve,modelFor,modelForRead,
   for(const row of choices(context)){const id={renderer:cache.rendererFingerprint,binding:fixedBinding(context.binding),source,designId:row.designId},hit=cache.get(id);if(hit)found.set(row.designId,{...hit,url:previewUrl(hit.hash)});}
   return found;
  }
- function urls(binding){try{return [...lookup(binding).values()].map(hit=>hit.url);}catch{return [];}}
+ // `options.modelFor` wie bei attach: ein bereits gehaltenes Modell desselben Produktstands statt eines Neuaufbaus.
+ function urls(binding,options=null){try{return [...lookup(binding,current(binding,false,options?.modelFor??null)).values()].map(hit=>hit.url);}catch{return [];}}
  function attach(result,options=null){
   const groups=new Map();
   // Only the first three visible cards are speculative candidates. No scans

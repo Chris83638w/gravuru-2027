@@ -177,14 +177,44 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
   if(store.workshop.konfis.paused(binding.productId))fail(423,'konfi_paused',PAUSED_MESSAGE);
   return checkedModel(store,binding,model);
  }
+ // Auftrag #265, „Vorab-Start verkürzen“ (Chris 20.11.2026): Das Servermodell, das der Modellzweig für diesen Produktstand schon
+ // hält (Antwortspeicher), dient auch der Startkarte, der Designliste und der Vorschau. Bisher baute jeder dieser Abrufe das Modell
+ // aus dem über 10 MB großen Dokument neu auf, manche zweimal. Gehalten wird nur bei unverändertem Produktstand; Pause, Zuordnung
+ // und Freigabe prüft heldModelFor frisch wie modelFor. Ohne gehaltenes Modell (erster Aufruf nach dem Start des Servers,
+ // verdrängt, kein Antwortspeicher) bleibt der bisherige Weg mit denselben Fehlern.
+ function heldModels(store,binding){
+  if(!modelCache)return null;
+  const state=productState(store,binding);
+  return state===null?null:modelCache.heldFor(store.storeId,JSON.stringify([store.storeId,binding.productId,binding.productRevision]),state);
+ }
+ function sharedModelFor(store,binding){const held=heldModels(store,binding);return held?heldModelFor(store,binding,held.model):modelFor(store,binding);}
+ function sharedCardFor(store,binding){return heldModels(store,binding)?.cardModel||cardFor(store,binding);}
+ // Für die öffentlichen Vorschauen: Sie dürfen die Prüfsumme eines tief eingefrorenen Modells je Objekt merken (public-design-previews.mjs).
+ const sharedPreviewModel=Object.freeze({modelFor:sharedModelFor});
  // Sitzung prüfen und die Zuordnung erneut auflösen: eine zwischenzeitlich geänderte aktive Zuordnung
  // oder ein anderer Store beenden die Sitzung (wie `active()` im Händlertest-Gateway).
  function active(req){
   return cartTimingStep('session_binding',()=>{
    const context=activeContext(req);
-   requireDoorbellApproval(context.store,context.binding);
+   requireActiveApproval(context.store,context.binding);
    return context;
   });
+ }
+ // Auftrag #265, „Vorab-Start verkürzen“ (Chris 20.11.2026): Jede Anfrage mit Sitzung prüft die Freigabe des Produktstands.
+ // Welche ART von Freigabe er braucht, steht nur im gespeicherten Dokument; dafür wurde es bei jeder Anfrage ganz gelesen
+ // (über 10 MB, am echten Server 0,15 bis 0,4 s je Anfrage – Designliste, Vorschau, Warenkorb). Die Art hängt allein an der
+ // unveränderlichen Revision und steht deshalb im selben Merker wie beim Modellzweig und bei den Design-Teilen. Fehlt sie dort,
+ // wird wie bisher das Dokument gelesen und die Art für genau diesen Produktstand gemerkt. Ohne lesbaren Produktstand (kein
+ // Antwortspeicher, Produkt fehlt, fremder Mandant …) bleibt alles beim bisherigen Weg mit denselben Fehlern.
+ // Die Freigabe selbst wird nie gemerkt: requireApproval liest sie bei jeder Anfrage frisch.
+ function requireActiveApproval(store,binding){
+  const state=productState(store,binding);
+  if(state===null)return requireDoorbellApproval(store,binding);
+  const holderKey=JSON.stringify([store.storeId,binding.productId,binding.productRevision]),known=rememberedKind(holderKey,state);
+  if(known!==undefined)return requireApproval(store,binding,known);
+  const epoch=writeEpoch(store),kind=approvalKind(store.workshop.repository.get(binding.productId,{revision:binding.productRevision}).document?.config);
+  requireApproval(store,binding,kind);
+  if(epoch!==null&&writeEpoch(store)===epoch&&productState(store,binding)===state)rememberKind(holderKey,state,kind);
  }
  // Sitzung, Anfragebegrenzung und frische Zuordnung ohne Freigabeprüfung (der Modellzweig prüft sie selbst, siehe dort).
  function activeContext(req){
@@ -310,7 +340,7 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
   }
   return allowed;
  }
- const designGallery=createShopDesignGallery({secret,resolve,modelFor,cardFor,allowedAssets,checkBinding:checkGalleryBinding,checkBindings:checkGalleryBindings,onMeasure:logger,previewUrl:hash=>pagePath+'vorschauen/'+hash+'.svg'});
+ const designGallery=createShopDesignGallery({secret,resolve,modelFor:sharedModelFor,cardFor:sharedCardFor,allowedAssets,checkBinding:checkGalleryBinding,checkBindings:checkGalleryBindings,onMeasure:logger,previewUrl:hash=>pagePath+'vorschauen/'+hash+'.svg'});
  const renderPublicTemplate=(context,designId)=>{const fresh=createShopDesignGallery({secret,resolve,modelFor,cardFor,allowedAssets,checkBinding:checkGalleryBinding});const start=fresh.start(context,context.model,designId);return fresh.preview(context,start.target);};
  const publicPreviews=publicPreviewDirectory===null?null:createPublicDesignPreviews({cache:createPublicDesignPreviewCache({directory:publicPreviewDirectory,secret}),resolve,modelFor,modelForRead:(store,binding)=>typeof store.workshop.publicPreviewModel==='function'?store.workshop.publicPreviewModel(binding.productId,binding.productRevision):null,checkBinding:checkGalleryBinding,gallery:designGallery,renderTemplate:renderPublicTemplate,previewUrl:hash=>pagePath+'vorschauen/'+hash+'.svg'});
  const preparePublicDesignPreviews=ids=>{if(!publicPreviews)throw Error('Öffentlicher Vorschauspeicher ist nicht eingeschaltet.');return publicPreviews.prepare(ids);};
@@ -340,7 +370,7 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
   // Startkarte (`format=json`, Vorabruf der Produktseite) zählt getrennt: Seitenaufrufe sperren keine echten Starts.
   if(!startLimiter(input.ticket?'ticket':'start'))fail(429,'shop_entry_busy','Bitte kurz warten und erneut versuchen.');
   const {store,binding}=resolve({shopifyProductId:input.shopifyProductId,shopifyVariantId:input.shopifyVariantId});
-  const startModel=modelFor(store,binding);
+  const startModel=sharedModelFor(store,binding);
   const issued=sessions.issue(binding,{customerId:proxy.customerId});
   // Every validated storefront product uses the same Prio shell over its own model.
   const fragment=new URLSearchParams({s:issued.token,ui:'prio-r15'});
@@ -351,7 +381,7 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
   // Startkarte: dieselbe Zieladresse als JSON; die Produktseite öffnet beim Klick direkt den Konfigurator-Host.
   if(input.ticket){
    let assets=null;
-   if(!input.config)try{assets=shopWarmManifest(presentedModel(startModel,binding,store).universal,{editorPath:store.nativeEditorPath,pagePath,previews:publicPreviews?.urls(binding)});}catch{/* Warming is optional; the actual start remains authoritative. */}
+   if(!input.config)try{assets=shopWarmManifest(presentedModel(startModel,binding,store).universal,{editorPath:store.nativeEditorPath,pagePath,previews:publicPreviews?.urls(binding,sharedPreviewModel)});}catch{/* Warming is optional; the actual start remains authoritative. */}
    return json(res,200,{url:target,expiresAt:issued.expiresAt,...(assets?{warm:{url:origin+warmPath,manifest:assets}}:{})});
   }
   if(input.config&&input.line==='theme'&&!input.embed){
@@ -666,11 +696,11 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
     if(action==='design-gallery'){
      if(req.method!=='GET')fail(405,'shop_entry_method','Diese Anfrageart ist nicht verfügbar.');
      if([...url.searchParams.keys()].some(k=>!['page','theme','q',...GALLERY_OPTIONS].includes(k))||['page','theme','q',...GALLERY_OPTIONS].some(k=>url.searchParams.getAll(k).length>1)||GALLERY_OPTIONS.some(k=>url.searchParams.has(k)&&!/^[A-Za-z0-9][A-Za-z0-9._-]{0,99}$/.test(url.searchParams.get(k)))||!['preferred','all'].includes(url.searchParams.get('theme')||'preferred')||!/^\d{1,5}$/.test(url.searchParams.get('page')||'0'))fail(422,'shop_gallery_page','Diese Seite der Designauswahl gibt es nicht.');
-     checkOrigin(req,{mutating:false});const context=active(req),sourceModel=cardFor(context.store,context.binding);checkGalleryBinding(context.store,context.binding,sourceModel);
+     checkOrigin(req,{mutating:false});const context=active(req),sourceModel=sharedCardFor(context.store,context.binding);checkGalleryBinding(context.store,context.binding,sourceModel);
      // Türschild-Konfi: aktuelle Ausführung aus dem Konfi (Form & Größe, Farbe, Befestigung); nur dort ausgewertet.
      const chosen=GALLERY_OPTIONS.filter(k=>url.searchParams.has(k)),options=chosen.length&&isAllSizesFamily(sourceModel.universal)?Object.fromEntries(chosen.map(k=>[k,url.searchParams.get(k)])):null;
      const result=await designGallery.list(context,{page:Number(url.searchParams.get('page')||0),theme:url.searchParams.get('theme')||'preferred',sourceModel,options,q:url.searchParams.get('q')||''});
-     return withCustomerReadScope(()=>{active(req);return json(res,200,publicPreviews?publicPreviews.attach(result):result);});
+     return withCustomerReadScope(()=>{active(req);return json(res,200,publicPreviews?publicPreviews.attach(result,sharedPreviewModel):result);});
     }
     if(action==='customer-vector-logo/preview'){
      if(req.method!=='POST')fail(405,'shop_entry_method','Diese Anfrageart ist nicht verfügbar.');
@@ -684,7 +714,7 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
      if(req.method!=='POST')fail(405,'shop_entry_method','Diese Anfrageart ist nicht verfügbar.');
      if(url.search)fail(404,'shop_entry_route','Diese Funktion ist nicht verfügbar.');
      checkOrigin(req,{mutating:true});const context=active(req),input=await body(req,8192);
-     modelFor(context.store,context.binding);
+     sharedModelFor(context.store,context.binding);
      if(Object.keys(input).length!==1||typeof input.target!=='string')fail(422,'shop_gallery_fields','Bitte ein Design aus der Auswahl wählen.');
      const bytes=await queueGalleryPreview(()=>withCustomerReadScope(()=>{if(req.aborted||res.destroyed)fail(409,'shop_gallery_cancelled','Vorschau abgebrochen.');const current=active(req);return Buffer.from(designGallery.preview(current,input.target));}));
      res.writeHead(200,headersFor('image/svg+xml',{'Content-Length':bytes.length,'Content-Security-Policy':"default-src 'none'; img-src data:; style-src 'unsafe-inline'; sandbox"}));return res.end(bytes);
@@ -693,7 +723,7 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
      if(req.method!=='POST')fail(405,'shop_entry_method','Diese Anfrageart ist nicht verfügbar.');
      if(url.search)fail(404,'shop_entry_route','Diese Funktion ist nicht verfügbar.');
      checkOrigin(req,{mutating:true});const context=active(req),input=await body(req,8192);
-     modelFor(context.store,context.binding);
+     sharedModelFor(context.store,context.binding);
      if(Object.keys(input).length!==1||typeof input.target!=='string')fail(422,'shop_gallery_fields','Bitte ein Design aus der Auswahl wählen.');
      const chosen=designGallery.target(context,input.target),issued=sessions.issue(chosen.binding,{customerId:context.session.customerId,expiresAt:context.session.expiresAt});
      return json(res,200,{token:issued.token,expiresAt:issued.expiresAt,designId:chosen.design.id,binding:publicBinding(chosen.binding),widthMm:chosen.geometry.width,heightMm:chosen.geometry.height,unitCents:chosen.price.unitCents,currency:chosen.price.currency,productionReady:false});
@@ -703,7 +733,7 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
      if(req.method!=='GET')fail(405,'shop_entry_method','Diese Anfrageart ist nicht verfügbar.');
      if(url.search)fail(404,'shop_entry_route','Diese Funktion ist nicht verfügbar.');
      checkOrigin(req,{mutating:false});
-     const context=active(req),model=modelFor(context.store,context.binding);
+     const context=active(req),model=sharedModelFor(context.store,context.binding);
      if(!allowedAssets(context.store,context.binding,model).has(asset[1]))fail(404,'shop_entry_asset','Diese Grafik gehört nicht zu diesem Produkt.');
      let bytes;try{bytes=context.store.workshop.assets.read(asset[1]);}catch{fail(404,'shop_entry_asset','Diese Grafik gehört nicht zu diesem Produkt.');}
      res.writeHead(200,headersFor('image/svg+xml',{'Content-Length':bytes.length,'Content-Security-Policy':"default-src 'none'; img-src data:; style-src 'none'; sandbox"}));return res.end(bytes);

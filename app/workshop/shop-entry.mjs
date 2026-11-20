@@ -25,6 +25,7 @@ import {createRevisionDerivationMemo} from './revision-derivation-memo.mjs';
 import {isLayeredDoorbell} from '../configurator/variant-m/doorbell-selection.mjs';
 import {moduleEnabled} from '../configurator/variant-m/module-profile.mjs';
 import {selectedProfile} from '../configurator/variant-m/contract.mjs';
+import {createProductShaMemo} from './review-product.mjs';
 import {withCartTiming,cartTimingStep,cartTimingCount,cartTimingHeaders} from './shop-cart-timing.mjs';
 
 // Öffentlicher Kundeneinstieg „Jetzt personalisieren“ (SHOP-ENTRY.txt). Shopify ruft über den App-Proxy
@@ -75,7 +76,7 @@ function createWindowLimiter(perMinute,clock){
  return key=>{const minute=Math.floor(clock()/60000);if(windows.size>4096)windows.clear();const entry=windows.get(key);if(!entry||entry.minute!==minute){windows.set(key,{minute,count:1});return true;}entry.count++;return entry.count<=perMinute;};
 }
 
-export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=null,warmCheckoutAccess=null,proxyPath,pagePath='/konfigurator/shop/',clock=Date.now,ttlMs,maxAgeSeconds=300,limits={},modelSlimmer,publicPreviewDirectory=null,publicPreviewPrepare=null,modelResponseCache=null,logger=event=>console.warn(JSON.stringify(event))}){
+export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=null,warmCheckoutAccess=null,proxyPath,pagePath='/konfigurator/shop/',clock=Date.now,ttlMs,maxAgeSeconds=300,limits={},modelSlimmer,publicPreviewDirectory=null,publicPreviewPrepare=null,modelResponseCache=null,reviewProductReference=false,logger=event=>console.warn(JSON.stringify(event))}){
  let address;try{address=new URL(origin);}catch{}
  if(!address||address.origin!==origin||address.protocol!=='https:'||address.username||address.password||!/^[-a-z0-9]+\.myshopify\.com$/.test(shopDomain||'')||typeof secret!=='string'||secret.length<16||!Array.isArray(stores)||!stores.length||stores.length>8||
    typeof proxyPath!=='string'||!/^\/[A-Za-z0-9_-]+(?:\/[A-Za-z0-9_-]+)*$/.test(proxyPath)||typeof pagePath!=='string'||!/^\/[A-Za-z0-9_-]+(?:\/[A-Za-z0-9_-]+)*\/$/.test(pagePath)||pagePath.startsWith('/api/')||proxyPath.startsWith('/api/')||proxyPath+'/'===pagePath)
@@ -93,6 +94,9 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
  // Revision und steht deshalb schon in jedem Speichereintrag; der Merker erspart den Design-Teilen das erneute Lesen des
  // Dokuments (am echten Server je Lesen 0,13 bis 0,2 s). Die Freigabe selbst wird nie gemerkt.
  const kinds=new Map();
+ // ENTSCHEIDUNGEN 3.47 (Chris 20.11.2026: „wie Zakeke und Fancy“): Mit `reviewProductReference` nennt das Prüfpaket eines
+ // Kundenentwurfs den Produktstand (Kennung, Revision, Prüfsumme), statt ihn einzubetten (review-product.mjs). Aus: bisheriges Paket.
+ const productSha=createProductShaMemo();
  const rememberKind=(holderKey,state,kind)=>{if(kinds.size>=256&&!kinds.has(holderKey))kinds.delete(kinds.keys().next().value);kinds.set(holderKey,{state,kind});};
  const rememberedKind=(holderKey,state)=>{const hit=kinds.get(holderKey);return hit&&hit.state===state?hit.kind:undefined;};
  const ids=new Set(),fixed=stores.map(s=>{
@@ -485,7 +489,8 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
    if(record.status==='archived'||repository.get(record.id).status==='archived')fail(422,'acrylic_required','Dieses Produkt ist nicht mehr verfügbar.');
    const config=cartTimingStep('model_build',()=>sharedModelFor(store,context.binding)).universal;
    if(warmCheckoutAccess&&checkoutImage&&hasSavedCartImage(store))void Promise.resolve().then(warmCheckoutAccess).catch(()=>{});
-   let bundle;try{bundle=await cartTimingStep('review_prepare',()=>prepareAcrylicReview({record,config,input,assets:store.workshop.assets}));}catch(error){if(error.status===422&&!error.code)error.code='shop_entry_draft';throw error;}
+   const productSha256=reviewProductReference===true?cartTimingStep('product_sha',()=>productSha(repository,record)):undefined;
+   let bundle;try{bundle=await cartTimingStep('review_prepare',()=>prepareAcrylicReview({record,config,input,assets:store.workshop.assets,...(productSha256?{productSha256}:{})}));}catch(error){if(error.status===422&&!error.code)error.code='shop_entry_draft';throw error;}
    const saved=cartTimingStep('draft_persist',()=>draft?drafts.acrylicDrafts.save(draft.id,token,data.expectedRevision,bundle):drafts.acrylicDrafts.create(bundle));
    if(checkoutImage&&hasSavedCartImage(store))warmCheckoutImage(()=>customerImages.snapshotUrl(store.storeId,saved.snapshotId,bundle.manifest.packageSha256),{justSaved:true});
    return json(res,draft?200:201,{...saved,photoHints:bundle.manifest.photoHints||[],photoResolution:(bundle.manifest.photoResolution||[]).map(p=>({objectId:p.objectId,grade:p.grade,effectiveDpi:p.effectiveDpi,targetDpi:p.targetDpi}))});

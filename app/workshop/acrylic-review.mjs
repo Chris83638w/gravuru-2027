@@ -17,6 +17,7 @@ import {commercePrice} from '../configurator/variant-m/commerce-model.mjs';
 import {prepareCustomerPhoto,prepareReviewPreviewPair} from './customer-photo.mjs';
 import {verifyCustomerVectorLogoMedia,vectorLogoMetadata} from './customer-vector-logo-media.mjs';
 import {zipStored} from './zip-stored.mjs';
+import {NATIVE_INPUT_EMBEDDED,NATIVE_INPUT_REFERENCE} from './review-product.mjs';
 import {textsNearHoles} from '../platform/sources/app/shared/models/hole-proximity.mjs';
 import {selectedProfile} from '../configurator/variant-m/contract.mjs';
 import {editorUi} from '../configurator/variant-m/toolbar-placement-model.mjs';
@@ -81,7 +82,10 @@ export function reviewSources(config,design){
  return frozen;
 }
 
-export async function prepareAcrylicReview({record,config,input,assets,preparePhoto=prepareCustomerPhoto}){
+// `productSha256` (Prüfsumme des Dokuments dieser Revision, review-product.mjs): Das Paket nennt den Produktstand, statt ihn
+// einzubetten (ENTSCHEIDUNGEN 3.47). Nur für native Produkte; ohne die Angabe entsteht das Paket der bisherigen Art.
+export async function prepareAcrylicReview({record,config,input,assets,preparePhoto=prepareCustomerPhoto,productSha256}){
+ if(productSha256!==undefined&&!/^[a-f0-9]{64}$/.test(String(productSha256)))fail('Die Prüfsumme des Produktstands ist ungültig.');
  config=cartTimingStep('review_config',()=>nativeReviewConfig(config,input));
  const layered=isLayeredDoorbell(config);
  let state;try{state=cartTimingStep('review_validate',()=>validateAcrylicReview(record,config,input));}catch(error){if(error.constructor===Error&&error.status===undefined)Object.assign(error,{status:422,code:'acrylic_review_invalid'});throw error;}
@@ -92,7 +96,8 @@ export async function prepareAcrylicReview({record,config,input,assets,preparePh
  if(ref?(!productionProfile||productionProfile.id!==ref.id||productionProfile.revision!==ref.revision):!!productionProfile)fail('Der gesicherte Fertigungsprofilstand fehlt oder passt nicht zur Produktrevision.');
  if(productionProfile)add('fertigungsprofil.json',json(productionProfile),'Unveränderlicher Fertigungsprofilstand; keine Maschinenfreigabe.');
  // No ephemeral upload URLs or tokens are accepted from the browser.
- add('produkt-und-gestaltung.json',json({schema:config.acrylic?'gravuru-acrylic-review-input/v1':'gravuru-native-review-input/v1',product:record.document,state,profileRevision:config.profile.revision,profileSelections:config.workshopProfiles}),'Gespeichertes natives Produkt, Kundenwerte und serverberechneter Preis.');
+ if(productSha256!==undefined&&!config.acrylic)add('produkt-und-gestaltung.json',json({schema:NATIVE_INPUT_REFERENCE,productRef:{id:record.id,revision:record.revision,sha256:productSha256},state,profileRevision:config.profile.revision,profileSelections:config.workshopProfiles}),'Verweis auf den unveränderlichen Produktstand der Werkstatt (Kennung, Revision, Prüfsumme), Kundenwerte und serverberechneter Preis.');
+ else add('produkt-und-gestaltung.json',json({schema:config.acrylic?'gravuru-acrylic-review-input/v1':NATIVE_INPUT_EMBEDDED,product:record.document,state,profileRevision:config.profile.revision,profileSelections:config.workshopProfiles}),'Gespeichertes natives Produkt, Kundenwerte und serverberechneter Preis.');
  add('konfigurator-quellen.json',json(frozen),'Feste Konfiguratorrevision mit Schriftpfaden und Motivquellen.');
  for(const [i,m] of input.media.entries()){
   if(m.vectorLogo!==undefined){

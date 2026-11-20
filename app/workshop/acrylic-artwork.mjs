@@ -1,3 +1,4 @@
+import {NATIVE_INPUT_EMBEDDED,NATIVE_INPUT_REFERENCE,savedProductDocument} from './review-product.mjs';
 import {isFamilyFormats} from '../configurator/variant-m/family-formats.mjs';
 import {designPaintOrder} from '../platform/sources/app/shared/models/design-layer-order.mjs';
 import {doorbellSeparations} from './doorbell-artwork.mjs';
@@ -38,16 +39,19 @@ export function nativeContour(g){
 }
 // K14 / Ü15.1: `surfaceId` wählt die Fläche (Standard vorn, wie bisher). Die Rückseite wird
 // seitenrichtig ausgegeben, ihre Kontur hat die von hinten gespiegelten Bohrlöcher.
-export async function acrylicArtwork(archive,archiveHash,{engraving=false,surfaceId='front'}={}){
+// `productDocument`: holt bei Paketen mit Verweis den Produktstand aus der Werkstatt (review-product.mjs); bei Paketen mit
+// eingebettetem Produktstand wird er nicht gebraucht.
+export async function acrylicArtwork(archive,archiveHash,{engraving=false,surfaceId='front',productDocument=null}={}){
  const {files,manifest}=readReviewPackage(archive,archiveHash,NATIVE_REVIEW_SCHEMAS),saved=JSON.parse(files.get('produkt-und-gestaltung.json')),config=JSON.parse(files.get('konfigurator-quellen.json')),state=saved.state;
  const layered=isLayeredDoorbell(config);
  if(config.doorbell&&!layered)fail('Die getrennte Fertigungsausgabe für Edelstahlträger und Acrylglasauflage ist noch nicht angebunden.');
  const native=manifest.schema===NATIVE_REVIEW;
- if(saved.schema!==(native?'gravuru-native-review-input/v1':'gravuru-acrylic-review-input/v1')||native!==(['slate','steel'].includes(config.profile.material.kind)||!!config.familyAcrylic||isFamilyFormats(config)||layered)||saved.profileRevision!==config.profile.revision||manifest.product.id!==config.profile.id)fail('Die gesicherte Produktrevision ist nicht eindeutig.');
+ if(!(native?[NATIVE_INPUT_EMBEDDED,NATIVE_INPUT_REFERENCE]:['gravuru-acrylic-review-input/v1']).includes(saved.schema)||native!==(['slate','steel'].includes(config.profile.material.kind)||!!config.familyAcrylic||isFamilyFormats(config)||layered)||saved.profileRevision!==config.profile.revision||manifest.product.id!==config.profile.id)fail('Die gesicherte Produktrevision ist nicht eindeutig.');
  // Profile fonts were frozen at checkout after the original product document.
  // Validate against those hash-verified paths, just like validateAcrylicReview;
  // never resolve a missing font from today's library or the browser.
- const document={...saved.product,config:{...saved.product.config,localResources:{...saved.product.config.localResources,fonts:{...saved.product.config.localResources?.fonts,...config.localResources.fonts}}}};
+ const stored=savedProductDocument(saved,manifest,productDocument),product=stored.document;
+ const document={...product,config:{...product.config,localResources:{...product.config.localResources,fonts:{...product.config.localResources?.fonts,...config.localResources.fonts}}}};
  const design=validateProductDesign(document,state.design,{options:state.options,fonts:config.localResources.fonts,motifs:config.localResources.motifs});
  if(surfaceId!=='front'&&!(surfaceId==='back'&&hasBack(config.profile)))fail('Dieses Produkt hat keine solche Seite.');
  const layers=layered?doorbellSeparations(config,state.options):null;
@@ -103,7 +107,7 @@ export async function acrylicArtwork(archive,archiveHash,{engraving=false,surfac
  if(design.marks?.length)fail('Diese Vorlage enthält noch nicht übernommene Gestaltungslinien. Bitte vor der Fertigung prüfen.');
  const clip=engraving?`<defs><clipPath id="native-engraving-contour"><path d="${geometry.contours.filter(c=>c.role==='outer').map(c=>c.d).join(' ')}" clip-rule="evenodd"/></clipPath></defs>`:'';
  const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="${geometry.widthMm}mm" height="${geometry.heightMm}mm" viewBox="0 0 ${geometry.widthMm} ${geometry.heightMm}">${clip}<g data-native-design="true"${engraving?' clip-path="url(#native-engraving-contour)"':''}>${parts.join('')}</g></svg>`;
- return {files,manifest,svg,geometry,...(layers?{doorbellLayers:layers}:{}),geometrySha256:digest(JSON.stringify(geometry)),photos,textFields,photoFields,surfaceId,surfaces:producedSurfaces(config.profile,design.objects),mirrorFor:front=>surfaceMirror(config,surfaceId,front)};
+ return {files,manifest,...(stored.reference?{productDocument:product,productReference:stored.reference}:{}),svg,geometry,...(layers?{doorbellLayers:layers}:{}),geometrySha256:digest(JSON.stringify(geometry)),photos,textFields,photoFields,surfaceId,surfaces:producedSurfaces(config.profile,design.objects),mirrorFor:front=>surfaceMirror(config,surfaceId,front)};
 }
 
 // Applied customer edits already contain their colour transform. Gravure keeps

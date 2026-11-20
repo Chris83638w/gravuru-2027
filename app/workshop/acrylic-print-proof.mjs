@@ -1,3 +1,4 @@
+import {PRODUCT_DOCUMENT_FILE,productDocumentJson} from './review-product.mjs';
 import {renderDoorbellCutPdfs} from './doorbell-artwork.mjs';
 import {printDelivery} from './print-delivery.mjs';
 import {acrylicArtwork} from './acrylic-artwork.mjs';
@@ -9,8 +10,9 @@ import {productionPackage} from './production-summary.mjs';
 import {surfaceFileName} from '../configurator/variant-m/surfaces.mjs';
 export const ACRYLIC_PRINT_RECIPE='gravuru-acrylic-print-proof/v7';
 export const acrylicPrintKey=settings=>digest(JSON.stringify({recipe:ACRYLIC_PRINT_RECIPE,settings:formPrintSettings(settings)}));
-export async function acrylicContourProof(archive,archiveHash){
- const a=await acrylicArtwork(archive,archiveHash);
+// `context.productDocument`: Zugriff auf den Produktstand der Werkstatt für Pakete mit Verweis (review-product.mjs).
+export async function acrylicContourProof(archive,archiveHash,context={}){
+ const a=await acrylicArtwork(archive,archiveHash,{productDocument:context.productDocument});
  if(a.doorbellLayers)return (await renderDoorbellCutPdfs(a.doorbellLayers)).acrylic;
  return geometryContourPdf(a.geometry,`${a.manifest.product.id}:${a.manifest.product.revision}; geometry=${a.geometrySha256}`);
 }
@@ -27,7 +29,7 @@ async function printSide(a,requested){
  return {raw,settings,delivery,pdf:delivery.pdf};
 }
 export async function createAcrylicPrintProof(archive,archiveHash,input={},context={}){
- const a=await acrylicArtwork(archive,archiveHash),requested=formPrintSettings({...a.manifest.productionProfile?.document.output,...input});
+ const a=await acrylicArtwork(archive,archiveHash,{productDocument:context.productDocument}),requested=formPrintSettings({...a.manifest.productionProfile?.document.output,...input});
  if(a.manifest.product.method!=='print')throw Object.assign(Error('Acrylgravur benötigt eine eigene Ausgabe ohne Druckweiß.'),{status:422});
  const front=await printSide(a,requested),{raw,settings,delivery}=front,{pdf}=delivery,warnings=[];
  if(requested.bleedMm&&!raw.bleedMm)warnings.push('Kein Druck am Außenrand: Der angeforderte Überdruck wurde nicht hinzugefügt.');
@@ -36,7 +38,7 @@ export async function createAcrylicPrintProof(archive,archiveHash,input={},conte
  // K14 / Ü15.1: gestaltete Rückseite → eigene Druck-, Weiß- und SVG-Datei mit „-rueckseite“;
  // die Vorderseite heißt dann „-vorderseite“. Ohne Rückseite bleiben alle Namen wie bisher.
  const sides=[{id:'front',a,side:front}];
- if(a.surfaces.includes('back')){const b=await acrylicArtwork(archive,archiveHash,{surfaceId:'back'});sides.push({id:'back',a:b,side:await printSide(b,{...requested,mirror:b.mirrorFor(requested.mirror)})});}
+ if(a.surfaces.includes('back')){const b=await acrylicArtwork(archive,archiveHash,{surfaceId:'back',productDocument:context.productDocument});sides.push({id:'back',a:b,side:await printSide(b,{...requested,mirror:b.mirrorFor(requested.mirror)})});}
  const two=sides.length>1,name=(n,id)=>two?surfaceFileName(n,id):n;
  if(two){
   for(const s of sides){const d=s.side.delivery.downloads;d.pdf.name=name(d.pdf.name,s.id);if(d.white)d.white.name=name(d.white.name,s.id);}
@@ -51,6 +53,8 @@ export async function createAcrylicPrintProof(archive,archiveHash,input={},conte
   extras.push({name:name('gesicherte-gestaltung.svg',s.id),blob:new Blob([s.a.svg])});
   extras.push(...dl.extras.map(e=>({...e,name:name(e.name,s.id)})));
  }
+ // Paket mit Verweis: Der geholte und geprüfte Produktstand kommt ins Fertigungspaket; es bleibt für sich vollständig.
+ if(a.productDocument)extras.push({name:PRODUCT_DOCUMENT_FILE,blob:new Blob([productDocumentJson(a.productDocument)])});
  const {archive:output}=await productionPackage({files:a.files,manifest:a.manifest,metadata,pdf,extras,orderLines:context.orderLines});
  return {pdf,archive:output,metadata};
 }

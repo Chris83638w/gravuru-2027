@@ -47,9 +47,10 @@ export function scenePreview(svg,url){
  if(!box||box.length!==4||!box.every(Number.isFinite))throw Error('Szenenvorschau: Maße fehlen.');
  return svg.replace(/(<svg\b[^>]*>)/,'$1<image data-scene-background="true" href="'+url+'" x="'+box[0]+'" y="'+box[1]+'" width="'+box[2]+'" height="'+box[3]+'" preserveAspectRatio="xMidYMid slice" pointer-events="none"/>');
 }
-export async function embedSurface(svg,url,doorbell,motifs=[]){
+export async function embedSurface(svg,url,doorbell,motifs=[],doorbellCartPreview=false){
  const sources=new Map();
  if(url && validSurface(url) && !url.startsWith('data:'))sources.set(url,null);
+ if(doorbellCartPreview && svg.includes('data-doorbell-steel="textured"'))sources.set(DOORBELL_STEEL_SURFACE,null);
  if(doorbell){
   const {imageUrl,steelImageUrl=DOORBELL_STEEL_SURFACE}=doorbell;
   if(isDoorbellImagePath(imageUrl))sources.set(imageUrl,null);

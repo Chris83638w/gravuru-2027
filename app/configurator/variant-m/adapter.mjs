@@ -151,8 +151,8 @@ export function installUniversal(configInput) {
       return body;
     };
     el.svg = function() { return svg(current()); };
-    el.png = async function({type='image/png',quality}={}) {
-      let source=await embedSurface(this.svg(true),config.materialSurface,dynamicDoorbell?profile().admin:undefined,config.localResources?.motifs);
+    el.png = async function({type='image/png',quality,cartPreview=false}={}) {
+      let source=await embedSurface(this.svg(true),config.materialSurface,dynamicDoorbell?profile().admin:undefined,config.localResources?.motifs,cartPreview && dynamicDoorbell);
       if(this.uxEmbedPreviewUploads)source=await this.uxEmbedPreviewUploads(source);
       const url = URL.createObjectURL(new Blob([source], {type:'image/svg+xml'}));
       try {

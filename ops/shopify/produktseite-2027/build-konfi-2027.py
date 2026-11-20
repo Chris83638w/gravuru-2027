@@ -1,27 +1,13 @@
-import json, hashlib
-ids = [str(58104601149820 + 32768*i) for i in range(404)]
-assert ids[-1]=="58104614355324" and "58104606556540" in ids and "58104610029948" in ids
-P="16190784438652"
-sel=[f'[id="MainProduct-{{{{ section.id }}}}"][data-product-id="{P}"] .product__block--buy_buttons button[name="add"]',
-     f'[id="MainProduct-{{{{ section.id }}}}"][data-product-id="{P}"] .product__block--buy_buttons .shopify-payment-button',
-     f'sticky-atc-bar-minimalist[data-product-id="{P}"][data-section="{{{{ section.id }}}}"] button[name="add"]',
-     f'sticky-atc-bar-minimalist[data-product-id="{P}"][data-section="{{{{ section.id }}}}"] .shopify-payment-button',
-     f'sticky-atc-bar[data-product-id="{P}"][data-section="{{{{ section.id }}}}"] button[name="add"]',
-     f'sticky-atc-bar[data-product-id="{P}"][data-section="{{{{ section.id }}}}"] .shopify-payment-button']
-konfi = ("{%- assign gv_konfi_id = product.metafields.custom.customization_id.value -%}{%- assign gv_variant = product.selected_or_first_available_variant -%}{%- assign gv_back = product.url | split: '?' | first -%}{%- assign gv_start_variant_id = gv_variant.id -%}{%- assign gv_prio_ui = '' -%}{%- if product.id == 16190784438652 and gv_konfi_id == 'katalog-formate-edelstahl-tuerschilder-familienschilder-eb5fe26624befe4a' -%}{%- assign gv_prio_ui = 'prio-r15' -%}{%- assign gv_start_variant_id = product.selected_variant.id | default: 58104606556540 -%}"
- '<style id="gravuru-steel-config-required-{{ section.id }}">' + ",\n".join(sel) + "{display:none!important}</style>"
- '<script type="application/json" id="gravuru-konfi-presentation">{"schema":"gravuru-shop-presentation/v1","productId":"16190784438652","ui":"prio-r15","variantId":"{{ gv_start_variant_id }}","themeVariantId":"{{ gv_variant.id }}","back":{{ gv_back | json }},"variants":[' + ",".join('"%s"'%i for i in ids) + "]}</script>{%- endif -%}"
- '{%- if gv_konfi_id != blank and gv_variant != blank -%}<div class="gravuru-personalisieren" data-gravuru-personalisieren data-start="/apps/konfigurator/start" data-product-id="{{ product.id }}" data-variant-id="{{ gv_start_variant_id }}" data-back="{{ gv_back }}" style="margin:12px 0 16px"><a class="btn btn--primary btn--gravuru-primary" data-gravuru-start rel="nofollow" href="/apps/konfigurator/start?product={{ product.id }}&amp;variant={{ gv_start_variant_id }}&amp;back={{ gv_back | url_encode }}{% if gv_prio_ui == \'prio-r15\' %}&amp;ui=prio-r15{% endif %}">Jetzt personalisieren</a><p style="margin:8px 0 0;font-size:.9em;opacity:.8;text-align:center">Design wählen und persönlich gestalten.</p></div>{%- endif -%}'
- "{%- if gv_konfi_id != blank -%}<style>.product__personalisation-card{display:none!important}</style>{%- endif -%}"
- "{%- if gv_konfi_id != blank -%}<script>{% if gv_prio_ui == 'prio-r15' %}import('/apps/konfigurator/shop-embed.mjs');{% else %}if(/[?&]fenster=1(&|$)/.test(location.search))import('/apps/konfigurator/shop-embed.mjs');{% endif %}</script>{%- endif -%}")
+import json
+from pathlib import Path
+
+root = Path(__file__).resolve().parent
+blocks = root / 'blocks'
+konfi = (blocks / 'personalisieren.liquid').read_text(encoding='utf-8')
+details = (blocks / 'produktdetails.liquid').read_text(encoding='utf-8')
 preis = ('<div class="gv27-preis" style="margin:4px 0 8px"><div style="display:flex;align-items:baseline;gap:.4rem;flex-wrap:wrap">{%- if product.price_varies -%}<span class="text-subtext">ab</span>{%- endif -%}<div class="f-price f-price--large"><span class="f-price-item f-price-item--regular">{{ product.price_min | money }}</span></div></div>'
  "<div class=\"product__tax text-sm text-subtext rte\" style=\"margin:2px 0 0\">{%- if cart.taxes_included -%}{{ 'products.product.include_taxes' | t }}{%- endif -%}{%- if shop.shipping_policy.body != blank %} {{ 'products.product.shipping_policy_html' | t: link: shop.shipping_policy.url }}{%- endif -%}</div></div>")
-cta = ("{%- if product.metafields.custom.customization_id.value != blank -%}<style>.gv27-cta{display:none}@media(max-width:767px){sticky-atc-bar-minimalist,sticky-atc-bar{display:none!important}.gv27-cta.is-on{display:block;position:fixed;left:0;right:0;bottom:0;z-index:30;padding:10px 16px calc(10px + env(safe-area-inset-bottom));background:#fff;box-shadow:0 -2px 12px rgba(0,0,0,.12)}.gv27-cta .btn{width:100%}}</style>"
- '<div class="gv27-cta" data-gv27-cta><button type="button" class="btn btn--primary btn--gravuru-primary">Jetzt personalisieren</button></div>'
- "<script>(function(){var b=document.querySelector('[data-gv27-cta]');if(!b)return;var s=function(){return document.querySelector('[data-gravuru-personalisieren] a[data-gravuru-start]')};b.querySelector('button').addEventListener('click',function(){var a=s();if(a)a.click()});var t=s();if(!t||!('IntersectionObserver' in window))return;new IntersectionObserver(function(e){b.classList.toggle('is-on',!e[0].isIntersecting&&e[0].boundingClientRect.top<0)}).observe(t)})();</script>{%- endif -%}"
- "<script>document.addEventListener('DOMContentLoaded',function(){document.querySelectorAll('.product__block--collapsible_tab').forEach(function(b){var c=b.querySelector('.accordion-details__content');if(c&&!c.textContent.trim()&&!c.querySelector('img,video,iframe,table'))b.style.display='none'})});</script>")
 H={"highlight_style":"none","highlight_font_style":"italic","highlight_style_color":"","highlight_text_color":""}
-def tab(h,c,page=""): return {"type":"collapsible_tab","settings":{"heading":h,"heading_size":"h4","icon":"none","content":c,"page":page,"default_open":False,"show_below_product_media":True}}
 def col(t,x): return {"type":"column","settings":{"title":t,**H,"heading_size":"h4","text":"<p>%s</p>"%x,"text_size":"text-base","button_label":"","button_link":"","button_style":"btn--underline","button_icon":"none"}}
 main={"type":"main-product","blocks":{
  "badges":{"type":"badges","settings":{"show_soldout_badge":True,"show_sale_badge":True,"sale_badge_type":"percentage"}},
@@ -35,16 +21,8 @@ main={"type":"main-product","blocks":{
   "asset_image_2":"gravuru-promise-herstellung.png","heading_2":"Eigene Herstellung","description_2":"Direkt aus unserer Produktion in Bielefeld",
   "asset_image_3":"gravuru-promise-erfahrung.png","heading_3":"Über 800.000 Kunden","description_3":"97 % positive Bewertungen bei über 10.000 Amazon-Verkäuferbewertungen",
   "asset_image_4":"gravuru-promise-verpackt.png","heading_4":"Sicher verpackt","description_4":"Gut gepolstert und zuverlässig versendet"}},
- "shipping_FfQnNC":{"type":"shipping","settings":{"deliver_text":"Voraussichtliche Lieferung:","deliver_days":"","date_format":"%d %b"}},
- "quantity_selector_qYU4Rg":{"type":"quantity_selector","settings":{"unit_label":"Stück","max_quantity":20,"tier_1_min_quantity":"","tier_1_discount":"","tier_2_min_quantity":"","tier_2_discount":"","tier_3_min_quantity":"","tier_3_discount":"","show_tip":False,"tip_label":"Tipp:","tip_template":"kaufe {qty} {unit} oder mehr und spare {discount}"}},
- "buy_buttons":{"type":"buy_buttons","settings":{"show_quantity_selector":False,"show_dynamic_checkout":False,"show_gift_card_recipient":True,"extra_classes":""}},
- "collapsible-row-1":tab("Beschreibung","{{ product.description }}","content"),
- "collapsible-row-2":tab("Material & Zusammensetzung","{{ product.metafields.custom.material_zusammensetzung | metafield_tag }}"),
- "collapsible-row-3":tab("Montage","{{ product.metafields.custom.montage | metafield_tag }}"),
- "collapsible_tab_TikNb8":tab("Sicherheitshinweise","{{ product.metafields.custom.sicherheitshinweise | metafield_tag }}"),
- "sticky_atc_bar_7HgNgP":{"type":"sticky-atc-bar","settings":{"visibility":"all","style":"minimalist","container":"full","show_atc_button":True,"show_dynamic_checkout_buttons":False,"show_quantity":True}},
- "custom_liquid_gv27cta":{"type":"custom_liquid","settings":{"custom_liquid":cta}}},
- "block_order":["badges","title","text_AbYXLT","custom_liquid_gv27preis","icon_with_text","custom_liquid_mTPWzc","promise_box_qjdKWr","shipping_FfQnNC","quantity_selector_qYU4Rg","buy_buttons","collapsible-row-1","collapsible-row-2","collapsible-row-3","collapsible_tab_TikNb8","sticky_atc_bar_7HgNgP","custom_liquid_gv27cta"],
+ "produktdetails":{"type":"custom_liquid","settings":{"custom_liquid":details}}},
+ "block_order":["badges","title","text_AbYXLT","custom_liquid_gv27preis","icon_with_text","custom_liquid_mTPWzc","promise_box_qjdKWr","produktdetails"],
  "custom_css":["@media (min-width: 1280px) {.product {padding-inline: 5rem; }}"],
  "settings":{"color_scheme":"scheme-1","use_color_scheme_in_container":False,"enable_sticky_info":True,"media_size":"large","gallery_layout":"vertical-carousel","mobile_thumbnails":"show","show_image_border":False,"enable_image_zoom":True,"enable_video_looping":True,"padding_top":0,"padding_bottom":60}}
 B={"button_label":"","button_link":"","button_style":"btn--underline","button_icon":"none"}
@@ -63,10 +41,8 @@ qual=iwt("Made in Germany - Made in Germany -","scheme-1","Unser Qualitätsversp
 ueber=iwt("Gravuru - Persönlich gefertigt -","","Über Uns","Unser Team – das sind kreative Köpfe, technische Tüftler, motivierte Produktionsprofis und herzliche Kollegen, die jeden Artikel liebevoll fertigen, verpacken und versenden. Ob Auszubildende, langjährige Mitarbeiter oder büro-eigene Vierbeiner – bei uns zählt der Mensch (und manchmal auch der Hund) – und jede Idee findet ihren Platz.","right",0,80,("Mehr über Uns","shopify://pages/uber-uns"))
 fc={"type":"featured-collection","blocks":{"c":{"type":"collection","settings":{"collection":"frontpage","title":"Derzeit beliebt","show_banner":False,"color_scheme":"scheme-info","card_link":"","image_overlay_opacity":0,"content_position":"split-bottom-button","content_alignment":"left","subheading":"","subheading_style":"","heading":"Unsere Produkte",**H,"heading_size":"h2","heading_size_mobile":"inherit","heading_size_custom":18,"description":"","text_size":"text-base","button_label":"Produkte ansehen","button_style":"btn--primary","button_icon":"none"}}},"block_order":["c"],"custom_css":[".block {transform: scale(1); mix-blend-mode: darken;}"],
  "settings":{"container":"fixed","color_scheme":"scheme-1","section_header_alignment":"left","section_header_alignment_mobile":"inherit","subheading":"","heading":"Das könnte dir auch gefallen",**H,"heading_size":"h2","heading_tag":"h2","description":"","text_size":"text-base",**B,"limit":12,"columns":4,"column_gap":"extra-large","row_gap":"large","enable_slider":True,"content_overflow":True,"navigation_position":"bottom","pcard_image_ratio":"","columns_mobile":"2","swipe_on_mobile":True,"show_progress_bar":True,"padding_top":60,"padding_bottom":60,"show_section_divider":True,"divider_width":"full"}}
-seo={"type":"rich-text","blocks":{"h":{"type":"heading","settings":{"heading":"{{ product.title }}",**H,"heading_size":"h3"}},"t":{"type":"text","settings":{"text":"{{ product.metafields.custom.seo_text | metafield_tag }}","text_size":"text-base","text_line_limit":"5-lines","button_style":"btn--underline","button_icon":"none"}}},"block_order":["h","t"],"settings":{"container":"fixed","color_scheme":"scheme-info","use_color_scheme_in_container":True,"content_spacing":"standard","content_alignment":"left","padding_top":0,"padding_bottom":60,"show_section_divider":False,"divider_width":"fixed"}}
 rv={"type":"recently-viewed-products","settings":{"container":"fixed","color_scheme":"","section_header_alignment":"left","section_header_alignment_mobile":"inherit","subheading":"","heading":"Zuletzt angesehen",**H,"heading_size":"h2","heading_tag":"h2","description":"","limit":8,"columns":4,"column_gap":"medium","row_gap":"inherit","enable_slider":True,"navigation_position":"bottom","pcard_image_ratio":"","columns_mobile":"1","swipe_on_mobile":True,"padding_top":0,"padding_bottom":60,"show_section_divider":False,"divider_width":"fixed"}}
-tpl={"sections":{"breadcrumbs":{"type":"breadcrumbs","custom_css":[],"settings":{"container":"fixed","text_alignment":"start","padding_top":16,"padding_bottom":20}},"main":main,"gv27_schritte":steps,"collapsible_tabs_c3WWta":faq,"support_contact_box_UncK9J":kontakt,"image_with_text_Fjf69J":qual,"image_with_text_B9mFzE":ueber,"featured_collection_TdgMg8":fc,"rich_text_KxE7kA":seo,"recently_viewed_products_T4pPRy":rv},
- "order":["breadcrumbs","main","gv27_schritte","collapsible_tabs_c3WWta","support_contact_box_UncK9J","image_with_text_Fjf69J","image_with_text_B9mFzE","featured_collection_TdgMg8","rich_text_KxE7kA","recently_viewed_products_T4pPRy"]}
+tpl={"sections":{"breadcrumbs":{"type":"breadcrumbs","custom_css":[],"settings":{"container":"fixed","text_alignment":"start","padding_top":16,"padding_bottom":20}},"main":main,"gv27_schritte":steps,"collapsible_tabs_c3WWta":faq,"support_contact_box_UncK9J":kontakt,"image_with_text_Fjf69J":qual,"image_with_text_B9mFzE":ueber,"featured_collection_TdgMg8":fc,"recently_viewed_products_T4pPRy":rv},
+ "order":["breadcrumbs","main","gv27_schritte","collapsible_tabs_c3WWta","support_contact_box_UncK9J","image_with_text_Fjf69J","image_with_text_B9mFzE","featured_collection_TdgMg8","recently_viewed_products_T4pPRy"]}
 body=json.dumps(tpl,ensure_ascii=False,separators=(",",":"))
-open("templates/product.konfi-2027.json","w",encoding="utf-8").write(body)
-print(len(body.encode()), hashlib.md5(body.encode()).hexdigest(), len(konfi))
+(root / "templates/product.konfi-2027.json").write_text(body + "\n", encoding="utf-8", newline="\n")

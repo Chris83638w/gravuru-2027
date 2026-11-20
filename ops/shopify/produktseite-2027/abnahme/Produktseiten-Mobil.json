@@ -1,0 +1,621 @@
+[
+  {
+    "name": "Ring",
+    "handle": "klingelschild-ring-wired-pro-3-gen-5dfya2-personalisiert",
+    "mode": "live",
+    "device": "Mobil",
+    "http": 200,
+    "display": {
+      "theme": 190984126844,
+      "main": true,
+      "title": "Klingelschild für Ring Wired Pro (3.Gen) 5DFYA2 · Hochformat 16 × 28 cm",
+      "cta": [
+        "Jetzt personalisieren"
+      ],
+      "picker": {
+        "total": 2,
+        "visible": 2
+      },
+      "quantity": {
+        "total": 1,
+        "visible": 0
+      },
+      "buy": {
+        "total": 1,
+        "visible": 0
+      },
+      "priceBlocks": {
+        "total": 1,
+        "visible": 1
+      },
+      "sticky": false,
+      "inViewport": false,
+      "slot": false,
+      "productId": 16126387257724,
+      "selected": 57471227756924,
+      "ctaProduct": "16126387257724",
+      "ctaVariant": "57471227756924"
+    },
+    "passed": true
+  },
+  {
+    "name": "Ring",
+    "handle": "klingelschild-ring-wired-pro-3-gen-5dfya2-personalisiert",
+    "mode": "vorschau",
+    "device": "Mobil",
+    "http": 200,
+    "display": {
+      "theme": 191449661820,
+      "main": true,
+      "title": "Klingelschild für Ring Wired Pro (3.Gen) 5DFYA2 · Hochformat 16 × 28 cm",
+      "cta": [
+        "Jetzt personalisieren"
+      ],
+      "picker": {
+        "total": 0,
+        "visible": 0
+      },
+      "quantity": {
+        "total": 0,
+        "visible": 0
+      },
+      "buy": {
+        "total": 0,
+        "visible": 0
+      },
+      "priceBlocks": {
+        "total": 1,
+        "visible": 1
+      },
+      "sticky": true,
+      "inViewport": true,
+      "slot": true,
+      "productId": 16126387257724,
+      "selected": 57471227756924,
+      "ctaProduct": "16126387257724",
+      "ctaVariant": "57471227756924"
+    },
+    "afterScroll": {
+      "theme": 191449661820,
+      "main": true,
+      "title": "Klingelschild für Ring Wired Pro (3.Gen) 5DFYA2 · Hochformat 16 × 28 cm",
+      "cta": [
+        "Jetzt personalisieren"
+      ],
+      "picker": {
+        "total": 0,
+        "visible": 0
+      },
+      "quantity": {
+        "total": 0,
+        "visible": 0
+      },
+      "buy": {
+        "total": 0,
+        "visible": 0
+      },
+      "priceBlocks": {
+        "total": 1,
+        "visible": 1
+      },
+      "sticky": true,
+      "inViewport": true,
+      "slot": true,
+      "productId": 16126387257724,
+      "selected": 57471227756924,
+      "ctaProduct": "16126387257724",
+      "ctaVariant": "57471227756924"
+    },
+    "passed": true
+  },
+  {
+    "name": "AOSU",
+    "handle": "klingelschild-aosu-pro-v8p1ax11-querformat-24x20-personalisiert",
+    "mode": "live",
+    "device": "Mobil",
+    "http": 200,
+    "display": {
+      "theme": 190984126844,
+      "main": true,
+      "title": "Klingelschild für AOSU Pro V8P1AX11 · Querformat 24 × 20 cm",
+      "cta": [
+        "Jetzt personalisieren"
+      ],
+      "picker": {
+        "total": 2,
+        "visible": 2
+      },
+      "quantity": {
+        "total": 1,
+        "visible": 0
+      },
+      "buy": {
+        "total": 1,
+        "visible": 0
+      },
+      "priceBlocks": {
+        "total": 1,
+        "visible": 1
+      },
+      "sticky": false,
+      "inViewport": false,
+      "slot": false,
+      "productId": 16182701621628,
+      "selected": 58046739054972,
+      "ctaProduct": "16182701621628",
+      "ctaVariant": "58046739054972"
+    },
+    "passed": true
+  },
+  {
+    "name": "AOSU",
+    "handle": "klingelschild-aosu-pro-v8p1ax11-querformat-24x20-personalisiert",
+    "mode": "vorschau",
+    "device": "Mobil",
+    "http": 200,
+    "display": {
+      "theme": 191449661820,
+      "main": true,
+      "title": "Klingelschild für AOSU Pro V8P1AX11 · Querformat 24 × 20 cm",
+      "cta": [
+        "Jetzt personalisieren"
+      ],
+      "picker": {
+        "total": 0,
+        "visible": 0
+      },
+      "quantity": {
+        "total": 0,
+        "visible": 0
+      },
+      "buy": {
+        "total": 0,
+        "visible": 0
+      },
+      "priceBlocks": {
+        "total": 1,
+        "visible": 1
+      },
+      "sticky": true,
+      "inViewport": true,
+      "slot": true,
+      "productId": 16182701621628,
+      "selected": 58046739054972,
+      "ctaProduct": "16182701621628",
+      "ctaVariant": "58046739054972"
+    },
+    "afterScroll": {
+      "theme": 191449661820,
+      "main": true,
+      "title": "Klingelschild für AOSU Pro V8P1AX11 · Querformat 24 × 20 cm",
+      "cta": [
+        "Jetzt personalisieren"
+      ],
+      "picker": {
+        "total": 0,
+        "visible": 0
+      },
+      "quantity": {
+        "total": 0,
+        "visible": 0
+      },
+      "buy": {
+        "total": 0,
+        "visible": 0
+      },
+      "priceBlocks": {
+        "total": 1,
+        "visible": 1
+      },
+      "sticky": true,
+      "inViewport": true,
+      "slot": true,
+      "productId": 16182701621628,
+      "selected": 58046739054972,
+      "ctaProduct": "16182701621628",
+      "ctaVariant": "58046739054972"
+    },
+    "passed": true
+  },
+  {
+    "name": "Edelstahl",
+    "handle": "tuerschild-edelstahl-form-und-groesse-selbst-waehlen",
+    "mode": "live",
+    "device": "Mobil",
+    "http": 200,
+    "display": {
+      "theme": 190984126844,
+      "main": true,
+      "title": "Türschild Edelstahl – Form und Größe selbst wählen",
+      "cta": [
+        "Jetzt personalisieren"
+      ],
+      "picker": {
+        "total": 0,
+        "visible": 0
+      },
+      "quantity": {
+        "total": 1,
+        "visible": 0
+      },
+      "buy": {
+        "total": 1,
+        "visible": 0
+      },
+      "priceBlocks": {
+        "total": 2,
+        "visible": 2
+      },
+      "sticky": false,
+      "inViewport": false,
+      "slot": false,
+      "productId": 16190784438652,
+      "selected": 58104606556540,
+      "ctaProduct": "16190784438652",
+      "ctaVariant": "58104606556540"
+    },
+    "passed": true
+  },
+  {
+    "name": "Edelstahl",
+    "handle": "tuerschild-edelstahl-form-und-groesse-selbst-waehlen",
+    "mode": "vorschau",
+    "device": "Mobil",
+    "http": 200,
+    "display": {
+      "theme": 191449661820,
+      "main": true,
+      "title": "Türschild Edelstahl – Form und Größe selbst wählen",
+      "cta": [
+        "Jetzt personalisieren"
+      ],
+      "picker": {
+        "total": 0,
+        "visible": 0
+      },
+      "quantity": {
+        "total": 0,
+        "visible": 0
+      },
+      "buy": {
+        "total": 0,
+        "visible": 0
+      },
+      "priceBlocks": {
+        "total": 1,
+        "visible": 1
+      },
+      "sticky": true,
+      "inViewport": true,
+      "slot": true,
+      "productId": 16190784438652,
+      "selected": 58104606556540,
+      "ctaProduct": "16190784438652",
+      "ctaVariant": "58104606556540"
+    },
+    "afterScroll": {
+      "theme": 191449661820,
+      "main": true,
+      "title": "Türschild Edelstahl – Form und Größe selbst wählen",
+      "cta": [
+        "Jetzt personalisieren"
+      ],
+      "picker": {
+        "total": 0,
+        "visible": 0
+      },
+      "quantity": {
+        "total": 0,
+        "visible": 0
+      },
+      "buy": {
+        "total": 0,
+        "visible": 0
+      },
+      "priceBlocks": {
+        "total": 1,
+        "visible": 1
+      },
+      "sticky": true,
+      "inViewport": true,
+      "slot": true,
+      "productId": 16190784438652,
+      "selected": 58104606556540,
+      "ctaProduct": "16190784438652",
+      "ctaVariant": "58104606556540"
+    },
+    "passed": true
+  },
+  {
+    "name": "Acryl",
+    "handle": "familienschild-acryl-baum-12x8-personalisiert",
+    "mode": "live",
+    "device": "Mobil",
+    "http": 200,
+    "display": {
+      "theme": 190984126844,
+      "main": true,
+      "title": "Familien-Namensschild mit Baum – Acrylglas 12 × 8 cm",
+      "cta": [
+        "Jetzt personalisieren"
+      ],
+      "picker": {
+        "total": 0,
+        "visible": 0
+      },
+      "quantity": {
+        "total": 1,
+        "visible": 0
+      },
+      "buy": {
+        "total": 1,
+        "visible": 0
+      },
+      "priceBlocks": {
+        "total": 2,
+        "visible": 2
+      },
+      "sticky": false,
+      "inViewport": false,
+      "slot": false,
+      "productId": 16189690118524,
+      "selected": 58100337213820,
+      "ctaProduct": "16189690118524",
+      "ctaVariant": "58100337213820"
+    },
+    "passed": true
+  },
+  {
+    "name": "Acryl",
+    "handle": "familienschild-acryl-baum-12x8-personalisiert",
+    "mode": "vorschau",
+    "device": "Mobil",
+    "http": 200,
+    "display": {
+      "theme": 191449661820,
+      "main": true,
+      "title": "Familien-Namensschild mit Baum – Acrylglas 12 × 8 cm",
+      "cta": [
+        "Jetzt personalisieren"
+      ],
+      "picker": {
+        "total": 0,
+        "visible": 0
+      },
+      "quantity": {
+        "total": 0,
+        "visible": 0
+      },
+      "buy": {
+        "total": 0,
+        "visible": 0
+      },
+      "priceBlocks": {
+        "total": 1,
+        "visible": 1
+      },
+      "sticky": true,
+      "inViewport": true,
+      "slot": true,
+      "productId": 16189690118524,
+      "selected": 58100337213820,
+      "ctaProduct": "16189690118524",
+      "ctaVariant": "58100337213820"
+    },
+    "afterScroll": {
+      "theme": 191449661820,
+      "main": true,
+      "title": "Familien-Namensschild mit Baum – Acrylglas 12 × 8 cm",
+      "cta": [
+        "Jetzt personalisieren"
+      ],
+      "picker": {
+        "total": 0,
+        "visible": 0
+      },
+      "quantity": {
+        "total": 0,
+        "visible": 0
+      },
+      "buy": {
+        "total": 0,
+        "visible": 0
+      },
+      "priceBlocks": {
+        "total": 1,
+        "visible": 1
+      },
+      "sticky": true,
+      "inViewport": true,
+      "slot": true,
+      "productId": 16189690118524,
+      "selected": 58100337213820,
+      "ctaProduct": "16189690118524",
+      "ctaVariant": "58100337213820"
+    },
+    "passed": true
+  },
+  {
+    "name": "Direkt",
+    "handle": "klingelschild-aosu-pro-v8p1ax11-personalisiert",
+    "mode": "live",
+    "device": "Mobil",
+    "http": 200,
+    "display": {
+      "theme": 190984126844,
+      "main": true,
+      "title": "Klingelschild für AOSU Pro V8P1AX11 · Hochformat 16 × 28 cm",
+      "cta": [
+        "Jetzt personalisieren"
+      ],
+      "picker": {
+        "total": 2,
+        "visible": 2
+      },
+      "quantity": {
+        "total": 1,
+        "visible": 0
+      },
+      "buy": {
+        "total": 1,
+        "visible": 0
+      },
+      "priceBlocks": {
+        "total": 1,
+        "visible": 1
+      },
+      "sticky": false,
+      "inViewport": false,
+      "slot": false,
+      "productId": 16124413084028,
+      "selected": 57465408291196,
+      "ctaProduct": "16124413084028",
+      "ctaVariant": "57465408291196"
+    },
+    "passed": true
+  },
+  {
+    "name": "Direkt",
+    "handle": "klingelschild-aosu-pro-v8p1ax11-personalisiert",
+    "mode": "vorschau",
+    "device": "Mobil",
+    "http": 200,
+    "display": {
+      "theme": 191449661820,
+      "main": true,
+      "title": "Klingelschild für AOSU Pro V8P1AX11 · Hochformat 16 × 28 cm",
+      "cta": [
+        "Jetzt personalisieren"
+      ],
+      "picker": {
+        "total": 0,
+        "visible": 0
+      },
+      "quantity": {
+        "total": 0,
+        "visible": 0
+      },
+      "buy": {
+        "total": 0,
+        "visible": 0
+      },
+      "priceBlocks": {
+        "total": 1,
+        "visible": 1
+      },
+      "sticky": true,
+      "inViewport": true,
+      "slot": true,
+      "productId": 16124413084028,
+      "selected": 57465408291196,
+      "ctaProduct": "16124413084028",
+      "ctaVariant": "57465408291196"
+    },
+    "afterScroll": {
+      "theme": 191449661820,
+      "main": true,
+      "title": "Klingelschild für AOSU Pro V8P1AX11 · Hochformat 16 × 28 cm",
+      "cta": [
+        "Jetzt personalisieren"
+      ],
+      "picker": {
+        "total": 0,
+        "visible": 0
+      },
+      "quantity": {
+        "total": 0,
+        "visible": 0
+      },
+      "buy": {
+        "total": 0,
+        "visible": 0
+      },
+      "priceBlocks": {
+        "total": 1,
+        "visible": 1
+      },
+      "sticky": true,
+      "inViewport": true,
+      "slot": true,
+      "productId": 16124413084028,
+      "selected": 57465408291196,
+      "ctaProduct": "16124413084028",
+      "ctaVariant": "57465408291196"
+    },
+    "passed": true
+  },
+  {
+    "name": "Service",
+    "handle": "eigenes-logo-einmalige-einrichtung",
+    "mode": "live",
+    "device": "Mobil",
+    "http": 200,
+    "display": {
+      "theme": 190984126844,
+      "main": true,
+      "title": "Eigenes Logo – einmalige Einrichtung",
+      "cta": [],
+      "picker": {
+        "total": 1,
+        "visible": 1
+      },
+      "quantity": {
+        "total": 1,
+        "visible": 1
+      },
+      "buy": {
+        "total": 1,
+        "visible": 1
+      },
+      "priceBlocks": {
+        "total": 1,
+        "visible": 1
+      },
+      "sticky": false,
+      "inViewport": false,
+      "slot": false,
+      "productId": null,
+      "selected": null,
+      "ctaProduct": null,
+      "ctaVariant": null
+    },
+    "passed": true
+  },
+  {
+    "name": "Service",
+    "handle": "eigenes-logo-einmalige-einrichtung",
+    "mode": "vorschau",
+    "device": "Mobil",
+    "http": 200,
+    "display": {
+      "theme": 191449661820,
+      "main": true,
+      "title": "Eigenes Logo – einmalige Einrichtung",
+      "cta": [],
+      "picker": {
+        "total": 1,
+        "visible": 1
+      },
+      "quantity": {
+        "total": 1,
+        "visible": 1
+      },
+      "buy": {
+        "total": 1,
+        "visible": 1
+      },
+      "priceBlocks": {
+        "total": 1,
+        "visible": 1
+      },
+      "sticky": false,
+      "inViewport": false,
+      "slot": false,
+      "productId": null,
+      "selected": null,
+      "ctaProduct": null,
+      "ctaVariant": null
+    },
+    "passed": true
+  }
+]

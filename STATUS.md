@@ -1,3 +1,7 @@
+## 20.11.2026 · Einheitliche Produktseite für den Prio R15 zur Sichtabnahme (#236)
+
+Die vorhandene Produktvorlage zeigt einen einzigen Kaufknopf für alle gebundenen Produkte. Die unveröffentlichte Vorschau auf dem aktuellen Theme wurde auf PC und Handy geprüft. Fünf persönliche Gestaltungen aus vier Produkten erreichten über die Vorschau den Shopify-Warenkorb und die Kasse. Chris entscheidet die Übernahme der Vorlage für 88 aktive und 41 ausschließlich per Direktlink erreichbare Artikel. [Produktlinks, Abdeckung und Prüfnachweise](ops/shopify/produktseite-2027/README.md)
+
 ## 2026-11-09 · Mika/Codex · Verbindlicher Produktworkflow, Preise und Excel
 
 Neue Nutzeranweisung für alle Produkt-/Vorlagenchats: vor JEDEM neuen Produkt Module, Ausführungen, Preise und Standardwerte konkret bestätigen; eigene Modulwünsche abfragen, je Produkt eine versionierte Excel als Referenz. Kein neuer Konfi pro Produkt, vorhandene Skript-/API-Dienste verwenden. Nicht erlaubte Foto-/Logo-Funktionen und Bohrungsoptionen ausblenden, Gültigkeit je Material/Form/Größe prüfen. [Zentrale Anleitung mit bestehenden Verträgen und Grenzen](docs/handoffs/2026-11-09-produktanlage-module-excel-workflow.md), [Excel-Leervorlage](docs/templates/Produktfreigabe-Vorlage.xlsx), [Feldschema](docs/templates/Feldschema-Produktfreigabe.md). Einstieg in AGENTS, START_HERE und PRIO-KONFI aktualisiert; historische Demo-Aussagen als historischen Stand eingeordnet.

@@ -1,0 +1,67 @@
+[
+  {
+    "produkt": "klingelschild-ring-wired-pro-3-gen-5dfya2-personalisiert",
+    "geraet": "Mobil",
+    "variante": 57471227756924,
+    "preisCent": 4999,
+    "eigenerTextImWarenkorb": true,
+    "gestaltungsrevision": "1",
+    "kassenbildPixel": [
+      952,
+      1600
+    ],
+    "ausserhalbErste250": false
+  },
+  {
+    "produkt": "klingelschild-aosu-pro-v8p1ax11-querformat-24x20-personalisiert",
+    "geraet": "Mobil",
+    "variante": 58046739054972,
+    "preisCent": 5999,
+    "eigenerTextImWarenkorb": true,
+    "gestaltungsrevision": "1",
+    "kassenbildPixel": [
+      1600,
+      1350
+    ],
+    "ausserhalbErste250": false
+  },
+  {
+    "produkt": "tuerschild-edelstahl-form-und-groesse-selbst-waehlen",
+    "geraet": "PC",
+    "variante": 58104606556540,
+    "preisCent": 1999,
+    "eigenerTextImWarenkorb": true,
+    "gestaltungsrevision": "1",
+    "kassenbildPixel": [
+      64,
+      44
+    ],
+    "ausserhalbErste250": false
+  },
+  {
+    "produkt": "familienschild-acryl-baum-12x8-personalisiert",
+    "geraet": "PC",
+    "variante": 58100337213820,
+    "preisCent": 1499,
+    "eigenerTextImWarenkorb": true,
+    "gestaltungsrevision": "1",
+    "kassenbildPixel": [
+      64,
+      44
+    ],
+    "ausserhalbErste250": false
+  },
+  {
+    "produkt": "tuerschild-edelstahl-form-und-groesse-selbst-waehlen",
+    "geraet": "PC",
+    "variante": 58104614355324,
+    "preisCent": 7768,
+    "eigenerTextImWarenkorb": true,
+    "gestaltungsrevision": "1",
+    "kassenbildPixel": [
+      64,
+      44
+    ],
+    "ausserhalbErste250": true
+  }
+]

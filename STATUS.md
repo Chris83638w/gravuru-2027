@@ -1,3 +1,7 @@
+## 20.11.2026 · Astra · Prio R15 auf 129 bestellbaren Artikeln
+
+88 aktive Artikel und 41 bereits veröffentlichte Direktlink-Klingelschilder öffnen den gemeinsamen Prio mit ihrer eigenen Produktrevision. 10.080 aktive und 4.920 Direktlink-Varianten erhielten ihre zuvor fehlende, einzeln zurückgelesene Kassenzuordnung. Zwei bezahlte Shopify-Testaufträge erreichten die Werkstatt. Neue Funkklingel-Kundenbilder enthalten die Edelstahltextur. Bei den zwei Acrylartikeln funktioniert die Layoutprüfung bis zum persönlichen Kassenbild. Chris prüft die Optik und die getrennte Theme-Vorschau. [Produktlinks und Ausnahmen](docs/handoffs/2026-11-19-beta-267/tempo/live/prio/Pruefliste.md) · [Nachweise und Rückwege](docs/handoffs/2026-11-19-beta-267/tempo/live/prio/README.md)
+
 ## 19.11.2026 · Astra · R15-Übergabe und Ring-Kassenprüfung live (#267)
 
 Die Testbestellungen #1033 und #1034 bestätigten vor und nach der letzten Auslieferung je zwei richtige Gestaltungen, Preise und Werkstattrevisionen. Der Warenkorb erreichte die sichtbaren persönlichen Bilder auf dem veröffentlichten R15 im Median in 5,57 s, vorher in 6,59 s. Die Zuordnung der 120 vorhandenen Variantenpreise behebt die Kassenablehnung dieses Ring-Artikels. Der aktuelle Produktionscode liegt auf `b36a8eef`. [Messungen, Fertigungsdateien und Bestellnachweis](docs/handoffs/2026-11-19-beta-267/tempo/live/abschluss/README.md)

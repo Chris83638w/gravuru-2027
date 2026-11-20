@@ -1,0 +1,24 @@
+{
+  "at": "2026-11-20T06:05:03.529025+00:00",
+  "errorCount": 0,
+  "accepted": [
+    {
+      "label": "S\u00fcd",
+      "test": true,
+      "status": "test-paid-event-recorded",
+      "productionReady": false,
+      "priceCents": 4999,
+      "packageSha256": "08bcfdb8db5def151212cd26ef0ad83136c330d421389b379f5904fade1c77f6",
+      "checkedFiles": 7
+    },
+    {
+      "label": "Nord",
+      "test": true,
+      "status": "test-paid-event-recorded",
+      "productionReady": false,
+      "priceCents": 4999,
+      "packageSha256": "45d9f9293347a424dbf5b641cc080c94d12827f8d7e244da75c3534ba21e5c19",
+      "checkedFiles": 5
+    }
+  ]
+}

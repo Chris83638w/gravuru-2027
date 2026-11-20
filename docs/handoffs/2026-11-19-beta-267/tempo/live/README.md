@@ -1,8 +1,10 @@
-# Prio-Konfi R15 im veröffentlichten Shopify-Shop · 19. November 2026
+# Ring-Referenzartikel im veröffentlichten Shopify-Shop · 19. November 2026
+
+Die folgenden Reihen wurden mit der nativen Werkzeugleiste des Ring-Referenzartikels gemessen. Seit dem 20. November öffnen alle 129 bestellbaren und freigegebenen Artikel den bestehenden Prio über ihre normale Shopify-Produktseite. [Aktuelle Produktlinks und Browserprüfungen](prio/Pruefliste.md)
 
 Später am selben Tag verkürzte sich der Warenkorbvorgang nach der letzten Shopify-Optimierung im Median auf 5,57 s. Die Testbestellungen #1033 und #1034 erreichten die Werkstatt. [Aktuelle Live-Abnahme](abschluss/README.md)
 
-Der Designwechsel im veröffentlichten R15 sank im Median von 977 auf 191 ms. Die geprüfte Designkarte erschien im Datensparmodus in acht von acht Versuchen. Neue Ring-Kundenbilder zeigen jetzt auch die Klingelkamera. Der gesamte Warenkorbvorgang dauerte zuletzt 6,06 s. Davon entfielen 1,79 s auf das Warten auf das bestätigte Kassenbild. [Ring-Produkt im Shop](https://gravuru-design.myshopify.com/products/klingelschild-ring-wired-pro-3-gen-5dfya2-personalisiert) · [Freigabe von Chris](https://github.com/Chris83638w/gravuru-2027/issues/267#issuecomment-7017499306)
+Der Designwechsel im veröffentlichten Ring-Editor sank im Median von 977 auf 191 ms. Die geprüfte Designkarte erschien im Datensparmodus in acht von acht Versuchen. Neue Ring-Kundenbilder zeigen jetzt auch die Klingelkamera. Der gesamte Warenkorbvorgang dauerte zuletzt 6,06 s. Davon entfielen 1,79 s auf das Warten auf das bestätigte Kassenbild. [Ring-Produkt im Shop](https://gravuru-design.myshopify.com/products/klingelschild-ring-wired-pro-3-gen-5dfya2-personalisiert) · [Freigabe von Chris](https://github.com/Chris83638w/gravuru-2027/issues/267#issuecomment-7017499306)
 
 ## Einzeln gemessene Änderungen
 

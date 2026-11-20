@@ -1,0 +1,16 @@
+{
+  "checkoutPageOpened": true,
+  "matchedVisiblePersonalImages": 2,
+  "expected": 2,
+  "dimensions": [
+    [
+      38,
+      64
+    ],
+    [
+      38,
+      64
+    ]
+  ],
+  "orderPlaced": false
+}

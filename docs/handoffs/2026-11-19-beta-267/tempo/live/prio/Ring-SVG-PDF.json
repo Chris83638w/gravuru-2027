@@ -1,0 +1,50 @@
+{
+  "checkedAt": "2026-11-20T06:03:21.118Z",
+  "renderer": "R15-Produktionsexport aus zwei eigenen festen Entwürfen; für den Zusatzvergleich nur Ziffern in /CreationDate ausgeblendet.",
+  "installedRendererHashes": {
+    "acrylic-artwork.mjs": "32db3356b435dcc4269cb2558e52673df26773ca0c9471256b11efa0bc7c3580",
+    "doorbell-artwork.mjs": "1805eb3307884c03ce8d5117b4b800fe4a51503cf4c1daf0f482c70cca3f58a6"
+  },
+  "rows": [
+    {
+      "position": 1,
+      "name": "Nord",
+      "engravingSvg": "b52755637ed13379e8a40a0fb3eb1d4c9093f75c9f8134673105551afae39d83",
+      "cutSteelSvg": "2f7fc44a99f85230e496fea0103a015b611df1586df4069eb46cbdfef2ad71e0",
+      "cutAcrylicSvg": "5b696850a2834c2f6b296f3bfb422b8edc0475f6176fb64d3763e022fa6cba9a",
+      "cutSteelPdf": "94cfccb3fa28bff4c456b2a8c261b68d2d73502c7565807a743c5f56bc13f169",
+      "cutAcrylicPdf": "07ca389143cdb8dceab8d1e9b6b0ab86578659ad75969cf6defd74258fabfb29",
+      "steelPdfContent": {
+        "sha256OutsideCreationTime": "82ef3d88c0e5b6e780baa42ba2011692ec39674018e0afae20554d1c0d6b2bd9",
+        "creationDate": "D:20261120070320+01'00"
+      },
+      "acrylicPdfContent": {
+        "sha256OutsideCreationTime": "92b401460e98eaa59be2cae43c929f7035de6d7697f3a49654a4748d6caefb50",
+        "creationDate": "D:20261120070320+01'00"
+      },
+      "widthMm": 160,
+      "heightMm": 280,
+      "textFields": 3
+    },
+    {
+      "position": 2,
+      "name": "Süd",
+      "engravingSvg": "7037bd5d30cce9a53a29a0fcbc2727d67670cdcd557cd049e957f1cd6d4a574b",
+      "cutSteelSvg": "2f7fc44a99f85230e496fea0103a015b611df1586df4069eb46cbdfef2ad71e0",
+      "cutAcrylicSvg": "5b696850a2834c2f6b296f3bfb422b8edc0475f6176fb64d3763e022fa6cba9a",
+      "cutSteelPdf": "2c25d4d08d09c95d6461526efd0c8ee817ae7894d4ad98641d6cf60602cfc5dc",
+      "cutAcrylicPdf": "728c76fc375d63a2b05626f00a57359a0ab42d171ff23c4add5e7b33ce69c339",
+      "steelPdfContent": {
+        "sha256OutsideCreationTime": "82ef3d88c0e5b6e780baa42ba2011692ec39674018e0afae20554d1c0d6b2bd9",
+        "creationDate": "D:20261120070321+01'00"
+      },
+      "acrylicPdfContent": {
+        "sha256OutsideCreationTime": "92b401460e98eaa59be2cae43c929f7035de6d7697f3a49654a4748d6caefb50",
+        "creationDate": "D:20261120070321+01'00"
+      },
+      "widthMm": 160,
+      "heightMm": 280,
+      "textFields": 3
+    }
+  ]
+}

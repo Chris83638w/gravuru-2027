@@ -37,6 +37,10 @@ const shop = 'https://gravuru-design.myshopify.com';
 const appHost = 'app-2027.gravuru-designwerkstatt.de';
 const link =
   shop + '/products/klingelschild-ring-wired-pro-3-gen-5dfya2-personalisiert';
+const prio = process.env.R15_PRIO_UI === '1';
+const protectedEntry = process.env.R15_PRIO_BETA === '1';
+const betaOrigin = 'https://konfi-beta.gravuru-designwerkstatt.de';
+assert(!protectedEntry || prio);
 const now = () => Math.round(performance.now());
 const digest = (s) => crypto.createHash('sha256').update(s).digest('hex');
 const report = {
@@ -63,7 +67,8 @@ async function waitEditor(page) {
     });
     if (
       f &&
-      (await f.getByRole('tab', { name: 'Designs', exact: true }).count())
+      (prio ? await f.locator('[data-demo-section="design"]').count() :
+        await f.getByRole('tab', { name: 'Designs', exact: true }).count())
     )
       return f;
     await page.waitForTimeout(120);
@@ -71,19 +76,31 @@ async function waitEditor(page) {
   throw Error('R15-Editor am freigegebenen Host nicht bereit');
 }
 async function gallery(page, row) {
-  const response = await page.goto(link, {
+  const response = await page.goto(protectedEntry ? betaOrigin + '/prio-pruefung.html' : link, {
     waitUntil: 'domcontentloaded',
     timeout: 45000,
   });
   assert.equal(response.status(), 200, 'Shop-Produkt');
   const click = now();
   await page
-    .getByText('Jetzt personalisieren', { exact: true })
+    .getByText(protectedEntry ? 'Ring-Klingelschild gestalten' : 'Jetzt personalisieren', { exact: true })
     .first()
     .click();
   const f = await waitEditor(page);
   row.editorMs = now() - click;
-  const tab = f.getByRole('tab', { name: 'Designs', exact: true });
+  const tab = prio ? f.locator('[data-demo-section="design"]:visible').first() : f.getByRole('tab', { name: 'Designs', exact: true });
+  if (prio) {
+    await f.parentFrame().waitForFunction(() => document.querySelector('#editor')?.inert === false && document.querySelector('#loading-screen')?.hidden);
+    await f.waitForFunction(() => document.querySelector('gravuru-configurator')?.dataset.mobileDemo === 'sheet' && window.parent.GravuruShopEntry?.presentation === 'prio-r15');
+    await tab.click({trial: true});
+    row.prio = await f.evaluate(() => {
+      const el = document.querySelector('gravuru-configurator');
+      return {presentation:window.parent.GravuruShopEntry.presentation, tabs:[...el.shadowRoot.querySelectorAll('[data-demo-section]')].filter(b=>b.getClientRects().length).map(b=>b.dataset.demoSection), width:el.state.width, height:el.state.height, product:window.parent.GravuruShopEntry.shopifyProductId};
+    });
+    assert.equal(row.prio.product,'gid://shopify/Product/16126387257724');
+    assert.equal(row.prio.width,160); assert.equal(row.prio.height,280);
+    if (row.round === 1 && row.position === 1) await page.screenshot({path:path.join(dir,row.device+'-Prio-Ring.png'),animations:'disabled'});
+  }
   if (!(await tab.isVisible())) {
     const open = f.getByRole('button', { name: /Werkzeuge öffnen/ });
     if (await open.count()) await open.first().click();
@@ -147,9 +164,10 @@ async function gallery(page, row) {
       .filter((p) => /^\/_acryl-bundle\/editor-[a-f0-9]{16}\.mjs$/.test(p))
       .map((p) => p.split('/').pop()),
   );
-  await f.getByRole('tab', { name: 'Text', exact: true }).click();
+  await (prio ? f.locator('[data-demo-section="text"]:visible').first() : f.getByRole('tab', { name: 'Text', exact: true })).click();
   const name = row.position === 1 ? 'Haus Nord 12' : 'Haus Süd 27';
-  const field = f.locator('textarea:visible').first();
+  const field = prio ? f.locator('textarea[data-ux-text="name"]:visible').first() : f.locator('textarea:visible').first();
+  if (prio && !await field.isVisible()) await f.locator('[data-ux="select-content"][data-id="name"]:visible').first().click();
   await field.fill(name);
   await field.press('Tab');
   assert.equal(await field.inputValue(), name);
@@ -263,10 +281,7 @@ async function readEvidenceImage(request, url) {
 async function cart(page, f, row, firstLine) {
   const photoPoints =
     process.env.R15_CHECK_PHOTO === '1' ? await devicePhotoReference(f) : null;
-  await f
-    .getByRole('button', { name: 'In den Warenkorb', exact: true })
-    .first()
-    .click();
+  await (prio ? f.locator('.completion-finish:visible').first() : f.getByRole('button', { name: 'In den Warenkorb', exact: true }).first()).click();
   const confirm = f
     .getByRole('button', { name: 'Jetzt in den Warenkorb', exact: true })
     .last();
@@ -298,6 +313,7 @@ async function cart(page, f, row, firstLine) {
     }));
   });
   row.cartMs = now() - begin;
+  if (prio && row.round === 1 && row.position === 2) await page.screenshot({path:path.join(dir,row.device+'-Prio-Warenkorb.png'),animations:'disabled'});
   const data = await page.evaluate(async () => {
     const r = await fetch('/cart.js', { cache: 'no-store' });
     if (!r.ok) throw Error('Shopify-Lesefehler');
@@ -449,6 +465,7 @@ async function cart(page, f, row, firstLine) {
           hasTouch: mobile,
           deviceScaleFactor: 1,
           locale: 'de-DE',
+          ...(protectedEntry ? {httpCredentials:{origin:betaOrigin,username:'astra',password:process.env.R15_BETA_PASSWORD}} : {}),
         });
         try {
           if (saveData)

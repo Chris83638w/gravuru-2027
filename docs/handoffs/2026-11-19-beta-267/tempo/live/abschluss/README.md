@@ -1,4 +1,6 @@
-# Live-Abnahme des Prio-Konfi R15 am 19. November 2026
+# Live-Abnahme des Ring-Referenzartikels am 19. November 2026
+
+Die Messungen und Bestellungen auf dieser Seite gehören zum Ring-Shopartikel. Er öffnet die native Werkzeugleiste des gemeinsamen Kerns. Die bestätigten Zeiten für die Prio-Werkzeugleiste und deren Verbindung zum Warenkorb stehen im gesonderten Edelstahl-Nachweis. [Echter Prio-Konfi im Shop](https://gravuru-design.myshopify.com/products/tuerschild-edelstahl-form-und-groesse-selbst-waehlen) · [Prio-Prüfung](../prio/README.md)
 
 Shopify nahm vor und nach der letzten Optimierung je zwei verschiedene Gestaltungen derselben Ring-Variante an. Die Testbestellungen **#1033** und **#1034** erreichten die Werkstatt über den normalen Zahlungseingang. Der Zeitvergleich vom letzten Klick bis zu den sichtbaren persönlichen Bildern ergab **6,59 s vorher und 5,57 s nachher**. [Veröffentlichter Ring-Artikel](https://gravuru-design.myshopify.com/products/klingelschild-ring-wired-pro-3-gen-5dfya2-personalisiert) · [Produktionscode](https://github.com/Chris83638w/gravuru-2027/commit/b36a8eef) · [Koordination in #267](https://github.com/Chris83638w/gravuru-2027/issues/267#issuecomment-7021750493)
 

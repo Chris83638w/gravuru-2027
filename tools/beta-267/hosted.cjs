@@ -63,6 +63,14 @@ const site = http.createServer((req,res) => {
   if (req.headers.origin && req.headers.origin !== origin || req.headers['sec-fetch-site'] === 'cross-site' && req.headers['sec-fetch-mode'] !== 'navigate') return fail(403,'Aufruf aus der Beta erforderlich.');
   let url;
   try { url = new URL(req.url,origin); } catch { return fail(400,'Ungültige Adresse.'); }
+  if (url.origin === origin && url.pathname === '/prio-pruefung.html' && ['GET','HEAD'].includes(req.method)) {
+    let page;
+    try { page = fs.readFileSync(path.join(root,'prio-pruefung.html')); }
+    catch { return fail(404,'Prüfeinstieg fehlt.'); }
+    res.writeHead(200,{'Content-Type':'text/html; charset=utf-8','Content-Length':page.length,'Vary':'Authorization',
+      'Content-Security-Policy':"default-src 'none'; style-src 'unsafe-inline'; frame-ancestors 'none'; base-uri 'none'; form-action 'none'"});
+    return res.end(req.method === 'HEAD' ? undefined : page);
+  }
   if (url.origin !== origin || !customerRoute(req.method,url.pathname)) return fail(404,'Prüfseite fehlt.');
   if (!workerPort) {res.setHeader('Retry-After','3');return fail(503,'Die Testumgebung startet.');}
   const headers = {'x-beta-gateway':gatewayKey};

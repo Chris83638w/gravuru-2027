@@ -1,0 +1,15 @@
+{
+  "number": "#1036",
+  "test": true,
+  "commercialOrder": false,
+  "productCents": 5999,
+  "shippingCents": 745,
+  "totalCents": 6744,
+  "priceRevision": 2,
+  "designRevision": "1",
+  "workshopLines": 1,
+  "verificationErrors": 0,
+  "sourceFiles": 7,
+  "packageSha256": "8c9607159a5d331d1526d6b068407499dd2d769dfbeb459985a94f703d08996e",
+  "timestamp": "2026-11-20T06:22:50.014108+00:00"
+}

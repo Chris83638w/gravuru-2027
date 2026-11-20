@@ -128,6 +128,8 @@ export async function installProductDesignGallery({el,r,config,files,say,dialog,
   if(!wanted.length)return;
   // In der Reihenfolge der Karten, in kleinen Gruppen: die oberen Designs sind zuerst fertig.
   preparing=preparing.then(async()=>{
+   // Vorab-Start auf der Produktseite: erst holen, wenn der Kunde den Konfigurator wirklich geöffnet hat.
+   try{await window.parent.GravuruShopEntry?.whenShown?.();}catch{/* Ohne Meldung der Shop-Seite sofort. */}
    for(let at=0;at<wanted.length&&version===epoch;at+=PREPARE_GROUP){
     const group=wanted.slice(at,at+PREPARE_GROUP).filter(id=>!profile().designs.some(d=>d.id===id));
     if(!group.length)continue;

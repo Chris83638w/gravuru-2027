@@ -62,7 +62,9 @@ export function installBackgroundLoading({el,r,config,win=window}){
   for(const type of ['pointerdown','focusin'])r.addEventListener(type,event=>{if(event.isTrusted&&event.target.closest?.('select[data-m-option],[data-m-option]'))queue.request('images').catch(()=>{});});
   // Start erst, wenn die Seite steht: Oberfläche fertig (installUX ruft das am Ende) und Szenenbild geladen.
   const scene=r.querySelector('.acryl-backdrop');
-  const start=()=>queue.start();
+  // Vorab-Start auf der Produktseite (shop-embed.mjs): das Nachladen beginnt erst, wenn der Kunde den Konfigurator sieht.
+  const start=()=>{let shown;try{shown=win.parent?.GravuruShopEntry?.whenShown?.();}catch{shown=null;}
+    if(shown&&typeof shown.then==='function')shown.then(()=>queue.start(),()=>queue.start());else queue.start();};
   if(scene&&!(scene.complete&&scene.naturalWidth>0)){scene.addEventListener('load',start,{once:true});scene.addEventListener('error',start,{once:true});}
   else start();
   return queue;

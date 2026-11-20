@@ -13,6 +13,10 @@ import {prepareAcrylicReview} from './acrylic-review.mjs';
 import {createAcrylicEngravingProof} from './acrylic-engraving-proof.mjs';
 import {readReviewPackage} from './review-package.mjs';
 import {NATIVE_REVIEW_SCHEMAS} from './native-review-schema.mjs';
+import os from 'node:os';import path from 'node:path';import {once} from 'node:events';
+import {createWorkshop} from './http.mjs';
+import {createPreviewServer} from '../configurator/variant-m/server.mjs';
+import {build} from '../configurator/variant-m/build.mjs';
 import {NATIVE_INPUT_EMBEDDED,NATIVE_INPUT_REFERENCE,PRODUCT_DOCUMENT_FILE,productDocumentSha,productDocumentJson,createProductShaMemo,savedProductDocument} from './review-product.mjs';
 
 const load=k=>validateFamily(JSON.parse(fs.readFileSync(new URL('./test-fixtures/acrylic-families/'+k+'.json',import.meta.url))));
@@ -96,4 +100,35 @@ test('die Prüfsumme je Produktstand wird je Ablage gemerkt und nie zwischen Abl
  assert.equal(memo(b,record('p',1,'y')),productDocumentSha({value:'y'}),'andere Ablage, gleiche Kennung: eigene Prüfsumme');
  assert.notEqual(memo(a,record('p',2,'z')),first);memo(a,record('q',1,'w'));
  reads=0;memo(a,record('p',1,'x'));assert.equal(reads,1,'über der Grenze verdrängt: wird neu gerechnet');
+});
+
+// Bis zur Fertigungsdatei über den Werkstatt-Server: ein Familienprodukt in der echten Ablage, ein Entwurf mit Verweis und einer
+// mit eingebettetem Produktstand. Kontur-Datei und Fertigungsauftrag müssen für beide gelingen; die Werkstatt holt den
+// Produktstand aus ihrer eigenen unveränderlichen Revision.
+test('Werkstatt-Server: Kontur-Datei und Fertigungsauftrag gelingen aus dem Paket mit Verweis wie aus dem bisherigen Paket',async t=>{
+ const dir=fs.mkdtempSync(path.join(os.tmpdir(),'g27-review-product-'));build({outputDirectory:dir});const seed=JSON.parse(fs.readFileSync(path.join(dir,'models.json')))[0];
+ const w=createWorkshop({filename:':memory:',seedConfig:seed.universal,legacy:seed.legacy});
+ const server=createPreviewServer({workshop:w,outputDirectory:dir});server.listen(0,'127.0.0.1');await once(server,'listening');const base='http://127.0.0.1:'+server.address().port;
+ t.after(async()=>{await new Promise(r=>server.close(r));w.close();fs.rmSync(dir,{recursive:true,force:true});});
+ const f=load('ss'),size=f.sizes.find(s=>s.key==='SS-RE-180X120'),created=w.repository.create(makeProductDocument(familyProductConfig(f,size,1)));
+ // Wie der Kundeneinstieg: das Modell der Werkstatt zu genau dieser Revision.
+ const record=w.repository.get(created.id,{revision:created.revision}),config=w.model(record.id,record.revision).universal,d=config.profile.designs[0];
+ const input=()=>({productId:record.id,productRevision:record.revision,designId:d.id,objects:structuredClone(d.objects),options:{mounting:'AH04','abstandshalter-farbe-ah04':'WS'},quantity:1,media:[],preview:pair.preview??=preview()});
+ const embedded=w.customerDrafts.acrylicDrafts.create(await prepareAcrylicReview({record,config,input:input(),assets:w.assets}));
+ const reference=w.customerDrafts.acrylicDrafts.create(await prepareAcrylicReview({record,config,input:input(),assets:w.assets,productSha256:productDocumentSha(record.document)}));
+ const size_=id=>w.customerDrafts.downloadSnapshot(id,'package').length;
+ assert.ok(size_(reference.snapshotId)<size_(embedded.snapshotId),'das Paket mit Verweis ist kleiner');
+ const {csrfToken}=await (await fetch(base+'/api/workshop/session')).json(),headers={'Content-Type':'application/json','X-Gravuru-CSRF':csrfToken};
+ const contours={};
+ for(const [name,draft] of [['embedded',embedded],['reference',reference]]){
+  const contour=await fetch(base+'/api/workshop/review-snapshots/'+draft.snapshotId+'/download',{method:'POST',headers,body:JSON.stringify({kind:'contour'})});
+  assert.equal(contour.status,200,name+': Kontur '+await contour.clone().text().then(x=>x.slice(0,200)));contours[name]=Buffer.from(await contour.arrayBuffer());
+  const queued=await fetch(base+'/api/workshop/export-jobs',{method:'POST',headers,body:JSON.stringify({snapshotId:draft.snapshotId,settings:{}})});
+  assert.equal(queued.status,202,name+': Fertigungsauftrag '+await queued.clone().text().then(x=>x.slice(0,200)));
+  const job=await queued.json();await w.exportWorker.wait(job.id);
+  const done=await (await fetch(base+'/api/workshop/export-jobs/'+job.id)).json();
+  assert.equal(done.status??done.job?.status,'completed',name+': '+JSON.stringify(done).slice(0,300));
+ }
+ // Dieselbe Gestaltung, derselbe Produktstand: Die Kontur hat dieselbe Größe (der Inhalt trägt nur andere Kennungen und Zeiten).
+ assert.ok(Math.abs(contours.reference.length-contours.embedded.length)<64,contours.reference.length+' / '+contours.embedded.length);
 });

@@ -10,7 +10,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {prepareConfig,validateDesign,customerLayoutIssue,customerBlockingIssue} from '../configurator/variant-m/contract.mjs';
 import {layoutReviewIssues} from '../configurator/variant-m/layout-review.mjs';
-import {keepCentreOnPlate,installEdgeClamp} from '../configurator/variant-m/edge-clamp.mjs';
+import {keepCentreOnPlate,installEdgeClamp,settleInside} from '../configurator/variant-m/edge-clamp.mjs';
 import {cutOffObjects,EDGE_NOTE} from '../configurator/variant-m/usability.mjs';
 import {edgeFree,pointOnPlate,isBoundaryIssue,OFF_PLATE_ISSUE} from '../platform/sources/app/shared/models/design-content.mjs';
 import {DOORBELL_SCHEMA} from '../configurator/variant-m/product-model-module.mjs';
@@ -123,4 +123,44 @@ test('Hinweis: ein neutraler Satz, sobald ein bewegliches Element über das Schi
  ];
  assert.deepEqual(cutOffObjects(objects,'front',geometry,glyphs),['text','motiv']);
  assert.deepEqual(cutOffObjects(objects,'back',geometry,glyphs),['hinten']);
+});
+
+// Chris 20.11.2026, 21:03 Uhr: „Ja“ – den Befund am Edelstahl-Türschild beheben. Die Randsperre ließ den Namen am äußersten
+// Rand stehen, die Prüfung vor dem Warenkorb meldete dort „Bitte Gestaltung prüfen“ (und der Server hätte abgelehnt).
+// Jetzt gilt nach der Randsperre dieselbe Lageprüfung als letzte Instanz.
+test('settleInside: rückt nur so weit zur Schildmitte, bis die Prüfung nicht mehr sperrt, und auf dem kürzesten Weg',()=>{
+ const geometry={width:120,height:80};
+ // Sperrt nicht: nichts passiert.
+ let o={x:60,y:40,w:10,h:5};assert.equal(settleInside(o,geometry,()=>false),false);assert.deepEqual([o.x,o.y],[60,40]);
+ // Sperrt rechts von 100: nur waagerecht, bis genau an die Grenze.
+ o={x:110,y:70,w:10,h:5};assert.equal(settleInside(o,geometry,c=>c.x>100),true);assert.ok(o.x<=100&&o.x>99.999,String(o.x));assert.equal(o.y,70);
+ // Sperrt unterhalb von 60: nur senkrecht.
+ o={x:110,y:70,w:10,h:5};assert.equal(settleInside(o,geometry,c=>c.y>60),true);assert.equal(o.x,110);assert.ok(o.y<=60&&o.y>59.999,String(o.y));
+ // Braucht beide Richtungen.
+ o={x:110,y:70,w:10,h:5};assert.equal(settleInside(o,geometry,c=>c.x>100||c.y>60),true);assert.ok(o.x<=100&&o.y<=60);assert.ok(o.x>99.99&&o.y>59.99,'nicht weiter als nötig: '+JSON.stringify(o));
+ // Passt nirgends: bleibt, wo es ist (die Prüfung vor dem Warenkorb meldet es dann wie bisher).
+ o={x:110,y:70,w:500,h:5};assert.equal(settleInside(o,geometry,()=>true),false);assert.deepEqual([o.x,o.y],[110,70]);
+ // Gesperrte, verborgene und Hilfselemente werden nie bewegt.
+ for(const fixed of [{locked:true},{uxLocked:true},{uxHidden:true},{role:'guide'},{uxDecoration:true,customerEditable:false}]){o={x:110,y:70,w:10,h:5,...fixed};assert.equal(settleInside(o,geometry,c=>c.x>100),false);assert.equal(o.x,110);}
+});
+
+test('Edelstahl: Was die Randsperre am Rand stehen lässt, nehmen auch die Prüfung vor dem Warenkorb und der Server an',()=>{
+ const profile=steel.profile,resources={motifs:steel.localResources.motifs||[],fonts:steel.localResources.fonts},d=design(steel),text=d.objects.find(o=>o.type==='text');
+ const blocked=o=>isBoundaryIssue(customerLayoutIssue(o,profile,resources));
+ assert.equal(blocked(text),false,'Vorlage liegt auf dem Schild');
+ // Die Grenze der strengen Prüfung nach rechts suchen und den Namen 0,3 mm darüber hinaus setzen – so stand er nach dem Ziehen,
+ // weil die Sperre an den gezeichneten Buchstaben misst.
+ let low=text.x,high=W+text.w;for(let i=0;i<40;i++){const mid=(low+high)/2;if(blocked({...text,x:mid}))high=mid;else low=mid;}
+ const limit=low,y=text.y;text.x=limit+0.3;
+ assert.equal(blocked(text),true);assert.equal(layoutReviewIssues({config:steel,profile,objects:d.objects,design:d,resources}).length,1,'vorher: Dialog vor dem Warenkorb');
+ assert.throws(()=>check(steel,d),/Gestaltungsfläche|ragt/,'vorher: der Server lehnt ab');
+ // Wie beim Zeichnen: die Randsperre mit Buchstaben, die 0,3 mm schmaler gemessen sind als die Umrisse der Schrift.
+ const el={state:{width:W,height:H,designId:d.id,objects:d.objects},fontData:resources.fonts,uxSelectedProfile:()=>profile,uxProfileGeometry:()=>profile.geometry,
+  uxTextBounds:o=>({x:-o.w/2,y:-o.h/2,width:o.w-0.6,height:o.h}),render(){return 'ok';}};
+ installEdgeClamp(el,{profile,motifs:resources.motifs});el.render();
+ assert.ok(Math.abs(text.x-limit)<0.001,'steht an der Grenze der Prüfung: '+text.x+' statt '+limit);assert.equal(text.y,y,'nur waagerecht bewegt');
+ assert.equal(layoutReviewIssues({config:steel,profile,objects:d.objects,design:d,resources}).length,0,'kein Dialog mehr');
+ assert.doesNotThrow(()=>check(steel,d),'der Server nimmt die Gestaltung an');
+ // Ein zweites Zeichnen bewegt nichts mehr.
+ const settled=text.x;el.render();assert.equal(text.x,settled);
 });

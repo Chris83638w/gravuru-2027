@@ -10,7 +10,7 @@ import {transformedCorners,fitsSurface} from './usability-model.mjs';
 import {embeddedMotifFits} from '../../platform/sources/app/shared/models/embedded-motif-fit.mjs';
 import {objectSurface} from './surfaces.mjs';
 import {textOutlineFits} from '../../platform/sources/app/shared/models/text-outline-fit.mjs';
-import {edgeFree,pointOnPlate} from '../../platform/sources/app/shared/models/design-content.mjs';
+import {edgeFree,pointOnPlate,surfaceObjectIssue,isBoundaryIssue} from '../../platform/sources/app/shared/models/design-content.mjs';
 
 export function boundingSize(o){
   const a=(Number(o.rotation)||0)*Math.PI/180,w=Math.max(0,Number(o.w)||0),h=Math.max(0,Number(o.h)||0);
@@ -87,6 +87,39 @@ export function keepCentreOnPlate(o,geometry){
  const position=at(low);o.x=position.x;o.y=position.y;return true;
 }
 
+// Chris 20.11.2026 („Ja“ zum Befund am Edelstahl-Türschild): Die Randsperre misst Text an den gezeichneten Buchstaben
+// (uxTextBounds), die Prüfung vor dem Warenkorb und der Server messen an den Umrissen der Schrift (customerLayoutIssue in
+// contract.mjs: surfaceObjectIssue ohne Bohrlöcher). Am äußersten Rand wichen beide um Bruchteile eines Millimeters ab:
+// Die Sperre ließ den Namen dort stehen, die Prüfung meldete „Bitte Gestaltung prüfen“. Nach der Randsperre gilt deshalb
+// dieselbe Prüfung als letzte Instanz: Sperrt sie noch, rückt das Element auf dem kürzesten Weg (erst nur waagerecht oder nur
+// senkrecht, sonst beides) so weit zur Schildmitte, bis sie nicht mehr sperrt. Passt es nirgends, bleibt es, wo es ist –
+// dann meldet es die Prüfung vor dem Warenkorb wie bisher.
+export function settleInside(o,geometry,blocked){
+ if(!o||o.uxHidden||o.locked||o.uxLocked||o.role==='guide'||o.uxDecoration&&o.customerEditable===false)return false;
+ if(!(geometry?.width>0&&geometry?.height>0)||!Number.isFinite(o.x)||!Number.isFinite(o.y)||!blocked(o))return false;
+ const start={x:o.x,y:o.y},centre={x:geometry.width/2,y:geometry.height/2};
+ const along=(moveX,moveY)=>{
+  const at=t=>({x:start.x+(moveX?(centre.x-start.x)*t:0),y:start.y+(moveY?(centre.y-start.y)*t:0)});
+  if(blocked({...o,...at(1)}))return null;
+  let low=0,high=1;
+  for(let i=0;i<24;i++){const mid=(low+high)/2;if(blocked({...o,...at(mid)}))low=mid;else high=mid;}
+  return at(high);
+ };
+ const distance=p=>Math.hypot(p.x-start.x,p.y-start.y);
+ let position=[along(true,false),along(false,true)].filter(Boolean).sort((a,b)=>distance(a)-distance(b))[0];
+ if(!position){
+  position=along(true,true);if(!position)return false;
+  // Beide Richtungen nötig: jede für sich wieder so weit zurück zum Ausgangspunkt, wie die Prüfung es zulässt.
+  for(const axis of ['x','y']){
+   const at=t=>({...position,[axis]:position[axis]+(start[axis]-position[axis])*t});
+   let low=0,high=1;
+   for(let i=0;i<24;i++){const mid=(low+high)/2;if(blocked({...o,...at(mid)}))high=mid;else low=mid;}
+   position=at(low);
+  }
+ }
+ o.x=position.x;o.y=position.y;return true;
+}
+
 export function installEdgeClamp(el,{profile=null,motifs=[]}={}){
   const surfacePositions=new Map(),starts=new Map();
   let choosingTemplate=null;
@@ -120,6 +153,12 @@ export function installEdgeClamp(el,{profile=null,motifs=[]}={}){
     return embeddedMotifFits(o,{...geometry,safeMarginMm:geometry?.safeMarginMm??0,holes:[]},original.resource)===true;
   };
   const glyphs=o=>{if(o.type!=='text'||o.uxHidden||!String(o.text??'').trim()||!el.uxTextBounds)return null;try{return el.uxTextBounds(o);}catch{return null;}};
+  // Letzte Instanz nach der Randsperre: dieselbe Lageprüfung wie vor dem Warenkorb und am Server (settleInside oben).
+  const settle=(self,o,chosen,geometry)=>{
+    const strict=chosen||profile;if(!strict?.geometry)return false;
+    const resources={motifs,fonts:self.fontData},checked={...strict,geometry:{...strict.geometry,holes:[]}};
+    return settleInside(o,geometry,candidate=>isBoundaryIssue(surfaceObjectIssue(candidate,checked,resources)));
+  };
   const clampAll=self=>{const s=self.state;if(!s?.objects)return;
     const doorbell=self.uxSelectedProfile?.();
     if(doorbell?.doorbellSchema==='gravuru-doorbell/v1'){
@@ -141,9 +180,9 @@ export function installEdgeClamp(el,{profile=null,motifs=[]}={}){
       if(cache?.geometryKey!==key){cache={geometryKey:key,positions:new Map()};surfacePositions.set(active,cache);}
       const objects=s.objects.filter(o=>objectSurface(o)===active),validPositions=cache.positions;
       const ids=new Set(objects.map(o=>o.id));for(const id of validPositions.keys())if(!ids.has(id))validPositions.delete(id);
-      for(const o of objects){if(unchangedStart(o,s,geometry))continue;const bounds=glyphs(o);clampToContour(o,geometry,bounds,validPositions.get(o.id),self.fontData);
+      for(const o of objects){if(unchangedStart(o,s,geometry))continue;const bounds=glyphs(o);clampToContour(o,geometry,bounds,validPositions.get(o.id),self.fontData);settle(self,o,doorbell,geometry);
         if(fitsSurface(o,bounds||{x:-o.w/2,y:-o.h/2,width:o.w,height:o.h},geometry)||textOutlineFits(o,geometry,self.fontData)===true)validPositions.set(o.id,{x:o.x,y:o.y});}
-    }else for(const o of s.objects)if(!unchangedStart(o,s,geometry))clampToPlate(o,s.width,s.height,0,glyphs(o));
+    }else for(const o of s.objects)if(!unchangedStart(o,s,geometry)){clampToPlate(o,s.width,s.height,0,glyphs(o));settle(self,o,doorbell,geometry||{width:s.width,height:s.height});}
   };
   const render=el.render;
   el.render=function(...args){clampAll(this);return render.apply(this,args);};

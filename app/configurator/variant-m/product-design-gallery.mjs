@@ -11,6 +11,7 @@ import {installNativeDesignSearch} from './native-design-search.mjs';
 import {planDesignAdoption} from './design-adoption.mjs';
 
 const money=cents=>new Intl.NumberFormat('de-DE',{style:'currency',currency:'EUR'}).format(cents/100);
+const TRANSFER_NOTE='Deine Texte und Fotos wurden übernommen. Bitte die neue Anordnung prüfen.';
 export const productChoiceInfo=item=>`${item.widthMm/10} × ${item.heightMm/10} cm · ${money(item.unitCents)}`;
 
 export async function installProductDesignGallery({el,r,config,files,say,dialog,esc}){
@@ -40,7 +41,7 @@ export async function installProductDesignGallery({el,r,config,files,say,dialog,
   // Nicht zuordenbare Texte und frei mitgenommene Fotos: freie Fläche statt über dem ersten Feld (Chris 13.11.2026).
   for(const key of result.added){const o=el.state.objects.find(o=>o.id===key);if(o)el.uxPlaceObject?.(o);}
   el.normalize();el.sync();
-  const note=section.querySelector('.ux-product-result');note.hidden=false;note.textContent='Deine Texte und Fotos wurden übernommen. Bitte die neue Anordnung prüfen.';say(note.textContent);
+  const note=section.querySelector('.ux-product-result');note.hidden=false;note.textContent=TRANSFER_NOTE;say(note.textContent);
   r.querySelector('#ux-tab-design')?.click();el.uxMobileSteps?.show('design',{scroll:false});
  }catch(error){window.parent.postMessage({type:'gravuru-design-transfer-failed',message:error.message},location.origin);throw error;}}
  const gallery=section;
@@ -90,7 +91,11 @@ export async function installProductDesignGallery({el,r,config,files,say,dialog,
   const template=known();
   if(template){
    if(item.designId===el.state.designId)return;
-   try{await el.uxEnsureDesignResources?.(template);el.chooseDesign(item.designId);}
+   try{
+    await el.uxEnsureDesignResources?.(template);el.chooseDesign(item.designId);
+    // Derselbe Hinweis wie nach dem bisherigen Wechsel über den Server.
+    if(el.state.designId===item.designId){const note=section.querySelector('.ux-product-result');note.hidden=false;note.textContent=TRANSFER_NOTE;say(TRANSFER_NOTE);}
+   }
    catch(error){status.textContent=error.message;say(error.message);}
    return;
   }

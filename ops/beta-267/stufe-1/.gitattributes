@@ -1,3 +1,5 @@
 *.cjs text eol=lf
 *.js text eol=lf
 *.py text eol=lf
+# The installed Plesk router retains the byte sequence of its verified predecessor.
+beta/hosted-stufe1.cjs -text !eol whitespace=cr-at-eol

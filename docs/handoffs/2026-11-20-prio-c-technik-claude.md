@@ -590,8 +590,29 @@ Code `e3fa6af8`. Entscheidung: ENTSCHEIDUNGEN 3.46 (Chris: „Ja“).
 
 **Nicht geprüft.** Der Warenkorb mit dem Namen am Rand am echten Server (erst nach dem Aufspielen sinnvoll), echte Geräte.
 
+## Warenkorb wie Zakeke und Fancy (20.11.2026, 21:36 Uhr) – Entscheidung und Plan, noch nichts gebaut
+
+Entscheidung: ENTSCHEIDUNGEN 3.47. Zweig `dev/claude-paket-20261120` auf `9bfc281b`.
+
+**Was die beiden tun** (nachgelesen am 20.11.): Zakeke erzeugt die Druckdateien erst, wenn die Bestellung bei Zakeke angemeldet ist (docs-develop.zakeke.com, „Order Registration“). Bei Fancy Product Designer exportiert der Händler die Druckdatei im Bereich „Orders“ der App (support.fancyproductdesigner.com, „Create production materials for a customized order“). Was sie beim Klick genau speichern, steht dort nicht.
+
+**Was wir heute tun** (im Code gelesen): `prepareAcrylicReview` baut beim Klick das ganze Prüfpaket. `produkt-und-gestaltung.json` enthält `record.document` (den ganzen Produktstand), `konfigurator-quellen.json` enthält die Konfiguration noch einmal mit allen Designs (`reviewSources` filtert nur Schriften und Motive auf das gewählte Design). Entwurfsstände sind unveränderlich und nicht löschbar (`acrylic-draft-store.mjs`, Trigger „require explicit retention“).
+
+**Wer das Paket liest.** Vor der Bestellung: `theme-cart.mjs` (nur `state.design`). Nach der Bestellung: `acrylic-artwork.mjs` (prüft die Gestaltung mit `validateProductDesign` gegen `saved.product` und erzeugt die Fertigungsdatei), `production-summary.mjs`. Die Formular-Pakete (`form-*.mjs`, `order-product-draft.mjs`) sind eine andere Paketart und nicht betroffen.
+
+**Plan in Stufen, jede für sich aufspielbar.**
+1. Schlankes Paket für neue Entwürfe: statt `product` ein Verweis (Produkt, Revision, Prüfsumme des Dokuments). Wer den Produktstand braucht, holt ihn aus der unveränderlichen Revision und prüft die Prüfsumme. Alte Pakete bleiben lesbar.
+2. `konfigurator-quellen.json` nur für das gewählte Design und die gewählte Ausführung.
+3. Mit der Bestellung entsteht das vollständige, eigenständige Fertigungspaket im heutigen Aufbau. Die Werkstatt liest dann weiter, was sie heute liest, und die Fertigung hängt nicht daran, dass der Produktstand später noch da ist.
+
+**Maßstab für jede Stufe:** Die Fertigungsdatei (`acrylicArtwork`) aus altem und neuem Paket ist für dieselbe Gestaltung Byte für Byte gleich; Preis, Warenkorbzeile und Bestellbindung sind gleich.
+
+**Vor dem Bauen zu klären (Stufe 0, nur lesen):** wo die Paket-Prüfsumme an Warenkorbzeile und Bestellung gebunden ist; ob sich Produktrevisionen löschen lassen; ob „Bearbeiten aus dem Warenkorb“ mehr als `state` liest; wie groß ein Paket am echten Server ist (Bitte an Astra in #267).
+
+**Risiko.** Das Paket ist Fertigungsunterlage; ein Fehler träfe echte Aufträge. Deshalb Stufen, Gegenproben und nach jedem Aufspielen ein Testlauf bis zur Fertigungsdatei.
+
 ### Offene Fragen an Chris
 
-1. Warenkorb: Soll der Entwurf schon beim Öffnen des Überblicks gesichert werden (Abschnitt „Warenkorb, Schritt 1“, „Was bleibt“)? Empfehlung: Ja.
+Keine. „Vorbereiten statt speichern“ ist zurückgestellt (ENTSCHEIDUNGEN 3.47).
 
 Der [Design-Master](https://github.com/Chris83638w/gravuru-katalog./blob/main/designs/DESIGN-MASTER.md) gilt unverändert; an Designs wurde nichts geändert.

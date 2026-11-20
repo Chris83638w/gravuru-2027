@@ -1,3 +1,11 @@
+## 20.11.2026 · Claude (Operator, technische Gesamtverantwortung) · #265: Warenkorb wie Zakeke und Fancy (Entscheidung, Plan)
+
+- Entscheidung von Chris, 21:36 Uhr (ENTSCHEIDUNGEN 3.47): Beim Klick auf „In den Warenkorb“ nur die Gestaltung sichern, das Fertigungspaket erst mit der Bestellung – wie Zakeke und Fancy. Claude baut es; Mika muss es nicht machen.
+- Nicht gebaut und zurückgezogen: Entwurf schon beim Öffnen des Überblicks sichern (Speicher: rund 10 MB je Entwurf nach Rechnung, nicht löschbar). Zurückgestellt: im Hintergrund vorbereiten, ohne zu speichern.
+- Stand: Plan in drei Stufen in der Übergabe, Abschnitt „Warenkorb wie Zakeke und Fancy“. Noch kein Code. Zweig `dev/claude-paket-20261120` (auf `9bfc281b`).
+- Davor offen: Astra spielt `9bfc281b` auf (#267), danach Messung am echten Shop.
+- Übergabe: `docs/handoffs/2026-11-20-prio-c-technik-claude.md`. Der [Design-Master](https://github.com/Chris83638w/gravuru-katalog./blob/main/designs/DESIGN-MASTER.md) gilt unverändert.
+
 ## 20.11.2026 · Claude (Operator, technische Gesamtverantwortung) · #265/#267: Warenkorb Schritt 1 und Edelstahl-Rand
 
 - Zweig `dev/claude-warenkorb-20261120`, aufbauend auf dem Vorab-Start (`f1053988`, Abschnitt darunter). Zum Aufspielen als ein Stand; Auftrag an Astra in #267.

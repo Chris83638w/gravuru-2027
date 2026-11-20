@@ -1,0 +1,286 @@
+{
+ "modus": "live",
+ "profil": "pc",
+ "drossel": false,
+ "zeit": "2026-11-20T09:11:35.077Z",
+ "ersatz": {},
+ "schritte": [
+  {
+   "titel": "Zweites Design wählen",
+   "ms": 2086,
+   "ziel": "Design Zwei Zeilen, versetzt",
+   "designId": "katalog-TAE-V2A-8x5-D2",
+   "texte": [
+    {
+     "text": "Koch",
+     "font": "Michroma",
+     "x": 70.9,
+     "y": 47.9,
+     "size": 10.59
+    },
+    {
+     "text": "Familie",
+     "font": "Michroma",
+     "x": 31.6,
+     "y": 31.8,
+     "size": 10.59
+    }
+   ],
+   "designsImGeraet": 1,
+   "groesse": "GR-ES-AB-120X80-T15",
+   "gedrueckt": [
+    "Design Zwei Zeilen, versetzt"
+   ],
+   "zurueckSichtbar": true,
+   "status": "21 verfügbare Designs",
+   "serverWechsel": 1,
+   "modellAbrufe": 1,
+   "neueEditoren": 1
+  },
+  {
+   "titel": "Drittes Design wählen",
+   "ms": 1811,
+   "ziel": "Design Zwei Zeilen mit Trennlinie",
+   "designId": "katalog-TAE-V2A-8x5-D3",
+   "texte": [
+    {
+     "text": "Koch",
+     "font": "Michroma",
+     "x": 60,
+     "y": 51.2,
+     "size": 16.25
+    },
+    {
+     "text": "Familie",
+     "font": "Michroma",
+     "x": 60,
+     "y": 28,
+     "size": 12.18
+    }
+   ],
+   "designsImGeraet": 1,
+   "groesse": "GR-ES-AB-120X80-T15",
+   "gedrueckt": [
+    "Design Zwei Zeilen mit Trennlinie"
+   ],
+   "zurueckSichtbar": true,
+   "status": "21 verfügbare Designs",
+   "serverWechsel": 1,
+   "modellAbrufe": 1,
+   "neueEditoren": 1
+  },
+  {
+   "titel": "Zurück zum ersten Design",
+   "ms": 1941,
+   "ziel": "Design Zwei Zeilen, mittig",
+   "designId": "katalog-TAE-V2A-8x5-D1",
+   "texte": [
+    {
+     "text": "Koch",
+     "font": "Michroma",
+     "x": 60,
+     "y": 49,
+     "size": 13.23
+    },
+    {
+     "text": "Familie",
+     "font": "Michroma",
+     "x": 60,
+     "y": 29,
+     "size": 13.23
+    }
+   ],
+   "designsImGeraet": 1,
+   "groesse": "GR-ES-AB-120X80-T15",
+   "gedrueckt": [
+    "Design Zwei Zeilen, mittig"
+   ],
+   "zurueckSichtbar": true,
+   "status": "21 verfügbare Designs",
+   "serverWechsel": 1,
+   "modellAbrufe": 1,
+   "neueEditoren": 1
+  },
+  {
+   "titel": "Noch einmal das zweite Design",
+   "ms": 1875,
+   "ziel": "Design Zwei Zeilen, versetzt",
+   "designId": "katalog-TAE-V2A-8x5-D2",
+   "texte": [
+    {
+     "text": "Koch",
+     "font": "Michroma",
+     "x": 70.9,
+     "y": 47.9,
+     "size": 10.59
+    },
+    {
+     "text": "Familie",
+     "font": "Michroma",
+     "x": 31.6,
+     "y": 31.8,
+     "size": 10.59
+    }
+   ],
+   "designsImGeraet": 1,
+   "groesse": "GR-ES-AB-120X80-T15",
+   "gedrueckt": [
+    "Design Zwei Zeilen, versetzt"
+   ],
+   "zurueckSichtbar": true,
+   "status": "21 verfügbare Designs",
+   "serverWechsel": 1,
+   "modellAbrufe": 1,
+   "neueEditoren": 1
+  },
+  {
+   "titel": "Größe wechseln",
+   "ms": 81,
+   "ziel": "GR-ES-RE-90X60-T15",
+   "designId": "katalog-TRE-V2A-8x5-D2",
+   "texte": [
+    {
+     "text": "Koch",
+     "font": "Michroma",
+     "x": 53,
+     "y": 35.7,
+     "size": 7.54
+    },
+    {
+     "text": "Familie",
+     "font": "Michroma",
+     "x": 24.5,
+     "y": 24.1,
+     "size": 7.54
+    }
+   ],
+   "designsImGeraet": 1,
+   "groesse": "GR-ES-RE-90X60-T15",
+   "gedrueckt": [],
+   "zurueckSichtbar": true,
+   "status": "Designs werden geladen …",
+   "serverWechsel": 0,
+   "modellAbrufe": 0,
+   "neueEditoren": 0
+  },
+  {
+   "titel": "Größe zurück",
+   "ms": 82,
+   "ziel": "GR-ES-AB-120X80-T15",
+   "designId": "katalog-TAE-V2A-8x5-D2",
+   "texte": [
+    {
+     "text": "Koch",
+     "font": "Michroma",
+     "x": 70.9,
+     "y": 47.9,
+     "size": 10.59
+    },
+    {
+     "text": "Familie",
+     "font": "Michroma",
+     "x": 31.6,
+     "y": 31.8,
+     "size": 10.59
+    }
+   ],
+   "designsImGeraet": 1,
+   "groesse": "GR-ES-AB-120X80-T15",
+   "gedrueckt": [],
+   "zurueckSichtbar": true,
+   "status": "Designs werden geladen …",
+   "serverWechsel": 0,
+   "modellAbrufe": 0,
+   "neueEditoren": 0
+  },
+  {
+   "titel": "Drittes Design (vor dem Zurückgehen)",
+   "ms": 2094,
+   "ziel": "Design Zwei Zeilen mit Trennlinie",
+   "designId": "katalog-TAE-V2A-8x5-D3",
+   "texte": [
+    {
+     "text": "Koch",
+     "font": "Michroma",
+     "x": 60,
+     "y": 51.2,
+     "size": 16.25
+    },
+    {
+     "text": "Familie",
+     "font": "Michroma",
+     "x": 60,
+     "y": 28,
+     "size": 12.18
+    }
+   ],
+   "designsImGeraet": 1,
+   "groesse": "GR-ES-AB-120X80-T15",
+   "gedrueckt": [
+    "Design Zwei Zeilen mit Trennlinie"
+   ],
+   "zurueckSichtbar": true,
+   "status": "21 verfügbare Designs",
+   "serverWechsel": 1,
+   "modellAbrufe": 1,
+   "neueEditoren": 1
+  }
+ ],
+ "fehler": [
+  "Konsole: Error fetching Web accessibility settings: Error: Failed to fetch Web accessibility settings: \n    at https://cdn.shopify.com/extensions/01a1f3eb-4a75-73d7-b24d",
+  "Konsole: Framing 'https://shop.app/' violates the following Content Security Policy directive: \"frame-ancestors 'self' https://shop.app https://admin.shopify.com\". The r"
+ ],
+ "editorBereit": true,
+ "oeffnenMs": 3372,
+ "start": {
+  "designId": "katalog-TAE-V2A-8x5-D1",
+  "texte": [
+   {
+    "text": "Rosenberg",
+    "font": "Michroma",
+    "x": 60,
+    "y": 49,
+    "size": 13.23
+   },
+   {
+    "text": "Familie",
+    "font": "Michroma",
+    "x": 60,
+    "y": 29,
+    "size": 13.23
+   }
+  ],
+  "objekte": 2,
+  "designsImGeraet": [
+   "katalog-TAE-V2A-8x5-D1"
+  ],
+  "groesse": "GR-ES-AB-120X80-T15",
+  "gedrueckt": [
+   "Design Zwei Zeilen, mittig"
+  ],
+  "karten": 21,
+  "zurueckSichtbar": false,
+  "status": "21 verfügbare Designs"
+ },
+ "textGesetzt": {
+  "feld": "name-2",
+  "vorher": [
+   "Rosenberg",
+   "Koch"
+  ]
+ },
+ "groessenwechsel": {
+  "jetzt": "GR-ES-AB-120X80-T15",
+  "ziel": "GR-ES-RE-90X60-T15",
+  "kannWechseln": true
+ },
+ "abbruch": "frame.evaluate: Frame was detached",
+ "pakete": [
+  "editor-03848a8822ea9589",
+  "editor-8a0b6bac286faad0",
+  "editor-6ee9bdee5f9ebc6b"
+ ],
+ "serverWechselGesamt": 5,
+ "modellAbrufeGesamt": 6,
+ "editorenAmEnde": 5
+}

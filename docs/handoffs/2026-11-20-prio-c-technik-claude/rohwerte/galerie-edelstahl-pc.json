@@ -1,0 +1,113 @@
+{
+ "ziel": "edelstahl",
+ "profil": "pc",
+ "zeit": "2026-11-20T08:54:52.480Z",
+ "modell": [
+  {
+   "bytes": 321919,
+   "status": 200,
+   "produkt": {
+    "id": "cfg_ac514214-a313-4738-8008-00445ee1befd",
+    "revision": 4,
+    "publishedRevision": null
+   },
+   "defaultDesignId": "katalog-TAE-V2A-8x5-D1",
+   "designsImModell": 1,
+   "designIds": [
+    "katalog-TAE-V2A-8x5-D1"
+   ],
+   "bindung": {
+    "productId": "cfg_ac514214-a313-4738-8008-00445ee1befd",
+    "productRevision": 4,
+    "variante": "58104606556540"
+   },
+   "schluessel": [
+    "model",
+    "startPreview",
+    "binding",
+    "editorPath",
+    "shopDomain",
+    "themeCartPath",
+    "expiresAt",
+    "customerId",
+    "productionReady",
+    "savedCartImage"
+   ]
+  }
+ ],
+ "galerie": [
+  {
+   "bytes": 27079,
+   "status": 200,
+   "anfrage": "",
+   "karten": 21,
+   "total": 21,
+   "current": 21,
+   "produkte": [
+    "cfg_ac514214-a313-4738-8008-00445ee1befd@4"
+   ],
+   "varianten": [
+    "58104606556540"
+   ],
+   "beispiel": [
+    {
+     "designId": "katalog-TAE-V2A-8x5-D1",
+     "name": "Zwei Zeilen, mittig",
+     "current": true,
+     "productId": "cfg_ac514214-a313-4738-8008-00445ee1befd",
+     "rev": 4,
+     "masse": "120x80"
+    },
+    {
+     "designId": "katalog-TAE-V2A-8x5-D2",
+     "name": "Zwei Zeilen, versetzt",
+     "current": true,
+     "productId": "cfg_ac514214-a313-4738-8008-00445ee1befd",
+     "rev": 4,
+     "masse": "120x80"
+    },
+    {
+     "designId": "katalog-TAE-V2A-8x5-D3",
+     "name": "Zwei Zeilen mit Trennlinie",
+     "current": true,
+     "productId": "cfg_ac514214-a313-4738-8008-00445ee1befd",
+     "rev": 4,
+     "masse": "120x80"
+    }
+   ],
+   "alleDesignIds": [
+    "katalog-TAE-V2A-8x5-D1",
+    "katalog-TAE-V2A-8x5-D2",
+    "katalog-TAE-V2A-8x5-D3",
+    "katalog-TAE-V2A-8x5-D4",
+    "katalog-TAE-V2A-8x5-D5",
+    "katalog-TAE-V2A-8x5-D55",
+    "katalog-TAE-V2A-8x5-D56",
+    "katalog-TAE-V2A-8x5-D57",
+    "katalog-TAE-V2A-8x5-D68",
+    "katalog-TAE-V2A-8x5-D69",
+    "katalog-TAE-V2A-8x5-D70",
+    "katalog-TAE-V2A-8x5-D71",
+    "katalog-TAE-V2A-8x5-D161",
+    "katalog-TAE-V2A-8x5-D801",
+    "katalog-TAE-V2A-8x5-D803",
+    "katalog-TAE-V2A-8x5-D807",
+    "katalog-TAE-V2A-8x5-D811",
+    "katalog-TAE-V2A-8x5-D815",
+    "katalog-TAE-V2A-8x5-D819",
+    "katalog-TAE-V2A-8x5-D952",
+    "katalog-TAE-V2A-8x5-D956"
+   ]
+  }
+ ],
+ "wechsel": [],
+ "editorBereit": true,
+ "oeffnenMs": 3239,
+ "designsGeklickt": true,
+ "karten": {
+  "lokaleKarten": 1,
+  "galerieKarten": 21,
+  "galerieKartenImGeraet": 21,
+  "aktuellesDesign": "katalog-TAE-V2A-8x5-D1"
+ }
+}

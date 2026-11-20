@@ -1,0 +1,1217 @@
+{
+ "zeit": "2026-11-20T08:58:03.409Z",
+ "zweite": "katalog-TAE-V2A-8x5-D2",
+ "status": 200,
+ "bytesErste": 321074,
+ "bytesZweite": 321244,
+ "abrufMs": 505,
+ "kopfzeilen": [
+  "x-gravuru-shop-session"
+ ],
+ "unterschiede": [
+  {
+   "pfad": ".model.legacy.designs",
+   "art": "Liste nach Kennung",
+   "nurErste": [
+    "katalog-TAE-V2A-8x5-D1"
+   ],
+   "nurZweite": [
+    "katalog-TAE-V2A-8x5-D2"
+   ],
+   "laengen": [
+    1,
+    1
+   ]
+  },
+  {
+   "pfad": ".model.legacy.defaultDesignId",
+   "art": "Wert",
+   "erste": "\"katalog-TAE-V2A-8x5-D1\"",
+   "zweite": "\"katalog-TAE-V2A-8x5-D2\""
+  },
+  {
+   "pfad": ".model.universal.profile.designs",
+   "art": "Liste nach Kennung",
+   "nurErste": [
+    "katalog-TAE-V2A-8x5-D1"
+   ],
+   "nurZweite": [
+    "katalog-TAE-V2A-8x5-D2"
+   ],
+   "laengen": [
+    1,
+    1
+   ]
+  },
+  {
+   "pfad": ".model.universal.profile.defaultDesignId",
+   "art": "Wert",
+   "erste": "\"katalog-TAE-V2A-8x5-D1\"",
+   "zweite": "\"katalog-TAE-V2A-8x5-D2\""
+  },
+  {
+   "pfad": ".model.universal.familyFormats.source.shopProduct.defaultDesignId",
+   "art": "Wert",
+   "erste": "\"TAE-V2A-8x5-D1\"",
+   "zweite": "\"TAE-V2A-8x5-D2\""
+  },
+  {
+   "pfad": ".model.universal.familyFormats.formats[GR-ES-RE-80X20-T15].variants",
+   "art": "Liste",
+   "laengen": [
+    1,
+    1
+   ],
+   "bytes": [
+    1133,
+    1133
+   ]
+  },
+  {
+   "pfad": ".model.universal.familyFormats.formats[GR-ES-RE-70X23P3-T15].variants",
+   "art": "Liste",
+   "laengen": [
+    1,
+    1
+   ],
+   "bytes": [
+    1147,
+    1147
+   ]
+  },
+  {
+   "pfad": ".model.universal.familyFormats.formats[GR-ES-RE-60X20-T15].variants",
+   "art": "Liste",
+   "laengen": [
+    1,
+    1
+   ],
+   "bytes": [
+    1133,
+    1133
+   ]
+  },
+  {
+   "pfad": ".model.universal.familyFormats.formats[GR-ES-RE-90X30-T15].variants",
+   "art": "Liste",
+   "laengen": [
+    1,
+    1
+   ],
+   "bytes": [
+    1133,
+    1133
+   ]
+  },
+  {
+   "pfad": ".model.universal.familyFormats.formats[GR-ES-RE-120X40-T15].variants",
+   "art": "Liste",
+   "laengen": [
+    1,
+    1
+   ],
+   "bytes": [
+    1137,
+    1137
+   ]
+  },
+  {
+   "pfad": ".model.universal.familyFormats.formats[GR-ES-EL-120X40-T15].variants",
+   "art": "Liste",
+   "laengen": [
+    1,
+    1
+   ],
+   "bytes": [
+    1137,
+    1137
+   ]
+  },
+  {
+   "pfad": ".model.universal.familyFormats.formats[GR-ES-RE-150X50-T15].variants",
+   "art": "Liste",
+   "laengen": [
+    1,
+    1
+   ],
+   "bytes": [
+    1137,
+    1137
+   ]
+  },
+  {
+   "pfad": ".model.universal.familyFormats.formats[GR-ES-EL-150X50-T15].variants",
+   "art": "Liste",
+   "laengen": [
+    1,
+    1
+   ],
+   "bytes": [
+    1137,
+    1137
+   ]
+  },
+  {
+   "pfad": ".model.universal.familyFormats.formats[GR-ES-RE-180X60-T15].variants",
+   "art": "Liste",
+   "laengen": [
+    1,
+    1
+   ],
+   "bytes": [
+    1137,
+    1137
+   ]
+  },
+  {
+   "pfad": ".model.universal.familyFormats.formats[GR-ES-EL-180X60-T15].variants",
+   "art": "Liste",
+   "laengen": [
+    1,
+    1
+   ],
+   "bytes": [
+    1137,
+    1137
+   ]
+  },
+  {
+   "pfad": ".model.universal.familyFormats.formats[GR-ES-RE-210X70-T15].variants",
+   "art": "Liste",
+   "laengen": [
+    1,
+    1
+   ],
+   "bytes": [
+    1137,
+    1137
+   ]
+  },
+  {
+   "pfad": ".model.universal.familyFormats.formats[GR-ES-EL-210X70-T15].variants",
+   "art": "Liste",
+   "laengen": [
+    1,
+    1
+   ],
+   "bytes": [
+    1137,
+    1137
+   ]
+  },
+  {
+   "pfad": ".model.universal.familyFormats.formats[GR-ES-RE-240X80-T15].variants",
+   "art": "Liste",
+   "laengen": [
+    1,
+    1
+   ],
+   "bytes": [
+    1137,
+    1137
+   ]
+  },
+  {
+   "pfad": ".model.universal.familyFormats.formats[GR-ES-EL-240X80-T15].variants",
+   "art": "Liste",
+   "laengen": [
+    1,
+    1
+   ],
+   "bytes": [
+    1137,
+    1137
+   ]
+  },
+  {
+   "pfad": ".model.universal.familyFormats.formats[GR-ES-RE-270X90-T15].variants",
+   "art": "Liste",
+   "laengen": [
+    1,
+    1
+   ],
+   "bytes": [
+    1137,
+    1137
+   ]
+  },
+  {
+   "pfad": ".model.universal.familyFormats.formats[GR-ES-EL-270X90-T15].variants",
+   "art": "Liste",
+   "laengen": [
+    1,
+    1
+   ],
+   "bytes": [
+    1137,
+    1137
+   ]
+  },
+  {
+   "pfad": ".model.universal.familyFormats.formats[GR-ES-EL-300X100-T15].variants",
+   "art": "Liste",
+   "laengen": [
+    1,
+    1
+   ],
+   "bytes": [
+    1138,
+    1138
+   ]
+  },
+  {
+   "pfad": ".model.universal.familyFormats.formats[GR-ES-RE-50X20-T15].variants",
+   "art": "Liste",
+   "laengen": [
+    1,
+    1
+   ],
+   "bytes": [
+    1133,
+    1133
+   ]
+  },
+  {
+   "pfad": ".model.universal.familyFormats.formats[GR-ES-RE-80X35-T15].variants",
+   "art": "Liste",
+   "laengen": [
+    1,
+    1
+   ],
+   "bytes": [
+    1143,
+    1143
+   ]
+  },
+  {
+   "pfad": ".model.universal.familyFormats.formats[GR-ES-RE-120X52P5-T15].variants",
+   "art": "Liste",
+   "laengen": [
+    1,
+    1
+   ],
+   "bytes": [
+    1153,
+    1153
+   ]
+  },
+  {
+   "pfad": ".model.universal.familyFormats.formats[GR-ES-RE-160X70-T15].variants",
+   "art": "Liste",
+   "laengen": [
+    1,
+    1
+   ],
+   "bytes": [
+    1139,
+    1139
+   ]
+  },
+  {
+   "pfad": ".model.universal.familyFormats.formats[GR-ES-RE-240X105-T15].variants",
+   "art": "Liste",
+   "laengen": [
+    1,
+    1
+   ],
+   "bytes": [
+    1148,
+    1148
+   ]
+  },
+  {
+   "pfad": ".model.universal.familyFormats.formats[GR-ES-RE-320X140-T15].variants",
+   "art": "Liste",
+   "laengen": [
+    1,
+    1
+   ],
+   "bytes": [
+    1140,
+    1140
+   ]
+  },
+  {
+   "pfad": ".model.universal.familyFormats.formats[GR-ES-RE-400X175-T15].variants",
+   "art": "Liste",
+   "laengen": [
+    1,
+    1
+   ],
+   "bytes": [
+    1148,
+    1148
+   ]
+  },
+  {
+   "pfad": ".model.universal.familyFormats.formats[GR-ES-OV-300X159P9-T15].variants",
+   "art": "Liste",
+   "laengen": [
+    1,
+    1
+   ],
+   "bytes": [
+    1140,
+    1140
+   ]
+  },
+  {
+   "pfad": ".model.universal.familyFormats.formats[GR-ES-OV-150X80-T15].variants",
+   "art": "Liste",
+   "laengen": [
+    1,
+    1
+   ],
+   "bytes": [
+    1137,
+    1137
+   ]
+  },
+  {
+   "pfad": ".model.universal.familyFormats.formats[GR-ES-OV-225X120-T15].variants",
+   "art": "Liste",
+   "laengen": [
+    1,
+    1
+   ],
+   "bytes": [
+    1138,
+    1138
+   ]
+  },
+  {
+   "pfad": ".model.universal.familyFormats.formats[GR-ES-RE-80X53P3-T15].variants",
+   "art": "Liste",
+   "laengen": [
+    1,
+    1
+   ],
+   "bytes": [
+    1148,
+    1148
+   ]
+  },
+  {
+   "pfad": ".model.universal.familyFormats.formats[GR-ES-AB-80X53P3-T15].variants",
+   "art": "Liste",
+   "laengen": [
+    1,
+    1
+   ],
+   "bytes": [
+    1148,
+    1148
+   ]
+  },
+  {
+   "pfad": ".model.universal.familyFormats.formats[GR-ES-RE-90X60-T15].variants",
+   "art": "Liste",
+   "laengen": [
+    1,
+    1
+   ],
+   "bytes": [
+    1134,
+    1134
+   ]
+  },
+  {
+   "pfad": ".model.universal.familyFormats.formats[GR-ES-AB-90X60-T15].variants",
+   "art": "Liste",
+   "laengen": [
+    1,
+    1
+   ],
+   "bytes": [
+    1134,
+    1134
+   ]
+  },
+  {
+   "pfad": ".model.universal.familyFormats.formats[GR-ES-OV-90X60-T15].variants",
+   "art": "Liste",
+   "laengen": [
+    1,
+    1
+   ],
+   "bytes": [
+    1133,
+    1133
+   ]
+  },
+  {
+   "pfad": ".model.universal.familyFormats.formats[GR-ES-RE-120X80-T15].variants",
+   "art": "Liste",
+   "laengen": [
+    1,
+    1
+   ],
+   "bytes": [
+    1137,
+    1137
+   ]
+  },
+  {
+   "pfad": ".model.universal.familyFormats.formats[GR-ES-AB-120X80-T15].variants",
+   "art": "Liste",
+   "laengen": [
+    1,
+    1
+   ],
+   "bytes": [
+    1137,
+    1137
+   ]
+  },
+  {
+   "pfad": ".model.universal.familyFormats.formats[GR-ES-OV-120X80-T15].variants",
+   "art": "Liste",
+   "laengen": [
+    1,
+    1
+   ],
+   "bytes": [
+    1136,
+    1136
+   ]
+  },
+  {
+   "pfad": ".model.universal.familyFormats.formats[GR-ES-RE-150X100-T15].variants",
+   "art": "Liste",
+   "laengen": [
+    1,
+    1
+   ],
+   "bytes": [
+    1138,
+    1138
+   ]
+  },
+  {
+   "pfad": ".model.universal.familyFormats.formats[GR-ES-AB-150X100-T15].variants",
+   "art": "Liste",
+   "laengen": [
+    1,
+    1
+   ],
+   "bytes": [
+    1138,
+    1138
+   ]
+  },
+  {
+   "pfad": ".model.universal.familyFormats.formats[GR-ES-OV-150X100-T15].variants",
+   "art": "Liste",
+   "laengen": [
+    1,
+    1
+   ],
+   "bytes": [
+    1137,
+    1137
+   ]
+  },
+  {
+   "pfad": ".model.universal.familyFormats.formats[GR-ES-RE-180X120-T15].variants",
+   "art": "Liste",
+   "laengen": [
+    1,
+    1
+   ],
+   "bytes": [
+    1138,
+    1138
+   ]
+  },
+  {
+   "pfad": ".model.universal.familyFormats.formats[GR-ES-AB-180X120-T15].variants",
+   "art": "Liste",
+   "laengen": [
+    1,
+    1
+   ],
+   "bytes": [
+    1138,
+    1138
+   ]
+  },
+  {
+   "pfad": ".model.universal.familyFormats.formats[GR-ES-OV-180X120-T15].variants",
+   "art": "Liste",
+   "laengen": [
+    1,
+    1
+   ],
+   "bytes": [
+    1137,
+    1137
+   ]
+  },
+  {
+   "pfad": ".model.universal.familyFormats.formats[GR-ES-RE-210X140-T15].variants",
+   "art": "Liste",
+   "laengen": [
+    1,
+    1
+   ],
+   "bytes": [
+    1138,
+    1138
+   ]
+  },
+  {
+   "pfad": ".model.universal.familyFormats.formats[GR-ES-AB-210X140-T15].variants",
+   "art": "Liste",
+   "laengen": [
+    1,
+    1
+   ],
+   "bytes": [
+    1138,
+    1138
+   ]
+  },
+  {
+   "pfad": ".model.universal.familyFormats.formats[GR-ES-OV-210X140-T15].variants",
+   "art": "Liste",
+   "laengen": [
+    1,
+    1
+   ],
+   "bytes": [
+    1137,
+    1137
+   ]
+  },
+  {
+   "pfad": ".model.universal.familyFormats.formats[GR-ES-RE-240X160-T15].variants",
+   "art": "Liste",
+   "laengen": [
+    1,
+    1
+   ],
+   "bytes": [
+    1138,
+    1138
+   ]
+  },
+  {
+   "pfad": ".model.universal.familyFormats.formats[GR-ES-AB-240X160-T15].variants",
+   "art": "Liste",
+   "laengen": [
+    1,
+    1
+   ],
+   "bytes": [
+    1138,
+    1138
+   ]
+  },
+  {
+   "pfad": ".model.universal.familyFormats.formats[GR-ES-OV-240X160-T15].variants",
+   "art": "Liste",
+   "laengen": [
+    1,
+    1
+   ],
+   "bytes": [
+    1137,
+    1137
+   ]
+  },
+  {
+   "pfad": ".model.universal.familyFormats.formats[GR-ES-RE-300X200-T15].variants",
+   "art": "Liste",
+   "laengen": [
+    1,
+    1
+   ],
+   "bytes": [
+    1771,
+    1771
+   ]
+  },
+  {
+   "pfad": ".model.universal.familyFormats.formats[GR-ES-AB-300X200-T15].variants",
+   "art": "Liste",
+   "laengen": [
+    1,
+    1
+   ],
+   "bytes": [
+    1783,
+    1783
+   ]
+  },
+  {
+   "pfad": ".model.universal.familyFormats.formats[GR-ES-OV-300X200-T15].variants",
+   "art": "Liste",
+   "laengen": [
+    1,
+    1
+   ],
+   "bytes": [
+    1141,
+    1141
+   ]
+  },
+  {
+   "pfad": ".model.universal.familyFormats.formats[GR-ES-RE-420X280-T15].variants",
+   "art": "Liste",
+   "laengen": [
+    1,
+    1
+   ],
+   "bytes": [
+    1261,
+    1261
+   ]
+  },
+  {
+   "pfad": ".model.universal.familyFormats.formats[GR-ES-AB-420X280-T15].variants",
+   "art": "Liste",
+   "laengen": [
+    1,
+    1
+   ],
+   "bytes": [
+    1261,
+    1261
+   ]
+  },
+  {
+   "pfad": ".model.universal.familyFormats.formats[GR-ES-RE-450X300-T15].variants",
+   "art": "Liste",
+   "laengen": [
+    1,
+    1
+   ],
+   "bytes": [
+    1261,
+    1261
+   ]
+  },
+  {
+   "pfad": ".model.universal.familyFormats.formats[GR-ES-AB-450X300-T15].variants",
+   "art": "Liste",
+   "laengen": [
+    1,
+    1
+   ],
+   "bytes": [
+    1261,
+    1261
+   ]
+  },
+  {
+   "pfad": ".model.universal.familyFormats.formats[GR-ES-QU-80X80-T15].variants",
+   "art": "Liste",
+   "laengen": [
+    1,
+    1
+   ],
+   "bytes": [
+    1133,
+    1133
+   ]
+  },
+  {
+   "pfad": ".model.universal.familyFormats.formats[GR-ES-QU-100X100-T15].variants",
+   "art": "Liste",
+   "laengen": [
+    1,
+    1
+   ],
+   "bytes": [
+    1135,
+    1135
+   ]
+  },
+  {
+   "pfad": ".model.universal.familyFormats.formats[GR-ES-QU-120X120-T15].variants",
+   "art": "Liste",
+   "laengen": [
+    1,
+    1
+   ],
+   "bytes": [
+    1137,
+    1137
+   ]
+  },
+  {
+   "pfad": ".model.universal.familyFormats.formats[GR-ES-QU-160X160-T15].variants",
+   "art": "Liste",
+   "laengen": [
+    1,
+    1
+   ],
+   "bytes": [
+    1247,
+    1247
+   ]
+  },
+  {
+   "pfad": ".model.universal.familyFormats.formats[GR-ES-QU-200X200-T15].variants",
+   "art": "Liste",
+   "laengen": [
+    1,
+    1
+   ],
+   "bytes": [
+    1247,
+    1247
+   ]
+  },
+  {
+   "pfad": ".model.universal.familyFormats.formats[GR-ES-QU-260X260-T15].variants",
+   "art": "Liste",
+   "laengen": [
+    1,
+    1
+   ],
+   "bytes": [
+    1247,
+    1247
+   ]
+  },
+  {
+   "pfad": ".model.universal.familyFormats.formats[GR-ES-QU-300X300-T15].variants",
+   "art": "Liste",
+   "laengen": [
+    1,
+    1
+   ],
+   "bytes": [
+    1248,
+    1248
+   ]
+  },
+  {
+   "pfad": ".model.universal.familyFormats.formats[GR-ES-R-65X65-T15].variants",
+   "art": "Liste",
+   "laengen": [
+    1,
+    1
+   ],
+   "bytes": [
+    1144,
+    1144
+   ]
+  },
+  {
+   "pfad": ".model.universal.familyFormats.formats[GR-ES-R-85X85-T15].variants",
+   "art": "Liste",
+   "laengen": [
+    1,
+    1
+   ],
+   "bytes": [
+    1144,
+    1144
+   ]
+  },
+  {
+   "pfad": ".model.universal.familyFormats.formats[GR-ES-R-120X120-T15].variants",
+   "art": "Liste",
+   "laengen": [
+    1,
+    1
+   ],
+   "bytes": [
+    1140,
+    1140
+   ]
+  },
+  {
+   "pfad": ".model.universal.familyFormats.formats[GR-ES-R-160X160-T15].variants",
+   "art": "Liste",
+   "laengen": [
+    1,
+    1
+   ],
+   "bytes": [
+    1140,
+    1140
+   ]
+  },
+  {
+   "pfad": ".model.universal.familyFormats.formats[GR-ES-R-200X200-T15].variants",
+   "art": "Liste",
+   "laengen": [
+    1,
+    1
+   ],
+   "bytes": [
+    1144,
+    1144
+   ]
+  },
+  {
+   "pfad": ".model.universal.familyFormats.formats[GR-ES-RT1-90X60-T15].variants",
+   "art": "Liste",
+   "laengen": [
+    1,
+    1
+   ],
+   "bytes": [
+    1141,
+    1141
+   ]
+  },
+  {
+   "pfad": ".model.universal.familyFormats.formats[GR-ES-RT1-120X80-T15].variants",
+   "art": "Liste",
+   "laengen": [
+    1,
+    1
+   ],
+   "bytes": [
+    1144,
+    1144
+   ]
+  },
+  {
+   "pfad": ".model.universal.familyFormats.formats[GR-ES-RT1-150X100-T15].variants",
+   "art": "Liste",
+   "laengen": [
+    1,
+    1
+   ],
+   "bytes": [
+    1145,
+    1145
+   ]
+  },
+  {
+   "pfad": ".model.universal.familyFormats.formats[GR-ES-RT1-180X120-T15].variants",
+   "art": "Liste",
+   "laengen": [
+    1,
+    1
+   ],
+   "bytes": [
+    1145,
+    1145
+   ]
+  },
+  {
+   "pfad": ".model.universal.familyFormats.formats[GR-ES-RT1-210X140-T15].variants",
+   "art": "Liste",
+   "laengen": [
+    1,
+    1
+   ],
+   "bytes": [
+    1145,
+    1145
+   ]
+  },
+  {
+   "pfad": ".model.universal.familyFormats.formats[GR-ES-RT1-240X160-T15].variants",
+   "art": "Liste",
+   "laengen": [
+    1,
+    1
+   ],
+   "bytes": [
+    1145,
+    1145
+   ]
+  },
+  {
+   "pfad": ".model.universal.familyFormats.formats[GR-ES-RT1-300X200-T15].variants",
+   "art": "Liste",
+   "laengen": [
+    1,
+    1
+   ],
+   "bytes": [
+    1149,
+    1149
+   ]
+  },
+  {
+   "pfad": ".model.universal.familyFormats.formats[GR-ES-RT2-90X60-T15].variants",
+   "art": "Liste",
+   "laengen": [
+    1,
+    1
+   ],
+   "bytes": [
+    1181,
+    1181
+   ]
+  },
+  {
+   "pfad": ".model.universal.familyFormats.formats[GR-ES-RT2-120X80-T15].variants",
+   "art": "Liste",
+   "laengen": [
+    1,
+    1
+   ],
+   "bytes": [
+    1184,
+    1184
+   ]
+  },
+  {
+   "pfad": ".model.universal.familyFormats.formats[GR-ES-RT2-150X100-T15].variants",
+   "art": "Liste",
+   "laengen": [
+    1,
+    1
+   ],
+   "bytes": [
+    1187,
+    1187
+   ]
+  },
+  {
+   "pfad": ".model.universal.familyFormats.formats[GR-ES-RT2-180X120-T15].variants",
+   "art": "Liste",
+   "laengen": [
+    1,
+    1
+   ],
+   "bytes": [
+    1185,
+    1185
+   ]
+  },
+  {
+   "pfad": ".model.universal.familyFormats.formats[GR-ES-RT2-210X140-T15].variants",
+   "art": "Liste",
+   "laengen": [
+    1,
+    1
+   ],
+   "bytes": [
+    1163,
+    1163
+   ]
+  },
+  {
+   "pfad": ".model.universal.familyFormats.formats[GR-ES-RT2-240X160-T15].variants",
+   "art": "Liste",
+   "laengen": [
+    1,
+    1
+   ],
+   "bytes": [
+    1185,
+    1185
+   ]
+  },
+  {
+   "pfad": ".model.universal.familyFormats.formats[GR-ES-RT2-300X200-T15].variants",
+   "art": "Liste",
+   "laengen": [
+    1,
+    1
+   ],
+   "bytes": [
+    1189,
+    1189
+   ]
+  },
+  {
+   "pfad": ".model.universal.familyFormats.designs",
+   "art": "Liste nach Kennung",
+   "nurErste": [
+    "katalog-TRE-V2A-8x2-D1",
+    "katalog-TRE-V2A-7x2-D1",
+    "katalog-TRE-V2A-6x2-D1",
+    "katalog-TRE-V2A-9x3-D1",
+    "katalog-TO-V2A-12x4-D1",
+    "katalog-TRE-V2A-5x2-D1"
+   ],
+   "nurZweite": [
+    "katalog-TRE-V2A-8x2-D2",
+    "katalog-TRE-V2A-7x2-D2",
+    "katalog-TRE-V2A-6x2-D2",
+    "katalog-TRE-V2A-9x3-D2",
+    "katalog-TO-V2A-12x4-D2",
+    "katalog-TRE-V2A-5x2-D2"
+   ],
+   "laengen": [
+    15,
+    15
+   ]
+  },
+  {
+   "pfad": ".model.universal.workshopElementRights.katalog-TAE-V2A-8x5-D1",
+   "art": "nur im ersten",
+   "bytes": 191
+  },
+  {
+   "pfad": ".model.universal.workshopElementRights.katalog-TRE-V2A-8x2-D1",
+   "art": "nur im ersten",
+   "bytes": 191
+  },
+  {
+   "pfad": ".model.universal.workshopElementRights.katalog-TRE-V2A-7x2-D1",
+   "art": "nur im ersten",
+   "bytes": 191
+  },
+  {
+   "pfad": ".model.universal.workshopElementRights.katalog-TRE-V2A-6x2-D1",
+   "art": "nur im ersten",
+   "bytes": 191
+  },
+  {
+   "pfad": ".model.universal.workshopElementRights.katalog-TRE-V2A-9x3-D1",
+   "art": "nur im ersten",
+   "bytes": 191
+  },
+  {
+   "pfad": ".model.universal.workshopElementRights.katalog-TO-V2A-12x4-D1",
+   "art": "nur im ersten",
+   "bytes": 191
+  },
+  {
+   "pfad": ".model.universal.workshopElementRights.katalog-TRE-V2A-5x2-D1",
+   "art": "nur im ersten",
+   "bytes": 191
+  },
+  {
+   "pfad": ".model.universal.workshopElementRights.katalog-TRE-V2A-8x3-5-D1",
+   "art": "nur im ersten",
+   "bytes": 191
+  },
+  {
+   "pfad": ".model.universal.workshopElementRights.katalog-TO-V2A-15x8-D1",
+   "art": "nur im ersten",
+   "bytes": 191
+  },
+  {
+   "pfad": ".model.universal.workshopElementRights.katalog-TRE-V2A-8x5-D1",
+   "art": "nur im ersten",
+   "bytes": 191
+  },
+  {
+   "pfad": ".model.universal.workshopElementRights.katalog-TO-V2A-9x6-D1",
+   "art": "nur im ersten",
+   "bytes": 191
+  },
+  {
+   "pfad": ".model.universal.workshopElementRights.katalog-TQ-V2A-8x8-D1",
+   "art": "nur im ersten",
+   "bytes": 191
+  },
+  {
+   "pfad": ".model.universal.workshopElementRights.katalog-TR-V2A-6-5x6-5-D1",
+   "art": "nur im ersten",
+   "bytes": 191
+  },
+  {
+   "pfad": ".model.universal.workshopElementRights.katalog-TR1-V2A-9x6-D1",
+   "art": "nur im ersten",
+   "bytes": 191
+  },
+  {
+   "pfad": ".model.universal.workshopElementRights.katalog-TR2-V2A-9x6-D1",
+   "art": "nur im ersten",
+   "bytes": 191
+  },
+  {
+   "pfad": ".model.universal.workshopElementRights.katalog-TAE-V2A-8x5-D2",
+   "art": "nur im zweiten",
+   "bytes": 191
+  },
+  {
+   "pfad": ".model.universal.workshopElementRights.katalog-TRE-V2A-8x2-D2",
+   "art": "nur im zweiten",
+   "bytes": 191
+  },
+  {
+   "pfad": ".model.universal.workshopElementRights.katalog-TRE-V2A-7x2-D2",
+   "art": "nur im zweiten",
+   "bytes": 191
+  },
+  {
+   "pfad": ".model.universal.workshopElementRights.katalog-TRE-V2A-6x2-D2",
+   "art": "nur im zweiten",
+   "bytes": 191
+  },
+  {
+   "pfad": ".model.universal.workshopElementRights.katalog-TRE-V2A-9x3-D2",
+   "art": "nur im zweiten",
+   "bytes": 191
+  },
+  {
+   "pfad": ".model.universal.workshopElementRights.katalog-TO-V2A-12x4-D2",
+   "art": "nur im zweiten",
+   "bytes": 191
+  },
+  {
+   "pfad": ".model.universal.workshopElementRights.katalog-TRE-V2A-5x2-D2",
+   "art": "nur im zweiten",
+   "bytes": 191
+  },
+  {
+   "pfad": ".model.universal.workshopElementRights.katalog-TRE-V2A-8x3-5-D2",
+   "art": "nur im zweiten",
+   "bytes": 191
+  },
+  {
+   "pfad": ".model.universal.workshopElementRights.katalog-TO-V2A-15x8-D2",
+   "art": "nur im zweiten",
+   "bytes": 191
+  },
+  {
+   "pfad": ".model.universal.workshopElementRights.katalog-TRE-V2A-8x5-D2",
+   "art": "nur im zweiten",
+   "bytes": 191
+  },
+  {
+   "pfad": ".model.universal.workshopElementRights.katalog-TO-V2A-9x6-D2",
+   "art": "nur im zweiten",
+   "bytes": 191
+  },
+  {
+   "pfad": ".model.universal.workshopElementRights.katalog-TQ-V2A-8x8-D2",
+   "art": "nur im zweiten",
+   "bytes": 191
+  },
+  {
+   "pfad": ".model.universal.workshopElementRights.katalog-TR-V2A-6-5x6-5-D2",
+   "art": "nur im zweiten",
+   "bytes": 191
+  },
+  {
+   "pfad": ".model.universal.workshopElementRights.katalog-TR1-V2A-9x6-D2",
+   "art": "nur im zweiten",
+   "bytes": 191
+  },
+  {
+   "pfad": ".model.universal.workshopElementRights.katalog-TR2-V2A-9x6-D2",
+   "art": "nur im zweiten",
+   "bytes": 191
+  },
+  {
+   "pfad": ".startPreview.target",
+   "art": "Wert",
+   "hinweis": "signiertes Auswahlziel, hier nicht abgelegt"
+  },
+  {
+   "pfad": ".startPreview.previewUrl",
+   "art": "Wert",
+   "hinweis": "Adresse des Vorschaubilds, hier nicht abgelegt"
+  }
+ ],
+ "groessen": {
+  "familyFormats": 162648,
+  "materialSurface": 130365,
+  "profile": 9972,
+  "workshopElementRights": 3259,
+  "localResources": 2845,
+  "workshopProfiles": 110,
+  "quantityTiers": 103,
+  "productExecution": 96,
+  "photo": 76,
+  "logo": 59,
+  "textRules": 23,
+  "quantityTierScope": 15
+ }
+}

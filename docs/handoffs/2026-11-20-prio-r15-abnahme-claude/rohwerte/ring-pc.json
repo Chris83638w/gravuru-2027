@@ -1,0 +1,125 @@
+{
+ "ziel": "ring",
+ "profil": "pc",
+ "prioErzwungen": false,
+ "zeit": "2026-11-20T05:49:00.620Z",
+ "url": "https://gravuru-design.myshopify.com/products/klingelschild-ring-wired-pro-3-gen-5dfya2-personalisiert",
+ "anfragen": [
+  "GET SHOP/apps/konfigurator/shop-embed.mjs",
+  "GET SHOP/apps/konfigurator/theme-cart-client.mjs",
+  "GET SHOP/apps/konfigurator/start?product=16126387257724&variant=57471227756924&back=%2Fproducts%2Fklingelschild-ring-wired-pro-3-gen-5dfya2-personalisiert&embed=1&format=json",
+  "GET APP/konfigurator/shop/warm/",
+  "GET APP/konfigurator/shop/shop-warm.mjs",
+  "GET APP/_merchant-acryl-editor.html",
+  "GET APP/konfigurator/shop/",
+  "GET APP/_acryl-bundle/editor-7dfd6f600e080015.mjs",
+  "GET APP/_acryl-bundle/editor-525420419a930df8.mjs",
+  "GET APP/konfigurator/shop/shop-entry-client.mjs",
+  "GET APP/konfigurator/shop/shop-entry-page.mjs",
+  "GET APP/konfigurator/shop/shop-design-switch.mjs",
+  "GET APP/konfigurator/shop/shop-selection-transfer.mjs",
+  "GET APP/api/shop-entry/model",
+  "GET APP/_merchant-acryl-editor.html",
+  "GET APP/_acryl-bundle/editor-7dfd6f600e080015.mjs",
+  "GET APP/_acryl-bundle/editor-525420419a930df8.mjs",
+  "GET APP/_acryl-bundle/editor-bbd6f79f32ce9680.mjs"
+ ],
+ "praesentation": null,
+ "startHref": "/apps/konfigurator/start?product=16126387257724&variant=57471227756924&back=%2Fproducts%2Fklingelschild-ring-wired-pro-3-gen-5dfya2-personalisiert",
+ "produkt": "Klingelschild für Ring Wired Pro (3.Gen) 5DFYA2 · Hochformat 16 × 28 cm",
+ "editorBereit": true,
+ "oeffnenMs": 2806,
+ "rahmen": [
+  "SHOP/products/klingelschild-ring-wired-pro-3-gen-5dfya2-personalisiert",
+  "SHOP/web-pixels@59be8e47w556dc13fpc8f027a5m478ef996/custom/web-pixel-shopify-custom-pixel@0540/sandbox/modern/products/klingelschild-ring-wired-pro-3-gen-5dfya2-personalisiert",
+  "null/",
+  "APP/konfigurator/shop/warm/#%7B…",
+  "APP/konfigurator/shop/#s=g…",
+  "APP/_merchant-acryl-editor.html"
+ ],
+ "ui": {
+  "knoepfe": [
+   "zzgl. Versand",
+   "Preisdetails",
+   "Menge verringern",
+   "Menge erhöhen",
+   "In den Warenkorb",
+   "Zum Produkt",
+   "Entwurf speichern",
+   "Vollbild öffnen",
+   "Rückgängig",
+   "Wiederholen",
+   "Hilfe",
+   "Ebenen (4)",
+   "Zurücksetzen",
+   "Ausführungen",
+   "Designs",
+   "Text",
+   "Motive",
+   "Design Strichdesign",
+   "Design Klar & modern",
+   "Design Große Hausnummer",
+   "Design Pur",
+   "Design Zwei Zeilen",
+   "Design Nummer im Kreis",
+   "Design Klassische Eleganz",
+   "Design Handschrift"
+  ],
+  "hostAttribute": {
+   "data-variant-c-ready": "",
+   "data-layout": "C",
+   "data-universal-profile": "cfg_d9fb1702-b41e-49f0-9eda-117be91f436a",
+   "data-doorbell-presentation": "",
+   "data-ux-photo-sizing": "false",
+   "style": "--guided-preview-offset: 0px; --guided-plate-ratio: 0.571428",
+   "data-ux-text-editing": "false",
+   "data-ux-compact-editing": "false",
+   "data-ux-neutral": "true",
+   "data-ux-layout": "compact",
+   "data-ux-modern": "true"
+  },
+  "uxTabs": [
+   "options",
+   "design",
+   "text",
+   "motif"
+  ],
+  "prioMerkmale": {
+   "htmlKlassen": "",
+   "bodyKlassen": "",
+   "datenUi": null
+  },
+  "warenkorbKnopf": [
+   {
+    "text": "In den Warenkorb",
+    "gesperrt": true,
+    "sichtbar": false
+   },
+   {
+    "text": "In den Warenkorb",
+    "gesperrt": true,
+    "sichtbar": false
+   },
+   {
+    "text": "Fertig · Einstellungen schließen",
+    "gesperrt": false,
+    "sichtbar": false
+   },
+   {
+    "text": "In den Warenkorb",
+    "gesperrt": true,
+    "sichtbar": false
+   },
+   {
+    "text": "In den Warenkorb",
+    "gesperrt": false,
+    "sichtbar": true
+   },
+   {
+    "text": "Fertig",
+    "gesperrt": false,
+    "sichtbar": false
+   }
+  ]
+ }
+}

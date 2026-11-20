@@ -1,0 +1,326 @@
+{
+ "ziel": "edelstahl",
+ "profil": "mobil",
+ "prioErzwungen": false,
+ "zeit": "2026-11-20T05:51:35.438Z",
+ "url": "https://gravuru-design.myshopify.com/products/tuerschild-edelstahl-form-und-groesse-selbst-waehlen",
+ "anfragen": [
+  "GET SHOP/apps/konfigurator/shop-embed.mjs",
+  "GET SHOP/apps/konfigurator/theme-cart-client.mjs",
+  "GET SHOP/apps/konfigurator/start?product=16190784438652&variant=58104606556540&back=%2Fproducts%2Ftuerschild-edelstahl-form-und-groesse-selbst-waehlen&ui=prio-r15&embed=1&for",
+  "GET APP/konfigurator/shop/warm/",
+  "GET APP/konfigurator/shop/shop-warm.mjs",
+  "GET APP/_merchant-acryl-editor.html",
+  "GET APP/konfigurator/shop/",
+  "GET APP/konfigurator/shop/shop-entry-client.mjs",
+  "GET APP/konfigurator/shop/shop-entry-page.mjs",
+  "GET APP/_acryl-bundle/editor-7dfd6f600e080015.mjs",
+  "GET APP/_acryl-bundle/editor-525420419a930df8.mjs",
+  "GET APP/konfigurator/shop/shop-design-switch.mjs",
+  "GET APP/konfigurator/shop/schriften/3201589047768a19ed4506e9b76a18aa1b353b932b9cd599e632bbde1575e0d1.json",
+  "GET APP/konfigurator/shop/shop-selection-transfer.mjs",
+  "GET APP/api/shop-entry/model",
+  "GET APP/konfigurator/shop/schriften/3201589047768a19ed4506e9b76a18aa1b353b932b9cd599e632bbde1575e0d1.json",
+  "GET APP/_merchant-acryl-editor.html",
+  "GET APP/_acryl-bundle/editor-7dfd6f600e080015.mjs",
+  "GET APP/_acryl-bundle/editor-525420419a930df8.mjs",
+  "GET APP/_acryl-bundle/editor-6ee9bdee5f9ebc6b.mjs",
+  "GET APP/konfigurator/shop/schriften/af923c8f9dca05fc70000003381d03a484a30a604a01c19835989931aec268e7.json"
+ ],
+ "praesentation": "{\"schema\":\"gravuru-shop-presentation/v1\",\"productId\":\"16190784438652\",\"ui\":\"prio-r15\",\"variantId\":\"58104606556540\",\"themeVariantId\":\"58104606556540\",\"back\":\"\\/products\\/tuerschild-edelstahl-form-und-groesse-selbst-waehlen\",\"variants\":[\"58104601149820\",\"58104601182588\",\"58104601215356\",\"58104601248124\",\"58104601280892\",\"58104601313660\",\"58104601346428\",\"58104601379196\",\"58104601411964\",\"58104601444",
+ "startHref": "/apps/konfigurator/start?product=16190784438652&variant=58104606556540&back=%2Fproducts%2Ftuerschild-edelstahl-form-und-groesse-selbst-waehlen&ui=prio-r15",
+ "produkt": "Türschild Edelstahl – Form und Größe selbst wählen",
+ "editorBereit": true,
+ "oeffnenMs": 2988,
+ "rahmen": [
+  "SHOP/products/tuerschild-edelstahl-form-und-groesse-selbst-waehlen",
+  "SHOP/web-pixels@59be8e47w556dc13fpc8f027a5m478ef996/custom/web-pixel-shopify-custom-pixel@0540/sandbox/modern/products/tuerschild-edelstahl-form-und-groesse-selbst-waehlen",
+  "SHOP/services/login_with_shop/buyer/callback?analytics_trace_id&target_origin&token",
+  "APP/konfigurator/shop/warm/#%7B…",
+  "APP/konfigurator/shop/#s=g…",
+  "APP/_merchant-acryl-editor.html"
+ ],
+ "ui": {
+  "knoepfe": [
+   "Werkzeuge öffnen",
+   "Produkt vergrößern",
+   "Zurück zum Produkt",
+   "Rückgängig",
+   "Wiederholen",
+   "Ebenen (2)",
+   "Entwurf speichern",
+   "Hilfe",
+   "Gestaltung zurücksetzen",
+   "Ausführung und Größe auswählen",
+   "Ausführung",
+   "Designs",
+   "Text",
+   "Motive",
+   "Logo",
+   "Warenkorb"
+  ],
+  "hostAttribute": {
+   "data-variant-c-ready": "",
+   "data-layout": "C",
+   "data-universal-profile": "cfg_ac514214-a313-4738-8008-00445ee1befd",
+   "data-family-formats": "",
+   "data-ux-photo-sizing": "false",
+   "style": "--guided-preview-offset: 0px; --guided-plate-ratio: 1.5; --m",
+   "data-ux-text-editing": "false",
+   "data-ux-compact-editing": "false",
+   "data-ux-mobile": "true",
+   "data-ux-mobile-tabs": "true",
+   "data-ux-step": "design",
+   "data-ux-keyboard": "false",
+   "data-ux-neutral": "true",
+   "data-ux-layout": "compact",
+   "data-ux-modern": "true",
+   "data-mobile-demo": "sheet",
+   "data-demo-sheet": "closed",
+   "data-demo-selected-type": ""
+  },
+  "uxTabs": [
+   "options",
+   "design",
+   "text",
+   "motif",
+   "upload"
+  ],
+  "prioMerkmale": {
+   "htmlKlassen": "",
+   "bodyKlassen": "",
+   "datenUi": null
+  },
+  "warenkorbKnopf": [
+   {
+    "text": "In den Warenkorb",
+    "gesperrt": true,
+    "sichtbar": false
+   },
+   {
+    "text": "In den Warenkorb",
+    "gesperrt": true,
+    "sichtbar": false
+   },
+   {
+    "text": "Fertig · Einstellungen schließen",
+    "gesperrt": false,
+    "sichtbar": false
+   },
+   {
+    "text": "Fertig",
+    "gesperrt": false,
+    "sichtbar": false
+   },
+   {
+    "text": "Fertig",
+    "gesperrt": false,
+    "sichtbar": false
+   },
+   {
+    "text": "In den Warenkorb",
+    "gesperrt": true,
+    "sichtbar": false
+   }
+  ]
+ },
+ "tiefe": {
+  "designsGeklickt": "Designs",
+  "karten": {
+   "gesamt": 22,
+   "sichtbar": 4,
+   "sichtbarFertig": 0,
+   "namen": [
+    "Zwei Zeilen, mittig",
+    "Zwei Zeilen, versetzt",
+    "Zwei Zeilen mit Trennlinie",
+    "Zwei Zeilen, versetzt mit Linie",
+    "Zwei Zeilen mit Zierlinien",
+    "Hier wohnt Familie mit Schnörkel und Herz",
+    "Familie mit Schnörkel-Ornament",
+    "Familie mit Herz-Ranken-Ornament",
+    "Familie mit Pfeil nach links",
+    "Familie mit Pfeil nach rechts, Serifenschrift",
+    "Zwei Vornamen und Nachname mit Pfeil nach oben",
+    "Familie mit Pfeil nach unten",
+    "Signature · Senkrecht – Straße an der Kante, Name groß",
+    "Hausnummer groß – feine Ziffer, Name daneben",
+    "Senkrecht – Nachname an der Kante",
+    "Typo-Linie – Name und Nummer unter der Linie"
+   ],
+   "gewaehlt": [
+    "Design Zwei Zeilen, mittig",
+    "Design Zwei Zeilen, mittig"
+   ]
+  },
+  "ausfuehrungGeklickt": "Fertig",
+  "ausfuehrung": "Ausführung",
+  "optionen": [
+   {
+    "feld": "form",
+    "wert": "RE",
+    "auswahl": [
+     "Rechteck"
+    ]
+   },
+   {
+    "feld": "",
+    "wert": "cfg_ac514214-a313-4738-8008-00445ee1befd",
+    "auswahl": [
+     "120 × 80 mm"
+    ]
+   },
+   {
+    "feld": "",
+    "wert": "K00",
+    "auswahl": [
+     "Ohne Befestigung"
+    ]
+   },
+   {
+    "feld": "",
+    "wert": "png",
+    "auswahl": [
+     "Produktvorschau · PNG",
+     "Vektorentwurf ohne Foto · SVG 1:1"
+    ]
+   },
+   {
+    "feld": "",
+    "wert": "",
+    "auswahl": [
+     "Unsere Empfehlungen",
+     "Alle Schriftarten",
+     "Schlicht & modern",
+     "Klassisch & elegant",
+     "Handschrift",
+     "Geschwungen & festlich",
+     "Markant & verspielt",
+     "Schreibmaschine"
+    ]
+   },
+   {
+    "feld": "",
+    "wert": "Nunito",
+    "auswahl": [
+     "Nunito"
+    ]
+   },
+   {
+    "feld": "",
+    "wert": "",
+    "auswahl": [
+     "Graustufen",
+     "Punktraster"
+    ]
+   },
+   {
+    "feld": "size",
+    "wert": "GR-ES-AB-120X80-T15",
+    "auswahl": [
+     "Rechteck · 8 × 2 cm · ohne Aufpreis",
+     "Rechteck · 7 × 2,33 cm · ohne Aufpreis",
+     "Rechteck · 6 × 2 cm · ohne Aufpreis",
+     "Rechteck · 9 × 3 cm · ohne Aufpreis",
+     "Rechteck · 12 × 4 cm · ohne Aufpreis",
+     "Oval · 12 × 4 cm · ohne Aufpreis",
+     "Rechteck · 15 × 5 cm · ohne Aufpreis",
+     "Oval · 15 × 5 cm · ohne Aufpreis",
+     "Rechteck · 18 × 6 cm · ohne Aufpreis",
+     "Oval · 18 × 6 cm · ohne Aufpreis",
+     "Rechteck · 21 × 7 cm · ohne Aufpreis",
+     "Oval · 21 × 7 cm · ohne Aufpreis",
+     "Rechteck · 24 × 8 cm · ohne Aufpreis",
+     "Oval · 24 × 8 cm · ohne Aufpreis",
+     "Rechteck · 27 × 9 cm · ohne Aufpreis",
+     "Oval · 27 × 9 cm · ohne Aufpreis",
+     "Oval · 30 × 10 cm · ohne Aufpreis",
+     "Rechteck · 5 × 2 cm · ohne Aufpreis",
+     "Rechteck · 8 × 3,5 cm · ohne Aufpreis",
+     "Rechteck · 12 × 5,25 cm · ohne Aufpreis",
+     "Rechteck · 16 × 7 cm · ohne Aufpreis",
+     "Rechteck · 24 × 10,5 cm · ohne Aufpreis",
+     "Rechteck · 32 × 14 cm · ohne Aufpreis",
+     "Rechteck · 40 × 17,5 cm · ohne Aufpreis",
+     "Oval · 30 × 16 cm · ohne Aufpreis",
+     "Oval · 15 × 8 cm · ohne Aufpreis",
+     "Oval · 22,5 × 12 cm · ohne Aufpreis",
+     "Rechteck · 8 × 5,33 cm · ohne Aufpreis",
+     "Rechteck abgerundet · 8 × 5,33 cm · ohne",
+     "Rechteck · 9 × 6 cm · ohne Aufpreis",
+     "Rechteck abgerundet · 9 × 6 cm · ohne Au",
+     "Oval · 9 × 6 cm · ohne Aufpreis",
+     "Rechteck · 12 × 8 cm · ohne Aufpreis",
+     "Rechteck abgerundet · 12 × 8 cm · ohne A",
+     "Oval · 12 × 8 cm · ohne Aufpreis",
+     "Rechteck · 15 × 10 cm · ohne Aufpreis",
+     "Rechteck abgerundet · 15 × 10 cm · ohne ",
+     "Oval · 15 × 10 cm · ohne Aufpreis",
+     "Rechteck · 18 × 12 cm · ohne Aufpreis",
+     "Rechteck abgerundet · 18 × 12 cm · ohne ",
+     "Oval · 18 × 12 cm · ohne Aufpreis",
+     "Rechteck · 21 × 14 cm · ohne Aufpreis",
+     "Rechteck abgerundet · 21 × 14 cm · ohne ",
+     "Oval · 21 × 14 cm · ohne Aufpreis",
+     "Rechteck · 24 × 16 cm · ohne Aufpreis",
+     "Rechteck abgerundet · 24 × 16 cm · ohne ",
+     "Oval · 24 × 16 cm · ohne Aufpreis",
+     "Rechteck · 30 × 20 cm · ohne Aufpreis",
+     "Rechteck abgerundet · 30 × 20 cm · ohne ",
+     "Oval · 30 × 20 cm · ohne Aufpreis",
+     "Rechteck · 42 × 28 cm · ohne Aufpreis",
+     "Rechteck abgerundet · 42 × 28 cm · ohne ",
+     "Rechteck · 45 × 30 cm · ohne Aufpreis",
+     "Rechteck abgerundet · 45 × 30 cm · ohne ",
+     "Quadrat · 8 × 8 cm · ohne Aufpreis",
+     "Quadrat · 10 × 10 cm · ohne Aufpreis",
+     "Quadrat · 12 × 12 cm · ohne Aufpreis",
+     "Quadrat · 16 × 16 cm · ohne Aufpreis",
+     "Quadrat · 20 × 20 cm · ohne Aufpreis",
+     "Quadrat · 26 × 26 cm · ohne Aufpreis",
+     "Quadrat · 30 × 30 cm · ohne Aufpreis",
+     "Rund · 6,5 × 6,5 cm · ohne Aufpreis",
+     "Rund · 8,5 × 8,5 cm · ohne Aufpreis",
+     "Rund · 12 × 12 cm · ohne Aufpreis",
+     "Rund · 16 × 16 cm · ohne Aufpreis",
+     "Rund · 20 × 20 cm · ohne Aufpreis",
+     "Retro 1 · 9 × 6 cm · ohne Aufpreis",
+     "Retro 1 · 12 × 8 cm · ohne Aufpreis",
+     "Retro 1 · 15 × 10 cm · ohne Aufpreis",
+     "Retro 1 · 18 × 12 cm · ohne Aufpreis",
+     "Retro 1 · 21 × 14 cm · ohne Aufpreis",
+     "Retro 1 · 24 × 16 cm · ohne Aufpreis",
+     "Retro 1 · 30 × 20 cm · ohne Aufpreis",
+     "Retro 2 · 9 × 6 cm · ohne Aufpreis",
+     "Retro 2 · 12 × 8 cm · ohne Aufpreis",
+     "Retro 2 · 15 × 10 cm · ohne Aufpreis",
+     "Retro 2 · 18 × 12 cm · ohne Aufpreis",
+     "Retro 2 · 21 × 14 cm · ohne Aufpreis",
+     "Retro 2 · 24 × 16 cm · ohne Aufpreis",
+     "Retro 2 · 30 × 20 cm · ohne Aufpreis"
+    ]
+   },
+   {
+    "feld": "mounting",
+    "wert": "K00",
+    "auswahl": [
+     "Ohne Bohrung · ohne Aufpreis",
+     "Selbstklebend – glatte Flächen · ohne Au",
+     "Selbstklebend – raue Flächen · ohne Aufp",
+     "Mit 2 Bohrlöchern · ohne Aufpreis",
+     "Mit 2 Schrauben · ohne Aufpreis",
+     "Mit 4 Bohrlöchern · ohne Aufpreis",
+     "Mit 4 Schrauben · ohne Aufpreis"
+    ]
+   },
+   {
+    "feld": "",
+    "wert": "preferred",
+    "auswahl": [
+     "Passende Themen zuerst",
+     "Alle Themen"
+    ]
+   }
+  ]
+ }
+}

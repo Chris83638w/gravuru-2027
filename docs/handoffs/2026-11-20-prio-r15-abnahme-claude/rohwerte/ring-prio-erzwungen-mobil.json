@@ -1,0 +1,479 @@
+{
+ "ziel": "ring",
+ "profil": "mobil",
+ "prioErzwungen": true,
+ "zeit": "2026-11-20T05:52:20.293Z",
+ "url": "https://gravuru-design.myshopify.com/products/klingelschild-ring-wired-pro-3-gen-5dfya2-personalisiert",
+ "anfragen": [
+  "GET SHOP/apps/konfigurator/shop-embed.mjs",
+  "GET SHOP/apps/konfigurator/theme-cart-client.mjs",
+  "GET SHOP/apps/konfigurator/start?product=16126387257724&variant=57471227756924&back=%2Fproducts%2Fklingelschild-ring-wired-pro-3-gen-5dfya2-personalisiert&embed=1&format=json",
+  "GET APP/konfigurator/shop/warm/",
+  "GET APP/konfigurator/shop/shop-warm.mjs",
+  "GET APP/_merchant-acryl-editor.html",
+  "GET APP/konfigurator/shop/",
+  "GET APP/_acryl-bundle/editor-7dfd6f600e080015.mjs",
+  "GET APP/_acryl-bundle/editor-525420419a930df8.mjs",
+  "GET APP/konfigurator/shop/shop-entry-client.mjs",
+  "GET APP/konfigurator/shop/shop-entry-page.mjs",
+  "GET APP/konfigurator/shop/shop-design-switch.mjs",
+  "GET APP/konfigurator/shop/shop-selection-transfer.mjs",
+  "GET APP/api/shop-entry/model",
+  "GET APP/_merchant-acryl-editor.html",
+  "GET APP/_acryl-bundle/editor-7dfd6f600e080015.mjs",
+  "GET APP/_acryl-bundle/editor-525420419a930df8.mjs",
+  "GET APP/_acryl-bundle/editor-bbd6f79f32ce9680.mjs"
+ ],
+ "praesentation": null,
+ "startHref": "/apps/konfigurator/start?product=16126387257724&variant=57471227756924&back=%2Fproducts%2Fklingelschild-ring-wired-pro-3-gen-5dfya2-personalisiert",
+ "produkt": "Klingelschild für Ring Wired Pro (3.Gen) 5DFYA2 · Hochformat 16 × 28 cm",
+ "editorBereit": true,
+ "oeffnenMs": 3418,
+ "rahmen": [
+  "SHOP/products/klingelschild-ring-wired-pro-3-gen-5dfya2-personalisiert",
+  "SHOP/web-pixels@59be8e47w556dc13fpc8f027a5m478ef996/custom/web-pixel-shopify-custom-pixel@0540/sandbox/modern/products/klingelschild-ring-wired-pro-3-gen-5dfya2-personalisiert",
+  "SHOP/services/login_with_shop/buyer/callback?analytics_trace_id&target_origin&token",
+  "APP/konfigurator/shop/warm/#%7B…",
+  "APP/konfigurator/shop/#s=g…",
+  "APP/_merchant-acryl-editor.html"
+ ],
+ "ui": {
+  "knoepfe": [
+   "Werkzeuge öffnen",
+   "Produkt vergrößern",
+   "Zurück zum Produkt",
+   "Rückgängig",
+   "Wiederholen",
+   "Ebenen (4)",
+   "Entwurf speichern",
+   "Hilfe",
+   "Gestaltung zurücksetzen",
+   "Ausführung und Größe auswählen",
+   "Ausführung",
+   "Designs",
+   "Text",
+   "Motive",
+   "Warenkorb"
+  ],
+  "hostAttribute": {
+   "data-variant-c-ready": "",
+   "data-layout": "C",
+   "data-universal-profile": "cfg_d9fb1702-b41e-49f0-9eda-117be91f436a",
+   "data-doorbell-presentation": "",
+   "data-ux-photo-sizing": "false",
+   "style": "--guided-preview-offset: 0px; --guided-plate-ratio: 0.571428",
+   "data-ux-text-editing": "false",
+   "data-ux-compact-editing": "false",
+   "data-ux-mobile": "true",
+   "data-ux-mobile-tabs": "true",
+   "data-ux-step": "design",
+   "data-ux-keyboard": "false",
+   "data-ux-neutral": "true",
+   "data-ux-layout": "compact",
+   "data-ux-modern": "true",
+   "data-mobile-demo": "sheet",
+   "data-demo-sheet": "closed",
+   "data-demo-selected-type": ""
+  },
+  "uxTabs": [
+   "options",
+   "design",
+   "text",
+   "motif"
+  ],
+  "prioMerkmale": {
+   "htmlKlassen": "",
+   "bodyKlassen": "",
+   "datenUi": null
+  },
+  "warenkorbKnopf": [
+   {
+    "text": "In den Warenkorb",
+    "gesperrt": true,
+    "sichtbar": false
+   },
+   {
+    "text": "In den Warenkorb",
+    "gesperrt": true,
+    "sichtbar": false
+   },
+   {
+    "text": "Fertig · Einstellungen schließen",
+    "gesperrt": false,
+    "sichtbar": false
+   },
+   {
+    "text": "Fertig",
+    "gesperrt": false,
+    "sichtbar": false
+   },
+   {
+    "text": "Fertig",
+    "gesperrt": false,
+    "sichtbar": false
+   },
+   {
+    "text": "In den Warenkorb",
+    "gesperrt": true,
+    "sichtbar": false
+   }
+  ]
+ },
+ "tiefe": {
+  "designsGeklickt": "Designs",
+  "karten": {
+   "gesamt": 16,
+   "sichtbar": 6,
+   "sichtbarFertig": 4,
+   "namen": [
+    "Strichdesign",
+    "Klar & modern",
+    "Große Hausnummer",
+    "Pur",
+    "Zwei Zeilen",
+    "Nummer im Kreis",
+    "Klassische Eleganz",
+    "Handschrift",
+    "Architektur",
+    "Unser Zuhause",
+    "Doppellinie",
+    "Nordisch",
+    "Herzstück",
+    "Versetzt",
+    "Feiner Rahmen",
+    "Signatur"
+   ],
+   "gewaehlt": [
+    "Design Strichdesign"
+   ]
+  },
+  "ausfuehrungGeklickt": "Fertig",
+  "ausfuehrung": "Ausführung",
+  "reiter": {
+   "Material": {
+    "wahl": [
+     {
+      "feld": "color",
+      "wert": "Schwarz · ohne Aufpreis",
+      "anzahl": 2
+     }
+    ],
+    "knoepfe": [
+     "Produkt vergrößern",
+     "Zurück",
+     "Fertig",
+     "Material",
+     "Information zu Material",
+     "Größe",
+     "Information zu Größe",
+     "Befestigung",
+     "Information zu Befestigung",
+     "Acrylfarbe Schwarz · ohne Aufpreis Anthrazit",
+     "Zurück zum Produkt",
+     "Rückgängig",
+     "Wiederholen",
+     "Ebenen (4)",
+     "Entwurf speichern",
+     "?",
+     "Ansicht 100 %",
+     "Gestaltung zurücksetzen",
+     "Acrylglas · 16 × 28 cm",
+     "Ausführung",
+     "Designs",
+     "Text",
+     "Motive",
+     "Warenkorb"
+    ],
+    "ueberschriften": [
+     "Ausführung & Größe",
+     "Acrylfarbe\nSchwarz · ohne Aufpreis\nAnthr",
+     "Ansicht\n100 %"
+    ]
+   },
+   "Größe": {
+    "wahl": [
+     {
+      "feld": "format",
+      "wert": "Hochformat · 49,99 €",
+      "anzahl": 3
+     }
+    ],
+    "knoepfe": [
+     "Produkt vergrößern",
+     "Zurück",
+     "Fertig",
+     "Material",
+     "Information zu Material",
+     "Größe",
+     "Information zu Größe",
+     "Befestigung",
+     "Information zu Befestigung",
+     "Format Hochformat · 49,99 € Querformat · 59,",
+     "Zurück zum Produkt",
+     "Rückgängig",
+     "Wiederholen",
+     "Ebenen (4)",
+     "Entwurf speichern",
+     "?",
+     "Ansicht 100 %",
+     "Gestaltung zurücksetzen",
+     "Acrylglas · 16 × 28 cm",
+     "Ausführung",
+     "Designs",
+     "Text",
+     "Motive",
+     "Warenkorb"
+    ],
+    "ueberschriften": [
+     "Ausführung & Größe",
+     "Format\nHochformat · 49,99 €\nQuerformat ·",
+     "Ansicht\n100 %"
+    ]
+   },
+   "Befestigung": {
+    "wahl": [
+     {
+      "feld": "position",
+      "wert": "Klingel unten",
+      "anzahl": 3
+     },
+     {
+      "feld": "frame",
+      "wert": "Ganzer Rahmen · ohne Aufpreis",
+      "anzahl": 4
+     }
+    ],
+    "knoepfe": [
+     "Produkt vergrößern",
+     "Zurück",
+     "Fertig",
+     "Material",
+     "Information zu Material",
+     "Größe",
+     "Information zu Größe",
+     "Befestigung",
+     "Information zu Befestigung",
+     "Position der Klingel Bitte wählen Klingel un",
+     "Edelstahlrahmen Ganzer Rahmen · ohne Aufprei",
+     "Keine Befestigung ohne Aufpreis ✓",
+     "Verdeckte Bolzen +5,99 €",
+     "Selbstklebend – raue Flächen +4,99 €",
+     "SIL Mit Silikon +4,99 €",
+     "Zurück zum Produkt",
+     "Rückgängig",
+     "Wiederholen",
+     "Ebenen (4)",
+     "Entwurf speichern",
+     "?",
+     "Ansicht 100 %",
+     "Gestaltung zurücksetzen",
+     "Acrylglas · 16 × 28 cm",
+     "Ausführung",
+     "Designs",
+     "Text",
+     "Motive",
+     "Warenkorb"
+    ],
+    "ueberschriften": [
+     "Ausführung & Größe",
+     "Position der Klingel\nBitte wählen\nKlinge",
+     "Edelstahlrahmen\nGanzer Rahmen · ohne Auf",
+     "Befestigung",
+     "Ansicht\n100 %"
+    ]
+   }
+  },
+  "text": {
+   "wahl": [],
+   "knoepfe": [
+    "Elementgröße ziehen – Ecke 1",
+    "Elementgröße ziehen – Ecke 2",
+    "Elementgröße ziehen – Ecke 3",
+    "Elementgröße ziehen – Ecke 4",
+    "↻",
+    "Ausgewähltes Element löschen",
+    "Produkt vergrößern",
+    "Zurück",
+    "Fertig",
+    "Name",
+    "Text „Mustermann“",
+    "Text „12a“",
+    "Schrift ändern Montserrat ›",
+    "Schriftgröße",
+    "−",
+    "+",
+    "Schrifthöhe",
+    "Links",
+    "Mitte",
+    "Rechts",
+    "Zurück zum Produkt",
+    "Rückgängig",
+    "Wiederholen",
+    "Ebenen (4)",
+    "Entwurf speichern",
+    "?",
+    "Ansicht 100 %",
+    "Gestaltung zurücksetzen",
+    "Acrylglas · 16 × 28 cm",
+    "Ausführung",
+    "Designs",
+    "Text",
+    "Motive",
+    "Warenkorb"
+   ],
+   "ueberschriften": [
+    "Text",
+    "Name",
+    "Schriftgröße",
+    "Schrifthöhe",
+    "Ansicht\n100 %"
+   ]
+  },
+  "motive": {
+   "wahl": [],
+   "knoepfe": [
+    "Elementgröße ziehen – Ecke 1",
+    "Elementgröße ziehen – Ecke 2",
+    "Elementgröße ziehen – Ecke 3",
+    "Elementgröße ziehen – Ecke 4",
+    "↻",
+    "Ausgewähltes Element löschen",
+    "Produkt vergrößern",
+    "Zurück",
+    "Fertig",
+    "Motiv suchen Beschreibe einfach, was du such",
+    "Kategorie Bestseller ✓ Tiere Blumen Herzen A",
+    "Bestseller ✓",
+    "Tiere",
+    "Blumen",
+    "Herzen",
+    "Alle Kategorien anzeigen",
+    "Haus",
+    "Strich Haus",
+    "Herzlinie schlicht",
+    "Florale Zierlinie",
+    "Zarte Blumenranke",
+    "Pusteblume einzeln",
+    "Zurück zum Produkt",
+    "Rückgängig",
+    "Wiederholen",
+    "Ebenen (4)",
+    "Entwurf speichern",
+    "?",
+    "Ansicht 100 %",
+    "Gestaltung zurücksetzen",
+    "Acrylglas · 16 × 28 cm",
+    "Ausführung",
+    "Designs",
+    "Text",
+    "Motive",
+    "Warenkorb"
+   ],
+   "ueberschriften": [
+    "Motive",
+    "Motiv suchen\n\nBeschreibe einfach, was du",
+    "Kategorie\nBestseller\n✓\nTiere\nBlumen\nHerz",
+    "Ansicht\n100 %"
+   ]
+  },
+  "optionen": [
+   {
+    "feld": "form",
+    "wert": "RE",
+    "auswahl": [
+     "Rechteck"
+    ]
+   },
+   {
+    "feld": "",
+    "wert": "cfg_d9fb1702-b41e-49f0-9eda-117be91f436a",
+    "auswahl": [
+     "160 × 280 mm"
+    ]
+   },
+   {
+    "feld": "",
+    "wert": "K00",
+    "auswahl": [
+     "Ohne Befestigung"
+    ]
+   },
+   {
+    "feld": "",
+    "wert": "",
+    "auswahl": [
+     "Unsere Empfehlungen",
+     "Alle Schriftarten",
+     "Schlicht & modern",
+     "Klassisch & elegant",
+     "Handschrift",
+     "Geschwungen & festlich",
+     "Markant & verspielt",
+     "Schreibmaschine"
+    ]
+   },
+   {
+    "feld": "",
+    "wert": "Montserrat",
+    "auswahl": [
+     "Montserrat",
+     "Josefin Sans",
+     "Raleway",
+     "Poppins",
+     "Nunito",
+     "Libre Baskerville",
+     "Cormorant Garamond",
+     "Playfair Display",
+     "Caveat",
+     "Sacramento",
+     "Allura"
+    ]
+   },
+   {
+    "feld": "",
+    "wert": "",
+    "auswahl": [
+     "Graustufen",
+     "Punktraster"
+    ]
+   },
+   {
+    "feld": "",
+    "wert": "png",
+    "auswahl": [
+     "Produktvorschau · PNG",
+     "Vektorentwurf ohne Foto · SVG 1:1"
+    ]
+   },
+   {
+    "feld": "mounting",
+    "wert": "K00",
+    "auswahl": [
+     "Keine Befestigung · ohne Aufpreis",
+     "Verdeckte Bolzen · +5,99 €",
+     "Selbstklebend – raue Flächen · +4,99 €",
+     "Mit Silikon · +4,99 €",
+     "Bohrlöcher mit Schrauben · +3,69 €"
+    ]
+   },
+   {
+    "feld": "format",
+    "wert": "16x28",
+    "auswahl": [
+     "Hochformat · 49,99 €",
+     "Querformat · 59,99 €",
+     "Länglich · 69,99 €"
+    ]
+   },
+   {
+    "feld": "position",
+    "wert": "standard",
+    "auswahl": [
+     "Bitte wählen",
+     "Klingel unten",
+     "Klingel oben"
+    ]
+   }
+  ]
+ }
+}

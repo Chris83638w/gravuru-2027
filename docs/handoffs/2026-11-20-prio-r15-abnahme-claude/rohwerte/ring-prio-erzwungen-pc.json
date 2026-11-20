@@ -1,0 +1,254 @@
+{
+ "ziel": "ring",
+ "profil": "pc",
+ "prioErzwungen": true,
+ "zeit": "2026-11-20T05:51:18.689Z",
+ "url": "https://gravuru-design.myshopify.com/products/klingelschild-ring-wired-pro-3-gen-5dfya2-personalisiert",
+ "anfragen": [
+  "GET SHOP/apps/konfigurator/shop-embed.mjs",
+  "GET SHOP/apps/konfigurator/theme-cart-client.mjs",
+  "GET SHOP/apps/konfigurator/start?product=16126387257724&variant=57471227756924&back=%2Fproducts%2Fklingelschild-ring-wired-pro-3-gen-5dfya2-personalisiert&embed=1&format=json",
+  "GET APP/konfigurator/shop/warm/",
+  "GET APP/konfigurator/shop/shop-warm.mjs",
+  "GET APP/_merchant-acryl-editor.html",
+  "GET APP/konfigurator/shop/",
+  "GET APP/konfigurator/shop/shop-entry-client.mjs",
+  "GET APP/konfigurator/shop/shop-entry-page.mjs",
+  "GET APP/_acryl-bundle/editor-7dfd6f600e080015.mjs",
+  "GET APP/_acryl-bundle/editor-525420419a930df8.mjs",
+  "GET APP/konfigurator/shop/shop-design-switch.mjs",
+  "GET APP/konfigurator/shop/shop-selection-transfer.mjs",
+  "GET APP/api/shop-entry/model",
+  "GET APP/_merchant-acryl-editor.html",
+  "GET APP/_acryl-bundle/editor-7dfd6f600e080015.mjs",
+  "GET APP/_acryl-bundle/editor-525420419a930df8.mjs",
+  "GET APP/_acryl-bundle/editor-bbd6f79f32ce9680.mjs"
+ ],
+ "praesentation": null,
+ "startHref": "/apps/konfigurator/start?product=16126387257724&variant=57471227756924&back=%2Fproducts%2Fklingelschild-ring-wired-pro-3-gen-5dfya2-personalisiert",
+ "produkt": "Klingelschild für Ring Wired Pro (3.Gen) 5DFYA2 · Hochformat 16 × 28 cm",
+ "editorBereit": true,
+ "oeffnenMs": 3572,
+ "rahmen": [
+  "SHOP/products/klingelschild-ring-wired-pro-3-gen-5dfya2-personalisiert",
+  "null/",
+  "SHOP/web-pixels@59be8e47w556dc13fpc8f027a5m478ef996/custom/web-pixel-shopify-custom-pixel@0540/sandbox/modern/products/klingelschild-ring-wired-pro-3-gen-5dfya2-personalisiert",
+  "APP/konfigurator/shop/warm/#%7B…",
+  "APP/konfigurator/shop/#s=g…",
+  "APP/_merchant-acryl-editor.html"
+ ],
+ "ui": {
+  "knoepfe": [
+   "Produkt vergrößern",
+   "In den Warenkorb",
+   "Ausführung & Größe",
+   "Designs",
+   "Text",
+   "Motive",
+   "Menge verringern",
+   "Menge erhöhen",
+   "Vollbild öffnen",
+   "Preisdetails",
+   "Zurück zum Produkt",
+   "Entwurf speichern",
+   "Vollansicht",
+   "Zurücksetzen",
+   "Rückgängig",
+   "Wiederholen",
+   "Hilfe",
+   "Ebenen",
+   "Ausführung und Größe auswählen",
+   "Warenkorb",
+   "Ausführung"
+  ],
+  "hostAttribute": {
+   "data-variant-c-ready": "",
+   "data-layout": "C",
+   "data-universal-profile": "cfg_d9fb1702-b41e-49f0-9eda-117be91f436a",
+   "data-doorbell-presentation": "",
+   "data-ux-photo-sizing": "false",
+   "style": "--guided-preview-offset: 0px; --guided-plate-ratio: 0.571428",
+   "data-ux-text-editing": "false",
+   "data-ux-compact-editing": "false",
+   "data-ux-neutral": "true",
+   "data-ux-layout": "compact",
+   "data-ux-modern": "true",
+   "data-mobile-demo": "sheet",
+   "data-demo-sheet": "menu",
+   "data-demo-selected-type": ""
+  },
+  "uxTabs": [
+   "options",
+   "design",
+   "text",
+   "motif"
+  ],
+  "prioMerkmale": {
+   "htmlKlassen": "",
+   "bodyKlassen": "",
+   "datenUi": null
+  },
+  "warenkorbKnopf": [
+   {
+    "text": "In den Warenkorb",
+    "gesperrt": true,
+    "sichtbar": false
+   },
+   {
+    "text": "In den Warenkorb",
+    "gesperrt": true,
+    "sichtbar": false
+   },
+   {
+    "text": "Fertig · Einstellungen schließen",
+    "gesperrt": false,
+    "sichtbar": false
+   },
+   {
+    "text": "In den Warenkorb",
+    "gesperrt": true,
+    "sichtbar": false
+   },
+   {
+    "text": "Fertig",
+    "gesperrt": false,
+    "sichtbar": false
+   },
+   {
+    "text": "In den Warenkorb",
+    "gesperrt": false,
+    "sichtbar": true
+   }
+  ]
+ },
+ "tiefe": {
+  "designsGeklickt": "Designs",
+  "karten": {
+   "gesamt": 16,
+   "sichtbar": 10,
+   "sichtbarFertig": 10,
+   "namen": [
+    "Strichdesign",
+    "Klar & modern",
+    "Große Hausnummer",
+    "Pur",
+    "Zwei Zeilen",
+    "Nummer im Kreis",
+    "Klassische Eleganz",
+    "Handschrift",
+    "Architektur",
+    "Unser Zuhause",
+    "Doppellinie",
+    "Nordisch",
+    "Herzstück",
+    "Versetzt",
+    "Feiner Rahmen",
+    "Signatur"
+   ],
+   "gewaehlt": [
+    "Design Strichdesign"
+   ]
+  },
+  "ausfuehrungGeklickt": "Fertig",
+  "ausfuehrung": "Ausführung & Größe",
+  "optionen": [
+   {
+    "feld": "form",
+    "wert": "RE",
+    "auswahl": [
+     "Rechteck"
+    ]
+   },
+   {
+    "feld": "",
+    "wert": "cfg_d9fb1702-b41e-49f0-9eda-117be91f436a",
+    "auswahl": [
+     "160 × 280 mm"
+    ]
+   },
+   {
+    "feld": "",
+    "wert": "K00",
+    "auswahl": [
+     "Ohne Befestigung"
+    ]
+   },
+   {
+    "feld": "",
+    "wert": "png",
+    "auswahl": [
+     "Produktvorschau · PNG",
+     "Vektorentwurf ohne Foto · SVG 1:1"
+    ]
+   },
+   {
+    "feld": "",
+    "wert": "",
+    "auswahl": [
+     "Unsere Empfehlungen",
+     "Alle Schriftarten",
+     "Schlicht & modern",
+     "Klassisch & elegant",
+     "Handschrift",
+     "Geschwungen & festlich",
+     "Markant & verspielt",
+     "Schreibmaschine"
+    ]
+   },
+   {
+    "feld": "",
+    "wert": "Montserrat",
+    "auswahl": [
+     "Montserrat",
+     "Josefin Sans",
+     "Raleway",
+     "Poppins",
+     "Nunito",
+     "Libre Baskerville",
+     "Cormorant Garamond",
+     "Playfair Display",
+     "Caveat",
+     "Sacramento",
+     "Allura"
+    ]
+   },
+   {
+    "feld": "",
+    "wert": "",
+    "auswahl": [
+     "Graustufen",
+     "Punktraster"
+    ]
+   },
+   {
+    "feld": "mounting",
+    "wert": "K00",
+    "auswahl": [
+     "Keine Befestigung · ohne Aufpreis",
+     "Verdeckte Bolzen · +5,99 €",
+     "Selbstklebend – raue Flächen · +4,99 €",
+     "Mit Silikon · +4,99 €",
+     "Bohrlöcher mit Schrauben · +3,69 €"
+    ]
+   },
+   {
+    "feld": "format",
+    "wert": "16x28",
+    "auswahl": [
+     "Hochformat · 49,99 €",
+     "Querformat · 59,99 €",
+     "Länglich · 69,99 €"
+    ]
+   },
+   {
+    "feld": "position",
+    "wert": "standard",
+    "auswahl": [
+     "Bitte wählen",
+     "Klingel unten",
+     "Klingel oben"
+    ]
+   }
+  ]
+ }
+}

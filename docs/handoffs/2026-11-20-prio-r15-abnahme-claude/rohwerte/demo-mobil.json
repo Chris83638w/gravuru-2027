@@ -1,0 +1,160 @@
+{
+ "ziel": "demo",
+ "profil": "mobil",
+ "prioErzwungen": false,
+ "zeit": "2026-11-20T05:49:28.997Z",
+ "url": "https://app-2027.gravuru-designwerkstatt.de/konfi-demo/mobil-20261107-r15/22x14.html?fresh=1",
+ "anfragen": [
+  "GET APP/konfi-demo/mobil-20261107-r15/22x14.html?fresh=1",
+  "GET APP/konfi-demo/mobil-20261107-r15/_bundle/editor-5fb55c25b1ff0091.mjs",
+  "GET APP/konfi-demo/mobil-20261107-r15/demo.mjs",
+  "GET APP/konfi-demo/mobil-20261107-r15/text-editor.mjs",
+  "GET APP/konfi-demo/mobil-20261107-r15/configurator/mobile-demo/edge-resize.mjs",
+  "GET APP/konfi-demo/mobil-20261107-r15/configurator/mobile-demo/motif-size-limit.mjs",
+  "GET APP/konfi-demo/mobil-20261107-r15/small-motif-controls.mjs",
+  "GET APP/konfi-demo/mobil-20261107-r15/text-selection-dismiss.mjs",
+  "GET APP/konfi-demo/mobil-20261107-r15/desktop-selection.mjs",
+  "GET APP/konfi-demo/mobil-20261107-r15/options-navigation.mjs",
+  "GET APP/konfi-demo/mobil-20261107-r15/overlap-review.mjs",
+  "GET APP/konfi-demo/mobil-20261107-r15/product-return.mjs",
+  "GET APP/konfi-demo/mobil-20261107-r15/_bundle/editor-e1e24f0ee6b66daf.mjs",
+  "GET APP/konfi-demo/mobil-20261107-r15/configurator/variant-m/edge-clamp.mjs",
+  "GET APP/konfi-demo/mobil-20261107-r15/platform/sources/app/shared/models/text-paths.mjs",
+  "GET APP/konfi-demo/mobil-20261107-r15/configurator/variant-m/surfaces.mjs",
+  "GET APP/konfi-demo/mobil-20261107-r15/overlap-consent.mjs",
+  "GET APP/konfi-demo/mobil-20261107-r15/contour-placement.mjs",
+  "GET APP/konfi-demo/mobil-20261107-r15/platform/sources/app/shared/models/contour-geometry.mjs",
+  "GET APP/konfi-demo/mobil-20261107-r15/workshop/process-profiles.mjs",
+  "GET APP/konfi-demo/mobil-20261107-r15/configurator/variant-m/usability-model.mjs",
+  "GET APP/konfi-demo/mobil-20261107-r15/platform/sources/app/shared/models/embedded-motif-fit.mjs",
+  "GET APP/konfi-demo/mobil-20261107-r15/platform/sources/app/shared/models/text-outline-fit.mjs",
+  "GET APP/konfi-demo/mobil-20261107-r15/schriften/b1518769e272da6664d99e38250f07d3afd922d6a6ceaf7543692c6b262c4a1c.json",
+  "GET APP/konfi-demo/mobil-20261107-r15/schriften/e4c516294647c20aa9229559d0b3576cc454766b1dfeb213c482ab1ce11f62ba.json",
+  "GET APP/konfi-demo/mobil-20261107-r15/schriften/d2862f9498c487c2eb5d28a193cbf4c0f027319ed34587f0249146342311cc4c.json",
+  "GET APP/konfi-demo/mobil-20261107-r15/schriften/450e284fccdbc2b9d1420719ebacad64e1789c196db0f19ee8907850f964157c.json",
+  "GET APP/konfi-demo/mobil-20261107-r15/schriften/af0ab1f125e849e07e0a85263869640360f49199019fe2707bf9375410d86d8d.json",
+  "GET APP/konfi-demo/mobil-20261107-r15/schriften/77b4abc87ded094d18460011188e82c4db2d76e2b4db8fb0b47010d1c5cf4eae.json",
+  "GET APP/konfi-demo/mobil-20261107-r15/schriften/b6085a7a685f2ed38ef0f88649029cce6068fd3b7edd4d24e07ea64e59e91c4f.json",
+  "GET APP/konfi-demo/mobil-20261107-r15/schriften/0910fcd563851c074c10807738f26c8a9c0716cd1d1775b7e94036f525c24ca2.json",
+  "GET APP/konfi-demo/mobil-20261107-r15/schriften/2de7db9cee35cf539003f2f64d0a7826c68e8096d431a588f3813b7c62b3b7ac.json",
+  "GET APP/konfi-demo/mobil-20261107-r15/schriften/bab8dfec799da294ac9dba5960d83c7ea3e2b26709a03769da2909d612258063.json",
+  "GET APP/konfi-demo/mobil-20261107-r15/schriften/9f6478809b966d1c12c68bda7a89b40a016ec42f310ec59bb4fd06d2b0e79878.json",
+  "GET APP/konfi-demo/mobil-20261107-r15/schriften/a2d2d7215ce632b45790814436ffee846addd5539d9ecc230da6eaa5818a79f8.json",
+  "GET APP/konfi-demo/mobil-20261107-r15/schriften/076933c087e2ec9bd6458f673343650e9d0f3959d2b5f47c30e2240182ccdf8f.json",
+  "GET APP/konfi-demo/mobil-20261107-r15/schriften/4b044f3681cd7add9ca06e337d5622497c9ab2dd91e1e628fa397b6ead770cf6.json",
+  "GET APP/konfi-demo/mobil-20261107-r15/schriften/dce5f11e7a2fe9320d83f150eee99c6f84df0ee8d50c8d4ae6bf2de69b4be184.json",
+  "GET APP/konfi-demo/mobil-20261107-r15/schriften/34dda5c088c7467250f977f09dcf4bf6e425076c2dac07818c8f28bc5552452d.json",
+  "GET APP/konfi-demo/mobil-20261107-r15/schriften/3acc76aec1916bd02a41b57e5cfd54261b4fbf03898bc78bf80c6834c05b3bf1.json",
+  "GET APP/konfi-demo/mobil-20261107-r15/schriften/d2b34266f28d1d748fc632b68ff68c60e3124bb5b3226d2914558ccea8781054.json",
+  "GET APP/konfi-demo/mobil-20261107-r15/schriften/65aa04467ed2d1e025bc941eed54728127f2cd6de80f0299521215360e87814e.json",
+  "GET APP/konfi-demo/mobil-20261107-r15/schriften/d0207ce5ca9d40232e37a6d33764fb900a2e18221adf4890aedcdf0b21f16324.json",
+  "GET APP/konfi-demo/mobil-20261107-r15/schriften/fc4895d92164e1053daa957397687d138da97f0eb15cd775d6694064b460e29b.json",
+  "GET APP/konfi-demo/mobil-20261107-r15/schriften/9b3e2f8741a92b71d01568deb991538159ce4d849e6d795cc20412259a8199c7.json",
+  "GET APP/konfi-demo/mobil-20261107-r15/schriften/8d9bd509e61009b3423cef649fd4fe8512a8153230bd85a811ecc5173abe09a0.json",
+  "GET APP/konfi-demo/mobil-20261107-r15/schriften/62f89cb6e004b5774d40aeb31591d9e8c79ce83da4544bc8ef81fa4db4ed171c.json",
+  "GET APP/konfi-demo/mobil-20261107-r15/schriften/a74f05fa90fbe0510c394871dd1049e8f5759659d4662936faa63b0e2ed05bde.json",
+  "GET APP/konfi-demo/mobil-20261107-r15/schriften/9b77964fe0978064a740133cbfb8708453be7af2d3c749d24c3a05792a76d73c.json",
+  "GET APP/konfi-demo/mobil-20261107-r15/schriften/15d3ba1725bdda7a1472a8327bf0fb58cb26010fbcdff3633e33674bb0b37b1f.json",
+  "GET APP/konfi-demo/mobil-20261107-r15/schriften/af923c8f9dca05fc70000003381d03a484a30a604a01c19835989931aec268e7.json",
+  "GET APP/konfi-demo/mobil-20261107-r15/schriften/0c88eafab76705ff60bd9e6af139b42426d58db3d4a95811d29c68d0ed821b0c.json",
+  "GET APP/konfi-demo/mobil-20261107-r15/schriften/effd5122233d57a1995b9b9e217d5de3bc5bdbefe960c6cc26780caeb112d64f.json",
+  "GET APP/konfi-demo/mobil-20261107-r15/_runtime/lazy/katalog-kern.json",
+  "GET APP/konfi-demo/mobil-20261107-r15/configurator/variant-m/print-export-model.mjs",
+  "GET APP/konfi-demo/mobil-20261107-r15/platform/sources/app/shared/models/processing-profiles.mjs",
+  "GET APP/konfi-demo/mobil-20261107-r15/configurator/variant-m/contour-pdf-path.mjs",
+  "GET APP/konfi-demo/mobil-20261107-r15/assistant.js",
+  "GET APP/konfi-demo/mobil-20261107-r15/demo.css",
+  "GET APP/konfi-demo/mobil-20261107-r15/api/guides",
+  "GET APP/konfi-demo/mobil-20261107-r15/_runtime/lazy/schriften/nunito.json",
+  "GET APP/konfi-demo/mobil-20261107-r15/_runtime/lazy/schriften/caveat.json"
+ ],
+ "titel": "Deine Gedenktafel gestalten · Gravuru",
+ "skripte": [
+  "/konfi-demo/mobil-20261107-r15/_bundle/editor-5fb55c25b1ff0091.mjs",
+  "/konfi-demo/mobil-20261107-r15/demo.mjs",
+  "/konfi-demo/mobil-20261107-r15/assistant.js"
+ ],
+ "ui": {
+  "knoepfe": [
+   "Zurück zum Produkt",
+   "Rückgängig",
+   "Wiederholen",
+   "Ebenen (4)",
+   "Entwurf speichern",
+   "Hilfe",
+   "Werkzeuge öffnen",
+   "Gestaltung zurücksetzen",
+   "Ausführung und Größe auswählen",
+   "Ausführung",
+   "Designs",
+   "Text",
+   "Motive",
+   "Foto",
+   "Warenkorb"
+  ],
+  "hostAttribute": {
+   "data-variant-c-ready": "",
+   "data-layout": "C",
+   "data-universal-profile": "demo-mobil-20261107-r15-22x14",
+   "data-product-execution": "memorial",
+   "data-ux-photo-sizing": "false",
+   "style": "--guided-preview-offset: 0px; --guided-plate-ratio: 1.571428",
+   "data-ux-text-editing": "false",
+   "data-ux-compact-editing": "false",
+   "data-ux-mobile": "true",
+   "data-ux-mobile-tabs": "true",
+   "data-ux-step": "design",
+   "data-ux-keyboard": "false",
+   "data-ux-neutral": "true",
+   "data-ux-layout": "compact",
+   "data-ux-modern": "true",
+   "data-mobile-demo": "sheet",
+   "data-demo-sheet": "closed",
+   "data-demo-selected-type": ""
+  },
+  "uxTabs": [
+   "options",
+   "design",
+   "text",
+   "motif",
+   "upload"
+  ],
+  "prioMerkmale": {
+   "htmlKlassen": "",
+   "bodyKlassen": "",
+   "datenUi": null
+  },
+  "warenkorbKnopf": [
+   {
+    "text": "In den Warenkorb",
+    "gesperrt": true,
+    "sichtbar": false
+   },
+   {
+    "text": "In den Warenkorb",
+    "gesperrt": true,
+    "sichtbar": false
+   },
+   {
+    "text": "Fertig · Einstellungen schließen",
+    "gesperrt": false,
+    "sichtbar": false
+   },
+   {
+    "text": "Fertig",
+    "gesperrt": false,
+    "sichtbar": false
+   },
+   {
+    "text": "Fertig",
+    "gesperrt": false,
+    "sichtbar": false
+   },
+   {
+    "text": "In den Warenkorb",
+    "gesperrt": true,
+    "sichtbar": false
+   }
+  ]
+ }
+}

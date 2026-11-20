@@ -1,0 +1,129 @@
+{
+ "ziel": "edelstahl",
+ "profil": "pc",
+ "prioErzwungen": false,
+ "zeit": "2026-11-20T05:48:50.837Z",
+ "url": "https://gravuru-design.myshopify.com/products/tuerschild-edelstahl-form-und-groesse-selbst-waehlen",
+ "anfragen": [
+  "GET SHOP/apps/konfigurator/shop-embed.mjs",
+  "GET SHOP/apps/konfigurator/theme-cart-client.mjs",
+  "GET SHOP/apps/konfigurator/start?product=16190784438652&variant=58104606556540&back=%2Fproducts%2Ftuerschild-edelstahl-form-und-groesse-selbst-waehlen&ui=prio-r15&embed=1&for",
+  "GET APP/konfigurator/shop/warm/",
+  "GET APP/konfigurator/shop/shop-warm.mjs",
+  "GET APP/konfigurator/shop/",
+  "GET APP/_merchant-acryl-editor.html",
+  "GET APP/konfigurator/shop/shop-entry-client.mjs",
+  "GET APP/konfigurator/shop/shop-entry-page.mjs",
+  "GET APP/_acryl-bundle/editor-7dfd6f600e080015.mjs",
+  "GET APP/_acryl-bundle/editor-525420419a930df8.mjs",
+  "GET APP/konfigurator/shop/shop-design-switch.mjs",
+  "GET APP/konfigurator/shop/schriften/3201589047768a19ed4506e9b76a18aa1b353b932b9cd599e632bbde1575e0d1.json",
+  "GET APP/konfigurator/shop/shop-selection-transfer.mjs",
+  "GET APP/api/shop-entry/model",
+  "GET APP/konfigurator/shop/schriften/3201589047768a19ed4506e9b76a18aa1b353b932b9cd599e632bbde1575e0d1.json",
+  "GET APP/_merchant-acryl-editor.html",
+  "GET APP/_acryl-bundle/editor-7dfd6f600e080015.mjs",
+  "GET APP/_acryl-bundle/editor-525420419a930df8.mjs",
+  "GET APP/_acryl-bundle/editor-6ee9bdee5f9ebc6b.mjs",
+  "GET APP/konfigurator/shop/schriften/af923c8f9dca05fc70000003381d03a484a30a604a01c19835989931aec268e7.json"
+ ],
+ "praesentation": "{\"schema\":\"gravuru-shop-presentation/v1\",\"productId\":\"16190784438652\",\"ui\":\"prio-r15\",\"variantId\":\"58104606556540\",\"themeVariantId\":\"58104606556540\",\"back\":\"\\/products\\/tuerschild-edelstahl-form-und-groesse-selbst-waehlen\",\"variants\":[\"58104601149820\",\"58104601182588\",\"58104601215356\",\"58104601248124\",\"58104601280892\",\"58104601313660\",\"58104601346428\",\"58104601379196\",\"58104601411964\",\"58104601444",
+ "startHref": "/apps/konfigurator/start?product=16190784438652&variant=58104606556540&back=%2Fproducts%2Ftuerschild-edelstahl-form-und-groesse-selbst-waehlen&ui=prio-r15",
+ "produkt": "Türschild Edelstahl – Form und Größe selbst wählen",
+ "editorBereit": true,
+ "oeffnenMs": 3113,
+ "rahmen": [
+  "SHOP/products/tuerschild-edelstahl-form-und-groesse-selbst-waehlen",
+  "SHOP/web-pixels@59be8e47w556dc13fpc8f027a5m478ef996/custom/web-pixel-shopify-custom-pixel@0540/sandbox/modern/products/tuerschild-edelstahl-form-und-groesse-selbst-waehlen",
+  "null/",
+  "APP/konfigurator/shop/warm/#%7B…",
+  "APP/konfigurator/shop/#s=g…",
+  "APP/_merchant-acryl-editor.html"
+ ],
+ "ui": {
+  "knoepfe": [
+   "Produkt vergrößern",
+   "In den Warenkorb",
+   "Ausführung & Größe",
+   "Designs",
+   "Text",
+   "Motive",
+   "Logo",
+   "Menge verringern",
+   "Menge erhöhen",
+   "Vollbild öffnen",
+   "Preisdetails",
+   "Zurück zum Produkt",
+   "Entwurf speichern",
+   "Vollansicht",
+   "Zurücksetzen",
+   "Rückgängig",
+   "Wiederholen",
+   "Hilfe",
+   "Ebenen",
+   "Ausführung und Größe auswählen",
+   "Warenkorb",
+   "Ausführung"
+  ],
+  "hostAttribute": {
+   "data-variant-c-ready": "",
+   "data-layout": "C",
+   "data-universal-profile": "cfg_ac514214-a313-4738-8008-00445ee1befd",
+   "data-family-formats": "",
+   "data-ux-photo-sizing": "false",
+   "style": "--guided-preview-offset: 0px; --guided-plate-ratio: 1.5; --m",
+   "data-ux-text-editing": "false",
+   "data-ux-compact-editing": "false",
+   "data-ux-neutral": "true",
+   "data-ux-layout": "compact",
+   "data-ux-modern": "true",
+   "data-mobile-demo": "sheet",
+   "data-demo-sheet": "menu",
+   "data-demo-selected-type": ""
+  },
+  "uxTabs": [
+   "options",
+   "design",
+   "text",
+   "motif",
+   "upload"
+  ],
+  "prioMerkmale": {
+   "htmlKlassen": "",
+   "bodyKlassen": "",
+   "datenUi": null
+  },
+  "warenkorbKnopf": [
+   {
+    "text": "In den Warenkorb",
+    "gesperrt": true,
+    "sichtbar": false
+   },
+   {
+    "text": "In den Warenkorb",
+    "gesperrt": true,
+    "sichtbar": false
+   },
+   {
+    "text": "Fertig · Einstellungen schließen",
+    "gesperrt": false,
+    "sichtbar": false
+   },
+   {
+    "text": "In den Warenkorb",
+    "gesperrt": true,
+    "sichtbar": false
+   },
+   {
+    "text": "Fertig",
+    "gesperrt": false,
+    "sichtbar": false
+   },
+   {
+    "text": "In den Warenkorb",
+    "gesperrt": false,
+    "sichtbar": true
+   }
+  ]
+ }
+}

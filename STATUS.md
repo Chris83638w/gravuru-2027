@@ -1,3 +1,12 @@
+## 20.11.2026 · Claude (Operator, als Prüfer) · #267: Ausgangslage vor der Abnahme „Prio-R15 für Ring mit Shopify-Warenkorb“
+
+- Auftrag: [koordinierter Auftrag von Chris](https://github.com/Chris83638w/gravuru-2027/issues/267#issuecomment-7031593545). **Nur gelesen:** Referenz, zwei Produktseiten und Editor geöffnet, nichts gespeichert, kein Warenkorb, keine Bestellung; Testbestellungen #1033 und #1034 in Shopify gelesen. Keine Änderung an Shop, Theme, Server, Preisen oder fremden Branches.
+- Übergabe: [docs/handoffs/2026-11-20-prio-r15-abnahme-claude.md](docs/handoffs/2026-11-20-prio-r15-abnahme-claude.md), Skript, Rohwerte und Bilder im gleichnamigen Ordner.
+- Befund: Der Ring-Produktseite fehlt die Prio-Kennung (`#gravuru-konfi-presentation`, `ui: prio-r15`); das Edelstahl-Türschild trägt sie. Das war schon am 19.11. mittags so. Mit der Kennung an der eigenen Anfrage öffnet der Ring bereits die Prio-Oberfläche mit eigenen Ring-Daten (16 Designs, 3 Formate, Position, 4 Rahmen, 5 Befestigungen, 2 Farben). Drei sichtbare Abweichungen zwischen Referenz-Demo und Prio im Shop.
+- Live-Stand `b36a8eef` (Branch `dev/astra-r15-live-267-20261119`): Gesamtsuite 2743/2751, dieselben vier Fehler wie am bisherigen Live-Code `9af3a1ac`; Gegenprobe Bestellung unverändert richtig. B `83fa4bd3`: Gegenprobe unverändert richtig, Gesamtsuite folgt mit der Abnahme.
+- Offen: Warenkorb, Kasse und Bestellung aus der Prio-Ansicht des Rings (braucht Schreibzugriff mit Freigabe); Entscheidung von Chris zu den drei Abweichungen und zu unveränderten Beispieltexten.
+- Nächster Schritt: Abnahme nach Astras Lieferung nach dem im Bericht genannten Maßstab, gleich für A und B.
+
 ## 19.11.2026 · Claude (Operator, als Prüfer) · #267: R15-Tempo-Patches A `f7504182` und B `60f05317`
 
 - Auftrag: Kurskorrektur von Chris im Text von #267, davor [Prüfauftrag in #265](https://github.com/Chris83638w/gravuru-2027/issues/265#issuecomment-7012429273). Nur lokale Prüfung. **Keine Runtime-, Shop- oder Preisänderung, kein Merge, kein Deployment, keine Bestellung.** Öffentlicher Produktdatensatz des Ring-Schilds einmal gelesen.

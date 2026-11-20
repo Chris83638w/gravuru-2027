@@ -9,7 +9,6 @@ import {isFamilyFormats,isAllSizesFamily,designNumber} from './family-formats.mj
 import {installDesignSearchControl} from './design-search-control.mjs';
 import {installNativeDesignSearch} from './native-design-search.mjs';
 import {planDesignAdoption} from './design-adoption.mjs';
-import {designResourcesReady} from './doorbell-lazy-designs.mjs';
 
 const money=cents=>new Intl.NumberFormat('de-DE',{style:'currency',currency:'EUR'}).format(cents/100);
 const TRANSFER_NOTE='Deine Texte und Fotos wurden übernommen. Bitte die neue Anordnung prüfen.';
@@ -123,11 +122,14 @@ export async function installProductDesignGallery({el,r,config,files,say,dialog,
  // gleichzeitig für alle Besucher zusammen, nur sichtbare Karten). Liegt ein Design samt Schrift und Motiv im Gerät,
  // zeichnet der Editor seine Karte selbst, mit derselben Zeichenfunktion wie die eigene Designauswahl und Variante C
  // (window.Funkklingel.thumb). Für alle anderen Karten bleibt die Vorschau vom Server.
+ // Gleiche Bedingung wie designResourcesReady in doorbell-lazy-designs.mjs. Hier eigenständig, weil jene Datei
+ // Gerätelogik der Klingelschilder nachzieht, die nicht ins gemeinsame Paket gehört (bundle.test.mjs).
+ const resourcesReady=design=>(design?.objects||[]).every(o=>o.type==='text'?!!el.fontData?.[o.font]:o.type==='motif'?typeof el.motifs?.[o.motif]==='string'||o.motif?.startsWith('ux-line-'):true);
  function drawCard(request){
   const {item,img}=request;
   if(!allSizes||!item.current||request.drawn||img.src||!img.parentNode||!el.isConnected||!el.uxLayoutReady)return false;
   const template=profile().designs.find(d=>d.id===item.designId);
-  if(!template||!designResourcesReady(template,el.fontData,el.motifs))return false;
+  if(!template||!resourcesReady(template))return false;
   let svg=null;
   try{const holder=document.createElement('div');holder.innerHTML=window.Funkklingel.thumb(el,template);svg=holder.firstElementChild;}catch{return false;}
   if(!svg||svg.localName!=='svg'||svg.childElementCount===0)return false;

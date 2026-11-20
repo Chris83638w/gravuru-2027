@@ -127,3 +127,36 @@ test('Design-Teile gibt es nur für das Türschild mit allen Größen und die Fa
  assert.equal(hasDesignParts({profile:{designs:[]}}),false);
 });
 
+// Chris, 20.11.2026, 17:10 Uhr: „Bei jedem Produkt muss es doch einfach umstellbsar sein.“ Anlass: Die schnelle Technik hing
+// zuerst nur am Türschild mit allen Größen; die Acrylglas-Schilder (feste Größe) brauchten ein eigenes Aufspielen.
+// Die Regel: Schickt der Start nur einen Teil der Designs, muss es für die übrigen Design-Teile geben. Sonst bleibt nur der
+// langsame Weg (Vorschau vom Server, je Wechsel ein neuer Editor). Das gilt für jeden Schnitt, den der Katalog erzeugt.
+test('jeder Produktschnitt aus dem Katalog hat nach dem Start alle Designs im Gerät oder bekommt sie als Design-Teile',()=>{
+ const count=model=>model.universal.familyFormats.designs.length;
+ const cut=(name,model)=>{
+  const sent=shopStartModel(model),complete=count(sent)===count(model);
+  assert.ok(complete||hasDesignParts(sent.universal),name+': Start ohne alle Designs und ohne Design-Teile');
+  return {complete,parts:hasDesignParts(sent.universal)};
+ };
+ // groessenWahl "alle" (ein Produkt mit allen Formen und Größen) und der Schnitt je Größe (feste Größe): Design-Teile.
+ assert.deepEqual(cut('alle Größen',doorSignModel()),{complete:false,parts:true});
+ assert.deepEqual(cut('feste Größe',fixedSignModel(6)),{complete:false,parts:true});
+ // groessenWahl "form" und die Familie mit Größenwahl im Konfi: Der Start schickt alle Designs, der Editor zeichnet selbst.
+ for(const wahl of ['form',undefined]){
+  const model=doorSignModel(),shop=model.universal.familyFormats.source.shopProduct;
+  if(wahl)shop.groessenWahl=wahl;else delete shop.groessenWahl;
+  assert.deepEqual(cut('Größenwahl '+wahl,model),{complete:true,parts:false});
+ }
+});
+
+// Bekannte Lücke, bewusst nicht blind gebaut (kein solches Produkt im Shop, also nicht am echten Shop prüfbar): Ein Produkt
+// ohne Familie (ältere Einzelprodukte) startet mit einem Design und hat keine Design-Teile. Kommt so ein Produkt in den
+// Shop, schlägt dieser Test nicht fehl – er hält nur fest, dass die Lücke bekannt ist und wo sie sitzt.
+test('bekannte Lücke: Produkte ohne Familie starten mit einem Design und haben keine Design-Teile',()=>{
+ const design=id=>({id,name:id,objects:[]});
+ const single={universal:{profile:{defaultDesignId:'a',designs:[design('a'),design('b'),design('c')]}}};
+ const sent=shopStartModel(single);
+ assert.deepEqual(sent.universal.profile.designs.map(d=>d.id),['a']);
+ assert.equal(hasDesignParts(sent.universal),false);
+});
+

@@ -137,42 +137,48 @@ export async function installProductDesignGallery({el,r,config,files,say,dialog,
  }
  const drawCards=()=>{for(const request of [...requests])try{drawCard(request);}catch{/* Diese Karte behält die Vorschau vom Server. */}};
  // Bei einem Größenwechsel sucht der Editor dieselbe Vorlage, sonst dieselbe Designnummer. Nur wenn das je Ausführung
- // eindeutig ist, hängt das Ergebnis nicht von der Reihenfolge der Aufnahme ab.
- const unambiguous=source=>{const byId=new Map(source.familyFormats.designs.map(d=>[d.id,d]));
-  return source.familyFormats.formats.every(format=>format.variants.every(variant=>{const numbers=variant.designIds.map(id=>designNumber(byId.get(id)));return numbers.every(n=>n!==null)&&new Set(numbers).size===numbers.length;}));};
+ // eindeutig ist, auch zusammen mit den schon aufgenommenen Designs, hängt das Ergebnis nicht von der Reihenfolge ab.
+ const unambiguous=(target,source)=>{
+  const byId=new Map([...target.familyFormats.designs,...source.familyFormats.designs].map(d=>[d.id,d]));
+  return source.familyFormats.formats.every((format,i)=>format.variants.every((variant,j)=>{
+   const ids=[...new Set([...(target.familyFormats.formats[i]?.variants[j]?.designIds||[]),...variant.designIds])],numbers=ids.map(id=>designNumber(byId.get(id)));
+   return numbers.every(n=>n!==null)&&new Set(numbers).size===numbers.length;}));
+ };
  const PREPARE_GROUP=6;
  function prepareDesigns(items,version){
   if(!allSizes||!api.loadDesigns||!el.uxAdoptDesignModel||saveDataActive(window.navigator?.connection))return;
   const wanted=items.filter(item=>item.current&&typeof item.designId==='string').map(item=>item.designId);
   if(!wanted.length)return;
-  // In der Reihenfolge der Karten, in kleinen Gruppen: die oberen Designs sind zuerst fertig.
-  preparing=preparing.then(async()=>{
-   for(let at=0;at<wanted.length&&version===epoch;at+=PREPARE_GROUP){
-    // Vorab-Start auf der Produktseite: Die erste Gruppe (die oberen Karten) liegt schon bereit, wenn der Kunde öffnet.
-    // Alle weiteren Gruppen erst, wenn er den Konfigurator wirklich sieht.
-    if(at>0)try{await window.parent.GravuruShopEntry?.whenShown?.();}catch{/* Ohne Meldung der Shop-Seite sofort. */}
-    const group=wanted.slice(at,at+PREPARE_GROUP).filter(id=>!profile().designs.some(d=>d.id===id));
-    if(!group.length){drawCards();continue;}
-    try{
-     const loaded=await api.loadDesigns(group);if(!loaded?.designIds?.length)continue;
-     await new Promise(resolve=>idleScheduler(window,{timeout:at?1500:300})(resolve));
-     while(switching)await new Promise(resolve=>setTimeout(resolve,120));
-     const started=performance.now(),source=structuredClone(loaded.universal);if(!unambiguous(source))continue;
-     // Erst vollständig prüfen (beide Kopien), dann schreiben, wie beim Antippen.
-     const updateGallery=planDesignAdoption(config,source,loaded.designIds[0]);
-     el.uxAdoptDesignModel(source,loaded.designIds[0]);updateGallery();
-     prepareLog.push({designs:loaded.designIds.length,ms:Math.round(performance.now()-started)});
-     drawCards();
-     // Schriften und Motive der Gruppe gleichzeitig holen; jede Karte erscheint, sobald ihr Design vollständig ist.
-     await Promise.all(loaded.designIds.map(async id=>{
-      const template=profile().designs.find(d=>d.id===id);
-      if(template)try{await el.uxEnsureDesignResources?.(template,{priority:'low'});}catch{/* Eine fehlende Schrift lädt beim Antippen erneut. */}
-      drawCards();
-     }));
-    }catch{/* Diese Gruppe lädt beim Antippen wie in Stufe 1. */}
-   }
+  const groups=[];for(let at=0;at<wanted.length;at+=PREPARE_GROUP)groups.push(wanted.slice(at,at+PREPARE_GROUP));
+  // Eine Gruppe: Design-Teile holen, aufnehmen, Schriften und Motive holen, Karten zeichnen.
+  const prepareGroup=async ids=>{
+   // Wie Variante C (Chris 20.11.2026, 15:07 Uhr, mit Bild: „nein, dauert sekunden“): Alle Designs und ihre Schriften
+   // laden schon, während die Produktseite offen ist (Vorab-Start), nicht erst nach dem Antippen. Beim Öffnen der
+   // Designauswahl sind dann alle Karten da. Im Datensparmodus und bei 2G lädt nichts davon (siehe oben und shop-embed.mjs).
+   if(version!==epoch)return;
+   const group=ids.filter(id=>!profile().designs.some(d=>d.id===id));
+   if(!group.length){drawCards();return;}
+   const loaded=await api.loadDesigns(group);if(!loaded?.designIds?.length)return;
+   // Kurz Luft lassen, damit Eingaben des Kunden zuerst drankommen; die Aufnahme selbst läuft in einem Zug.
+   await new Promise(resolve=>setTimeout(resolve,0));
+   while(switching)await new Promise(resolve=>setTimeout(resolve,120));
+   if(version!==epoch)return;
+   const started=performance.now(),source=structuredClone(loaded.universal);if(!unambiguous(config,source))return;
+   // Erst vollständig prüfen (beide Kopien), dann schreiben, wie beim Antippen.
+   const updateGallery=planDesignAdoption(config,source,loaded.designIds[0]);
+   el.uxAdoptDesignModel(source,loaded.designIds[0]);updateGallery();
+   prepareLog.push({designs:loaded.designIds.length,ms:Math.round(performance.now()-started)});
    drawCards();
-  });
+   // Schriften und Motive gleichzeitig holen; jede Karte erscheint, sobald ihr Design vollständig ist.
+   await Promise.all(loaded.designIds.map(async id=>{
+    const template=profile().designs.find(d=>d.id===id);
+    if(template)try{await el.uxEnsureDesignResources?.(template,{priority:'low'});}catch{/* Eine fehlende Schrift lädt beim Antippen erneut. */}
+    drawCards();
+   }));
+  };
+  // Alle Gruppen gleichzeitig (Chris 20.11.2026: bei Variante C „sehe ich sofort alles“): Die Karten sollen nicht
+  // gruppenweise nacheinander erscheinen. Scheitert eine Gruppe, lädt sie beim Antippen wie in Stufe 1.
+  preparing=preparing.then(()=>Promise.all(groups.map(ids=>prepareGroup(ids).catch(()=>{})))).then(drawCards,()=>{});
  }
  async function load(){
   if(pager.loading||pager.next===null)return;const version=epoch;more.disabled=true;themes.disabled=true;status.textContent='Designs werden geladen …';

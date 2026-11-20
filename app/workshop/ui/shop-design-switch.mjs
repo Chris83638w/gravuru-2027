@@ -51,7 +51,10 @@ export function createDesignSwitch({initial,fragment,container,activate,toDataUr
   takeTransfer:()=>{const value=entry.pending;entry.pending=null;return value;},
   // Auftrag #265 (Weg A): Modell eines weiteren Designs derselben Sitzung nur lesen. Sitzung, Rahmen und Adresse bleiben unverändert.
   loadDesign:async designId=>{
-   checkRead(entry);const loaded=await entry.client.loadModel(designId);checkRead(entry);
+   checkRead(entry);
+   // Ein Entwurf aus dem Warenkorb ist fest an sein Design gebunden (acrylic_draft_identity). Dort bleibt der bisherige Wechsel.
+   if(['config','rev','line'].some(key=>entry.fragment.has(key)))throw Error('Beim Bearbeiten aus dem Warenkorb bleibt der bisherige Designwechsel.');
+   const loaded=await entry.client.loadModel(designId);checkRead(entry);
    for(const key of ['productId','productRevision','shopifyProductId','shopifyVariantId'])if(loaded.binding?.[key]===undefined||loaded.binding[key]!==entry.data.binding?.[key])throw Error('Die Produktzuordnung wurde geändert. Bitte die Designauswahl neu öffnen.');
    if(loaded.model.configuration.id!==entry.data.model.configuration.id||loaded.model.configuration.revision!==entry.data.model.configuration.revision||!loaded.model.universal.profile.designs.some(d=>d.id===designId))throw Error('Dieses Design gehört nicht zum gewählten Produkt.');
    return {universal:loaded.model.universal};

@@ -6,13 +6,13 @@ import {createDesignSwitch} from './ui/shop-design-switch.mjs';
 
 const binding={productId:'cfg_ts',productRevision:4,shopifyProductId:'gid://shopify/Product/1',shopifyVariantId:'gid://shopify/ProductVariant/11'};
 const model=designId=>({editorPath:'/_merchant-editor.html',binding:{...binding},model:{name:'Türschild',configuration:{id:'cfg_ts',revision:4},universal:{profile:{designs:[{id:designId}]}},legacy:{}}});
-function fixture(answer){
+function fixture(answer,fragment='s=gse1.a.b'){
  const calls=[],replaced=[],appended=[];
  const win={location:{origin:'https://test.example'},history:{replaceState(...args){replaced.push(args);}},addEventListener(){},removeEventListener(){},setTimeout,clearTimeout};
  const frame={style:{},contentWindow:{},remove(){}};
  const client={loadModel:async id=>{calls.push(['loadModel',id]);return answer(id);},switchDesign:async()=>{calls.push(['switchDesign']);throw Error('nicht erwartet');},loadDesignGallery:async()=>({items:[]})};
  let api,active;
- createDesignSwitch({initial:{client,data:model('d1'),resources:{},frame},fragment:new URLSearchParams('s=gse1.a.b'),container:{append(node){appended.push(node);}},activate:(entry,a)=>{active=entry;api=a;},toDataUrl:async()=>'',win,doc:{createElement(){throw Error('kein neuer Rahmen erwartet');}}});
+ createDesignSwitch({initial:{client,data:model('d1'),resources:{},frame},fragment:new URLSearchParams(fragment),container:{append(node){appended.push(node);}},activate:(entry,a)=>{active=entry;api=a;},toDataUrl:async()=>'',win,doc:{createElement(){throw Error('kein neuer Rahmen erwartet');}}});
  return {api,calls,replaced,appended,frame,active:()=>active};
 }
 
@@ -39,4 +39,11 @@ test('lehnt ein Modell mit anderer Produktzuordnung, anderem Produktstand oder o
  for(const answer of wrong){const f=fixture(answer);await assert.rejects(f.api.loadDesign('d2'),/Produktzuordnung|gehört nicht/);assert.deepEqual(f.appended,[]);assert.deepEqual(f.replaced,[]);}
  const failing=fixture(async()=>{throw Error('Sitzung abgelaufen');});
  await assert.rejects(failing.api.loadDesign('d2'),/Sitzung abgelaufen/);
+});
+
+test('beim Bearbeiten aus dem Warenkorb wird nichts nachgeholt: der Entwurf bleibt an sein Design gebunden',async()=>{
+ for(const fragment of ['s=gse1.a.b&config=konfig_1&rev=2&line=abc','s=gse1.a.b&rev=2','s=gse1.a.b&line=abc']){
+  const f=fixture(id=>model(id),fragment);
+  await assert.rejects(f.api.loadDesign('d2'),/Warenkorb/);assert.deepEqual(f.calls,[]);
+ }
 });

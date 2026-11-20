@@ -1,0 +1,76 @@
+{
+ "hinweis": "Vollständiger Lauf über alle 208 Designs am 20.11.2026 gegen 15:50 Uhr (acryl/pruefen-alle.mjs). Die Maße zu D808 stammen aus dem Einzellauf danach.",
+ "produkt": "familienschild-acryl-baum-12x8-personalisiert",
+ "designsInDerAuswahl": 208,
+ "geprueft": 208,
+ "nichtBestanden": [
+  {
+   "id": "katalog-TAE-V2A-8x5-D808",
+   "name": "Herzlinie – Name mit feiner Herzlinie",
+   "pruefung": "Herzlinie – Name mit feiner Herzlinie: Element ragt über die Gestaltungsfläche hinaus."
+  }
+ ],
+ "restWeichtAb": [],
+ "d808": {
+  "id": "katalog-TAE-V2A-8x5-D808",
+  "name": "Herzlinie – Name mit feiner Herzlinie",
+  "pruefung": "Herzlinie – Name mit feiner Herzlinie: Element ragt über die Gestaltungsfläche hinaus.",
+  "flaeche": {
+   "breite": 120,
+   "hoehe": 80,
+   "rand": null,
+   "form": "rect"
+  },
+  "objekte": [
+   {
+    "id": "text-1",
+    "art": "text",
+    "text": "Lorenz",
+    "x": 60,
+    "y": 13.864000000000008,
+    "w": 57.000375000000005,
+    "h": 30.400199999999998,
+    "drehung": 0,
+    "links": 31.5,
+    "rechts": 88.5,
+    "oben": -1.34,
+    "unten": 29.06
+   },
+   {
+    "id": "motiv-1",
+    "art": "motif",
+    "x": 59.994,
+    "y": 50.849500000000006,
+    "w": 63.251999999999995,
+    "h": 35.701499999999996,
+    "drehung": 0,
+    "links": 28.37,
+    "rechts": 91.62,
+    "oben": 33,
+    "unten": 68.7
+   },
+   {
+    "id": "text-2",
+    "art": "text",
+    "text": "Lindenstraße 5",
+    "x": 60,
+    "y": 74.089,
+    "w": 56.887364999999996,
+    "h": 8.2242,
+    "drehung": 0,
+    "links": 31.56,
+    "rechts": 88.44,
+    "oben": 69.98,
+    "unten": 78.2
+   }
+  ]
+ },
+ "zweitesProdukt": {
+  "produkt": "tuerschild-acryl-leuchtturm-12x8-personalisiert",
+  "designsInDerAuswahl": 208,
+  "geprueft": 1,
+  "nichtBestanden": [
+   "katalog-TAE-V2A-8x5-D808"
+  ]
+ }
+}

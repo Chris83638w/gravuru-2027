@@ -1,0 +1,301 @@
+{
+ "ersatz": {
+  "fingerabdruck": "d03f7500b213",
+  "seite": true,
+  "paket": true
+ },
+ "fehler": [],
+ "syncNurStartdesign": {
+  "designs": 1,
+  "syncMs": [
+   49,
+   43,
+   42,
+   41,
+   44,
+   40
+  ]
+ },
+ "fuellen": {
+  "ersteSeite": {
+   "karten": 40,
+   "imGeraet": 37,
+   "vomServer": 3,
+   "offen": 0,
+   "sichtbarOffen": 0,
+   "designsImGeraet": 40
+  },
+  "zweiteSeite": {
+   "karten": 80,
+   "imGeraet": 63,
+   "vomServer": 5,
+   "offen": 12,
+   "sichtbarOffen": 0,
+   "designsImGeraet": 76
+  },
+  "suche": {
+   "karten": 33,
+   "imGeraet": 33,
+   "vomServer": 0,
+   "offen": 0,
+   "sichtbarOffen": 0,
+   "designsImGeraet": 100,
+   "status": "33 Designs gefunden"
+  },
+  "nachbau": 103
+ },
+ "messung": {
+  "syncEnde": {
+   "designs": 103,
+   "syncMs": [
+    156,
+    100,
+    97,
+    104,
+    109,
+    124
+   ]
+  },
+  "wartenVorTippenMs": 10000,
+  "bereitNachMs": 23,
+  "vorOeffnen": {
+   "designsImGeraet": 40,
+   "schriften": 19
+  },
+  "verlauf": [
+   {
+    "sek": 0.1,
+    "karten": 40,
+    "imGeraet": 39,
+    "vomServer": 1,
+    "offen": 0,
+    "sichtbarOffen": 0,
+    "designsImGeraet": 40
+   },
+   {
+    "sek": 0.2,
+    "karten": 40,
+    "imGeraet": 39,
+    "vomServer": 1,
+    "offen": 0,
+    "sichtbarOffen": 0,
+    "designsImGeraet": 40
+   },
+   {
+    "sek": 0.5,
+    "karten": 40,
+    "imGeraet": 39,
+    "vomServer": 1,
+    "offen": 0,
+    "sichtbarOffen": 0,
+    "designsImGeraet": 40
+   },
+   {
+    "sek": 1,
+    "karten": 40,
+    "imGeraet": 39,
+    "vomServer": 1,
+    "offen": 0,
+    "sichtbarOffen": 0,
+    "designsImGeraet": 40
+   },
+   {
+    "sek": 2,
+    "karten": 40,
+    "imGeraet": 39,
+    "vomServer": 1,
+    "offen": 0,
+    "sichtbarOffen": 0,
+    "designsImGeraet": 40
+   }
+  ],
+  "nachErsterSeite": {
+   "designsImGeraet": 40,
+   "schriften": 19,
+   "vorladen": "6:4 5:19 6:19 6:5 6:2 6:3 4:2"
+  },
+  "wechsel": [
+   {
+    "id": "katalog-TAE-V2A-8x5-D4",
+    "ms": 324
+   },
+   {
+    "id": "katalog-TAE-V2A-8x5-D10",
+    "ms": 366
+   },
+   {
+    "id": "katalog-TAE-V2A-8x5-D18",
+    "ms": 264
+   }
+  ],
+  "rueck": {
+   "vor": "katalog-TAE-V2A-8x5-D18",
+   "knopf": true,
+   "nach": "katalog-TAE-V2A-8x5-D10"
+  },
+  "syncViele": {
+   "designs": 40,
+   "syncMs": [
+    81,
+    71,
+    72,
+    72,
+    72,
+    72
+   ]
+  },
+  "ausfuehrung": {
+   "gruppen": [
+    {
+     "id": "color",
+     "werte": [
+      "schwarz",
+      "anthrazit"
+     ]
+    },
+    {
+     "id": "mounting",
+     "werte": [
+      "K00",
+      "KGL",
+      "KRA",
+      "B02",
+      "B02S"
+     ]
+    }
+   ],
+   "vor": {
+    "design": "katalog-TAE-V2A-8x5-D10",
+    "optionen": {
+     "color": "schwarz",
+     "mounting": "K00"
+    }
+   },
+   "mitte": {
+    "design": "katalog-TAE-V2A-8x5-D10",
+    "optionen": {
+     "color": "anthrazit",
+     "mounting": "K00"
+    },
+    "objekte": 5
+   },
+   "zurueck": {
+    "design": "katalog-TAE-V2A-8x5-D10",
+    "optionen": {
+     "color": "schwarz",
+     "mounting": "K00"
+    }
+   }
+  },
+  "weitereDesigns": true,
+  "seite2": {
+   "sek": 4,
+   "karten": 80,
+   "imGeraet": 78,
+   "vomServer": 1,
+   "offen": 1,
+   "sichtbarOffen": 0,
+   "designsImGeraet": 79,
+   "nichtImGeraet": [
+    "D808"
+   ],
+   "abgelehnt": 1
+  },
+  "suche": {
+   "sek": 3,
+   "karten": 33,
+   "imGeraet": 33,
+   "vomServer": 0,
+   "offen": 0,
+   "sichtbarOffen": 0,
+   "designsImGeraet": 103,
+   "status": "33 Designs gefunden"
+  },
+  "ende": {
+   "designsImGeraet": 103,
+   "schriften": 39,
+   "designId": "katalog-TAE-V2A-8x5-D10"
+  },
+  "zaehler": {
+   "wechselServer": 0,
+   "modelle": 0,
+   "teile": 19,
+   "vorschauServer": 6,
+   "editoren": 1
+  }
+ },
+ "sofort": {
+  "wartenVorTippenMs": 1200,
+  "bereitNachMs": 3998,
+  "vorOeffnen": {
+   "designsImGeraet": 1,
+   "schriften": 5
+  },
+  "verlauf": [
+   {
+    "sek": 0.1,
+    "karten": 0,
+    "imGeraet": 0,
+    "vomServer": 0,
+    "offen": 0,
+    "sichtbarOffen": 0,
+    "designsImGeraet": 1
+   },
+   {
+    "sek": 0.2,
+    "karten": 0,
+    "imGeraet": 0,
+    "vomServer": 0,
+    "offen": 0,
+    "sichtbarOffen": 0,
+    "designsImGeraet": 1
+   },
+   {
+    "sek": 0.5,
+    "karten": 0,
+    "imGeraet": 0,
+    "vomServer": 0,
+    "offen": 0,
+    "sichtbarOffen": 0,
+    "designsImGeraet": 1
+   },
+   {
+    "sek": 1,
+    "karten": 40,
+    "imGeraet": 1,
+    "vomServer": 0,
+    "offen": 39,
+    "sichtbarOffen": 2,
+    "designsImGeraet": 1
+   },
+   {
+    "sek": 2,
+    "karten": 40,
+    "imGeraet": 10,
+    "vomServer": 1,
+    "offen": 29,
+    "sichtbarOffen": 1,
+    "designsImGeraet": 40
+   },
+   {
+    "sek": 3,
+    "karten": 40,
+    "imGeraet": 36,
+    "vomServer": 1,
+    "offen": 3,
+    "sichtbarOffen": 0,
+    "designsImGeraet": 40
+   },
+   {
+    "sek": 5,
+    "karten": 40,
+    "imGeraet": 39,
+    "vomServer": 1,
+    "offen": 0,
+    "sichtbarOffen": 0,
+    "designsImGeraet": 40
+   }
+  ],
+  "schriften": 19
+ }
+}

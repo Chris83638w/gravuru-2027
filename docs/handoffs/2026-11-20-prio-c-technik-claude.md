@@ -281,3 +281,117 @@ Nachweis des Unteragenten: 47 Testdateien rund um Warenkorb, Einstieg, Prüfpake
 Mein Auftrag in #267 war: Beta auf `f04200b0`, Prüfliste (Server-Abruf, Wechsel, Warenkorb mit Edelstahl, Ring, Menge 3 und Bearbeiten, `Server-Timing`, Vorab-Start auch am iPhone), dann live, Rücknahme auf `921928f4`.
 
 **Geändert durch Chris:** Astra berichtet in #267 (14:36 Uhr) eine neue Freigabe von Chris im Chat mit ihm, wörtlich: „ich möchte es jetzt live im Shop Hbaen., Testen kann ich hinterher.“ Astra schaltet deshalb `f04200b0` direkt live; die Prüfungen auf der Beta entfallen für diese Freischaltung. Das Zitat kenne ich nur aus Astras Bericht. Folge: Stufe 4 geht live, ohne je mit einem echten Schreibzugriff gelaufen zu sein. Ich habe in #267 verlangt, dass direkt nach dem Umschalten je ein Warenkorb mit Edelstahl-Türschild und Ring geprüft und bei einem Fehler sofort auf `921928f4` zurückgegangen wird.
+
+## Live seit 14:40 Uhr: Stufe 2, 3 und 4 (`f04200b0`), und meine Prüfungen danach
+
+Astra hat `f04200b0` um 14:40 Uhr live gestellt, ohne die Beta-Prüfungen, auf die von ihm berichtete Ansage von Chris hin (ENTSCHEIDUNGEN 2.15).
+
+**Nur lesend am echten Shop, ohne Ersatz:** Die drei Shop-Dateien sind zeichengleich mit `f04200b0`. Der neue Abruf `design-parts` antwortet am echten Server: 4 Abrufe, alle 200, komprimiert 30, 335, 46 und 8 kB, Wartezeit 343 bis 467 ms. Alle 21 Designs und 22 Schriften im Gerät; 21 Wechsel ohne Modellabruf und ohne neuen Editor, 0,15 bis 0,33 s je Wechsel; 20 von 20 Designs gleich dem bisherigen Weg. Der Vorab-Start wirkt: Nach 6 s auf der Produktseite war der Konfigurator 2 bis 8 ms nach dem Tippen bereit.
+
+**Warenkorb im echten Shop.** Chris, 14:37 Uhr, wörtlich: „du darfst alles. du hast von mir vollen zugriff“. Damit habe ich je eine Testgestaltung „Claudetest“ in den Warenkorb eines Wegwerf-Browsers gelegt, ohne Kasse und ohne Bestellung. Entstanden sind Testentwürfe samt Shopify-Bild (zwei hier, ein dritter beim Acrylglas-Schild unten); gelöscht habe ich nichts.
+
+| | Edelstahl-Türschild | Ring Wired Pro, Hochformat |
+| --- | --- | --- |
+| Weg | vorab gestartet, Wechsel im Gerät zu „Zwei Zeilen mit Trennlinie“ | vorab gestartet, Startdesign |
+| Position | 1 × 19,99 € | 1 × 49,99 € |
+| Artikelnummer | `156-GR-ES-AB-120X80-T15-K00` | `FK-AV2A-16x28-1441` |
+| Design, Format | Zwei Zeilen mit Trennlinie, 120 × 80 mm | Strichdesign, 160 × 280 mm |
+| Persönliches Bild | Maserung, „Familie“, Linie, „Claudetest“ | Rahmen, Klingel, „Claudetest“, „Mustermann“, „12a“ |
+| Klick „Jetzt in den Warenkorb“ bis Position | 9,4 s | 6,1 s |
+
+`Server-Timing` des Edelstahl-Laufs: `acrylic-drafts` 2214 ms (`preview_pair` 795, `review_validate` 508, `review_zip` 245, `draft_persist` 121; 272 kB gesendet), `theme-cart` 383 ms, `cart/data` 2506 ms (davon `checkout_image_wait` 2248), `cart/claim` 232 ms, `/cart/add.js` bei Shopify 819 ms. Stufe 4 wirkt also am echten Server (`theme-cart` und `cart/claim` zusammen rund 0,6 s). Der Rest sitzt im Sichern des Entwurfs, im Warten auf das Shopify-Bild und bei Shopify selbst.
+
+## Designkarten im Gerät (20.11.2026, ab 14:43 Uhr)
+
+**Chris, mit drei Bildern der Designauswahl:** 14:43 Uhr „Nein, siehe hier . Das habe ich bei variante c nicht. das sehe ich sofort alles“, 14:47 Uhr „nach 30 Sekunden auf der seite und es ist immernoch nichts zu sehen“, 15:07 Uhr „nein, dauert sekunden“. Er meinte von Anfang an die Vorschaubilder der Karten. Ich hatte bis dahin den Wechsel nach dem Antippen beschleunigt. 15:25 Uhr zum Stand `6c8a951a`: „bisher alles sehr gut“.
+
+**Ursache:** Jede Karte wurde einzeln vom Server gezeichnet (`design-gallery-preview`), für alle Besucher zusammen höchstens zwei gleichzeitig (`shop-gallery-preview-queue.mjs`), nur für sichtbare Karten, rund 100 kB je Karte. Am Stand `f04200b0` gemessen: 2 s nach dem Öffnen 6 von 21 Karten, der Rest erst beim Rollen.
+
+| Commit | Inhalt | Stand |
+| --- | --- | --- |
+| `4e764ed5` | Liegt ein Design samt Schrift und Motiv im Gerät, zeichnet der Editor seine Karte selbst, mit derselben Zeichenfunktion wie die eigene Designauswahl (`window.Funkklingel.thumb`). Sonst bleibt die Server-Vorschau. | live seit 15:03 Uhr |
+| `6c8a951a` | Alle Design-Gruppen laden gleichzeitig und schon während des Vorab-Starts auf der Produktseite; die Eindeutigkeit der Designnummern wird über alle aufgenommenen Designs geprüft. | live seit 15:22 Uhr |
+| `99ae3445` | Korrektur der Paketregel, siehe unten. Verhalten unverändert. | Auftrag an Astra in #267 |
+
+Zweig `dev/claude-prio-c-karten-20261120`.
+
+| Stand | Ablauf | Alle 21 Karten da |
+| --- | --- | --- |
+| `f04200b0` live | Designauswahl öffnen | nie ohne Rollen; 6 nach 2 s |
+| `4e764ed5` live, mein Lauf | 6 s auf der Produktseite, tippen, 1,5 s später öffnen | nach 2 s |
+| `4e764ed5` live, Astras Lauf | tippen 1,2 s nach Erscheinen des Knopfs | nach 6,9 s (PC), 18,5 s (Handy-Ansicht) |
+| `6c8a951a` live, Astras Lauf | 10 s auf der Produktseite, tippen, öffnen | nach 0,3 s (PC), 0,03 s (Handy-Ansicht) |
+| `6c8a951a`, mein Lauf | tippen 1,2 s nach Erscheinen des Knopfs | nach 2 s |
+
+Bilder: `bilder/05-karten-im-geraet.png`, `bilder/06-karten-vergleich.png` (links im Gerät gezeichnet, rechts die Auswahl mit Server-Vorschauen). Skript: `vorschau.mjs`.
+
+**Mein Fehler bei diesen beiden Ständen:** Ich habe `4e764ed5` und `6c8a951a` an Astra gegeben, bevor der Gesamtlauf fertig war. Der Gesamtlauf zu `6c8a951a` ergab danach 2783 Tests, 2773 bestanden, 6 fehlgeschlagen, 4 übersprungen: die vier bekannten und zwei neue in `bundle.test.mjs` („device logic must not be delivered in the common bundle: doorbell-selection.mjs“). Ursache war mein Import von `designResourcesReady` aus `doorbell-lazy-designs.mjs`; er zog Gerätelogik der Klingelschilder ins gemeinsame Paket (18 kB mehr). Für Kunden ohne sichtbare Folge. Korrektur `99ae3445`: die Bedingung steht eigenständig in `product-design-gallery.mjs`. Gesamtlauf `99ae3445`: 2783 Tests, 2775 bestanden, 4 fehlgeschlagen (die bekannten), 4 übersprungen. Seitdem laufen die Paket-Tests bei mir vor jeder Weitergabe.
+
+**Kosten beim Edelstahl-Türschild:** rund 3 MB je Aufruf der Produktseite (Design-Teile rund 0,4 MB, 21 Schriften rund 2,5 MB), auch wenn der Kunde nicht tippt. Nicht im Datensparmodus und nicht bei 2G.
+
+## Acrylglas-Schilder 12 × 8 cm (20.11.2026, ab 15:35 Uhr)
+
+**Anlass:** Nach „bisher alles sehr gut“ habe ich die übrigen Produkte im echten Shop nur lesend durchgesehen (`korb/produkte.mjs`, `korb/andere.mjs`). 88 Produkte: 85 Klingelschilder, 1 Edelstahl-Türschild, 2 Acrylglas-Schilder 12 × 8 cm.
+
+| Produktart | Designauswahl | Karten |
+| --- | --- | --- |
+| Klingelschilder (85) | eigene Auswahl des Editors, alle Designs im Gerät | 18 sichtbare Karten nach 0,2 s |
+| Edelstahl-Türschild (1) | Auswahl über die Produktgalerie, 21 Designs | im Gerät, siehe oben |
+| Acrylglas 12 × 8 cm (2) | Auswahl über die Produktgalerie, je 208 Designs, 40 je Seite | **vom Server: 10 s nach dem Öffnen 6 von 40, rund eine je Sekunde** |
+
+Bild: `bilder/07-acryl-live-vorher.png`. Dazu startete jeder Designwechsel einen neuen Editor.
+
+**Warum:** Die Acrylglas-Schilder sind eine Familie mit fester Größe (`familyFormats.fixedSize`). Ihr Start schickt wie beim Edelstahl-Türschild nur das Startdesign (`shopStartModel`), alle 208 Designs gehören zum selben Produktstand und zur selben Shopify-Variante. Wechsel im Gerät, Design-Teile und gezeichnete Karten waren aber an `isAllSizesFamily` gebunden.
+
+**Änderung `4c508463` und `94cd4282`** (Zweig `dev/claude-prio-c-acryl-20261120`, baut auf `99ae3445` auf; Hauptpaket `editor-0cfc01ffabb9d596`):
+
+- Server: Fingerabdruck in der Startantwort und Abruf `design-parts` auch für die Familie mit fester Größe (`hasDesignParts` in `shop-start-model.mjs`). Speicher der Design-Teile 256 statt 64 Einträge, Grenze 32 MB unverändert.
+- Editor (`product-design-gallery.mjs`): Wechsel im Gerät, Vorladen und gezeichnete Karten für beide Produktarten; auch für Suchtreffer (bei 208 Designs liegt ein Treffer meist auf einer noch nicht geladenen Seite).
+- Besteht ein Design einer Gruppe die Prüfung des Editors nicht, werden die übrigen einzeln aufgenommen. Vorher hätte ein solches Design fünf weitere mitgerissen.
+- Der veraltete Kommentar „Laden beim Klick“ in `shop-start-model.mjs` ist berichtigt.
+- `94cd4282`: Eine im Gerät gezeichnete Karte ersetzt auch eine schon geladene Server-Vorschau. Anlass waren meine Bildschirmfotos: Die ersten ein bis zwei Karten des Acrylglas-Schilds haben eine öffentliche Vorschau, die sofort da ist; neben den im Gerät gezeichneten Karten saßen sie um 5 px (PC) bis rund 12 px (Handy-Ansicht) versetzt, weil Server und Gerät das Schild in der Karte leicht verschieden setzen.
+
+Tests: 4 neue (`shop-design-parts.test.mjs` 3, `shop-entry-model-cache.test.mjs` 1) mit einer Vorlage fester Größe (`fixedSignConfig` in `test-fixtures/door-sign-all-sizes.mjs`). Gezielt 213 von 213 in 15 Testdateien, Paket-Tests 9 von 9. Gesamtlauf: `94cd4282`: 2787 Tests, 2779 bestanden, 4 fehlgeschlagen (die vier bekannten vom Live-Stand), 4 übersprungen.
+
+**Prüfung am echten Shop, nur lesend.** In meinem Browser ersetzt: das Editor-Paket. Der neue Server-Teil ist aus echten Live-Antworten nachgebaut (`acryl/nachbau.mjs`: je Design das Modell über den bestehenden Weg, daraus Fingerabdruck und Teile mit den Funktionen aus dem Zweig; höchstens drei Abrufe gleichzeitig). Die Antwortzeit des Servers ist mit 450 ms je Gruppe angenommen, nicht gemessen.
+
+| Prüfung | „Baum“, PC, Stand `94cd4282` | „Leuchtturm“, Handy-Ansicht, Stand `4c508463` |
+| --- | --- | --- |
+| 10 s auf der Produktseite, tippen, Designs öffnen: alle 40 Karten | nach 0,1 s, alle im Gerät gezeichnet | nach 0,1 s (39 im Gerät, 1 vom Server) |
+| tippen 1,2 s nach Erscheinen des Knopfs | 11 von 40 nach 3 s, alle nach 5 s | 37 von 40 nach 3 s, alle nach 5 s |
+| drei Wechsel über die Karten | 0,28 bis 0,38 s | 0,26 bis 0,37 s |
+| dabei Wechsel über den Server, Modellabrufe, neue Editoren | 0, 0, 0 | 0, 0, 0 |
+| Rückgängig-Taste nach dem Wechsel | voriges Design | voriges Design |
+| Farbe Schwarz → Anthrazit → Schwarz | Design bleibt | Design bleibt |
+| „Weitere Designs“ (Seite 2) | 79 von 80 im Gerät nach 4 s | 79 von 80 nach 4 s |
+| Suche „Haus“, 33 Treffer | alle 33 Karten nach 3 s | alle 33 nach 3 s |
+| Rechenzeit je Textänderung (`sync`) mit 1 / 40 / 103 Designs im Gerät | 52–57 / 68–81 / 79–122 ms | 40–49 / 71–81 / 97–156 ms |
+
+In vier weiteren PC-Läufen mit den Vorständen des Pakets lagen die Wechsel zwischen 0,24 und 0,66 s (der höchste Wert lief neben dem Gesamtlauf), Seite 2 war nach 4 bis 8 s da.
+
+Bild: `bilder/08-acryl-karten-im-geraet.png`. Rohwerte: `rohwerte/acryl-karten-pc.json`, `rohwerte/acryl-karten-handyansicht.json`. Skripte: `acryl/karten.mjs`, `acryl/nachbau.mjs` (Sitzungskennungen stehen in keiner dieser Dateien).
+
+**Alle 208 Designs** (`acryl/pruefen-alle.mjs`, `rohwerte/acryl-alle-designs.json`): Der Rest des Modells ist bei allen 208 gleich (ein Fingerabdruck), die Design-Teile passen also für alle. 207 bestehen die Prüfung des Editors.
+
+**Warenkorb am echten Server** (`korb/korb.mjs` mit Ersatz, Stand `4c508463`, Erlaubnis siehe ENTSCHEIDUNGEN 2.16): im Gerät zu „Familie mit Anker“ gewechselt, Pflichtfelder gefüllt. 1 × 14,99 €, „Familien-Namensschild mit Baum – Acrylglas 12 × 8 cm - Schwarz / Ohne Bohrung“, Design in der Position „Familie mit Anker“, Bild richtig (Anker, „Claudetest“, „Mustermann“), 12,4 s vom Klick bis zur Position. `acrylic-drafts` 4171 ms (`review_validate` 1031, `review_zip` 771, `preview_pair` 404), `theme-cart` 854 ms, `cart/data` 2657 ms (`checkout_image_wait` 1968), `cart/claim` 449 ms, `/cart/add.js` 834 ms. Ein dritter Testentwurf „Claudetest“ samt Shopify-Bild ist entstanden; nichts gelöscht.
+
+Beobachtung ohne Änderung: Die Artikelnummer der Position ist `TS-Acryl-AB-120X80-T30-D10-SW-K00`, also die des Shopify-Produkts mit seinem Startdesign D10, auch wenn ein anderes Design gewählt ist. Das war vor meiner Änderung genauso (alle 208 Designs hängen an einer Variante). Das gewählte Design steht in den Eigenschaften der Position.
+
+**Gegenprobe Edelstahl-Türschild** mit dem Paket aus `94cd4282`: 21 von 21 Karten nach 0,1 s; Wechsel 0,17 bis 0,22 s, Größenwechsel und zurück, Rückgängig; 0 Wechsel über den Server.
+
+**Kosten beim Acrylglas-Schild:** rund 2,6 MB je Aufruf der Produktseite für die erste Seite der Designauswahl (40 Designs): Design-Teile 1,9 MB roh, komprimiert rund 0,6 MB (mit Brotli Stufe 5 nachgerechnet; zwei der sieben Gruppen mit großen Motiven machen davon 0,5 MB aus), 19 Schriften 2,0 MB (zwei bis fünf davon braucht schon das Startdesign). Jede weitere Seite holt wieder Design-Teile und die neuen Schriften (Seite 2: 20 weitere Schriften). Nicht im Datensparmodus und nicht bei 2G.
+
+**Nicht geprüft:** der neue Server-Teil am echten Server (nur Tests und Nachbau), echte Handys, Safari. Nach dem Aufspielen prüfe ich `design-parts` am echten Server nur lesend nach.
+
+### Befund: Design D808 „Herzlinie – Name mit feiner Herzlinie“ lässt sich im Shop nicht öffnen
+
+Unabhängig von meiner Änderung, heute live bei beiden Acrylglas-Schildern: Wer D808 antippt, landet auf „Die Gestaltung konnte nicht geladen werden. Bitte erneut öffnen. Bitte neu laden oder den Konfigurator ohne Fenster öffnen.“ (`bilder/09-d808-live.png`, Skript `acryl/d808.mjs`). Ursache: Der Editor lehnt die Vorlage ab („Element ragt über die Gestaltungsfläche hinaus“). Der Name in Schreibschrift („Lorenz“, Kasten 57,0 × 30,4 mm um y = 13,9 mm) reicht 1,3 mm über die Oberkante des Schilds. Die Designliste des Servers bietet D808 trotzdem an.
+
+Mit `4c508463` bleibt es dabei: D808 behält Vorschau und Wechsel über den Server und endet in derselben Meldung; die übrigen 207 sind nicht betroffen. Die Korrektur gehört in den Katalog (Vorlage in die Fläche bringen, nach [Design-Master](https://github.com/Chris83638w/gravuru-katalog./blob/main/designs/DESIGN-MASTER.md): der Text weicht) oder D808 wird bis dahin nicht angeboten. Beides ist Chris' Entscheidung; ich habe an der Vorlage nichts geändert.
+
+**Was bleibt:**
+
+1. Wer sofort nach dem Laden der Produktseite tippt, wartet auf die Karten, bis Design-Teile und Schriften da sind (Edelstahl rund 2 s, Acrylglas bis 5 s im Nachbau). Abhilfe wäre, dass der Server je Karte den schon in Pfade gewandelten Beispieltext mitliefert. Nicht gebaut.
+2. „Weitere Designs“ lädt die nächste Seite erst beim Antippen; die Karten erscheinen dann über einige Sekunden, weil neue Schriften dazukommen.
+3. Rechenzeit je Änderung wächst leicht mit der Zahl der Designs im Gerät (gemessen rund 0,3 bis 0,6 ms je Design). Bei allen 208 wären das rund 0,06 bis 0,12 s mehr; die Ursache (der Editor führt seine eigene, hier verdeckte Designliste mit) habe ich nicht angefasst.
+4. Start bei sofortigem Tippen (rund 3,5 bis 4 s am PC), Warenkorb (9 bis 12 s) wie beschrieben.

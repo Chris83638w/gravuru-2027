@@ -1,3 +1,15 @@
+## 20.11.2026 · Claude (Operator, technische Gesamtverantwortung) · #265/#267: Designkarten im Gerät, jetzt auch Acrylglas 12 × 8 cm
+
+- Live: `f04200b0` (Stufe 2, 3, 4) seit 14:40 Uhr, `4e764ed5` seit 15:03 Uhr, `6c8a951a` seit 15:22 Uhr (alle Astra, auf Chris' Ansage ohne Beta-Prüfung, ENTSCHEIDUNGEN 2.15). Chris, 15:25 Uhr: „bisher alles sehr gut“.
+- Edelstahl-Türschild: alle 21 Designkarten 0,1 bis 0,3 s nach dem Öffnen, wenn die Produktseite rund 10 s offen war; bei sofortigem Tippen nach 2 s. Anlass waren Chris' Bilder der Karten „Vorschau wird geladen“ (ENTSCHEIDUNGEN 2.17).
+- Mein Fehler: `4e764ed5` und `6c8a951a` gingen vor dem Ende des Gesamtlaufs an Astra; `6c8a951a` hatte zwei neue Fehlschläge in `bundle.test.mjs` (Klingel-Gerätelogik im gemeinsamen Paket, für Kunden ohne Folge). Korrektur `99ae3445`, Gesamtlauf 2783 Tests, 2775 bestanden, 4 bekannte Fehlschläge, 4 übersprungen. Auftrag an Astra in #267.
+- Warenkorb mit Chris' Erlaubnis (ENTSCHEIDUNGEN 2.16) im echten Shop geprüft, ohne Kasse: Edelstahl 19,99 €, 9,4 s; Ring 49,99 €, 6,1 s; Acrylglas 14,99 €, 12,4 s; Bild und Design jeweils richtig. Drei Testentwürfe „Claudetest“ samt Shopify-Bild sind entstanden, nichts gelöscht.
+- Neu `4c508463` und `94cd4282` (Zweig `dev/claude-prio-c-acryl-20261120`, Auftrag an Astra in #267): Die zwei Acrylglas-Schilder 12 × 8 cm (je 208 Designs) zeichneten ihre Karten weiter am Server (live gemessen: nach 10 s 6 von 40) und starteten je Designwechsel einen neuen Editor. Jetzt dieselbe Technik wie beim Edelstahl-Türschild, auch für Suchtreffer. Geprüft am echten Shop mit ersetztem Paket und nachgebautem Server-Teil: alle 40 Karten nach 0,1 s, Wechsel 0,28 bis 0,38 s ohne Server, Warenkorb am echten Server angenommen. Kosten rund 2,6 MB je Aufruf der Produktseite. Gesamtlauf: `94cd4282`: 2787 Tests, 2779 bestanden, 4 fehlgeschlagen (die vier bekannten vom Live-Stand), 4 übersprungen.
+- Befund, heute live und unabhängig von meiner Änderung: Design D808 „Herzlinie“ lässt sich bei beiden Acrylglas-Schildern nicht öffnen („Die Gestaltung konnte nicht geladen werden“); der Name ragt 1,3 mm über die Oberkante. Entscheidung bei Chris: Vorlage korrigieren oder vorerst nicht anbieten.
+- Nicht geprüft: der neue Server-Teil für die feste Größe am echten Server, echte Handys, Safari.
+- Offen: Karten bei sofortigem Tippen, „Weitere Designs“ lädt Schriften nach, Rechenzeit je Änderung, Warenkorb (Sichern des Entwurfs 2 bis 4 s, Shopify-Bild 2 s).
+- Übergabe: `docs/handoffs/2026-11-20-prio-c-technik-claude.md`, Abschnitte „Live seit 14:40 Uhr“, „Designkarten im Gerät“, „Acrylglas-Schilder 12 × 8 cm“. Der [Design-Master](https://github.com/Chris83638w/gravuru-katalog./blob/main/designs/DESIGN-MASTER.md) bleibt maßgeblich; hier wurden keine Designs bearbeitet.
+
 ## 20.11.2026 · Claude (Operator, technische Gesamtverantwortung) · #265/#267: gemeinsamer Stand mit Stufe 2, 3 und 4
 
 - Chris, 13:57 Uhr: „nutze unteragenten. wir haben keine zeit mehr“. Zwei Unteragenten haben parallel gebaut; ich habe beide Änderungen gelesen und zusammengeführt: `dev/claude-prio-c-gesamt-20261120`, `f04200b0`.

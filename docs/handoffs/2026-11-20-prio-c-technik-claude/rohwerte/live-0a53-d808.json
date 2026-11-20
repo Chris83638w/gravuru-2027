@@ -1,0 +1,83 @@
+{
+ "ersatz": {
+  "seite": false,
+  "paket": false,
+  "hinweis": "ohne Ersatz, echter Shop"
+ },
+ "fehler": [],
+ "karte": {
+  "id": "katalog-TAE-V2A-8x5-D808",
+  "imGeraetGezeichnet": true,
+  "serverBild": false,
+  "imGeraet": true,
+  "abgelehnt": 0
+ },
+ "rahmenVorWahl": [
+  {
+   "sichtbar": true,
+   "editor": true,
+   "design": "katalog-TAE-V2A-8x5-D10",
+   "text": null
+  }
+ ],
+ "wahl": {
+  "id": "katalog-TAE-V2A-8x5-D808",
+  "ms": 291
+ },
+ "rahmenNachWahl": [
+  {
+   "sichtbar": true,
+   "editor": true,
+   "design": "katalog-TAE-V2A-8x5-D808",
+   "text": null
+  }
+ ],
+ "zustand": {
+  "design": "katalog-TAE-V2A-8x5-D808",
+  "sichtbar": true,
+  "flaeche": {
+   "b": 120,
+   "h": 80
+  },
+  "texte": [
+   {
+    "text": "Lorenz",
+    "kasten": {
+     "oben": -1.33,
+     "unten": 29.06,
+     "links": 31.5,
+     "rechts": 88.5
+    },
+    "buchstaben": {
+     "x": -28.57,
+     "y": -11.17,
+     "width": 58.87,
+     "height": 27.91
+    }
+   },
+   {
+    "text": "Lindenstraße 5",
+    "kasten": {
+     "oben": 69.98,
+     "unten": 78.2,
+     "links": 31.57,
+     "rechts": 88.43
+    },
+    "buchstaben": {
+     "x": -27.6,
+     "y": -2.71,
+     "width": 55.74,
+     "height": 5.14
+    }
+   }
+  ],
+  "hinweise": [],
+  "meldungen": [
+   "1 Design gefunden"
+  ]
+ },
+ "zaehler": {
+  "wechselUeberServer": 0,
+  "neueEditoren": 0
+ }
+}

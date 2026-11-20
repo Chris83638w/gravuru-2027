@@ -1,6 +1,9 @@
 ## 20.11.2026 · Claude (Operator, technische Gesamtverantwortung) · #265/#267: Rand-Regel, schnellerer Abruf, Vollbild-Korrektur
 
-- Live: `94cd4282` seit 16:53 Uhr (Astra), Rückweg `6c8a951a`. Acrylglas-Schilder 12 × 8 cm: alle 40 Karten 0,1 s nach dem Öffnen, wenn die Produktseite rund 10 s offen war. Chris, 17:52 Uhr, Handy: „Ladezeit sehr gut“.
+- **Live seit 19:16 Uhr: `0a536870`** (Astra, #267), Rückweg `94cd4282`. Astras Messung beim ersten Aufruf nach dem Neustart: alle 40 Karten nach 5,66 s (PC) und 5,14 s (Handy-Ansicht), zuvor 12,94 s und 9,84 s.
+- Meine Nachprüfung am echten Shop ohne Ersatz, 19:25 bis 19:40 Uhr, nur lesend: D808 wird im Gerät gezeichnet und öffnet in 0,29 s ohne Hinweis. Vollbild bei 393 px nach Start und nach Designwechsel: Schild ganz sichtbar, Knopf unten links. Design-Teile: dieselben Designs in anderer Zusammenstellung kommen in 0,14 bis 0,25 s (zuvor rund 0,6 s je neuer Zusammenstellung); noch nie gelieferte Designs 0,16 s (1 Design), 0,27 s und 0,98 s (je 6 Designs, je ein Lauf).
+- Bleibt: Der Vorab-Start auf der Produktseite braucht in meinen zwei Läufen 9,8 und 13,8 s, bis alle Karten bereit sind. Wer früher „Designs“ antippt, sieht noch Ladehinweise (zweiter Lauf: 1 von 40 Karten nach 0,1 s, 31 nach 4 s, alle nach 8 s). Die Designliste kostet am Server je Abruf rund 1 s und fällt zweimal an; die Design-Teile warten währenddessen.
+- Vor `0a536870` live: `94cd4282` seit 16:53 Uhr (Astra). Chris, 17:52 Uhr, Handy: „Ladezeit sehr gut“.
 - Zum Aufspielen, ein Stand (Zweig `dev/claude-prio-c-rand-20261120`, Auftrag an Astra in #267):
   - `ea2c9670` + `4db475ad` Rand-Regel: Der Editor öffnet Vorlagen mit überstehendem Element ohne Fehlermeldung (Chris 16:49 Uhr, ENTSCHEIDUNGEN 3.43). D808 öffnet; bei D808 ragt nur der Textkasten über den Rand, nicht die Buchstaben. Mein Fehler: Die erste Fassung lockerte auch drei Prüfungen der Werkstatt (Speichern, Produktanlage aus Familien, Katalog-Umrechnung); der Gesamtlauf zeigte es, `4db475ad` begrenzt die Regel auf den Editor. Nie live.
   - `d1a3d95e` Abruf der Design-Teile: ein Speichereintrag je Design, Modell und Freigabe-Art vom Start. Wirkung am echten Server noch nicht gemessen.
@@ -10,7 +13,7 @@
 - Prüfungen: gezielte Tests je Änderung mit Gegenprobe am alten Stand, Paket-Tests 9 von 9, am echten Shop mit ersetztem Paket (nur lesend; ein Warenkorb-Test mit D808 ohne Kasse). Gesamtlauf: Ergebnis im Auftrag an Astra in #267.
 - Nicht geprüft: echte Handys, Safari auf einem Gerät, Tablet-Breite mit Fotogrößen-Regler, der neue Server-Abruf am echten Server.
 - Offen bei Chris: Rand-Regel auch für das, was der Kunde selbst über den Rand schiebt; D808-Vorlage unverändert lassen; Warenkorb 9 bis 12 s als nächstes Thema.
-- Nächster Schritt: Astra spielt den Stand auf; danach messe ich den Abruf der Design-Teile am echten Server und prüfe D808 und das Vollbild nur lesend nach.
+- Nächster Schritt: Chris' Antworten auf die drei offenen Fragen; danach das nächste Thema (Vorschlag: Warenkorb 9 bis 12 s, daneben die Dauer des Vorab-Starts).
 - Übergabe: `docs/handoffs/2026-11-20-prio-c-technik-claude.md`, Abschnitt „Stand zum Aufspielen: Rand-Regel, schnellerer Abruf, Vollbild“. Der [Design-Master](https://github.com/Chris83638w/gravuru-katalog./blob/main/designs/DESIGN-MASTER.md) gilt unverändert.
 
 ## 20.11.2026 · Claude (Operator, technische Gesamtverantwortung) · #265/#267: Designkarten im Gerät, jetzt auch Acrylglas 12 × 8 cm

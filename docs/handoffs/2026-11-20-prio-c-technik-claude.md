@@ -442,6 +442,20 @@ Chris, 17:52 Uhr, zwei Bilder: Nach „Vergrößern“ verrutscht die Vorschau. 
 - **Nicht geprüft:** Tablet-Breite mit Fotogrößen-Regler am echten Shop (kein Fotoprodukt im Shop); echte Geräte.
 - Diese Korrektur ändert die gemeinsame Prio-Oberfläche. Grundlage ist Chris' Fehlermeldung an mich und sein „Ja“ zum Bild, im Rahmen von #265.
 
+### Live seit 19:16 Uhr: `0a536870` (Astra), Rückweg `94cd4282`
+
+Astra (#267): Dienst um 19:15:59 Uhr umgeschaltet, beide Pakete (`editor-ae2260b297a473fa`, `editor-d6521828989e096a`) öffentlich. Erster Aufruf nach dem Neustart, 10 s am Knopf gewartet, dann „Designs“: alle 40 Karten nach 5,66 s (PC) und 5,14 s (Handy-Ansicht); mit `94cd4282` waren es 12,94 s und 9,84 s.
+
+Meine Nachprüfung am echten Shop ohne Ersatz, 19:25 bis 19:40 Uhr, nur lesend (`acryl/live-teile2.mjs`, `acryl/d808-neu.mjs` mit `OHNE=1`, `korb/vollbild.mjs`; `rohwerte/live-0a53-*.json`):
+
+- D808: Karte im Gerät gezeichnet, öffnet in 0,29 s, kein Hinweis, kein Wechsel über den Server.
+- Vollbild bei 393 px nach Start und nach Designwechsel: Schild ganz sichtbar, Knopf fest unten links, Regler daneben.
+- Design-Teile, je ein Lauf: Dieselben Designs in anderer Zusammenstellung (zweite frische Sitzung, 4, 1 und 8 Designs) warten 0,24, 0,14 und 0,15 s; das ist der Speicher je Design. Zuvor kostete jede neue Zusammenstellung rund 0,6 s. Noch nie gelieferte Designs: 0,16 s (1 Design), 0,27 s und 0,98 s (je 6 Designs).
+- Erste Sitzung: 10 s nach dem Erscheinen des Knopfs getippt, alle 40 Karten 0,1 s nach dem Öffnen.
+- Zweite Sitzung: Der Vorab-Start war beim Tippen noch nicht fertig (13,8 s statt 9,8 s bis alle Design-Teile da waren). 1 von 40 Karten nach 0,1 s, 31 nach 4 s, alle nach 8 s.
+
+**Was das zeigt:** Der Abruf der Design-Teile ist nicht mehr der Engpass. Es bleibt die Dauer des Vorab-Starts: Start 1,4 s; bis zum Modell 1 bis 3 s Wartezeit der Produktseite; Modell 1,1 bis 1,9 s; Editor und Designliste 3,8 bis 5,5 s (die Designliste kostet am Server je Abruf rund 1,0 bis 1,2 s und fällt zweimal an); danach die Design-Teile, die hinter der Designliste warten (0,3 bis 2,3 s). Nicht gebaut; Vorschlag für danach: Der Start liefert die Kennungen der ersten Seite mit, damit die Design-Teile nicht auf die Designliste warten.
+
 ### Offene Fragen an Chris
 
 1. Rand-Regel: Soll auch das, was der Kunde selbst über den Rand schiebt, ohne Hinweis und ohne Prüfung vor dem Warenkorb durchgehen?

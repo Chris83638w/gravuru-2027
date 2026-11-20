@@ -1,0 +1,208 @@
+{
+ "knopfNachMs": 3156,
+ "editorBereitNachTippenMs": 12,
+ "verlauf": [
+  {
+   "sek": 0.1,
+   "karten": 40,
+   "imGeraet": 40,
+   "vomServer": 0,
+   "offen": 0,
+   "designs": 40
+  },
+  {
+   "sek": 0.5,
+   "karten": 40,
+   "imGeraet": 40,
+   "vomServer": 0,
+   "offen": 0,
+   "designs": 40
+  },
+  {
+   "sek": 1,
+   "karten": 40,
+   "imGeraet": 40,
+   "vomServer": 0,
+   "offen": 0,
+   "designs": 40
+  }
+ ],
+ "ersteSeite": [
+  {
+   "weg": "design-parts",
+   "designs": 6,
+   "status": 200,
+   "startMs": 10482,
+   "wartenMs": 294,
+   "dauerMs": 296,
+   "kB": 11,
+   "server": ""
+  },
+  {
+   "weg": "design-parts",
+   "designs": 6,
+   "status": 200,
+   "startMs": 10482,
+   "wartenMs": 292,
+   "dauerMs": 296,
+   "kB": 21,
+   "server": ""
+  },
+  {
+   "weg": "design-parts",
+   "designs": 6,
+   "status": 200,
+   "startMs": 10482,
+   "wartenMs": 375,
+   "dauerMs": 379,
+   "kB": 54,
+   "server": ""
+  },
+  {
+   "weg": "design-parts",
+   "designs": 4,
+   "status": 200,
+   "startMs": 10482,
+   "wartenMs": 1065,
+   "dauerMs": 1066,
+   "kB": 10,
+   "server": ""
+  },
+  {
+   "weg": "design-parts",
+   "designs": 6,
+   "status": 200,
+   "startMs": 10481,
+   "wartenMs": 1261,
+   "dauerMs": 1262,
+   "kB": 3,
+   "server": ""
+  },
+  {
+   "weg": "design-parts",
+   "designs": 6,
+   "status": 200,
+   "startMs": 10482,
+   "wartenMs": 2270,
+   "dauerMs": 2472,
+   "kB": 333,
+   "server": ""
+  },
+  {
+   "weg": "design-parts",
+   "designs": 5,
+   "status": 200,
+   "startMs": 10481,
+   "wartenMs": 1149,
+   "dauerMs": 2477,
+   "kB": 193,
+   "server": ""
+  }
+ ],
+ "ungeseheneGruppen": [
+  {
+   "art": "neu",
+   "designs": 6,
+   "geliefert": 6,
+   "ms": 368
+  },
+  {
+   "art": "neu",
+   "designs": 1,
+   "geliefert": 1,
+   "ms": 166
+  },
+  {
+   "art": "neu",
+   "designs": 6,
+   "geliefert": 6,
+   "ms": 1181
+  },
+  {
+   "art": "andere Mischung schon gelieferter",
+   "designs": 4,
+   "geliefert": 4,
+   "ms": 0
+  },
+  {
+   "art": "dieselbe Gruppe noch einmal",
+   "designs": 6,
+   "geliefert": 6,
+   "ms": 0
+  }
+ ],
+ "danach": [
+  {
+   "weg": "design-parts",
+   "designs": 6,
+   "status": 200,
+   "startMs": 16661,
+   "wartenMs": 266,
+   "dauerMs": 365,
+   "kB": 47,
+   "server": ""
+  },
+  {
+   "weg": "design-parts",
+   "designs": 1,
+   "status": 200,
+   "startMs": 17028,
+   "wartenMs": 162,
+   "dauerMs": 164,
+   "kB": 12,
+   "server": ""
+  },
+  {
+   "weg": "design-parts",
+   "designs": 6,
+   "status": 200,
+   "startMs": 17194,
+   "wartenMs": 980,
+   "dauerMs": 1177,
+   "kB": 64,
+   "server": ""
+  }
+ ],
+ "sonstige": [
+  {
+   "weg": "start",
+   "designs": null,
+   "status": 200,
+   "startMs": 3145,
+   "wartenMs": 1470,
+   "dauerMs": 1472,
+   "kB": 1,
+   "server": ""
+  },
+  {
+   "weg": "model",
+   "designs": null,
+   "status": 200,
+   "startMs": 5634,
+   "wartenMs": 368,
+   "dauerMs": 1143,
+   "kB": 69,
+   "server": ""
+  },
+  {
+   "weg": "design-gallery",
+   "designs": null,
+   "status": 200,
+   "startMs": 9467,
+   "wartenMs": 1000,
+   "dauerMs": 1001,
+   "kB": 3,
+   "server": ""
+  },
+  {
+   "weg": "design-gallery",
+   "designs": null,
+   "status": 200,
+   "startMs": 15692,
+   "wartenMs": 965,
+   "dauerMs": 967,
+   "kB": 3,
+   "server": ""
+  }
+ ]
+}

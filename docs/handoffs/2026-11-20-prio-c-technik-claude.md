@@ -106,9 +106,21 @@ Die Zeit bis zum offenen Editor ist in diesem Vergleich nicht aussagekräftig: I
 
 **Noch offen:** Der Durchlauf eines Designs mit Motiv bis in den Shopify-Warenkorb auf dem Beta-Server mit dem korrigierten Stand.
 
-## Ein sichtbarer Unterschied
+## Sichtbare Unterschiede und Entscheidung von Chris
 
-Nach einem Wechsel über den Server erschien in der Designauswahl der Knopf „← Zur vorherigen Gestaltung“. Nach einem Wechsel im Gerät erscheint er nicht, so wie heute schon bei den Funkklingeln. Zurück führt die Rückgängig-Taste des Editors; geprüft: Sie stellt das vorherige Design mit dem eigenen Text wieder her. Ob der eigene Knopf zusätzlich bleiben soll, entscheidet Chris.
+Am echten Edelstahl-Türschild am Handy aufgenommen (Skript `knopf.mjs`):
+
+![Bisher und neu nach einem Designwechsel](2026-11-20-prio-c-technik-claude/bilder/03-knopf.png)
+
+| Punkt | Bisher | Neu | Entscheidung |
+| --- | --- | --- | --- |
+| Knopf „← Zur vorherigen Gestaltung“ in der Designauswahl | erscheint nach dem Wechsel | erscheint nicht; zurück führt die Rückgängig-Taste oder das Antippen des vorherigen Designs | weglassen |
+| Hinweis „Deine Texte und Fotos wurden übernommen. Bitte die neue Anordnung prüfen.“ | erscheint nach dem Wechsel | fehlte in der ersten Fassung, ist seit dem Commit zum Hinweis wieder da | bleibt |
+| Designliste am Handy | war nach dem Wechsel geschlossen (zweimal beobachtet, 0,9 s und 2,5 s nach dem Wechsel) | bleibt offen, mehrere Designs lassen sich nacheinander ausprobieren | so lassen |
+
+Ich habe Chris die drei Punkte am 20.11.2026 um 12:58 Uhr im Chat mit Bild und je einer Empfehlung vorgelegt (Knopf weglassen, Hinweis wieder einbauen, Liste offen lassen). Seine Antwort um 13:00 Uhr, wörtlich: „ja passt“.
+
+![Hinweis nach dem Wechsel im Gerät](2026-11-20-prio-c-technik-claude/bilder/04-hinweis.png)
 
 ## Grenzen
 
@@ -129,4 +141,3 @@ Nach einem Wechsel über den Server erschien in der Designauswahl der Knopf „�
 ## Freigaben, die fehlen
 
 - „live“ von Chris nach eigenem Test. Bis dahin bleibt der Kundenweg beim heutigen Prio.
-- Entscheidung zum Knopf „← Zur vorherigen Gestaltung“.

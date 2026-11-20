@@ -1,3 +1,12 @@
+## 20.11.2026 · Claude (Operator, technische Gesamtverantwortung) · #265/#267: gemeinsamer Stand mit Stufe 2, 3 und 4
+
+- Chris, 13:57 Uhr: „nutze unteragenten. wir haben keine zeit mehr“. Zwei Unteragenten haben parallel gebaut; ich habe beide Änderungen gelesen und zusammengeführt: `dev/claude-prio-c-gesamt-20261120`, `f04200b0`.
+- Stufe 3 (`82ef626e`): Der Konfigurator startet auf der Produktseite einmal unsichtbar vorab; das Tippen blendet ihn ein. Nimmt das Abschalten vom 27.10. zurück. Chris auf meine Frage dazu, wörtlich: „wie bei Variante C. Was so schwer zu verstehen ? Wie klar soll ich es sagen ?“ (ENTSCHEIDUNGEN 2.13).
+- Stufe 4 (`1d0b74e5`): `theme-cart`, `cart/data`, `cart/claim` lesen Produktstand und Zuordnungsbeleg je Lesephase nur einmal. Keine Prüfung entfällt. Lokal mit synthetischem 12-MB-Produkt je Anfrage von rund 1,1 s auf 0,3 bis 0,4 s (Angabe des Unteragenten).
+- Geprüft am gemeinsamen Stand: gezielt 151 von 151; Gesamtlauf 2783 Tests, 2775 bestanden, 4 fehlgeschlagen (dieselben vier wie am Live-Stand `921928f4`), 4 übersprungen; am echten Edelstahl-Türschild 20 von 20 Designs gleich dem bisherigen Weg.
+- Nicht geprüft: alles mit Schreibzugriff, echte Handys, Safari, der neue Server-Abruf am echten Server. Mein Auftrag an Astra war Beta, Prüfliste, dann live. Laut Astra (#267, 14:36 Uhr) hat Chris ihm im Chat gesagt: „ich möchte es jetzt live im Shop Hbaen., Testen kann ich hinterher.“ Astra schaltet `f04200b0` deshalb direkt live, Rücknahme auf `921928f4`. Von mir verlangt: direkt danach je ein Warenkorb mit Edelstahl und Ring.
+- Übergabe: `docs/handoffs/2026-11-20-prio-c-technik-claude.md`, Abschnitt „Unteragenten, Stufe 3 und Stufe 4“. Der [Design-Master](https://github.com/Chris83638w/gravuru-katalog./blob/main/designs/DESIGN-MASTER.md) bleibt maßgeblich; hier wurden keine Designs bearbeitet.
+
 ## 20.11.2026 · Claude (Operator, technische Gesamtverantwortung) · #265/#267: Stufe 2, alle Designs im Gerät wie bei Variante C
 
 - Anweisung: Chris im Chat, 13:28 bis 13:31 Uhr: „bitte so wie bei variante c“, „nichts vergleichen“, „Ich möchte den prio Konfi exakt so gebaut haben. Nur unser Layout und die Funktiopnen müssen beibehalten bleiben“. Vorher 13:09 Uhr: „jetzt alles auf einmal“.

@@ -56,7 +56,7 @@ Stand: 02.11.2026 abends. Gelesen: Code-Repo `origin/main` f78ad5b (STATUS.md, A
 |---|---|---|---|
 | 2.1 | 27.10. | Server-Grenzen: Chris hat CloudLinux selbst angehoben (SPEED 400 %, PMEM 4G, IO 50 MB/s, IOPS 4096, EP 50, NPROC 200) → Sichern 31,5 s → 1,2 s. | S:415; H:2026-10-27-konfi-geschwindigkeit.md Z.23 |
 | 2.2 | 27.10. | Zitat: „prüfe alles“ → Messung Modell 11,2 MB, 7,6 s bedienbar; danach schlanker Start live: Modell 3.763 KB, Desktop 6,6–6,9 s. | S:370–373 (27.10.) |
-| 2.3 | 27.10. | Zitat: „wenn die seite geladen ist, kann der konfi bereits laden“ → Vorladen gebaut, gemessen nutzlos (~15 MB je Aufruf), mit Chris' Satz wieder abgeschaltet. | S:379–381 (27.10.) |
+| 2.3 | 27.10. | Zitat: „wenn die seite geladen ist, kann der konfi bereits laden“ → Vorladen gebaut, gemessen nutzlos (~15 MB je Aufruf), mit Chris' Satz wieder abgeschaltet. **ÜBERHOLT** durch 2.13 (20.11.). | S:379–381 (27.10.) |
 | 2.4 | 28.10. 05:27 | Freigabe: Produktschriften bei Bedarf nachladen + paralleles Laden (`main` 7076fd0). **Bestwert:** Modell **552 KB, 1 Schrift**, WebP; Desktop 3,8–4,4 s, Handy-Simulation 6,0 s; Einstiegsseite `gravuru-warm` + `modulepreload`. | S:339–340 (28.10.) |
 | 2.5 | 28.10. 07:49 | Freigabe Direktstart ohne Shopify-Umweg (`main` 8540800): Klick → bedienbar **3,3–3,9 s**; Startkarte im Leerlauf bzw. „bei Absicht“ vorgewärmt. | S:333–345 (28.10.) |
 | 2.6 | 28.10. | Zitat: „setze alles um“ / „ne wir machen weiter“ (restliche Produktschriften erst bei Bedarf). | S:361 (28.10.) |
@@ -65,6 +65,9 @@ Stand: 02.11.2026 abends. Gelesen: Code-Repo `origin/main` f78ad5b (STATUS.md, A
 | 2.9 | 02.11. 22:58 | Nichts neu erfinden, vorhandenen schlanken Start auf `familyFormats` übertragen; Ziel Modell < 1 MB, bedienbar < 3 s (Claude-Vorgabe nach Chris' Hinweis). | [#139·6588305764](https://github.com/Chris83638w/gravuru-2027/issues/139#issuecomment-6588305764) |
 | 2.10 | 02.11. 23:23 | Verbindlich: Rückfall auf den 28.10.-Stand; Abnahme je Linie mit `scripts/konfi-messen.cjs`: Modell ≤ 600 KB, Desktop ≤ 4 s, Handy ≤ 6 s; Linux-Test mit Größenbudget gegen Rückfälle (*Grenzwerte von Claude formuliert*). | [#139·6588814817](https://github.com/Chris83638w/gravuru-2027/issues/139#issuecomment-6588814817) |
 | 2.11 | 29.10. | Weg „In den Warenkorb“ → Warenkorb heute ~10 s, Ziel < 3 s (aus Chris' iPhone-Test, Ziel von Claude). | [#48·6497400984](https://github.com/Chris83638w/gravuru-2027/issues/48#issuecomment-6497400984) D5 |
+| 2.12 | 20.11. 13:28–13:31 | **NEUER:** Zitat: „bitte so wie bei variante c“, „das ist mein anweisung“, „nichts vergleichen“, „Variante C läuft sehr gut und schnell […] Ich möchte den prio Konfi exakt so gebaut haben. Nur unser Layout und die Funktiopnen müssen beibehalten bleiben“, „also vom Prio das Design und die Funktionen“ → Technik wie Variante C, Oberfläche und Funktionen vom Prio. Umsetzung: alle Designs samt Schriften nach dem Start im Gerät (statt Laden beim Antippen), Start mit der Produktseite, Warenkorb. | Chat Chris/Claude 20.11.; H:2026-11-20-prio-c-technik-claude.md |
+| 2.13 | 20.11. | **NEUER** (ersetzt 2.3): Auf die Frage, ob das Vorladen auf der Produktseite wieder eingeschaltet werden soll (rund 0,8 MB mehr je Seitenaufruf): Zitat: „wie bei Variante C. Was so schwer zu verstehen ? Wie klar soll ich es sagen ?“ → Vorab-Start wieder ein; nicht im Datensparmodus, bei 2G oder auf verborgener Seite. | Chat Chris/Claude 20.11.; [#267·7039410406](https://github.com/Chris83638w/gravuru-2027/issues/267#issuecomment-7039410406) |
+| 2.14 | 20.11. 13:57 | Zitat: „nutze unteragenten. wir haben keine zeit mehr“ → für diesen Auftrag ausdrücklich erlaubt. | Chat Chris/Claude 20.11. |
 
 ## 3. Konfi-Bedienung / UX
 

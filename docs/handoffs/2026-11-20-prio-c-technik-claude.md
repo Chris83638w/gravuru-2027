@@ -203,8 +203,81 @@ Die Zeit im Handy-Profil ist reine Rechenzeit des Editors beim Neuzeichnen, ohne
 - Bei einem Größenwechsel sucht der Editor dieselbe Vorlage, sonst dieselbe Designnummer, sonst die erste der Liste. Der letzte Fall hängt von der Reihenfolge der Aufnahme ab und kann vom Server abweichen. Das gilt schon für Stufe 1. Die Aufnahme im Hintergrund hängt neue Vorlagen nur an und läuft nur, wenn die Designnummern je Ausführung eindeutig sind.
 - Beobachtung: Abrufe aus meinem Prüfprogramm (nicht aus dem Browser) kamen heute mehrfach unvollständig an; mit `curl` waren dieselben Dateien vollständig. Ich ordne das meiner Umgebung zu.
 
-### Was zu „exakt wie Variante C“ noch fehlt
+### Was nach Stufe 2 zu „exakt wie Variante C“ noch fehlte
+
+Stand vor Stufe 3 und 4; die beiden folgenden Abschnitte gehen Punkt 2 und 3 an.
+
 
 1. **Rechenzeit je Änderung.** Jeder Wechsel und jede Eingabe läuft durch dieselbe Kette. Am PC rund 0,15 s, im Handy-Profil rund 1 s.
 2. **Start.** Vom Tippen bis zum bereiten Editor: am PC 3,4 bis 3,9 s (fünf Läufe), im Handy-Profil 11,5 s (ein Lauf, `start.mjs`). Im Handy-Profil bestimmt das Editor-Paket (421 kB komprimiert, 1,4 MB) den Zeitpunkt, danach rund 4,8 s Rechenzeit. Variante C startet als fertige Seite ohne Sitzung und ohne Modellabruf.
 3. **Warenkorb.** Nicht angefasst. Messung bei Astra angefragt (#267).
+
+## Unteragenten, Stufe 3 und Stufe 4 (20.11.2026, ab 13:57 Uhr)
+
+Chris, 13:57 Uhr, wörtlich: „nutze unteragenten. wir haben keine zeit mehr“. Zwei Unteragenten haben parallel in eigenen Arbeitskopien gebaut. Ich habe beide Änderungen Zeile für Zeile gelesen und zum gemeinsamen Stand zusammengeführt. Ihre Messungen habe ich nicht wiederholt; sie sind unten als ihre Angaben gekennzeichnet.
+
+| Teil | Zweig | Commit |
+| --- | --- | --- |
+| Stufe 3, Start | `dev/claude-prio-c-start-20261120` | `82ef626e` |
+| Stufe 4, Warenkorb | `dev/claude-prio-c-warenkorb-20261120` | `1d0b74e5` |
+| Gemeinsamer Stand (Stufe 2, 3, 4) | `dev/claude-prio-c-gesamt-20261120` | `f04200b0`, danach nur Doku |
+
+### Stufe 3: Vorab-Start auf der Produktseite
+
+**Entscheidung von Chris.** Das Vorladen war am 27.10.2026 gebaut und mit seiner Zustimmung wieder abgeschaltet worden, weil es damals nichts brachte (ENTSCHEIDUNGEN 2.3: „gemessen nutzlos (~15 MB je Aufruf)“). Ich habe ihn deshalb gefragt, ob es wieder eingeschaltet werden soll, mit dem Hinweis auf rund 0,8 MB mehr je Aufruf der Produktseite. Seine Antwort, wörtlich: „wie bei Variante C. Was so schwer zu verstehen ? Wie klar soll ich es sagen ?“ Ich werte das als Ja (ENTSCHEIDUNGEN 2.13).
+
+**Befund des Unteragenten:** In `shop-embed.mjs` holte die Produktseite in der Ruhephase schon die Startkarte (Sitzung) und wärmte eine kleine Dateiliste vor. Das unsichtbare Vollfenster (`preload()`, `.gv-embed--preload`) war vorhanden, hatte aber keinen Auslöser. Modell, Editor-Seite und Editor-Start begannen erst beim Tippen.
+
+**Gebaut:** Nach der Startkarte und einer Ruhephase startet das vorhandene unsichtbare Fenster einmal (`createPrebootControl`). Beim Tippen wird es nur eingeblendet. Regeln, je mit Test: nicht im Datensparmodus, bei 2G oder auf verborgener Seite; nur mit gültiger Startkarte; höchstens einmal je Seitenaufruf; andere Variante oder abgelaufene Startkarte beim Tippen: verwerfen, normaler Start; Fehler im unsichtbaren Fenster: still verwerfen; Schließen und Escape greifen nicht ins unsichtbare Fenster; Bearbeiten aus dem Warenkorb startet nie vorab. Das Nachladen im Editor (weitere Designs aus Stufe 2, Schriften, Motive) beginnt erst, wenn die Produktseite meldet, dass der Kunde den Konfigurator sieht (`GravuruShopEntry.whenShown`). Eine kleine Verhaltensänderung: Ist der Konfigurator beim Einblenden schon fertig, geht der Fokus in den Konfigurator statt auf den dann verborgenen Schließen-Knopf.
+
+**Angaben des Unteragenten** (je ein Lauf, nur lesend am echten Edelstahl-Türschild mit ersetzten Dateien im eigenen Browser; parallel liefen andere Läufe):
+
+| Lauf | Tippen bis bedienbar |
+| --- | ---: |
+| PC, ohne Vorab-Start | 3,9 s |
+| PC, mit Vorab-Start, nach einigen Sekunden auf der Produktseite | 0 s (war schon fertig) |
+| PC, Variante vor dem Tippen gewechselt | 4,7 s (richtige Variante geöffnet) |
+| Handy-Profil, mit Vorab-Start, nach rund 15 s auf der Produktseite | 0 s (war schon fertig) |
+| Handy-Profil, Tippen 5 s nach Erscheinen des Knopfs | 9,1 s |
+
+Der Konfigurator war unsichtbar fertig: am PC 4,5 bis 5,4 s nach Erscheinen des Knopfs, im Handy-Profil 14,9 s danach. Früh tippen bringt also wenig.
+
+**Kosten und offene Punkte:** rund 0,8 MB mehr je Aufruf der Produktseite ohne Tippen (am PC 1.490 statt 655 kB). Keine zusätzliche Sitzung, aber je Seitenaufruf statt je Tippen ein Modellabruf, die Designliste und die Startvorschau. Der ganze Editor rechnet im Hintergrund; ob die Produktseite auf echten Handys dabei ruckelt und ob Safari unsichtbare fremde Fenster bremst (am 27.10. beobachtet), ist nicht geprüft. Nicht geprüft sind auch Speichern und Warenkorb nach einem Vorab-Start.
+
+### Stufe 4: Warenkorb-Übergabe
+
+**Kette im heutigen Stand** (Unteragent, aus dem Code): Vorbereitung im Browser → `POST acrylic-drafts` → `POST theme-cart` → `GET cart/data` → `POST cart/claim` → `POST /cart/add.js`. Von Astra schon erledigt: Kundenbild als WebP, Shopify-Bild startet direkt nach dem Sichern, kein PNG mehr über das Kundengerät, Zeitmessung je Abschnitt.
+
+**Befund:** `prepareThemeCart` läuft dreimal je Warenkorb, jedes Mal mit einer bis zwei vollen Angebotsprüfungen. Jede las den ganzen Produktstand (rund 12 MB) neu und prüfte seine Prüfsumme neu. Modell- und Galerieabruf vermeiden das seit „Paket 1a“ über eine Lesephase und einen Prüfsummen-Merker; die Warenkorb-Routen nutzten beides nicht.
+
+**Gebaut** (`shop-entry.mjs`, 43 Zeilen): `theme-cart`, `cart/data` (je eine Phase vor und nach dem Warten auf das Bild) und `cart/claim` laufen in `withCustomerReadScope`; die Zuordnung wird mit demselben Merker aufgelöst wie bei der Sitzungsprüfung jeder Anfrage (`cartRegistry`). Keine Prüfung entfällt; Reihenfolge und Fehlermeldungen sind gleich. Von mir beim Lesen geprüft: In `themeProxy` liegt die Herkunftsprüfung des Claims weiter nach der Vorbereitung, der Claim läuft nur für `POST …/claim`, der Datenzweig prüft nach dem Warten auf das Bild erneut. Die Lesephase merkt Datenbank-Lesungen nur bei unverändertem Datenbankstand (`customer-read-scope.mjs`), nach einem Schreibvorgang wird neu gelesen.
+
+**Risiko, das auf die Beta gehört:** Werte aus einer Lesephase sind eingefroren. Ein Schreibversuch darauf in einem Zweig, den die Tests nicht abdecken, endet als Fehler 500. Deshalb die Durchläufe mit Edelstahl, Ring, Menge 3 und Bearbeiten aus dem Warenkorb.
+
+**Angaben des Unteragenten** (im Prozess mit echter SQLite-Werkstatt; Produkt synthetisch mit 12 MB, 80 Formaten, 240 Designs; Shopify-Bild als Attrappe; Median aus 5 Läufen, Maschine parallel belastet):
+
+| Anfrage | vorher | nachher |
+| --- | ---: | ---: |
+| `acrylic-drafts` | 1949 ms | 1736 ms (unverändert, Schwankung) |
+| `theme-cart` | 1098 ms | 384 ms |
+| `cart/data` | 1082 ms | 357 ms |
+| `cart/claim` | 1180 ms | 269 ms |
+
+Nachweis des Unteragenten: 47 Testdateien rund um Warenkorb, Einstieg, Prüfpaket, Bestelleingang und Zuordnung mit 487 Tests, 486 bestanden, 1 übersprungen; meine Gegenprobe am geänderten Stand und am Live-Stand `921928f4` mit gleichem Ergebnis (`druck.pdf` und `gestaltung.svg` bytegleich, `konturA.pdf` weicht wie bekannt zwischen Läufen ab).
+
+**Offen, nur am echten Server oder bei Shopify messbar:** ob der Antwortspeicher (`modelResponseCache`) live eingeschaltet ist (ohne ihn wirkt nur die Lesephase); `checkout_image_wait` und das Anlegen des Bilds bei Shopify; Dauer von `/cart/add.js`; Größe des Uploads bei `acrylic-drafts`.
+
+**Nicht gebaut, braucht eine Entscheidung:** Das Prüfpaket enthält je Entwurf das ganze Produktdokument (rund 12 MB). Ein Verweis auf den unveränderlichen Produktstand würde das Sichern lokal um geschätzt 0,6 bis 0,8 s kürzen, ändert aber Inhalt und Prüfsumme des Prüfpakets und alle Leser (Fertigung, Bestelleingang). Ebenso offen: `cart/data` und `cart/claim` zusammenlegen (spart einen Abruf über den Shopify-App-Proxy, ändert das Protokoll).
+
+### Prüfungen am gemeinsamen Stand `f04200b0`
+
+- Gezielte Tests: 151 von 151.
+- Gesamtlauf: 2783 Tests, 2775 bestanden, 4 fehlgeschlagen (dieselben vier wie am Live-Stand `921928f4`), 4 übersprungen
+- Am echten Edelstahl-Türschild mit dem Editor-Paket dieses Stands (`stufe2.mjs`, nur lesend): 21 Designs im Gerät, 21 Wechsel ohne Modellabruf und ohne neuen Editor, 20 von 20 Designs gleich dem bisherigen Weg.
+- Gesamtlauf zu Stufe 2 allein (`c83ec441`): 2779 Tests, 2771 bestanden, 4 fehlgeschlagen (dieselben vier wie am Live-Stand), 4 übersprungen.
+
+### Stand der Übergabe an Astra
+
+Mein Auftrag in #267 war: Beta auf `f04200b0`, Prüfliste (Server-Abruf, Wechsel, Warenkorb mit Edelstahl, Ring, Menge 3 und Bearbeiten, `Server-Timing`, Vorab-Start auch am iPhone), dann live, Rücknahme auf `921928f4`.
+
+**Geändert durch Chris:** Astra berichtet in #267 (14:36 Uhr) eine neue Freigabe von Chris im Chat mit ihm, wörtlich: „ich möchte es jetzt live im Shop Hbaen., Testen kann ich hinterher.“ Astra schaltet deshalb `f04200b0` direkt live; die Prüfungen auf der Beta entfallen für diese Freischaltung. Das Zitat kenne ich nur aus Astras Bericht. Folge: Stufe 4 geht live, ohne je mit einem echten Schreibzugriff gelaufen zu sein. Ich habe in #267 verlangt, dass direkt nach dem Umschalten je ein Warenkorb mit Edelstahl-Türschild und Ring geprüft und bei einem Fehler sofort auf `921928f4` zurückgegangen wird.

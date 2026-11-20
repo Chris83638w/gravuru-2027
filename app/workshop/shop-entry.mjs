@@ -330,7 +330,8 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
   const {store,binding}=resolve({shopifyProductId:input.shopifyProductId,shopifyVariantId:input.shopifyVariantId});
   const startModel=modelFor(store,binding);
   // Presentation is cosmetic and comes from this checked, fixed product revision.
-  const presentation=startModel.universal.customerUI?.presentation==='prio-r15'?'prio-r15':input.presentation;
+  const ringPilot=binding.shopifyProductId==='gid://shopify/Product/16126387257724';
+  const presentation=ringPilot||startModel.universal.customerUI?.presentation==='prio-r15'?'prio-r15':input.presentation;
   const issued=sessions.issue(binding,{customerId:proxy.customerId});
   const fragment=new URLSearchParams({s:issued.token});
   if(input.config){fragment.set('config',input.config);fragment.set('rev',input.rev);if(input.line)fragment.set('line',input.line);}

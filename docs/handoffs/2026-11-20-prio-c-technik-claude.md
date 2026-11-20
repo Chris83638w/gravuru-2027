@@ -730,3 +730,35 @@ Befund im Code: Das Prinzip ist an drei Stellen schon umgesetzt (Rohlingbilder i
 2. Erledigt, 22:34 Uhr (ENTSCHEIDUNGEN 3.50): **abgelehnt.** Die ganze Bestellung muss bei Shopify sein, auch das Kundenfoto. Das Foto geht beim Klick als Datei an die Warenkorbzeile; der Server holt es beim Bestelleingang von dort; „Bearbeiten“ lädt es von der Zeile zurück (so macht es der ältere Bestellweg in `gravuru-legacy-cart.js`). Die Fertigungsdateien kommen nach dem Bestelleingang an die Shopify-Bestellung; Berechtigung der App dafür prüfen. Der Foto-Upload lässt sich damit nicht vor den Klick ziehen.
 
 Der [Design-Master](https://github.com/Chris83638w/gravuru-katalog./blob/main/designs/DESIGN-MASTER.md) gilt unverändert; an Designs wurde nichts geändert.
+
+## Paket, Stufe 2 (20.11.2026, 22:45 bis 23:10 Uhr) – gebaut (`07516299`), nicht aufgespielt
+
+**Was.** `konfigurator-quellen.json` enthielt die Konfiguration mit allen Designs der Familie (`familyFormats.designs`, `profile.designs`). Dieselben Listen stehen unverändert im Produktstand (im live-nahen Aufbau per Prüfsumme belegt, `beta267/prio/paket/gleich.mjs`). Ein Paket mit Verweis behält dort nur das gewählte Design und trägt `sourcesRef` mit Anzahl und Prüfsumme je gekürzter Liste.
+
+**Wie.** `review-product.mjs`: `slimReviewSources(frozen,document,designId)` kürzt nur Listen, deren Prüfsumme mit der Liste im Produktstand übereinstimmt; sonst bleibt die Liste eingebettet. `savedReviewSources(config,document)` stellt wieder her und prüft Anzahl und Prüfsumme. `acrylic-review.mjs` kürzt nur bei Paketen mit Verweis (`productSha256`, nicht bei der alten Acrylart). `acrylic-artwork.mjs` stellt direkt nach dem Holen des Produktstands wieder her und ersetzt die Datei in `files`; Zusammenfassung und Fertigungspaket lesen daraus und sehen die Datei Byte für Byte wie bisher.
+
+**Leser beim Klick** brauchen keine Wiederherstellung: `theme-cart.mjs` liest nur das gewählte Design, `cart-edit-revision.mjs` nur Kennung, Revision und Bindung des Profils.
+
+**Zahlen (lokal, synthetische Daten):** 24,04 MB → 10,94 MB → 1,49 MB je Entwurf. Rest: Schriften des Designs, Elementrechte (375 kB), Formatliste ohne Designs.
+
+**Prüfungen:** siehe `STATUS.md` (vier neue Tests, Gegenprobe, gezielt 90 von 90, Gesamtlauf 2819 von 2827 mit den vier bekannten Fehlschlägen, Paket- und Handy-Tests 211 von 211).
+
+**Offen in diesem Paket:** Elementrechte ebenfalls kürzen; das Kopieren der ganzen Konfiguration je Klick (`nativeReviewConfig`, `reviewSources`) vermeiden.
+
+## Kassenbild: jetzt der größte Anteil (Befund 23:05 Uhr)
+
+Gerechnet aus der Messung von 21:46 Uhr: Acrylglas Entwurf gesichert bei 5,05 s, Bild „bereit“ bei rund 8,6 s (3,6 s); Edelstahl 2,93 s und rund 5,95 s (3,0 s). `shopify-checkout-image.mjs` legt die Datei an und fragt alle 750 ms nach. Nach „bereit“ folgen heute noch rund 2,5 s (Rest des Abrufs, Bestätigen, Shopify, Warenkorbseite).
+
+| Weg | erreichbar (Rechnung) | Folge |
+| --- | --- | --- |
+| Kassenbild bleibt im Klick | rund 7 s | keine |
+| Vorschau als Erstes senden, Anmeldung läuft neben dem Sichern | rund 6 s | ein zusätzlicher kleiner Abruf |
+| Kassenbild beim Öffnen des Überblicks anmelden | rund 3,5 bis 4,5 s | bei Shopify unter „Dateien“ liegt auch für Kunden, die nicht einlegen, ein Bild der Gestaltung; Aufräumregel nötig |
+
+Die Shopify-Funktion prüft nur die Form der Bildadresse (`cart-image.mjs`); eine Anmeldung vor dem Klick braucht dort keine Änderung. Am Server bräuchte sie einen Abruf, der die Vorschau annimmt, unter einer inhaltsbezogenen Adresse bereitstellt und beim Klick wiedererkennt. Noch nicht gebaut.
+
+### Offene Fragen an Chris
+
+1. Kassenbild schon beim Öffnen des Überblicks bei Shopify anmelden, nicht bestellte Bilder nach 30 Tagen automatisch löschen. Empfehlung: Ja. (Gestellt 23:10 Uhr.)
+
+Der [Design-Master](https://github.com/Chris83638w/gravuru-katalog./blob/main/designs/DESIGN-MASTER.md) gilt unverändert; an Designs wurde nichts geändert.

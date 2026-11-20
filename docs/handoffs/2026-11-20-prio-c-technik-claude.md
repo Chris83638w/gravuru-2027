@@ -617,7 +617,7 @@ Was bis „bereit“ bleibt: die Produktseite selbst, die Abrufe nacheinander (S
 
 ## Warenkorb wie Zakeke und Fancy (20.11.2026, 21:36 Uhr) – Entscheidung und Plan, noch nichts gebaut
 
-> **Überholt seit 22:12 Uhr** durch den Abschnitt „Warenkorb wie Variante C“ weiter unten (ENTSCHEIDUNGEN 3.48, 3.49). Stufe 1 dieses Plans ist gebaut (`5ad10b05`), wird aber nicht aufgespielt.
+> **Ergänzt seit 22:12 Uhr** durch den Abschnitt „Warenkorb wie Variante C“ weiter unten (ENTSCHEIDUNGEN 3.48, 3.49). Stufe 1 dieses Plans ist gebaut (`5ad10b05`) und bleibt die Grundlage; noch nicht aufgespielt.
 
 Entscheidung: ENTSCHEIDUNGEN 3.47. Zweig `dev/claude-paket-20261120` auf `9bfc281b`.
 
@@ -642,11 +642,11 @@ Entscheidung: ENTSCHEIDUNGEN 3.47. Zweig `dev/claude-paket-20261120` auf `9bfc28
 
 Zu diesem überholten Plan keine.
 
-## Kleines Paket, Stufe 1 (20.11.2026, 21:40 bis 22:10 Uhr) – gebaut, nicht aufgespielt, überholt
+## Kleines Paket, Stufe 1 (20.11.2026, 21:40 bis 22:10 Uhr) – gebaut, nicht aufgespielt
 
 - `5fb395f9`, `255857d0`: Das Prüfpaket kann den Produktstand nennen statt einbetten (`app/workshop/review-product.mjs`); die Fertigung liest beide Arten. `84e4e31c`: Der Kundeneinstieg sichert das kleine Paket. `5ad10b05`: Tests berichtigt und ergänzt. In `84e4e31c` stand eine falsche Testerwartung, weil die Ausgabe des Testlaufs durch einen Filter lief und der Fehlschlag den Commit nicht aufhielt; berichtigt in `5ad10b05`.
 - Gesamtlauf auf `5ad10b05`: 2823 Tests, 2815 bestanden, 4 übersprungen, die vier bekannten Fehlschläge.
-- Nicht bei Astra beauftragt. Mit ENTSCHEIDUNGEN 3.49 entfällt der Anlass: Beim Klick entsteht am Server kein Paket mehr.
+- Nicht bei Astra beauftragt. Um 22:12 Uhr hielt ich es für überholt; das war voreilig, siehe „Nachtrag 22:50 Uhr“ im Abschnitt darunter: Es ist die Grundlage des neuen Wegs.
 
 ## Warenkorb wie Variante C (20.11.2026, ab 21:52 Uhr) – Entscheidung, Befunde, Plan; noch nichts gebaut
 
@@ -679,6 +679,43 @@ Ich hatte Chris geschrieben, Variante C habe keinen Bestellweg gehabt. Grundlage
 
 **Risiken, benannt:** Die Prüfung der Gestaltung liegt nach dem Kauf. Der Browser bestimmt die Angaben für den Preis wie schon heute; Abweichungen fallen erst beim Bestelleingang auf. Entwurf und Vorschau liegen bei Shopify unter nicht erratbaren, aber öffentlichen Adressen. Änderungen an Theme-Dateien und an der Shop-Seite spielt Astra auf.
 
+### Nachtrag 22:50 Uhr: Aufbau berichtigt – ein kurzer Abruf an unseren Server bleibt, das kleine Paket ist die Grundlage
+
+Beim Weiterlesen gefunden: Vier Funktionen des Prio-Konfis hängen an Angaben, die nur unser Server liefert.
+
+| Funktion | Stelle | Braucht |
+| --- | --- | --- |
+| „Bearbeiten“ im Warenkorb | `ops/shopify/theme-block/snippets/gravuru-warenkorb-bearbeiten.liquid` | `_gravuru_config`, `_gravuru_rev`; öffnet den signierten Einstieg, der Server lädt den Entwurf |
+| Bild auf der Danke-Seite | `ops/shopify/thank-you-preview/src/model.mjs` | `_gravuru_bild` als Adresse unseres Servers (`…/gestaltung/…/offer_…/<Prüfsumme>.png`) |
+| Bild in der Bestellbestätigung (Vorlage) | `ops/shopify/notifications/gravuru-bestellbestaetigung-bild.liquid` | dieselbe Adresse |
+| Kassenbild | `ops/shopify/checkout-image/cart-image.mjs` | ein vom Server bei Shopify angemeldetes Bild und `_gravuru_offer` |
+
+Ganz ohne unseren Server beim Klick (wie Variante C) müssten diese vier Stellen bei Shopify neu gebaut und freigegeben werden, und Kundenfotos lägen öffentlich bei Shopify. Das widerspricht „sämtliche Funktionen bleiben“ und „keine dritte Architektur“. **Deshalb:** Der Server bleibt mit einem kurzen Abruf beteiligt, vergibt die Kennungen der Zeile und behält eine kleine Kopie von Entwurf und Vorschau. Fertigungspaket und Prüfung entstehen mit dem Bestelleingang (3.48, 3.49). Der kleine Entwurf hängt zusätzlich als Datei an der Warenkorbzeile, damit die Bestellung für sich vollständig ist.
+
+Damit ist das kleine Paket (Stufe 1, `5ad10b05`) **nicht** überholt, sondern die Grundlage; meine Aussage von 22:12 Uhr war voreilig. Es reicht aber noch nicht: Lokal im live-nahen Aufbau (synthetische Daten, Dokument 11,49 MB, `beta267/prio/paket/groesse.mjs`) belegt das bisherige Paket 24,04 MB, das kleine 10,94 MB; davon 11,19 MB `konfigurator-quellen.json` (die Konfiguration mit allen Designs).
+
+**Wohin die 11,1 s heute gehen** (Messung 21:46 Uhr am echten Shop, Acrylglas, Zeiten des Servers):
+
+| Schritt | Dauer | davon |
+| --- | --- | --- |
+| Vorbereitung im Browser | 0,7 s | Vorschaubilder |
+| Entwurf sichern | 4,3 s | Prüfung 1,41 s, Speichern 0,55 s, Vorschaupaar 0,40 s, Konfiguration 0,20 s, Produkt lesen 0,18 s, Übertragung 0,9 s |
+| Warenkorb vorbereiten | 0,8 s | Angebot 0,23 s, Paket lesen 0,14 s |
+| Daten für die Shop-Seite | 3,1 s | Warten auf das Kassenbild 1,95 s, Angebot 0,27 s, Paket lesen 0,13 s |
+| Übergabe bestätigen | 0,8 s | Angebot 0,20 s, Paket lesen 0,13 s |
+| Shopify legt die Zeile an | 1,0 s | bei Shopify |
+
+**Bauschritte, jeder für sich aufspielbar, alle nur am Server und im Editor:**
+1. Paket klein: Stufe 1 (gebaut) und `konfigurator-quellen.json` nur für das gewählte Design.
+2. Kassenbild schon beim Sichern des Entwurfs anmelden statt erst bei den Daten für die Shop-Seite; das Warten überlappt dann mit den folgenden Abrufen.
+3. Die drei Abrufe nach dem Sichern rechnen dasselbe dreimal; einmal rechnen, Ergebnis weiterreichen. Produktstand nicht mehr je Abruf lesen.
+4. Prüfung der Gestaltung an den Bestelleingang (3.49); die Fertigung prüft ohnehin noch einmal (`acrylic-artwork.mjs`).
+5. Kleiner Entwurf als Datei an die Warenkorbzeile.
+6. Bestelleingang: Paket und Fertigungsdateien automatisch (3.48).
+7. Kundenfotos beim Auswählen hochladen (Frage an Chris offen).
+
+Rechnung, nicht gemessen: nach den Schritten 1 bis 4 rund 3 s vom Klick bis zum Warenkorb (Browser 0,7 s, ein bis zwei kurze Abrufe rund 1 s, Shopify 0,7 bis 1,0 s, Laden der Warenkorbseite).
+
 ### Frage von Chris, 22:18 Uhr: kleinere WebP-Datei im Konfigurator, echte Datei für die Bestellung
 
 Befund im Code: Das Prinzip ist an drei Stellen schon umgesetzt (Rohlingbilder in `shop-model-slim.mjs`, Szenen und Sockelbilder in `acrylic-scene.mjs` und `acrylic-product.mjs`, Beispielfotos über `design-assets/…/preview.svg`). Feste Rasterbilder in Druckdesigns (`motif-raster`) stehen in der Gestaltung nur mit ihrer Prüfsumme (`assetId`); der Editor zeigt die Datei unter `raster.url` (`ux.mjs`, `rasterMarkup`). Eine kleinere Anzeige-Datei unter dieser Adresse ändert an der Gestaltung nichts; die Fertigung nimmt das Original über die Prüfsumme. Der ältere Bestellweg lud das Original in den Browser und prüfte die Prüfsumme (`commerce-export.mjs`); mit dem Bestelleingang am Server entfällt das. Nicht geprüft: ein veröffentlichtes Druckprodukt mit Rasterbild und dessen Dateigrößen (bei Astra angefragt, Punkt 6).
@@ -689,7 +726,7 @@ Befund im Code: Das Prinzip ist an drei Stellen schon umgesetzt (Rohlingbilder i
 
 ### Offene Fragen an Chris
 
-1. Schlägt die Prüfung nach dem Kauf fehl: Die Bestellung bekommt im Backend „Bitte prüfen“ und wird nicht automatisch gefertigt. Empfehlung: Ja.
-2. Kundenfotos und -logos (Stufe C): schon beim Auswählen im Hintergrund auf unseren Server laden, nicht an Shopify; nicht bestellte Bilder nach 30 Tagen löschen. Empfehlung: Ja.
+1. Schlägt die Prüfung nach dem Kauf fehl: Die Bestellung bekommt im Backend „Bitte prüfen“ und wird nicht automatisch gefertigt. Empfehlung: Ja. Rückfragen von Chris, 22:25 und 22:26 Uhr („Was meinst du ?“, „Warum muss was kontrolliert werden ?“), beantwortet: kein Mitarbeiter prüft normale Bestellungen; es geht um das Nachrechnen des Preises und um Gestaltungen, aus denen sich keine Fertigungsdatei bauen lässt. Antwort steht aus.
+2. Kundenfotos und -logos: schon beim Auswählen im Hintergrund auf unseren Server laden, nicht an Shopify; nicht bestellte Bilder nach 30 Tagen löschen. Empfehlung: Ja. Rückfrage von Chris, 22:25 Uhr („Warum nicht nach Shopify ?“), beantwortet: Shopify nimmt Dateien erst beim Einlegen an (der Upload läge im Klick), und die Adressen dort sind öffentlich. Antwort steht aus.
 
 Der [Design-Master](https://github.com/Chris83638w/gravuru-katalog./blob/main/designs/DESIGN-MASTER.md) gilt unverändert; an Designs wurde nichts geändert.

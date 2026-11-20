@@ -14,7 +14,8 @@ Zur Freigabe: Chris schrieb um 10:05 Uhr „du kannst es direkt live setzen“ u
 
 - Zweig `dev/claude-prio-c-20261120`, abgezweigt vom Live-Stand `2bd7bd8e` (`dev/astra-r15-live-267-20261119`).
 - Stufe 1 ist gebaut und geprüft: Designwechsel im Gerät für Türschilder mit allen Größen.
-- Nicht aufgespielt. Ich habe keinen Serverzugang.
+- Stand `a38c9701` hatte einen Fehler bei Designs mit eigenem Motiv. Er ist mit `a4267e67` behoben, siehe „Nachtrag: Fehler in der ersten Fassung“.
+- Astra hat `a38c9701` als geschützten Testpfad auf den Beta-Server gestellt. Ich selbst habe keinen Serverzugang.
 
 ## Was nicht mehr zu tun war
 
@@ -86,6 +87,25 @@ Die Zeit bis zum offenen Editor ist in diesem Vergleich nicht aussagekräftig: I
 
 ![Prio am Handy nach dem Wechsel im Gerät](2026-11-20-prio-c-technik-claude/bilder/01-prio-handy.png)
 
+## Nachtrag: Fehler in der ersten Fassung und Korrektur (20.11.2026, 12:45 Uhr)
+
+**Fehler.** Astra hat `a38c9701` auf dem Beta-Server geprüft und gemeldet: Beim Design „Zwei Zeilen mit Trennlinie“ fehlt nach dem Wechsel im Gerät die Trennlinie, die Fertigungsprüfung hält vor dem Speichern an ([Meldung in #265](https://github.com/Chris83638w/gravuru-2027/issues/265#issuecomment-7036710071)). Ich habe das nachvollzogen und den Umfang bestimmt: Ich habe die Modelle aller 21 Designs mit dem Startmodell verglichen (nur lesend am Live-Shop). Zusätzlich zu den oben genannten Design-Teilen unterscheiden sie sich in `localResources.motifs`. 18 der 21 Designs bringen eigene Motive mit (Linien, Ornamente, Pfeile). Bei allen 18 fehlte nach dem Wechsel das Motiv. Eine falsche Bestellung war nicht möglich, weil die vorhandene Exportprüfung das Speichern anhält.
+
+**Meine Lücke.** Mein Modellvergleich lief nur zwischen Design 1 und Design 2, beide ohne Motiv. Meine Bedienprüfung hat nur Texte verglichen. Den Punkt „Motive in Designs“ hatte ich als nicht geprüft genannt, die Fassung aber trotzdem zum Test gegeben.
+
+**Korrektur.** Astras Vorschlag `a4267e67` ([PR #279](https://github.com/Chris83638w/gravuru-2027/pull/279)) habe ich gelesen, geprüft und übernommen. Er meldet die Motive der Vorlage beim laufenden Zeichner an und nimmt sie in beide Modellkopien auf. Angenommen werden nur eingebettete Motive aus reinen Pfaden; alles andere (Verweise, Bilder, abweichende Ressourcen, schon belegte Schlüssel) führt zum bisherigen Wechsel. Die Anmeldung entspricht dem Weg beim normalen Start (`build.mjs`: lokale Motive in die Motivliste, Schlüssel in `GravuruTemplateOnlyMotifKeys`, damit sie nicht in der Motivbibliothek des Kunden erscheinen).
+
+**Prüfung der Korrektur.**
+
+- Alle 21 Designs nacheinander gewählt, einmal mit dem bisherigen und einmal mit dem neuen Wechsel (Skript `alle-wechsel.mjs`, Rohwerte `alle-live-pc.json` und `alle-neu-pc.json`). Verglichen je Design: Design, Texte, Motive mit Lage und Größe, Anzahl der gezeichneten Pfade, Prüfsumme über alle Pfaddaten, Anzahl nicht umgewandelter Textelemente. Ergebnis: alle 20 Wechsel gleich, darunter die 18 Designs mit Motiv. Neu: kein Serverwechsel, ein Editor. Bisher: 20 Serverwechsel, 21 Editoren.
+- Der Rückweg auf Design 1 ergibt im neuen Wechsel exakt den Startzustand (16 Pfade, gleiche Prüfsumme). Im bisherigen Wechsel zeigte mein Vergleich dort zwei noch nicht umgewandelte Texte; das ist ein Zeitpunkt meiner Aufnahme im frisch gestarteten Editor und kein Befund am neuen Weg.
+- Gezielte Tests 68 von 68. Gesamtsuite auf `a4267e67`: 2765 Tests, 2757 bestanden, dieselben 4 Fehlschläge wie am Live-Stand, 4 übersprungen. Gegenprobe unverändert.
+- Bedienprüfung mit eigenem Text, Größenwechsel und Rückgängig-Taste wiederholt: wie zuvor.
+
+![Trennlinien-Design vorher und nachher](2026-11-20-prio-c-technik-claude/bilder/02-trennlinie.png)
+
+**Noch offen:** Der Durchlauf eines Designs mit Motiv bis in den Shopify-Warenkorb auf dem Beta-Server mit dem korrigierten Stand.
+
 ## Ein sichtbarer Unterschied
 
 Nach einem Wechsel über den Server erschien in der Designauswahl der Knopf „← Zur vorherigen Gestaltung“. Nach einem Wechsel im Gerät erscheint er nicht, so wie heute schon bei den Funkklingeln. Zurück führt die Rückgängig-Taste des Editors; geprüft: Sie stellt das vorherige Design mit dem eigenen Text wieder her. Ob der eigene Knopf zusätzlich bleiben soll, entscheidet Chris.
@@ -94,8 +114,9 @@ Nach einem Wechsel über den Server erschien in der Designauswahl der Knopf „�
 
 - Stufe 1 gilt für Produkte mit allen Größen in einem Produkt (heute das Edelstahl-Türschild). Andere Galerie-Produkte, zum Beispiel mit fester Größe oder mit Fotofeldern, nutzen weiter den bisherigen Weg.
 - Beim ersten Wechsel zu einem Design wird weiter das Modell mit 321 kB geholt. Eine schlanke Antwort nur mit den Design-Teilen (rund 16 kB) und das Vorladen sichtbarer Karten sind der nächste Schritt; das braucht eine kleine Serveränderung.
-- Geprüft am Edelstahl-Türschild im Format 12 × 8 cm mit drei Designs und einem Größenwechsel. Nicht geprüft: alle 21 Designs, alle 80 Formate, Motive in Designs, echtes Handy.
+- Geprüft am Edelstahl-Türschild im Format 12 × 8 cm mit allen 21 Designs und einem Größenwechsel. Nicht geprüft: die anderen 79 Formate, Designs mit Bildern oder Verweisen im Motiv (sie nehmen den bisherigen Weg), echtes Handy.
 - Start des Editors und „In den Warenkorb“ sind noch nicht angefasst.
+- Nachtrag: Astra hat auf dem Beta-Server zwei Gestaltungen nach einem Wechsel im Gerät in den echten Warenkorb gelegt (zwei Positionen, je 19,99 €, Bilder stimmen). Das ist für mich ein fremder Bericht.
 - **Speichern und Warenkorb nach einem Wechsel im Gerät habe ich nicht ausgeführt**, weil ich im Live-Shop nichts schreibe. Begründung, warum es gleich bleibt: Sitzung und Produktzuordnung sind dieselben wie vor dem Wechsel, der Server prüft beim Speichern Produkt und Stand der Sitzung und das Design gegen das vollständige Produkt, und der Editor legt je Design einen eigenen Entwurf an. Das ist eine Herleitung aus dem gelesenen Code, kein Nachweis. Der Nachweis gehört auf den Beta-Server: zwei Gestaltungen nach einem Wechsel im Gerät in den Warenkorb legen, Preis, Bild und Artikelnummer ablesen.
 - Beobachtung ohne Einordnung: Zwischen 11:10 und 11:40 Uhr kam bei meinen Abrufen dreimal eine unvollständige Antwort (zweimal wurde der Editor in 120 s nicht bereit, einmal lieferte das Hauptpaket 12.149 statt 1.403.777 Zeichen bei Status 200). 28 weitere Abrufe waren in Ordnung. Die Ursache kann in meiner Umgebung liegen, die Abrufe laufen über einen Zwischenrechner.
 

@@ -1,0 +1,192 @@
+[
+  {
+    "type": "bestand",
+    "sameEditor": false,
+    "frames": 2,
+    "writes": [],
+    "localRequests": 0,
+    "name": "katalog-TAE-V2A-8x5-D3",
+    "objects": [
+      {
+        "type": "motif",
+        "key": "katalog-TAE-V2A-8x5-D3-motiv-1",
+        "stored": true,
+        "local": true,
+        "original": true,
+        "bounds": [
+          7,
+          24.552,
+          66,
+          0.379
+        ],
+        "runtimeBounds": [
+          7,
+          24.552,
+          66,
+          0.379
+        ],
+        "embeddedOnly": true,
+        "excludedFromLibrary": true,
+        "ownResource": {
+          "chars": 115,
+          "paths": 1,
+          "text": [],
+          "image": 0
+        },
+        "catalog": {
+          "chars": 115,
+          "paths": 1,
+          "text": [],
+          "image": 0
+        },
+        "object": {
+          "chars": 723,
+          "paths": 2,
+          "text": [],
+          "image": 0
+        },
+        "uxObject": null,
+        "ObjectKeys": [
+          "id",
+          "type",
+          "motif",
+          "x",
+          "y",
+          "w",
+          "h",
+          "rotation",
+          "color",
+          "templateOrigin",
+          "customerEditable"
+        ]
+      }
+    ],
+    "localMotifs": 15,
+    "runtimeMotifs": 39,
+    "resources": 0,
+    "export": {
+      "valid": true,
+      "length": 7756,
+      "sha256": "648c6b5f88e92af2406b589daad386a75d0816804e1fc916c0daed37ae76c3c5",
+      "normalized": "85e9615a5875d87a52f8834aa6129cfc8366e253d22be6fc2663443faf02dfae",
+      "paths": 15,
+      "geometry": {
+        "width": 120,
+        "height": 80,
+        "shape": "rect",
+        "cornerRadiusMm": 5,
+        "safeMarginMm": 0,
+        "holes": []
+      },
+      "rawIds": [
+        "studio-customer-45-element-0-ink"
+      ],
+      "pixelSize": [
+        960,
+        640
+      ],
+      "pixels": "3bcf011f3e2000ee89c245c7b27df1578221073ced64f3846b3df2eb803515e2",
+      "artKeys": [
+        "svg",
+        "geometry",
+        "fingerprint",
+        "examplePhotos"
+      ]
+    }
+  },
+  {
+    "type": "lokaler-kandidat",
+    "sameEditor": true,
+    "frames": 1,
+    "writes": [],
+    "localRequests": 2,
+    "name": "katalog-TAE-V2A-8x5-D3",
+    "objects": [
+      {
+        "type": "motif",
+        "key": "katalog-TAE-V2A-8x5-D3-motiv-1",
+        "stored": true,
+        "local": true,
+        "original": true,
+        "bounds": [
+          7,
+          24.552,
+          66,
+          0.379
+        ],
+        "runtimeBounds": [
+          7,
+          24.552,
+          66,
+          0.379
+        ],
+        "embeddedOnly": true,
+        "excludedFromLibrary": true,
+        "ownResource": {
+          "chars": 115,
+          "paths": 1,
+          "text": [],
+          "image": 0
+        },
+        "catalog": {
+          "chars": 115,
+          "paths": 1,
+          "text": [],
+          "image": 0
+        },
+        "object": {
+          "chars": 723,
+          "paths": 2,
+          "text": [],
+          "image": 0
+        },
+        "uxObject": null,
+        "ObjectKeys": [
+          "id",
+          "type",
+          "motif",
+          "x",
+          "y",
+          "w",
+          "h",
+          "rotation",
+          "color",
+          "templateOrigin",
+          "customerEditable"
+        ]
+      }
+    ],
+    "localMotifs": 15,
+    "runtimeMotifs": 39,
+    "resources": 0,
+    "export": {
+      "valid": true,
+      "length": 7756,
+      "sha256": "d433825b2831c4bf6b9384568492468fb728759e8e91a6234a5d15f9f6d99423",
+      "normalized": "85e9615a5875d87a52f8834aa6129cfc8366e253d22be6fc2663443faf02dfae",
+      "paths": 15,
+      "geometry": {
+        "width": 120,
+        "height": 80,
+        "shape": "rect",
+        "cornerRadiusMm": 5,
+        "safeMarginMm": 0,
+        "holes": []
+      },
+      "rawIds": [
+        "studio-customer-54-element-0-ink"
+      ],
+      "pixelSize": [
+        960,
+        640
+      ],
+      "pixels": "3bcf011f3e2000ee89c245c7b27df1578221073ced64f3846b3df2eb803515e2",
+      "artKeys": [
+        "svg",
+        "geometry",
+        "fingerprint",
+        "examplePhotos"
+      ]
+    }
+  }
+]

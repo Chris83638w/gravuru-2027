@@ -4,6 +4,10 @@ import {validateDesignContent} from '../../platform/sources/app/shared/models/de
 import {isArtworkResource} from './artwork-resource.mjs';
 import {productFontIndex} from './lazy-resources-model.mjs';
 
+// Auftrag #265, Stufe 2: Mit allen Designs im Gerät prüfte jeder Aufruf erneut sämtliche Schriftkonturen und Motivpfade
+// (über 1 MB je Aufruf, mehrmals je Designwechsel). Konturen und Motive sind nach dem Laden unveränderlich; ein bereits
+// geprüftes Objekt wird deshalb nicht noch einmal geprüft. Ein neues oder ersetztes Objekt durchläuft die Prüfung vollständig.
+const checkedGlyphs=new WeakSet(),checkedMotifs=new WeakSet();
 export function localFontIds(config) {
   if (!config.localResources) return [];
   if (config.reviewOnly !== true || config.profile.binding?.kind !== 'local-review' || config.profile.features?.orderEnabled !== false) throw Error('Eigene Schriftressourcen sind nur im lokalen Prüfprodukt erlaubt.');
@@ -17,12 +21,16 @@ export function localFontIds(config) {
   for(const name of Object.keys(resources.fonts)){
     const f=resources.fonts[name]?.regular;
     if(!f||!Number.isFinite(f.units)||f.units<=0||!f.glyphs)throw Error('Lokale Schrift ungültig.');
+    if(checkedGlyphs.has(f.glyphs))continue;
     for(const [character,g] of Object.entries(f.glyphs))if([...character].length!==1||!Number.isFinite(g.a)||typeof g.d!=='string'||!/^[MmLlHhVvCcSsQqTtAaZz\d.,+eE\s-]*$/.test(g.d))throw Error('Lokale Schrift enthält ungültige Pfade.');
+    checkedGlyphs.add(f.glyphs);
   }
   for(const m of resources.motifs){
+    if(m&&typeof m==='object'&&checkedMotifs.has(m))continue;
     if(m.artwork!==undefined){if(!isArtworkResource(m))throw Error('Importierte Designressource ist ungültig.');continue;}
     if(m.embeddedOnly!==undefined&&typeof m.embeddedOnly!=='boolean')throw Error('Vorlagenmotiv-Kennzeichnung ist ungültig.');
     if(!/^[\w.-]{1,120}$/.test(m.key)||!Array.isArray(m.bounds)||m.bounds.length!==4||!m.bounds.every(Number.isFinite)||m.bounds[2]<=0||m.bounds[3]<=0||typeof m.svgFragment!=='string'||!m.svgFragment.match(/^(?:<path d="[MmLlHhVvCcSsQqTtAaZz\d.,+eE\s-]+" fill="(?:currentColor|none)" fill-rule="(?:evenodd|nonzero)"(?: stroke="currentColor" stroke-width="\d+(?:\.\d+)?")?(?: opacity="(?:0(?:\.\d+)?|1(?:\.0+)?)")?(?: stroke-linecap="(?:butt|round|square)" stroke-linejoin="(?:miter|round|bevel)" stroke-miterlimit="\d+(?:\.\d+)?")?\/>)+$/))throw Error('Lokales Motiv enthält nicht erlaubte Inhalte.');
+    checkedMotifs.add(m);
   }
   return ids;
 }

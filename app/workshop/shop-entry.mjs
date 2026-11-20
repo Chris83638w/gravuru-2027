@@ -87,8 +87,14 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
  if(modelResponseCache!==null&&modelResponseCache!==undefined&&modelResponseCache!==false&&modelResponseCache!==true&&(typeof modelResponseCache!=='object'||Array.isArray(modelResponseCache)||Object.keys(modelResponseCache).some(k=>!['maxEntries','maxBytes','maxModels'].includes(k))))fail(503,'shop_entry_config','Der Konfigurator-Einstieg ist nicht eingerichtet.');
  let modelCache;try{modelCache=modelResponseCache===null||modelResponseCache===undefined||modelResponseCache===false?null:createModelResponseCache(modelResponseCache===true?{}:modelResponseCache);}catch{fail(503,'shop_entry_config','Der Konfigurator-Einstieg ist nicht eingerichtet.');}
  // Auftrag #265, Stufe 2: eigener kleiner Speicher für die Design-Teile. Einträge, Grenzen und Zähler des Modellspeichers bleiben unberührt.
- // 256 Einträge: Eine Familie mit fester Größe fragt je Seite der Designauswahl (40 Designs) sieben Gruppen ab; die Grenze nach Bytes bleibt.
- const DESIGN_PARTS_MAX=48,partsCache=modelCache?createModelResponseCache({maxEntries:256,maxBytes:32*1024*1024,maxModels:1}):null;
+ // Ein Eintrag je Design und Ausführung (zwei Acrylglas-Schilder mit je 208 Designs brauchen rund 20 MB); begrenzt nach Einträgen und Bytes.
+ const DESIGN_PARTS_MAX=48,partsCache=modelCache?createModelResponseCache({maxEntries:2048,maxBytes:48*1024*1024,maxModels:1}):null;
+ // Art der Freigabe je Produktstand (Katalog, Funkklingel oder keine). Sie hängt allein am gespeicherten Dokument dieser
+ // Revision und steht deshalb schon in jedem Speichereintrag; der Merker erspart den Design-Teilen das erneute Lesen des
+ // Dokuments (am echten Server je Lesen 0,13 bis 0,2 s). Die Freigabe selbst wird nie gemerkt.
+ const kinds=new Map();
+ const rememberKind=(holderKey,state,kind)=>{if(kinds.size>=256&&!kinds.has(holderKey))kinds.delete(kinds.keys().next().value);kinds.set(holderKey,{state,kind});};
+ const rememberedKind=(holderKey,state)=>{const hit=kinds.get(holderKey);return hit&&hit.state===state?hit.kind:undefined;};
  const ids=new Set(),fixed=stores.map(s=>{
   const w=s?.workshop;
   if(!s||!/^[-a-zA-Z0-9_]{1,100}$/.test(s.storeId||'')||ids.has(s.storeId)||typeof s.registry?.resolve!=='function'||typeof s.cart!=='function'||typeof w?.model!=='function'||!w.tenantId||w.sessionContext?.shopDomain!==shopDomain||
@@ -594,7 +600,7 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
       const holderKey=JSON.stringify([context.store.storeId,context.binding.productId,context.binding.productRevision]);
       const held=modelCache.heldFor(context.store.storeId,holderKey,state)||{holderKey,model,cardModel};
       let activeKind;try{activeKind=approvalKind(context.store.workshop.repository.get(context.binding.productId,{revision:context.binding.productRevision}).document?.config);}catch{activeKind=undefined;}
-      if(activeKind!==undefined)modelCache.set(context.store.storeId,key,state,{json:modelJson,activeKind,modelKind:approvalKind(model.universal),startDesignId:designId,fontHashes:lazyFontHashes(presented),held,...baseRest});
+      if(activeKind!==undefined){rememberKind(holderKey,state,activeKind);modelCache.set(context.store.storeId,key,state,{json:modelJson,activeKind,modelKind:approvalKind(model.universal),startDesignId:designId,fontHashes:lazyFontHashes(presented),held,...baseRest});}
      }
      lap('msBuild',at);return sendJson(res,200,bytes);
     }
@@ -607,36 +613,55 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
      const ids=wanted.split(',');
      if(ids.length>DESIGN_PARTS_MAX||ids.some(id=>!id||id.length>200)||new Set(ids).size!==ids.length)fail(404,'shop_entry_route','Diese Funktion ist nicht verfügbar.');
      checkOrigin(req,{mutating:false});
-     const context=activeContext(req),state=productState(context.store,context.binding);
+     const context=activeContext(req),state=productState(context.store,context.binding),storeId=context.store.storeId;
      const slimState=slimmer?(slimmer.ready()?'ready':'cold'):'none';
-     const key=state===null||!partsCache?null:modelResponseKey({storeId:context.store.storeId,productId:context.binding.productId,productRevision:context.binding.productRevision,bindingId:context.binding.bindingId,assignmentRevision:context.binding.assignmentRevision,unitCents:context.binding.unitCents,options:context.binding.options,designId:'parts:'+ids.join(','),slimState});
-     const hit=key===null?null:partsCache.get(context.store.storeId,key,state);
-     if(hit){
-      // Treffer: dieselben frischen Prüfungen und Fehler wie beim Treffer im Modellzweig.
-      requireApproval(context.store,context.binding,hit.activeKind);
-      if(context.store.workshop.konfis.paused(context.binding.productId))fail(423,'konfi_paused',PAUSED_MESSAGE);
-      requireApproval(context.store,context.binding,hit.modelKind);
-      return sendJson(res,200,Buffer.from(hit.json));
+     // Ein Eintrag je Design (20.11.2026, nach Astras Messung in #267: die ersten Aufrufe nach dem Aufspielen brauchten 9,8 und
+     // 12,9 s; am echten Server kostete jeder Abruf ohne Treffer rund 0,6 s, gleich ob 1 oder 6 Designs). Der Eintrag galt bisher
+     // für genau eine Zusammenstellung von Designs; eine andere Seite, eine Suche oder eine andere Gruppierung traf ihn nie.
+     const usable=state!==null&&!!partsCache;
+     const partKey=id=>modelResponseKey({storeId,productId:context.binding.productId,productRevision:context.binding.productRevision,bindingId:context.binding.bindingId,assignmentRevision:context.binding.assignmentRevision,unitCents:context.binding.unitCents,options:context.binding.options,designId:'part:'+id,slimState});
+     const cached=ids.map(id=>usable?partsCache.get(storeId,partKey(id),state):null);
+     // Produkt und Produktstand der Antwort sind die der festen Zuordnung (checkedModel lässt kein anderes Modell zu).
+     const head='{"binding":'+JSON.stringify(publicBinding(context.binding))+',"configuration":'+JSON.stringify({id:context.binding.productId,revision:context.binding.productRevision})+',"designs":[';
+     const respond=fragments=>sendJson(res,200,Buffer.from(head+fragments.filter(Boolean).join(',')+']}'));
+     const paused=()=>{if(context.store.workshop.konfis.paused(context.binding.productId))fail(423,'konfi_paused',PAUSED_MESSAGE);};
+     if(cached.every(Boolean)){
+      // Alles im Speicher: dieselben frischen Prüfungen und Fehler wie beim Treffer im Modellzweig.
+      requireApproval(context.store,context.binding,cached[0].activeKind);paused();
+      requireApproval(context.store,context.binding,cached[0].modelKind);
+      return respond(cached.map(entry=>entry.json));
      }
-     const epoch=key===null?null:writeEpoch(context.store);
-     requireDoorbellApproval(context.store,context.binding);
-     const model=modelFor(context.store,context.binding);
+     const epoch=usable?writeEpoch(context.store):null;
+     // Art der Freigabe: steht in jedem Eintrag dieses Produktstands und im Merker des Modellzweigs. Nur wenn beides fehlt,
+     // wird wie bisher das gespeicherte Dokument gelesen. Geprüft wird die Freigabe selbst bei jedem Abruf frisch.
+     const holderKey=JSON.stringify([storeId,context.binding.productId,context.binding.productRevision]);
+     let activeKind=usable?(cached.find(Boolean)?.activeKind??rememberedKind(holderKey,state)):undefined;
+     if(activeKind!==undefined)requireApproval(context.store,context.binding,activeKind);else requireDoorbellApproval(context.store,context.binding);
+     // Das Modell hält der Modellzweig seit dem Start dieser Gestaltung schon bereit; nur ohne dieses wird neu aufgebaut.
+     const held=usable&&modelCache?modelCache.heldFor(storeId,holderKey,state):null;
+     const model=held?heldModelFor(context.store,context.binding,held.model):modelFor(context.store,context.binding);
      if(!hasDesignParts(model.universal)||!moduleEnabled(model.universal,'designs'))fail(404,'shop_entry_design_parts','Für dieses Produkt gibt es keine einzelnen Design-Teile.');
      allowedAssets(context.store,context.binding,model);
-     const designs=[];
-     for(const id of ids){
+     const fragments=[],fresh=[];
+     for(let i=0;i<ids.length;i++){
+      if(cached[i]){fragments.push(cached[i].json);continue;}
+      const id=ids[i];
       // Ein Design, das in der gewählten Ausführung nicht verfügbar ist, fehlt in der Antwort; der Browser nimmt dafür den bisherigen Weg.
       let presented;try{presented=presentedModel(model,context.binding,context.store,id);}catch(error){if(error?.code==='shop_entry_design')continue;throw error;}
       if(presented.universal.profile.defaultDesignId!==id)continue;
-      designs.push({id,base:shopDesignBase(presented.universal),parts:shopDesignParts(presented.universal)});
+      const fragment=JSON.stringify({id,base:shopDesignBase(presented.universal),parts:shopDesignParts(presented.universal)});
+      fragments.push(fragment);fresh.push([id,fragment]);
      }
-     const body=JSON.stringify({binding:publicBinding(context.binding),configuration:{id:model.configuration.id,revision:model.configuration.revision},designs});
      // Ablegen unter denselben Bedingungen wie im Modellzweig: kein Schreibvorgang während des Aufbaus, gleicher Produktstand, gleicher Verschlanker.
-     if(key!==null&&epoch!==null&&(!slimmer||slimmer.ready()===(slimState==='ready'))&&writeEpoch(context.store)===epoch&&productState(context.store,context.binding)===state){
-      let activeKind;try{activeKind=approvalKind(context.store.workshop.repository.get(context.binding.productId,{revision:context.binding.productRevision}).document?.config);}catch{activeKind=undefined;}
-      if(activeKind!==undefined)partsCache.set(context.store.storeId,key,state,{json:body,activeKind,modelKind:approvalKind(model.universal)});
+     if(usable&&fresh.length&&epoch!==null&&(!slimmer||slimmer.ready()===(slimState==='ready'))&&writeEpoch(context.store)===epoch&&productState(context.store,context.binding)===state){
+      if(activeKind===undefined){try{activeKind=approvalKind(context.store.workshop.repository.get(context.binding.productId,{revision:context.binding.productRevision}).document?.config);}catch{activeKind=undefined;}}
+      if(activeKind!==undefined){
+       rememberKind(holderKey,state,activeKind);
+       const modelKind=approvalKind(model.universal);
+       for(const [id,fragment] of fresh)partsCache.set(storeId,partKey(id),state,{json:fragment,activeKind,modelKind});
+      }
      }
-     return sendJson(res,200,Buffer.from(body));
+     return respond(fragments);
     }
     if(action==='design-gallery'){
      if(req.method!=='GET')fail(405,'shop_entry_method','Diese Anfrageart ist nicht verfügbar.');

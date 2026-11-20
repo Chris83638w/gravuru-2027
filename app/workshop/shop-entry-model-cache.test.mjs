@@ -49,7 +49,7 @@ function workshop(s,{withEpoch=true,withPause=true,withState=true}={}){
    s.onModel?.();return structuredClone(s.model());
   },
   galleryModel:(id,rev)=>{const m=s.model();return {key:m.key,configuration:m.configuration,galleryCategoryIds:m.galleryCategoryIds,universal:m.universal};},
-  repository:{get:id=>{if(s.missing)throw Object.assign(Error('Konfiguration nicht gefunden.'),{status:404,code:'not_found'});return {id,revision:3,status:'draft',document:{config:s.docConfig}};},
+  repository:{get:id=>{s.docReads=(s.docReads||0)+1;if(s.missing)throw Object.assign(Error('Konfiguration nicht gefunden.'),{status:404,code:'not_found'});return {id,revision:3,status:'draft',document:{config:s.docConfig}};},
    ...(withState?{revisionState:(id,{revision}={})=>{
     s.stateReads++;
     if(s.missing)throw Object.assign(Error('Konfiguration nicht gefunden.'),{status:404,code:'not_found'});
@@ -481,5 +481,45 @@ test('Stufe 2 gilt auch für die Familie mit fester Größe: Fingerabdruck in de
  // Zweiter Abruf aus dem Speicher; Pause gilt weiter bei jedem Abruf.
  const {calls:again}=await calls(s,()=>designParts(on,headers,query));assert.equal(again,0);
  s.paused=true;const paused=await designParts(on,headers,query);assert.equal(paused.status,423);assert.equal(paused.data.error.code,'konfi_paused');
+},{setup:fixedSetup}));
+
+// 20.11.2026, nach Astras Messung in #267 (erste Aufrufe nach dem Aufspielen 9,8 und 12,9 s; je Abruf ohne Treffer rund 0,6 s
+// am echten Server): ein Speichereintrag je Design, das Modell kommt vom Modellzweig, das Dokument wird nicht erneut gelesen.
+test('Design-Teile: nach dem Start der Gestaltung baut kein Abruf das Modell neu oder liest das Dokument, auch nicht beim ersten Mal',()=>run(async({s,on,off,open,model})=>{
+ const headers=await open();
+ assert.equal((await model(on,headers)).status,200);
+ const ids=['fs-2','fs-3','fs-4'],before={calls:s.modelCalls,docs:s.docReads};
+ const first=await designParts(on,headers,'?designs='+ids.join(','));
+ assert.equal(first.status,200);assert.deepEqual(first.data.designs.map(d=>d.id),ids);
+ assert.equal(s.modelCalls-before.calls,0,'das gehaltene Modell des Modellzweigs genügt');
+ assert.equal(s.docReads-before.docs,0,'die Art der Freigabe ist aus dem Modellzweig bekannt');
+ // Ohne Speicher dieselben Bytes.
+ assert.ok(first.body.equals((await designParts(off,headers,'?designs='+ids.join(','))).body));
+},{setup:fixedSetup}));
+
+test('Design-Teile: jede andere Zusammenstellung schon gelieferter Designs kommt aus dem Speicher; nur neue Designs werden gerechnet',()=>run(async({s,on,off,open,model})=>{
+ const headers=await open();await model(on,headers);
+ await designParts(on,headers,'?designs=fs-2,fs-3');
+ for(const query of ['?designs=fs-3','?designs=fs-3,fs-2','?designs=fs-2,fs-4,fs-3','?designs=fs-4,gibt-es-nicht,fs-2']){
+  const before={calls:s.modelCalls,docs:s.docReads},a=await designParts(on,headers,query),b=await designParts(off,headers,query);
+  assert.equal(a.status,200,query);assert.ok(a.body.equals(b.body),'bytegleich mit dem Weg ohne Speicher: '+query);
+  assert.deepEqual(a.data.designs.map(d=>d.id),query.slice(9).split(',').filter(id=>id.startsWith('fs-')),query);
+  // `off` hat keinen Speicher und baut immer; gezählt wird deshalb vor dem Vergleichsabruf.
+  assert.equal(s.modelCalls-before.calls-1,0,'kein neuer Modellaufbau mit Speicher: '+query);
+ }
+},{setup:fixedSetup}));
+
+test('Design-Teile: Pause, Freigabe und anderer Produktstand greifen auch bei Treffern je Design und beim gehaltenen Modell',()=>run(async({s,on,open,model})=>{
+ const headers=await open();await model(on,headers);
+ assert.equal((await designParts(on,headers,'?designs=fs-2')).status,200);
+ // Teils im Speicher (fs-2), teils neu (fs-3): Pause und Freigabe kommen vor jeder Antwort.
+ s.paused=true;let r=await designParts(on,headers,'?designs=fs-2,fs-3');assert.equal(r.status,423);assert.equal(r.data.error.code,'konfi_paused');
+ r=await designParts(on,headers,'?designs=fs-2');assert.equal(r.status,423);s.paused=false;
+ s.catalogApproved=false;r=await designParts(on,headers,'?designs=fs-2,fs-3');assert.equal(r.status,404);assert.equal(r.data.error.code,'shop_entry_catalog_release');
+ r=await designParts(on,headers,'?designs=fs-2');assert.equal(r.status,404);s.catalogApproved=true;
+ // Anderer Produktstand: weder Einträge noch gehaltenes Modell noch gemerkte Art gelten weiter.
+ s.product={...s.product,headRevision:4};
+ const before={calls:s.modelCalls,docs:s.docReads};r=await designParts(on,headers,'?designs=fs-2,fs-3');
+ assert.equal(r.status,200);assert.ok(s.modelCalls>before.calls,'Modell neu aufgebaut');assert.ok(s.docReads>before.docs,'Dokument neu gelesen');
 },{setup:fixedSetup}));
 

@@ -1,3 +1,15 @@
+## 20.11.2026 · Claude (Operator, technische Gesamtverantwortung) · #265/#267: Warenkorb Schritt 1 und Edelstahl-Rand
+
+- Zweig `dev/claude-warenkorb-20261120`, aufbauend auf dem Vorab-Start (`f1053988`, Abschnitt darunter). Zum Aufspielen als ein Stand; Auftrag an Astra in #267.
+- `ed1b8d8c` Warenkorb, Schritt 1, nur Server (Chris 19:26 Uhr: nach dem Vorab-Start der Warenkorb). Das Prüfpaket eines Entwurfs enthält den ganzen Produktstand (über 10 MB); der Server packt es jetzt mit nativer Prüfsumme, das Archiv bleibt Byte für Byte gleich (lokal 11,3 MB: 145–161 → 15 ms; am echten Server waren es 0,8 s je Entwurf). Der Entwurf nutzt das gehaltene Modell. Die Freigabe-Prüfungen des Warenkorbwegs nehmen die gemerkte Art.
+- Berichtigung zu meiner Aussage beim Vorab-Start: `f1053988` allein hätte im Warenkorbweg weniger gespart als angegeben. `active()` las das Dokument nicht mehr, die zweite Freigabe-Prüfung in drei der vier Abrufe dafür selbst. Erst `ed1b8d8c` nimmt auch dort die gemerkte Art. Gezählt im Warenkorb-Ablauftest: Dokumentlesungen 133 ohne Speicher; mit Speicher 135 (`44f9bdcf`), 88 (`f1053988`), 72 (`ed1b8d8c`).
+- `e3fa6af8` Edelstahl-Rand (Chris 21:03 Uhr: „Ja“, ENTSCHEIDUNGEN 3.46). Die Randsperre misst an den gezeichneten Buchstaben, die Prüfung vor dem Warenkorb und der Server an den Umrissen der Schrift; am äußersten Rand wichen beide um Bruchteile eines Millimeters ab. Jetzt gilt nach der Randsperre dieselbe Prüfung als letzte Instanz. Ändert das Editor-Paket: `editor-6928e91ac4b786bf` → `editor-6f2e52f6bb197537`; `editor-d6521828989e096a` bleibt.
+- Am echten Shop mit ersetztem Paket, nur lesend: Edelstahl-Name an den rechten Rand gezogen, am PC und in Handy-Größe: kein Dialog, die Prüfung gibt frei (`bilder/22-edelstahl-rand-ohne-dialog.png`). Acrylglas unverändert frei über den Rand mit Hinweis.
+- Prüfungen: Kundenablauf und Warenkorb-Ablauf laufen zusätzlich mit Antwortspeicher; Test auf bytegleiches Archiv; zwei Tests zum Edelstahl-Rand, Gegenprobe mit abgeschalteter Korrektur schlägt fehl. Gesamtlauf: Ergebnis im Auftrag an Astra in #267.
+- Nicht geprüft: die Wirkung am echten Server (Warenkorbzeiten, Vorab-Start); nach dem Aufspielen messe ich nach. Edelstahl: Warenkorb mit dem Namen am Rand am echten Server.
+- Warenkorb, was bleibt (Messung 20:18 Uhr, 12,0 s): Prüfung des Entwurfs 1,1 s, Speichern 0,5 s, Vorschaubilder 0,5 s, Warten auf das Kassenbild 2,0 s, dreimal Warenkorb-Vorbereitung je 0,3 s. Der größte Hebel wäre, den Entwurf schon beim Öffnen des Überblicks zu sichern; das ändert, wann ein Entwurf entsteht, und braucht Chris' Entscheidung.
+- Übergabe: `docs/handoffs/2026-11-20-prio-c-technik-claude.md`, Abschnitte „Warenkorb, Schritt 1“ und „Edelstahl: Rand“. Der [Design-Master](https://github.com/Chris83638w/gravuru-katalog./blob/main/designs/DESIGN-MASTER.md) gilt unverändert.
+
 ## 20.11.2026 · Claude (Operator, technische Gesamtverantwortung) · #265/#267: Vorab-Start verkürzen (Server)
 
 - Auftrag von Chris, 19:26 Uhr („3. Ja“): nach dem Rand den Vorab-Start verkürzen, danach den Warenkorb.

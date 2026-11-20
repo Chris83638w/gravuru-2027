@@ -557,8 +557,41 @@ Je ein Lauf. Der echte Server rechnete in den Messungen oben rund viermal so lan
 
 **Warenkorb, Ausgangslage** (aus dem Lauf von 20:18 Uhr): 12,0 s bis das Schild im Warenkorb liegt. `session_binding` fällt viermal an, zusammen 0,9 s; das entfällt mit diesem Stand weitgehend. Größte Posten danach: Entwurf sichern 4,2 s, Warten auf das Kassenbild 2,0 s, Warenkorb-Vorbereitung dreimal je 0,3 s.
 
+## Warenkorb, Schritt 1 (20.11.2026, ab 21:00 Uhr)
+
+Zweig `dev/claude-warenkorb-20261120`, Code `ed1b8d8c`, nur Server. Auftrag: Chris, 19:26 Uhr („3. Ja“).
+
+**Ausgangslage** (echter Shop, 20:18 Uhr, `rohwerte/rand-live-warenkorb.json`): 12,0 s bis zum Warenkorb. Am Server: Entwurf sichern 4,2 s, Warenkorb vorbereiten 0,9 s, Warenkorbdaten 2,7 s, Übernahme 0,5 s; dazu Shopify 0,6 s.
+
+**Befund.** Das Prüfpaket jedes Entwurfs enthält den ganzen Produktstand (`produkt-und-gestaltung.json` mit `record.document`, über 10 MB – alle 208 Designs der Familie). Daran hängen Packen (0,8 s), Speichern (0,5 s) und das spätere Lesen des Pakets (dreimal 0,13 s). Das Paket ist Fertigungsunterlage; seinen Inhalt habe ich nicht geändert.
+
+**Gebaut.**
+- `app/workshop/zip-stored.mjs`: dasselbe ungepackte Archiv wie `zipFiles`, die Prüfsumme je Datei mit `zlib.crc32` statt einer Schleife über jedes Byte. Byte für Byte gleich (`zip-stored.test.mjs`); die Paket-Prüfsumme bleibt. Lokal 11,3 MB: 145–161 ms → 15 ms.
+- Entwurf: Modell aus dem Antwortspeicher (`sharedModelFor`).
+- Freigabe-Prüfungen des Warenkorbwegs (`requireActiveApproval` an zwei Stellen): gemerkte Art wie in `active()`.
+
+**Berichtigung.** Im Abschnitt „Vorab-Start verkürzen“ steht, `session_binding` entfalle im Warenkorbweg weitgehend. Für `f1053988` allein stimmt das nur beim Entwurf: In den drei anderen Abrufen las die zweite Freigabe-Prüfung das Dokument danach selbst. Erst mit `ed1b8d8c` entfällt es dort. Zählung im Warenkorb-Ablauftest (ein ganzer Durchlauf): 133 Dokumentlesungen ohne Speicher; mit Speicher 135 (`44f9bdcf`), 88 (`f1053988`), 72 (`ed1b8d8c`).
+
+**Geprüft.** `shop-entry-flow.test.mjs` und `theme-cart-flow.test.mjs` laufen zusätzlich mit Antwortspeicher, mit denselben Erwartungen (Preise, Prüfstand, Bearbeiten, Bestellbindung). Gesamtlauf: im Auftrag an Astra.
+
+**Nicht geprüft.** Zeiten am echten Server; ein Lauf nach dem Aufspielen zeigt sie in den Zeitmarken der Antworten.
+
+**Was bleibt** (Zahlen von 20:18 Uhr): Prüfung des Entwurfs 1,1 s, Speichern 0,5 s, Vorschaubilder 0,5 s, Lesen des Produktstands 0,3 s, Warten auf das Kassenbild bei Shopify 2,0 s, Warenkorb-Vorbereitung dreimal je 0,3 s. Größter Hebel: den Entwurf schon beim Öffnen des Überblicks sichern, dann liefe das alles, während der Kunde den Überblick liest. Das ändert, wann ein Entwurf entsteht (einen Klick früher, auch wenn der Kunde danach abbricht) – Entscheidung von Chris. Ein kleineres Prüfpaket (nur das gewählte Design) wäre der zweite Hebel; es ändert die Fertigungsunterlage und gehört mit Mika abgestimmt.
+
+## Edelstahl: Rand (20.11.2026, 21:03 Uhr)
+
+Code `e3fa6af8`. Entscheidung: ENTSCHEIDUNGEN 3.46 (Chris: „Ja“).
+
+**Ursache.** Die Randsperre misst Text an den gezeichneten Buchstaben (`uxTextBounds`), die Prüfung vor dem Warenkorb und der Server messen an den Umrissen der Schrift (`customerLayoutIssue`). Am äußersten Rand wichen beide um Bruchteile eines Millimeters ab. Die Sperre ließ den Namen dort stehen, die Prüfung meldete „Bitte Gestaltung prüfen“; mit „So übernehmen und weiter“ hätte der Server abgelehnt (nicht am echten Server ausprobiert, aus dem Code gelesen und im Test belegt).
+
+**Gebaut.** `settleInside` in `edge-clamp.mjs`: Nach der Randsperre gilt dieselbe Lageprüfung als letzte Instanz. Sperrt sie noch, rückt das Element auf dem kürzesten Weg zur Schildmitte, bis sie nicht mehr sperrt. Passt es nirgends, bleibt es und wird wie bisher gemeldet. Nur im strengen Zweig; Klingelschilder und der freie Rand sind unverändert. Neues Editor-Paket `editor-6f2e52f6bb197537`.
+
+**Geprüft.** Zwei Tests in `customer-edge.test.mjs` (die Funktion für sich; der Edelstahl-Fall mit Randsperre, Prüfung vor dem Warenkorb und Server), Gegenprobe mit abgeschalteter Korrektur schlägt fehl. Am echten Shop mit ersetztem Paket, nur lesend (`rohwerte/rand-edelstahl-neu-*.json`, `rand-acryl-neu-pc.json`): Edelstahl am PC und in Handy-Größe ohne Dialog; der Name steht auf zwei Nachkommastellen dort, wo er vorher stand (Mitte 74,83 mm). Acrylglas unverändert frei.
+
+**Nicht geprüft.** Der Warenkorb mit dem Namen am Rand am echten Server (erst nach dem Aufspielen sinnvoll), echte Geräte.
+
 ### Offene Fragen an Chris
 
-1. Edelstahl: Sperre und Prüfung vor dem Warenkorb messen am Rand verschieden (Befund oben). Beheben?
+1. Warenkorb: Soll der Entwurf schon beim Öffnen des Überblicks gesichert werden (Abschnitt „Warenkorb, Schritt 1“, „Was bleibt“)? Empfehlung: Ja.
 
 Der [Design-Master](https://github.com/Chris83638w/gravuru-katalog./blob/main/designs/DESIGN-MASTER.md) gilt unverändert; an Designs wurde nichts geändert.

@@ -18,7 +18,7 @@ const editor=()=>page.frames().filter(f=>{try{return /^\/_merchant-(acryl-)?edit
 const lage=f=>f.evaluate(()=>{const el=document.querySelector('gravuru-configurator'),r=el.shadowRoot,p=el.uxSelectedProfile?.(),badge=r.querySelector('[data-ux-boundary-status]'),plate=r.querySelector('.plate-holder')?.getBoundingClientRect();
  const texts=el.state.objects.filter(o=>o.type==='text'&&String(o.text||'').trim()).sort((a,b)=>b.w*b.h-a.w*a.h);
  return {material:p?.material?.kind,breite:el.state.width,hoehe:el.state.height,objekte:el.state.objects.filter(o=>['text','motif'].includes(o.type)).map(o=>({id:o.id,typ:o.type,text:(o.text||'').slice(0,16),x:+o.x.toFixed(2),y:+o.y.toFixed(2),w:+o.w.toFixed(2),h:+o.h.toFixed(2)})),groesster:texts[0]?.id,
-  hinweis:badge?{sichtbar:!badge.hidden,text:badge.textContent,neutral:badge.hasAttribute('data-ux-edge-note'),farbe:getComputedStyle(badge).color}:null,
+  rand:p?.geometry?.safeMarginMm??null,form:p?.geometry?.shape+'/'+(p?.geometry?.cornerRadiusMm??0),hinweis:badge?{sichtbar:!badge.hidden,text:badge.textContent,neutral:badge.hasAttribute('data-ux-edge-note'),farbe:getComputedStyle(badge).color}:null,
   roteMarken:r.querySelectorAll('.scene .ux-outside,.ux-text-row.ux-overflow').length,dialoge:[...r.querySelectorAll('dialog[open]')].map(d=>(d.getAttribute('aria-label')||d.className).slice(0,40)),
   schild:plate?{links:Math.round(plate.left),rechts:Math.round(plate.right),oben:Math.round(plate.top),unten:Math.round(plate.bottom)}:null};});
 try{

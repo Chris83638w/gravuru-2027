@@ -1,0 +1,223 @@
+{
+ "lauf": "Claude, 20.11.2026, 21:47 bis 21:50 Uhr (UTC+2), echter Shop, Stand 9bfc281b live, ohne Ersatz; Skript korb/korb.mjs; keine Kasse, keine Bestellung",
+ "laeufe": [
+  {
+   "produkt": "Acrylglas-Familienschild Baum",
+   "imKorbNachMs": 11088,
+   "fehler": [],
+   "ueberRand": null,
+   "korb": {
+    "item_count": 1,
+    "total_price": 1499
+   },
+   "eigeneAbrufe": [
+    {
+     "weg": "acrylic-drafts",
+     "methode": "POST",
+     "status": 201,
+     "dauerMs": 4323,
+     "serverMs": {
+      "total": 3459.41,
+      "session_binding": 17.02,
+      "body_read": 2.99,
+      "body_json": 0.55,
+      "product_read": 178.27,
+      "model_build": 0.81,
+      "review_config": 203.32,
+      "review_validate": 1414.23,
+      "review_sources": 9.48,
+      "preview_pair": 397.92,
+      "review_zip": 40.12,
+      "originals_zip": 0.16,
+      "review_prepare": 2514.45,
+      "draft_persist": 546.79,
+      "response_json": 0.02
+     }
+    },
+    {
+     "weg": "theme-cart",
+     "methode": "POST",
+     "status": 200,
+     "dauerMs": 835,
+     "serverMs": {
+      "total": 694.62,
+      "session_binding": 19.03,
+      "body_read": 0.24,
+      "body_json": 0.03,
+      "draft_read": 0.16,
+      "review_read": 15.37,
+      "variant_candidates": 120.4,
+      "variant_binding": 14.11,
+      "offer_resolve": 226.25,
+      "offer_create": 21.59,
+      "bound_offer": 248.26,
+      "review_package": 138.41,
+      "cart_assign": 2.45,
+      "customer_image_url": 0.21,
+      "cart_prepare": 521.81,
+      "response_json": 0.02
+     }
+    },
+    {
+     "weg": "data",
+     "methode": "GET",
+     "status": 200,
+     "dauerMs": 3053,
+     "serverMs": {
+      "total": 2684.06,
+      "proxy_verify": 0.18,
+      "session_binding": 31.17,
+      "offer_resolve": 266.57,
+      "offer_create": 25.99,
+      "bound_offer": 292.77,
+      "review_package": 132.8,
+      "cart_assign": 0.38,
+      "customer_image_url": 0.11,
+      "cart_prepare": 547.98,
+      "checkout_image_wait": 1949.45,
+      "cart_revalidate": 154.43,
+      "response_json": 0.05
+     }
+    },
+    {
+     "weg": "claim",
+     "methode": "POST",
+     "status": 200,
+     "dauerMs": 767,
+     "serverMs": {
+      "total": 538.04,
+      "proxy_verify": 0.15,
+      "session_binding": 12.3,
+      "offer_resolve": 202.96,
+      "offer_create": 29.75,
+      "bound_offer": 232.91,
+      "review_package": 134.18,
+      "cart_assign": 0.36,
+      "customer_image_url": 0.11,
+      "cart_prepare": 490.72,
+      "cart_claim": 34.39,
+      "response_json": 0.01
+     }
+    }
+   ],
+   "shopifyCartAddMs": [
+    992
+   ]
+  },
+  {
+   "produkt": "Edelstahl-Türschild, Name bis an den rechten Rand (UEBER_RAND=1)",
+   "imKorbNachMs": 9145,
+   "fehler": [],
+   "ueberRand": {
+    "x": 73.06,
+    "w": 95.85,
+    "mitteX": 73.06,
+    "ragtUeberMm": 0.98,
+    "material": "steel",
+    "hinweis": {
+     "sichtbar": false,
+     "text": "",
+     "neutral": false
+    },
+    "roteMarken": 0
+   },
+   "korb": {
+    "item_count": 1,
+    "total_price": 1999
+   },
+   "eigeneAbrufe": [
+    {
+     "weg": "acrylic-drafts",
+     "methode": "POST",
+     "status": 201,
+     "dauerMs": 2466,
+     "serverMs": {
+      "total": 1879.55,
+      "session_binding": 29.66,
+      "body_read": 1.46,
+      "body_json": 0.64,
+      "product_read": 84.53,
+      "model_build": 0.78,
+      "review_config": 55.8,
+      "review_validate": 629.22,
+      "review_sources": 8.07,
+      "preview_pair": 651.03,
+      "review_zip": 17.2,
+      "originals_zip": 0.17,
+      "review_prepare": 1537.17,
+      "draft_persist": 137.26,
+      "response_json": 0.02
+     }
+    },
+    {
+     "weg": "theme-cart",
+     "methode": "POST",
+     "status": 200,
+     "dauerMs": 564,
+     "serverMs": {
+      "total": 412.35,
+      "session_binding": 19.03,
+      "body_read": 0.26,
+      "body_json": 0.03,
+      "draft_read": 0.18,
+      "review_read": 8.0,
+      "variant_candidates": 174.21,
+      "variant_binding": 13.56,
+      "offer_resolve": 89.0,
+      "offer_create": 10.64,
+      "bound_offer": 99.89,
+      "review_package": 37.11,
+      "cart_assign": 2.76,
+      "customer_image_url": 0.13,
+      "cart_prepare": 194.03,
+      "response_json": 0.01
+     }
+    },
+    {
+     "weg": "data",
+     "methode": "GET",
+     "status": 200,
+     "dauerMs": 2710,
+     "serverMs": {
+      "total": 2408.58,
+      "proxy_verify": 0.17,
+      "session_binding": 28.62,
+      "offer_resolve": 98.62,
+      "offer_create": 16.39,
+      "bound_offer": 115.31,
+      "review_package": 41.9,
+      "cart_assign": 0.34,
+      "customer_image_url": 0.11,
+      "cart_prepare": 189.92,
+      "checkout_image_wait": 2109.03,
+      "cart_revalidate": 80.17,
+      "response_json": 0.05
+     }
+    },
+    {
+     "weg": "claim",
+     "methode": "POST",
+     "status": 200,
+     "dauerMs": 506,
+     "serverMs": {
+      "total": 264.99,
+      "proxy_verify": 0.2,
+      "session_binding": 17.75,
+      "offer_resolve": 101.65,
+      "offer_create": 18.62,
+      "bound_offer": 120.56,
+      "review_package": 40.33,
+      "cart_assign": 0.34,
+      "customer_image_url": 0.11,
+      "cart_prepare": 216.73,
+      "cart_claim": 29.54,
+      "response_json": 0.04
+     }
+    }
+   ],
+   "shopifyCartAddMs": [
+    679
+   ]
+  }
+ ]
+}

@@ -1,3 +1,15 @@
+## 20.11.2026 · Claude (Operator, technische Gesamtverantwortung) · #265/#267: `9bfc281b` live, Messung am echten Shop
+
+- **Live seit 21:43 Uhr: `9bfc281b`** (Astra, #267; Pakete `editor-6f2e52f6bb197537`, `editor-d6521828989e096a`), Rückweg `44f9bdcf`. Beim ersten Umschalten 21:34:40 Uhr meldete der Webserver HTTP 503; Astra schaltete 21:36:57 Uhr zurück und wiederholte nach einem Neustart des Prozesses (21:42:16 Uhr wieder erreichbar). Laut Astra kein Kundenabruf in dem Fenster; Ursache laut Astra: Der Webserver verlor die lokale Verbindung zum Dienst.
+- Vorab-Start, je drei Läufe am echten Shop (vorher 20:18–20:22 Uhr, nachher 21:46 Uhr, Acrylglas-Familienschild „Baum“, nur lesend): Konfigurator bereit nach 7,1–7,9 s → **6,2–6,5 s**; alles geladen nach 10,8–12,1 s → **7,7–8,1 s**. Startkarte 1,0 s → 0,35 s. Designliste 0,9–1,3 s → 0,27–0,35 s. Editor-Seite wartet 0,9–1,3 s → 0,42–0,46 s. Vorschau 0,8–1,9 s → 0,21–0,58 s. Modell unverändert rund 1,0 s.
+- Warenkorb, je ein Lauf (Testentwurf „Claudetest“, keine Kasse): Acrylglas 12,0 s → **11,1 s**; Entwurf sichern am Server 4,2 s → 3,5 s (Packen 0,79 s → 0,04 s, Modellaufbau entfällt). Die Zeit für die Art der Freigabe ist in den Warenkorb-Abrufen nicht ganz weg: Sie taucht zum Teil in der Angebotsprüfung wieder auf (`offer_resolve` 0,03 s → 0,2 s), weil dort weiter das Dokument gelesen wird. Edelstahl: 9,1 s.
+- Edelstahl-Rand am echten Server: Name bis an den rechten Rand, kein Dialog, Entwurf angenommen, Schild im Warenkorb (19,99 €).
+- **Größe eines Entwurfs, von Astra gemessen: 37,36 MB** (Acrylglas-Familienschild „Baum“). Meine Rechnung von rund 10 MB war zu niedrig.
+- Testentwürfe „Claudetest“: jetzt acht; nichts gelöscht.
+- Nicht geprüft: echte Geräte; eine echte Fertigungsdatei aus einem Entwurf des echten Servers.
+- Nächster Schritt: Paket-Umbau (ENTSCHEIDUNGEN 3.47). Stufe 1a ist gebaut (`5fb395f9`, Schalter aus, nicht im Gesamtlauf, nicht zum Aufspielen).
+- Übergabe: `docs/handoffs/2026-11-20-prio-c-technik-claude.md`, Abschnitt „Live seit 21:43 Uhr“. Der [Design-Master](https://github.com/Chris83638w/gravuru-katalog./blob/main/designs/DESIGN-MASTER.md) gilt unverändert.
+
 ## 20.11.2026 · Claude (Operator, technische Gesamtverantwortung) · #265: Warenkorb wie Zakeke und Fancy (Entscheidung, Plan)
 
 - Entscheidung von Chris, 21:36 Uhr (ENTSCHEIDUNGEN 3.47): Beim Klick auf „In den Warenkorb“ nur die Gestaltung sichern, das Fertigungspaket erst mit der Bestellung – wie Zakeke und Fancy. Claude baut es; Mika muss es nicht machen.

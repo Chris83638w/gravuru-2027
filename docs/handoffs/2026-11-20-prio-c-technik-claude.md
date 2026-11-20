@@ -590,6 +590,31 @@ Code `e3fa6af8`. Entscheidung: ENTSCHEIDUNGEN 3.46 (Chris: „Ja“).
 
 **Nicht geprüft.** Der Warenkorb mit dem Namen am Rand am echten Server (erst nach dem Aufspielen sinnvoll), echte Geräte.
 
+## Live seit 21:43 Uhr: `9bfc281b` (Astra), Rückweg `44f9bdcf`
+
+Astra, #267: umgeschaltet 21:43:02 Uhr, neuer Prozess 21:43:15 Uhr, Pakete `editor-6f2e52f6bb197537` und `editor-d6521828989e096a` bestätigt. Erster Versuch 21:34:40 Uhr: HTTP 503 (Webserver ohne Verbindung zum Dienst), zurück auf `44f9bdcf` um 21:36:57 Uhr, 21:42:16 Uhr wieder erreichbar, danach derselbe Stand erneut. Laut Astra kein Kundenabruf im Fenster.
+
+**Vorab-Start** (`rohwerte/vorab-live-vorher-*.json`, `vorab-live-nachher-*.json`, je drei Läufe, Zeiten ab Aufruf der Produktseite):
+
+| | vorher | nachher |
+|---|---|---|
+| Konfigurator bereit | 7,1 / 7,3 / 7,9 s | 6,2 / 6,5 / 6,5 s |
+| alles geladen | 10,8 / 11,0 / 12,1 s | 7,7 / 7,8 / 8,1 s |
+| Startkarte | 0,97–1,03 s | 0,35–0,39 s |
+| Modell | 0,82–1,04 s | 1,02–1,17 s |
+| Editor-Seite wartet | 0,90–1,26 s | 0,42–0,46 s |
+| Designliste | 0,94–1,13 s, einzeln 0,9–1,3 s | 0,27–0,31 s, einzeln 0,27–0,35 s |
+| Vorschau | 0,8–1,9 s | 0,21–0,58 s |
+| Design-Teile, je Abruf | 0,14–2,2 s | 0,15–0,59 s |
+
+Was bis „bereit“ bleibt: die Produktseite selbst, die Abrufe nacheinander (Startkarte, Start-Seite, Skripte, Modell, Editor-Seite, Pakete) und der Start des Editors im Browser.
+
+**Warenkorb** (`rohwerte/rand-live-warenkorb.json` vorher, `warenkorb-live-nachher.json` nachher, je ein Lauf): Acrylglas 12,0 s → 11,1 s. Serverzeiten vorher → nachher: Entwurf sichern 4,18 → 3,46 s (Packen 0,79 → 0,04; Modellaufbau 0,23 → unter 0,02; Sitzung 0,15 → unter 0,02; Prüfung 1,08 → 1,41; Speichern 0,54 → 0,55), Warenkorb vorbereiten 0,85 → 0,70 s, Warenkorbdaten 2,73 → 2,68 s (Warten auf das Kassenbild 2,01 → 1,95), Übernahme 0,54 → 0,54 s. In den drei Warenkorb-Abrufen ist die Sitzungszeit weg, dafür braucht `offer_resolve` 0,2 s statt 0,03 s: Das Dokument wird dort weiter gelesen. Edelstahl: 9,1 s.
+
+**Edelstahl-Rand** am echten Server: Name bis an den Rand (Mitte 73,06 mm, Kasten 0,98 mm über dem Rand, Buchstaben am Rand), kein Dialog, Entwurf 201, im Warenkorb.
+
+**Größe eines Entwurfs** (Astra, gemessen): 37.362.089 Byte für einen Entwurf des Acrylglas-Familienschilds „Baum“.
+
 ## Warenkorb wie Zakeke und Fancy (20.11.2026, 21:36 Uhr) – Entscheidung und Plan, noch nichts gebaut
 
 Entscheidung: ENTSCHEIDUNGEN 3.47. Zweig `dev/claude-paket-20261120` auf `9bfc281b`.

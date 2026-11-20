@@ -318,8 +318,7 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
   const back=optional('back',v=>v.length<=512&&/^\/(?!\/)[A-Za-z0-9/_.~%-]*(?:\?[A-Za-z0-9=&_.~%-]*)?$/.test(v));
   const embed=optional('embed',v=>v==='1')==='1',ticket=optional('format',v=>v==='json')==='json';
   const toolbar=params.getAll('leiste'),leiste=toolbar.length===1&&['a','b'].includes(toolbar[0])?toolbar[0]:null;
-  const presentations=params.getAll('ui'),presentation=presentations.length===1&&presentations[0]==='prio-r15'?'prio-r15':null;
-  return {shopifyProductId:number('product','Product'),shopifyVariantId:number('variant','ProductVariant'),config,rev,line,back,embed,ticket,leiste,presentation};
+  return {shopifyProductId:number('product','Product'),shopifyVariantId:number('variant','ProductVariant'),config,rev,line,back,embed,ticket,leiste};
  }
  function start(req,res,url){
   if(req.method!=='GET')fail(405,'shop_entry_method','Diese Anfrageart ist nicht verfügbar.');
@@ -329,14 +328,11 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
   if(!startLimiter(input.ticket?'ticket':'start'))fail(429,'shop_entry_busy','Bitte kurz warten und erneut versuchen.');
   const {store,binding}=resolve({shopifyProductId:input.shopifyProductId,shopifyVariantId:input.shopifyVariantId});
   const startModel=modelFor(store,binding);
-  // Presentation is cosmetic and comes from this checked, fixed product revision.
-  const ringPilot=binding.shopifyProductId==='gid://shopify/Product/16126387257724';
-  const presentation=ringPilot||startModel.universal.customerUI?.presentation==='prio-r15'?'prio-r15':input.presentation;
   const issued=sessions.issue(binding,{customerId:proxy.customerId});
-  const fragment=new URLSearchParams({s:issued.token});
+  // Every validated storefront product uses the same Prio shell over its own model.
+  const fragment=new URLSearchParams({s:issued.token,ui:'prio-r15'});
   if(input.config){fragment.set('config',input.config);fragment.set('rev',input.rev);if(input.line)fragment.set('line',input.line);}
   if(input.back)fragment.set('back',input.back);
-  if(presentation)fragment.set('ui',presentation);
   if(input.embed){fragment.set('embed','1');if(input.leiste)fragment.set('leiste',input.leiste);}
   const target=origin+pagePath+'#'+fragment.toString();
   // Startkarte: dieselbe Zieladresse als JSON; die Produktseite öffnet beim Klick direkt den Konfigurator-Host.

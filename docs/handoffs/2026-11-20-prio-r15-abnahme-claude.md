@@ -2,7 +2,7 @@
 
 Auftrag: [koordinierter Auftrag von Chris in #267](https://github.com/Chris83638w/gravuru-2027/issues/267#issuecomment-7031593545), Abschnitt „Claude – unabhängige Abnahme“. Reihenfolge laut Auftrag: (1) richtige Prio-R15-Oberfläche, (2) Ring und Shopify-Warenkorb, (3) sichere Bestellung und Fertigung, (4) Tempo.
 
-Astras Ring in der Prio-Oberfläche ist noch nicht geliefert. Dieser Bericht hält deshalb die Ausgangslage fest und legt den Maßstab für die Abnahme offen.
+Dieser Bericht hält die Ausgangslage fest und legt den Maßstab für die Abnahme offen. Während der Prüfung hat Astra eine geschützte Prüfseite und die Testbestellung #1035 aus der Prio-Ansicht des Rings gemeldet. Die Bestellung habe ich gelesen. Die Prüfseite kann ich nicht öffnen: Ohne Anmeldung antwortet sie mit 401, ich habe keinen Zugang und erfrage keine Kennwörter (N). Dieselbe Ansicht erreiche ich über den Shop mit der Kennung an meiner eigenen Anfrage.
 
 **Nur gelesen.** Ich habe die Referenz, zwei Produktseiten und den Editor geöffnet, nichts gespeichert, keinen Warenkorb angelegt und nichts bestellt. Die beiden Testbestellungen habe ich in Shopify gelesen. Keine Änderung an Shop, Theme, Server, Preisen oder den Branches der Teams. **Keine Freigabe durch diese Prüfung.**
 
@@ -12,9 +12,9 @@ Kennzeichnung: **S** = selbst reproduziert · **F** = fremder Bericht · **N** =
 
 1. **Der Ring hat im Shop eine andere Bedienleiste als die Referenz, weil seiner Produktseite die Prio-Kennung fehlt** (S). Das Edelstahl-Türschild trägt sie und öffnet die Prio-Oberfläche.
 2. **Das war schon gestern Mittag so**, vor allen Live-Änderungen (S, mein Bild aus Phase A). Astra hat in der Nacht keine alte Oberfläche eingesetzt.
-3. **Mit der Kennung öffnet der Ring heute schon die Prio-Oberfläche mit seinen eigenen Daten** (S, nur in meinem Prüfbrowser): 16 Ring-Designs, drei Formate mit Preisen, Klingelposition, vier Rahmen, fünf Befestigungen mit Aufpreisen, zwei Acrylfarben. Der Schritt ist also klein. Nicht geprüft ist der Warenkorb aus dieser Ansicht.
+3. **Mit der Kennung öffnet der Ring heute schon die Prio-Oberfläche mit seinen eigenen Daten** (S, nur in meinem Prüfbrowser): 16 Ring-Designs, drei Formate mit Preisen, Klingelposition, vier Rahmen, fünf Befestigungen mit Aufpreisen, zwei Acrylfarben. Der Schritt ist also klein. Den Warenkorb aus dieser Ansicht habe ich nicht selbst ausgelöst. Astras Testbestellung #1035 stammt aus ihr: Die Bearbeiten-Adresse beider Positionen endet auf `ui=prio-r15` (S gelesen).
 4. **Die Prio-Oberfläche im Shop weicht an drei Stellen von der Referenz ab** (S). Das muss Chris entscheiden.
-5. **Die zwei Testbestellungen #1033 und #1034 stimmen** (S): je zwei Positionen derselben Variante zu 49,99 €, eigene Bilder, eigene Revisionen.
+5. **Die drei Testbestellungen #1033, #1034 und #1035 stimmen** (S): je zwei Positionen derselben Variante zu 49,99 €, eigene Bilder, eigene Revisionen. Die zwei bestellten Bilder von #1035 habe ich abgerufen: Rahmen, Gerätefoto, Text und Zierwinkel sind vollständig.
 6. **Die Tempogewinne von gestern gelten für den Ring in der bisherigen Leiste.** Das Edelstahl-Türschild in der Prio-Oberfläche war in meiner Messung vom 19.11. deutlich langsamer, und der Ring öffnete mit Prio-Kennung langsamer als ohne.
 
 ## Die vier Ansichten (S)
@@ -57,7 +57,7 @@ Geprüft in meinem Prüfbrowser auf PC und in Handybreite, ohne zu speichern.
 
 Kleinigkeit im vierten Bild der Handyreihe: Der runde Plus-Knopf verdeckt die Maßangabe „160 mm“ unter dem Schild.
 
-**Nicht geprüft:** Speichern, Warenkorb, Kasse und Bestellung aus dieser Ansicht. Dafür braucht es einen Schreibzugriff, den ich ohne Freigabe nicht mache.
+**Nicht selbst ausgelöst:** Speichern, Warenkorb, Kasse und Bestellung aus dieser Ansicht. Dafür braucht es einen Schreibzugriff, den ich ohne Freigabe nicht mache. Gelesen habe ich Astras Testbestellung #1035 aus dieser Ansicht, siehe unten.
 
 ## Abweichungen zwischen Referenz und Prio im Shop (S)
 
@@ -71,16 +71,19 @@ Die Referenz lädt ein eigenes, am 07.11. eingefrorenes Paket. Der Shop lädt de
 
 ## Testbestellungen in Shopify gelesen (S)
 
-| | #1033 | #1034 |
-| --- | --- | --- |
-| Angelegt | 19.11., 22:34 Uhr | 19.11., 22:37 Uhr |
-| Art | Test, Testzahlung, bezahlt, nicht versandt, nicht storniert | ebenso |
-| Summe | 99,98 € | 99,98 € |
-| Positionen | 2 × Variante `57471227756924`, Artikelnummer `FK-AV2A-16x28-1441`, je 49,99 € | ebenso |
-| Gestaltung | „Strichdesign“ mit „Haus Süd 27“, „Klar & modern“ mit „Haus Nord 12“ | ebenso |
-| Je Position | 15 Angaben; eigene Konfiguration, eigenes Angebot, eigenes Bild auf dem eigenen Server und eigenes Kassenbild bei Shopify | ebenso |
+| | #1033 | #1034 | #1035 |
+| --- | --- | --- | --- |
+| Angelegt | 19.11., 22:34 Uhr | 19.11., 22:37 Uhr | 20.11., 08:03 Uhr |
+| Art | Test, Testzahlung, bezahlt, nicht versandt, nicht storniert | ebenso | ebenso |
+| Summe | 99,98 € | 99,98 € | 99,98 € |
+| Positionen | 2 × Variante `57471227756924`, Artikelnummer `FK-AV2A-16x28-1441`, je 49,99 € | ebenso | ebenso |
+| Gestaltung | „Strichdesign“ mit „Haus Süd 27“, „Klar & modern“ mit „Haus Nord 12“ | ebenso | ebenso |
+| Je Position | 15 Angaben; eigene Konfiguration, eigenes Angebot, eigenes Bild auf dem eigenen Server und eigenes Kassenbild bei Shopify | ebenso | ebenso |
+| Ansicht | bisherige Leiste | bisherige Leiste | Prio (`ui=prio-r15` in der Bearbeiten-Adresse) |
 
-Auffällig in allen vier Positionen: Im Gravurtext steht „Name: Haus Süd 27 · Text „Mustermann“: Mustermann · Text „12a“: 12a“. Die beiden unveränderten Beispieltexte sind mitbestellt. Die Angabe „Bearbeitbarer Entwurf“ hat keinen Unterstrich und enthält eine technische Kennung.
+![Bestellte Bilder aus #1035](2026-11-20-prio-r15-abnahme-claude/bilder/05-bestellung-1035-bestellte-bilder.png)
+
+Auffällig in allen sechs Positionen: Im Gravurtext steht „Name: Haus Süd 27 · Text „Mustermann“: Mustermann · Text „12a“: 12a“. Die beiden unveränderten Beispieltexte sind mitbestellt. Die Angabe „Bearbeitbarer Entwurf“ hat keinen Unterstrich und enthält eine technische Kennung.
 
 Gestern Mittag hatte die Ring-Position im Warenkorb 11 Angaben (S, Phase A), heute 15. Hinzugekommen sind „Bearbeitbarer Entwurf“, `_gravuru_motifs`, `_gravuru_uploads` und `_gravuru_revision`. Astra nennt dafür die Freigabe von Chris zur Preiszuordnung des Ring-Artikels (F).
 
@@ -124,7 +127,7 @@ Sobald Astra liefert, prüfe ich in dieser Reihenfolge. Für A und B gelten dies
 ## Offen bei Chris
 
 - Entscheidung zu den drei Abweichungen zwischen Referenz und Prio im Shop.
-- Freigabe, ob ich für die Abnahme selbst Testwarenkörbe im Shop anlegen darf (abgestimmt mit Astra), oder ob ich nur Astras Läufe gegenlese.
+- Eigene Testwarenkörbe brauche ich vorerst nicht. Astras Testbestellungen lese ich in Shopify gegen und rufe die bestellten Bilder ab.
 - Sollen unveränderte Beispieltexte bestellbar bleiben?
 
 ## Wiederholen

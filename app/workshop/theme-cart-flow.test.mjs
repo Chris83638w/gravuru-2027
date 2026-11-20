@@ -22,6 +22,7 @@ import {shopCartRequest} from '../configurator/variant-m/shop-cart.mjs';
 import {createOrderWebhookHandler,ORDER_WEBHOOK_PATH} from './shopify-order-webhook.mjs';
 import {cartTransformRun} from '../../ops/shopify/einzelsperre-release/preis/src/master-release/cart_transform_run.mjs';
 import {cartValidationsGenerateRun} from '../../ops/shopify/einzelsperre-release/pruefung/src/cart_validation_run.mjs';
+import {customerReadMemo} from './customer-read-scope.mjs';
 
 // Durchlauf des öffentlichen Einstiegs mit echter Werkstatt: Start über App-Proxy-Signatur → Modell →
 // Gestaltung als privater Prüfstand → normaler Theme-Warenkorb (synthetischer Ajax-Shop)
@@ -57,7 +58,12 @@ test('theme cart: signed entry, immutable design, edit, quantity 1 to 4 and sign
   extraMotifCents:record.document.config.extraMotifCents,extraPhotoCents:record.document.config.photo.extraPriceCents,quantityTiers,quantityTierScope};
  const bound=w.orderIntake.bindVariants({record,shopDomain,mappings,personalizationPricing:pricing});
  assert.equal(bound.bindings.length,mappings.length);
+ // Auftrag #265, Stufe 4: Zähler für die Lesephasen der Warenkorbstrecke. `calls` zählt jede Auflösung der Zuordnung,
+ // `phases` nur die erste je Lesephase (customerReadMemo merkt innerhalb einer Phase, außerhalb nie).
+ const reads={calls:0,phases:0,owner:{}};
+ const counted=async work=>{const before={...reads};const result=await work();return {result,calls:reads.calls-before.calls,phases:reads.phases-before.phases};};
  const registry={resolve({shopifyProductId,shopifyVariantId}){
+  reads.calls++;customerReadMemo(reads.owner,'phase',()=>++reads.phases);
   const b=bound.bindings.find(x=>'gid://shopify/ProductVariant/'+x.variantId===shopifyVariantId);
   if(shopifyProductId!==product.shopifyProductId||!b)throw Object.assign(Error('Keine ausdrückliche aktive Zuordnung.'),{status:404,code:'shop_binding_active_not_found'});
   return {storeId:'acryl',tenantId:w.tenantId,shopDomain,shopifyProductId,shopifyVariantId,bindingId:b.id,productId:b.productId,productRevision:b.productRevision,options:structuredClone(b.options),unitCents:b.unitCents,assignmentRevision:1};
@@ -149,7 +155,9 @@ test('theme cart: signed entry, immutable design, edit, quantity 1 to 4 and sign
   return Response.json(result.data,{status:result.status});
  }});
  const requestInput=shopCartRequest({saved:{draftId:draft.id,revision:1},quantity:2,cartMode:'theme',presentation:fragment.get('ui')});
- const prepared={data:await entryClient.submitThemeCart(requestInput,{draftToken:draft.token})};
+ const submitted=await counted(()=>entryClient.submitThemeCart(requestInput,{draftToken:draft.token})),prepared={data:submitted.result};
+ // Sitzungsprüfung vor dem Lesen des Bodys, danach eine Lesephase für Variantenwahl und Angebotsprüfung: jede Prüfung läuft, gelesen wird einmal.
+ assert.ok(submitted.calls>=3,'Sitzung, Variante und Angebot lösen die Zuordnung je einmal auf');assert.equal(submitted.phases,2);
  assert.equal(prepared.data.mode,'theme');assert.equal(sent.length,0,'no separate Storefront cart is created');
  const transferToken=new URLSearchParams(new URL(prepared.data.handoffUrl).hash.slice(1)).get('handoff');assert.match(transferToken,/^[a-f0-9]{64}$/);
  // V2: Shopify-Checkout-Bild startet bereits mit der Übergabe (nicht erst mit /cart/data).
@@ -176,7 +184,9 @@ test('theme cart: signed entry, immutable design, edit, quantity 1 to 4 and sign
   const logged=JSON.stringify(timingEvents);
   for(const privateValue of [secret,token,draft.token,draft.id,transferToken,png,webp])assert.ok(!logged.includes(privateValue),'private value in timing log');
  });
- imagePending=false;const data=await proxyRequest('/cart/data','GET',transferToken,hosted);assert.equal(data.status,200,JSON.stringify(data.data));const p=data.data;
+ imagePending=false;const dataRead=await counted(()=>proxyRequest('/cart/data','GET',transferToken,hosted)),data=dataRead.result;assert.equal(data.status,200,JSON.stringify(data.data));const p=data.data;
+ // Vor und nach dem Warten auf das Shopify-Bild je eine Lesephase mit Sitzungs- und Angebotsprüfung.
+ assert.equal(dataRead.calls,4);assert.equal(dataRead.phases,2);
  assert.equal(p.variantId,product.variants[3].shopifyVariantId.split('/').at(-1));assert.equal(p.quantity,2);assert.equal(p.totalCents,chosen.priceCents*2);
  assert.equal(p.properties._gravuru_config,prepared.data.configuration.id);assert.equal(p.properties._gravuru_rev,'1');assert.ok(p.properties.Gravurtext);
  assert.equal(p.preview,undefined,'with a READY Shopify file no PNG travels to the customer device');assert.ok(JSON.stringify(p).length<64*1024,'handoff stays small');
@@ -267,10 +277,13 @@ test('theme cart: signed entry, immutable design, edit, quantity 1 to 4 and sign
   }
   assert.fail(url);
  };
- const bridge=token=>createThemeCartClient({fetchImpl:shopFetch,claim:async()=>{const r=await proxyRequest('/cart/claim','POST',token);assert.equal(r.status,200,JSON.stringify(r.data));}});
+ const claimReads=[];
+ const bridge=token=>createThemeCartClient({fetchImpl:shopFetch,claim:async()=>{const claimed=await counted(()=>proxyRequest('/cart/claim','POST',token)),r=claimed.result;claimReads.push(claimed);assert.equal(r.status,200,JSON.stringify(r.data));}});
  const client=bridge(transferToken);await client.submit(p,{image:new Blob(['wrong later JPEG'],{type:'image/jpeg'})});await client.submit(p);
  assert.equal(adds,1);assert.equal(themeCart.items.length,2);assert.deepEqual(themeCart.items[0],other);
  assert.equal((await proxyRequest('/cart/claim','POST')).status,409,'persistent claim refuses a second upload');
+ // Beim Claim liegen Sitzungsprüfung, Vorbereitung und Claim in einer Lesephase; alle drei Prüfungen laufen.
+ assert.ok(claimReads.length>=1);for(const claimed of claimReads){assert.equal(claimed.calls,3);assert.equal(claimed.phases,1);}
  const opened=await request('/api/shop-entry/cart-configurations/'+p.configuration.id+'/1',undefined,undefined,headers);
  assert.equal(opened.status,200);assert.equal(opened.data.draft.id,draft.id);assert.equal(opened.data.quantity,2);
  const photo=await request('/api/shop-entry/cart-configurations/'+p.configuration.id+'/1/photos/kundenfoto',undefined,undefined,headers);assert.deepEqual(photo.body,Buffer.from(png,'base64'));

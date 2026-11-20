@@ -8,13 +8,13 @@ const kurz=process.env.KURZ||(PRODUKT.includes('ring')?'ring':'edelstahl'),OUT=p
 const browser=await chromium.launch({executablePath:process.env.CHROME_PATH,headless:true,proxy:{server:process.env.HTTPS_PROXY},args:['--disable-features=IsolateOrigins,site-per-process','--disable-site-isolation-trials']});
 const ctx=await browser.newContext({viewport:{width:1366,height:900},locale:'de-DE'});const page=await ctx.newPage();
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));const res={produkt:PRODUKT,zeit:new Date().toISOString(),anfragen:[],fehler:[],verlauf:[]};let t0=null;
-const wichtig=/acrylic-drafts|theme-cart|\/cart\/data|\/cart\/claim|\/cart\/add|design-parts|\/api\/shop-entry\/model|checkout/;
+const wichtig=/acrylic-drafts|theme-cart|\/cart\/data|\/cart\/claim|\/cart\/add|design-parts|\/api\/shop-entry\/model/;
 page.on('requestfinished',async r=>{const u=r.url();if(t0===null||!wichtig.test(u))return;try{const resp=await r.response(),z=await r.sizes(),t=r.timing();
  res.anfragen.push({weg:new URL(u).pathname.replace(/[a-f0-9]{24,}/g,'…').slice(-48),m:r.method(),status:resp.status(),abMs:Date.now()-t0-Math.round(t.responseEnd),dauerMs:Math.round(t.responseEnd),wartenMs:Math.round(t.responseStart-t.requestStart),gesendetKb:Math.round((z.requestBodySize||0)/102.4)/10,empfangenKb:Math.round(z.responseBodySize/102.4)/10,serverTiming:(resp.headers()['server-timing']||'').slice(0,900)});}catch{}});
 page.on('requestfailed',r=>{if(t0!==null&&wichtig.test(r.url()))res.fehler.push('Abruf fehlgeschlagen '+new URL(r.url()).pathname.slice(-40)+' '+(r.failure()?.errorText||''));});
 page.on('pageerror',e=>res.fehler.push('Seitenfehler: '+String(e.message).slice(0,160)));
 // Mit NEU_PAKET: Paket und neuer Server-Teil nur in meinem Browser ersetzt (acryl/nachbau.mjs). Der Warenkorb geht an den echten Server.
-if(process.env.NEU_PAKET){const {nachbau}=await import('../acryl/nachbau.mjs');await nachbau(ctx,page,res);}
+if(process.env.NEU_PAKET){const {nachbau,nurPaket}=await import('../acryl/nachbau.mjs');if(process.env.NUR_PAKET==='1')await nurPaket(page,res);else await nachbau(ctx,page,res);}
 await page.addInitScript(()=>{if(window.top!==window)return;window.__gv=[];window.addEventListener('message',e=>{const t=e.data?.type;if(typeof t==='string'&&t.startsWith('gravuru'))window.__gv.push(t);},true);});
 const editor=()=>page.frames().filter(f=>{try{return new URL(f.url()).pathname==='/_merchant-acryl-editor.html'&&!f.isDetached();}catch{return false;}}).at(-1);
 const sicht=`const all=[];const walk=r=>{for(const e of r.querySelectorAll('*')){all.push(e);if(e.shadowRoot)walk(e.shadowRoot);}};walk(document);const sicht=e=>{const r=e.getBoundingClientRect();const s=getComputedStyle(e);return r.width>4&&r.height>4&&s.visibility!=='hidden'&&s.display!=='none';};`;
@@ -28,13 +28,19 @@ try{
  const s0=Date.now();while(Date.now()-s0<120000){const m=await page.evaluate(()=>window.__gv||[]).catch(()=>[]);if(m.includes('gravuru-shop-editor-ready'))break;await sleep(100);}
  res.bereitNachMs=Date.now()-s0;await sleep(3000);let f=editor();res.start=await lage(f);
  if(Number(KARTE)>=0){
-  await knopf(f,'Designs');const w=Date.now();while(Date.now()-w<60000){const l=await lage(f);if(l.karten>Number(KARTE)&&l.designsImGeraet>=l.karten)break;await sleep(300);}
+  await knopf(f,'Designs');
+  // SUCHE: erst in der Designauswahl suchen (z. B. „D808“), dann die Karte mit der Nummer KARTE aus den Treffern wählen.
+  if(process.env.SUCHE){await sleep(1200);await f.evaluate(new Function('text',sicht+`const i=all.find(e=>e.matches('.ux-product-designs input'));i.focus();i.value=text;i.dispatchEvent(new Event('input',{bubbles:true}));`),process.env.SUCHE);await sleep(3500);}
+  const w=Date.now();while(Date.now()-w<60000){const l=await lage(f);if(l.karten>Number(KARTE)&&(process.env.SUCHE||l.designsImGeraet>=l.karten))break;await sleep(300);}
   res.vorWahl=await lage(f);
   const gewaehlt=await f.evaluate(new Function('i',sicht+`const k=all.filter(e=>e.matches('.ux-product-choose'))[i];if(!k)return null;k.click();return {id:k.dataset.productDesignId,name:k.getAttribute('aria-label')};`),Number(KARTE));
   res.gewaehlt=gewaehlt;await sleep(2500);
  }
  if(process.env.ALLE_TEXTE==='1')await f.evaluate(()=>{window.__alleTexte=true;});
  res.name=await f.evaluate(name=>{const el=document.querySelector('gravuru-configurator');const t=el.state.objects.filter(o=>o.type==='text');const o=t.find(x=>/^name$/.test(x.fieldKey||''))||t[0];if(!o)return null;el.record?.();const vorher=o.text;o.text=name;const weitere=[];if(window.__alleTexte){const ersatz=['Mustermann','Musterweg 1','2026'];let n=0;for(const x of t)if(x!==o){const alt=x.text;x.text=ersatz[n++%ersatz.length];weitere.push(alt+' → '+x.text);}}el.normalize?.();el.sync();return {feld:o.fieldKey||o.id,vorher,jetzt:o.text,weitere};},NAME);
+ // UEBER_RAND=1 (Chris 20.11., 19:26 Uhr: Kunde darf über den Rand gestalten, außer bei Edelstahl): den Namen so weit nach rechts setzen, dass ein Teil über den Schildrand hinausragt.
+ if(process.env.UEBER_RAND==='1'){res.ueberRand=await f.evaluate(()=>{const el=document.querySelector('gravuru-configurator');const t=el.state.objects.filter(o=>o.type==='text');const o=t.find(x=>/^name$/.test(x.fieldKey||''))||t[0];el.record?.();const vorher={x:+o.x.toFixed(2),w:+o.w.toFixed(2)};o.x=el.state.width-o.w*0.05;el.sync();return {id:o.id,schildBreite:el.state.width,vorher};});await sleep(1500);
+  res.ueberRand.danach=await f.evaluate(id=>{const el=document.querySelector('gravuru-configurator'),r=el.shadowRoot,o=el.state.objects.find(o=>o.id===id),badge=r.querySelector('[data-ux-boundary-status]');return {x:+o.x.toFixed(2),w:+o.w.toFixed(2),mitteX:+o.x.toFixed(2),ragtUeberMm:+(o.x+o.w/2-el.state.width).toFixed(2),material:el.uxSelectedProfile?.()?.material?.kind,hinweis:badge?{sichtbar:!badge.hidden,text:badge.textContent,neutral:badge.hasAttribute('data-ux-edge-note')}:null,roteMarken:r.querySelectorAll('.scene .ux-outside,.ux-text-row.ux-overflow').length};},res.ueberRand.id);}
  await sleep(1500);res.vorKorb=await lage(f);await page.screenshot({path:OUT+kurz+'-1-vor-warenkorb.png'});
  res.fertig=await knopf(f,'Fertig');await sleep(1200);
  res.klick=await knopf(f,'In den Warenkorb')?'In den Warenkorb':(await knopf(f,'Warenkorb')?'Warenkorb':false);await sleep(2000);await page.screenshot({path:OUT+kurz+'-1b-ueberblick.png'});
@@ -54,6 +60,6 @@ try{
  res.bilder=[];for(const [k,v] of bildUrls){try{const r=await ctx.request.get(v);const b=await r.body();const ct=r.headers()['content-type']||'';const ext=/png/.test(ct)?'png':/webp/.test(ct)?'webp':/jpe?g/.test(ct)?'jpg':'bin';const datei=OUT+kurz+'-bild-'+k.replace(/\W/g,'')+'.'+ext;fs.writeFileSync(datei,b);res.bilder.push({eigenschaft:k,status:r.status(),typ:ct,bytes:b.length,datei});}catch(e){res.bilder.push({eigenschaft:k,fehler:String(e.message).slice(0,100)});}}
 }catch(e){res.abbruch=String(e.message).slice(0,300);}
 fs.writeFileSync(OUT+kurz+'-ergebnis.json',JSON.stringify(res,null,1));
-console.log(JSON.stringify({bereitNachMs:res.bereitNachMs,gewaehlt:res.gewaehlt,name:res.name,vorKorb:res.vorKorb&&{design:res.vorKorb.design,texte:res.vorKorb.texte,motive:res.vorKorb.motive},klick:res.klick,imKorbNachMs:res.imKorbNachMs,korb:res.korb,bilder:res.bilder,verlauf:res.verlauf,fehler:res.fehler,abbruch:res.abbruch},null,1).slice(0,5000));
+console.log(JSON.stringify({ueberRand:res.ueberRand,bereitNachMs:res.bereitNachMs,gewaehlt:res.gewaehlt,name:res.name,vorKorb:res.vorKorb&&{design:res.vorKorb.design,texte:res.vorKorb.texte,motive:res.vorKorb.motive},klick:res.klick,imKorbNachMs:res.imKorbNachMs,korb:res.korb,bilder:res.bilder,verlauf:res.verlauf,fehler:res.fehler,abbruch:res.abbruch},null,1).slice(0,5000));
 console.log('ANFRAGEN');for(const a of res.anfragen)console.log(String(a.abMs).padStart(6),String(a.dauerMs).padStart(6),a.m.padEnd(4),a.status,String(a.gesendetKb).padStart(7),String(a.empfangenKb).padStart(7),a.weg,'|',a.serverTiming.slice(0,330));
 await browser.close();

@@ -506,6 +506,57 @@ Meine Prüfung am echten Shop ohne Ersatz, 20:18 bis 20:24 Uhr (`rohwerte/rand-l
 
 Weiter nicht geprüft: eine echte Fertigungsdatei mit überstehendem Element, echte Geräte.
 
+## Vorab-Start verkürzen (20.11.2026, ab 20:07 Uhr)
+
+Zweig `dev/claude-vorab-20261120` auf `98ae40a9` (live ist `44f9bdcf`). Code: `f1053988`, nur Server. Auftrag: Chris, 19:26 Uhr, „3. Ja“ (ENTSCHEIDUNGEN 3.45).
+
+**Gemessen am echten Shop vor der Änderung** (Skript `vorab/vorab.mjs`, nur lesend, Acrylglas-Familienschild „Baum“). Zwei Läufe um 20:12 und 20:13 Uhr lagen direkt nach Astras Neustart und zählen nicht. Mit warmem Server:
+
+| Lauf | Ansicht | Konfigurator bereit nach | alles geladen nach | Startkarte | Modell | Editor-Seite wartet | Designliste wartet |
+|---|---|---|---|---|---|---|---|
+| 20:18:19 Uhr | PC | 7,9 s | 12,1 s | 0,97 s | 1,04 s | 0,98 s | 1,13 s |
+| 20:18:49 Uhr | Handy-Breite | 7,3 s | 11,0 s | 1,03 s | 0,92 s | 0,90 s | 0,94 s |
+| 20:21:39 Uhr | PC | 7,1 s | 10,8 s | – | 0,82 s | 1,26 s | 1,11 s |
+
+Zeiten ab Aufruf der Produktseite (`rohwerte/vorab-live-vorher-*.json`). Die Editor-Seite ist eine feste Datei; sie wartet, weil der Server in dem Moment die Startvorschau rechnet (0,8 bis 1,0 s). Die Designliste allein, sechsmal nacheinander abgerufen: 0,9 bis 1,3 s je Abruf. Vorschauen 0,8 bis 1,9 s. Unkomprimiert: Modell 201 kB, Design-Teile für 40 Designs 1,9 MB, Editor-Seite 367 kB.
+
+**Ursache** (lokal im live-nahen Aufbau gezählt, `vorab/bench-routen.mjs`, `rohwerte/vorab-bench-vorher.json`):
+- `active()` prüft bei jeder Anfrage mit Sitzung die Freigabe. Welche Art von Freigabe der Produktstand braucht, steht im gespeicherten Dokument; dafür wurde es jedes Mal ganz gelesen. Das ist auch die Zeit `session_binding` im Warenkorbweg.
+- Designliste und Vorschau lasen das Dokument zweimal und bauten das Modell neu auf; die Startkarte baute es zweimal. Die Vorschau tat das auch, wenn das Bild schon im Speicher lag.
+- Die Preisberechnung je Design ist es nicht: 208 Designs brauchen lokal 14 bis 23 ms.
+
+**Gebaut** (`f1053988`, `app/workshop/shop-entry.mjs`, `public-design-previews.mjs`):
+- `requireActiveApproval`: nimmt die gemerkte Art der Freigabe (`rememberedKind`, derselbe Merker wie beim Modell und bei den Design-Teilen). Fehlt sie, wird wie bisher gelesen und für genau diesen Produktstand gemerkt, nicht bei einem Schreibvorgang währenddessen. Die Freigabe selbst wird nie gemerkt.
+- `sharedModelFor`, `sharedCardFor`: das Modell, das der Antwortspeicher für diesen Produktstand hält, statt eines Neuaufbaus. Genutzt von Startkarte, Designliste, Vorschau, Designwechsel und Motivgrafiken. `heldModelFor` prüft Pause, Zuordnung und Freigabe wie `modelFor`.
+- Öffentliche Vorschauen: `urls()` nimmt wie `attach()` ein gehaltenes Modell.
+- Unverändert: Antworten, Fehler, Reihenfolge der Prüfungen, Editor-Pakete. Ohne Antwortspeicher, ohne lesbaren Produktstand oder bei anderem Produktstand gilt der bisherige Weg.
+
+**Lokal gemessen** (zweiter Kunde, Dokument 11,5 MB, 404 Varianten; `rohwerte/vorab-bench-vorher.json` und `-nachher.json`):
+
+| Abruf | vorher | nachher |
+|---|---|---|
+| Startkarte | 194 ms | 20 ms |
+| Modell | 24 ms | 17 ms |
+| Vorschau Startdesign | 252 ms | 12 ms |
+| Designliste | 228 ms | 12 ms |
+| Vorschau anderes Design, erster Abruf | 297 ms | 63 ms |
+| Vorschau, Wiederholung | 237 ms | 11 ms |
+| Design-Teile | 47 ms | 53 ms |
+
+Je ein Lauf. Der echte Server rechnete in den Messungen oben rund viermal so lange wie dieser Rechner. Antworten von Designliste, Vorschau, Vorwärmliste der Startkarte und Modell sind mit und ohne Speicher gleich (`gleichOhneSpeicher` in der Nachher-Datei).
+
+**Geprüft.**
+- Vier neue Tests in `shop-entry-model-cache.test.mjs`, jeweils mit Gegenlauf ohne Speicher: keine Dokumentlesung und kein Neuaufbau nach dem Modellabruf; Pause, entzogene Freigabe, anderer Produktstand und fehlendes Produkt wirken wie ohne Speicher; die Art wird beim ersten Abruf gemerkt, nicht bei einem Schreibvorgang währenddessen; Werkstätten ohne lesbaren Produktstand laufen wie bisher. Gegenprobe: Auf dem alten Code schlagen die zwei messenden Tests fehl.
+- Gesamtlauf auf `f1053988`: 2809 Tests, 2801 bestanden, 4 übersprungen, die vier bekannten Fehlschläge. Paket-Tests 9 von 9, Handy-Layout 202 von 202. Der Bau ergibt dieselben Pakete wie live.
+
+**Nicht geprüft.** Die Wirkung am echten Server; sie ist ohne Aufspielen nicht messbar. Erwartung aus den Zahlen oben, keine Messung: Startkarte, Editor-Seite, Designliste und Vorschau verlieren je einen großen Teil ihrer Wartezeit.
+
+**Verworfen.** Zwei Verbindungs-Hinweise im Browser (auf der Produktseite zum Konfigurator-Host, auf der Start-Seite für die Abrufe ohne Cookies). Am echten Shop mit ersetzter Datei gemessen: Die Start-Seite und der Modellabruf bauen ihre Verbindung weiter neu auf (rund 0,5 s in meiner Messumgebung). Der Browser trennt Verbindungen nach der Seite, in der ein Rahmen steckt, und nach Abrufen mit und ohne Cookies. Nicht eingebaut. Möglich wäre ein früher kleiner Rahmen des Konfigurator-Hosts; nicht gebaut.
+
+**Grenzen.** Der Antwortspeicher hält höchstens zwei Produktstände (`maxModels`). Der erste Aufruf eines Produkts nach einem Neustart oder nach Verdrängung rechnet wie bisher. Die erste Vorschau eines Designs wird weiter gezeichnet. Der Start des Editors im Browser (rund 1,3 s vom Paket bis „bereit“) ist unverändert.
+
+**Warenkorb, Ausgangslage** (aus dem Lauf von 20:18 Uhr): 12,0 s bis das Schild im Warenkorb liegt. `session_binding` fällt viermal an, zusammen 0,9 s; das entfällt mit diesem Stand weitgehend. Größte Posten danach: Entwurf sichern 4,2 s, Warten auf das Kassenbild 2,0 s, Warenkorb-Vorbereitung dreimal je 0,3 s.
+
 ### Offene Fragen an Chris
 
 1. Edelstahl: Sperre und Prüfung vor dem Warenkorb messen am Rand verschieden (Befund oben). Beheben?

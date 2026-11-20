@@ -1,0 +1,393 @@
+{
+ "stand": "prioD",
+ "bank": {
+  "designs": 240,
+  "formate": 80,
+  "dokumentMB": 11.5
+ },
+ "reihe": [
+  {
+   "abruf": "erster Kunde (kalt): start",
+   "status": 200,
+   "ms": 885.5,
+   "ersterByteMs": 885.1,
+   "kB": 1,
+   "bausteine": {
+    "workshop.model": "4× 209 ms",
+    "registry.galleryRevision": "2× 4 ms",
+    "registry.listActiveForGallery": "2× 2 ms",
+    "registry.resolve": "2× 171 ms",
+    "orderIntake.catalogLiveApproval": "3× 68 ms"
+   }
+  },
+  {
+   "abruf": "erster Kunde (kalt): model",
+   "status": 200,
+   "ms": 216,
+   "ersterByteMs": 210.6,
+   "kB": 598,
+   "bausteine": {
+    "registry.resolve": "2× 1 ms",
+    "repository.get": "2× 54 ms",
+    "orderIntake.catalogLiveApproval": "4× 2 ms",
+    "workshop.model": "2× 22 ms",
+    "workshop.galleryModel": "1× 0 ms"
+   }
+  },
+  {
+   "abruf": "erster Kunde (kalt): design-gallery-preview (Startdesign)",
+   "status": 200,
+   "ms": 41.3,
+   "ersterByteMs": 39.3,
+   "kB": 1885,
+   "bausteine": {
+    "registry.resolve": "3× 1 ms",
+    "orderIntake.catalogLiveApproval": "5× 1 ms"
+   },
+   "vorschauAdresse": false
+  },
+  {
+   "abruf": "erster Kunde (kalt): design-gallery Seite 0",
+   "status": 200,
+   "ms": 79.5,
+   "ersterByteMs": 79.4,
+   "kB": 3,
+   "bausteine": {
+    "registry.resolve": "3× 1 ms",
+    "orderIntake.catalogLiveApproval": "6× 1 ms"
+   },
+   "karten": 3,
+   "gesamt": 3
+  },
+  {
+   "abruf": "erster Kunde (kalt): design-gallery Seite 0 noch einmal",
+   "status": 200,
+   "ms": 27.2,
+   "ersterByteMs": 27,
+   "kB": 3,
+   "bausteine": {
+    "registry.resolve": "3× 1 ms",
+    "orderIntake.catalogLiveApproval": "6× 1 ms"
+   }
+  },
+  {
+   "abruf": "erster Kunde (kalt): design-parts (2 Designs)",
+   "status": 200,
+   "ms": 85.9,
+   "ersterByteMs": 59.1,
+   "kB": 8869,
+   "bausteine": {
+    "registry.resolve": "1× 0 ms",
+    "orderIntake.catalogLiveApproval": "2× 0 ms"
+   }
+  },
+  {
+   "abruf": "erster Kunde (kalt): design-parts dieselben noch einmal",
+   "status": 200,
+   "ms": 55.1,
+   "ersterByteMs": 21.7,
+   "kB": 8869,
+   "bausteine": {
+    "registry.resolve": "1× 0 ms",
+    "orderIntake.catalogLiveApproval": "2× 0 ms"
+   }
+  },
+  {
+   "abruf": "erster Kunde (kalt): design-gallery-preview (anderes Design)",
+   "status": 200,
+   "ms": 54.3,
+   "ersterByteMs": 52.3,
+   "kB": 1885,
+   "bausteine": {
+    "registry.resolve": "3× 1 ms",
+    "orderIntake.catalogLiveApproval": "5× 1 ms"
+   }
+  },
+  {
+   "abruf": "erster Kunde (kalt): design-gallery-preview (dasselbe noch einmal)",
+   "status": 200,
+   "ms": 15.7,
+   "ersterByteMs": 14.1,
+   "kB": 1885,
+   "bausteine": {
+    "registry.resolve": "3× 1 ms",
+    "orderIntake.catalogLiveApproval": "5× 1 ms"
+   }
+  },
+  {
+   "abruf": "erster Kunde (kalt): acryl-guides? (model noch einmal)",
+   "status": 200,
+   "ms": 17.3,
+   "ersterByteMs": 14.2,
+   "kB": 598,
+   "bausteine": {
+    "registry.resolve": "2× 1 ms",
+    "orderIntake.catalogLiveApproval": "4× 1 ms"
+   }
+  },
+  {
+   "abruf": "zweiter Kunde (warm): start",
+   "status": 200,
+   "ms": 19.6,
+   "ersterByteMs": 19.5,
+   "kB": 1,
+   "bausteine": {
+    "registry.resolve": "2× 1 ms",
+    "orderIntake.catalogLiveApproval": "3× 0 ms"
+   }
+  },
+  {
+   "abruf": "zweiter Kunde (warm): model",
+   "status": 200,
+   "ms": 16.8,
+   "ersterByteMs": 13.8,
+   "kB": 598,
+   "bausteine": {
+    "registry.resolve": "2× 1 ms",
+    "orderIntake.catalogLiveApproval": "4× 1 ms"
+   }
+  },
+  {
+   "abruf": "zweiter Kunde (warm): design-gallery-preview (Startdesign)",
+   "status": 200,
+   "ms": 12,
+   "ersterByteMs": 10.4,
+   "kB": 1885,
+   "bausteine": {
+    "registry.resolve": "3× 1 ms",
+    "orderIntake.catalogLiveApproval": "5× 1 ms"
+   },
+   "vorschauAdresse": false
+  },
+  {
+   "abruf": "zweiter Kunde (warm): design-gallery Seite 0",
+   "status": 200,
+   "ms": 11.6,
+   "ersterByteMs": 11.5,
+   "kB": 3,
+   "bausteine": {
+    "registry.resolve": "3× 1 ms",
+    "orderIntake.catalogLiveApproval": "6× 1 ms"
+   },
+   "karten": 3,
+   "gesamt": 3
+  },
+  {
+   "abruf": "zweiter Kunde (warm): design-gallery Seite 0 noch einmal",
+   "status": 200,
+   "ms": 11.5,
+   "ersterByteMs": 11.4,
+   "kB": 3,
+   "bausteine": {
+    "registry.resolve": "3× 1 ms",
+    "orderIntake.catalogLiveApproval": "6× 1 ms"
+   }
+  },
+  {
+   "abruf": "zweiter Kunde (warm): design-parts (2 Designs)",
+   "status": 200,
+   "ms": 53.3,
+   "ersterByteMs": 23.5,
+   "kB": 8869,
+   "bausteine": {
+    "registry.resolve": "1× 0 ms",
+    "orderIntake.catalogLiveApproval": "2× 0 ms"
+   }
+  },
+  {
+   "abruf": "zweiter Kunde (warm): design-parts dieselben noch einmal",
+   "status": 200,
+   "ms": 61.8,
+   "ersterByteMs": 37.6,
+   "kB": 8869,
+   "bausteine": {
+    "registry.resolve": "1× 0 ms",
+    "orderIntake.catalogLiveApproval": "2× 0 ms"
+   }
+  },
+  {
+   "abruf": "zweiter Kunde (warm): design-gallery-preview (anderes Design)",
+   "status": 200,
+   "ms": 63.2,
+   "ersterByteMs": 61.4,
+   "kB": 1885,
+   "bausteine": {
+    "registry.resolve": "3× 2 ms",
+    "orderIntake.catalogLiveApproval": "5× 1 ms",
+    "workshop.galleryModel": "1× 49 ms"
+   }
+  },
+  {
+   "abruf": "zweiter Kunde (warm): design-gallery-preview (dasselbe noch einmal)",
+   "status": 200,
+   "ms": 11,
+   "ersterByteMs": 9,
+   "kB": 1885,
+   "bausteine": {
+    "registry.resolve": "3× 1 ms",
+    "orderIntake.catalogLiveApproval": "5× 1 ms"
+   }
+  },
+  {
+   "abruf": "zweiter Kunde (warm): acryl-guides? (model noch einmal)",
+   "status": 200,
+   "ms": 15.4,
+   "ersterByteMs": 12.5,
+   "kB": 598,
+   "bausteine": {
+    "registry.resolve": "2× 1 ms",
+    "orderIntake.catalogLiveApproval": "4× 1 ms"
+   }
+  },
+  {
+   "abruf": "dritter Kunde (warm): start",
+   "status": 200,
+   "ms": 13.2,
+   "ersterByteMs": 13.1,
+   "kB": 1,
+   "bausteine": {
+    "registry.resolve": "2× 1 ms",
+    "orderIntake.catalogLiveApproval": "3× 0 ms"
+   }
+  },
+  {
+   "abruf": "dritter Kunde (warm): model",
+   "status": 200,
+   "ms": 12,
+   "ersterByteMs": 9.2,
+   "kB": 598,
+   "bausteine": {
+    "registry.resolve": "2× 1 ms",
+    "orderIntake.catalogLiveApproval": "4× 1 ms"
+   }
+  },
+  {
+   "abruf": "dritter Kunde (warm): design-gallery-preview (Startdesign)",
+   "status": 200,
+   "ms": 17.1,
+   "ersterByteMs": 14.8,
+   "kB": 1885,
+   "bausteine": {
+    "registry.resolve": "3× 4 ms",
+    "orderIntake.catalogLiveApproval": "5× 1 ms"
+   },
+   "vorschauAdresse": false
+  },
+  {
+   "abruf": "dritter Kunde (warm): design-gallery Seite 0",
+   "status": 200,
+   "ms": 10.5,
+   "ersterByteMs": 10.4,
+   "kB": 3,
+   "bausteine": {
+    "registry.resolve": "3× 2 ms",
+    "orderIntake.catalogLiveApproval": "6× 1 ms"
+   },
+   "karten": 3,
+   "gesamt": 3
+  },
+  {
+   "abruf": "dritter Kunde (warm): design-gallery Seite 0 noch einmal",
+   "status": 200,
+   "ms": 18,
+   "ersterByteMs": 18,
+   "kB": 3,
+   "bausteine": {
+    "registry.resolve": "3× 1 ms",
+    "orderIntake.catalogLiveApproval": "6× 2 ms"
+   }
+  },
+  {
+   "abruf": "dritter Kunde (warm): design-parts (2 Designs)",
+   "status": 200,
+   "ms": 38.6,
+   "ersterByteMs": 14.6,
+   "kB": 8869,
+   "bausteine": {
+    "registry.resolve": "1× 0 ms",
+    "orderIntake.catalogLiveApproval": "2× 0 ms"
+   }
+  },
+  {
+   "abruf": "dritter Kunde (warm): design-parts dieselben noch einmal",
+   "status": 200,
+   "ms": 55.3,
+   "ersterByteMs": 23.9,
+   "kB": 8869,
+   "bausteine": {
+    "registry.resolve": "1× 1 ms",
+    "orderIntake.catalogLiveApproval": "2× 0 ms"
+   }
+  },
+  {
+   "abruf": "dritter Kunde (warm): design-gallery-preview (anderes Design)",
+   "status": 200,
+   "ms": 27.8,
+   "ersterByteMs": 25.9,
+   "kB": 1885,
+   "bausteine": {
+    "registry.resolve": "3× 2 ms",
+    "orderIntake.catalogLiveApproval": "5× 2 ms"
+   }
+  },
+  {
+   "abruf": "dritter Kunde (warm): design-gallery-preview (dasselbe noch einmal)",
+   "status": 200,
+   "ms": 13.6,
+   "ersterByteMs": 12.1,
+   "kB": 1885,
+   "bausteine": {
+    "registry.resolve": "3× 2 ms",
+    "orderIntake.catalogLiveApproval": "5× 2 ms"
+   }
+  },
+  {
+   "abruf": "dritter Kunde (warm): acryl-guides? (model noch einmal)",
+   "status": 200,
+   "ms": 20.6,
+   "ersterByteMs": 16.4,
+   "kB": 598,
+   "bausteine": {
+    "registry.resolve": "2× 1 ms",
+    "orderIntake.catalogLiveApproval": "4× 1 ms"
+   }
+  }
+ ],
+ "gleichOhneSpeicher": {
+  "designliste": true,
+  "vorschau": true,
+  "startkarteVorwaermliste": true,
+  "modell": true
+ },
+ "protokoll": [
+  {
+   "event": "shop_gallery_binding_measure",
+   "storeId": "acryl",
+   "activeRowsMs": 1.004091000000244,
+   "documentReadMs": 112.42015000000174,
+   "documentParseMs": 16.247381000000132,
+   "documentHashMs": 117.51885700000003,
+   "bindingReadMs": 20.85446800000409,
+   "products": 1,
+   "bindings": 404,
+   "totalMs": 1656.4422650000001
+  },
+  {
+   "event": "shop_gallery_build_measure",
+   "storeId": "acryl",
+   "registryMs": 1656.9648359999997,
+   "modelMs": 0.07001800000034564,
+   "profileMs": 0,
+   "selectionMs": 0,
+   "models": 1,
+   "bindings": 404,
+   "cards": 0,
+   "totalMs": 4729.441736000001
+  },
+  {
+   "event": "shop_gallery_cache_saved",
+   "storeId": "acryl",
+   "ms": 1.2140660000004573
+  }
+ ]
+}

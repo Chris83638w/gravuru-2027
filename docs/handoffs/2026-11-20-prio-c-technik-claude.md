@@ -726,7 +726,7 @@ Befund im Code: Das Prinzip ist an drei Stellen schon umgesetzt (Rohlingbilder i
 
 ### Offene Fragen an Chris
 
-1. Schlägt die Prüfung nach dem Kauf fehl: Die Bestellung bekommt im Backend „Bitte prüfen“ und wird nicht automatisch gefertigt. Empfehlung: Ja. Rückfragen von Chris, 22:25, 22:26 und 22:32 Uhr („Was meinst du ?“, „Warum muss was kontrolliert werden ?“, „Wie hich ist die Wahrscheinlichkeit.  Wir sehen es ja auch im Büro. Wie viel Ladezeit haben wir dadurch ?“), beantwortet: kein Mitarbeiter prüft normale Bestellungen; es geht um das Nachrechnen des Preises und um Gestaltungen, aus denen sich keine Fertigungsdatei bauen lässt; Ladezeit null, weil nach dem Kauf; Wahrscheinlichkeit gering, keine Zahl; der Preisvergleich besteht im Bestelleingang schon. Antwort steht aus.
+1. Erledigt, 22:41 Uhr (ENTSCHEIDUNGEN 3.51): Chris überlässt es Claude („Wie du meinst“). Der Preisvergleich nach dem Bestelleingang bleibt; bei Abweichung oder ohne baubare Fertigungsdatei keine automatische Fertigung, Vermerk „Bitte prüfen“.
 2. Erledigt, 22:34 Uhr (ENTSCHEIDUNGEN 3.50): **abgelehnt.** Die ganze Bestellung muss bei Shopify sein, auch das Kundenfoto. Das Foto geht beim Klick als Datei an die Warenkorbzeile; der Server holt es beim Bestelleingang von dort; „Bearbeiten“ lädt es von der Zeile zurück (so macht es der ältere Bestellweg in `gravuru-legacy-cart.js`). Die Fertigungsdateien kommen nach dem Bestelleingang an die Shopify-Bestellung; Berechtigung der App dafür prüfen. Der Foto-Upload lässt sich damit nicht vor den Klick ziehen.
 
 Der [Design-Master](https://github.com/Chris83638w/gravuru-katalog./blob/main/designs/DESIGN-MASTER.md) gilt unverändert; an Designs wurde nichts geändert.

@@ -617,6 +617,8 @@ Was bis „bereit“ bleibt: die Produktseite selbst, die Abrufe nacheinander (S
 
 ## Warenkorb wie Zakeke und Fancy (20.11.2026, 21:36 Uhr) – Entscheidung und Plan, noch nichts gebaut
 
+> **Überholt seit 22:12 Uhr** durch den Abschnitt „Warenkorb wie Variante C“ weiter unten (ENTSCHEIDUNGEN 3.48, 3.49). Stufe 1 dieses Plans ist gebaut (`5ad10b05`), wird aber nicht aufgespielt.
+
 Entscheidung: ENTSCHEIDUNGEN 3.47. Zweig `dev/claude-paket-20261120` auf `9bfc281b`.
 
 **Was die beiden tun** (nachgelesen am 20.11.): Zakeke erzeugt die Druckdateien erst, wenn die Bestellung bei Zakeke angemeldet ist (docs-develop.zakeke.com, „Order Registration“). Bei Fancy Product Designer exportiert der Händler die Druckdatei im Bereich „Orders“ der App (support.fancyproductdesigner.com, „Create production materials for a customized order“). Was sie beim Klick genau speichern, steht dort nicht.
@@ -638,6 +640,56 @@ Entscheidung: ENTSCHEIDUNGEN 3.47. Zweig `dev/claude-paket-20261120` auf `9bfc28
 
 ### Offene Fragen an Chris
 
-Keine. „Vorbereiten statt speichern“ ist zurückgestellt (ENTSCHEIDUNGEN 3.47).
+Zu diesem überholten Plan keine.
+
+## Kleines Paket, Stufe 1 (20.11.2026, 21:40 bis 22:10 Uhr) – gebaut, nicht aufgespielt, überholt
+
+- `5fb395f9`, `255857d0`: Das Prüfpaket kann den Produktstand nennen statt einbetten (`app/workshop/review-product.mjs`); die Fertigung liest beide Arten. `84e4e31c`: Der Kundeneinstieg sichert das kleine Paket. `5ad10b05`: Tests berichtigt und ergänzt. In `84e4e31c` stand eine falsche Testerwartung, weil die Ausgabe des Testlaufs durch einen Filter lief und der Fehlschlag den Commit nicht aufhielt; berichtigt in `5ad10b05`.
+- Gesamtlauf auf `5ad10b05`: 2823 Tests, 2815 bestanden, 4 übersprungen, die vier bekannten Fehlschläge.
+- Nicht bei Astra beauftragt. Mit ENTSCHEIDUNGEN 3.49 entfällt der Anlass: Beim Klick entsteht am Server kein Paket mehr.
+
+## Warenkorb wie Variante C (20.11.2026, ab 21:52 Uhr) – Entscheidung, Befunde, Plan; noch nichts gebaut
+
+Entscheidungen: ENTSCHEIDUNGEN 3.48 (Fertigungsdatei automatisch mit dem Bestelleingang, im Backend) und 3.49 (beim Klick nur kleiner Entwurf und Vorschaubild direkt an die Shopify-Warenkorbzeile). Vorgabe aus #265 bleibt: Layout und sämtliche Funktionen des Prio-Konfis bleiben, keine dritte Architektur.
+
+### Berichtigung zu Variante C
+
+Ich hatte Chris geschrieben, Variante C habe keinen Bestellweg gehabt. Grundlage war `MASTER.md` im Repo `gravuru-shopify` („Bestellung ist im v3-Profil deaktiviert“). Chris nannte die Testbestellung #1017 vom 21.09.2026. In Shopify gelesen (keine Adressen und keine Kundendaten hier): Die Warenkorbzeile trug sichtbare Angaben (Design, Gravurtext, Format und weitere), die Kennungen `_gravuru_design`, `_Design-ID`, `_Artikel-SKU`, `_Konfiguratorprofil`, `_Profilversion` und sieben Dateien (`_PDF 1 zu 1`, `_Entwurf`, `_Gravur Vektoren`, `_Acryl Schnitt`, `_Edelstahl Bohrbild`, `_Bearbeitbarer Entwurf` mit rund 3,5 kB, `_Produktzuordnung` mit rund 4 kB). Der Quelltext dazu: `platform/sources/funkklingel-release/release.js` (Funktion `order`) und `commerce.js` (`gravuru-shopify`, Zweig `feat/variante-m-profile-20260924`, `b564422`). Ablauf: Lage und Schrift prüfen, Preis der Variante frisch laden, Dateien im Browser bauen, `cart/add.js`, Zeile zurücklesen, zum Warenkorb. Nach einer unklaren Übertragung wird nie von selbst wiederholt.
+
+### Was im Prio-Konfi schon da ist
+
+| Baustein | Stelle | Stand |
+| --- | --- | --- |
+| Direkter Weg zur Shopify-Warenkorbzeile mit Dateien | `app/configurator/variant-m/commerce.mjs`, `commerce-export.mjs` | vorhanden als „älterer Bestellweg“; baut alle Fertigungsdateien im Browser, deshalb langsam; keine Vektorlogos |
+| Shop-Seite dazu: Dateien anhängen, Bearbeiten aus dem Warenkorb, Zeile ersetzen, Rückleseprüfung | `ops/shopify/theme-block/assets/gravuru-legacy-cart.js`, `legacy-cart-restore.mjs` | vorhanden; ob im veröffentlichten Theme noch aktiv, ist bei Astra angefragt |
+| Aufpreise und Mengenrabatt | Shopify-Preisfunktion `ops/shopify/master-release/price-v1.mjs`, `cart_transform_run.mjs` | rechnet aus Preisvertrag am Produkt und den Angaben an der Zeile; braucht unseren Server nicht |
+| Sperre nicht bepreisbarer Zeilen an der Kasse | `cart_validation_run.mjs` | unverändert nutzbar |
+| Kassenbild | `ops/shopify/checkout-image/cart-image.mjs` | verlangt ein bei Shopify angemeldetes Bild und die Angaben `_gravuru_config`, `_gravuru_rev`, `_gravuru_offer` in ihrer heutigen Form |
+| Bestelleingang | `app/workshop/order-intake.mjs` (`orders/paid`) | bindet heute über `_gravuru_offer` an ein gespeichertes Angebot; für den neuen Weg zu erweitern |
+| Prüfung und Fertigungsdatei aus einer Gestaltung | `acrylic-review.mjs`, `acrylic-artwork.mjs`, Druck- und Gravurausgabe | vorhanden; läuft künftig mit dem Bestelleingang statt beim Klick |
+
+### Plan in Stufen
+
+- **Stufe A, Klick (Gestaltungen ohne Kundenfoto und ohne Kundenlogo).** Der Editor übergibt der Shop-Seite den kleinen Entwurf (Produkt und Revision, Design, Objekte, Ausführung, Menge) und die Kundenvorschau. Die Shop-Seite schickt beides mit den Preisangaben per `cart/add.js` an Shopify und liest die Zeile zurück. „Bearbeiten“ im Warenkorb lädt den Entwurf von der Zeile und ersetzt genau diese Zeile. Das Kassenbild meldet der Server im Hintergrund an; es kommt kurz nach dem Einlegen an die Zeile. Gestaltungen mit Kundenfoto oder -logo laufen bis Stufe C über den heutigen Weg.
+- **Stufe B, Bestelleingang.** Für Zeilen des neuen Wegs holt der Server den Entwurf von der Zeile, prüft ihn gegen die feste Produktrevision, rechnet Aufpreise und Mengenrabatt nach, vergleicht mit dem bezahlten Preis und baut Prüf- und Fertigungspaket im heutigen Aufbau. Schlägt etwas fehl, entsteht keine Fertigungsdatei.
+- **Stufe C.** Kundenfotos und -logos auf den neuen Weg; danach den heutigen Klick-Weg für R15 abschalten.
+- A und B gehen zusammen live, damit keine Zeile im Warenkorb liegt, deren Bestellung der Server nicht verarbeiten kann.
+
+**Maßstab:** vom Klick bis zum Warenkorb unter 3 s (ENTSCHEIDUNGEN 2.11; heute 11,1 s bei Acrylglas, 9,1 s bei Edelstahl). Die Fertigungsdatei aus dem neuen Weg ist für dieselbe Gestaltung Byte für Byte gleich der aus dem heutigen Weg. Preis an der Kasse gleich. Layout und Funktionen gleich.
+
+**Risiken, benannt:** Die Prüfung der Gestaltung liegt nach dem Kauf. Der Browser bestimmt die Angaben für den Preis wie schon heute; Abweichungen fallen erst beim Bestelleingang auf. Entwurf und Vorschau liegen bei Shopify unter nicht erratbaren, aber öffentlichen Adressen. Änderungen an Theme-Dateien und an der Shop-Seite spielt Astra auf.
+
+### Frage von Chris, 22:18 Uhr: kleinere WebP-Datei im Konfigurator, echte Datei für die Bestellung
+
+Befund im Code: Das Prinzip ist an drei Stellen schon umgesetzt (Rohlingbilder in `shop-model-slim.mjs`, Szenen und Sockelbilder in `acrylic-scene.mjs` und `acrylic-product.mjs`, Beispielfotos über `design-assets/…/preview.svg`). Feste Rasterbilder in Druckdesigns (`motif-raster`) stehen in der Gestaltung nur mit ihrer Prüfsumme (`assetId`); der Editor zeigt die Datei unter `raster.url` (`ux.mjs`, `rasterMarkup`). Eine kleinere Anzeige-Datei unter dieser Adresse ändert an der Gestaltung nichts; die Fertigung nimmt das Original über die Prüfsumme. Der ältere Bestellweg lud das Original in den Browser und prüfte die Prüfsumme (`commerce-export.mjs`); mit dem Bestelleingang am Server entfällt das. Nicht geprüft: ein veröffentlichtes Druckprodukt mit Rasterbild und dessen Dateigrößen (bei Astra angefragt, Punkt 6).
+
+### Auftrag an Astra
+
+#267, Kommentar 7049713911 (22:25 Uhr), nur lesend: Bestelleingang, freigegebene Shopify-Funktionen, älterer Bestellweg im Theme, Speicher der Entwürfe, Ursache des HTTP 503 um 21:34 Uhr, Rasterbilder in Druckprodukten. Stand 22:15 Uhr gab es von Astra seit 21:44 Uhr keine neue Nachricht.
+
+### Offene Fragen an Chris
+
+1. Schlägt die Prüfung nach dem Kauf fehl: Die Bestellung bekommt im Backend „Bitte prüfen“ und wird nicht automatisch gefertigt. Empfehlung: Ja.
+2. Kundenfotos und -logos (Stufe C): schon beim Auswählen im Hintergrund auf unseren Server laden, nicht an Shopify; nicht bestellte Bilder nach 30 Tagen löschen. Empfehlung: Ja.
 
 Der [Design-Master](https://github.com/Chris83638w/gravuru-katalog./blob/main/designs/DESIGN-MASTER.md) gilt unverändert; an Designs wurde nichts geändert.

@@ -2,22 +2,37 @@ import assert from 'node:assert/strict';
 import {DatabaseSync} from 'node:sqlite';
 import test from 'node:test';
 import {createOrderIntake} from './order-intake.mjs';
+import {fixedDoorbellProducts,hasFixedDoorbellCheckout} from './fixed-doorbell-checkout-products.mjs';
 
-test('approved Ring fixed price follows the saved revision through offer creation and resolution',()=>{
+test('only confirmed doorbell profiles at their verified revision receive fixed checkout fields',()=>{
+ const rows=Object.entries(fixedDoorbellProducts);
+ assert.equal(rows.length,85);assert.equal(new Set(Object.values(fixedDoorbellProducts)).size,85);
+ for(const [shopifyProduct,profile] of rows){
+  assert.match(shopifyProduct,/^gid:\/\/shopify\/Product\/[0-9]+$/);
+  assert.equal(hasFixedDoorbellCheckout(profile,2),true);
+  assert.equal(hasFixedDoorbellCheckout(profile,1),false);
+  assert.equal(hasFixedDoorbellCheckout(profile,3),false);
+ }
+ assert.equal(hasFixedDoorbellCheckout('cfg_other',2),false);
+});
+
+for(const [label,shopifyProduct,variant,format,cents] of [
+ ['Ring','16126387257724','57471227756924','16x28',4999],['AOSU','16182701621628','58046739054972','24x20',5999]]){
+test(label+' fixed price follows the saved revision through offer creation and resolution',()=>{
  const database=new DatabaseSync(':memory:');
  try{
-  const shop='gravuru-design.myshopify.com',product='cfg_d9fb1702-b41e-49f0-9eda-117be91f436a';
-  const selections={format:'16x28',frame:'FK-RUNDUM',color:'schwarz',mounting:'K00'};
+  const shop='gravuru-design.myshopify.com',product=fixedDoorbellProducts['gid://shopify/Product/'+shopifyProduct];
+  const selections={format,frame:'FK-RUNDUM',color:'schwarz',mounting:'K00'};
   const manifest={schema:'gravuru-native-review/v1',id:'proof_first',packageSha256:'a'.repeat(64),
-   product:{id:product,revision:2,currency:'EUR',basePriceCents:4999},
-   selection:{options:selections,price:{quantity:1,unitCents:4999,totalCents:4999,additionalMotifs:0,chargedUploads:0}}};
+   product:{id:product,revision:2,currency:'EUR',basePriceCents:cents},
+   selection:{options:selections,price:{quantity:1,unitCents:cents,totalCents:cents,additionalMotifs:0,chargedUploads:0}}};
   const intake=createOrderIntake({database,tenantId:'gravuru',snapshot:()=>structuredClone(manifest)});
   function bind(id,productId,variant){
-   database.prepare('INSERT INTO form_shop_bindings(id,shop,variant_id,product_id,product_revision,unit_cents,created_at,tenant_id) VALUES(?,?,?,?,2,4999,?,?)')
-    .run(id,shop,variant,productId,new Date().toISOString(),'gravuru');
+   database.prepare('INSERT INTO form_shop_bindings(id,shop,variant_id,product_id,product_revision,unit_cents,created_at,tenant_id) VALUES(?,?,?,?,2,?,?,?)')
+    .run(id,shop,variant,productId,cents,new Date().toISOString(),'gravuru');
    database.prepare('INSERT INTO form_shop_binding_selections(binding_id,options,tenant_id) VALUES(?,?,?)').run(id,JSON.stringify(selections),'gravuru');
   }
-  bind('binding_1',product,'57471227756924');
+  bind('binding_1',product,variant);
   const a=intake.offer({bindingId:'binding_1',snapshotId:manifest.id,quantity:1});
   assert.deepEqual(a.personalization,{revision:'2',motifs:0,uploads:0,designReference:'gravuru:proof_first:'+manifest.packageSha256});
   assert.equal(intake.resolveCartOffer({offerId:a.id,offerToken:a.property.value,snapshotId:manifest.id,shopDomain:shop}).personalization.designReference,a.personalization.designReference);
@@ -27,3 +42,4 @@ test('approved Ring fixed price follows the saved revision through offer creatio
   assert.equal(intake.offer({bindingId:'binding_2',snapshotId:manifest.id,quantity:1}).personalization,undefined);
  }finally{database.close();}
 });
+}

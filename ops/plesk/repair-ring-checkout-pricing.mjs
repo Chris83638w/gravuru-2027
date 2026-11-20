@@ -8,28 +8,30 @@ import {createShopifyClient} from '../../scripts/shop-export.mjs';
 import {ADMIN_READONLY_IDENTITY as identity} from '../../app/workshop/shopify-admin-readonly.mjs';
 import {capturePersonalization} from '../../app/workshop/cart-personalization.mjs';
 import {prepareShopProduct} from '../../app/workshop/shop-preparation.mjs';
+import {fixedDoorbellProducts} from '../../app/workshop/fixed-doorbell-checkout-products.mjs';
 import {cartTransformRun} from '../shopify/einzelsperre-release/preis/src/master-release/cart_transform_run.mjs';
 import {cartValidationsGenerateRun} from '../shopify/einzelsperre-release/pruefung/src/cart_validation_run.mjs';
 
-const productId='gid://shopify/Product/16126387257724';
-const cfgId='cfg_d9fb1702-b41e-49f0-9eda-117be91f436a';
+const ringId='gid://shopify/Product/16126387257724';
 const digest=value=>createHash('sha256').update(value).digest('hex');
 const optionKey=o=>JSON.stringify(Object.entries(o).sort());
 const inspection=`query RingRead($id:ID!){
  shop{myshopifyDomain currencyCode} currentAppInstallation{app{id} accessScopes{handle}}
- product(id:$id){id status variants(first:120){nodes{id price} pageInfo{hasNextPage}}
+ product(id:$id){id status templateSuffix onlineStoreUrl variants(first:120){nodes{id price} pageInfo{hasNextPage}}
  pricing:metafield(namespace:"$app",key:"personalization"){id namespace key type value compareDigest}}
 }`;
 const setField=`mutation RingSet($values:[MetafieldsSetInput!]!){metafieldsSet(metafields:$values){metafields{id compareDigest} userErrors{code message}}}`;
 const deleteField=`mutation RingRestore($fields:[MetafieldIdentifierInput!]!){metafieldsDelete(metafields:$fields){deletedMetafields{ownerId key namespace} userErrors{message}}}`;
-const [action,dbFile,receiptDir]=process.argv.slice(2);
+const [action,dbFile,receiptDir,scope=ringId]=process.argv.slice(2);
 assert(['plan','apply','readback','rollback'].includes(action)&&path.isAbsolute(dbFile)&&path.isAbsolute(receiptDir));
+const batch=scope==='active-doorbells';
+assert(batch?action!=='rollback':Object.hasOwn(fixedDoorbellProducts,scope));
 process.umask(0o077);
 const cfg=merchantConfig(process.env);
 assert.equal(cfg.host,'app-2027.gravuru-designwerkstatt.de');
 const api=createShopifyClient({shopDomain:identity.shopDomain,clientId:identity.clientId,apiVersion:identity.apiVersion,
  credentials:{kind:'client_credentials',secret:cfg.runtimeEnv.GRAVURU_SHOPIFY_CLIENT_SECRET},maxRetries:0});
-async function inspect(){
+async function inspect(productId){
  const {data}=await api.graphql(inspection,{id:productId});
  assert.equal(data.shop.myshopifyDomain,'gravuru-design.myshopify.com');
  assert.equal(data.shop.currencyCode,'EUR');
@@ -38,6 +40,7 @@ async function inspect(){
  const product=data.product;
  assert.equal(product.id,productId);
  assert.equal(product.status,'ACTIVE');
+ if(productId!==ringId){assert.equal(product.templateSuffix,'funkklingeln-2027');assert(product.onlineStoreUrl);}
  assert.equal(product.variants.pageInfo.hasNextPage,false);
  assert.equal(product.variants.nodes.length,120);
  if(product.pricing){
@@ -47,6 +50,7 @@ async function inspect(){
  return product;
 }
 function pricePlan(product){
+ const productId=product.id,cfgId=fixedDoorbellProducts[productId];
  const db=new DatabaseSync(dbFile,{readOnly:true});
  try{
   const record=db.prepare("SELECT r.document,r.status FROM products p JOIN product_revisions r ON p.id=r.product_id AND r.tenant_id=p.tenant_id AND r.revision=p.revision WHERE p.tenant_id='gravuru' AND p.id=? AND p.revision=2 AND p.archived=0").get(cfgId);
@@ -74,7 +78,7 @@ function pricePlan(product){
    assert.equal(livePrices.get(r.variant_gid),(r.unit_cents/100).toFixed(2));
    variants[variantIds[index]]=r.unit_cents;
   });
-  assert.equal(variants['57471227756924'],4999);
+  if(productId===ringId)assert.equal(variants['57471227756924'],4999);
   const pricing={schema:'gravuru-personalization-pricing/v1',enabled:true,productId,revision:2,currency:'EUR',
    extraMotifCents:document.config.extraMotifCents,extraPhotoCents:document.config.photo.extraPriceCents,variants};
   assert.equal(pricing.extraPhotoCents,0);assert.equal(pricing.extraMotifCents,0);
@@ -98,30 +102,44 @@ function pricePlan(product){
    acceptedPriceCases:480,incompleteCasesBlocked:480,digest:digest(value),documentDigest:approval.document_sha256}};
  }finally{db.close();}
 }
-const original=await inspect();
-const {value,stamp}=pricePlan(original);
-const backupFile=path.join(receiptDir,'ring-festpreis-vorher.json');
-const target={ownerId:productId,namespace:'$app',key:'personalization'};
-if(action==='apply'&&original.pricing===null){
- const backup={original:null,...stamp};
- if(fs.existsSync(backupFile))assert.deepEqual(JSON.parse(fs.readFileSync(backupFile)),backup);
- else fs.writeFileSync(backupFile,JSON.stringify(backup),{flag:'wx',mode:0o600});
- assert.deepEqual(JSON.parse(fs.readFileSync(backupFile)),backup);
- const {data}=await api.graphql(setField,{values:[{...target,type:'json',value,compareDigest:null}]});
- assert.deepEqual(data.metafieldsSet.userErrors,[]);assert.equal(data.metafieldsSet.metafields.length,1);
-}
-if(action==='rollback'){
- assert.deepEqual(JSON.parse(fs.readFileSync(backupFile)),{original:null,...stamp});
- if(original.pricing){
-  assert.equal(original.pricing.value,value);
-  const live=await inspect();
-  assert.equal(live.pricing.id,original.pricing.id);assert.equal(live.pricing.compareDigest,original.pricing.compareDigest);
-  const {data}=await api.graphql(deleteField,{fields:[target]});
-  assert.deepEqual(data.metafieldsDelete.userErrors,[]);assert.equal(data.metafieldsDelete.deletedMetafields[0].ownerId,productId);
+async function runProduct(productId){
+ const original=await inspect(productId);
+ const {value,stamp}=pricePlan(original);
+ const name=productId===ringId?'ring-festpreis':productId.split('/').at(-1)+'-festpreis';
+ const backupFile=path.join(receiptDir,name+'-vorher.json');
+ const planFile=path.join(receiptDir,name+'-abgleich.json');
+ if(productId!==ringId){
+  if(action==='plan'&&!fs.existsSync(planFile)){
+   assert.equal(original.pricing,null);fs.writeFileSync(planFile,JSON.stringify(stamp),{flag:'wx',mode:0o600});
+  }
+  assert.deepEqual(JSON.parse(fs.readFileSync(planFile)),stamp);
+  if(action==='apply'&&original.pricing){assert.deepEqual(JSON.parse(fs.readFileSync(backupFile)),{original:null,...stamp});}
  }
+ const target={ownerId:productId,namespace:'$app',key:'personalization'};
+ if(action==='apply'&&original.pricing===null){
+  const backup={original:null,...stamp};
+  if(fs.existsSync(backupFile))assert.deepEqual(JSON.parse(fs.readFileSync(backupFile)),backup);
+  else fs.writeFileSync(backupFile,JSON.stringify(backup),{flag:'wx',mode:0o600});
+  assert.deepEqual(JSON.parse(fs.readFileSync(backupFile)),backup);
+  const {data}=await api.graphql(setField,{values:[{...target,type:'json',value,compareDigest:null}]});
+  assert.deepEqual(data.metafieldsSet.userErrors,[]);assert.equal(data.metafieldsSet.metafields.length,1);
+ }
+ if(action==='rollback'){
+  assert.deepEqual(JSON.parse(fs.readFileSync(backupFile)),{original:null,...stamp});
+  if(original.pricing){
+   assert.equal(original.pricing.value,value);
+   const live=await inspect(productId);
+   assert.equal(live.pricing.id,original.pricing.id);assert.equal(live.pricing.compareDigest,original.pricing.compareDigest);
+   const {data}=await api.graphql(deleteField,{fields:[target]});
+   assert.deepEqual(data.metafieldsDelete.userErrors,[]);assert.equal(data.metafieldsDelete.deletedMetafields[0].ownerId,productId);
+  }
+ }
+ const final=['plan','readback'].includes(action)?original:await inspect(productId);
+ if(action==='apply'||action==='readback')assert.equal(final.pricing?.value,value);
+ if(action==='rollback')assert.equal(final.pricing,null);
+ if(action==='plan'&&final.pricing)assert.equal(final.pricing.value,value);
+ console.log(JSON.stringify({action,checkedAt:new Date().toISOString(),...stamp,matched:final.pricing?.value===value}));
 }
-const final=['plan'].includes(action)?original:await inspect();
-if(action==='apply'||action==='readback')assert.equal(final.pricing?.value,value);
-if(action==='rollback')assert.equal(final.pricing,null);
-if(action==='plan'&&final.pricing)assert.equal(final.pricing.value,value);
-console.log(JSON.stringify({action,checkedAt:new Date().toISOString(),...stamp,matched:final.pricing?.value===value}));
+
+const targets=batch?Object.keys(fixedDoorbellProducts).filter(id=>id!==ringId):[scope];
+for(const productId of targets)await runProduct(productId);

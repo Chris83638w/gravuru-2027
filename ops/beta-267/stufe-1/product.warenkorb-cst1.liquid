@@ -1,0 +1,134 @@
+{% layout none %}
+<!doctype html>
+<html lang="de"><head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow"><meta name="referrer" content="no-referrer">
+  <title>Prio R15 · Shopify-Testwarenkorb</title>
+  {% if product.id == 16190784438652 %}
+  <script>
+  (()=>{
+    const query = new URLSearchParams(location.hash.slice(1));
+    const handoff = query.get('handoff');
+    const testId = query.get('test') || history.state?.gravuruPilot;
+    if(location.hash)history.replaceState({gravuruPilot:testId},'',location.pathname+location.search);
+    document.addEventListener('DOMContentLoaded', async()=>{
+      const {createThemeCartClient, hostedPreview, validateThemeCartPayload, verifyThemeCartLine} = await import('/apps/konfigurator/theme-cart-client.mjs');
+      const shop = 'gravuru-design.myshopify.com';
+      const productId = '16190784438652';
+      const storageKey = 'gravuru-prio-stufe1-' + testId;
+      const status = document.querySelector('#status');
+      const list = document.querySelector('#positionen');
+      const dialog = document.querySelector('#gross');
+      const retry = document.querySelector('#erneut');
+      const price = n => new Intl.NumberFormat('de-DE',{style:'currency',currency:'EUR'}).format(n/100);
+      function expect(ok,reason) { if (!ok) throw Error(reason); }
+      function element(tag,text) { const e=document.createElement(tag); e.textContent=text||''; return e; }
+      let confirmed=false, cartClient;
+      dialog.querySelector('button').onclick=()=>dialog.close();
+      async function json(path,options={}) {
+        const result=await fetch(path,{cache:'no-store',credentials:'same-origin',...options});
+        let data;try {data=await result.json();} catch {throw Error('Shopify konnte die Antwort nicht bestätigen.');}
+        expect(result.ok,data.error?.message||data.description||'Die Anfrage wurde von Shopify abgelehnt.');
+        return data;
+      }
+      function transfer(action) {
+        return json('/apps/konfigurator/cart/'+action,{
+          method:action==='claim'?'POST':'GET',credentials:'omit',
+          headers:{'X-Gravuru-Cart-Handoff':handoff,...(action==='data'?{'X-Gravuru-Cart-Preview':'hosted'}:{})}
+        });
+      }
+      function readOwn() {
+        const stored=sessionStorage.getItem(storageKey);
+        return stored?JSON.parse(stored):{cartToken:null,offers:{}};
+      }
+      function record(own) {sessionStorage.setItem(storageKey,JSON.stringify(own));}
+      function match(line,own) {
+        const prop=line.properties||{};
+        return String(line.product_id)===productId && own.offers[prop._gravuru_config]===prop._gravuru_offer && !!hostedPreview({properties:prop});
+      }
+      function ownCart(cart,own) {
+        expect(cart.currency==='EUR'&&Array.isArray(cart.items)&&typeof cart.token==='string','Der Shopify-Warenkorb konnte nicht geprüft werden.');
+        expect(!cart.items.length||(cart.token===own.cartToken&&cart.items.every(i=>match(i,own))),
+          'In diesem Browser liegen bereits Artikel in einem anderen Warenkorb. Bitte öffne den geschützten Testlink in einem neuen privaten Fenster.');
+      }
+      const lock=callback=>navigator.locks?navigator.locks.request('gravuru-theme-cart',callback):callback();
+      async function remove(key) {
+        await lock(async()=>{
+          const own=readOwn(), before=await json('/cart.js'); ownCart(before,own);
+          const line=before.items.find(i=>i.key===key);
+          expect(line,'Diese Position ist schon entfernt.');
+          const after=await json('/cart/change.js',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:key,quantity:0})});
+          ownCart(after,own);
+          expect(after.items.length===before.items.length-1 && !after.items.some(i=>i.key===key),'Shopify hat das Entfernen nicht bestätigt.');
+          delete own.offers[line.properties._gravuru_config];record(own);render(after);
+        });
+      }
+      function render(cart) {
+        list.replaceChildren();
+        for(const line of cart.items) {
+          const prop=line.properties, row=element('article'),photo=element('button'),img=element('img');
+          row.dataset.configuration=prop._gravuru_config; row.dataset.variant=String(line.variant_id);
+          const picture=hostedPreview({properties:prop});
+          img.src=picture;img.alt='Persönliche Gestaltung vergrößern';photo.type='button';photo.className='foto';photo.append(img);
+          photo.onclick=()=>{dialog.querySelector('img').src=picture;dialog.showModal();};
+          const texts=Object.entries(prop).filter(([key])=>/^Gravurtext(?: \d+)?$/.test(key)).map(([,v])=>v);
+          const details=element('div'),erase=element('button','Entfernen');erase.type='button';
+          erase.onclick=async()=>{erase.disabled=true;try{await remove(line.key);}catch(e){status.textContent=e.message;erase.disabled=false;}};
+          details.append(element('h2',line.product_title),element('p',[prop.Design,prop.Format,...texts].filter(Boolean).join(' · ')),
+            element('small','Artikelnummer '+line.sku),element('p',line.quantity+' × '+price(line.final_price)),erase);
+          row.append(photo,details);list.append(row);
+        }
+        status.textContent=cart.items.length?'Bei Shopify bestätigt.':'Dein Testwarenkorb ist leer.';
+        document.querySelector('#summe').textContent=cart.items.length?'Gesamt '+price(cart.total_price):'';
+      }
+      async function show() {
+        retry.hidden=true;
+        try {
+          expect(location.hostname===shop && /^[a-f0-9]{48}$/.test(testId||''),'Bitte über die geschützte Edelstahl-Testseite öffnen.');
+          await lock(async()=>{
+            const own=readOwn(),before=await json('/cart.js');ownCart(before,own);
+            if(confirmed||!handoff){render(before);return;}
+            expect(/^[a-f0-9]{64}$/.test(handoff),'Die Übergabedaten fehlen. Bitte erneut über die Designauswahl öffnen.');
+            const offer=await transfer('data');validateThemeCartPayload(offer);
+            expect(offer.shopDomain===shop && offer.productId===productId && offer.mode==='create' && hostedPreview(offer),
+              'Dieses Angebot gehört nicht zum Edelstahl-Test.');
+            const existed=before.items.some(i=>i.properties?._gravuru_offer===offer.properties._gravuru_offer);
+            if(existed){verifyThemeCartLine(before,offer);render(before);}
+            else{
+              own.cartToken=before.token;own.offers[offer.configuration.id]=offer.properties._gravuru_offer;record(own);
+              cartClient??=createThemeCartClient({claim:()=>transfer('claim')});
+              const result=await cartClient.submit(offer);
+              verifyThemeCartLine(result.cart,offer);
+              // A newly created empty cart can receive its final token at the first successful add.
+              if(!before.items.length)own.cartToken=result.cart.token;
+              ownCart(result.cart,own);record(own);render(result.cart);
+            }
+            confirmed=true;
+          });
+        }catch(e){status.textContent=e.message;retry.hidden=false;}
+      }
+      retry.onclick=show;show();
+    },{once:true});
+  })();
+  </script>
+  {% endif %}
+  {{ content_for_header }}
+  <style>
+    *{box-sizing:border-box}body{margin:0;background:#f4f6f5;color:#203132;font:16px/1.45 system-ui,sans-serif}
+    main{max-width:700px;margin:auto;padding:clamp(14px,4vw,32px)}h1{font-size:1.65rem;margin:0 0 12px}h2{font-size:1.05rem;margin:0}p{margin:7px 0}
+    article{display:grid;grid-template-columns:minmax(96px,36%) 1fr;align-items:start;gap:14px;background:white;border:1px solid #cfdbd7;border-radius:12px;padding:12px;margin:10px 0}
+    button,a{font:inherit;color:#14564f}button{cursor:pointer;min-height:44px;border:1px solid #a6bab4;border-radius:8px;background:white;padding:6px 10px}button:focus-visible,a:focus-visible{outline:3px solid #296c60;outline-offset:2px}
+    .foto{padding:3px;width:100%}.foto img{width:100%;display:block;object-fit:contain;max-height:160px}dialog{max-width:94vw;border:1px solid #a6bab4;border-radius:12px}dialog img{display:block;max-width:82vw;max-height:76vh}#summe{font-weight:bold}[hidden]{display:none!important}
+  </style>
+</head><body>
+{% if product.id == 16190784438652 %}
+  <main><h1>Dein Shopify-Testwarenkorb</h1><p id="status" role="status">Die Positionen werden bei Shopify geprüft …</p>
+    <div id="positionen"></div><p id="summe"></p><button id="erneut" type="button" hidden>Erneut prüfen</button>
+    <p><a href="https://konfi-beta.gravuru-designwerkstatt.de/prio-stufe-1/">Weiteres Edelstahl-Türschild gestalten</a></p>
+    <small>Der Test endet im Warenkorb.</small>
+  </main>
+  <dialog id="gross"><button type="button">Schließen</button><img alt="Vergrößerte persönliche Gestaltung"></dialog>
+{% else %}
+  <main><p>Diese Testseite gehört zum freigegebenen Edelstahl-Türschild.</p></main>
+{% endif %}
+</body></html>

@@ -1,0 +1,123 @@
+{
+  "started": "2026-11-20T10:03:42.611Z",
+  "commit": "a38c9701",
+  "viewport": "390 × 844",
+  "productRevision": 4,
+  "entry": "https://konfi-beta.gravuru-designwerkstatt.de/prio-stufe-1/",
+  "designs": [
+    {
+      "after": "katalog-TAE-V2A-8x5-D2",
+      "title": "Zwei Zeilen, versetzt",
+      "start": "katalog-TAE-V2A-8x5-D1",
+      "addedFrames": 0,
+      "addedEditors": 0,
+      "sameDocument": true,
+      "sameEditor": true,
+      "sameFrame": true,
+      "width": 120,
+      "height": 80,
+      "design": "katalog-TAE-V2A-8x5-D2",
+      "modelReads": 1,
+      "serverSwitches": 0
+    },
+    {
+      "after": "katalog-TAE-V2A-8x5-D952",
+      "title": "Willkommen bei den … – Familie mit Vornamen",
+      "start": "katalog-TAE-V2A-8x5-D1",
+      "addedFrames": 0,
+      "addedEditors": 0,
+      "sameDocument": true,
+      "sameEditor": true,
+      "sameFrame": true,
+      "width": 120,
+      "height": 80,
+      "design": "katalog-TAE-V2A-8x5-D952",
+      "modelReads": 1,
+      "serverSwitches": 0
+    }
+  ],
+  "images": [
+    {
+      "name": "Berger",
+      "width": 1600,
+      "height": 1102,
+      "pixelHash": "cf45622aa666c66711926513d0abe9fe9c374e008f916a78da35062c1f5812e9",
+      "identicalToSavedCustomerPicture": true
+    },
+    {
+      "name": "Neumann",
+      "width": 1600,
+      "height": 1102,
+      "pixelHash": "cd35f832627643d05bf303b518591c884be7d381fb57897b26463ff884d568a9",
+      "identicalToSavedCustomerPicture": true
+    }
+  ],
+  "errors": [],
+  "cartUpdates": [
+    {
+      "name": "Berger",
+      "design": "Zwei Zeilen, versetzt",
+      "sku": "156-GR-ES-AB-120X80-T15-K00",
+      "unitCents": 1999,
+      "totalCents": 1999,
+      "configurationDigest": "393b3098652c14aafefb14395f108fd95df7ae092aa8d221bb63f1f27cb0b9df",
+      "savedRevision": "1",
+      "zoom": true
+    },
+    {
+      "name": "Neumann",
+      "design": "Willkommen bei den … – Familie mit Vornamen",
+      "sku": "156-GR-ES-AB-120X80-T15-K00",
+      "unitCents": 1999,
+      "totalCents": 3998,
+      "configurationDigest": "bbfc97c1c88bc11dfc0a3f841a7f9cd59b273748738da083e26d5996065144cc",
+      "savedRevision": "1",
+      "zoom": true
+    }
+  ],
+  "assets": [
+    {
+      "path": "/konfi-demo/prio-claude-stufe1-267/prio.html",
+      "status": 200
+    },
+    {
+      "path": "/konfi-demo/prio-claude-stufe1-267/shop-entry-page.js",
+      "status": 200
+    },
+    {
+      "path": "/konfi-demo/prio-claude-stufe1-267/pilot.js",
+      "status": 200
+    },
+    {
+      "path": "/konfi-demo/prio-claude-stufe1-267/shop-design-switch.js",
+      "status": 200
+    },
+    {
+      "path": "/konfi-demo/prio-claude-stufe1-267/editor-d64f43ea13aaac6a.js",
+      "status": 200
+    },
+    {
+      "path": "/konfi-demo/prio-claude-stufe1-267/editor.html",
+      "status": 200
+    },
+    {
+      "path": "/konfi-demo/prio-claude-stufe1-267/editor-8a0b6bac286faad0.js",
+      "status": 200
+    },
+    {
+      "path": "/konfi-demo/prio-claude-stufe1-267/editor-6ee9bdee5f9ebc6b.js",
+      "status": 200
+    }
+  ],
+  "passed": true,
+  "network": {
+    "draftCreates": 2,
+    "draftWrites": 0,
+    "offers": 2,
+    "claims": 2,
+    "shopifyAdds": 2,
+    "checkouts": 0
+  },
+  "browser": "157.0.8103.78",
+  "ended": "2026-11-20T10:04:22.683Z"
+}

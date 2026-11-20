@@ -1,0 +1,108 @@
+[
+  {
+    "type": "bestand",
+    "sameEditor": false,
+    "frames": 2,
+    "writes": [],
+    "name": "katalog-TAE-V2A-8x5-D3",
+    "objects": [
+      {
+        "type": "motif",
+        "key": "katalog-TAE-V2A-8x5-D3-motiv-1",
+        "stored": true,
+        "local": true,
+        "ownResource": {
+          "chars": 115,
+          "paths": 1,
+          "text": [],
+          "image": 0
+        },
+        "catalog": {
+          "chars": 115,
+          "paths": 1,
+          "text": [],
+          "image": 0
+        },
+        "object": {
+          "chars": 723,
+          "paths": 2,
+          "text": [],
+          "image": 0
+        },
+        "uxObject": null,
+        "ObjectKeys": [
+          "id",
+          "type",
+          "motif",
+          "x",
+          "y",
+          "w",
+          "h",
+          "rotation",
+          "color",
+          "templateOrigin",
+          "customerEditable"
+        ]
+      }
+    ],
+    "localMotifs": 15,
+    "runtimeMotifs": 39,
+    "resources": 0,
+    "export": {
+      "valid": true,
+      "length": 7756,
+      "artKeys": [
+        "svg",
+        "geometry",
+        "fingerprint",
+        "examplePhotos"
+      ]
+    }
+  },
+  {
+    "type": "stufe1",
+    "sameEditor": true,
+    "frames": 1,
+    "writes": [],
+    "name": "katalog-TAE-V2A-8x5-D3",
+    "objects": [
+      {
+        "type": "motif",
+        "key": "katalog-TAE-V2A-8x5-D3-motiv-1",
+        "stored": false,
+        "local": false,
+        "ownResource": null,
+        "catalog": null,
+        "object": {
+          "chars": 465,
+          "paths": 2,
+          "text": [
+            "Motiv fehlt"
+          ],
+          "image": 0
+        },
+        "uxObject": null,
+        "ObjectKeys": [
+          "id",
+          "type",
+          "motif",
+          "x",
+          "y",
+          "w",
+          "h",
+          "rotation",
+          "color",
+          "templateOrigin",
+          "customerEditable"
+        ]
+      }
+    ],
+    "localMotifs": 0,
+    "runtimeMotifs": 24,
+    "resources": 0,
+    "export": {
+      "valid": false,
+      "error": "Nicht in Pfade umgewandelter Text im Motiv. Bitte die Vorlage prüfen."
+    }
+  }
+]

@@ -14,7 +14,10 @@ export function layoutFingerprint(state,rendered,profile){
   const ids=new Map([...svg.matchAll(/\bid="([^"]+)"/g)].map((match,index)=>[match[1],'contour-'+index]));
   return svg.replace(/\bid="([^"]+)"/g,(_,id)=>'id="'+ids.get(id)+'"')
    .replace(/url\(#([^)]*)\)/g,(_,id)=>'url(#'+(ids.get(id)||id)+')')
-   .replace(/(\b(?:xlink:)?href=")#([^"]+)"/g,(_,prefix,id)=>prefix+'#'+(ids.get(id)||id)+'"');
+   .replace(/(\b(?:xlink:)?href=")#([^"]+)"/g,(_,prefix,id)=>prefix+'#'+(ids.get(id)||id)+'"')
+   // Acrylic engraving refers to a filter in the outer plate SVG. Its render
+   // sequence changes on every objectSVG call, even for the same artwork.
+   .replace(/(data-preview-rear-engraving="true" filter="url\(#studio-customer-)\d+(-rear-frost\)")/g,'$1instance$2');
  };
  return JSON.stringify([state.designId,state.width,state.height,state.fkFrame,state.mOptions,
   state.objects,profile?.id,profile?.revision,profile?.geometry,rendered.map(([id,svg])=>[id,stableSVG(svg)])]);

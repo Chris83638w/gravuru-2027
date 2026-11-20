@@ -58,7 +58,8 @@ export async function exportCommerce({el,config,files,selection,binding}){
  }
  // Marks are already editable decoration objects when UX is installed.
  const vectorSvg=wrap(vectors,w,h),artwork=await embedRasters(await embedUploads(wrap(layout,w,h),files),config.localResources?.rasters,rasterAssets);
- const preview=await raster(await embedRasters(await embedUploads(await embedSurface(el.svg(),config.materialSurface),files),config.localResources?.rasters,rasterAssets));
+ const previewSvg=await embedSurface(el.svg(),config.materialSurface,profile.doorbellSchema==='gravuru-doorbell/v1'?profile.admin:undefined,config.localResources?.motifs);
+ const preview=await raster(await embedRasters(await embedUploads(previewSvg,files),config.localResources?.rasters,rasterAssets));
  const print=await raster(artwork,Math.round(w/25.4*(rasterObjects.length?600:300)),'#ffffff');
  const jpeg=new Uint8Array(await (await new Promise(res=>print.canvas.toBlob(res,'image/jpeg',.98))).arrayBuffer());
  const outer=profile.geometry.shape==='ellipse'?`<ellipse cx="${w/2}" cy="${h/2}" rx="${w/2}" ry="${h/2}"/>`:`<rect width="${w}" height="${h}" rx="${profile.geometry.cornerRadiusMm||0}"/>`;

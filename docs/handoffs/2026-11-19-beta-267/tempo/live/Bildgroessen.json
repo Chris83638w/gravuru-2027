@@ -1,0 +1,72 @@
+{
+  "Nord": {
+    "fullBytes": 290298,
+    "fullSize": [
+      952,
+      1600
+    ],
+    "sourceBytes": 295559,
+    "sourceToShopifyMean": 0.0,
+    "widths": {
+      "160": {
+        "bytes": 36474,
+        "width": 160,
+        "height": 269,
+        "mime": "image/png",
+        "meanChannelDifferenceFromResizedOriginal": 0.594,
+        "otherDesignDifference": 3.565
+      },
+      "320": {
+        "bytes": 102345,
+        "width": 320,
+        "height": 538,
+        "mime": "image/png",
+        "meanChannelDifferenceFromResizedOriginal": 0.435,
+        "otherDesignDifference": 3.286
+      },
+      "480": {
+        "bytes": 186375,
+        "width": 480,
+        "height": 807,
+        "mime": "image/png",
+        "meanChannelDifferenceFromResizedOriginal": 0.342,
+        "otherDesignDifference": 3.122
+      }
+    }
+  },
+  "Süd": {
+    "fullBytes": 291390,
+    "fullSize": [
+      952,
+      1600
+    ],
+    "sourceBytes": 296809,
+    "sourceToShopifyMean": 0.0,
+    "widths": {
+      "160": {
+        "bytes": 35985,
+        "width": 160,
+        "height": 269,
+        "mime": "image/png",
+        "meanChannelDifferenceFromResizedOriginal": 0.608,
+        "otherDesignDifference": 3.557
+      },
+      "320": {
+        "bytes": 102519,
+        "width": 320,
+        "height": 538,
+        "mime": "image/png",
+        "meanChannelDifferenceFromResizedOriginal": 0.441,
+        "otherDesignDifference": 3.285
+      },
+      "480": {
+        "bytes": 186323,
+        "width": 480,
+        "height": 807,
+        "mime": "image/png",
+        "meanChannelDifferenceFromResizedOriginal": 0.348,
+        "otherDesignDifference": 3.12
+      }
+    }
+  }
+}

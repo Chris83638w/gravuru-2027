@@ -10,9 +10,20 @@ import {capturePersonalization,personalizationForSnapshot,personalizationAttribu
 import {tenantOption,ensureTenantColumns,TENANT_COLUMN} from './tenant.mjs';
 import {createShopProductBindingStore} from './shop-product-binding-store.mjs';
 import {cartTimingRead,cartTimingCount} from './shop-cart-timing.mjs';
+import {hasFixedDoorbellCheckout} from './fixed-doorbell-checkout-products.mjs';
 import {SURCHARGE_UNAVAILABLE_MESSAGE} from '../configurator/variant-m/surcharge-availability.mjs';
 const fail=(status,message)=>{throw Object.assign(Error(message),{status,code:'order_intake'});};
 const OFFER_MISMATCH='Shop-Variante, Menge oder Preis weichen vom gesicherten Entwurf ab.';
+// Approved fixed-price revisions use their unchanged variant price and snapshot.
+function checkoutPriceFields(binding,manifest,stored){
+ if(stored)return {personalization:stored.personalization};
+ if(binding.tenant_id!=='gravuru'||binding.shop!=='gravuru-design.myshopify.com'||
+    !hasFixedDoorbellCheckout(binding.product_id,binding.product_revision))return {};
+ if(manifest.product?.id!==binding.product_id||manifest.product.revision!==binding.product_revision||manifest.product.currency!=='EUR')
+  fail(422,OFFER_MISMATCH);
+ const contract={revision:String(binding.product_revision),baseCents:binding.unit_cents,extraMotifCents:0,extraPhotoCents:0};
+ return {personalization:personalizationForSnapshot(contract,manifest).personalization};
+}
 const optionKey=o=>JSON.stringify(Object.entries(o||{}).sort());
 const samePositionId=(value,stored)=>value===stored||(typeof value==='number'&&String(value)===stored);
 function positionDocuments(rows,onUnreadable){
@@ -301,7 +312,7 @@ export function createOrderIntake({database:db,snapshot,clock=Date.now,autoRelea
    const id='offer_'+randomUUID(),token=stableToken??randomBytes(32).toString('hex');
    db.prepare('INSERT INTO form_order_offers(id,token_hash,binding_id,snapshot_id,package_sha256,quantity,created_at,expires_at,tenant_id) VALUES(?,?,?,?,?,?,?,?,?)').run(id,sha(token),bindingId,snapshotId,m.packageSha256,quantity,at(),clock()+7*86400000,tenant);
    if(extra)db.prepare('INSERT INTO form_offer_personalization(offer_id,document,tenant_id) VALUES(?,?,?)').run(id,JSON.stringify(extra),tenant);
-   return {id,property:{name:'_gravuru_offer',value:token},variantId:b.variant_id,quantity,unitCents:unit,currency:'EUR',scope:'test-checkout-only',...(extra?{personalization:extra.personalization}:{}),...offerFields(m)};
+   return {id,property:{name:'_gravuru_offer',value:token},variantId:b.variant_id,quantity,unitCents:unit,currency:'EUR',scope:'test-checkout-only',...checkoutPriceFields(b,m,extra),...offerFields(m)};
   });},
   // Resolve only a previously saved offer. Price, quantity and variant are never
   // accepted from a browser here. Callers must additionally authenticate its draft.
@@ -318,7 +329,7 @@ export function createOrderIntake({database:db,snapshot,clock=Date.now,autoRelea
    const chosen=selection(b.id);
    if(chosen&&(!isNativeReviewSchema(m.schema)||optionKey(chosen)!==optionKey(m.selection?.options)||m.selection?.price?.quantity!==o.quantity))fail(409,'Die gesicherte Ausführung oder Menge stimmt nicht überein.');
    if(m.packageSha256!==o.package_sha256||m.product.id!==b.product_id||m.product.revision!==b.product_revision||m.product.basePriceCents!==unit||m.product.currency!=='EUR')fail(409,'Der gesicherte Angebotsstand stimmt nicht überein.');
-   return {id:o.id,property:{name:'_gravuru_offer',value:offerToken},variantId:b.variant_id,quantity:o.quantity,unitCents:unit,currency:'EUR',scope:'test-checkout-only',...(extra?{personalization:extra.personalization}:{}),...offerFields(m)};
+   return {id:o.id,property:{name:'_gravuru_offer',value:offerToken},variantId:b.variant_id,quantity:o.quantity,unitCents:unit,currency:'EUR',scope:'test-checkout-only',...checkoutPriceFields(b,m,extra),...offerFields(m)};
   },
   receive(raw,headers,config,routing){
    let accepted=null;
@@ -401,10 +412,13 @@ export function createOrderIntake({database:db,snapshot,clock=Date.now,autoRelea
      const identities=db.prepare('SELECT DISTINCT product_gid FROM shop_product_binding_revisions WHERE tenant_id=? AND shop=? AND binding_id=?').all(tenant,shop,b.id);
      if(identities.length&&(identities.length!==1||identities[0].product_gid!=='gid://shopify/Product/'+identifier(line.product_id)))fail(422,'Das Shopify-Produkt passt nicht zur festen Entwurfsbindung.');
     }
-    for(const expected of personalizationAttributes(extra?.personalization)){
-     const actual=properties.filter(p=>p?.name===expected.key);
-     if(actual.length!==1||actual[0].value!==expected.value)fail(422,'Bestellung hat die gesicherte Entwurfs- oder Aufpreiszuordnung verändert.');
+    function validatePersonalization(value){
+     for(const expected of personalizationAttributes(value)){
+      const actual=properties.filter(p=>p?.name===expected.key);
+      if(actual.length!==1||actual[0].value!==expected.value)fail(422,'Bestellung hat die gesicherte Entwurfs- oder Aufpreiszuordnung verändert.');
+     }
     }
+    validatePersonalization(extra?.personalization);
     // K8 (Ü9.1): Die Position verweist auf genau die Konfigurations-Revision, die zu diesem Angebot gesichert wurde.
     // Fehlt sie oder ist sie unbekannt, wird nur diese Position abgelehnt (E3), nicht die ganze Bestellung.
     const configuration=configurationFor(properties,o.id);
@@ -417,6 +431,7 @@ export function createOrderIntake({database:db,snapshot,clock=Date.now,autoRelea
     }
     if(db.prepare('SELECT 1 FROM form_order_lines WHERE offer_id=? AND tenant_id=?').get(o.id,tenant))fail(409,'Dieser Entwurf wurde bereits einer anderen Bestellposition zugeordnet.');
     const m=snapshot(o.snapshot_id);
+    if(!extra)validatePersonalization(checkoutPriceFields(b,m,null).personalization);
     // F04 (#239, Chris 16.11.2026: „Ja, annehmen“): Der gespeicherte Entwurf bleibt gültig. Ein älteres Angebot
     // wird angenommen, solange der heutige Preisvertrag genau denselben Preis ergibt; sonst wie bisher abgelehnt.
     if(o.expires_at<clock()&&!priceStillCurrent(b,m,extra,unitCents))fail(422,'Die Checkout-Zuordnung ist abgelaufen; vor Übernahme prüfen.');if(m.packageSha256!==o.package_sha256)fail(409,'Der gesicherte Prüfstand wurde verändert.');

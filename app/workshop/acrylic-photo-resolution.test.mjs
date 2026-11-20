@@ -10,21 +10,30 @@ test('native photo density follows physical scale and crop zoom, not pan or rota
  const zoomed={...slot,uxPhotoCrop:{zoom:2,x:1,y:-1,angle:90},rotation:37};
  assert.equal(measure(zoomed,photo,1).effectiveDpi,150);
  assert.equal(measure({...zoomed,uxPhotoCrop:{zoom:2}},photo,1).effectiveDpi,150);
- assert.equal(measure({...slot,w:50.8},photo,1).effectiveDpi,300); // cover, not squeezed pixels
+ const square={...slot,w:50.8};
+ assert.equal(measure(square,photo,1).effectiveDpi,600);
+ assert.equal(measure({...square,uxPhotoCrop:{zoom:1}},photo,1).effectiveDpi,300);
 });
 test('edited image pixels and each placement determine density; originals remain intact',()=>{
  const edited={...photo,edited:{path:'fotos/edited.png',width:200,height:200}};
- const result=measure(slot,edited,1);
+ const originalPlacement=measure(slot,edited,1);
+ assert.equal(originalPlacement.frameCovered,false);assert.equal(originalPlacement.effectiveDpi,100);
+ assert.equal(originalPlacement.placedWidthMm,50.8);assert.equal(originalPlacement.placedHeightMm,50.8);
+ const cropped={...slot,uxPhotoCrop:{zoom:1}};
+ const result=measure(cropped,edited,1);
  assert.equal(result.frameCovered,true);assert.equal(measure({...slot,uxPhotoCrop:{zoom:.5}},edited,1).frameCovered,false);assert.equal(result.source,'edited');assert.equal(result.effectiveDpi,50);
  assert.equal(result.placedHeightMm,101.6);assert.equal(result.path,'fotos/edited.png');
  assert.equal(photo.width,1200);assert.equal(edited.width,1200);
- assert.equal(measure({...slot,w:50.8,h:25.4},edited,1).effectiveDpi,100);
+ assert.equal(measure({...cropped,w:50.8,h:25.4},edited,1).effectiveDpi,100);
  assert.equal(measure(slot,{...photo,width:0},1),null);
 });
-test('free uploads use contained image dimensions rather than the photo-slot cover',()=>{
+test('free uploads and unedited rectangular slots preserve the whole image; a shaped mask uses cover',()=>{
  const square={...slot,type:'image',w:101.6,h:101.6};
- const contained=measure(square,photo,1),covered=measure({...square,type:'photoSlot'},photo,1);
+ const contained=measure(square,photo,1),plain=measure({...square,type:'photoSlot',photoShape:'rect'},photo,1);
+ const covered=measure({...square,type:'photoSlot',photoShape:'circle'},photo,1);
  assert.equal(contained.effectiveDpi,300);assert.equal(contained.placedHeightMm,50.8);
+ assert.equal(plain.effectiveDpi,contained.effectiveDpi);assert.equal(plain.placedHeightMm,contained.placedHeightMm);
+ assert.equal(plain.frameCovered,false);assert.equal(covered.frameCovered,true);
  assert.equal(covered.effectiveDpi,150);assert.equal(covered.placedWidthMm,203.2);
 });
 import {resolutionGrade,resolutionHint,photoResolutionNote,resolutionTargetDpi,LOW_RESOLUTION_HINT} from './acrylic-photo-resolution.mjs';

@@ -413,8 +413,8 @@ export function editedDesignTexts(config,state){
   o.text!==source?.objects.find(original=>original.fieldKey===o.fieldKey)?.text).map(o=>[o.fieldKey,o.text]));
 }
 
-export function designFromState(config, state, values=state.mOptions||{}) {
-  const source = selectedProfile(config,values).designs.find(d => d.id === state.designId);
+export function designFromState(config, state, values=state.mOptions||{}, profile=selectedProfile(config,values)) {
+  const source = profile.designs.find(d => d.id === state.designId);
   if (!source) fail('Unbekanntes Design.');
   return {...clone(source), textOnTop:true, objects:state.objects.map(cleanObject)};
 }

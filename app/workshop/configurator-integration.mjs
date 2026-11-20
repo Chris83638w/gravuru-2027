@@ -65,8 +65,9 @@ export function createConfiguratorIntegration({settings,legacy,acryl,origin,shop
  // The existing session verifier uses `test-only` even for the public shop
  // entry. The explicit shop-entry activation controls this lazy image adapter;
  // the session label must not silently disable checkout previews.
- const checkoutImage=entry?createShopifyCheckoutImages({origin,shopDomain,getAccessToken:createDraftTokenProvider({shopDomain,clientId:shopifySessions.clientId,clientSecret:shopifySessions.secret})}):null;
- const shopEntry=entry?createShopEntry({origin,shopDomain,secret:shopifySessions.secret,stores,checkoutImage,proxyPath:entry.proxyPath,...(entry.pagePath===undefined?{}:{pagePath:entry.pagePath}),...(entry.ttlMs===undefined?{}:{ttlMs:entry.ttlMs}),...(entry.publicPreviewDirectory===undefined?{}:{publicPreviewDirectory:entry.publicPreviewDirectory}),...(entry.publicPreviewPrepare===undefined?{}:{publicPreviewPrepare:entry.publicPreviewPrepare}),...(entry.modelResponseCache===true?{modelResponseCache:true}:{}),...(entry.preSaveOnReview===true?{preSaveOnReview:true}:{})}):null;
+ const getCheckoutAccess=entry?createDraftTokenProvider({shopDomain,clientId:shopifySessions.clientId,clientSecret:shopifySessions.secret}):null;
+ const checkoutImage=entry?createShopifyCheckoutImages({origin,shopDomain,getAccessToken:getCheckoutAccess}):null;
+ const shopEntry=entry?createShopEntry({origin,shopDomain,secret:shopifySessions.secret,stores,checkoutImage,warmCheckoutAccess:getCheckoutAccess,proxyPath:entry.proxyPath,...(entry.pagePath===undefined?{}:{pagePath:entry.pagePath}),...(entry.ttlMs===undefined?{}:{ttlMs:entry.ttlMs}),...(entry.publicPreviewDirectory===undefined?{}:{publicPreviewDirectory:entry.publicPreviewDirectory}),...(entry.publicPreviewPrepare===undefined?{}:{publicPreviewPrepare:entry.publicPreviewPrepare}),...(entry.modelResponseCache===true?{modelResponseCache:true}:{}),...(entry.preSaveOnReview===true?{preSaveOnReview:true}:{})}):null;
  const statusWebhook=liveEnabled?createDoorbellStatusWebhookHandler({config:webhookConfig,intake:acryl.orderIntake}):null;
  const orders=createCrossStoreOrders({stores,origin,shopDomain,verifyMerchant:createShopifySessionVerifier(shopifySessions),enabled:Boolean(orderWebhook)});
  return Object.freeze({gateway,webhook,statusWebhook,shopEntry,orders});

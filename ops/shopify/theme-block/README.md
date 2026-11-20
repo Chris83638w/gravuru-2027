@@ -1,5 +1,11 @@
 # Theme-App-Block „Jetzt personalisieren“
 
+## R15-Warenkorb ab 19. November 2026
+
+Im veröffentlichten Theme sind der Schritt für kleinere persönliche Bilder und das Entfernen des nativen Bearbeiten-Links mit zwei einzelnen Patches belegt. Die Beta-Vorlage verwendet dieselben drei Anzeigebreiten für die bestätigte Shopify-Datei und behält ihr bestehendes Vergrößerungsziel. [Live-Messung, Prüfsummen und Rückweg](../../../docs/handoffs/2026-11-19-beta-267/tempo/live/README.md)
+
+Die gemeinsame Beta zeigt das persönliche Bild der gespeicherten Position in der Warenkorbseite und im Drawer. Vergrößern öffnet das Bild. Menge, Preis und Entfernen gehören weiterhin zur umgebenden Theme-Sektion. Eine neue Gestaltung beginnt beim Produkt. Der bestehende Snippet-Dateiname erhält die Einbindung beider Sektionen. Die Beta verwendet dazu `assets/gravuru-cart-preview.js` und `cart-media-placement.patch`. Der Stand liegt in PR #268. Die folgenden Betriebsnachweise beschreiben frühere Shop-Versionen. [Entscheidung von Chris](https://github.com/Chris83638w/gravuru-2027/issues/267#issuecomment-7008823567)
+
 **Live-Nachtrag 30.10.2026:** `cart-native-proof-visibility.patch` blendet ausschließlich die technische Eigenschaft „Bearbeitbarer Entwurf“ nativer Positionen in beiden Cart-Sections aus. Preisvertrag, Daten und Bearbeiten-Link bleiben erhalten. Im MAIN-Theme **185833718140** installiert und vollständig zurückgelesen; sechs Liquid-Fälle sowie bestehender Live-Warenkorb geprüft. [Prüfsummen, Sicherung, Rückweg und Grenzen](../../../docs/handoffs/2026-10-30-master-abgleich-warenkorb.md). Die nachfolgende Testtheme-Aussage vom 27.10. beschreibt den damaligen Stand.
 
 Quelle für die **bestehende** Theme-App-Erweiterung `gravuru-storefront` der App „Gravuru Konfigurator“ (Client-ID `9640dd7a6907f0c73e7013ea8c24869b`). Dieser Ordner ist **kein** eigenständiges Shopify-App-Projekt: Ein `shopify app deploy` aus einem unvollständigen Projekt entfernt nicht enthaltene Module. Die Dateien werden in das vollständige private Erweiterungsprojekt auf dem Host kopiert (siehe [SHOP-EINSTIEG.md](../SHOP-EINSTIEG.md)). Die bisherigen Blöcke `configurator.liquid` und `personalizer.liquid` bleiben unverändert erhalten.
@@ -8,7 +14,7 @@ Quelle für die **bestehende** Theme-App-Erweiterung `gravuru-storefront` der Ap
 | --- | --- | --- |
 | `blocks/jetzt-personalisieren.liquid` | `extensions/gravuru-storefront/blocks/` | App-Block für Produktsektionen: sichtbar nur, wenn das Produkt das Metafeld `custom.customization_id` trägt (Definition `gid://shopify/MetafieldDefinition/397781762428`, Konfi-Produktkennung). Link auf `/apps/<subpath>/start?product=<id>&variant=<id>&back=<Produktpfad>`. |
 | `assets/gravuru-personalisieren.js` | `extensions/gravuru-storefront/assets/` | Hält die Varianten-ID im Link aktuell (Produktformular `name="id"`, `?variant=`, Theme-Ereignisse). Ohne JavaScript bleibt der Link auf der beim Rendern gewählten Variante nutzbar. |
-| `snippets/gravuru-warenkorb-bearbeiten.liquid` | **Theme** (`snippets/`), nicht Erweiterung | Gesicherte `_Entwurf`-Vorschau und „Bearbeiten“-Link je Warenkorbzeile aus `_gravuru_config`/`_gravuru_rev` (K8). Aufruf direkt in der Bildspalte von `sections/main-cart.liquid` und `sections/cart-drawer.liquid`: `{% render 'gravuru-warenkorb-bearbeiten', item: item %}`. |
+| `snippets/gravuru-warenkorb-bearbeiten.liquid` | Theme-Snippet | Persönliches Bild der gesicherten Position für Warenkorbseite und Drawer. |
 
 Übergeben werden ausschließlich Shopify-Produkt-ID, Varianten-ID, der Produktpfad für den Rücksprung und beim Bearbeiten `config`/`rev`/`line`. Kein Preis, keine SKU, kein Handle: Die Zuordnung zum Werkstattprodukt trifft der Server allein über die Binding-Registry {Produkt-ID, Varianten-ID}. Shopify signiert jede Proxy-Anfrage; der Server prüft Signatur, Shop und Zeit.
 

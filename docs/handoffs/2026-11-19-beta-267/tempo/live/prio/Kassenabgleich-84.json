@@ -1,0 +1,849 @@
+{
+  "varianteJeArtikel": 120,
+  "artikel": 84,
+  "varianten": 10080,
+  "gueltigePreisfaelle": 40320,
+  "unvollstaendigeGesperrt": 40320,
+  "produkte": [
+    {
+      "productId": "gid://shopify/Product/16182701621628",
+      "count": 120,
+      "minCents": 4999,
+      "maxCents": 7598,
+      "acceptedPriceCases": 480,
+      "incompleteCasesBlocked": 480,
+      "digest": "a0402eeb0e6fcdc5f30e1a8db5b6dda2183c5eedf58a9fcb6abcea88ce09d993",
+      "matched": true
+    },
+    {
+      "productId": "gid://shopify/Product/16182702211452",
+      "count": 120,
+      "minCents": 4999,
+      "maxCents": 7598,
+      "acceptedPriceCases": 480,
+      "incompleteCasesBlocked": 480,
+      "digest": "a382abbdcd899c54e908e2dbec600d29342e23c9c26b7c5d023e38e26c512319",
+      "matched": true
+    },
+    {
+      "productId": "gid://shopify/Product/16182861726076",
+      "count": 120,
+      "minCents": 4999,
+      "maxCents": 7598,
+      "acceptedPriceCases": 480,
+      "incompleteCasesBlocked": 480,
+      "digest": "7d71d86558dc8a8f5e6341f2696b12c2e7397c1d5b0c13d8d0143b974cca3d56",
+      "matched": true
+    },
+    {
+      "productId": "gid://shopify/Product/16182866346364",
+      "count": 120,
+      "minCents": 4999,
+      "maxCents": 7598,
+      "acceptedPriceCases": 480,
+      "incompleteCasesBlocked": 480,
+      "digest": "29534c26df3b04b007446e73368f03f0dafa605b7277761a9121097e8937bd42",
+      "matched": true
+    },
+    {
+      "productId": "gid://shopify/Product/16182866444668",
+      "count": 120,
+      "minCents": 4999,
+      "maxCents": 7598,
+      "acceptedPriceCases": 480,
+      "incompleteCasesBlocked": 480,
+      "digest": "66c33ce242c8c765a9f8d59834869e2bb6fd114d35a9e254f64f0dee91468ef4",
+      "matched": true
+    },
+    {
+      "productId": "gid://shopify/Product/16182866542972",
+      "count": 120,
+      "minCents": 4999,
+      "maxCents": 7598,
+      "acceptedPriceCases": 480,
+      "incompleteCasesBlocked": 480,
+      "digest": "841d7629e41dcabbf715be90292a55e73297ac9fb79e1a39f6c9dfe8fbec857c",
+      "matched": true
+    },
+    {
+      "productId": "gid://shopify/Product/16182866608508",
+      "count": 120,
+      "minCents": 4999,
+      "maxCents": 7598,
+      "acceptedPriceCases": 480,
+      "incompleteCasesBlocked": 480,
+      "digest": "8e164a19a7dc67ff73040254859e4ed4b914fa69cc2f0e4484f9ff533740869a",
+      "matched": true
+    },
+    {
+      "productId": "gid://shopify/Product/16182866674044",
+      "count": 120,
+      "minCents": 4999,
+      "maxCents": 7598,
+      "acceptedPriceCases": 480,
+      "incompleteCasesBlocked": 480,
+      "digest": "2b85dabcd1cab167b3d199f8d3b3e64caca2f0fd81849279a094b9445e71793e",
+      "matched": true
+    },
+    {
+      "productId": "gid://shopify/Product/16182866772348",
+      "count": 120,
+      "minCents": 4999,
+      "maxCents": 7598,
+      "acceptedPriceCases": 480,
+      "incompleteCasesBlocked": 480,
+      "digest": "d549160f35287f0643599248300a435c212b99203fd66599d0f3ebba4b7e0ac5",
+      "matched": true
+    },
+    {
+      "productId": "gid://shopify/Product/16182866936188",
+      "count": 120,
+      "minCents": 4999,
+      "maxCents": 7598,
+      "acceptedPriceCases": 480,
+      "incompleteCasesBlocked": 480,
+      "digest": "5903f5bb0169eaede257dd4f18fdfb780746a8b101c7dea652dbbfda11b6c75f",
+      "matched": true
+    },
+    {
+      "productId": "gid://shopify/Product/16182867067260",
+      "count": 120,
+      "minCents": 4999,
+      "maxCents": 7598,
+      "acceptedPriceCases": 480,
+      "incompleteCasesBlocked": 480,
+      "digest": "ba5226bc0bf404a55b9d15a2912ca7cd1ec6d9237c96449a7e7c90bafdadcf1e",
+      "matched": true
+    },
+    {
+      "productId": "gid://shopify/Product/16182867231100",
+      "count": 120,
+      "minCents": 4999,
+      "maxCents": 7598,
+      "acceptedPriceCases": 480,
+      "incompleteCasesBlocked": 480,
+      "digest": "525953e4371c74bf613660f54be27457574ad4a1a089618803b631e73fed35b4",
+      "matched": true
+    },
+    {
+      "productId": "gid://shopify/Product/16182867329404",
+      "count": 120,
+      "minCents": 4999,
+      "maxCents": 7598,
+      "acceptedPriceCases": 480,
+      "incompleteCasesBlocked": 480,
+      "digest": "684591e3c32ace29269de7a7f71b169c40c61a6146e58bbe587ea0c12b874aa8",
+      "matched": true
+    },
+    {
+      "productId": "gid://shopify/Product/16182867427708",
+      "count": 120,
+      "minCents": 4999,
+      "maxCents": 7598,
+      "acceptedPriceCases": 480,
+      "incompleteCasesBlocked": 480,
+      "digest": "aaca8fe786c56ca3a5df79f751a3cf5e7e2e4dc55be424629dd79bf5f901dca4",
+      "matched": true
+    },
+    {
+      "productId": "gid://shopify/Product/16182867558780",
+      "count": 120,
+      "minCents": 4999,
+      "maxCents": 7598,
+      "acceptedPriceCases": 480,
+      "incompleteCasesBlocked": 480,
+      "digest": "3da6ed7ba8aabccef087f7ab60df576779b9afdc467320d749544700c43d7223",
+      "matched": true
+    },
+    {
+      "productId": "gid://shopify/Product/16182867722620",
+      "count": 120,
+      "minCents": 4999,
+      "maxCents": 7598,
+      "acceptedPriceCases": 480,
+      "incompleteCasesBlocked": 480,
+      "digest": "00b11825d824b2a369400bc9038726a1985fd194db531cebd2974bf5f72c71ea",
+      "matched": true
+    },
+    {
+      "productId": "gid://shopify/Product/16182867820924",
+      "count": 120,
+      "minCents": 4999,
+      "maxCents": 7598,
+      "acceptedPriceCases": 480,
+      "incompleteCasesBlocked": 480,
+      "digest": "eb56bf936656d6e9e25b25e77cf89d6207b1d5ba132315feb662f8da2a111cf6",
+      "matched": true
+    },
+    {
+      "productId": "gid://shopify/Product/16182868017532",
+      "count": 120,
+      "minCents": 4999,
+      "maxCents": 7598,
+      "acceptedPriceCases": 480,
+      "incompleteCasesBlocked": 480,
+      "digest": "48cc667096f94478dcd726b948242bebfb9a89f88f29b026f91091550eccf26b",
+      "matched": true
+    },
+    {
+      "productId": "gid://shopify/Product/16182868115836",
+      "count": 120,
+      "minCents": 4999,
+      "maxCents": 7598,
+      "acceptedPriceCases": 480,
+      "incompleteCasesBlocked": 480,
+      "digest": "556ee6a95084070a7caeb9c09431074e055be1ff975d5c67d19d83c2324ca79d",
+      "matched": true
+    },
+    {
+      "productId": "gid://shopify/Product/16182868246908",
+      "count": 120,
+      "minCents": 4999,
+      "maxCents": 7598,
+      "acceptedPriceCases": 480,
+      "incompleteCasesBlocked": 480,
+      "digest": "a44b82d80afe54e3f7180d7a7eb87128bff21ccdb40e1b66540d77806de7116a",
+      "matched": true
+    },
+    {
+      "productId": "gid://shopify/Product/16182868410748",
+      "count": 120,
+      "minCents": 4999,
+      "maxCents": 7598,
+      "acceptedPriceCases": 480,
+      "incompleteCasesBlocked": 480,
+      "digest": "ef4728e36927f7367ae3b8d0f836825e998a6850b3d0190c64b4245678769b98",
+      "matched": true
+    },
+    {
+      "productId": "gid://shopify/Product/16182868574588",
+      "count": 120,
+      "minCents": 4999,
+      "maxCents": 7598,
+      "acceptedPriceCases": 480,
+      "incompleteCasesBlocked": 480,
+      "digest": "55ff8545e9872a348899ebf9091eb89425964aef489a6b0a24700163c11d03a3",
+      "matched": true
+    },
+    {
+      "productId": "gid://shopify/Product/16182868705660",
+      "count": 120,
+      "minCents": 4999,
+      "maxCents": 7598,
+      "acceptedPriceCases": 480,
+      "incompleteCasesBlocked": 480,
+      "digest": "5be9f78cdd58ce9dec16af235ff675700afec3e7d72a7cfc6567160cdc2622d1",
+      "matched": true
+    },
+    {
+      "productId": "gid://shopify/Product/16182868836732",
+      "count": 120,
+      "minCents": 4999,
+      "maxCents": 7598,
+      "acceptedPriceCases": 480,
+      "incompleteCasesBlocked": 480,
+      "digest": "f17149206a80f46844bf30861db233023c8eb16169da1ef39ebba213cc199ccb",
+      "matched": true
+    },
+    {
+      "productId": "gid://shopify/Product/16182868902268",
+      "count": 120,
+      "minCents": 4999,
+      "maxCents": 7598,
+      "acceptedPriceCases": 480,
+      "incompleteCasesBlocked": 480,
+      "digest": "42f19117cf22571bbbc3204f9b545615d7979a2836db4c6cc7554e7cebe31951",
+      "matched": true
+    },
+    {
+      "productId": "gid://shopify/Product/16182869033340",
+      "count": 120,
+      "minCents": 4999,
+      "maxCents": 7598,
+      "acceptedPriceCases": 480,
+      "incompleteCasesBlocked": 480,
+      "digest": "942f155f283f6858dc92364d295a1110076834e232a29923757e84c7565b2c44",
+      "matched": true
+    },
+    {
+      "productId": "gid://shopify/Product/16182869131644",
+      "count": 120,
+      "minCents": 4999,
+      "maxCents": 7598,
+      "acceptedPriceCases": 480,
+      "incompleteCasesBlocked": 480,
+      "digest": "2b572031f0ca00cd78d64ea93bbe2570dce53443d25150dc68fb70282faff0c8",
+      "matched": true
+    },
+    {
+      "productId": "gid://shopify/Product/16182869262716",
+      "count": 120,
+      "minCents": 4999,
+      "maxCents": 7598,
+      "acceptedPriceCases": 480,
+      "incompleteCasesBlocked": 480,
+      "digest": "6b0d4091667ec0fb7288955f8a8610e5a3fc4533454702b03707713b46edbdce",
+      "matched": true
+    },
+    {
+      "productId": "gid://shopify/Product/16182869361020",
+      "count": 120,
+      "minCents": 4999,
+      "maxCents": 7598,
+      "acceptedPriceCases": 480,
+      "incompleteCasesBlocked": 480,
+      "digest": "b82d07aad0cd803bf9f490f444e758641765dd50b0aef3c58fa617830b025cf8",
+      "matched": true
+    },
+    {
+      "productId": "gid://shopify/Product/16182869492092",
+      "count": 120,
+      "minCents": 4999,
+      "maxCents": 7598,
+      "acceptedPriceCases": 480,
+      "incompleteCasesBlocked": 480,
+      "digest": "e1bb3e409f35d5332e32b6e1cb75666513acfe780e9ea3985bd969e4f0b24662",
+      "matched": true
+    },
+    {
+      "productId": "gid://shopify/Product/16182869590396",
+      "count": 120,
+      "minCents": 4999,
+      "maxCents": 7598,
+      "acceptedPriceCases": 480,
+      "incompleteCasesBlocked": 480,
+      "digest": "ae8cfe953bfc7bc163aed481c92f17c2717871e2bb9357a1bbecfe4f3b411173",
+      "matched": true
+    },
+    {
+      "productId": "gid://shopify/Product/16182869688700",
+      "count": 120,
+      "minCents": 4999,
+      "maxCents": 7598,
+      "acceptedPriceCases": 480,
+      "incompleteCasesBlocked": 480,
+      "digest": "6fbd548f89ca07d11029782b03cb0ad7f9fd1d65a55bfdbcc961edd46772a4bc",
+      "matched": true
+    },
+    {
+      "productId": "gid://shopify/Product/16182869819772",
+      "count": 120,
+      "minCents": 4999,
+      "maxCents": 7598,
+      "acceptedPriceCases": 480,
+      "incompleteCasesBlocked": 480,
+      "digest": "fb47c9223e6d65fadca7a5bf22d7f64650ec326760ea1b024026639fa9eded79",
+      "matched": true
+    },
+    {
+      "productId": "gid://shopify/Product/16182869950844",
+      "count": 120,
+      "minCents": 4999,
+      "maxCents": 7598,
+      "acceptedPriceCases": 480,
+      "incompleteCasesBlocked": 480,
+      "digest": "3eb46d5ac3857bc8062e3fe0d42ebe7d68274c07087975e67449c98cf59bc21d",
+      "matched": true
+    },
+    {
+      "productId": "gid://shopify/Product/16182870049148",
+      "count": 120,
+      "minCents": 4999,
+      "maxCents": 7598,
+      "acceptedPriceCases": 480,
+      "incompleteCasesBlocked": 480,
+      "digest": "98261256dd8ca2c42b86c60d2a3ebe241996794849440931d58d7d5d94662f66",
+      "matched": true
+    },
+    {
+      "productId": "gid://shopify/Product/16182870212988",
+      "count": 120,
+      "minCents": 4999,
+      "maxCents": 7598,
+      "acceptedPriceCases": 480,
+      "incompleteCasesBlocked": 480,
+      "digest": "718bde1a99d4882f27fcf7daa6438cccb474e8d6e02086a35f5c7a67c1f93773",
+      "matched": true
+    },
+    {
+      "productId": "gid://shopify/Product/16182870311292",
+      "count": 120,
+      "minCents": 4999,
+      "maxCents": 7598,
+      "acceptedPriceCases": 480,
+      "incompleteCasesBlocked": 480,
+      "digest": "d1eb529525b9d79fc8a8d1e38795db786742b865b92d13222af2e164c5e6454e",
+      "matched": true
+    },
+    {
+      "productId": "gid://shopify/Product/16182870376828",
+      "count": 120,
+      "minCents": 4999,
+      "maxCents": 7598,
+      "acceptedPriceCases": 480,
+      "incompleteCasesBlocked": 480,
+      "digest": "32653c4332982fe8c5be81ca23cc987c524e3a01c24a751c2bad09f4df3ef5f4",
+      "matched": true
+    },
+    {
+      "productId": "gid://shopify/Product/16182870442364",
+      "count": 120,
+      "minCents": 4999,
+      "maxCents": 7598,
+      "acceptedPriceCases": 480,
+      "incompleteCasesBlocked": 480,
+      "digest": "04fd9271301b4cf62ed0e4f3b561ebd844e6048802a3d08a6f556cb6b2b8d65b",
+      "matched": true
+    },
+    {
+      "productId": "gid://shopify/Product/16182870638972",
+      "count": 120,
+      "minCents": 4999,
+      "maxCents": 7598,
+      "acceptedPriceCases": 480,
+      "incompleteCasesBlocked": 480,
+      "digest": "194de8b67623826a39c22ba0c7a9dffde077d7e90647b39bd9deb8223b4c2f4b",
+      "matched": true
+    },
+    {
+      "productId": "gid://shopify/Product/16182870770044",
+      "count": 120,
+      "minCents": 4999,
+      "maxCents": 7598,
+      "acceptedPriceCases": 480,
+      "incompleteCasesBlocked": 480,
+      "digest": "8ec26ec794a022183c64884aab4ab356ae538f2377f6c0afd204c5ffc3a676bd",
+      "matched": true
+    },
+    {
+      "productId": "gid://shopify/Product/16182870901116",
+      "count": 120,
+      "minCents": 4999,
+      "maxCents": 7598,
+      "acceptedPriceCases": 480,
+      "incompleteCasesBlocked": 480,
+      "digest": "e4427e67b46610e912d6d1b0579518a5ed670a9fba3cdb8badcb48f0d17b0201",
+      "matched": true
+    },
+    {
+      "productId": "gid://shopify/Product/16182870999420",
+      "count": 120,
+      "minCents": 4999,
+      "maxCents": 7598,
+      "acceptedPriceCases": 480,
+      "incompleteCasesBlocked": 480,
+      "digest": "4e8f30bd8bc76fb86d8488194143c9b1f16ad9d4f1b8475c5c63a55483b148b1",
+      "matched": true
+    },
+    {
+      "productId": "gid://shopify/Product/16182871097724",
+      "count": 120,
+      "minCents": 4999,
+      "maxCents": 7598,
+      "acceptedPriceCases": 480,
+      "incompleteCasesBlocked": 480,
+      "digest": "7706d0c6921b579bee6e66d3a7cd936f2f6a763308255e42e0840d945332b0ee",
+      "matched": true
+    },
+    {
+      "productId": "gid://shopify/Product/16182871228796",
+      "count": 120,
+      "minCents": 4999,
+      "maxCents": 7598,
+      "acceptedPriceCases": 480,
+      "incompleteCasesBlocked": 480,
+      "digest": "2adec8264f8fbbf68d1cc0a31b0ba742061bf82ede8899cdbf004348fcc62349",
+      "matched": true
+    },
+    {
+      "productId": "gid://shopify/Product/16182871327100",
+      "count": 120,
+      "minCents": 4999,
+      "maxCents": 7598,
+      "acceptedPriceCases": 480,
+      "incompleteCasesBlocked": 480,
+      "digest": "929a6c19adfb97400392e86831f8ef76f15b4646c7cbc6506f251ba08e69aa8e",
+      "matched": true
+    },
+    {
+      "productId": "gid://shopify/Product/16182871425404",
+      "count": 120,
+      "minCents": 4999,
+      "maxCents": 7598,
+      "acceptedPriceCases": 480,
+      "incompleteCasesBlocked": 480,
+      "digest": "b8ac628b1101a31ec743b5772c720cc751ea638d5847dbba629244f67424b9b4",
+      "matched": true
+    },
+    {
+      "productId": "gid://shopify/Product/16182871490940",
+      "count": 120,
+      "minCents": 4999,
+      "maxCents": 7598,
+      "acceptedPriceCases": 480,
+      "incompleteCasesBlocked": 480,
+      "digest": "1d38c6c2dec304ebf1b5389912f2195333c8e4a6b2d4125bd9c2168324545284",
+      "matched": true
+    },
+    {
+      "productId": "gid://shopify/Product/16182871556476",
+      "count": 120,
+      "minCents": 4999,
+      "maxCents": 7598,
+      "acceptedPriceCases": 480,
+      "incompleteCasesBlocked": 480,
+      "digest": "b0333a1a7e672911f9d4061a01c25a3efc49c3bffc7ba1d067efd720394e3e8e",
+      "matched": true
+    },
+    {
+      "productId": "gid://shopify/Product/16182871687548",
+      "count": 120,
+      "minCents": 4999,
+      "maxCents": 7598,
+      "acceptedPriceCases": 480,
+      "incompleteCasesBlocked": 480,
+      "digest": "5d03442ff13df483f7ed336c171dc26dc39937570e07c777e51280d7732c08aa",
+      "matched": true
+    },
+    {
+      "productId": "gid://shopify/Product/16182871818620",
+      "count": 120,
+      "minCents": 4999,
+      "maxCents": 7598,
+      "acceptedPriceCases": 480,
+      "incompleteCasesBlocked": 480,
+      "digest": "05090a13dc7e61e971581b4399f257b6c58beda83a028ee5df0a508dfa7763d3",
+      "matched": true
+    },
+    {
+      "productId": "gid://shopify/Product/16182871884156",
+      "count": 120,
+      "minCents": 4999,
+      "maxCents": 7598,
+      "acceptedPriceCases": 480,
+      "incompleteCasesBlocked": 480,
+      "digest": "82e71a69b760b7914ebdcd977421b563b269632b71f6400f6bf5e992bd962408",
+      "matched": true
+    },
+    {
+      "productId": "gid://shopify/Product/16182871982460",
+      "count": 120,
+      "minCents": 4999,
+      "maxCents": 7598,
+      "acceptedPriceCases": 480,
+      "incompleteCasesBlocked": 480,
+      "digest": "123f55b1e62c7ea8933df764eeee1b595a619aec80cf385932dca4b3c82defae",
+      "matched": true
+    },
+    {
+      "productId": "gid://shopify/Product/16182872080764",
+      "count": 120,
+      "minCents": 4999,
+      "maxCents": 7598,
+      "acceptedPriceCases": 480,
+      "incompleteCasesBlocked": 480,
+      "digest": "c44b140c9d9965aa97d944f053e4bd7393db9828f5bf7279a13488a86e635f8d",
+      "matched": true
+    },
+    {
+      "productId": "gid://shopify/Product/16182872179068",
+      "count": 120,
+      "minCents": 4999,
+      "maxCents": 7598,
+      "acceptedPriceCases": 480,
+      "incompleteCasesBlocked": 480,
+      "digest": "ca3ba9e444d4130702082714d0bf39e6eb09242e2df771ef5da4adfbc98ec22b",
+      "matched": true
+    },
+    {
+      "productId": "gid://shopify/Product/16182872277372",
+      "count": 120,
+      "minCents": 4999,
+      "maxCents": 7598,
+      "acceptedPriceCases": 480,
+      "incompleteCasesBlocked": 480,
+      "digest": "6740269e97943a848de700f3cc94708c461d6f438e2db7757a1171ada1ae89f2",
+      "matched": true
+    },
+    {
+      "productId": "gid://shopify/Product/16182872375676",
+      "count": 120,
+      "minCents": 4999,
+      "maxCents": 7598,
+      "acceptedPriceCases": 480,
+      "incompleteCasesBlocked": 480,
+      "digest": "419f8febddfa7da32a862de277a8d64f6ebe57a2e04b74a67345aa222e9c753e",
+      "matched": true
+    },
+    {
+      "productId": "gid://shopify/Product/16182872473980",
+      "count": 120,
+      "minCents": 4999,
+      "maxCents": 7598,
+      "acceptedPriceCases": 480,
+      "incompleteCasesBlocked": 480,
+      "digest": "6707bd671c36a0b21eede737ef9a60cd5d052c740065f1b1aeba747ceb99aaba",
+      "matched": true
+    },
+    {
+      "productId": "gid://shopify/Product/16182872605052",
+      "count": 120,
+      "minCents": 4999,
+      "maxCents": 7598,
+      "acceptedPriceCases": 480,
+      "incompleteCasesBlocked": 480,
+      "digest": "d41bfa042b5d4b871269e30054ab3b13c2e169b2f12a43afc8a8009cf612bea7",
+      "matched": true
+    },
+    {
+      "productId": "gid://shopify/Product/16182872670588",
+      "count": 120,
+      "minCents": 4999,
+      "maxCents": 7598,
+      "acceptedPriceCases": 480,
+      "incompleteCasesBlocked": 480,
+      "digest": "7f682014fb16e6f6815ef58b530bc6badaeb25ab3fa985c756767d75204b5d41",
+      "matched": true
+    },
+    {
+      "productId": "gid://shopify/Product/16182872768892",
+      "count": 120,
+      "minCents": 4999,
+      "maxCents": 7598,
+      "acceptedPriceCases": 480,
+      "incompleteCasesBlocked": 480,
+      "digest": "d98d7f9d4562fc98d0a29e75b1b093c11b77be2bf5a9fa165a200a9e825acfd0",
+      "matched": true
+    },
+    {
+      "productId": "gid://shopify/Product/16182872899964",
+      "count": 120,
+      "minCents": 4999,
+      "maxCents": 7598,
+      "acceptedPriceCases": 480,
+      "incompleteCasesBlocked": 480,
+      "digest": "d9f830b92989350b126a8c55e6bd6f05e755ce577db363fb2400e20800890ba3",
+      "matched": true
+    },
+    {
+      "productId": "gid://shopify/Product/16182872998268",
+      "count": 120,
+      "minCents": 4999,
+      "maxCents": 7598,
+      "acceptedPriceCases": 480,
+      "incompleteCasesBlocked": 480,
+      "digest": "fe26fb46ca10da03a05e54073d6fd420dc6d61cff2c1986795b54f43a1e66c48",
+      "matched": true
+    },
+    {
+      "productId": "gid://shopify/Product/16182873129340",
+      "count": 120,
+      "minCents": 4999,
+      "maxCents": 7598,
+      "acceptedPriceCases": 480,
+      "incompleteCasesBlocked": 480,
+      "digest": "413bcbeea22b9d3741ff226ac8f1ade76e38d4e5607fc150c15f9fa2005d0eff",
+      "matched": true
+    },
+    {
+      "productId": "gid://shopify/Product/16182873260412",
+      "count": 120,
+      "minCents": 4999,
+      "maxCents": 7598,
+      "acceptedPriceCases": 480,
+      "incompleteCasesBlocked": 480,
+      "digest": "33c0c3879fffc1ec8311f312c394f29a175752d9e7efc519d904c2e0d924e076",
+      "matched": true
+    },
+    {
+      "productId": "gid://shopify/Product/16182873358716",
+      "count": 120,
+      "minCents": 4999,
+      "maxCents": 7598,
+      "acceptedPriceCases": 480,
+      "incompleteCasesBlocked": 480,
+      "digest": "cb82ae51997942e6eca810d899d8e4bfbf0f09dbf336db8839a21a2d8a03b39b",
+      "matched": true
+    },
+    {
+      "productId": "gid://shopify/Product/16182873457020",
+      "count": 120,
+      "minCents": 4999,
+      "maxCents": 7598,
+      "acceptedPriceCases": 480,
+      "incompleteCasesBlocked": 480,
+      "digest": "dc1cc85f280529fb2fb053365528f377823bbd8781e96a1c9ae353e2acadb9e2",
+      "matched": true
+    },
+    {
+      "productId": "gid://shopify/Product/16182873522556",
+      "count": 120,
+      "minCents": 4999,
+      "maxCents": 7598,
+      "acceptedPriceCases": 480,
+      "incompleteCasesBlocked": 480,
+      "digest": "3722c8583c6bda26e5b49d0b34735fb74f114bcf5a4c244e5c630f66f4b0a5dd",
+      "matched": true
+    },
+    {
+      "productId": "gid://shopify/Product/16182873686396",
+      "count": 120,
+      "minCents": 4999,
+      "maxCents": 7598,
+      "acceptedPriceCases": 480,
+      "incompleteCasesBlocked": 480,
+      "digest": "73a75441bdf2daaadad86a98dd63af2eb73ad016f9561fda9b7a4b38770ff0b4",
+      "matched": true
+    },
+    {
+      "productId": "gid://shopify/Product/16182873751932",
+      "count": 120,
+      "minCents": 4999,
+      "maxCents": 7598,
+      "acceptedPriceCases": 480,
+      "incompleteCasesBlocked": 480,
+      "digest": "dd8f20af474d8be62425d67beaf5d2be9feb3694d4bc5a18c1d33a1383e32249",
+      "matched": true
+    },
+    {
+      "productId": "gid://shopify/Product/16182873850236",
+      "count": 120,
+      "minCents": 4999,
+      "maxCents": 7598,
+      "acceptedPriceCases": 480,
+      "incompleteCasesBlocked": 480,
+      "digest": "a674d14f37f09af018c630ff8fbdc5280d1173c4a8af35bd3376ac3b69bfb7f0",
+      "matched": true
+    },
+    {
+      "productId": "gid://shopify/Product/16182874014076",
+      "count": 120,
+      "minCents": 4999,
+      "maxCents": 7598,
+      "acceptedPriceCases": 480,
+      "incompleteCasesBlocked": 480,
+      "digest": "e665c2c589247ef29fbf6e0f272d6b0adb5eeed6cc05fc22816ba4d6dd32b5f9",
+      "matched": true
+    },
+    {
+      "productId": "gid://shopify/Product/16182874079612",
+      "count": 120,
+      "minCents": 4999,
+      "maxCents": 7598,
+      "acceptedPriceCases": 480,
+      "incompleteCasesBlocked": 480,
+      "digest": "d73fe26059ecb21550ce14b3bd64a8f38205ebb14fce3044484f0defbe21eee4",
+      "matched": true
+    },
+    {
+      "productId": "gid://shopify/Product/16182874210684",
+      "count": 120,
+      "minCents": 4999,
+      "maxCents": 7598,
+      "acceptedPriceCases": 480,
+      "incompleteCasesBlocked": 480,
+      "digest": "ddd1c6dee2b04f3864e42b014ad46e02933dbd6907c2f689347172b02797f061",
+      "matched": true
+    },
+    {
+      "productId": "gid://shopify/Product/16182874276220",
+      "count": 120,
+      "minCents": 4999,
+      "maxCents": 7598,
+      "acceptedPriceCases": 480,
+      "incompleteCasesBlocked": 480,
+      "digest": "aa660497880c018d12afe51a752c63f8df754acac88420ed3111c58be723f3b4",
+      "matched": true
+    },
+    {
+      "productId": "gid://shopify/Product/16182874374524",
+      "count": 120,
+      "minCents": 4999,
+      "maxCents": 7598,
+      "acceptedPriceCases": 480,
+      "incompleteCasesBlocked": 480,
+      "digest": "8919ce1dcbae52385a9e21902574db02a1b205bbc04943f6731527c9fdd42e2c",
+      "matched": true
+    },
+    {
+      "productId": "gid://shopify/Product/16182874505596",
+      "count": 120,
+      "minCents": 4999,
+      "maxCents": 7598,
+      "acceptedPriceCases": 480,
+      "incompleteCasesBlocked": 480,
+      "digest": "95d996c83b6c9bc2c43b58399719dc634b27781e8a433a2749077800e7d7d984",
+      "matched": true
+    },
+    {
+      "productId": "gid://shopify/Product/16182874603900",
+      "count": 120,
+      "minCents": 4999,
+      "maxCents": 7598,
+      "acceptedPriceCases": 480,
+      "incompleteCasesBlocked": 480,
+      "digest": "9ffe8290c1c0c2edd12dba0e1bd5c6265142bc58c071e760826fea5b23481108",
+      "matched": true
+    },
+    {
+      "productId": "gid://shopify/Product/16182874734972",
+      "count": 120,
+      "minCents": 4999,
+      "maxCents": 7598,
+      "acceptedPriceCases": 480,
+      "incompleteCasesBlocked": 480,
+      "digest": "1ac023b27982683f446cc6abb338a2559b33504676704fe90830ddcc2a38b00a",
+      "matched": true
+    },
+    {
+      "productId": "gid://shopify/Product/16182874866044",
+      "count": 120,
+      "minCents": 4999,
+      "maxCents": 7598,
+      "acceptedPriceCases": 480,
+      "incompleteCasesBlocked": 480,
+      "digest": "c0540c050221539467e1619973bf5305b87659c5eedc45fad216287be7bbb9cb",
+      "matched": true
+    },
+    {
+      "productId": "gid://shopify/Product/16182874997116",
+      "count": 120,
+      "minCents": 4999,
+      "maxCents": 7598,
+      "acceptedPriceCases": 480,
+      "incompleteCasesBlocked": 480,
+      "digest": "2bffafb105da8c277a04a7c82838b8bfe3ab16fe7eff77342d40f0c8007167aa",
+      "matched": true
+    },
+    {
+      "productId": "gid://shopify/Product/16182875062652",
+      "count": 120,
+      "minCents": 4999,
+      "maxCents": 7598,
+      "acceptedPriceCases": 480,
+      "incompleteCasesBlocked": 480,
+      "digest": "d95bf8781a47ced6f9a8fe3e295f550f939e78d4eaaa08c72eab742c8f3f1a32",
+      "matched": true
+    },
+    {
+      "productId": "gid://shopify/Product/16182875193724",
+      "count": 120,
+      "minCents": 4999,
+      "maxCents": 7598,
+      "acceptedPriceCases": 480,
+      "incompleteCasesBlocked": 480,
+      "digest": "80363bc22696bd0f5b17ee9a78af2bfaee409dd9cf3046b6be213883e794ef7f",
+      "matched": true
+    },
+    {
+      "productId": "gid://shopify/Product/16182875390332",
+      "count": 120,
+      "minCents": 4999,
+      "maxCents": 7598,
+      "acceptedPriceCases": 480,
+      "incompleteCasesBlocked": 480,
+      "digest": "161297ddcc97815c7ef63c9eadcd9363e00f9921dd873c67db32af8324872a40",
+      "matched": true
+    }
+  ]
+}

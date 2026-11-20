@@ -1,0 +1,206 @@
+{
+  "vorFotokorrektur": {
+    "browser": "157.0.8103.78",
+    "method": "Je eine normale Chrome-Bildanfrage über das Shopify-CDN in einem neuen anonymen Kontext. Gemessen wird der Bildabruf allein.",
+    "samples": [
+      {
+        "run": 1,
+        "name": "Nord",
+        "width": 952,
+        "decodedMs": 183,
+        "mime": "image/webp",
+        "encodedBytes": 18684
+      },
+      {
+        "run": 1,
+        "name": "Nord",
+        "width": 160,
+        "decodedMs": 140,
+        "mime": "image/avif",
+        "encodedBytes": 4530
+      },
+      {
+        "run": 1,
+        "name": "Süd",
+        "width": 952,
+        "decodedMs": 208,
+        "mime": "image/webp",
+        "encodedBytes": 18767
+      },
+      {
+        "run": 1,
+        "name": "Süd",
+        "width": 160,
+        "decodedMs": 618,
+        "mime": "image/avif",
+        "encodedBytes": 4607
+      },
+      {
+        "run": 2,
+        "name": "Nord",
+        "width": 160,
+        "decodedMs": 274,
+        "mime": "image/avif",
+        "encodedBytes": 4493
+      },
+      {
+        "run": 2,
+        "name": "Nord",
+        "width": 952,
+        "decodedMs": 270,
+        "mime": "image/webp",
+        "encodedBytes": 18684
+      },
+      {
+        "run": 2,
+        "name": "Süd",
+        "width": 160,
+        "decodedMs": 222,
+        "mime": "image/avif",
+        "encodedBytes": 4573
+      },
+      {
+        "run": 2,
+        "name": "Süd",
+        "width": 952,
+        "decodedMs": 228,
+        "mime": "image/webp",
+        "encodedBytes": 18749
+      },
+      {
+        "run": 3,
+        "name": "Nord",
+        "width": 952,
+        "decodedMs": 308,
+        "mime": "image/webp",
+        "encodedBytes": 18721
+      },
+      {
+        "run": 3,
+        "name": "Nord",
+        "width": 160,
+        "decodedMs": 300,
+        "mime": "image/avif",
+        "encodedBytes": 4493
+      },
+      {
+        "run": 3,
+        "name": "Süd",
+        "width": 952,
+        "decodedMs": 271,
+        "mime": "image/webp",
+        "encodedBytes": 18767
+      },
+      {
+        "run": 3,
+        "name": "Süd",
+        "width": 160,
+        "decodedMs": 254,
+        "mime": "image/avif",
+        "encodedBytes": 4573
+      }
+    ]
+  },
+  "nachFotokorrektur": {
+    "browser": "157.0.8103.78",
+    "method": "Je eine normale Chrome-Bildanfrage über das Shopify-CDN in einem neuen anonymen Kontext. Gemessen wird der Bildabruf allein.",
+    "samples": [
+      {
+        "run": 1,
+        "name": "Nord",
+        "width": 952,
+        "decodedMs": 615,
+        "mime": "image/webp",
+        "encodedBytes": 24685
+      },
+      {
+        "run": 1,
+        "name": "Nord",
+        "width": 160,
+        "decodedMs": 201,
+        "mime": "image/avif",
+        "encodedBytes": 5492
+      },
+      {
+        "run": 1,
+        "name": "Süd",
+        "width": 952,
+        "decodedMs": 690,
+        "mime": "image/webp",
+        "encodedBytes": 24732
+      },
+      {
+        "run": 1,
+        "name": "Süd",
+        "width": 160,
+        "decodedMs": 230,
+        "mime": "image/avif",
+        "encodedBytes": 5425
+      },
+      {
+        "run": 2,
+        "name": "Nord",
+        "width": 160,
+        "decodedMs": 246,
+        "mime": "image/avif",
+        "encodedBytes": 5455
+      },
+      {
+        "run": 2,
+        "name": "Nord",
+        "width": 952,
+        "decodedMs": 299,
+        "mime": "image/webp",
+        "encodedBytes": 24651
+      },
+      {
+        "run": 2,
+        "name": "Süd",
+        "width": 160,
+        "decodedMs": 234,
+        "mime": "image/avif",
+        "encodedBytes": 5425
+      },
+      {
+        "run": 2,
+        "name": "Süd",
+        "width": 952,
+        "decodedMs": 259,
+        "mime": "image/webp",
+        "encodedBytes": 24735
+      },
+      {
+        "run": 3,
+        "name": "Nord",
+        "width": 952,
+        "decodedMs": 635,
+        "mime": "image/webp",
+        "encodedBytes": 24688
+      },
+      {
+        "run": 3,
+        "name": "Nord",
+        "width": 160,
+        "decodedMs": 256,
+        "mime": "image/avif",
+        "encodedBytes": 5454
+      },
+      {
+        "run": 3,
+        "name": "Süd",
+        "width": 952,
+        "decodedMs": 312,
+        "mime": "image/webp",
+        "encodedBytes": 24698
+      },
+      {
+        "run": 3,
+        "name": "Süd",
+        "width": 160,
+        "decodedMs": 259,
+        "mime": "image/avif",
+        "encodedBytes": 5424
+      }
+    ]
+  }
+}

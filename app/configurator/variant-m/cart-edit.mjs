@@ -67,17 +67,22 @@ function cartObjects(objects,scale,acrylic){
 
 // Stellt Gestaltung, Ausführung, Menge und Fotos der Revision im Editor her. Passt der Produkt-/Profilstand nicht,
 // bleibt der Editor leer und der Kunde sieht den Hinweis (readDraft lehnt fremde Profilrevisionen ab).
-export async function installCartEdit(api, {request = window.parent?.GravuruMerchantRequest || fetch, storage, search = location.search} = {}) {
+export async function installCartEdit(api, {request = window.parent?.GravuruMerchantRequest || fetch, storage, search = location.search, required = false} = {}) {
   const params = cartEditParams(search);
-  if (!params || !api.config || !api.el?.import) return null;
+  if (!params || !api.config || !api.el?.import) {
+    if(required)throw Error('Die gewählte Warenkorbposition kann nicht geöffnet werden.');
+    return null;
+  }
   const say = message => {const node = api.r.querySelector('[data-ux-status]') || api.r.querySelector('.fk-order-status'); if (node) {node.textContent = message; node.style.removeProperty('display');}};
   try {
     const shopEntry=globalThis.window?.parent?.GravuruShopEntry;
-    const loaded = shopEntry?.cartRevision?.(params) ?? await loadCartRevision({request, storage:storage??sessionStorage, params});
+    const loaded = await (shopEntry?.cartRevision?.(params) ?? loadCartRevision({request, storage:storage??sessionStorage, params}));
+    if(required && (loaded.configuration?.id!==params.configId || loaded.configuration?.rev!==params.rev))
+      throw Error('Der geladene Stand gehört nicht zu dieser Warenkorbposition.');
     const endpoint = '/api/workshop/cart-configurations/' + params.configId + '/' + params.rev;
     if(loaded.editorKind&&loaded.editorKind!=='native')throw Error('Diese gespeicherte Gestaltung benötigt den Formeditor.');
     const blocking = loaded.hints.filter(h => !/bereits Revision/.test(h));
-    if (blocking.length) {say(blocking.join(' ')); return null;}
+    if (blocking.length) throw Error(blocking.join(' '));
     for (const photo of loaded.photos) {
       const file = await photoFile(request, endpoint, loaded.token, photo.uploadId, false), url = URL.createObjectURL(file);
       const entry = {file, url, editSourceUrl:url, width: photo.width, height: photo.height,...(photo.vectorLogo?{vectorLogo:photo.vectorLogo}:{})};
@@ -98,5 +103,5 @@ export async function installCartEdit(api, {request = window.parent?.GravuruMerc
     api.el.sync();
     say('Deine Gestaltung aus dem Warenkorb (Revision ' + params.rev + ') ist geladen.' + (context.cartLineId ? ' „Warenkorb aktualisieren“ ersetzt die bestehende Position.' : ' Die Warenkorbposition wurde nicht gefunden; die Gestaltung wird neu hinzugefügt.') + (loaded.hints.length ? ' ' + loaded.hints.join(' ') : ''));
     return context;
-  } catch (error) {say(error.message); return null;}
+  } catch (error) {say(error.message); if(required)throw error; return null;}
 }

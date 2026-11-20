@@ -13,6 +13,7 @@ import {workshopResources} from './catalog.mjs';
 import {nativeSpecimenConfig,steelPreviewSurface} from './specimen-product.mjs';
 import {nativeFamilyAcrylicConfig} from './family-acrylic-product.mjs';
 import {nativeSlateConfig} from './slate-product.mjs';
+import {slateAccessoryFits} from './slate-customer-rules.mjs';
 import {makeProductDocument} from './product-model.mjs';
 import {nativeContour} from './acrylic-artwork.mjs';
 import {processProfile,isProcessProfileId,processMirror} from './process-profiles.mjs';
@@ -256,7 +257,9 @@ export function familyProductConfig(f,s,revision,{previewOnly=false}={}){
  if(f.material.kind==='acrylic'){
   if(f.backing){const o=f.backing.offsetMm,bg={...sourceGeometry,width:g.width+2*o,height:g.height+2*o,cornerRadiusMm:sourceGeometry.backingCornerRadiusMm??offsetRadius(sourceGeometry,o),holes:[]};profile.backingPreview={...structuredClone(f.backing),geometry:{width:bg.width,height:bg.height,shape:'contour',outlinePath:nativeContour(bg).contours[0].d,holes:[]}};}
  }
- const fields=familyOptionFields(f,s);if(fields.length)profile.optionFields=fields;
+ if(f.material.kind==='slate'&&f.id.startsWith('schiefer-tafeln-'))profile.slateCatalogueForm=group.key;
+ const fields=familyOptionFields(f,s).filter(field=>f.material.kind!=='slate'||slateAccessoryFits(field.id,profile));
+ if(fields.length)profile.optionFields=fields;
  if(f.surfaces!==undefined)profile.surfaces=structuredClone(f.surfaces);
  const c={reviewOnly:true,basePriceCents:s.baseCents,extraMotifCents:0,logo:{enabled:false},photo:{enabled:false,mode:'upload-only',includedCount:f.photo?.includedCount??0,extraPriceCents:f.photo?.extraPriceCents??0},localResources:{scope:'local-review-only',fonts:{[font]:resources.fonts[font]},motifs:[]},profile};
  if(f.id.startsWith('schiefer-tafeln-')){c.photoDesignPricing=true;c.photo.enabled=s.photoDesignCents!==undefined;}

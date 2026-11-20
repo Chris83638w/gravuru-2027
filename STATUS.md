@@ -1,3 +1,27 @@
+## 20.11.2026 · Astra · Prio R15 auf 129 bestellbaren Artikeln
+
+88 aktive Artikel und 41 bereits veröffentlichte Direktlink-Klingelschilder öffnen den gemeinsamen Prio mit ihrer eigenen Produktrevision. 10.080 aktive und 4.920 Direktlink-Varianten erhielten ihre zuvor fehlende, einzeln zurückgelesene Kassenzuordnung. Zwei bezahlte Shopify-Testaufträge erreichten die Werkstatt. Neue Funkklingel-Kundenbilder enthalten die Edelstahltextur. Bei den zwei Acrylartikeln funktioniert die Layoutprüfung bis zum persönlichen Kassenbild. Chris prüft die Optik und die getrennte Theme-Vorschau. [Produktlinks und Ausnahmen](docs/handoffs/2026-11-19-beta-267/tempo/live/prio/Pruefliste.md) · [Nachweise und Rückwege](docs/handoffs/2026-11-19-beta-267/tempo/live/prio/README.md)
+
+## 19.11.2026 · Astra · R15-Übergabe und Ring-Kassenprüfung live (#267)
+
+Die Testbestellungen #1033 und #1034 bestätigten vor und nach der letzten Auslieferung je zwei richtige Gestaltungen, Preise und Werkstattrevisionen. Der Warenkorb erreichte die sichtbaren persönlichen Bilder auf dem veröffentlichten R15 im Median in 5,57 s, vorher in 6,59 s. Die Zuordnung der 120 vorhandenen Variantenpreise behebt die Kassenablehnung dieses Ring-Artikels. Der aktuelle Produktionscode liegt auf `b36a8eef`. [Messungen, Fertigungsdateien und Bestellnachweis](docs/handoffs/2026-11-19-beta-267/tempo/live/abschluss/README.md)
+
+## 19.11.2026 · Astra · Prio-Konfi R15 im veröffentlichten Shop (#267)
+
+Die geprüfte Designkarte erschien im Datensparmodus in 8/8 Versuchen nach 26 ms bis 113 ms. Vorher blieb sie in 8/8 Versuchen mindestens drei Sekunden leer. Der Designwechsel sank von 977 auf 191 ms. Neue Ring-Entwürfe zeigen das gebundene Gerätefoto im persönlichen Kundenbild (24/24 Bildmerkmale je Gestaltung). Am PC übertrug das kleine Bild rund 78 % weniger Daten als das zugehörige Original. Bis zu allen sichtbaren Warenkorbbildern vergingen vorher 6,59 s und zuletzt 6,06 s. Alle 72 regulären Testpositionen erreichten Shopify. Vergrößern, Entfernen, die Kassenbilder und die Fertigung aus festen Revisionen sind geprüft. Für Änderungen an der Shopify-Übergabe stehen die Bestellansicht mit Werkstattübergabe und die gesonderte Freigabe aus. [Live-Messungen, Screenshots, verwendete Commits und Rückweg](docs/handoffs/2026-11-19-beta-267/tempo/live/README.md)
+
+## 19.11.2026 · Astra · Gemessene R15-Optimierung auf der geschützten Beta (#267)
+
+Der freigegebene Prüfstand verwendet `f7504182`. Bei zwölf Ring-Gestaltungen je Stand sank die Zeit vom Öffnen zur ersten sichtbaren Karte von 4,19 auf 2,78 s, der Designwechsel von 366 auf 229 ms. Bis zu den sichtbaren persönlichen Warenkorbbildern vergingen im Median 4,15 → 3,81 s. Der mobile Teil stieg von 4,15 auf 5,22 s. Die vier separat prüfbaren Anwendungscommits betreffen den vorhandenen Editor und die Übergabe seines gespeicherten Bilds. [Messprotokoll, Regression und historische Quellen](docs/handoffs/2026-11-19-beta-267/tempo/README.md) · [Geschützte Beta](https://konfi-beta.gravuru-designwerkstatt.de/)
+
+## 19.11.2026 · Astra · Vorheriger Referenzstand der geschützten Beta (#267)
+
+Bei dieser früheren Abnahme lieferte die getrennte Beta Commit `347aa63f` aus. Zwölf Ring-Gestaltungen auf PC und Handybreite bestätigen jeweils das Gerätefoto, den richtigen Gravurtext und die zum Design gehörende Zierlinie. Die Einzelposition lässt sich entfernen. 337 Projektprüfungen und sechs zusätzliche Gravurprüfungen bestanden. Das Fünf-Sekunden-Ziel, das externe Shopify-Testshop-Szenario am neuen Stand und die unabhängige Gegenüberstellung mit Grok sind offen. Claude erhält denselben Freeze zur Gegenprüfung. [Geschützte Abnahme und Originalbilder](docs/handoffs/2026-11-19-beta-267/GESCHUETZTE-BETA.md)
+
+## 19.11.2026 · Astra · Persönliche Vorschau im R15-Warenkorb (#267)
+
+Im gemeinsamen Entwurfs-PR #268 gibt es den Ring-Vorschauweg mit zwei unterschiedlich personalisierten Positionen derselben Variante zu insgesamt 99,98 €. Die isolierte Prüfung bestätigt auf PC und Handybreite beide Bilder bis zur tatsächlichen Anzeige, eindeutige Revisionen, die lesbare Vergrößerung und das Entfernen einer einzelnen Position. Am zugrunde liegenden Stand bestanden 317 Abnahmetests einschließlich einer bytegleichen Nachfertigung des Kontur-PDFs. [Screenshots, Messwerte und Quellen](docs/handoffs/2026-11-19-beta-267/WARENKORB-VORSCHAU.md) · [Paritätsmatrix](docs/handoffs/2026-11-19-beta-267/README.md)
+
 ## 18.11.2026 · Astra (Codex) · Chris korrigiert die zusätzliche Randfallmeldung
 
 Chris: „sowas gibt es nicht“ und „Die Standardschriftarten habe ich eben bekannt gegeben und zusätzlich mögliche vom Design.“ Maßstab bleibt exakt seine Standardgruppe plus die Schriften des geöffneten Designs. Die in 452e4ba ergänzte Meldungsverzweigung für einen hypothetischen leeren Schriftbestand ist zurückgenommen; tatsächliche Ladefehler werden weiterhin behandelt. Keine neue Schriftregel, keine Daten-/Liveänderung. Backend-Pflege ausdrücklich als nächster Schritt beauftragt; direkte Abstimmung mit Claude läuft.

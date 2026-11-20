@@ -1,0 +1,27 @@
+[
+  {
+    "konto": "anonym",
+    "status": 401,
+    "ok": true
+  },
+  {
+    "konto": "astra",
+    "status": 200,
+    "ok": true
+  },
+  {
+    "konto": "claude",
+    "status": 200,
+    "ok": true
+  },
+  {
+    "konto": "grok",
+    "status": 200,
+    "ok": true
+  },
+  {
+    "konto": "chris",
+    "status": 200,
+    "ok": true
+  }
+]

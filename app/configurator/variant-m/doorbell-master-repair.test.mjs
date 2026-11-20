@@ -7,6 +7,22 @@ import {fitText} from './workflow-model.mjs';
 import {designArea,designAreaPreview} from './design-area.mjs';
 import {studioSvg} from '../../platform/sources/app/shared/models/studio-svg.mjs';
 import {DOORBELL_STEEL_SURFACE} from '../../platform/sources/app/shared/models/doorbell-material-preview.mjs';
+import {embedSurface} from './material-surface.mjs';
+
+test('the personal doorbell picture embeds the displayed steel surface only on cart export',async t=>{
+ const calls=[],data='data:image/webp;base64,UklGRg==';
+ t.mock.method(globalThis,'fetch',async url=>{calls.push(url);return new Response(new Blob(['RIFF'],{type:'image/webp'}));});
+ const reader=Object.getOwnPropertyDescriptor(globalThis,'FileReader');
+ Object.defineProperty(globalThis,'FileReader',{configurable:true,value:class {readAsDataURL(){this.result=data;this.onload();}}});
+ t.after(()=>{if(reader)Object.defineProperty(globalThis,'FileReader',reader);else delete globalThis.FileReader;});
+ const svg='<svg><g data-doorbell-steel="textured"><image href="'+DOORBELL_STEEL_SURFACE+'"/></g><path id="glass"/></svg>';
+ assert.equal(await embedSurface(svg),svg);
+ const custom=svg.replace(DOORBELL_STEEL_SURFACE,'https://example.test/other.webp');
+ assert.equal(await embedSurface(custom,undefined,undefined,[],true),custom);
+ assert.deepEqual(calls,[]);
+ assert.equal(await embedSurface(svg,undefined,undefined,[],true),svg.replace(DOORBELL_STEEL_SURFACE,data));
+ assert.deepEqual(calls,[DOORBELL_STEEL_SURFACE]);
+});
 import {customerRightsTemplate} from './customer-rights.mjs';
 import {restoreElementRights} from './element-rights.mjs';
 import {clampToAcrylic,installEdgeClamp} from './edge-clamp.mjs';

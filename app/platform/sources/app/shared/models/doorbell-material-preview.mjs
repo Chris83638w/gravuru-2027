@@ -1,7 +1,8 @@
 import {escapeXml as esc} from './design-content.mjs';
+import {DOORBELL_STEEL_SURFACE} from './doorbell-image-paths.mjs';
 
 // Existing empty AOSU preview surface from MATERIALREFERENZEN.md, named by its SHA-256 prefix.
-export const DOORBELL_STEEL_SURFACE='/_runtime/images/gravuru-edelstahl-feine-maserung-vorschau.50e74d27e1f6f494.webp';
+export {DOORBELL_STEEL_SURFACE};
 export function doorbellMaterialPreview(profile,acrylic,id){
  const {width:w,height:h}=profile.geometry,a=acrylic;
  const source=profile.admin?.steelImageUrl||DOORBELL_STEEL_SURFACE;

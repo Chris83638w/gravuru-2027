@@ -100,6 +100,15 @@ test('native per-render SVG identifiers and their internal references are canoni
   assert.notEqual(layoutFingerprint(state,[['other',svg('studio-customer-90-element-0')]],profile),before);
 });
 
+test('an acrylic rear-engraving fragment keeps its identity when the outer plate is rendered again',()=>{
+  const state={designId:'D10',objects:[]},profile={id:'acrylic',geometry:{width:120,height:80}};
+  const fragment=(n,path,marked=true)=>`<g ${marked?'data-preview-rear-engraving="true" ':''}filter="url(#studio-customer-${n}-rear-frost)"><path d="${path}"/></g>`;
+  const id=svg=>layoutFingerprint(state,[['motiv-1',svg]],profile);
+  assert.equal(id(fragment(35,'M0 0L1 1')),id(fragment(40,'M0 0L1 1')));
+  assert.notEqual(id(fragment(35,'M0 0L1 1')),id(fragment(40,'M0 0L2 1')));
+  assert.notEqual(id(fragment(35,'M0 0L1 1',false)),id(fragment(40,'M0 0L1 1',false)));
+});
+
 test('transparent rectangle intersections are removed only for complete disjoint ink; boundary stays',()=>{
   const a={id:'a',data:Uint8Array.of(1,0,0)},b={id:'b',data:Uint8Array.of(0,0,1)},boundary={code:'boundary',ids:['a']};
   assert.equal(masksTouch(a.data,b.data),false);

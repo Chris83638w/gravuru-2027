@@ -1,0 +1,545 @@
+{
+  "browserVersion": "157.0.8103.78",
+  "rows": [
+    {
+      "run": 1,
+      "device": "PC",
+      "version": "nativ",
+      "cache": "kalt",
+      "time": {
+        "entry": 981,
+        "firstTwo": 213.40000009536743,
+        "first": 302.89999997615814,
+        "second": 285.7000000476837,
+        "text": 328.60000002384186
+      },
+      "realAtFirst": 3,
+      "cards": 16
+    },
+    {
+      "run": 1,
+      "device": "PC",
+      "version": "nativ",
+      "cache": "warm",
+      "time": {
+        "entry": 939.8999999761581,
+        "firstTwo": 125.30000007152557,
+        "first": 314.7000000476837,
+        "second": 296.59999990463257,
+        "text": 287.89999997615814
+      },
+      "realAtFirst": 3,
+      "cards": 16
+    },
+    {
+      "run": 1,
+      "device": "PC",
+      "version": "r15-vorher",
+      "cache": "kalt",
+      "time": {
+        "entry": 1015.7000000476837,
+        "firstTwo": 102.09999990463257,
+        "first": 370,
+        "second": 304.2999999523163,
+        "text": 220.10000002384186
+      },
+      "realAtFirst": 3,
+      "cards": 16
+    },
+    {
+      "run": 1,
+      "device": "PC",
+      "version": "r15-vorher",
+      "cache": "warm",
+      "time": {
+        "entry": 1100.5999999046326,
+        "firstTwo": 29.300000071525574,
+        "first": 361.10000002384186,
+        "second": 319.2000000476837,
+        "text": 235.70000004768372
+      },
+      "realAtFirst": 3,
+      "cards": 16
+    },
+    {
+      "run": 1,
+      "device": "PC",
+      "version": "beta",
+      "cache": "kalt",
+      "time": {
+        "entry": 897.6000000238419,
+        "firstTwo": 23.799999952316284,
+        "first": 206.80000007152557,
+        "second": 145.5,
+        "text": 119.20000004768372
+      },
+      "realAtFirst": 3,
+      "cards": 16
+    },
+    {
+      "run": 1,
+      "device": "PC",
+      "version": "beta",
+      "cache": "warm",
+      "time": {
+        "entry": 798.1000000238419,
+        "firstTwo": 20.799999952316284,
+        "first": 163.40000009536743,
+        "second": 147.29999995231628,
+        "text": 117
+      },
+      "realAtFirst": 3,
+      "cards": 16
+    },
+    {
+      "run": 1,
+      "device": "Mobil",
+      "version": "nativ",
+      "cache": "kalt",
+      "time": {
+        "entry": 7348.700000047684,
+        "firstTwo": 369.60000002384186,
+        "first": 1806.3999999761581,
+        "second": 3390.1999999284744,
+        "text": 2303.0999999046326
+      },
+      "realAtFirst": 2,
+      "cards": 16
+    },
+    {
+      "run": 1,
+      "device": "Mobil",
+      "version": "nativ",
+      "cache": "warm",
+      "time": {
+        "entry": 5619,
+        "firstTwo": 241.10000002384186,
+        "first": 3173.6999999284744,
+        "second": 2172.600000023842,
+        "text": 2838.600000023842
+      },
+      "realAtFirst": 2,
+      "cards": 16
+    },
+    {
+      "run": 1,
+      "device": "Mobil",
+      "version": "r15-vorher",
+      "cache": "kalt",
+      "time": {
+        "entry": 6831.700000047684,
+        "firstTwo": 430,
+        "first": 2153.7000000476837,
+        "second": 1847.5,
+        "text": 2586.8000000715256
+      },
+      "realAtFirst": 2,
+      "cards": 16
+    },
+    {
+      "run": 1,
+      "device": "Mobil",
+      "version": "r15-vorher",
+      "cache": "warm",
+      "time": {
+        "entry": 7473.300000071526,
+        "firstTwo": 900.2000000476837,
+        "first": 2488.2999999523163,
+        "second": 2451.3000000715256,
+        "text": 1615.7999999523163
+      },
+      "realAtFirst": 2,
+      "cards": 16
+    },
+    {
+      "run": 1,
+      "device": "Mobil",
+      "version": "beta",
+      "cache": "kalt",
+      "time": {
+        "entry": 4027.7999999523163,
+        "firstTwo": 462.10000002384186,
+        "first": 1016.6000000238419,
+        "second": 908.2000000476837,
+        "text": 1115
+      },
+      "realAtFirst": 2,
+      "cards": 16
+    },
+    {
+      "run": 1,
+      "device": "Mobil",
+      "version": "beta",
+      "cache": "warm",
+      "time": {
+        "entry": 4206.200000047684,
+        "firstTwo": 443.5,
+        "first": 1190,
+        "second": 1032.3999999761581,
+        "text": 904.7999999523163
+      },
+      "realAtFirst": 2,
+      "cards": 16
+    },
+    {
+      "run": 2,
+      "device": "PC",
+      "version": "r15-vorher",
+      "cache": "kalt",
+      "time": {
+        "entry": 1115.5,
+        "firstTwo": 36.799999952316284,
+        "first": 336.2999999523163,
+        "second": 318.10000002384186,
+        "text": 246.10000002384186
+      },
+      "realAtFirst": 3,
+      "cards": 16
+    },
+    {
+      "run": 2,
+      "device": "PC",
+      "version": "r15-vorher",
+      "cache": "warm",
+      "time": {
+        "entry": 1070.9000000953674,
+        "firstTwo": 34.89999997615814,
+        "first": 333.89999997615814,
+        "second": 308.89999997615814,
+        "text": 196.5
+      },
+      "realAtFirst": 3,
+      "cards": 16
+    },
+    {
+      "run": 2,
+      "device": "PC",
+      "version": "beta",
+      "cache": "kalt",
+      "time": {
+        "entry": 814.4000000953674,
+        "firstTwo": 24.699999928474426,
+        "first": 183.29999995231628,
+        "second": 141.70000004768372,
+        "text": 135.40000009536743
+      },
+      "realAtFirst": 3,
+      "cards": 16
+    },
+    {
+      "run": 2,
+      "device": "PC",
+      "version": "beta",
+      "cache": "warm",
+      "time": {
+        "entry": 906.3999999761581,
+        "firstTwo": 21.899999976158142,
+        "first": 169.69999992847443,
+        "second": 172.89999997615814,
+        "text": 121.5
+      },
+      "realAtFirst": 3,
+      "cards": 16
+    },
+    {
+      "run": 2,
+      "device": "PC",
+      "version": "nativ",
+      "cache": "kalt",
+      "time": {
+        "entry": 935.3999999761581,
+        "firstTwo": 130.5,
+        "first": 314.39999997615814,
+        "second": 318.2999999523163,
+        "text": 334.39999997615814
+      },
+      "realAtFirst": 3,
+      "cards": 16
+    },
+    {
+      "run": 2,
+      "device": "PC",
+      "version": "nativ",
+      "cache": "warm",
+      "time": {
+        "entry": 914,
+        "firstTwo": 117.29999995231628,
+        "first": 348.7999999523163,
+        "second": 296.7000000476837,
+        "text": 278.8000000715256
+      },
+      "realAtFirst": 3,
+      "cards": 16
+    },
+    {
+      "run": 2,
+      "device": "Mobil",
+      "version": "r15-vorher",
+      "cache": "kalt",
+      "time": {
+        "entry": 7687.199999928474,
+        "firstTwo": 1363.4000000953674,
+        "first": 2251.399999976158,
+        "second": 1835.6000000238419,
+        "text": 1645.9000000953674
+      },
+      "realAtFirst": 2,
+      "cards": 16
+    },
+    {
+      "run": 2,
+      "device": "Mobil",
+      "version": "r15-vorher",
+      "cache": "warm",
+      "time": {
+        "entry": 7734,
+        "firstTwo": 532.0999999046326,
+        "first": 2099.7999999523163,
+        "second": 2129.9000000953674,
+        "text": 3107.6999999284744
+      },
+      "realAtFirst": 2,
+      "cards": 16
+    },
+    {
+      "run": 2,
+      "device": "Mobil",
+      "version": "beta",
+      "cache": "kalt",
+      "time": {
+        "entry": 5328.400000095367,
+        "firstTwo": 448.09999990463257,
+        "first": 1451.6000000238419,
+        "second": 1524.7999999523163,
+        "text": 1097.6000000238419
+      },
+      "realAtFirst": 2,
+      "cards": 16
+    },
+    {
+      "run": 2,
+      "device": "Mobil",
+      "version": "beta",
+      "cache": "warm",
+      "time": {
+        "entry": 4876.700000047684,
+        "firstTwo": 457.1999999284744,
+        "first": 1685.3999999761581,
+        "second": 884,
+        "text": 911.1000000238419
+      },
+      "realAtFirst": 2,
+      "cards": 16
+    },
+    {
+      "run": 2,
+      "device": "Mobil",
+      "version": "nativ",
+      "cache": "kalt",
+      "time": {
+        "entry": 6090.700000047684,
+        "firstTwo": 354.1999999284744,
+        "first": 2872.5,
+        "second": 1744.1000000238419,
+        "text": 2463.7999999523163
+      },
+      "realAtFirst": 2,
+      "cards": 16
+    },
+    {
+      "run": 2,
+      "device": "Mobil",
+      "version": "nativ",
+      "cache": "warm",
+      "time": {
+        "entry": 6572.200000047684,
+        "firstTwo": 336.89999997615814,
+        "first": 2159.899999976158,
+        "second": 1746.7999999523163,
+        "text": 1973
+      },
+      "realAtFirst": 2,
+      "cards": 16
+    },
+    {
+      "run": 3,
+      "device": "PC",
+      "version": "beta",
+      "cache": "kalt",
+      "time": {
+        "entry": 836.8999999761581,
+        "firstTwo": 28.600000023841858,
+        "first": 172.20000004768372,
+        "second": 140.29999995231628,
+        "text": 114.30000007152557
+      },
+      "realAtFirst": 3,
+      "cards": 16
+    },
+    {
+      "run": 3,
+      "device": "PC",
+      "version": "beta",
+      "cache": "warm",
+      "time": {
+        "entry": 837.1999999284744,
+        "firstTwo": 24,
+        "first": 168.80000007152557,
+        "second": 148.70000004768372,
+        "text": 120.89999997615814
+      },
+      "realAtFirst": 3,
+      "cards": 16
+    },
+    {
+      "run": 3,
+      "device": "PC",
+      "version": "nativ",
+      "cache": "kalt",
+      "time": {
+        "entry": 843.2000000476837,
+        "firstTwo": 120.20000004768372,
+        "first": 307.89999997615814,
+        "second": 288.7999999523163,
+        "text": 284.6999999284744
+      },
+      "realAtFirst": 3,
+      "cards": 16
+    },
+    {
+      "run": 3,
+      "device": "PC",
+      "version": "nativ",
+      "cache": "warm",
+      "time": {
+        "entry": 962.8999999761581,
+        "firstTwo": 111.69999992847443,
+        "first": 337.7999999523163,
+        "second": 281.10000002384186,
+        "text": 279.2000000476837
+      },
+      "realAtFirst": 3,
+      "cards": 16
+    },
+    {
+      "run": 3,
+      "device": "PC",
+      "version": "r15-vorher",
+      "cache": "kalt",
+      "time": {
+        "entry": 1045.6000000238419,
+        "firstTwo": 33.89999997615814,
+        "first": 341.3000000715256,
+        "second": 305.3000000715256,
+        "text": 198.80000007152557
+      },
+      "realAtFirst": 3,
+      "cards": 16
+    },
+    {
+      "run": 3,
+      "device": "PC",
+      "version": "r15-vorher",
+      "cache": "warm",
+      "time": {
+        "entry": 1035.8000000715256,
+        "firstTwo": 34.700000047683716,
+        "first": 318.1999999284744,
+        "second": 334,
+        "text": 296.7999999523163
+      },
+      "realAtFirst": 3,
+      "cards": 16
+    },
+    {
+      "run": 3,
+      "device": "Mobil",
+      "version": "beta",
+      "cache": "kalt",
+      "time": {
+        "entry": 5399.300000071526,
+        "firstTwo": 316.5,
+        "first": 1066.9000000953674,
+        "second": 1073.5,
+        "text": 972.7000000476837
+      },
+      "realAtFirst": 2,
+      "cards": 16
+    },
+    {
+      "run": 3,
+      "device": "Mobil",
+      "version": "beta",
+      "cache": "warm",
+      "time": {
+        "entry": 5402.199999928474,
+        "firstTwo": 474.89999997615814,
+        "first": 1241.8999999761581,
+        "second": 1190,
+        "text": 2496.5
+      },
+      "realAtFirst": 2,
+      "cards": 16
+    },
+    {
+      "run": 3,
+      "device": "Mobil",
+      "version": "nativ",
+      "cache": "kalt",
+      "time": {
+        "entry": 5946,
+        "firstTwo": 410.2000000476837,
+        "first": 2133.7999999523163,
+        "second": 3176.8000000715256,
+        "text": 2271
+      },
+      "realAtFirst": 2,
+      "cards": 16
+    },
+    {
+      "run": 3,
+      "device": "Mobil",
+      "version": "nativ",
+      "cache": "warm",
+      "time": {
+        "entry": 8212.299999952316,
+        "firstTwo": 360.2000000476837,
+        "first": 2771.7999999523163,
+        "second": 3702,
+        "text": 2164.5
+      },
+      "realAtFirst": 2,
+      "cards": 16
+    },
+    {
+      "run": 3,
+      "device": "Mobil",
+      "version": "r15-vorher",
+      "cache": "kalt",
+      "time": {
+        "entry": 5815.600000023842,
+        "firstTwo": 575.5,
+        "first": 2158.5,
+        "second": 1716,
+        "text": 1872.7999999523163
+      },
+      "realAtFirst": 2,
+      "cards": 16
+    },
+    {
+      "run": 3,
+      "device": "Mobil",
+      "version": "r15-vorher",
+      "cache": "warm",
+      "time": {
+        "entry": 7685.299999952316,
+        "firstTwo": 502,
+        "first": 2543.5,
+        "second": 1807.7000000476837,
+        "text": 2412.8000000715256
+      },
+      "realAtFirst": 2,
+      "cards": 16
+    }
+  ]
+}

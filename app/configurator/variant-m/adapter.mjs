@@ -42,45 +42,87 @@ export function installUniversal(configInput) {
   let options = {}, quantity = 1, el, renderId = 0;
   const photos = new Map(); // File objects stay in this page. Never localStorage, URL, draft or Git.
   const thumbnails=new WeakMap();
-  const current = () => designFromState(config, el.state);
+  const current = () => {
+    const values=el.state.mOptions||{};
+    return designFromState(config,el.state,values,profile('front',values));
+  };
   // K14 / Ü15.1: gewählte Seite (`el.state.uxSurface`, Standard vorn); von hinten sind die Bohrlöcher gespiegelt.
   const activeSurface = () => el?.state?.uxSurface === 'back' ? 'back' : 'front';
-  // A family profile projects the whole catalogue. Its immutable templates only
-  // change with the physical options, never while the customer edits text.
-  let familyProfileKey=null,familyProfile=null;
-  const profile = (surface = activeSurface()) => {
-    const key=dynamicProfiles?JSON.stringify(options):null;
-    if(dynamicProfiles&&key!==familyProfileKey){familyProfile=selectedProfile(config,options);familyProfileKey=key;}
-    const sp=dynamicProfiles?familyProfile:selectedProfile(config,options);
+  // The physical options select the immutable template set. Doorbell glyphs
+  // and preview assets load separately into the editor's resource maps.
+  let projectionKey=null,projectedProfile=null;
+  const profile = (surface = activeSurface(), values = options) => {
+    const key=dynamicFormats?JSON.stringify(values):null;
+    if(dynamicFormats&&key!==projectionKey){projectedProfile=selectedProfile(config,values);projectionKey=key;}
+    const sp=dynamicFormats?projectedProfile:selectedProfile(config,values);
     return surface==='back'?{...sp,geometry:surfaceGeometry(sp.geometry,'back')}:sp;
   };
   const motifs = () => customerMotifs(config, el.motifs, el.catalog);
   const svg = (design, {guides=false, selected='', handles=false, keepout=false, surface='front', screen=false, bare=false} = {}) => {
     const visible={...design,textOnTop:true,objects:design.objects.filter(o=>!o.uxHidden&&objectSurface(o)===surface)};
-    let result=surfacePreview(studioSvg(profile(surface), visible, el.fontData,{frameKey:options.frame,color:options.color,mountingKey:options.mounting,motifs:motifs(),media:[],guides,selected,handles,id:'customer-'+(++renderId)}),bare?'':screen?previewSurfaceUrl(config.materialSurface):config.materialSurface,profile(surface).geometry);
-    if(dynamicFamily&&screen&&!bare)result=plateDepthPreview(result,profile(surface).geometry,'customer-'+renderId);
-    if(config.reviewOnly){const doc=svgDocument(result);for(const o of visible.objects.filter(o=>o.type==='photoSlot'&&!o.uxUploadId)){const group=doc.querySelector('[data-object="'+CSS.escape(o.id)+'"]');if(group){for(const rect of group.querySelectorAll('rect:not([fill="transparent"])')){rect.setAttribute('fill','none');rect.setAttribute('stroke-dasharray','2 2');}for(const text of group.querySelectorAll('text'))text.setAttribute('fill',processing.ink);}}result=doc.documentElement.outerHTML;}
-    if(el.uxObjectSVG){const doc=svgDocument(result);for(const o of visible.objects){const replacement=el.uxObjectSVG(o);if(replacement!==undefined){const group=doc.querySelector('[data-object="'+CSS.escape(o.id)+'"]');if(group)group.outerHTML=replacement;}}result=doc.documentElement.outerHTML;}
+    const shownProfile=profile(surface);
+    let result=surfacePreview(studioSvg(shownProfile, visible, el.fontData,{frameKey:options.frame,color:options.color,mountingKey:options.mounting,motifs:motifs(),media:[],guides,selected,handles,id:'customer-'+(++renderId)}),bare?'':screen?previewSurfaceUrl(config.materialSurface):config.materialSurface,shownProfile.geometry);
+    if(dynamicFamily&&screen&&!bare)result=plateDepthPreview(result,shownProfile.geometry,'customer-'+renderId);
+    const doc=(config.reviewOnly || el.uxObjectSVG || !bare) ? svgDocument(result) : null;
+    if(config.reviewOnly){
+      for(const object of visible.objects.filter(o=>o.type==='photoSlot'&&!o.uxUploadId)){
+        const group=doc.querySelector('[data-object="'+CSS.escape(object.id)+'"]');
+        if(!group)continue;
+        for(const rect of group.querySelectorAll('rect:not([fill="transparent"])')){
+          rect.setAttribute('fill','none');
+          rect.setAttribute('stroke-dasharray','2 2');
+        }
+        for(const text of group.querySelectorAll('text'))text.setAttribute('fill',processing.ink);
+      }
+    }
+    if(el.uxObjectSVG){
+      for(const object of visible.objects){
+        const replacement=el.uxObjectSVG(object);
+        if(replacement===undefined)continue;
+        const group=doc.querySelector('[data-object="'+CSS.escape(object.id)+'"]');
+        if(group)group.outerHTML=replacement;
+      }
+    }
     // Clip artwork to the real plate for every universal shape; external edit handles remain outside.
     // This is visual containment only. The shared placement and server validation still reject overflow.
-    if(!bare){const doc=svgDocument(result),root=doc.documentElement,clipId='customer-artwork-'+renderId,ns='http://www.w3.org/2000/svg';
-      const acrylic=dynamicDoorbell?doorbellTextSurface(profile(surface)):null;
-      const outline=acrylic?'<rect x="'+acrylic.x+'" y="'+acrylic.y+'" width="'+acrylic.width+'" height="'+acrylic.height+'"/>':plateClipMarkup(profile(surface).geometry);
+    if(!bare){const root=doc.documentElement,clipId='customer-artwork-'+renderId,ns='http://www.w3.org/2000/svg';
+      const acrylic=dynamicDoorbell?doorbellTextSurface(shownProfile):null;
+      const outline=acrylic?'<rect x="'+acrylic.x+'" y="'+acrylic.y+'" width="'+acrylic.width+'" height="'+acrylic.height+'"/>':plateClipMarkup(shownProfile.geometry);
       const defs=doc.createElementNS(ns,'defs');defs.innerHTML='<clipPath id="'+clipId+'">'+outline+'</clipPath>';root.prepend(defs);
-      for(const group of [...root.querySelectorAll('[data-object]')]){const wrapper=doc.createElementNS(ns,'g');wrapper.setAttribute('clip-path','url(#'+clipId+')');group.before(wrapper);wrapper.append(group);}result=root.outerHTML;
+      for(const group of [...root.querySelectorAll('[data-object]')]){const wrapper=doc.createElementNS(ns,'g');wrapper.setAttribute('clip-path','url(#'+clipId+')');group.before(wrapper);wrapper.append(group);}
     }
+    if(doc)result=doc.documentElement.outerHTML;
     // Design boundary and drill-hole zones are preview layers only (keepout flag = editor preview); el.svg() for the order carries neither.
     // Rote Schutzringe um die Bohrlöcher zeigt der Kundeneditor nicht mehr (Chris 20.10.2026), und seit 22./23.10.2026
     // auch keinen Hinweis zu Texten nahe an Löchern (nur noch mechanische Prüfung). Schrauben/Abstandshalter
     // erscheinen, wenn die Befestigung sie enthält.
-    return scenePreview(designAreaPreview(keepoutPreview(screwPreview(spacerPreview(result,profile(surface)),profile(surface)),profile(surface),{show:false,emphasis:guides}),config,profile(surface),{show:keepout}),config.sceneBackground);
+    return scenePreview(designAreaPreview(keepoutPreview(screwPreview(spacerPreview(result,shownProfile),shownProfile),shownProfile,{show:false,emphasis:guides}),config,shownProfile,{show:keepout}),config.sceneBackground);
   };
   const locked = o => !!o?.uxLocked;
 
   // Leistung (Fehler 20.10.2026): Die Altgalerie ruft thumb() bei jedem sync für jede Karte auf –
   // beim Ziehen also je Fingerbewegung. Vorlagen ändern sich dabei nicht: Ergebnis zwischenspeichern.
-  const thumbCache=new Map();let familyThumbOptions=null;
-  window.Funkklingel.thumb = (element, d) => { el = element; if(!el.isConnected||!el.uxLayoutReady)return pendingThumbnail; const design=(dynamicFormats?profile().designs:p.designs).find(x => x.id === d.id) || d; if(dynamicDoorbell&&!designResourcesReady(design,el.fontData,el.motifs))return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 120"><text x="120" y="65" text-anchor="middle" font-size="12" fill="#526b5d">Design wird geladen …</text></svg>'; const optionKey=JSON.stringify(options);if(dynamicProfiles&&familyThumbOptions!==optionKey){thumbCache.clear();familyThumbOptions=optionKey;}const key=JSON.stringify([options,design]); let markup=thumbCache.get(key); if(markup===undefined){markup=svg(design,{screen:true});if(!dynamicFamily&&thumbCache.size>64)thumbCache.clear();thumbCache.set(key,markup);} return markup; };
+  const thumbCache=new Map();let familyThumbOptions=null,thumbRenderer;
+  function originalThumbnail(design) {
+    const optionKey=JSON.stringify(options);
+    if(thumbRenderer!==el.uxObjectSVG || dynamicProfiles&&familyThumbOptions!==optionKey)thumbCache.clear();
+    familyThumbOptions=optionKey;thumbRenderer=el.uxObjectSVG;
+    const key=JSON.stringify([options,design]);
+    let markup=thumbCache.get(key);
+    if(markup===undefined){
+      markup=svg(design,{screen:true});
+      if(!dynamicFamily&&thumbCache.size>64)thumbCache.clear();
+      thumbCache.set(key,markup);
+    }
+    return markup;
+  }
+  window.Funkklingel.thumb = (element,d) => {
+    el=element;
+    if(!el.isConnected||!el.uxLayoutReady)return pendingThumbnail;
+    const design=(dynamicFormats?profile().designs:p.designs).find(x=>x.id===d.id)||d;
+    if(dynamicDoorbell&&!designResourcesReady(design,el.fontData,el.motifs))return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 120"><text x="120" y="65" text-anchor="middle" font-size="12" fill="#526b5d">Design wird geladen …</text></svg>';
+    return originalThumbnail(design);
+  };
   window.Funkklingel.prepare = element => {
     el = element; prepareNativeShellState(el,profile());
     const {width, height, shape, cornerRadiusMm=0} = profile().geometry;
@@ -102,15 +144,15 @@ export function installUniversal(configInput) {
       const refs=cacheable?[this.uxObjectSVG,...design.objects.map(o=>o.type==='text'?this.fontData[o.font]:this.motifs[o.motif])]:null;
       const key=cacheable?JSON.stringify([design,options,preview,guides,!!this.$('[data-setting=guides]')?.checked,this.state.selected,activeSurface()]):null;
       if(cacheable&&bodyCache?.key===key&&refs.every((r,i)=>r===bodyCache.refs[i]))return bodyCache.body;
-      const doc = svgDocument(svg(current(), {guides:preview && guides && !!this.$('[data-setting=guides]')?.checked,selected:preview?this.state.selected:'',handles:preview,keepout:preview,surface:preview?activeSurface():'front',screen:preview}));
-      if(preview){const design=current();decorateEmptyPhotoSlots(doc,design.objects,processing.ink,profile().material.color,config.localResources?.photoPlaceholders||[],design.id,config.localResources?.photoExamples||[],config.photo.hints||[],{blendMode:profile().material.kind==='slate'?'lighten':undefined,grayscale:profile().material.kind==='slate'});for(const o of design.objects.filter(o=>o.type==='motif'&&o.locked===true&&o.customerEditable===false)){const g=doc.querySelector('[data-object="'+CSS.escape(o.id)+'"]');if(g)g.style.pointerEvents='none';}}
+      const doc = svgDocument(svg(design, {guides:preview && guides && !!this.$('[data-setting=guides]')?.checked,selected:preview?this.state.selected:'',handles:preview,keepout:preview,surface:preview?activeSurface():'front',screen:preview}));
+      if(preview){decorateEmptyPhotoSlots(doc,design.objects,processing.ink,profile().material.color,config.localResources?.photoPlaceholders||[],design.id,config.localResources?.photoExamples||[],config.photo.hints||[],{blendMode:profile().material.kind==='slate'?'lighten':undefined,grayscale:profile().material.kind==='slate'});for(const o of design.objects.filter(o=>o.type==='motif'&&o.locked===true&&o.customerEditable===false)){const g=doc.querySelector('[data-object="'+CSS.escape(o.id)+'"]');if(g)g.style.pointerEvents='none';}}
       const body=doc.documentElement.innerHTML;
       bodyCache=cacheable?{key,refs,body}:null;
       return body;
     };
     el.svg = function() { return svg(current()); };
-    el.png = async function({type='image/png',quality}={}) {
-      let source=await embedSurface(this.svg(true),config.materialSurface);
+    el.png = async function({type='image/png',quality,cartPreview=false}={}) {
+      let source=await embedSurface(this.svg(true),config.materialSurface,dynamicDoorbell?profile().admin:undefined,config.localResources?.motifs,cartPreview && dynamicDoorbell);
       if(this.uxEmbedPreviewUploads)source=await this.uxEmbedPreviewUploads(source);
       const url = URL.createObjectURL(new Blob([source], {type:'image/svg+xml'}));
       try {
@@ -307,15 +349,17 @@ export function installUniversal(configInput) {
       if(dragging||!el.isConnected||!el.uxLayoutReady)return 0;
       const thumbnailKey=JSON.stringify(options)+'|'+(el.uxThumbnailSignature?.()||'');
       let budget=Number.isFinite(el.uxThumbnailBudget)?el.uxThumbnailBudget:Infinity,deferred=0;
+      // All cards in this synchronous pass belong to the same format and side.
+      const thumbnailProfile=dynamicFormats?profile():p;
       for(const card of r.querySelectorAll('[data-c-design]')){
-        const design=(dynamicFormats?profile().designs:p.designs).find(d=>d.id===card.dataset.cDesign);if(!design)continue;
+        const design=thumbnailProfile.designs.find(d=>d.id===card.dataset.cDesign);if(!design)continue;
         if(dynamicDoorbell&&!designResourcesReady(design,el.fontData,el.motifs))continue;
         let thumbnail=thumbnails.get(card);
         if(!thumbnail||thumbnail.key!==thumbnailKey){
           if(card.hidden||budget<=0||el.uxThumbnailDeferred?.(card)===true){if(!card.hidden&&budget<=0)deferred++;if(!thumbnail)continue;}
           else{budget--;const shown=el.uxThumbnailDesign?.(design)||design;
             // Chris 21.10.2026: Miniaturen zeigen das Musterfoto wie die Vorschau, nicht den Schriftzug „Dein Foto“.
-            let markup=svg(shown,{screen:true});try{if(shown.objects.some(o=>o.type==='photoSlot')){const doc=svgDocument(markup);decorateEmptyPhotoSlots(doc,shown.objects,processing.ink,profile().material.color,config.localResources?.photoPlaceholders||[],design.id,config.localResources?.photoExamples||[],shown.objects.filter(o=>o.type==='photoSlot').map(o=>({designId:design.id,slotId:o.id,enabled:false})),{blendMode:profile().material.kind==='slate'?'lighten':undefined,grayscale:profile().material.kind==='slate'});for(const g of doc.querySelectorAll('[data-ux-empty-photo-slot]')){g.removeAttribute('data-ux-empty-photo-slot');g.removeAttribute('role');g.removeAttribute('tabindex');g.removeAttribute('aria-label');g.style.removeProperty('cursor');}markup=doc.documentElement.outerHTML;}}catch{}
+            let markup=dynamicDoorbell && shown===design ? originalThumbnail(design) : svg(shown,{screen:true});try{if(shown.objects.some(o=>o.type==='photoSlot')){const doc=svgDocument(markup);decorateEmptyPhotoSlots(doc,shown.objects,processing.ink,profile().material.color,config.localResources?.photoPlaceholders||[],design.id,config.localResources?.photoExamples||[],shown.objects.filter(o=>o.type==='photoSlot').map(o=>({designId:design.id,slotId:o.id,enabled:false})),{blendMode:profile().material.kind==='slate'?'lighten':undefined,grayscale:profile().material.kind==='slate'});for(const g of doc.querySelectorAll('[data-ux-empty-photo-slot]')){g.removeAttribute('data-ux-empty-photo-slot');g.removeAttribute('role');g.removeAttribute('tabindex');g.removeAttribute('aria-label');g.style.removeProperty('cursor');}markup=doc.documentElement.outerHTML;}}catch{}
             thumbnail={key:thumbnailKey,markup};}
         }
         // The legacy sync replaces the SVG with its portrait doorbell preview.
@@ -346,7 +390,7 @@ export function installUniversal(configInput) {
         card.hidden=!visible.has(card.dataset.cDesign);const note=card.querySelector('small'),review=familyDesignReviewNote(config,options,card.dataset.cDesign);note.textContent=review||'Vorlage inklusive';note.toggleAttribute('data-family-review',!!review);
       }
       renderThumbnails();
-      const name=current().name;$('.guided-review dl').innerHTML='<div><dt>Design</dt><dd>'+esc(name)+'</dd></div><div><dt>Material</dt><dd>'+esc(processing.name)+'</dd></div>';
+      $('.guided-review dl').innerHTML='<div><dt>Design</dt><dd>'+esc(d.name)+'</dd></div><div><dt>Material</dt><dd>'+esc(processing.name)+'</dd></div>';
       $('[data-setting=guides]').closest('.check-guide').hidden=false;
       for(const select of picks.querySelectorAll('select[data-m-option]'))select.value=options[select.dataset.mOption];
       updateOptionVisibility();

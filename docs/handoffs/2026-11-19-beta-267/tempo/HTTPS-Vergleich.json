@@ -1,0 +1,3209 @@
+{
+  "scope": "Konfi-Beta mit echtem R15 und isoliertem Prüfwarenkorb. Gleiche zwei Produkteingaben. Chrome ohne künstliche Drosselung, Handy emuliert.",
+  "builds": {
+    "ref": {
+      "start": "2026-11-19T14:55:15.235Z",
+      "browser": "157.0.8103.78",
+      "samples": [
+        {
+          "device": "PC",
+          "run": 1,
+          "cache": "kalt",
+          "clickThroughPaintMs": 4192.4,
+          "requests": [
+            {
+              "route": "Gerätefoto",
+              "method": "GET",
+              "atMs": 111.6,
+              "firstByteMs": 240.8,
+              "requestBytes": 0,
+              "responseBytes": 63547
+            },
+            {
+              "route": "Ressource",
+              "method": "GET",
+              "atMs": 111.8,
+              "firstByteMs": 77.7,
+              "requestBytes": 0,
+              "responseBytes": 97861
+            },
+            {
+              "route": "Ressource",
+              "method": "GET",
+              "atMs": 121.1,
+              "firstByteMs": 310.3,
+              "requestBytes": 0,
+              "responseBytes": 97837
+            },
+            {
+              "route": "Gerätefoto",
+              "method": "GET",
+              "atMs": 121.4,
+              "firstByteMs": 471.4,
+              "requestBytes": 0,
+              "responseBytes": 63547
+            },
+            {
+              "route": "Entwurf",
+              "method": "POST",
+              "atMs": 971.1,
+              "firstByteMs": 1594.6,
+              "requestBytes": 94650,
+              "responseBytes": 327
+            },
+            {
+              "route": "Warenkorb",
+              "method": "POST",
+              "atMs": 2575.1,
+              "firstByteMs": 578.6,
+              "requestBytes": 134,
+              "responseBytes": 316
+            },
+            {
+              "route": "Warenkorbseite",
+              "method": "GET",
+              "atMs": 3184.1,
+              "firstByteMs": 77.1,
+              "requestBytes": 0,
+              "responseBytes": 1698
+            },
+            {
+              "route": "Beta-Client",
+              "method": "GET",
+              "atMs": 3314.6,
+              "firstByteMs": 76.4,
+              "requestBytes": 0,
+              "responseBytes": 3357
+            },
+            {
+              "route": "Warenkorb",
+              "method": "GET",
+              "atMs": 3405.9,
+              "firstByteMs": 94.9,
+              "requestBytes": 0,
+              "responseBytes": 515
+            },
+            {
+              "route": "Positionsbild",
+              "method": "GET",
+              "atMs": 3508.1,
+              "firstByteMs": 152.1,
+              "requestBytes": 0,
+              "responseBytes": 490492
+            }
+          ],
+          "pixelSha256": "c5ebe87773642884b29af2293735266d51877a256114c9844aecc66872ac6630",
+          "pngSha256": "d519ff7cf65a6b163abf100f9a686a71cd619900e7df6cd54d33de8d72a2297d",
+          "cameraChecks": 24,
+          "angle": {
+            "horizontal": 0,
+            "vertical": 0
+          },
+          "sku": "FK-AV2A-16x28-1441",
+          "variant": "57471227756924",
+          "totalCents": 9998,
+          "firstCardMs": 41.7,
+          "switchMs": 369.4,
+          "readyMs": 4508.9,
+          "entryThroughCardMs": 4707.1
+        },
+        {
+          "device": "PC",
+          "run": 1,
+          "cache": "warm",
+          "clickThroughPaintMs": 8719.3,
+          "requests": [
+            {
+              "route": "Gerätefoto",
+              "method": "GET",
+              "atMs": 108,
+              "firstByteMs": 323.9,
+              "requestBytes": 0,
+              "responseBytes": 63547
+            },
+            {
+              "route": "Ressource",
+              "method": "GET",
+              "atMs": 108.2,
+              "firstByteMs": 112,
+              "requestBytes": 0,
+              "responseBytes": 97861
+            },
+            {
+              "route": "Motiv",
+              "method": "GET",
+              "atMs": 108.3,
+              "firstByteMs": 322.9,
+              "requestBytes": 0,
+              "responseBytes": 227
+            },
+            {
+              "route": "Motiv",
+              "method": "GET",
+              "atMs": 108.4,
+              "firstByteMs": 354.2,
+              "requestBytes": 0,
+              "responseBytes": 202
+            },
+            {
+              "route": "Ressource",
+              "method": "GET",
+              "atMs": 117.3,
+              "firstByteMs": 384.5,
+              "requestBytes": 0,
+              "responseBytes": 97837
+            },
+            {
+              "route": "Motiv",
+              "method": "GET",
+              "atMs": 119.6,
+              "firstByteMs": 383.9,
+              "requestBytes": 0,
+              "responseBytes": 202
+            },
+            {
+              "route": "Gerätefoto",
+              "method": "GET",
+              "atMs": 119.8,
+              "firstByteMs": 343.7,
+              "requestBytes": 0,
+              "responseBytes": 63547
+            },
+            {
+              "route": "Entwurf",
+              "method": "POST",
+              "atMs": 826.8,
+              "firstByteMs": 6203.6,
+              "requestBytes": 95706,
+              "responseBytes": 314
+            },
+            {
+              "route": "Warenkorb",
+              "method": "POST",
+              "atMs": 7045.7,
+              "firstByteMs": 582.5,
+              "requestBytes": 134,
+              "responseBytes": 267
+            },
+            {
+              "route": "Warenkorbseite",
+              "method": "GET",
+              "atMs": 7659.2,
+              "firstByteMs": 78.1,
+              "requestBytes": 0,
+              "responseBytes": 1698
+            },
+            {
+              "route": "Beta-Client",
+              "method": "GET",
+              "atMs": 7795.7,
+              "firstByteMs": 73.6,
+              "requestBytes": 0,
+              "responseBytes": 3357
+            },
+            {
+              "route": "Warenkorb",
+              "method": "GET",
+              "atMs": 7893.9,
+              "firstByteMs": 76.6,
+              "requestBytes": 0,
+              "responseBytes": 610
+            },
+            {
+              "route": "Positionsbild",
+              "method": "GET",
+              "atMs": 7980.9,
+              "firstByteMs": 149.8,
+              "requestBytes": 0,
+              "responseBytes": 490525
+            },
+            {
+              "route": "Positionsbild",
+              "method": "GET",
+              "atMs": 7981.1,
+              "firstByteMs": 473.1,
+              "requestBytes": 0,
+              "responseBytes": 491996
+            }
+          ],
+          "pixelSha256": "0f3997d621452d71bc21c739675f8a8fa8b07843194aa0a274eadf31e4523e7f",
+          "pngSha256": "9fc2acaeb667b929ff48de8180ef65209cf7fe950f70d6b75a1ea5577ad15036",
+          "cameraChecks": 24,
+          "angle": {
+            "horizontal": 16,
+            "vertical": 16
+          },
+          "sku": "FK-AV2A-16x28-1441",
+          "variant": "57471227756924",
+          "totalCents": 9998,
+          "firstCardMs": 42.1,
+          "switchMs": 367.7,
+          "readyMs": 3145.4,
+          "entryThroughCardMs": 3433.6
+        },
+        {
+          "device": "Mobil",
+          "run": 1,
+          "cache": "kalt",
+          "clickThroughPaintMs": 4151.2,
+          "requests": [
+            {
+              "route": "Gerätefoto",
+              "method": "GET",
+              "atMs": 105.5,
+              "firstByteMs": 165.2,
+              "requestBytes": 0,
+              "responseBytes": 63547
+            },
+            {
+              "route": "Ressource",
+              "method": "GET",
+              "atMs": 107.3,
+              "firstByteMs": 247.3,
+              "requestBytes": 0,
+              "responseBytes": 97837
+            },
+            {
+              "route": "Ressource",
+              "method": "GET",
+              "atMs": 115,
+              "firstByteMs": 305.7,
+              "requestBytes": 0,
+              "responseBytes": 97837
+            },
+            {
+              "route": "Gerätefoto",
+              "method": "GET",
+              "atMs": 121.3,
+              "firstByteMs": 299.7,
+              "requestBytes": 0,
+              "responseBytes": 63547
+            },
+            {
+              "route": "Ressource",
+              "method": "GET",
+              "atMs": 274.3,
+              "firstByteMs": 471.3,
+              "requestBytes": 0,
+              "responseBytes": 130917
+            },
+            {
+              "route": "Ressource",
+              "method": "GET",
+              "atMs": 275.8,
+              "firstByteMs": 389.4,
+              "requestBytes": 0,
+              "responseBytes": 219597
+            },
+            {
+              "route": "Entwurf",
+              "method": "POST",
+              "atMs": 804.2,
+              "firstByteMs": 1548,
+              "requestBytes": 94650,
+              "responseBytes": 328
+            },
+            {
+              "route": "Warenkorb",
+              "method": "POST",
+              "atMs": 2362.3,
+              "firstByteMs": 581.2,
+              "requestBytes": 134,
+              "responseBytes": 191
+            },
+            {
+              "route": "Warenkorbseite",
+              "method": "GET",
+              "atMs": 2974.1,
+              "firstByteMs": 105.3,
+              "requestBytes": 0,
+              "responseBytes": 1727
+            },
+            {
+              "route": "Beta-Client",
+              "method": "GET",
+              "atMs": 3155.9,
+              "firstByteMs": 137.9,
+              "requestBytes": 0,
+              "responseBytes": 3357
+            },
+            {
+              "route": "Warenkorb",
+              "method": "GET",
+              "atMs": 3330.8,
+              "firstByteMs": 116.7,
+              "requestBytes": 0,
+              "responseBytes": 503
+            },
+            {
+              "route": "Positionsbild",
+              "method": "GET",
+              "atMs": 3458.4,
+              "firstByteMs": 184.4,
+              "requestBytes": 0,
+              "responseBytes": 490511
+            }
+          ],
+          "pixelSha256": "c5ebe87773642884b29af2293735266d51877a256114c9844aecc66872ac6630",
+          "pngSha256": "d519ff7cf65a6b163abf100f9a686a71cd619900e7df6cd54d33de8d72a2297d",
+          "cameraChecks": 24,
+          "angle": {
+            "horizontal": 0,
+            "vertical": 0
+          },
+          "sku": "FK-AV2A-16x28-1441",
+          "variant": "57471227756924",
+          "totalCents": 9998,
+          "firstCardMs": 141.3,
+          "switchMs": 351.1,
+          "readyMs": 5597.8,
+          "entryThroughCardMs": 6105.6
+        },
+        {
+          "device": "Mobil",
+          "run": 1,
+          "cache": "warm",
+          "clickThroughPaintMs": 3830.2,
+          "requests": [
+            {
+              "route": "Gerätefoto",
+              "method": "GET",
+              "atMs": 109.7,
+              "firstByteMs": 87.4,
+              "requestBytes": 0,
+              "responseBytes": 63571
+            },
+            {
+              "route": "Ressource",
+              "method": "GET",
+              "atMs": 109.8,
+              "firstByteMs": 89.4,
+              "requestBytes": 0,
+              "responseBytes": 97837
+            },
+            {
+              "route": "Motiv",
+              "method": "GET",
+              "atMs": 110,
+              "firstByteMs": 165.7,
+              "requestBytes": 0,
+              "responseBytes": 250
+            },
+            {
+              "route": "Motiv",
+              "method": "GET",
+              "atMs": 110.1,
+              "firstByteMs": 165.3,
+              "requestBytes": 0,
+              "responseBytes": 254
+            },
+            {
+              "route": "Ressource",
+              "method": "GET",
+              "atMs": 123,
+              "firstByteMs": 153.9,
+              "requestBytes": 0,
+              "responseBytes": 97837
+            },
+            {
+              "route": "Motiv",
+              "method": "GET",
+              "atMs": 124.2,
+              "firstByteMs": 159.8,
+              "requestBytes": 0,
+              "responseBytes": 202
+            },
+            {
+              "route": "Gerätefoto",
+              "method": "GET",
+              "atMs": 124.4,
+              "firstByteMs": 159.4,
+              "requestBytes": 0,
+              "responseBytes": 63547
+            },
+            {
+              "route": "Ressource",
+              "method": "GET",
+              "atMs": 176.2,
+              "firstByteMs": 134.2,
+              "requestBytes": 0,
+              "responseBytes": 143678
+            },
+            {
+              "route": "Ressource",
+              "method": "GET",
+              "atMs": 415.8,
+              "firstByteMs": 99.3,
+              "requestBytes": 0,
+              "responseBytes": 219591
+            },
+            {
+              "route": "Ressource",
+              "method": "GET",
+              "atMs": 416,
+              "firstByteMs": 181.1,
+              "requestBytes": 0,
+              "responseBytes": 130911
+            },
+            {
+              "route": "Entwurf",
+              "method": "POST",
+              "atMs": 657.5,
+              "firstByteMs": 1341.3,
+              "requestBytes": 95706,
+              "responseBytes": 313
+            },
+            {
+              "route": "Warenkorb",
+              "method": "POST",
+              "atMs": 2007.7,
+              "firstByteMs": 567.6,
+              "requestBytes": 134,
+              "responseBytes": 190
+            },
+            {
+              "route": "Warenkorbseite",
+              "method": "GET",
+              "atMs": 2600.2,
+              "firstByteMs": 120,
+              "requestBytes": 0,
+              "responseBytes": 1581
+            },
+            {
+              "route": "Beta-Client",
+              "method": "GET",
+              "atMs": 2780.3,
+              "firstByteMs": 133.1,
+              "requestBytes": 0,
+              "responseBytes": 3334
+            },
+            {
+              "route": "Warenkorb",
+              "method": "GET",
+              "atMs": 2937.8,
+              "firstByteMs": 103.9,
+              "requestBytes": 0,
+              "responseBytes": 599
+            },
+            {
+              "route": "Positionsbild",
+              "method": "GET",
+              "atMs": 3053.8,
+              "firstByteMs": 195,
+              "requestBytes": 0,
+              "responseBytes": 490507
+            },
+            {
+              "route": "Positionsbild",
+              "method": "GET",
+              "atMs": 3054,
+              "firstByteMs": 272.7,
+              "requestBytes": 0,
+              "responseBytes": 492072
+            }
+          ],
+          "pixelSha256": "0f3997d621452d71bc21c739675f8a8fa8b07843194aa0a274eadf31e4523e7f",
+          "pngSha256": "9fc2acaeb667b929ff48de8180ef65209cf7fe950f70d6b75a1ea5577ad15036",
+          "cameraChecks": 24,
+          "angle": {
+            "horizontal": 16,
+            "vertical": 16
+          },
+          "sku": "FK-AV2A-16x28-1441",
+          "variant": "57471227756924",
+          "totalCents": 9998,
+          "firstCardMs": 104.7,
+          "switchMs": 330.6,
+          "readyMs": 3056.7,
+          "entryThroughCardMs": 3305.7
+        },
+        {
+          "device": "PC",
+          "run": 2,
+          "cache": "kalt",
+          "clickThroughPaintMs": 11131.5,
+          "requests": [
+            {
+              "route": "Gerätefoto",
+              "method": "GET",
+              "atMs": 97.1,
+              "firstByteMs": 247.4,
+              "requestBytes": 0,
+              "responseBytes": 63547
+            },
+            {
+              "route": "Ressource",
+              "method": "GET",
+              "atMs": 97.2,
+              "firstByteMs": 79.8,
+              "requestBytes": 0,
+              "responseBytes": 97861
+            },
+            {
+              "route": "Ressource",
+              "method": "GET",
+              "atMs": 108.2,
+              "firstByteMs": 305,
+              "requestBytes": 0,
+              "responseBytes": 97837
+            },
+            {
+              "route": "Gerätefoto",
+              "method": "GET",
+              "atMs": 108.5,
+              "firstByteMs": 425.4,
+              "requestBytes": 0,
+              "responseBytes": 63547
+            },
+            {
+              "route": "Entwurf",
+              "method": "POST",
+              "atMs": 776.9,
+              "firstByteMs": 6313.7,
+              "requestBytes": 94650,
+              "responseBytes": 326
+            },
+            {
+              "route": "Warenkorb",
+              "method": "POST",
+              "atMs": 7105,
+              "firstByteMs": 2984.1,
+              "requestBytes": 134,
+              "responseBytes": 294
+            },
+            {
+              "route": "Warenkorbseite",
+              "method": "GET",
+              "atMs": 10108.9,
+              "firstByteMs": 70.9,
+              "requestBytes": 0,
+              "responseBytes": 1720
+            },
+            {
+              "route": "Beta-Client",
+              "method": "GET",
+              "atMs": 10239.9,
+              "firstByteMs": 99.4,
+              "requestBytes": 0,
+              "responseBytes": 3357
+            },
+            {
+              "route": "Warenkorb",
+              "method": "GET",
+              "atMs": 10366.9,
+              "firstByteMs": 72.8,
+              "requestBytes": 0,
+              "responseBytes": 516
+            },
+            {
+              "route": "Positionsbild",
+              "method": "GET",
+              "atMs": 10456.3,
+              "firstByteMs": 142.4,
+              "requestBytes": 0,
+              "responseBytes": 490516
+            }
+          ],
+          "pixelSha256": "c5ebe87773642884b29af2293735266d51877a256114c9844aecc66872ac6630",
+          "pngSha256": "d519ff7cf65a6b163abf100f9a686a71cd619900e7df6cd54d33de8d72a2297d",
+          "cameraChecks": 24,
+          "angle": {
+            "horizontal": 0,
+            "vertical": 0
+          },
+          "sku": "FK-AV2A-16x28-1441",
+          "variant": "57471227756924",
+          "totalCents": 9998,
+          "firstCardMs": 44.4,
+          "switchMs": 367.6,
+          "readyMs": 5177.1,
+          "entryThroughCardMs": 5319.2
+        },
+        {
+          "device": "PC",
+          "run": 2,
+          "cache": "warm",
+          "clickThroughPaintMs": 3859.5,
+          "requests": [
+            {
+              "route": "Gerätefoto",
+              "method": "GET",
+              "atMs": 111.5,
+              "firstByteMs": 175.6,
+              "requestBytes": 0,
+              "responseBytes": 63547
+            },
+            {
+              "route": "Ressource",
+              "method": "GET",
+              "atMs": 112.8,
+              "firstByteMs": 243.3,
+              "requestBytes": 0,
+              "responseBytes": 97837
+            },
+            {
+              "route": "Motiv",
+              "method": "GET",
+              "atMs": 113.2,
+              "firstByteMs": 107,
+              "requestBytes": 0,
+              "responseBytes": 203
+            },
+            {
+              "route": "Motiv",
+              "method": "GET",
+              "atMs": 113.7,
+              "firstByteMs": 106.1,
+              "requestBytes": 0,
+              "responseBytes": 229
+            },
+            {
+              "route": "Ressource",
+              "method": "GET",
+              "atMs": 123.6,
+              "firstByteMs": 303.9,
+              "requestBytes": 0,
+              "responseBytes": 97837
+            },
+            {
+              "route": "Motiv",
+              "method": "GET",
+              "atMs": 123.9,
+              "firstByteMs": 368.4,
+              "requestBytes": 0,
+              "responseBytes": 203
+            },
+            {
+              "route": "Gerätefoto",
+              "method": "GET",
+              "atMs": 124.1,
+              "firstByteMs": 368,
+              "requestBytes": 0,
+              "responseBytes": 63547
+            },
+            {
+              "route": "Entwurf",
+              "method": "POST",
+              "atMs": 801.9,
+              "firstByteMs": 1366.5,
+              "requestBytes": 95706,
+              "responseBytes": 315
+            },
+            {
+              "route": "Warenkorb",
+              "method": "POST",
+              "atMs": 2180.5,
+              "firstByteMs": 589.7,
+              "requestBytes": 134,
+              "responseBytes": 293
+            },
+            {
+              "route": "Warenkorbseite",
+              "method": "GET",
+              "atMs": 2796.8,
+              "firstByteMs": 99,
+              "requestBytes": 0,
+              "responseBytes": 1698
+            },
+            {
+              "route": "Beta-Client",
+              "method": "GET",
+              "atMs": 2953.5,
+              "firstByteMs": 72.9,
+              "requestBytes": 0,
+              "responseBytes": 3357
+            },
+            {
+              "route": "Warenkorb",
+              "method": "GET",
+              "atMs": 3055.4,
+              "firstByteMs": 93.5,
+              "requestBytes": 0,
+              "responseBytes": 610
+            },
+            {
+              "route": "Positionsbild",
+              "method": "GET",
+              "atMs": 3159.4,
+              "firstByteMs": 83.9,
+              "requestBytes": 0,
+              "responseBytes": 490519
+            },
+            {
+              "route": "Positionsbild",
+              "method": "GET",
+              "atMs": 3160.1,
+              "firstByteMs": 452,
+              "requestBytes": 0,
+              "responseBytes": 491996
+            }
+          ],
+          "pixelSha256": "0f3997d621452d71bc21c739675f8a8fa8b07843194aa0a274eadf31e4523e7f",
+          "pngSha256": "9fc2acaeb667b929ff48de8180ef65209cf7fe950f70d6b75a1ea5577ad15036",
+          "cameraChecks": 24,
+          "angle": {
+            "horizontal": 16,
+            "vertical": 16
+          },
+          "sku": "FK-AV2A-16x28-1441",
+          "variant": "57471227756924",
+          "totalCents": 9998,
+          "firstCardMs": 51.4,
+          "switchMs": 369.2,
+          "readyMs": 2863.5,
+          "entryThroughCardMs": 3146.5
+        },
+        {
+          "device": "Mobil",
+          "run": 2,
+          "cache": "kalt",
+          "clickThroughPaintMs": 4148.9,
+          "requests": [
+            {
+              "route": "Gerätefoto",
+              "method": "GET",
+              "atMs": 125.4,
+              "firstByteMs": 227.5,
+              "requestBytes": 0,
+              "responseBytes": 63547
+            },
+            {
+              "route": "Ressource",
+              "method": "GET",
+              "atMs": 125.5,
+              "firstByteMs": 123.4,
+              "requestBytes": 0,
+              "responseBytes": 97837
+            },
+            {
+              "route": "Ressource",
+              "method": "GET",
+              "atMs": 142,
+              "firstByteMs": 309.6,
+              "requestBytes": 0,
+              "responseBytes": 97837
+            },
+            {
+              "route": "Gerätefoto",
+              "method": "GET",
+              "atMs": 142.2,
+              "firstByteMs": 401.2,
+              "requestBytes": 0,
+              "responseBytes": 63547
+            },
+            {
+              "route": "Ressource",
+              "method": "GET",
+              "atMs": 260.2,
+              "firstByteMs": 353.3,
+              "requestBytes": 0,
+              "responseBytes": 219597
+            },
+            {
+              "route": "Ressource",
+              "method": "GET",
+              "atMs": 260.5,
+              "firstByteMs": 353,
+              "requestBytes": 0,
+              "responseBytes": 130917
+            },
+            {
+              "route": "Entwurf",
+              "method": "POST",
+              "atMs": 794.8,
+              "firstByteMs": 1572,
+              "requestBytes": 94650,
+              "responseBytes": 328
+            },
+            {
+              "route": "Warenkorb",
+              "method": "POST",
+              "atMs": 2376.4,
+              "firstByteMs": 571,
+              "requestBytes": 134,
+              "responseBytes": 200
+            },
+            {
+              "route": "Warenkorbseite",
+              "method": "GET",
+              "atMs": 2970.4,
+              "firstByteMs": 113.6,
+              "requestBytes": 0,
+              "responseBytes": 1720
+            },
+            {
+              "route": "Beta-Client",
+              "method": "GET",
+              "atMs": 3134.4,
+              "firstByteMs": 174.3,
+              "requestBytes": 0,
+              "responseBytes": 3357
+            },
+            {
+              "route": "Warenkorb",
+              "method": "GET",
+              "atMs": 3331.8,
+              "firstByteMs": 108.3,
+              "requestBytes": 0,
+              "responseBytes": 516
+            },
+            {
+              "route": "Positionsbild",
+              "method": "GET",
+              "atMs": 3452.8,
+              "firstByteMs": 98.5,
+              "requestBytes": 0,
+              "responseBytes": 490501
+            }
+          ],
+          "pixelSha256": "c5ebe87773642884b29af2293735266d51877a256114c9844aecc66872ac6630",
+          "pngSha256": "d519ff7cf65a6b163abf100f9a686a71cd619900e7df6cd54d33de8d72a2297d",
+          "cameraChecks": 24,
+          "angle": {
+            "horizontal": 0,
+            "vertical": 0
+          },
+          "sku": "FK-AV2A-16x28-1441",
+          "variant": "57471227756924",
+          "totalCents": 9998,
+          "firstCardMs": 109.4,
+          "switchMs": 340.2,
+          "readyMs": 4994.6,
+          "entryThroughCardMs": 5439.3
+        },
+        {
+          "device": "Mobil",
+          "run": 2,
+          "cache": "warm",
+          "clickThroughPaintMs": 10227.2,
+          "requests": [
+            {
+              "route": "Gerätefoto",
+              "method": "GET",
+              "atMs": 112.6,
+              "firstByteMs": 76.6,
+              "requestBytes": 0,
+              "responseBytes": 63571
+            },
+            {
+              "route": "Ressource",
+              "method": "GET",
+              "atMs": 112.8,
+              "firstByteMs": 148.5,
+              "requestBytes": 0,
+              "responseBytes": 97837
+            },
+            {
+              "route": "Motiv",
+              "method": "GET",
+              "atMs": 112.9,
+              "firstByteMs": 216.5,
+              "requestBytes": 0,
+              "responseBytes": 202
+            },
+            {
+              "route": "Motiv",
+              "method": "GET",
+              "atMs": 113,
+              "firstByteMs": 216.2,
+              "requestBytes": 0,
+              "responseBytes": 205
+            },
+            {
+              "route": "Ressource",
+              "method": "GET",
+              "atMs": 135.9,
+              "firstByteMs": 195.2,
+              "requestBytes": 0,
+              "responseBytes": 97837
+            },
+            {
+              "route": "Motiv",
+              "method": "GET",
+              "atMs": 137,
+              "firstByteMs": 306.3,
+              "requestBytes": 0,
+              "responseBytes": 202
+            },
+            {
+              "route": "Gerätefoto",
+              "method": "GET",
+              "atMs": 137.7,
+              "firstByteMs": 239.2,
+              "requestBytes": 0,
+              "responseBytes": 63547
+            },
+            {
+              "route": "Entwurf",
+              "method": "POST",
+              "atMs": 732.4,
+              "firstByteMs": 6201.3,
+              "requestBytes": 95706,
+              "responseBytes": 323
+            },
+            {
+              "route": "Warenkorb",
+              "method": "POST",
+              "atMs": 6943.9,
+              "firstByteMs": 603.5,
+              "requestBytes": 134,
+              "responseBytes": 176
+            },
+            {
+              "route": "Warenkorbseite",
+              "method": "GET",
+              "atMs": 7569.4,
+              "firstByteMs": 191.9,
+              "requestBytes": 0,
+              "responseBytes": 1720
+            },
+            {
+              "route": "Beta-Client",
+              "method": "GET",
+              "atMs": 7817.3,
+              "firstByteMs": 137.4,
+              "requestBytes": 0,
+              "responseBytes": 3381
+            },
+            {
+              "route": "Warenkorb",
+              "method": "GET",
+              "atMs": 7980.4,
+              "firstByteMs": 188.5,
+              "requestBytes": 0,
+              "responseBytes": 610
+            },
+            {
+              "route": "Positionsbild",
+              "method": "GET",
+              "atMs": 8178.4,
+              "firstByteMs": 241.4,
+              "requestBytes": 0,
+              "responseBytes": 490501
+            },
+            {
+              "route": "Positionsbild",
+              "method": "GET",
+              "atMs": 8178.6,
+              "firstByteMs": 336.1,
+              "requestBytes": 0,
+              "responseBytes": 491996
+            }
+          ],
+          "pixelSha256": "0f3997d621452d71bc21c739675f8a8fa8b07843194aa0a274eadf31e4523e7f",
+          "pngSha256": "9fc2acaeb667b929ff48de8180ef65209cf7fe950f70d6b75a1ea5577ad15036",
+          "cameraChecks": 24,
+          "angle": {
+            "horizontal": 16,
+            "vertical": 16
+          },
+          "sku": "FK-AV2A-16x28-1441",
+          "variant": "57471227756924",
+          "totalCents": 9998,
+          "firstCardMs": 96.6,
+          "switchMs": 329.4,
+          "readyMs": 2963.9,
+          "entryThroughCardMs": 3210.4
+        },
+        {
+          "device": "PC",
+          "run": 3,
+          "cache": "kalt",
+          "clickThroughPaintMs": 3979.3,
+          "requests": [
+            {
+              "route": "Gerätefoto",
+              "method": "GET",
+              "atMs": 114,
+              "firstByteMs": 81.5,
+              "requestBytes": 0,
+              "responseBytes": 63571
+            },
+            {
+              "route": "Ressource",
+              "method": "GET",
+              "atMs": 114.3,
+              "firstByteMs": 148.7,
+              "requestBytes": 0,
+              "responseBytes": 97837
+            },
+            {
+              "route": "Ressource",
+              "method": "GET",
+              "atMs": 124.1,
+              "firstByteMs": 282.1,
+              "requestBytes": 0,
+              "responseBytes": 97837
+            },
+            {
+              "route": "Gerätefoto",
+              "method": "GET",
+              "atMs": 124.3,
+              "firstByteMs": 423.5,
+              "requestBytes": 0,
+              "responseBytes": 63547
+            },
+            {
+              "route": "Entwurf",
+              "method": "POST",
+              "atMs": 740.2,
+              "firstByteMs": 1566.4,
+              "requestBytes": 94650,
+              "responseBytes": 326
+            },
+            {
+              "route": "Warenkorb",
+              "method": "POST",
+              "atMs": 2320.9,
+              "firstByteMs": 554.4,
+              "requestBytes": 134,
+              "responseBytes": 268
+            },
+            {
+              "route": "Warenkorbseite",
+              "method": "GET",
+              "atMs": 2904.3,
+              "firstByteMs": 77,
+              "requestBytes": 0,
+              "responseBytes": 1744
+            },
+            {
+              "route": "Beta-Client",
+              "method": "GET",
+              "atMs": 3029.6,
+              "firstByteMs": 91.7,
+              "requestBytes": 0,
+              "responseBytes": 3357
+            },
+            {
+              "route": "Warenkorb",
+              "method": "GET",
+              "atMs": 3142,
+              "firstByteMs": 90.9,
+              "requestBytes": 0,
+              "responseBytes": 515
+            },
+            {
+              "route": "Positionsbild",
+              "method": "GET",
+              "atMs": 3240.6,
+              "firstByteMs": 148.3,
+              "requestBytes": 0,
+              "responseBytes": 490492
+            }
+          ],
+          "pixelSha256": "c5ebe87773642884b29af2293735266d51877a256114c9844aecc66872ac6630",
+          "pngSha256": "d519ff7cf65a6b163abf100f9a686a71cd619900e7df6cd54d33de8d72a2297d",
+          "cameraChecks": 24,
+          "angle": {
+            "horizontal": 0,
+            "vertical": 0
+          },
+          "sku": "FK-AV2A-16x28-1441",
+          "variant": "57471227756924",
+          "totalCents": 9998,
+          "firstCardMs": 48.3,
+          "switchMs": 389.9,
+          "readyMs": 6281.1,
+          "entryThroughCardMs": 6457.5
+        },
+        {
+          "device": "PC",
+          "run": 3,
+          "cache": "warm",
+          "clickThroughPaintMs": 3817.2,
+          "requests": [
+            {
+              "route": "Gerätefoto",
+              "method": "GET",
+              "atMs": 107.1,
+              "firstByteMs": 179.3,
+              "requestBytes": 0,
+              "responseBytes": 63547
+            },
+            {
+              "route": "Ressource",
+              "method": "GET",
+              "atMs": 107.3,
+              "firstByteMs": 293.1,
+              "requestBytes": 0,
+              "responseBytes": 97837
+            },
+            {
+              "route": "Motiv",
+              "method": "GET",
+              "atMs": 107.4,
+              "firstByteMs": 293,
+              "requestBytes": 0,
+              "responseBytes": 203
+            },
+            {
+              "route": "Motiv",
+              "method": "GET",
+              "atMs": 107.5,
+              "firstByteMs": 109.1,
+              "requestBytes": 0,
+              "responseBytes": 229
+            },
+            {
+              "route": "Ressource",
+              "method": "GET",
+              "atMs": 117.8,
+              "firstByteMs": 378.2,
+              "requestBytes": 0,
+              "responseBytes": 97837
+            },
+            {
+              "route": "Motiv",
+              "method": "GET",
+              "atMs": 121.2,
+              "firstByteMs": 347.3,
+              "requestBytes": 0,
+              "responseBytes": 227
+            },
+            {
+              "route": "Gerätefoto",
+              "method": "GET",
+              "atMs": 121.6,
+              "firstByteMs": 411.3,
+              "requestBytes": 0,
+              "responseBytes": 63547
+            },
+            {
+              "route": "Entwurf",
+              "method": "POST",
+              "atMs": 818,
+              "firstByteMs": 1390.5,
+              "requestBytes": 95706,
+              "responseBytes": 314
+            },
+            {
+              "route": "Warenkorb",
+              "method": "POST",
+              "atMs": 2221.9,
+              "firstByteMs": 535.7,
+              "requestBytes": 134,
+              "responseBytes": 313
+            },
+            {
+              "route": "Warenkorbseite",
+              "method": "GET",
+              "atMs": 2784.7,
+              "firstByteMs": 93.4,
+              "requestBytes": 0,
+              "responseBytes": 1698
+            },
+            {
+              "route": "Beta-Client",
+              "method": "GET",
+              "atMs": 2939.1,
+              "firstByteMs": 77.1,
+              "requestBytes": 0,
+              "responseBytes": 3357
+            },
+            {
+              "route": "Warenkorb",
+              "method": "GET",
+              "atMs": 3040.3,
+              "firstByteMs": 79.8,
+              "requestBytes": 0,
+              "responseBytes": 611
+            },
+            {
+              "route": "Positionsbild",
+              "method": "GET",
+              "atMs": 3130.8,
+              "firstByteMs": 146.8,
+              "requestBytes": 0,
+              "responseBytes": 490525
+            },
+            {
+              "route": "Positionsbild",
+              "method": "GET",
+              "atMs": 3131,
+              "firstByteMs": 444.3,
+              "requestBytes": 0,
+              "responseBytes": 491996
+            }
+          ],
+          "pixelSha256": "0f3997d621452d71bc21c739675f8a8fa8b07843194aa0a274eadf31e4523e7f",
+          "pngSha256": "9fc2acaeb667b929ff48de8180ef65209cf7fe950f70d6b75a1ea5577ad15036",
+          "cameraChecks": 24,
+          "angle": {
+            "horizontal": 16,
+            "vertical": 16
+          },
+          "sku": "FK-AV2A-16x28-1441",
+          "variant": "57471227756924",
+          "totalCents": 9998,
+          "firstCardMs": 81.8,
+          "switchMs": 374.4,
+          "readyMs": 3124.9,
+          "entryThroughCardMs": 3676.9
+        },
+        {
+          "device": "Mobil",
+          "run": 3,
+          "cache": "kalt",
+          "clickThroughPaintMs": 8879.8,
+          "requests": [
+            {
+              "route": "Gerätefoto",
+              "method": "GET",
+              "atMs": 107.6,
+              "firstByteMs": 132.4,
+              "requestBytes": 0,
+              "responseBytes": 63547
+            },
+            {
+              "route": "Ressource",
+              "method": "GET",
+              "atMs": 107.7,
+              "firstByteMs": 274.1,
+              "requestBytes": 0,
+              "responseBytes": 97837
+            },
+            {
+              "route": "Ressource",
+              "method": "GET",
+              "atMs": 119.4,
+              "firstByteMs": 301.3,
+              "requestBytes": 0,
+              "responseBytes": 97837
+            },
+            {
+              "route": "Gerätefoto",
+              "method": "GET",
+              "atMs": 119.5,
+              "firstByteMs": 300.5,
+              "requestBytes": 0,
+              "responseBytes": 63547
+            },
+            {
+              "route": "Ressource",
+              "method": "GET",
+              "atMs": 250.6,
+              "firstByteMs": 447.9,
+              "requestBytes": 0,
+              "responseBytes": 143684
+            },
+            {
+              "route": "Entwurf",
+              "method": "POST",
+              "atMs": 833,
+              "firstByteMs": 6333.6,
+              "requestBytes": 94650,
+              "responseBytes": 329
+            },
+            {
+              "route": "Ressource",
+              "method": "GET",
+              "atMs": 869.7,
+              "firstByteMs": 551.5,
+              "requestBytes": 0,
+              "responseBytes": 219597
+            },
+            {
+              "route": "Ressource",
+              "method": "GET",
+              "atMs": 869.9,
+              "firstByteMs": 365.9,
+              "requestBytes": 0,
+              "responseBytes": 130940
+            },
+            {
+              "route": "Warenkorb",
+              "method": "POST",
+              "atMs": 7177.1,
+              "firstByteMs": 574.9,
+              "requestBytes": 134,
+              "responseBytes": 176
+            },
+            {
+              "route": "Warenkorbseite",
+              "method": "GET",
+              "atMs": 7778.2,
+              "firstByteMs": 82.3,
+              "requestBytes": 0,
+              "responseBytes": 1720
+            },
+            {
+              "route": "Beta-Client",
+              "method": "GET",
+              "atMs": 7930.7,
+              "firstByteMs": 75.7,
+              "requestBytes": 0,
+              "responseBytes": 3358
+            },
+            {
+              "route": "Warenkorb",
+              "method": "GET",
+              "atMs": 8038.9,
+              "firstByteMs": 78,
+              "requestBytes": 0,
+              "responseBytes": 502
+            },
+            {
+              "route": "Positionsbild",
+              "method": "GET",
+              "atMs": 8127.1,
+              "firstByteMs": 149.4,
+              "requestBytes": 0,
+              "responseBytes": 490492
+            }
+          ],
+          "pixelSha256": "c5ebe87773642884b29af2293735266d51877a256114c9844aecc66872ac6630",
+          "pngSha256": "d519ff7cf65a6b163abf100f9a686a71cd619900e7df6cd54d33de8d72a2297d",
+          "cameraChecks": 24,
+          "angle": {
+            "horizontal": 0,
+            "vertical": 0
+          },
+          "sku": "FK-AV2A-16x28-1441",
+          "variant": "57471227756924",
+          "totalCents": 9998,
+          "firstCardMs": 99,
+          "switchMs": 342.8,
+          "readyMs": 4861.2,
+          "entryThroughCardMs": 5303.3
+        },
+        {
+          "device": "Mobil",
+          "run": 3,
+          "cache": "warm",
+          "clickThroughPaintMs": 3949.8,
+          "requests": [
+            {
+              "route": "Gerätefoto",
+              "method": "GET",
+              "atMs": 109.1,
+              "firstByteMs": 101.3,
+              "requestBytes": 0,
+              "responseBytes": 63552
+            },
+            {
+              "route": "Ressource",
+              "method": "GET",
+              "atMs": 109.3,
+              "firstByteMs": 90.2,
+              "requestBytes": 0,
+              "responseBytes": 97837
+            },
+            {
+              "route": "Motiv",
+              "method": "GET",
+              "atMs": 109.4,
+              "firstByteMs": 161.4,
+              "requestBytes": 0,
+              "responseBytes": 250
+            },
+            {
+              "route": "Motiv",
+              "method": "GET",
+              "atMs": 109.5,
+              "firstByteMs": 77.4,
+              "requestBytes": 0,
+              "responseBytes": 250
+            },
+            {
+              "route": "Ressource",
+              "method": "GET",
+              "atMs": 120.9,
+              "firstByteMs": 157.4,
+              "requestBytes": 0,
+              "responseBytes": 97837
+            },
+            {
+              "route": "Motiv",
+              "method": "GET",
+              "atMs": 122.1,
+              "firstByteMs": 165.9,
+              "requestBytes": 0,
+              "responseBytes": 202
+            },
+            {
+              "route": "Gerätefoto",
+              "method": "GET",
+              "atMs": 122.3,
+              "firstByteMs": 165.4,
+              "requestBytes": 0,
+              "responseBytes": 63547
+            },
+            {
+              "route": "Ressource",
+              "method": "GET",
+              "atMs": 145.9,
+              "firstByteMs": 209.2,
+              "requestBytes": 0,
+              "responseBytes": 219591
+            },
+            {
+              "route": "Ressource",
+              "method": "GET",
+              "atMs": 146.1,
+              "firstByteMs": 218.1,
+              "requestBytes": 0,
+              "responseBytes": 130911
+            },
+            {
+              "route": "Entwurf",
+              "method": "POST",
+              "atMs": 827.3,
+              "firstByteMs": 1374.6,
+              "requestBytes": 95706,
+              "responseBytes": 313
+            },
+            {
+              "route": "Warenkorb",
+              "method": "POST",
+              "atMs": 2226.2,
+              "firstByteMs": 485,
+              "requestBytes": 134,
+              "responseBytes": 194
+            },
+            {
+              "route": "Warenkorbseite",
+              "method": "GET",
+              "atMs": 2733.7,
+              "firstByteMs": 116.5,
+              "requestBytes": 0,
+              "responseBytes": 1581
+            },
+            {
+              "route": "Beta-Client",
+              "method": "GET",
+              "atMs": 2902.8,
+              "firstByteMs": 130.9,
+              "requestBytes": 0,
+              "responseBytes": 3334
+            },
+            {
+              "route": "Warenkorb",
+              "method": "GET",
+              "atMs": 3055.3,
+              "firstByteMs": 129.7,
+              "requestBytes": 0,
+              "responseBytes": 598
+            },
+            {
+              "route": "Positionsbild",
+              "method": "GET",
+              "atMs": 3193.7,
+              "firstByteMs": 116.1,
+              "requestBytes": 0,
+              "responseBytes": 490484
+            },
+            {
+              "route": "Positionsbild",
+              "method": "GET",
+              "atMs": 3193.9,
+              "firstByteMs": 503.4,
+              "requestBytes": 0,
+              "responseBytes": 491996
+            }
+          ],
+          "pixelSha256": "0f3997d621452d71bc21c739675f8a8fa8b07843194aa0a274eadf31e4523e7f",
+          "pngSha256": "9fc2acaeb667b929ff48de8180ef65209cf7fe950f70d6b75a1ea5577ad15036",
+          "cameraChecks": 24,
+          "angle": {
+            "horizontal": 16,
+            "vertical": 16
+          },
+          "sku": "FK-AV2A-16x28-1441",
+          "variant": "57471227756924",
+          "totalCents": 9998,
+          "firstCardMs": 106.5,
+          "switchMs": 363.8,
+          "readyMs": 2923.2,
+          "entryThroughCardMs": 3204.6
+        }
+      ]
+    },
+    "neu": {
+      "start": "2026-11-19T15:51:32.830Z",
+      "browser": "157.0.8103.78",
+      "samples": [
+        {
+          "device": "PC",
+          "run": 1,
+          "cache": "kalt",
+          "clickThroughPaintMs": 3772.4,
+          "requests": [
+            {
+              "route": "Gerätefoto",
+              "method": "GET",
+              "atMs": 44.3,
+              "firstByteMs": 160.9,
+              "requestBytes": 0,
+              "responseBytes": 63547
+            },
+            {
+              "route": "Oberfläche",
+              "method": "GET",
+              "atMs": 44.4,
+              "firstByteMs": 81.1,
+              "requestBytes": 0,
+              "responseBytes": 97861
+            },
+            {
+              "route": "Oberfläche",
+              "method": "GET",
+              "atMs": 50.2,
+              "firstByteMs": 155.3,
+              "requestBytes": 0,
+              "responseBytes": 97837
+            },
+            {
+              "route": "Gerätefoto",
+              "method": "GET",
+              "atMs": 55.4,
+              "firstByteMs": 237.2,
+              "requestBytes": 0,
+              "responseBytes": 63547
+            },
+            {
+              "route": "Entwurf",
+              "method": "POST",
+              "atMs": 462.6,
+              "firstByteMs": 1712.9,
+              "requestBytes": 94650,
+              "responseBytes": 329
+            },
+            {
+              "route": "Warenkorb",
+              "method": "POST",
+              "atMs": 2186.4,
+              "firstByteMs": 593,
+              "requestBytes": 134,
+              "responseBytes": 191
+            },
+            {
+              "route": "Warenkorbseite",
+              "method": "GET",
+              "atMs": 2805.9,
+              "firstByteMs": 115.6,
+              "requestBytes": 0,
+              "responseBytes": 1727
+            },
+            {
+              "route": "Beta-Client",
+              "method": "GET",
+              "atMs": 2969.8,
+              "firstByteMs": 107.3,
+              "requestBytes": 0,
+              "responseBytes": 3357
+            },
+            {
+              "route": "Warenkorb",
+              "method": "GET",
+              "atMs": 3088.2,
+              "firstByteMs": 118.4,
+              "requestBytes": 0,
+              "responseBytes": 516
+            },
+            {
+              "route": "Positionsbild",
+              "method": "GET",
+              "atMs": 3216.6,
+              "firstByteMs": 79.7,
+              "requestBytes": 0,
+              "responseBytes": 490534
+            }
+          ],
+          "pixelSha256": "c5ebe87773642884b29af2293735266d51877a256114c9844aecc66872ac6630",
+          "pngSha256": "d519ff7cf65a6b163abf100f9a686a71cd619900e7df6cd54d33de8d72a2297d",
+          "cameraChecks": 24,
+          "angle": {
+            "horizontal": 0,
+            "vertical": 0
+          },
+          "sku": "FK-AV2A-16x28-1441",
+          "variant": "57471227756924",
+          "totalCents": 9998,
+          "firstCardMs": 47.6,
+          "switchMs": 245.5,
+          "readyMs": 2659,
+          "entryThroughCardMs": 2852.7
+        },
+        {
+          "device": "PC",
+          "run": 1,
+          "cache": "warm",
+          "clickThroughPaintMs": 3808,
+          "requests": [
+            {
+              "route": "Gerätefoto",
+              "method": "GET",
+              "atMs": 44.7,
+              "firstByteMs": 172.9,
+              "requestBytes": 0,
+              "responseBytes": 63571
+            },
+            {
+              "route": "Oberfläche",
+              "method": "GET",
+              "atMs": 44.8,
+              "firstByteMs": 258.9,
+              "requestBytes": 0,
+              "responseBytes": 97837
+            },
+            {
+              "route": "Motiv",
+              "method": "GET",
+              "atMs": 44.9,
+              "firstByteMs": 258.6,
+              "requestBytes": 0,
+              "responseBytes": 203
+            },
+            {
+              "route": "Motiv",
+              "method": "GET",
+              "atMs": 45,
+              "firstByteMs": 262.3,
+              "requestBytes": 0,
+              "responseBytes": 203
+            },
+            {
+              "route": "Oberfläche",
+              "method": "GET",
+              "atMs": 50.5,
+              "firstByteMs": 257.4,
+              "requestBytes": 0,
+              "responseBytes": 97837
+            },
+            {
+              "route": "Motiv",
+              "method": "GET",
+              "atMs": 50.7,
+              "firstByteMs": 333.9,
+              "requestBytes": 0,
+              "responseBytes": 203
+            },
+            {
+              "route": "Gerätefoto",
+              "method": "GET",
+              "atMs": 50.9,
+              "firstByteMs": 332.5,
+              "requestBytes": 0,
+              "responseBytes": 63547
+            },
+            {
+              "route": "Ressource",
+              "method": "GET",
+              "atMs": 234.3,
+              "firstByteMs": 159.1,
+              "requestBytes": 0,
+              "responseBytes": 143684
+            },
+            {
+              "route": "Ressource",
+              "method": "GET",
+              "atMs": 489.5,
+              "firstByteMs": 84.4,
+              "requestBytes": 0,
+              "responseBytes": 219598
+            },
+            {
+              "route": "Ressource",
+              "method": "GET",
+              "atMs": 489.6,
+              "firstByteMs": 178.2,
+              "requestBytes": 0,
+              "responseBytes": 130925
+            },
+            {
+              "route": "Entwurf",
+              "method": "POST",
+              "atMs": 596.2,
+              "firstByteMs": 1247.8,
+              "requestBytes": 95706,
+              "responseBytes": 317
+            },
+            {
+              "route": "Warenkorb",
+              "method": "POST",
+              "atMs": 1852.4,
+              "firstByteMs": 582.7,
+              "requestBytes": 134,
+              "responseBytes": 298
+            },
+            {
+              "route": "Warenkorbseite",
+              "method": "GET",
+              "atMs": 2463.9,
+              "firstByteMs": 112.5,
+              "requestBytes": 0,
+              "responseBytes": 1720
+            },
+            {
+              "route": "Beta-Client",
+              "method": "GET",
+              "atMs": 2627.1,
+              "firstByteMs": 127.8,
+              "requestBytes": 0,
+              "responseBytes": 3357
+            },
+            {
+              "route": "Warenkorb",
+              "method": "GET",
+              "atMs": 2767.2,
+              "firstByteMs": 148.8,
+              "requestBytes": 0,
+              "responseBytes": 611
+            },
+            {
+              "route": "Positionsbild",
+              "method": "GET",
+              "atMs": 2927.8,
+              "firstByteMs": 193.1,
+              "requestBytes": 0,
+              "responseBytes": 490501
+            },
+            {
+              "route": "Positionsbild",
+              "method": "GET",
+              "atMs": 2928,
+              "firstByteMs": 445.4,
+              "requestBytes": 0,
+              "responseBytes": 492014
+            }
+          ],
+          "pixelSha256": "0f3997d621452d71bc21c739675f8a8fa8b07843194aa0a274eadf31e4523e7f",
+          "pngSha256": "9fc2acaeb667b929ff48de8180ef65209cf7fe950f70d6b75a1ea5577ad15036",
+          "cameraChecks": 24,
+          "angle": {
+            "horizontal": 16,
+            "vertical": 16
+          },
+          "sku": "FK-AV2A-16x28-1441",
+          "variant": "57471227756924",
+          "totalCents": 9998,
+          "firstCardMs": 41.9,
+          "switchMs": 173.3,
+          "readyMs": 1995.3,
+          "entryThroughCardMs": 2397.2
+        },
+        {
+          "device": "Mobil",
+          "run": 1,
+          "cache": "kalt",
+          "clickThroughPaintMs": 8320.4,
+          "requests": [
+            {
+              "route": "Gerätefoto",
+              "method": "GET",
+              "atMs": 48.8,
+              "firstByteMs": 179.4,
+              "requestBytes": 0,
+              "responseBytes": 63547
+            },
+            {
+              "route": "Oberfläche",
+              "method": "GET",
+              "atMs": 48.9,
+              "firstByteMs": 163.4,
+              "requestBytes": 0,
+              "responseBytes": 97861
+            },
+            {
+              "route": "Oberfläche",
+              "method": "GET",
+              "atMs": 56.8,
+              "firstByteMs": 249.8,
+              "requestBytes": 0,
+              "responseBytes": 97837
+            },
+            {
+              "route": "Gerätefoto",
+              "method": "GET",
+              "atMs": 57,
+              "firstByteMs": 249.1,
+              "requestBytes": 0,
+              "responseBytes": 63547
+            },
+            {
+              "route": "Ressource",
+              "method": "GET",
+              "atMs": 131.7,
+              "firstByteMs": 269.1,
+              "requestBytes": 0,
+              "responseBytes": 262424
+            },
+            {
+              "route": "Ressource",
+              "method": "GET",
+              "atMs": 542.3,
+              "firstByteMs": 100.9,
+              "requestBytes": 0,
+              "responseBytes": 270830
+            },
+            {
+              "route": "Entwurf",
+              "method": "POST",
+              "atMs": 580.3,
+              "firstByteMs": 6241.7,
+              "requestBytes": 94650,
+              "responseBytes": 317
+            },
+            {
+              "route": "Ressource",
+              "method": "GET",
+              "atMs": 802.4,
+              "firstByteMs": 219.6,
+              "requestBytes": 0,
+              "responseBytes": 136902
+            },
+            {
+              "route": "Ressource",
+              "method": "GET",
+              "atMs": 1043.8,
+              "firstByteMs": 83.2,
+              "requestBytes": 0,
+              "responseBytes": 143760
+            },
+            {
+              "route": "Ressource",
+              "method": "GET",
+              "atMs": 1183,
+              "firstByteMs": 93.3,
+              "requestBytes": 0,
+              "responseBytes": 219597
+            },
+            {
+              "route": "Ressource",
+              "method": "GET",
+              "atMs": 1183.1,
+              "firstByteMs": 179.2,
+              "requestBytes": 0,
+              "responseBytes": 130917
+            },
+            {
+              "route": "Warenkorb",
+              "method": "POST",
+              "atMs": 6829.3,
+              "firstByteMs": 599.7,
+              "requestBytes": 134,
+              "responseBytes": 199
+            },
+            {
+              "route": "Warenkorbseite",
+              "method": "GET",
+              "atMs": 7448.8,
+              "firstByteMs": 85,
+              "requestBytes": 0,
+              "responseBytes": 1581
+            },
+            {
+              "route": "Beta-Client",
+              "method": "GET",
+              "atMs": 7576.9,
+              "firstByteMs": 80.6,
+              "requestBytes": 0,
+              "responseBytes": 3334
+            },
+            {
+              "route": "Warenkorb",
+              "method": "GET",
+              "atMs": 7666.1,
+              "firstByteMs": 81.9,
+              "requestBytes": 0,
+              "responseBytes": 504
+            },
+            {
+              "route": "Positionsbild",
+              "method": "GET",
+              "atMs": 7752.1,
+              "firstByteMs": 160.7,
+              "requestBytes": 0,
+              "responseBytes": 490527
+            }
+          ],
+          "pixelSha256": "c5ebe87773642884b29af2293735266d51877a256114c9844aecc66872ac6630",
+          "pngSha256": "d519ff7cf65a6b163abf100f9a686a71cd619900e7df6cd54d33de8d72a2297d",
+          "cameraChecks": 24,
+          "angle": {
+            "horizontal": 0,
+            "vertical": 0
+          },
+          "sku": "FK-AV2A-16x28-1441",
+          "variant": "57471227756924",
+          "totalCents": 9998,
+          "firstCardMs": 102.7,
+          "switchMs": 163.6,
+          "readyMs": 2860.7,
+          "entryThroughCardMs": 3251.5
+        },
+        {
+          "device": "Mobil",
+          "run": 1,
+          "cache": "warm",
+          "clickThroughPaintMs": 3774.9,
+          "requests": [
+            {
+              "route": "Gerätefoto",
+              "method": "GET",
+              "atMs": 46.9,
+              "firstByteMs": 356.2,
+              "requestBytes": 0,
+              "responseBytes": 63561
+            },
+            {
+              "route": "Oberfläche",
+              "method": "GET",
+              "atMs": 47,
+              "firstByteMs": 356.2,
+              "requestBytes": 0,
+              "responseBytes": 97842
+            },
+            {
+              "route": "Motiv",
+              "method": "GET",
+              "atMs": 47.1,
+              "firstByteMs": 355.9,
+              "requestBytes": 0,
+              "responseBytes": 202
+            },
+            {
+              "route": "Motiv",
+              "method": "GET",
+              "atMs": 47.1,
+              "firstByteMs": 355.9,
+              "requestBytes": 0,
+              "responseBytes": 202
+            },
+            {
+              "route": "Oberfläche",
+              "method": "GET",
+              "atMs": 52.9,
+              "firstByteMs": 545,
+              "requestBytes": 0,
+              "responseBytes": 97837
+            },
+            {
+              "route": "Motiv",
+              "method": "GET",
+              "atMs": 55.2,
+              "firstByteMs": 542.6,
+              "requestBytes": 0,
+              "responseBytes": 202
+            },
+            {
+              "route": "Gerätefoto",
+              "method": "GET",
+              "atMs": 55.4,
+              "firstByteMs": 463.7,
+              "requestBytes": 0,
+              "responseBytes": 63547
+            },
+            {
+              "route": "Ressource",
+              "method": "GET",
+              "atMs": 420.1,
+              "firstByteMs": 204.9,
+              "requestBytes": 0,
+              "responseBytes": 270833
+            },
+            {
+              "route": "Entwurf",
+              "method": "POST",
+              "atMs": 728.9,
+              "firstByteMs": 1217.5,
+              "requestBytes": 95706,
+              "responseBytes": 311
+            },
+            {
+              "route": "Ressource",
+              "method": "GET",
+              "atMs": 854.9,
+              "firstByteMs": 94.2,
+              "requestBytes": 0,
+              "responseBytes": 136896
+            },
+            {
+              "route": "Ressource",
+              "method": "GET",
+              "atMs": 1078.5,
+              "firstByteMs": 82.1,
+              "requestBytes": 0,
+              "responseBytes": 143678
+            },
+            {
+              "route": "Ressource",
+              "method": "GET",
+              "atMs": 1288.7,
+              "firstByteMs": 659.6,
+              "requestBytes": 0,
+              "responseBytes": 219591
+            },
+            {
+              "route": "Ressource",
+              "method": "GET",
+              "atMs": 1289.1,
+              "firstByteMs": 901.1,
+              "requestBytes": 0,
+              "responseBytes": 130929
+            },
+            {
+              "route": "Warenkorb",
+              "method": "POST",
+              "atMs": 1950.8,
+              "firstByteMs": 592.8,
+              "requestBytes": 134,
+              "responseBytes": 168
+            },
+            {
+              "route": "Warenkorbseite",
+              "method": "GET",
+              "atMs": 2554.4,
+              "firstByteMs": 159,
+              "requestBytes": 0,
+              "responseBytes": 1581
+            },
+            {
+              "route": "Beta-Client",
+              "method": "GET",
+              "atMs": 2739.3,
+              "firstByteMs": 117,
+              "requestBytes": 0,
+              "responseBytes": 3357
+            },
+            {
+              "route": "Warenkorb",
+              "method": "GET",
+              "atMs": 2867.1,
+              "firstByteMs": 137.7,
+              "requestBytes": 0,
+              "responseBytes": 599
+            },
+            {
+              "route": "Positionsbild",
+              "method": "GET",
+              "atMs": 3013,
+              "firstByteMs": 90.7,
+              "requestBytes": 0,
+              "responseBytes": 490493
+            },
+            {
+              "route": "Positionsbild",
+              "method": "GET",
+              "atMs": 3013.2,
+              "firstByteMs": 91.6,
+              "requestBytes": 0,
+              "responseBytes": 492005
+            }
+          ],
+          "pixelSha256": "0f3997d621452d71bc21c739675f8a8fa8b07843194aa0a274eadf31e4523e7f",
+          "pngSha256": "9fc2acaeb667b929ff48de8180ef65209cf7fe950f70d6b75a1ea5577ad15036",
+          "cameraChecks": 24,
+          "angle": {
+            "horizontal": 16,
+            "vertical": 16
+          },
+          "sku": "FK-AV2A-16x28-1441",
+          "variant": "57471227756924",
+          "totalCents": 9998,
+          "firstCardMs": 72.4,
+          "switchMs": 152.9,
+          "readyMs": 1779.5,
+          "entryThroughCardMs": 1953.6
+        },
+        {
+          "device": "PC",
+          "run": 2,
+          "cache": "kalt",
+          "clickThroughPaintMs": 3518.8,
+          "requests": [
+            {
+              "route": "Gerätefoto",
+              "method": "GET",
+              "atMs": 58,
+              "firstByteMs": 85.7,
+              "requestBytes": 0,
+              "responseBytes": 63570
+            },
+            {
+              "route": "Oberfläche",
+              "method": "GET",
+              "atMs": 58.1,
+              "firstByteMs": 88.6,
+              "requestBytes": 0,
+              "responseBytes": 97837
+            },
+            {
+              "route": "Oberfläche",
+              "method": "GET",
+              "atMs": 63.7,
+              "firstByteMs": 88.9,
+              "requestBytes": 0,
+              "responseBytes": 97837
+            },
+            {
+              "route": "Gerätefoto",
+              "method": "GET",
+              "atMs": 63.8,
+              "firstByteMs": 170.6,
+              "requestBytes": 0,
+              "responseBytes": 63547
+            },
+            {
+              "route": "Entwurf",
+              "method": "POST",
+              "atMs": 370,
+              "firstByteMs": 1437.8,
+              "requestBytes": 94650,
+              "responseBytes": 326
+            },
+            {
+              "route": "Warenkorb",
+              "method": "POST",
+              "atMs": 1815.1,
+              "firstByteMs": 571.5,
+              "requestBytes": 134,
+              "responseBytes": 171
+            },
+            {
+              "route": "Warenkorbseite",
+              "method": "GET",
+              "atMs": 2399.5,
+              "firstByteMs": 116.2,
+              "requestBytes": 0,
+              "responseBytes": 1605
+            },
+            {
+              "route": "Beta-Client",
+              "method": "GET",
+              "atMs": 2573.4,
+              "firstByteMs": 136.7,
+              "requestBytes": 0,
+              "responseBytes": 3342
+            },
+            {
+              "route": "Warenkorb",
+              "method": "GET",
+              "atMs": 2727.8,
+              "firstByteMs": 137.5,
+              "requestBytes": 0,
+              "responseBytes": 504
+            },
+            {
+              "route": "Positionsbild",
+              "method": "GET",
+              "atMs": 2872.2,
+              "firstByteMs": 211.1,
+              "requestBytes": 0,
+              "responseBytes": 490599
+            }
+          ],
+          "pixelSha256": "c5ebe87773642884b29af2293735266d51877a256114c9844aecc66872ac6630",
+          "pngSha256": "d519ff7cf65a6b163abf100f9a686a71cd619900e7df6cd54d33de8d72a2297d",
+          "cameraChecks": 24,
+          "angle": {
+            "horizontal": 0,
+            "vertical": 0
+          },
+          "sku": "FK-AV2A-16x28-1441",
+          "variant": "57471227756924",
+          "totalCents": 9998,
+          "firstCardMs": 26.9,
+          "switchMs": 165.9,
+          "readyMs": 2572,
+          "entryThroughCardMs": 2993.1
+        },
+        {
+          "device": "PC",
+          "run": 2,
+          "cache": "warm",
+          "clickThroughPaintMs": 8622.9,
+          "requests": [
+            {
+              "route": "Gerätefoto",
+              "method": "GET",
+              "atMs": 47.4,
+              "firstByteMs": 285.8,
+              "requestBytes": 0,
+              "responseBytes": 63646
+            },
+            {
+              "route": "Oberfläche",
+              "method": "GET",
+              "atMs": 48.5,
+              "firstByteMs": 382.3,
+              "requestBytes": 0,
+              "responseBytes": 97837
+            },
+            {
+              "route": "Motiv",
+              "method": "GET",
+              "atMs": 48.6,
+              "firstByteMs": 381.9,
+              "requestBytes": 0,
+              "responseBytes": 202
+            },
+            {
+              "route": "Motiv",
+              "method": "GET",
+              "atMs": 48.7,
+              "firstByteMs": 403.8,
+              "requestBytes": 0,
+              "responseBytes": 202
+            },
+            {
+              "route": "Oberfläche",
+              "method": "GET",
+              "atMs": 55,
+              "firstByteMs": 397.8,
+              "requestBytes": 0,
+              "responseBytes": 97837
+            },
+            {
+              "route": "Motiv",
+              "method": "GET",
+              "atMs": 62.3,
+              "firstByteMs": 407.5,
+              "requestBytes": 0,
+              "responseBytes": 202
+            },
+            {
+              "route": "Gerätefoto",
+              "method": "GET",
+              "atMs": 62.4,
+              "firstByteMs": 401.5,
+              "requestBytes": 0,
+              "responseBytes": 63547
+            },
+            {
+              "route": "Ressource",
+              "method": "GET",
+              "atMs": 363.3,
+              "firstByteMs": 120.8,
+              "requestBytes": 0,
+              "responseBytes": 270830
+            },
+            {
+              "route": "Ressource",
+              "method": "GET",
+              "atMs": 604.3,
+              "firstByteMs": 98.9,
+              "requestBytes": 0,
+              "responseBytes": 136879
+            },
+            {
+              "route": "Entwurf",
+              "method": "POST",
+              "atMs": 752.4,
+              "firstByteMs": 6157.8,
+              "requestBytes": 95706,
+              "responseBytes": 317
+            },
+            {
+              "route": "Ressource",
+              "method": "GET",
+              "atMs": 754.6,
+              "firstByteMs": 250.6,
+              "requestBytes": 0,
+              "responseBytes": 143708
+            },
+            {
+              "route": "Ressource",
+              "method": "GET",
+              "atMs": 1070.6,
+              "firstByteMs": 90.9,
+              "requestBytes": 0,
+              "responseBytes": 219597
+            },
+            {
+              "route": "Ressource",
+              "method": "GET",
+              "atMs": 1070.8,
+              "firstByteMs": 106.1,
+              "requestBytes": 0,
+              "responseBytes": 130925
+            },
+            {
+              "route": "Warenkorb",
+              "method": "POST",
+              "atMs": 6919.5,
+              "firstByteMs": 583.9,
+              "requestBytes": 134,
+              "responseBytes": 276
+            },
+            {
+              "route": "Warenkorbseite",
+              "method": "GET",
+              "atMs": 7532.9,
+              "firstByteMs": 87.6,
+              "requestBytes": 0,
+              "responseBytes": 1701
+            },
+            {
+              "route": "Beta-Client",
+              "method": "GET",
+              "atMs": 7669.4,
+              "firstByteMs": 90.1,
+              "requestBytes": 0,
+              "responseBytes": 3357
+            },
+            {
+              "route": "Warenkorb",
+              "method": "GET",
+              "atMs": 7794.1,
+              "firstByteMs": 84.3,
+              "requestBytes": 0,
+              "responseBytes": 598
+            },
+            {
+              "route": "Positionsbild",
+              "method": "GET",
+              "atMs": 7889.9,
+              "firstByteMs": 174.6,
+              "requestBytes": 0,
+              "responseBytes": 490528
+            },
+            {
+              "route": "Positionsbild",
+              "method": "GET",
+              "atMs": 7890.8,
+              "firstByteMs": 254.6,
+              "requestBytes": 0,
+              "responseBytes": 492014
+            }
+          ],
+          "pixelSha256": "0f3997d621452d71bc21c739675f8a8fa8b07843194aa0a274eadf31e4523e7f",
+          "pngSha256": "9fc2acaeb667b929ff48de8180ef65209cf7fe950f70d6b75a1ea5577ad15036",
+          "cameraChecks": 24,
+          "angle": {
+            "horizontal": 16,
+            "vertical": 16
+          },
+          "sku": "FK-AV2A-16x28-1441",
+          "variant": "57471227756924",
+          "totalCents": 9998,
+          "firstCardMs": 38.3,
+          "switchMs": 235.5,
+          "readyMs": 1885.1,
+          "entryThroughCardMs": 2333.2
+        },
+        {
+          "device": "Mobil",
+          "run": 2,
+          "cache": "kalt",
+          "clickThroughPaintMs": 3809.6,
+          "requests": [
+            {
+              "route": "Gerätefoto",
+              "method": "GET",
+              "atMs": 52.9,
+              "firstByteMs": 110,
+              "requestBytes": 0,
+              "responseBytes": 63547
+            },
+            {
+              "route": "Oberfläche",
+              "method": "GET",
+              "atMs": 53.3,
+              "firstByteMs": 85.2,
+              "requestBytes": 0,
+              "responseBytes": 97837
+            },
+            {
+              "route": "Oberfläche",
+              "method": "GET",
+              "atMs": 60.9,
+              "firstByteMs": 130.4,
+              "requestBytes": 0,
+              "responseBytes": 97837
+            },
+            {
+              "route": "Gerätefoto",
+              "method": "GET",
+              "atMs": 61.1,
+              "firstByteMs": 127.1,
+              "requestBytes": 0,
+              "responseBytes": 63547
+            },
+            {
+              "route": "Entwurf",
+              "method": "POST",
+              "atMs": 412.9,
+              "firstByteMs": 1722.1,
+              "requestBytes": 94650,
+              "responseBytes": 314
+            },
+            {
+              "route": "Warenkorb",
+              "method": "POST",
+              "atMs": 2149.1,
+              "firstByteMs": 543.8,
+              "requestBytes": 134,
+              "responseBytes": 192
+            },
+            {
+              "route": "Warenkorbseite",
+              "method": "GET",
+              "atMs": 2725.6,
+              "firstByteMs": 118.9,
+              "requestBytes": 0,
+              "responseBytes": 1584
+            },
+            {
+              "route": "Beta-Client",
+              "method": "GET",
+              "atMs": 2906.5,
+              "firstByteMs": 117.3,
+              "requestBytes": 0,
+              "responseBytes": 3334
+            },
+            {
+              "route": "Warenkorb",
+              "method": "GET",
+              "atMs": 3054.7,
+              "firstByteMs": 128.6,
+              "requestBytes": 0,
+              "responseBytes": 505
+            },
+            {
+              "route": "Positionsbild",
+              "method": "GET",
+              "atMs": 3198.2,
+              "firstByteMs": 183.8,
+              "requestBytes": 0,
+              "responseBytes": 490501
+            }
+          ],
+          "pixelSha256": "c5ebe87773642884b29af2293735266d51877a256114c9844aecc66872ac6630",
+          "pngSha256": "d519ff7cf65a6b163abf100f9a686a71cd619900e7df6cd54d33de8d72a2297d",
+          "cameraChecks": 24,
+          "angle": {
+            "horizontal": 0,
+            "vertical": 0
+          },
+          "sku": "FK-AV2A-16x28-1441",
+          "variant": "57471227756924",
+          "totalCents": 9998,
+          "firstCardMs": 96.8,
+          "switchMs": 235.9,
+          "readyMs": 2872,
+          "entryThroughCardMs": 3349.2
+        },
+        {
+          "device": "Mobil",
+          "run": 2,
+          "cache": "warm",
+          "clickThroughPaintMs": 6637.6,
+          "requests": [
+            {
+              "route": "Gerätefoto",
+              "method": "GET",
+              "atMs": 47.7,
+              "firstByteMs": 92.2,
+              "requestBytes": 0,
+              "responseBytes": 63572
+            },
+            {
+              "route": "Oberfläche",
+              "method": "GET",
+              "atMs": 47.9,
+              "firstByteMs": 99.4,
+              "requestBytes": 0,
+              "responseBytes": 97838
+            },
+            {
+              "route": "Motiv",
+              "method": "GET",
+              "atMs": 48,
+              "firstByteMs": 190.4,
+              "requestBytes": 0,
+              "responseBytes": 202
+            },
+            {
+              "route": "Motiv",
+              "method": "GET",
+              "atMs": 48.1,
+              "firstByteMs": 190.1,
+              "requestBytes": 0,
+              "responseBytes": 202
+            },
+            {
+              "route": "Oberfläche",
+              "method": "GET",
+              "atMs": 56.3,
+              "firstByteMs": 182.7,
+              "requestBytes": 0,
+              "responseBytes": 97838
+            },
+            {
+              "route": "Motiv",
+              "method": "GET",
+              "atMs": 56.7,
+              "firstByteMs": 266.6,
+              "requestBytes": 0,
+              "responseBytes": 202
+            },
+            {
+              "route": "Gerätefoto",
+              "method": "GET",
+              "atMs": 56.9,
+              "firstByteMs": 205.7,
+              "requestBytes": 0,
+              "responseBytes": 63548
+            },
+            {
+              "route": "Ressource",
+              "method": "GET",
+              "atMs": 65.1,
+              "firstByteMs": 258.2,
+              "requestBytes": 0,
+              "responseBytes": 262428
+            },
+            {
+              "route": "Ressource",
+              "method": "GET",
+              "atMs": 523.8,
+              "firstByteMs": 81.2,
+              "requestBytes": 0,
+              "responseBytes": 270825
+            },
+            {
+              "route": "Entwurf",
+              "method": "POST",
+              "atMs": 563.5,
+              "firstByteMs": 1112.7,
+              "requestBytes": 95706,
+              "responseBytes": 293
+            },
+            {
+              "route": "Ressource",
+              "method": "GET",
+              "atMs": 745.2,
+              "firstByteMs": 79.9,
+              "requestBytes": 0,
+              "responseBytes": 136874
+            },
+            {
+              "route": "Ressource",
+              "method": "GET",
+              "atMs": 884.5,
+              "firstByteMs": 104.9,
+              "requestBytes": 0,
+              "responseBytes": 143703
+            },
+            {
+              "route": "Ressource",
+              "method": "GET",
+              "atMs": 1043.2,
+              "firstByteMs": 632.7,
+              "requestBytes": 0,
+              "responseBytes": 219615
+            },
+            {
+              "route": "Ressource",
+              "method": "GET",
+              "atMs": 1043.3,
+              "firstByteMs": 860.8,
+              "requestBytes": 0,
+              "responseBytes": 130912
+            },
+            {
+              "route": "Warenkorb",
+              "method": "POST",
+              "atMs": 1693.1,
+              "firstByteMs": 2978,
+              "requestBytes": 134,
+              "responseBytes": 303
+            },
+            {
+              "route": "Warenkorbseite",
+              "method": "GET",
+              "atMs": 4688.4,
+              "firstByteMs": 93.9,
+              "requestBytes": 0,
+              "responseBytes": 1679
+            },
+            {
+              "route": "Beta-Client",
+              "method": "GET",
+              "atMs": 4830.6,
+              "firstByteMs": 79.9,
+              "requestBytes": 0,
+              "responseBytes": 3357
+            },
+            {
+              "route": "Warenkorb",
+              "method": "GET",
+              "atMs": 4935.5,
+              "firstByteMs": 87.3,
+              "requestBytes": 0,
+              "responseBytes": 624
+            },
+            {
+              "route": "Positionsbild",
+              "method": "GET",
+              "atMs": 5031.1,
+              "firstByteMs": 157.1,
+              "requestBytes": 0,
+              "responseBytes": 490493
+            },
+            {
+              "route": "Positionsbild",
+              "method": "GET",
+              "atMs": 5031.3,
+              "firstByteMs": 590.8,
+              "requestBytes": 0,
+              "responseBytes": 492005
+            }
+          ],
+          "pixelSha256": "0f3997d621452d71bc21c739675f8a8fa8b07843194aa0a274eadf31e4523e7f",
+          "pngSha256": "9fc2acaeb667b929ff48de8180ef65209cf7fe950f70d6b75a1ea5577ad15036",
+          "cameraChecks": 24,
+          "angle": {
+            "horizontal": 16,
+            "vertical": 16
+          },
+          "sku": "FK-AV2A-16x28-1441",
+          "variant": "57471227756924",
+          "totalCents": 9998,
+          "firstCardMs": 73.5,
+          "switchMs": 148.9,
+          "readyMs": 2051.5,
+          "entryThroughCardMs": 2474.5
+        },
+        {
+          "device": "PC",
+          "run": 3,
+          "cache": "kalt",
+          "clickThroughPaintMs": 8340.3,
+          "requests": [
+            {
+              "route": "Gerätefoto",
+              "method": "GET",
+              "atMs": 50.7,
+              "firstByteMs": 82,
+              "requestBytes": 0,
+              "responseBytes": 63571
+            },
+            {
+              "route": "Oberfläche",
+              "method": "GET",
+              "atMs": 50.8,
+              "firstByteMs": 106.8,
+              "requestBytes": 0,
+              "responseBytes": 97837
+            },
+            {
+              "route": "Oberfläche",
+              "method": "GET",
+              "atMs": 58.8,
+              "firstByteMs": 133.6,
+              "requestBytes": 0,
+              "responseBytes": 97837
+            },
+            {
+              "route": "Gerätefoto",
+              "method": "GET",
+              "atMs": 60.6,
+              "firstByteMs": 123.8,
+              "requestBytes": 0,
+              "responseBytes": 63547
+            },
+            {
+              "route": "Entwurf",
+              "method": "POST",
+              "atMs": 487,
+              "firstByteMs": 6305,
+              "requestBytes": 94650,
+              "responseBytes": 325
+            },
+            {
+              "route": "Warenkorb",
+              "method": "POST",
+              "atMs": 6804.1,
+              "firstByteMs": 588.1,
+              "requestBytes": 134,
+              "responseBytes": 176
+            },
+            {
+              "route": "Warenkorbseite",
+              "method": "GET",
+              "atMs": 7419.3,
+              "firstByteMs": 90.5,
+              "requestBytes": 0,
+              "responseBytes": 1720
+            },
+            {
+              "route": "Beta-Client",
+              "method": "GET",
+              "atMs": 7570.2,
+              "firstByteMs": 82.2,
+              "requestBytes": 0,
+              "responseBytes": 3357
+            },
+            {
+              "route": "Warenkorb",
+              "method": "GET",
+              "atMs": 7685.4,
+              "firstByteMs": 83,
+              "requestBytes": 0,
+              "responseBytes": 515
+            },
+            {
+              "route": "Positionsbild",
+              "method": "GET",
+              "atMs": 7782.7,
+              "firstByteMs": 152.6,
+              "requestBytes": 0,
+              "responseBytes": 490511
+            }
+          ],
+          "pixelSha256": "c5ebe87773642884b29af2293735266d51877a256114c9844aecc66872ac6630",
+          "pngSha256": "d519ff7cf65a6b163abf100f9a686a71cd619900e7df6cd54d33de8d72a2297d",
+          "cameraChecks": 24,
+          "angle": {
+            "horizontal": 0,
+            "vertical": 0
+          },
+          "sku": "FK-AV2A-16x28-1441",
+          "variant": "57471227756924",
+          "totalCents": 9998,
+          "firstCardMs": 39.3,
+          "switchMs": 247.9,
+          "readyMs": 3225.5,
+          "entryThroughCardMs": 3333.1
+        },
+        {
+          "device": "PC",
+          "run": 3,
+          "cache": "warm",
+          "clickThroughPaintMs": 3597.8,
+          "requests": [
+            {
+              "route": "Gerätefoto",
+              "method": "GET",
+              "atMs": 73.1,
+              "firstByteMs": 175.5,
+              "requestBytes": 0,
+              "responseBytes": 63547
+            },
+            {
+              "route": "Oberfläche",
+              "method": "GET",
+              "atMs": 73.3,
+              "firstByteMs": 97.5,
+              "requestBytes": 0,
+              "responseBytes": 97837
+            },
+            {
+              "route": "Motiv",
+              "method": "GET",
+              "atMs": 73.4,
+              "firstByteMs": 96.8,
+              "requestBytes": 0,
+              "responseBytes": 226
+            },
+            {
+              "route": "Motiv",
+              "method": "GET",
+              "atMs": 73.4,
+              "firstByteMs": 96.8,
+              "requestBytes": 0,
+              "responseBytes": 202
+            },
+            {
+              "route": "Oberfläche",
+              "method": "GET",
+              "atMs": 83.4,
+              "firstByteMs": 316.1,
+              "requestBytes": 0,
+              "responseBytes": 97837
+            },
+            {
+              "route": "Motiv",
+              "method": "GET",
+              "atMs": 83.9,
+              "firstByteMs": 316,
+              "requestBytes": 0,
+              "responseBytes": 202
+            },
+            {
+              "route": "Gerätefoto",
+              "method": "GET",
+              "atMs": 84.1,
+              "firstByteMs": 275.4,
+              "requestBytes": 0,
+              "responseBytes": 63547
+            },
+            {
+              "route": "Entwurf",
+              "method": "POST",
+              "atMs": 688.7,
+              "firstByteMs": 1339,
+              "requestBytes": 95706,
+              "responseBytes": 311
+            },
+            {
+              "route": "Warenkorb",
+              "method": "POST",
+              "atMs": 2041,
+              "firstByteMs": 508.8,
+              "requestBytes": 134,
+              "responseBytes": 167
+            },
+            {
+              "route": "Warenkorbseite",
+              "method": "GET",
+              "atMs": 2577.5,
+              "firstByteMs": 78.1,
+              "requestBytes": 0,
+              "responseBytes": 1581
+            },
+            {
+              "route": "Beta-Client",
+              "method": "GET",
+              "atMs": 2712,
+              "firstByteMs": 85.3,
+              "requestBytes": 0,
+              "responseBytes": 3334
+            },
+            {
+              "route": "Warenkorb",
+              "method": "GET",
+              "atMs": 2831.4,
+              "firstByteMs": 90.8,
+              "requestBytes": 0,
+              "responseBytes": 599
+            },
+            {
+              "route": "Positionsbild",
+              "method": "GET",
+              "atMs": 2934.6,
+              "firstByteMs": 159.3,
+              "requestBytes": 0,
+              "responseBytes": 490517
+            },
+            {
+              "route": "Positionsbild",
+              "method": "GET",
+              "atMs": 2935,
+              "firstByteMs": 496.8,
+              "requestBytes": 0,
+              "responseBytes": 492081
+            }
+          ],
+          "pixelSha256": "0f3997d621452d71bc21c739675f8a8fa8b07843194aa0a274eadf31e4523e7f",
+          "pngSha256": "9fc2acaeb667b929ff48de8180ef65209cf7fe950f70d6b75a1ea5577ad15036",
+          "cameraChecks": 24,
+          "angle": {
+            "horizontal": 16,
+            "vertical": 16
+          },
+          "sku": "FK-AV2A-16x28-1441",
+          "variant": "57471227756924",
+          "totalCents": 9998,
+          "firstCardMs": 53.3,
+          "switchMs": 221.9,
+          "readyMs": 2298.6,
+          "entryThroughCardMs": 2715.8
+        },
+        {
+          "device": "Mobil",
+          "run": 3,
+          "cache": "kalt",
+          "clickThroughPaintMs": 3634.3,
+          "requests": [
+            {
+              "route": "Gerätefoto",
+              "method": "GET",
+              "atMs": 54,
+              "firstByteMs": 99.5,
+              "requestBytes": 0,
+              "responseBytes": 63547
+            },
+            {
+              "route": "Oberfläche",
+              "method": "GET",
+              "atMs": 54.1,
+              "firstByteMs": 87.9,
+              "requestBytes": 0,
+              "responseBytes": 97837
+            },
+            {
+              "route": "Oberfläche",
+              "method": "GET",
+              "atMs": 58.8,
+              "firstByteMs": 115.9,
+              "requestBytes": 0,
+              "responseBytes": 97837
+            },
+            {
+              "route": "Gerätefoto",
+              "method": "GET",
+              "atMs": 59,
+              "firstByteMs": 96,
+              "requestBytes": 0,
+              "responseBytes": 63547
+            },
+            {
+              "route": "Ressource",
+              "method": "GET",
+              "atMs": 84.3,
+              "firstByteMs": 189.5,
+              "requestBytes": 0,
+              "responseBytes": 219673
+            },
+            {
+              "route": "Ressource",
+              "method": "GET",
+              "atMs": 84.5,
+              "firstByteMs": 143,
+              "requestBytes": 0,
+              "responseBytes": 130917
+            },
+            {
+              "route": "Entwurf",
+              "method": "POST",
+              "atMs": 406.5,
+              "firstByteMs": 1461.8,
+              "requestBytes": 94650,
+              "responseBytes": 316
+            },
+            {
+              "route": "Warenkorb",
+              "method": "POST",
+              "atMs": 1879.6,
+              "firstByteMs": 562.2,
+              "requestBytes": 134,
+              "responseBytes": 170
+            },
+            {
+              "route": "Warenkorbseite",
+              "method": "GET",
+              "atMs": 2472,
+              "firstByteMs": 114.6,
+              "requestBytes": 0,
+              "responseBytes": 1581
+            },
+            {
+              "route": "Beta-Client",
+              "method": "GET",
+              "atMs": 2639.9,
+              "firstByteMs": 134.6,
+              "requestBytes": 0,
+              "responseBytes": 3358
+            },
+            {
+              "route": "Warenkorb",
+              "method": "GET",
+              "atMs": 2797.6,
+              "firstByteMs": 130.1,
+              "requestBytes": 0,
+              "responseBytes": 506
+            },
+            {
+              "route": "Positionsbild",
+              "method": "GET",
+              "atMs": 2941.2,
+              "firstByteMs": 227.1,
+              "requestBytes": 0,
+              "responseBytes": 490510
+            }
+          ],
+          "pixelSha256": "c5ebe87773642884b29af2293735266d51877a256114c9844aecc66872ac6630",
+          "pngSha256": "d519ff7cf65a6b163abf100f9a686a71cd619900e7df6cd54d33de8d72a2297d",
+          "cameraChecks": 24,
+          "angle": {
+            "horizontal": 0,
+            "vertical": 0
+          },
+          "sku": "FK-AV2A-16x28-1441",
+          "variant": "57471227756924",
+          "totalCents": 9998,
+          "firstCardMs": 97.2,
+          "switchMs": 235.3,
+          "readyMs": 3987.9,
+          "entryThroughCardMs": 4230.9
+        },
+        {
+          "device": "Mobil",
+          "run": 3,
+          "cache": "warm",
+          "clickThroughPaintMs": 8574,
+          "requests": [
+            {
+              "route": "Gerätefoto",
+              "method": "GET",
+              "atMs": 48.1,
+              "firstByteMs": 194.3,
+              "requestBytes": 0,
+              "responseBytes": 63547
+            },
+            {
+              "route": "Oberfläche",
+              "method": "GET",
+              "atMs": 48.2,
+              "firstByteMs": 195.4,
+              "requestBytes": 0,
+              "responseBytes": 97837
+            },
+            {
+              "route": "Motiv",
+              "method": "GET",
+              "atMs": 48.3,
+              "firstByteMs": 195.2,
+              "requestBytes": 0,
+              "responseBytes": 202
+            },
+            {
+              "route": "Motiv",
+              "method": "GET",
+              "atMs": 48.3,
+              "firstByteMs": 294.9,
+              "requestBytes": 0,
+              "responseBytes": 202
+            },
+            {
+              "route": "Oberfläche",
+              "method": "GET",
+              "atMs": 53.8,
+              "firstByteMs": 189.3,
+              "requestBytes": 0,
+              "responseBytes": 97837
+            },
+            {
+              "route": "Motiv",
+              "method": "GET",
+              "atMs": 54,
+              "firstByteMs": 188.9,
+              "requestBytes": 0,
+              "responseBytes": 224
+            },
+            {
+              "route": "Gerätefoto",
+              "method": "GET",
+              "atMs": 54,
+              "firstByteMs": 189.2,
+              "requestBytes": 0,
+              "responseBytes": 63547
+            },
+            {
+              "route": "Ressource",
+              "method": "GET",
+              "atMs": 259.2,
+              "firstByteMs": 89.4,
+              "requestBytes": 0,
+              "responseBytes": 262443
+            },
+            {
+              "route": "Ressource",
+              "method": "GET",
+              "atMs": 516.3,
+              "firstByteMs": 110.4,
+              "requestBytes": 0,
+              "responseBytes": 270834
+            },
+            {
+              "route": "Entwurf",
+              "method": "POST",
+              "atMs": 606.2,
+              "firstByteMs": 6107.4,
+              "requestBytes": 95706,
+              "responseBytes": 313
+            },
+            {
+              "route": "Ressource",
+              "method": "GET",
+              "atMs": 762.7,
+              "firstByteMs": 87.2,
+              "requestBytes": 0,
+              "responseBytes": 136874
+            },
+            {
+              "route": "Ressource",
+              "method": "GET",
+              "atMs": 902,
+              "firstByteMs": 86.1,
+              "requestBytes": 0,
+              "responseBytes": 143679
+            },
+            {
+              "route": "Ressource",
+              "method": "GET",
+              "atMs": 1039.7,
+              "firstByteMs": 85.1,
+              "requestBytes": 0,
+              "responseBytes": 219592
+            },
+            {
+              "route": "Ressource",
+              "method": "GET",
+              "atMs": 1041.1,
+              "firstByteMs": 173.2,
+              "requestBytes": 0,
+              "responseBytes": 130912
+            },
+            {
+              "route": "Warenkorb",
+              "method": "POST",
+              "atMs": 6721.7,
+              "firstByteMs": 589,
+              "requestBytes": 134,
+              "responseBytes": 303
+            },
+            {
+              "route": "Warenkorbseite",
+              "method": "GET",
+              "atMs": 7334.7,
+              "firstByteMs": 94.5,
+              "requestBytes": 0,
+              "responseBytes": 1698
+            },
+            {
+              "route": "Beta-Client",
+              "method": "GET",
+              "atMs": 7484.5,
+              "firstByteMs": 86.4,
+              "requestBytes": 0,
+              "responseBytes": 3357
+            },
+            {
+              "route": "Warenkorb",
+              "method": "GET",
+              "atMs": 7597.9,
+              "firstByteMs": 86.3,
+              "requestBytes": 0,
+              "responseBytes": 598
+            },
+            {
+              "route": "Positionsbild",
+              "method": "GET",
+              "atMs": 7697.8,
+              "firstByteMs": 163.2,
+              "requestBytes": 0,
+              "responseBytes": 490493
+            },
+            {
+              "route": "Positionsbild",
+              "method": "GET",
+              "atMs": 7698,
+              "firstByteMs": 533.2,
+              "requestBytes": 0,
+              "responseBytes": 491996
+            }
+          ],
+          "pixelSha256": "0f3997d621452d71bc21c739675f8a8fa8b07843194aa0a274eadf31e4523e7f",
+          "pngSha256": "9fc2acaeb667b929ff48de8180ef65209cf7fe950f70d6b75a1ea5577ad15036",
+          "cameraChecks": 24,
+          "angle": {
+            "horizontal": 16,
+            "vertical": 16
+          },
+          "sku": "FK-AV2A-16x28-1441",
+          "variant": "57471227756924",
+          "totalCents": 9998,
+          "firstCardMs": 92.1,
+          "switchMs": 240,
+          "readyMs": 2383.4,
+          "entryThroughCardMs": 2613.7
+        }
+      ]
+    }
+  }
+}

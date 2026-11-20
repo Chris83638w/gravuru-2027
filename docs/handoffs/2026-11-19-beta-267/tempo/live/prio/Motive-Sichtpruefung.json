@@ -1,0 +1,211 @@
+{
+  "veroeffentlichtUTC": "2026-11-20T07:23:27.226262+00:00",
+  "commit": "2bd7bd8e4b556955fbbbe28b585ecdaa4bfc7179",
+  "produkt": "https://gravuru-design.myshopify.com/products/tuerschild-edelstahl-form-und-groesse-selbst-waehlen",
+  "browser": "157.0.8103.78",
+  "bildschirmpruefungen": [
+    {
+      "breite": 320,
+      "hoehe": 568,
+      "vorher": {
+        "firstY": 560,
+        "completeCards": 0,
+        "completeImages": 0,
+        "firstThreeReady": true,
+        "scrollTop": 0,
+        "searchFocused": false,
+        "price": "Je Motiv 1,69 €."
+      },
+      "live": {
+        "firstY": 373,
+        "completeCards": 3,
+        "completeImages": 3,
+        "firstThreeReady": true,
+        "scrollTop": 0,
+        "searchFocused": false,
+        "price": "Je Motiv 1,69 €."
+      },
+      "beimErstenMesspunktLive": {
+        "firstY": 373,
+        "completeCards": 3,
+        "completeImages": 0,
+        "firstThreeReady": false,
+        "scrollTop": 0,
+        "searchFocused": false,
+        "price": "Je Motiv 1,69 €."
+      },
+      "bisAlleSichtbarenBilderGeladenMs": 1355
+    },
+    {
+      "breite": 360,
+      "hoehe": 640,
+      "vorher": {
+        "firstY": 560,
+        "completeCards": 0,
+        "completeImages": 0,
+        "firstThreeReady": true,
+        "scrollTop": 0,
+        "searchFocused": false,
+        "price": "Je Motiv 1,69 €."
+      },
+      "live": {
+        "firstY": 403,
+        "completeCards": 3,
+        "completeImages": 3,
+        "firstThreeReady": true,
+        "scrollTop": 0,
+        "searchFocused": false,
+        "price": "Je Motiv 1,69 €."
+      },
+      "beimErstenMesspunktLive": {
+        "firstY": 403,
+        "completeCards": 3,
+        "completeImages": 3,
+        "firstThreeReady": true,
+        "scrollTop": 0,
+        "searchFocused": false,
+        "price": "Je Motiv 1,69 €."
+      },
+      "bisAlleSichtbarenBilderGeladenMs": 0
+    },
+    {
+      "breite": 390,
+      "hoehe": 844,
+      "vorher": {
+        "firstY": 627,
+        "completeCards": 3,
+        "completeImages": 3,
+        "firstThreeReady": true,
+        "scrollTop": 0,
+        "searchFocused": false,
+        "price": "Je Motiv 1,69 €."
+      },
+      "live": {
+        "firstY": 503,
+        "completeCards": 6,
+        "completeImages": 6,
+        "firstThreeReady": true,
+        "scrollTop": 0,
+        "searchFocused": false,
+        "price": "Je Motiv 1,69 €."
+      },
+      "beimErstenMesspunktLive": {
+        "firstY": 503,
+        "completeCards": 6,
+        "completeImages": 0,
+        "firstThreeReady": false,
+        "scrollTop": 0,
+        "searchFocused": false,
+        "price": "Je Motiv 1,69 €."
+      },
+      "bisAlleSichtbarenBilderGeladenMs": 550
+    },
+    {
+      "breite": 1440,
+      "hoehe": 900,
+      "vorher": {
+        "firstY": 618,
+        "completeCards": 3,
+        "completeImages": 3,
+        "firstThreeReady": true,
+        "scrollTop": 0,
+        "searchFocused": false,
+        "price": "Je Motiv 1,69 €."
+      },
+      "live": {
+        "firstY": 320,
+        "completeCards": 12,
+        "completeImages": 12,
+        "firstThreeReady": true,
+        "scrollTop": 0,
+        "searchFocused": false,
+        "price": "Je Motiv 1,69 €."
+      },
+      "beimErstenMesspunktLive": {
+        "firstY": 320,
+        "completeCards": 12,
+        "completeImages": 0,
+        "firstThreeReady": false,
+        "scrollTop": 0,
+        "searchFocused": false,
+        "price": "Je Motiv 1,69 €."
+      },
+      "bisAlleSichtbarenBilderGeladenMs": 1539
+    }
+  ],
+  "bedienpruefungen": [
+    {
+      "produkt": "klingelschild-ring-wired-pro-3-gen-5dfya2-personalisiert",
+      "fenster": [
+        390,
+        844
+      ],
+      "sichtbareMotivbilder": 6,
+      "suchbegriff": "Anker",
+      "anzahlKategorien": 48,
+      "tastaturAuswahl": "Weihnachten",
+      "kategorieNachMenue": "Tiere",
+      "hinweis": "Motive sind im Preis enthalten.",
+      "produktvorschauNachFertigWieVorher": true,
+      "suchtrefferBeiReduzierterHoeheSichtbar": true
+    },
+    {
+      "produkt": "tuerschild-edelstahl-form-und-groesse-selbst-waehlen",
+      "fenster": [
+        360,
+        640
+      ],
+      "sichtbareMotivbilder": 3,
+      "suchbegriff": "Anker",
+      "anzahlKategorien": 48,
+      "tastaturAuswahl": "Weihnachten",
+      "kategorieNachMenue": "Tiere",
+      "hinweis": "Das Motiv der Vorlage ist im Preis enthalten. Jedes weitere oder geänderte Motiv: +1,69 €.",
+      "produktvorschauNachFertigWieVorher": true,
+      "suchtrefferBeiReduzierterHoeheSichtbar": true
+    }
+  ],
+  "warenkorb": [
+    {
+      "stand": "vorher",
+      "produkt": "tuerschild-edelstahl-form-und-groesse-selbst-waehlen",
+      "geraet": "PC",
+      "motiv": "Haus",
+      "preisCent": 2168,
+      "positionen": 1,
+      "bildImWarenkorb": [
+        160,
+        110
+      ],
+      "bildInDerKasse": [
+        64,
+        44
+      ]
+    },
+    {
+      "stand": "live",
+      "produkt": "tuerschild-edelstahl-form-und-groesse-selbst-waehlen",
+      "geraet": "Mobil",
+      "motiv": "Haus",
+      "preisCent": 2168,
+      "positionen": 1,
+      "bildImWarenkorb": [
+        160,
+        110
+      ],
+      "bildInDerKasse": [
+        1600,
+        1102
+      ]
+    }
+  ],
+  "pruefungenPR268": {
+    "commit": "c5cf282ce653d298246df1c04854c238b78c99cb",
+    "ausgabe": [
+      "ℹ tests 298",
+      "ℹ pass 298",
+      "ℹ fail 0",
+      "ℹ duration_ms 12238.50085"
+    ]
+  }
+}

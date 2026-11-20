@@ -1,0 +1,394 @@
+[
+  {
+    "phase": "prio-r15-geschuetzt",
+    "geraet": "PC",
+    "position": 1,
+    "preisCent": 4999,
+    "design": "FK-SEITLICH",
+    "werkzeuge": [
+      "options",
+      "design",
+      "text",
+      "motif"
+    ],
+    "darstellung": "prio-r15",
+    "formatMm": [
+      160,
+      280
+    ],
+    "klickBisBildMs": 6444,
+    "wechselMs": 188,
+    "eigeneBilder": 1,
+    "bearbeiten": 0,
+    "server": [
+      {
+        "teil": "speichern",
+        "ms": 836,
+        "http": 201
+      },
+      {
+        "teil": "uebergabe",
+        "ms": 343,
+        "http": 200
+      },
+      {
+        "teil": "bilddaten",
+        "ms": 1897,
+        "http": 200
+      },
+      {
+        "teil": "bestaetigen",
+        "ms": 328,
+        "http": 200
+      },
+      {
+        "teil": "shopify-add",
+        "ms": 687,
+        "http": 200
+      }
+    ]
+  },
+  {
+    "phase": "prio-r15-geschuetzt",
+    "geraet": "PC",
+    "position": 2,
+    "preisCent": 9998,
+    "design": "FK-RUNDUM",
+    "werkzeuge": [
+      "options",
+      "design",
+      "text",
+      "motif"
+    ],
+    "darstellung": "prio-r15",
+    "formatMm": [
+      160,
+      280
+    ],
+    "klickBisBildMs": 5213,
+    "wechselMs": 202,
+    "eigeneBilder": 2,
+    "bearbeiten": 0,
+    "server": [
+      {
+        "teil": "speichern",
+        "ms": 560,
+        "http": 201
+      },
+      {
+        "teil": "uebergabe",
+        "ms": 301,
+        "http": 200
+      },
+      {
+        "teil": "bilddaten",
+        "ms": 955,
+        "http": 200
+      },
+      {
+        "teil": "bestaetigen",
+        "ms": 304,
+        "http": 200
+      },
+      {
+        "teil": "shopify-add",
+        "ms": 522,
+        "http": 200
+      }
+    ]
+  },
+  {
+    "phase": "prio-r15-geschuetzt",
+    "geraet": "Mobil",
+    "position": 1,
+    "preisCent": 4999,
+    "design": "FK-SEITLICH",
+    "werkzeuge": [
+      "options",
+      "design",
+      "text",
+      "motif"
+    ],
+    "darstellung": "prio-r15",
+    "formatMm": [
+      160,
+      280
+    ],
+    "klickBisBildMs": 6883,
+    "wechselMs": 187,
+    "eigeneBilder": 1,
+    "bearbeiten": 0,
+    "server": [
+      {
+        "teil": "speichern",
+        "ms": 1040,
+        "http": 201
+      },
+      {
+        "teil": "uebergabe",
+        "ms": 336,
+        "http": 200
+      },
+      {
+        "teil": "bilddaten",
+        "ms": 1882,
+        "http": 200
+      },
+      {
+        "teil": "bestaetigen",
+        "ms": 351,
+        "http": 200
+      },
+      {
+        "teil": "shopify-add",
+        "ms": 445,
+        "http": 200
+      }
+    ]
+  },
+  {
+    "phase": "prio-r15-geschuetzt",
+    "geraet": "Mobil",
+    "position": 2,
+    "preisCent": 9998,
+    "design": "FK-RUNDUM",
+    "werkzeuge": [
+      "options",
+      "design",
+      "text",
+      "motif"
+    ],
+    "darstellung": "prio-r15",
+    "formatMm": [
+      160,
+      280
+    ],
+    "klickBisBildMs": 6695,
+    "wechselMs": 203,
+    "eigeneBilder": 2,
+    "bearbeiten": 0,
+    "server": [
+      {
+        "teil": "speichern",
+        "ms": 1043,
+        "http": 201
+      },
+      {
+        "teil": "uebergabe",
+        "ms": 376,
+        "http": 200
+      },
+      {
+        "teil": "bilddaten",
+        "ms": 888,
+        "http": 200
+      },
+      {
+        "teil": "bestaetigen",
+        "ms": 315,
+        "http": 200
+      },
+      {
+        "teil": "shopify-add",
+        "ms": 784,
+        "http": 200
+      }
+    ]
+  },
+  {
+    "phase": "prio-r15-ring-pilot",
+    "geraet": "PC",
+    "position": 1,
+    "preisCent": 4999,
+    "design": "FK-SEITLICH",
+    "werkzeuge": [
+      "options",
+      "design",
+      "text",
+      "motif"
+    ],
+    "darstellung": "prio-r15",
+    "formatMm": [
+      160,
+      280
+    ],
+    "klickBisBildMs": 6250,
+    "wechselMs": 426,
+    "eigeneBilder": 1,
+    "bearbeiten": 0,
+    "server": [
+      {
+        "teil": "speichern",
+        "ms": 834,
+        "http": 201
+      },
+      {
+        "teil": "uebergabe",
+        "ms": 328,
+        "http": 200
+      },
+      {
+        "teil": "bilddaten",
+        "ms": 1807,
+        "http": 200
+      },
+      {
+        "teil": "bestaetigen",
+        "ms": 322,
+        "http": 200
+      },
+      {
+        "teil": "shopify-add",
+        "ms": 780,
+        "http": 200
+      }
+    ]
+  },
+  {
+    "phase": "prio-r15-ring-pilot",
+    "geraet": "PC",
+    "position": 2,
+    "preisCent": 9998,
+    "design": "FK-RUNDUM",
+    "werkzeuge": [
+      "options",
+      "design",
+      "text",
+      "motif"
+    ],
+    "darstellung": "prio-r15",
+    "formatMm": [
+      160,
+      280
+    ],
+    "klickBisBildMs": 6093,
+    "wechselMs": 363,
+    "eigeneBilder": 2,
+    "bearbeiten": 0,
+    "server": [
+      {
+        "teil": "speichern",
+        "ms": 748,
+        "http": 201
+      },
+      {
+        "teil": "uebergabe",
+        "ms": 346,
+        "http": 200
+      },
+      {
+        "teil": "bilddaten",
+        "ms": 2047,
+        "http": 200
+      },
+      {
+        "teil": "bestaetigen",
+        "ms": 490,
+        "http": 200
+      },
+      {
+        "teil": "shopify-add",
+        "ms": 438,
+        "http": 200
+      }
+    ]
+  },
+  {
+    "phase": "prio-r15-ring-pilot",
+    "geraet": "Mobil",
+    "position": 1,
+    "preisCent": 4999,
+    "design": "FK-SEITLICH",
+    "werkzeuge": [
+      "options",
+      "design",
+      "text",
+      "motif"
+    ],
+    "darstellung": "prio-r15",
+    "formatMm": [
+      160,
+      280
+    ],
+    "klickBisBildMs": 5540,
+    "wechselMs": 207,
+    "eigeneBilder": 1,
+    "bearbeiten": 0,
+    "server": [
+      {
+        "teil": "speichern",
+        "ms": 723,
+        "http": 201
+      },
+      {
+        "teil": "uebergabe",
+        "ms": 267,
+        "http": 200
+      },
+      {
+        "teil": "bilddaten",
+        "ms": 1776,
+        "http": 200
+      },
+      {
+        "teil": "bestaetigen",
+        "ms": 475,
+        "http": 200
+      },
+      {
+        "teil": "shopify-add",
+        "ms": 516,
+        "http": 200
+      }
+    ]
+  },
+  {
+    "phase": "prio-r15-ring-pilot",
+    "geraet": "Mobil",
+    "position": 2,
+    "preisCent": 9998,
+    "design": "FK-RUNDUM",
+    "werkzeuge": [
+      "options",
+      "design",
+      "text",
+      "motif"
+    ],
+    "darstellung": "prio-r15",
+    "formatMm": [
+      160,
+      280
+    ],
+    "klickBisBildMs": 5553,
+    "wechselMs": 274,
+    "eigeneBilder": 2,
+    "bearbeiten": 0,
+    "server": [
+      {
+        "teil": "speichern",
+        "ms": 616,
+        "http": 201
+      },
+      {
+        "teil": "uebergabe",
+        "ms": 713,
+        "http": 200
+      },
+      {
+        "teil": "bilddaten",
+        "ms": 2014,
+        "http": 200
+      },
+      {
+        "teil": "bestaetigen",
+        "ms": 331,
+        "http": 200
+      },
+      {
+        "teil": "shopify-add",
+        "ms": 383,
+        "http": 200
+      }
+    ]
+  }
+]

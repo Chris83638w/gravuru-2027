@@ -5,16 +5,18 @@ import {applySlateCustomerRules} from './slate-customer-rules.mjs';
 import {familyProductConfig} from './product-families.mjs';
 import {quote,prepareConfig} from '../configurator/variant-m/contract.mjs';
 import {capturePersonalization} from './cart-personalization.mjs';
-const seed=()=>({profile:{material:{kind:'slate'},themeId:'monogramme',geometry:{width:220,height:140},optionFields:['silikon','staender-klar','staender-schwarz'].map(id=>({id}))},slateAccessories:{choices:['silikon','staender-klar','staender-schwarz'].map(id=>({fieldId:id,optionId:id}))},extraMotifCents:0});
+const seed=()=>({profile:{material:{kind:'slate'},themeId:'monogramme',geometry:{shape:'rect',width:220,height:140},optionFields:['silikon','staender-klar','staender-schwarz'].map(id=>({id}))},slateAccessories:{choices:['silikon','staender-klar','staender-schwarz'].map(id=>({fieldId:id,optionId:id}))},extraMotifCents:0});
 test('Monogramme offer no acrylic stands, retain silicone and do not mutate the source',()=>{
  const source=seed(),c=applySlateCustomerRules(source);
  assert.deepEqual(c.profile.optionFields.map(f=>f.id),['silikon']);assert.deepEqual(c.slateAccessories.choices.map(f=>f.fieldId),['silikon']);
  assert.equal(source.profile.optionFields.length,3);assert.equal(c.extraMotifCents,169);
 });
-test('memorial stands remain available except 600 x 300 mm, including portrait orientation',()=>{
- for(const [width,height,allowed] of [[220,140,true],[300,200,true],[600,300,false],[300,600,false]]){
-  const c=seed();c.profile.themeId='gedenken';c.profile.geometry={width,height};
-  assert.equal(applySlateCustomerRules(c).profile.optionFields.length,allowed?3:1);
+test('only confirmed rectangular and square memorial blanks fit the stand in either orientation',()=>{
+ for(const [shape,width,height,allowed] of [['rect',400,300,true],['rect',300,400,true],['rect',300,300,true],['rect',400,301,false],['rect',401,300,false],['rect',560,180,false],['rect',600,300,false],['ellipse',355,355,false],['ellipse',200,100,false],['contour',220,140,false],[undefined,220,140,false]]){
+  const c=seed();c.profile.themeId='gedenken';c.profile.geometry={shape,width,height};
+  const result=applySlateCustomerRules(c);
+  assert.equal(result.profile.optionFields.length,allowed?3:1);
+  assert.equal(result.slateAccessories.choices.length,allowed?3:1);
  }
  const other=seed();other.profile.material.kind='steel';assert.deepEqual(applySlateCustomerRules(other),other);
 });
@@ -25,7 +27,7 @@ test('real catalogue memorial themes retain stands and select the matching motif
   assert.deepEqual(c.profile.optionFields.map(f=>f.id),['silikon','staender-klar','staender-schwarz'],themeId);
   assert.equal(c.slateAccessories.choices.length,3,themeId);assert.equal(c.motifTheme,motifTheme);
   for(const [width,height] of [[600,300],[300,600]]){
-   source.profile.geometry={width,height};const large=applySlateCustomerRules(source);
+   source.profile.geometry={shape:'rect',width,height};const large=applySlateCustomerRules(source);
    assert.deepEqual(large.profile.optionFields.map(f=>f.id),['silikon']);
    assert.deepEqual(large.slateAccessories.choices.map(f=>f.fieldId),['silikon']);
   }
@@ -35,6 +37,18 @@ test('real catalogue memorial themes retain stands and select the matching motif
  const house=seed();house.profile.themeId='hundeschilder';house.motifTheme='remembranceAnimal';
  assert.equal(applySlateCustomerRules(house).motifTheme,'home');
  assert.deepEqual(applySlateCustomerRules(house).profile.optionFields.map(f=>f.id),['silikon']);
+});
+test('a newly generated slate family projects only physically permitted accessories and retains their catalogue prices',()=>{
+ const family=JSON.parse(fs.readFileSync(new URL('../designs/steel-door-signs/family.json',import.meta.url)));
+ family.material={kind:'slate',label:'Schiefer',thicknessMm:5,processingProfileId:'slate-engraving'};
+ family.options=[{id:'zubehoer',label:'Zubehör',kind:'accessory',selection:'multiple',choices:[
+  {id:'silikon',label:'Silikon',priceCents:599},{id:'staender-klar',label:'Klar',priceCents:1399},{id:'staender-schwarz',label:'Schwarz',priceCents:1599}]}];
+ const size=family.sizes.find(s=>family.groups.find(g=>g.key===s.groupKey)?.shape==='rect');
+ for(const [widthMm,heightMm,eligible] of [[400,300,true],[560,180,false]]){
+  const c=familyProductConfig(family,{...size,widthMm,heightMm},1);
+  const fields=c.profile.optionFields.map(({id,priceCents})=>[id,priceCents]);
+  assert.deepEqual(fields,eligible?[['silikon',599],['staender-klar',1399],['staender-schwarz',1599]]:[['silikon',599]]);
+ }
 });
 test('native quote and Shopify snapshot contract agree on 0, 1 and 2 added motifs',()=>{
  const f=JSON.parse(fs.readFileSync(new URL('../designs/steel-door-signs/family.json',import.meta.url)));

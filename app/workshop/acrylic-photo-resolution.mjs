@@ -32,7 +32,7 @@ export function photoResolutionNote(effectiveDpi,targetDpi=DEFAULT_TARGET_DPI){
  return {grade,effectiveDpi,targetDpi,hint:resolutionHint(grade),productionNote:grade==='rot'?'Auflösung niedrig':grade==='gelb'?'Auflösung knapp':''};
 }
 
-// Match cover + crop for photo slots and xMidYMid meet for other uploads.
+// Use the editor's placement for plain photos, shaped masks and intentional crops.
 // This measures available pixels, not focus, compression or prior upscaling.
 export function acrylicPhotoResolution(object,photo,scale,{targetDpi=DEFAULT_TARGET_DPI}={}){
  const source=photo.edited||photo;

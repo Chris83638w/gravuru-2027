@@ -1,5 +1,6 @@
 """Vector-only 1:1 contour proof from the stored mm geometry, never a production release."""
 import sys,json,math,importlib.util
+import hashlib
 from pathlib import Path
 spec=importlib.util.spec_from_file_location('contour',Path(__file__).with_name('contour-converter.py'))
 c=importlib.util.module_from_spec(spec);spec.loader.exec_module(c)
@@ -27,7 +28,11 @@ def export(data):
     for p in pieces:shape.draw_bezier(*[point(v) for v in p.bpoints()])
   shape.finish(color=(0,0,0),fill=None,width=.05*k,closePath=True);shape.commit()
  doc.set_metadata({'title':'Gravuru Konturprüfung 1:1','subject':data['reference'],'creator':'Gravuru 2027 · Formprüfung','keywords':'Konturprüfung, keine Fertigungsfreigabe'})
- return doc.tobytes(garbage=4,deflate=True)
+ # Re-exporting an unchanged revision must also preserve the PDF trailer ID.
+ source=json.dumps([data['reference'],g],sort_keys=True,separators=(',',':'),ensure_ascii=False).encode('utf-8')
+ document_id=hashlib.sha256(source).hexdigest()[:32]
+ doc.xref_set_key(-1,'ID',f'[<{document_id}><{document_id}>]')
+ return doc.tobytes(garbage=4,deflate=True,no_new_id=True)
 try:
  data=json.loads(sys.stdin.buffer.read(4*1024*1024));sys.stdout.buffer.write(export(data))
 except Exception:

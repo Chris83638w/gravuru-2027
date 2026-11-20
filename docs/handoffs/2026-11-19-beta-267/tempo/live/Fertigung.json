@@ -1,0 +1,1699 @@
+{
+  "unveraenderterAusgangsbestand": {
+    "ersterAbruf": "2026-11-19T18:16:54.249570+00:00",
+    "letzterAbruf": "2026-11-19T19:01:02.457709+00:00",
+    "erhalten": 12
+  },
+  "gespeichertePakete": {
+    "referenz": {
+      "checkedAt": "2026-11-19T18:16:54.249570+00:00",
+      "rows": [
+        {
+          "round": 1,
+          "device": "PC",
+          "position": 1,
+          "snapshotFingerprint": "470611d3ee000ac2",
+          "archiveHash": "4125a891f063dc2bbf1399a70413671706522607ba56a14a955a2d845914e18c",
+          "archiveBytes": 1355732,
+          "checkedFiles": 5,
+          "storedContourPdf": null,
+          "storedPreview": "7a24507cb6ab62f8d9f8f0b7ce5ca996e4e44edb1ec47c8d5e52ccc9eb3ca6e7",
+          "media": {
+            "gestaltung-kundenansicht.png": "17024f5465084c1fef7a83f7e5196cb3f8ea45281caeb5ee15cf33246a43dc95",
+            "gestaltung-referenz.png": "08e5e8b01107bb6a8ff3e3a7d3b984cc6491f04e668b4ac18945c1ee8537b0e9"
+          }
+        },
+        {
+          "round": 1,
+          "device": "PC",
+          "position": 2,
+          "snapshotFingerprint": "b26418926c1ff232",
+          "archiveHash": "1241393733ef2098f0993e417d114a1f8dd31a54339c3c8bbe2cc86286fc206a",
+          "archiveBytes": 1361627,
+          "checkedFiles": 7,
+          "storedContourPdf": null,
+          "storedPreview": "6736506db64828000af7e4faa491bf39aa3149d586b01d99292aa37f69d2ab02",
+          "media": {
+            "quellen/994bd7bd51d4cf21c6275f0812657089a131bd872fea4469d55ed84f48fe96dd-original.svg": "d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8",
+            "quellen/994bd7bd51d4cf21c6275f0812657089a131bd872fea4469d55ed84f48fe96dd-vorschau.svg": "ead6e79ae6969c6012c9df9cd4b191e559df01aa31e880d8d982b22b1974f0f1",
+            "gestaltung-kundenansicht.png": "ca8a5e95b88a49849d2476e38830239c7e3cbb3b17f10902362518dfe104070c",
+            "gestaltung-referenz.png": "5e015d3a692b9a0d92e2715f05920309c0226699b7eac151cdea3410208dc57c"
+          }
+        },
+        {
+          "round": 1,
+          "device": "Mobil",
+          "position": 1,
+          "snapshotFingerprint": "87cee66ff7b9f907",
+          "archiveHash": "149db95c246ecbdb142905ec68e60aab20abcadf05851e26883c2d338afeba25",
+          "archiveBytes": 1355732,
+          "checkedFiles": 5,
+          "storedContourPdf": null,
+          "storedPreview": "7a24507cb6ab62f8d9f8f0b7ce5ca996e4e44edb1ec47c8d5e52ccc9eb3ca6e7",
+          "media": {
+            "gestaltung-kundenansicht.png": "17024f5465084c1fef7a83f7e5196cb3f8ea45281caeb5ee15cf33246a43dc95",
+            "gestaltung-referenz.png": "08e5e8b01107bb6a8ff3e3a7d3b984cc6491f04e668b4ac18945c1ee8537b0e9"
+          }
+        },
+        {
+          "round": 1,
+          "device": "Mobil",
+          "position": 2,
+          "snapshotFingerprint": "469577eb511b7308",
+          "archiveHash": "3376ecd3f0c115c521541bd0928d898f3618ccc142d56fec638909f102a18004",
+          "archiveBytes": 1361627,
+          "checkedFiles": 7,
+          "storedContourPdf": null,
+          "storedPreview": "6736506db64828000af7e4faa491bf39aa3149d586b01d99292aa37f69d2ab02",
+          "media": {
+            "quellen/994bd7bd51d4cf21c6275f0812657089a131bd872fea4469d55ed84f48fe96dd-original.svg": "d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8",
+            "quellen/994bd7bd51d4cf21c6275f0812657089a131bd872fea4469d55ed84f48fe96dd-vorschau.svg": "ead6e79ae6969c6012c9df9cd4b191e559df01aa31e880d8d982b22b1974f0f1",
+            "gestaltung-kundenansicht.png": "ca8a5e95b88a49849d2476e38830239c7e3cbb3b17f10902362518dfe104070c",
+            "gestaltung-referenz.png": "5e015d3a692b9a0d92e2715f05920309c0226699b7eac151cdea3410208dc57c"
+          }
+        },
+        {
+          "round": 2,
+          "device": "Mobil",
+          "position": 1,
+          "snapshotFingerprint": "4f4f5331920f3d8a",
+          "archiveHash": "c2e306e61536301ce31af23cba269b7c0d2f4db4b0f4128f2210b4c4f983eb75",
+          "archiveBytes": 1355732,
+          "checkedFiles": 5,
+          "storedContourPdf": null,
+          "storedPreview": "7a24507cb6ab62f8d9f8f0b7ce5ca996e4e44edb1ec47c8d5e52ccc9eb3ca6e7",
+          "media": {
+            "gestaltung-kundenansicht.png": "17024f5465084c1fef7a83f7e5196cb3f8ea45281caeb5ee15cf33246a43dc95",
+            "gestaltung-referenz.png": "08e5e8b01107bb6a8ff3e3a7d3b984cc6491f04e668b4ac18945c1ee8537b0e9"
+          }
+        },
+        {
+          "round": 2,
+          "device": "Mobil",
+          "position": 2,
+          "snapshotFingerprint": "7a3f7e0e4ac5c863",
+          "archiveHash": "9b81393358a1e92106cb623fd3dd51400b4a62143fd17865b8d2d0d8f5490180",
+          "archiveBytes": 1361627,
+          "checkedFiles": 7,
+          "storedContourPdf": null,
+          "storedPreview": "6736506db64828000af7e4faa491bf39aa3149d586b01d99292aa37f69d2ab02",
+          "media": {
+            "quellen/994bd7bd51d4cf21c6275f0812657089a131bd872fea4469d55ed84f48fe96dd-original.svg": "d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8",
+            "quellen/994bd7bd51d4cf21c6275f0812657089a131bd872fea4469d55ed84f48fe96dd-vorschau.svg": "ead6e79ae6969c6012c9df9cd4b191e559df01aa31e880d8d982b22b1974f0f1",
+            "gestaltung-kundenansicht.png": "ca8a5e95b88a49849d2476e38830239c7e3cbb3b17f10902362518dfe104070c",
+            "gestaltung-referenz.png": "5e015d3a692b9a0d92e2715f05920309c0226699b7eac151cdea3410208dc57c"
+          }
+        },
+        {
+          "round": 2,
+          "device": "PC",
+          "position": 1,
+          "snapshotFingerprint": "805a42bdc16b367a",
+          "archiveHash": "c374a39c2e7397bf60210d171ba33d3494f7dc8224162641edd1c0dd1233b711",
+          "archiveBytes": 1355732,
+          "checkedFiles": 5,
+          "storedContourPdf": null,
+          "storedPreview": "7a24507cb6ab62f8d9f8f0b7ce5ca996e4e44edb1ec47c8d5e52ccc9eb3ca6e7",
+          "media": {
+            "gestaltung-kundenansicht.png": "17024f5465084c1fef7a83f7e5196cb3f8ea45281caeb5ee15cf33246a43dc95",
+            "gestaltung-referenz.png": "08e5e8b01107bb6a8ff3e3a7d3b984cc6491f04e668b4ac18945c1ee8537b0e9"
+          }
+        },
+        {
+          "round": 2,
+          "device": "PC",
+          "position": 2,
+          "snapshotFingerprint": "5ec8ff4715c71158",
+          "archiveHash": "9a2aedbe406c161d63bbb701b7b39960f31fb8d55b8858501e598dd492493081",
+          "archiveBytes": 1361627,
+          "checkedFiles": 7,
+          "storedContourPdf": null,
+          "storedPreview": "6736506db64828000af7e4faa491bf39aa3149d586b01d99292aa37f69d2ab02",
+          "media": {
+            "quellen/994bd7bd51d4cf21c6275f0812657089a131bd872fea4469d55ed84f48fe96dd-original.svg": "d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8",
+            "quellen/994bd7bd51d4cf21c6275f0812657089a131bd872fea4469d55ed84f48fe96dd-vorschau.svg": "ead6e79ae6969c6012c9df9cd4b191e559df01aa31e880d8d982b22b1974f0f1",
+            "gestaltung-kundenansicht.png": "ca8a5e95b88a49849d2476e38830239c7e3cbb3b17f10902362518dfe104070c",
+            "gestaltung-referenz.png": "5e015d3a692b9a0d92e2715f05920309c0226699b7eac151cdea3410208dc57c"
+          }
+        },
+        {
+          "round": 3,
+          "device": "PC",
+          "position": 1,
+          "snapshotFingerprint": "7a6a4279442d69f2",
+          "archiveHash": "93d859921c3f534266efa05ed508eb30f3b0bd5a190fedb1951ca8165393c0be",
+          "archiveBytes": 1355732,
+          "checkedFiles": 5,
+          "storedContourPdf": null,
+          "storedPreview": "7a24507cb6ab62f8d9f8f0b7ce5ca996e4e44edb1ec47c8d5e52ccc9eb3ca6e7",
+          "media": {
+            "gestaltung-kundenansicht.png": "17024f5465084c1fef7a83f7e5196cb3f8ea45281caeb5ee15cf33246a43dc95",
+            "gestaltung-referenz.png": "08e5e8b01107bb6a8ff3e3a7d3b984cc6491f04e668b4ac18945c1ee8537b0e9"
+          }
+        },
+        {
+          "round": 3,
+          "device": "PC",
+          "position": 2,
+          "snapshotFingerprint": "6ff4dcab0ca9eb91",
+          "archiveHash": "d74dace9e223f5d993eec9e8d1f6c36d2a63fd982b2501b942440ac52d7e83a9",
+          "archiveBytes": 1361627,
+          "checkedFiles": 7,
+          "storedContourPdf": null,
+          "storedPreview": "6736506db64828000af7e4faa491bf39aa3149d586b01d99292aa37f69d2ab02",
+          "media": {
+            "quellen/994bd7bd51d4cf21c6275f0812657089a131bd872fea4469d55ed84f48fe96dd-original.svg": "d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8",
+            "quellen/994bd7bd51d4cf21c6275f0812657089a131bd872fea4469d55ed84f48fe96dd-vorschau.svg": "ead6e79ae6969c6012c9df9cd4b191e559df01aa31e880d8d982b22b1974f0f1",
+            "gestaltung-kundenansicht.png": "ca8a5e95b88a49849d2476e38830239c7e3cbb3b17f10902362518dfe104070c",
+            "gestaltung-referenz.png": "5e015d3a692b9a0d92e2715f05920309c0226699b7eac151cdea3410208dc57c"
+          }
+        },
+        {
+          "round": 3,
+          "device": "Mobil",
+          "position": 1,
+          "snapshotFingerprint": "4f137094911a57bb",
+          "archiveHash": "fe6c126b285f697082c898f14837ed787effaa20ae231a887e77e1dc8706259e",
+          "archiveBytes": 1355732,
+          "checkedFiles": 5,
+          "storedContourPdf": null,
+          "storedPreview": "7a24507cb6ab62f8d9f8f0b7ce5ca996e4e44edb1ec47c8d5e52ccc9eb3ca6e7",
+          "media": {
+            "gestaltung-kundenansicht.png": "17024f5465084c1fef7a83f7e5196cb3f8ea45281caeb5ee15cf33246a43dc95",
+            "gestaltung-referenz.png": "08e5e8b01107bb6a8ff3e3a7d3b984cc6491f04e668b4ac18945c1ee8537b0e9"
+          }
+        },
+        {
+          "round": 3,
+          "device": "Mobil",
+          "position": 2,
+          "snapshotFingerprint": "c336bb1acbd4f267",
+          "archiveHash": "198e6f19450bf674969939665b394f1198627bc4f16b1ef1a05777ec115759c9",
+          "archiveBytes": 1361627,
+          "checkedFiles": 7,
+          "storedContourPdf": null,
+          "storedPreview": "6736506db64828000af7e4faa491bf39aa3149d586b01d99292aa37f69d2ab02",
+          "media": {
+            "quellen/994bd7bd51d4cf21c6275f0812657089a131bd872fea4469d55ed84f48fe96dd-original.svg": "d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8",
+            "quellen/994bd7bd51d4cf21c6275f0812657089a131bd872fea4469d55ed84f48fe96dd-vorschau.svg": "ead6e79ae6969c6012c9df9cd4b191e559df01aa31e880d8d982b22b1974f0f1",
+            "gestaltung-kundenansicht.png": "ca8a5e95b88a49849d2476e38830239c7e3cbb3b17f10902362518dfe104070c",
+            "gestaltung-referenz.png": "5e015d3a692b9a0d92e2715f05920309c0226699b7eac151cdea3410208dc57c"
+          }
+        }
+      ]
+    },
+    "stufe1": {
+      "checkedAt": "2026-11-19T18:19:49.555012+00:00",
+      "rows": [
+        {
+          "round": 1,
+          "device": "PC",
+          "position": 1,
+          "snapshotFingerprint": "cafa817106b0b57a",
+          "archiveHash": "e6f3b6907a598f29c711de191fe134a5be3d303dc3c56676675897588c1f1b8e",
+          "archiveBytes": 1355732,
+          "checkedFiles": 5,
+          "storedContourPdf": null,
+          "storedPreview": "7a24507cb6ab62f8d9f8f0b7ce5ca996e4e44edb1ec47c8d5e52ccc9eb3ca6e7",
+          "media": {
+            "gestaltung-kundenansicht.png": "17024f5465084c1fef7a83f7e5196cb3f8ea45281caeb5ee15cf33246a43dc95",
+            "gestaltung-referenz.png": "08e5e8b01107bb6a8ff3e3a7d3b984cc6491f04e668b4ac18945c1ee8537b0e9"
+          }
+        },
+        {
+          "round": 1,
+          "device": "PC",
+          "position": 2,
+          "snapshotFingerprint": "b8764aaf6c56898b",
+          "archiveHash": "eba97ac8bbc248c792c91e22ba7c300ba8f351913bbb3482f42b5a7f0ce745fb",
+          "archiveBytes": 1361627,
+          "checkedFiles": 7,
+          "storedContourPdf": null,
+          "storedPreview": "6736506db64828000af7e4faa491bf39aa3149d586b01d99292aa37f69d2ab02",
+          "media": {
+            "quellen/994bd7bd51d4cf21c6275f0812657089a131bd872fea4469d55ed84f48fe96dd-original.svg": "d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8",
+            "quellen/994bd7bd51d4cf21c6275f0812657089a131bd872fea4469d55ed84f48fe96dd-vorschau.svg": "ead6e79ae6969c6012c9df9cd4b191e559df01aa31e880d8d982b22b1974f0f1",
+            "gestaltung-kundenansicht.png": "ca8a5e95b88a49849d2476e38830239c7e3cbb3b17f10902362518dfe104070c",
+            "gestaltung-referenz.png": "5e015d3a692b9a0d92e2715f05920309c0226699b7eac151cdea3410208dc57c"
+          }
+        },
+        {
+          "round": 1,
+          "device": "Mobil",
+          "position": 1,
+          "snapshotFingerprint": "943d10f841d47328",
+          "archiveHash": "f96444585fe643d0c425f7f7ef2edadbf2cc443029289ebae17c2d3f7e82199b",
+          "archiveBytes": 1355732,
+          "checkedFiles": 5,
+          "storedContourPdf": null,
+          "storedPreview": "7a24507cb6ab62f8d9f8f0b7ce5ca996e4e44edb1ec47c8d5e52ccc9eb3ca6e7",
+          "media": {
+            "gestaltung-kundenansicht.png": "17024f5465084c1fef7a83f7e5196cb3f8ea45281caeb5ee15cf33246a43dc95",
+            "gestaltung-referenz.png": "08e5e8b01107bb6a8ff3e3a7d3b984cc6491f04e668b4ac18945c1ee8537b0e9"
+          }
+        },
+        {
+          "round": 1,
+          "device": "Mobil",
+          "position": 2,
+          "snapshotFingerprint": "23c7f2396223900d",
+          "archiveHash": "7ef727d3ffb18fb51f2ddab065c2c13689771a0296811b1b5c5174ca9237ba9f",
+          "archiveBytes": 1361627,
+          "checkedFiles": 7,
+          "storedContourPdf": null,
+          "storedPreview": "6736506db64828000af7e4faa491bf39aa3149d586b01d99292aa37f69d2ab02",
+          "media": {
+            "quellen/994bd7bd51d4cf21c6275f0812657089a131bd872fea4469d55ed84f48fe96dd-original.svg": "d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8",
+            "quellen/994bd7bd51d4cf21c6275f0812657089a131bd872fea4469d55ed84f48fe96dd-vorschau.svg": "ead6e79ae6969c6012c9df9cd4b191e559df01aa31e880d8d982b22b1974f0f1",
+            "gestaltung-kundenansicht.png": "ca8a5e95b88a49849d2476e38830239c7e3cbb3b17f10902362518dfe104070c",
+            "gestaltung-referenz.png": "5e015d3a692b9a0d92e2715f05920309c0226699b7eac151cdea3410208dc57c"
+          }
+        },
+        {
+          "round": 2,
+          "device": "Mobil",
+          "position": 1,
+          "snapshotFingerprint": "6feca69474a5e331",
+          "archiveHash": "7b114548f2bb23e837da2a6466767086ba6ef763103063fa733a3e656ca67fae",
+          "archiveBytes": 1355732,
+          "checkedFiles": 5,
+          "storedContourPdf": null,
+          "storedPreview": "7a24507cb6ab62f8d9f8f0b7ce5ca996e4e44edb1ec47c8d5e52ccc9eb3ca6e7",
+          "media": {
+            "gestaltung-kundenansicht.png": "17024f5465084c1fef7a83f7e5196cb3f8ea45281caeb5ee15cf33246a43dc95",
+            "gestaltung-referenz.png": "08e5e8b01107bb6a8ff3e3a7d3b984cc6491f04e668b4ac18945c1ee8537b0e9"
+          }
+        },
+        {
+          "round": 2,
+          "device": "Mobil",
+          "position": 2,
+          "snapshotFingerprint": "07434ad124d3f025",
+          "archiveHash": "38e2bc0f879f5a0938aa5a00ce17736e185037d9fc97e8cca80151805a6d4af8",
+          "archiveBytes": 1361627,
+          "checkedFiles": 7,
+          "storedContourPdf": null,
+          "storedPreview": "6736506db64828000af7e4faa491bf39aa3149d586b01d99292aa37f69d2ab02",
+          "media": {
+            "quellen/994bd7bd51d4cf21c6275f0812657089a131bd872fea4469d55ed84f48fe96dd-original.svg": "d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8",
+            "quellen/994bd7bd51d4cf21c6275f0812657089a131bd872fea4469d55ed84f48fe96dd-vorschau.svg": "ead6e79ae6969c6012c9df9cd4b191e559df01aa31e880d8d982b22b1974f0f1",
+            "gestaltung-kundenansicht.png": "ca8a5e95b88a49849d2476e38830239c7e3cbb3b17f10902362518dfe104070c",
+            "gestaltung-referenz.png": "5e015d3a692b9a0d92e2715f05920309c0226699b7eac151cdea3410208dc57c"
+          }
+        },
+        {
+          "round": 2,
+          "device": "PC",
+          "position": 1,
+          "snapshotFingerprint": "4aa815d603cb6788",
+          "archiveHash": "a13583cecff5ed6d363656b1dd406acd504949147149bffc7a796ee6526a32b3",
+          "archiveBytes": 1355732,
+          "checkedFiles": 5,
+          "storedContourPdf": null,
+          "storedPreview": "7a24507cb6ab62f8d9f8f0b7ce5ca996e4e44edb1ec47c8d5e52ccc9eb3ca6e7",
+          "media": {
+            "gestaltung-kundenansicht.png": "17024f5465084c1fef7a83f7e5196cb3f8ea45281caeb5ee15cf33246a43dc95",
+            "gestaltung-referenz.png": "08e5e8b01107bb6a8ff3e3a7d3b984cc6491f04e668b4ac18945c1ee8537b0e9"
+          }
+        },
+        {
+          "round": 2,
+          "device": "PC",
+          "position": 2,
+          "snapshotFingerprint": "0686201fa2080927",
+          "archiveHash": "16ab53034a3760d06fab1e46e16e9f4f39124e83f7589b8f860f9d78c2aa5976",
+          "archiveBytes": 1361627,
+          "checkedFiles": 7,
+          "storedContourPdf": null,
+          "storedPreview": "6736506db64828000af7e4faa491bf39aa3149d586b01d99292aa37f69d2ab02",
+          "media": {
+            "quellen/994bd7bd51d4cf21c6275f0812657089a131bd872fea4469d55ed84f48fe96dd-original.svg": "d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8",
+            "quellen/994bd7bd51d4cf21c6275f0812657089a131bd872fea4469d55ed84f48fe96dd-vorschau.svg": "ead6e79ae6969c6012c9df9cd4b191e559df01aa31e880d8d982b22b1974f0f1",
+            "gestaltung-kundenansicht.png": "ca8a5e95b88a49849d2476e38830239c7e3cbb3b17f10902362518dfe104070c",
+            "gestaltung-referenz.png": "5e015d3a692b9a0d92e2715f05920309c0226699b7eac151cdea3410208dc57c"
+          }
+        },
+        {
+          "round": 3,
+          "device": "PC",
+          "position": 1,
+          "snapshotFingerprint": "2fa27b3b9b24f3f3",
+          "archiveHash": "b4de25418dcaf08e6d4591580e71a08046ecbf93d43c4ccc6318bf86b1311bd3",
+          "archiveBytes": 1355732,
+          "checkedFiles": 5,
+          "storedContourPdf": null,
+          "storedPreview": "7a24507cb6ab62f8d9f8f0b7ce5ca996e4e44edb1ec47c8d5e52ccc9eb3ca6e7",
+          "media": {
+            "gestaltung-kundenansicht.png": "17024f5465084c1fef7a83f7e5196cb3f8ea45281caeb5ee15cf33246a43dc95",
+            "gestaltung-referenz.png": "08e5e8b01107bb6a8ff3e3a7d3b984cc6491f04e668b4ac18945c1ee8537b0e9"
+          }
+        },
+        {
+          "round": 3,
+          "device": "PC",
+          "position": 2,
+          "snapshotFingerprint": "0e72e4b7b8ac1e2e",
+          "archiveHash": "a19095d0d766afd95ddea96f9431c9ad608daad37a2c3a0096ad49caeb75511b",
+          "archiveBytes": 1361627,
+          "checkedFiles": 7,
+          "storedContourPdf": null,
+          "storedPreview": "6736506db64828000af7e4faa491bf39aa3149d586b01d99292aa37f69d2ab02",
+          "media": {
+            "quellen/994bd7bd51d4cf21c6275f0812657089a131bd872fea4469d55ed84f48fe96dd-original.svg": "d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8",
+            "quellen/994bd7bd51d4cf21c6275f0812657089a131bd872fea4469d55ed84f48fe96dd-vorschau.svg": "ead6e79ae6969c6012c9df9cd4b191e559df01aa31e880d8d982b22b1974f0f1",
+            "gestaltung-kundenansicht.png": "ca8a5e95b88a49849d2476e38830239c7e3cbb3b17f10902362518dfe104070c",
+            "gestaltung-referenz.png": "5e015d3a692b9a0d92e2715f05920309c0226699b7eac151cdea3410208dc57c"
+          }
+        },
+        {
+          "round": 3,
+          "device": "Mobil",
+          "position": 1,
+          "snapshotFingerprint": "6c6893eec7285764",
+          "archiveHash": "59695ebf88be8e5d946fc3a619523263e624d25a849dbd9e693f11009adbec76",
+          "archiveBytes": 1355732,
+          "checkedFiles": 5,
+          "storedContourPdf": null,
+          "storedPreview": "7a24507cb6ab62f8d9f8f0b7ce5ca996e4e44edb1ec47c8d5e52ccc9eb3ca6e7",
+          "media": {
+            "gestaltung-kundenansicht.png": "17024f5465084c1fef7a83f7e5196cb3f8ea45281caeb5ee15cf33246a43dc95",
+            "gestaltung-referenz.png": "08e5e8b01107bb6a8ff3e3a7d3b984cc6491f04e668b4ac18945c1ee8537b0e9"
+          }
+        },
+        {
+          "round": 3,
+          "device": "Mobil",
+          "position": 2,
+          "snapshotFingerprint": "0419e67721c30940",
+          "archiveHash": "52a2fbbc5422d845daeeccf0291c41e990fea0d85d45382502f8c51998488eaa",
+          "archiveBytes": 1361627,
+          "checkedFiles": 7,
+          "storedContourPdf": null,
+          "storedPreview": "6736506db64828000af7e4faa491bf39aa3149d586b01d99292aa37f69d2ab02",
+          "media": {
+            "quellen/994bd7bd51d4cf21c6275f0812657089a131bd872fea4469d55ed84f48fe96dd-original.svg": "d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8",
+            "quellen/994bd7bd51d4cf21c6275f0812657089a131bd872fea4469d55ed84f48fe96dd-vorschau.svg": "ead6e79ae6969c6012c9df9cd4b191e559df01aa31e880d8d982b22b1974f0f1",
+            "gestaltung-kundenansicht.png": "ca8a5e95b88a49849d2476e38830239c7e3cbb3b17f10902362518dfe104070c",
+            "gestaltung-referenz.png": "5e015d3a692b9a0d92e2715f05920309c0226699b7eac151cdea3410208dc57c"
+          }
+        }
+      ]
+    },
+    "stufe2": {
+      "checkedAt": "2026-11-19T18:28:26.532009+00:00",
+      "rows": [
+        {
+          "round": 1,
+          "device": "PC",
+          "position": 1,
+          "snapshotFingerprint": "f77233c68577fa5c",
+          "archiveHash": "c3e955b695fbb36c4f64422a8c1d5b2cbad9ed2de8e930cf130f1c44a3d3d4a9",
+          "archiveBytes": 1355732,
+          "checkedFiles": 5,
+          "storedContourPdf": null,
+          "storedPreview": "7a24507cb6ab62f8d9f8f0b7ce5ca996e4e44edb1ec47c8d5e52ccc9eb3ca6e7",
+          "media": {
+            "gestaltung-kundenansicht.png": "17024f5465084c1fef7a83f7e5196cb3f8ea45281caeb5ee15cf33246a43dc95",
+            "gestaltung-referenz.png": "08e5e8b01107bb6a8ff3e3a7d3b984cc6491f04e668b4ac18945c1ee8537b0e9"
+          }
+        },
+        {
+          "round": 1,
+          "device": "PC",
+          "position": 2,
+          "snapshotFingerprint": "c093a57d4eb6283c",
+          "archiveHash": "c9b12b7b5d9e59d8c66e0e141100f22202e246f2abaca464cc0366771b3dd522",
+          "archiveBytes": 1361627,
+          "checkedFiles": 7,
+          "storedContourPdf": null,
+          "storedPreview": "6736506db64828000af7e4faa491bf39aa3149d586b01d99292aa37f69d2ab02",
+          "media": {
+            "quellen/994bd7bd51d4cf21c6275f0812657089a131bd872fea4469d55ed84f48fe96dd-original.svg": "d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8",
+            "quellen/994bd7bd51d4cf21c6275f0812657089a131bd872fea4469d55ed84f48fe96dd-vorschau.svg": "ead6e79ae6969c6012c9df9cd4b191e559df01aa31e880d8d982b22b1974f0f1",
+            "gestaltung-kundenansicht.png": "ca8a5e95b88a49849d2476e38830239c7e3cbb3b17f10902362518dfe104070c",
+            "gestaltung-referenz.png": "5e015d3a692b9a0d92e2715f05920309c0226699b7eac151cdea3410208dc57c"
+          }
+        },
+        {
+          "round": 1,
+          "device": "Mobil",
+          "position": 1,
+          "snapshotFingerprint": "589d0285476ad0cb",
+          "archiveHash": "115a57528ecd3b9c0c99a37c556a97a6a265847f24bde5a6c0cec11d7afeae7d",
+          "archiveBytes": 1355732,
+          "checkedFiles": 5,
+          "storedContourPdf": null,
+          "storedPreview": "7a24507cb6ab62f8d9f8f0b7ce5ca996e4e44edb1ec47c8d5e52ccc9eb3ca6e7",
+          "media": {
+            "gestaltung-kundenansicht.png": "17024f5465084c1fef7a83f7e5196cb3f8ea45281caeb5ee15cf33246a43dc95",
+            "gestaltung-referenz.png": "08e5e8b01107bb6a8ff3e3a7d3b984cc6491f04e668b4ac18945c1ee8537b0e9"
+          }
+        },
+        {
+          "round": 1,
+          "device": "Mobil",
+          "position": 2,
+          "snapshotFingerprint": "d975bb28d39e02b9",
+          "archiveHash": "032516f6f0d1201f27ebacbea6723f6816a0bc65bcb89fc9b1384c77eec8c16f",
+          "archiveBytes": 1361627,
+          "checkedFiles": 7,
+          "storedContourPdf": null,
+          "storedPreview": "6736506db64828000af7e4faa491bf39aa3149d586b01d99292aa37f69d2ab02",
+          "media": {
+            "quellen/994bd7bd51d4cf21c6275f0812657089a131bd872fea4469d55ed84f48fe96dd-original.svg": "d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8",
+            "quellen/994bd7bd51d4cf21c6275f0812657089a131bd872fea4469d55ed84f48fe96dd-vorschau.svg": "ead6e79ae6969c6012c9df9cd4b191e559df01aa31e880d8d982b22b1974f0f1",
+            "gestaltung-kundenansicht.png": "ca8a5e95b88a49849d2476e38830239c7e3cbb3b17f10902362518dfe104070c",
+            "gestaltung-referenz.png": "5e015d3a692b9a0d92e2715f05920309c0226699b7eac151cdea3410208dc57c"
+          }
+        },
+        {
+          "round": 2,
+          "device": "Mobil",
+          "position": 1,
+          "snapshotFingerprint": "9d63befa9b5ea766",
+          "archiveHash": "42daa0c83831b9db945fc75f88ab373e6e5c0ea2d1dc45ca8b7a29e3e4f0c091",
+          "archiveBytes": 1355732,
+          "checkedFiles": 5,
+          "storedContourPdf": null,
+          "storedPreview": "7a24507cb6ab62f8d9f8f0b7ce5ca996e4e44edb1ec47c8d5e52ccc9eb3ca6e7",
+          "media": {
+            "gestaltung-kundenansicht.png": "17024f5465084c1fef7a83f7e5196cb3f8ea45281caeb5ee15cf33246a43dc95",
+            "gestaltung-referenz.png": "08e5e8b01107bb6a8ff3e3a7d3b984cc6491f04e668b4ac18945c1ee8537b0e9"
+          }
+        },
+        {
+          "round": 2,
+          "device": "Mobil",
+          "position": 2,
+          "snapshotFingerprint": "036b3c9eac429a8d",
+          "archiveHash": "4a2dfe5eacb5a809d441cbaa2fb231cf5ebf0e1a772a1ee76dbba3cdf4d515f4",
+          "archiveBytes": 1361627,
+          "checkedFiles": 7,
+          "storedContourPdf": null,
+          "storedPreview": "6736506db64828000af7e4faa491bf39aa3149d586b01d99292aa37f69d2ab02",
+          "media": {
+            "quellen/994bd7bd51d4cf21c6275f0812657089a131bd872fea4469d55ed84f48fe96dd-original.svg": "d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8",
+            "quellen/994bd7bd51d4cf21c6275f0812657089a131bd872fea4469d55ed84f48fe96dd-vorschau.svg": "ead6e79ae6969c6012c9df9cd4b191e559df01aa31e880d8d982b22b1974f0f1",
+            "gestaltung-kundenansicht.png": "ca8a5e95b88a49849d2476e38830239c7e3cbb3b17f10902362518dfe104070c",
+            "gestaltung-referenz.png": "5e015d3a692b9a0d92e2715f05920309c0226699b7eac151cdea3410208dc57c"
+          }
+        },
+        {
+          "round": 2,
+          "device": "PC",
+          "position": 1,
+          "snapshotFingerprint": "3cc9a53325087ea0",
+          "archiveHash": "121fa2b113fa582bf52b76366a09f8aa62a58cfff649c5a26b812da84cb001db",
+          "archiveBytes": 1355732,
+          "checkedFiles": 5,
+          "storedContourPdf": null,
+          "storedPreview": "7a24507cb6ab62f8d9f8f0b7ce5ca996e4e44edb1ec47c8d5e52ccc9eb3ca6e7",
+          "media": {
+            "gestaltung-kundenansicht.png": "17024f5465084c1fef7a83f7e5196cb3f8ea45281caeb5ee15cf33246a43dc95",
+            "gestaltung-referenz.png": "08e5e8b01107bb6a8ff3e3a7d3b984cc6491f04e668b4ac18945c1ee8537b0e9"
+          }
+        },
+        {
+          "round": 2,
+          "device": "PC",
+          "position": 2,
+          "snapshotFingerprint": "58f4384e023723a0",
+          "archiveHash": "32e8ad3aa2094c043585a3ab902098eb688d4e4fffec3465bfc2f00e403399bb",
+          "archiveBytes": 1361627,
+          "checkedFiles": 7,
+          "storedContourPdf": null,
+          "storedPreview": "6736506db64828000af7e4faa491bf39aa3149d586b01d99292aa37f69d2ab02",
+          "media": {
+            "quellen/994bd7bd51d4cf21c6275f0812657089a131bd872fea4469d55ed84f48fe96dd-original.svg": "d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8",
+            "quellen/994bd7bd51d4cf21c6275f0812657089a131bd872fea4469d55ed84f48fe96dd-vorschau.svg": "ead6e79ae6969c6012c9df9cd4b191e559df01aa31e880d8d982b22b1974f0f1",
+            "gestaltung-kundenansicht.png": "ca8a5e95b88a49849d2476e38830239c7e3cbb3b17f10902362518dfe104070c",
+            "gestaltung-referenz.png": "5e015d3a692b9a0d92e2715f05920309c0226699b7eac151cdea3410208dc57c"
+          }
+        },
+        {
+          "round": 3,
+          "device": "PC",
+          "position": 1,
+          "snapshotFingerprint": "3b8cfef3ab9d4c48",
+          "archiveHash": "42d432c238cb7fc806f5605bee2f8ddd380c0f8aa58001c2423f32fe32d78f4a",
+          "archiveBytes": 1355732,
+          "checkedFiles": 5,
+          "storedContourPdf": null,
+          "storedPreview": "7a24507cb6ab62f8d9f8f0b7ce5ca996e4e44edb1ec47c8d5e52ccc9eb3ca6e7",
+          "media": {
+            "gestaltung-kundenansicht.png": "17024f5465084c1fef7a83f7e5196cb3f8ea45281caeb5ee15cf33246a43dc95",
+            "gestaltung-referenz.png": "08e5e8b01107bb6a8ff3e3a7d3b984cc6491f04e668b4ac18945c1ee8537b0e9"
+          }
+        },
+        {
+          "round": 3,
+          "device": "PC",
+          "position": 2,
+          "snapshotFingerprint": "888d5d4baade670d",
+          "archiveHash": "8db6252c8a642a3a5cb07aa8a7ded2d627daa97658e24c2a33c6b325750b7830",
+          "archiveBytes": 1361627,
+          "checkedFiles": 7,
+          "storedContourPdf": null,
+          "storedPreview": "6736506db64828000af7e4faa491bf39aa3149d586b01d99292aa37f69d2ab02",
+          "media": {
+            "quellen/994bd7bd51d4cf21c6275f0812657089a131bd872fea4469d55ed84f48fe96dd-original.svg": "d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8",
+            "quellen/994bd7bd51d4cf21c6275f0812657089a131bd872fea4469d55ed84f48fe96dd-vorschau.svg": "ead6e79ae6969c6012c9df9cd4b191e559df01aa31e880d8d982b22b1974f0f1",
+            "gestaltung-kundenansicht.png": "ca8a5e95b88a49849d2476e38830239c7e3cbb3b17f10902362518dfe104070c",
+            "gestaltung-referenz.png": "5e015d3a692b9a0d92e2715f05920309c0226699b7eac151cdea3410208dc57c"
+          }
+        },
+        {
+          "round": 3,
+          "device": "Mobil",
+          "position": 1,
+          "snapshotFingerprint": "82e43182bceb6f5e",
+          "archiveHash": "f7b6b6c00cc35652b22e24bd13dea73c48954ec6e15387cdca9cd27ee8a3670e",
+          "archiveBytes": 1355732,
+          "checkedFiles": 5,
+          "storedContourPdf": null,
+          "storedPreview": "7a24507cb6ab62f8d9f8f0b7ce5ca996e4e44edb1ec47c8d5e52ccc9eb3ca6e7",
+          "media": {
+            "gestaltung-kundenansicht.png": "17024f5465084c1fef7a83f7e5196cb3f8ea45281caeb5ee15cf33246a43dc95",
+            "gestaltung-referenz.png": "08e5e8b01107bb6a8ff3e3a7d3b984cc6491f04e668b4ac18945c1ee8537b0e9"
+          }
+        },
+        {
+          "round": 3,
+          "device": "Mobil",
+          "position": 2,
+          "snapshotFingerprint": "0a6f699ee78d591e",
+          "archiveHash": "98961d4eea5617f172a2edb8731da4644c286c5bb682eed4e2048ad1c019c6a1",
+          "archiveBytes": 1361627,
+          "checkedFiles": 7,
+          "storedContourPdf": null,
+          "storedPreview": "6736506db64828000af7e4faa491bf39aa3149d586b01d99292aa37f69d2ab02",
+          "media": {
+            "quellen/994bd7bd51d4cf21c6275f0812657089a131bd872fea4469d55ed84f48fe96dd-original.svg": "d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8",
+            "quellen/994bd7bd51d4cf21c6275f0812657089a131bd872fea4469d55ed84f48fe96dd-vorschau.svg": "ead6e79ae6969c6012c9df9cd4b191e559df01aa31e880d8d982b22b1974f0f1",
+            "gestaltung-kundenansicht.png": "ca8a5e95b88a49849d2476e38830239c7e3cbb3b17f10902362518dfe104070c",
+            "gestaltung-referenz.png": "5e015d3a692b9a0d92e2715f05920309c0226699b7eac151cdea3410208dc57c"
+          }
+        }
+      ]
+    },
+    "stufe3": {
+      "checkedAt": "2026-11-19T18:33:02.090566+00:00",
+      "rows": [
+        {
+          "round": 1,
+          "device": "PC",
+          "position": 1,
+          "snapshotFingerprint": "7596061e18594459",
+          "archiveHash": "e6e355899789bd52af3051b66eab9c02ad15472431457dd390b18720aca99fee",
+          "archiveBytes": 1355732,
+          "checkedFiles": 5,
+          "storedContourPdf": null,
+          "storedPreview": "7a24507cb6ab62f8d9f8f0b7ce5ca996e4e44edb1ec47c8d5e52ccc9eb3ca6e7",
+          "media": {
+            "gestaltung-kundenansicht.png": "17024f5465084c1fef7a83f7e5196cb3f8ea45281caeb5ee15cf33246a43dc95",
+            "gestaltung-referenz.png": "08e5e8b01107bb6a8ff3e3a7d3b984cc6491f04e668b4ac18945c1ee8537b0e9"
+          }
+        },
+        {
+          "round": 1,
+          "device": "PC",
+          "position": 2,
+          "snapshotFingerprint": "4004d4f9c811c885",
+          "archiveHash": "c07591f0b3970a97308f6c3987f50e52ad7b626fe097ac7898b674f85b7c9493",
+          "archiveBytes": 1361627,
+          "checkedFiles": 7,
+          "storedContourPdf": null,
+          "storedPreview": "6736506db64828000af7e4faa491bf39aa3149d586b01d99292aa37f69d2ab02",
+          "media": {
+            "quellen/994bd7bd51d4cf21c6275f0812657089a131bd872fea4469d55ed84f48fe96dd-original.svg": "d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8",
+            "quellen/994bd7bd51d4cf21c6275f0812657089a131bd872fea4469d55ed84f48fe96dd-vorschau.svg": "ead6e79ae6969c6012c9df9cd4b191e559df01aa31e880d8d982b22b1974f0f1",
+            "gestaltung-kundenansicht.png": "ca8a5e95b88a49849d2476e38830239c7e3cbb3b17f10902362518dfe104070c",
+            "gestaltung-referenz.png": "5e015d3a692b9a0d92e2715f05920309c0226699b7eac151cdea3410208dc57c"
+          }
+        },
+        {
+          "round": 1,
+          "device": "Mobil",
+          "position": 1,
+          "snapshotFingerprint": "5e76e536c940883f",
+          "archiveHash": "23c608ae1613222bd9445b17eacbf701d3d62677ff7abaf7cfe4d4eb46f301b1",
+          "archiveBytes": 1355732,
+          "checkedFiles": 5,
+          "storedContourPdf": null,
+          "storedPreview": "7a24507cb6ab62f8d9f8f0b7ce5ca996e4e44edb1ec47c8d5e52ccc9eb3ca6e7",
+          "media": {
+            "gestaltung-kundenansicht.png": "17024f5465084c1fef7a83f7e5196cb3f8ea45281caeb5ee15cf33246a43dc95",
+            "gestaltung-referenz.png": "08e5e8b01107bb6a8ff3e3a7d3b984cc6491f04e668b4ac18945c1ee8537b0e9"
+          }
+        },
+        {
+          "round": 1,
+          "device": "Mobil",
+          "position": 2,
+          "snapshotFingerprint": "634da857e942a026",
+          "archiveHash": "1a15d70fb050091475afc1e4cff666e6e87784b2eca2c838f5fccfc32d5c27d8",
+          "archiveBytes": 1361627,
+          "checkedFiles": 7,
+          "storedContourPdf": null,
+          "storedPreview": "6736506db64828000af7e4faa491bf39aa3149d586b01d99292aa37f69d2ab02",
+          "media": {
+            "quellen/994bd7bd51d4cf21c6275f0812657089a131bd872fea4469d55ed84f48fe96dd-original.svg": "d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8",
+            "quellen/994bd7bd51d4cf21c6275f0812657089a131bd872fea4469d55ed84f48fe96dd-vorschau.svg": "ead6e79ae6969c6012c9df9cd4b191e559df01aa31e880d8d982b22b1974f0f1",
+            "gestaltung-kundenansicht.png": "ca8a5e95b88a49849d2476e38830239c7e3cbb3b17f10902362518dfe104070c",
+            "gestaltung-referenz.png": "5e015d3a692b9a0d92e2715f05920309c0226699b7eac151cdea3410208dc57c"
+          }
+        },
+        {
+          "round": 2,
+          "device": "Mobil",
+          "position": 1,
+          "snapshotFingerprint": "5336723d07674910",
+          "archiveHash": "73cd5803fec91446b661f1221adc4a0afda274ceb8f56f83d2c9a3980617101b",
+          "archiveBytes": 1355732,
+          "checkedFiles": 5,
+          "storedContourPdf": null,
+          "storedPreview": "7a24507cb6ab62f8d9f8f0b7ce5ca996e4e44edb1ec47c8d5e52ccc9eb3ca6e7",
+          "media": {
+            "gestaltung-kundenansicht.png": "17024f5465084c1fef7a83f7e5196cb3f8ea45281caeb5ee15cf33246a43dc95",
+            "gestaltung-referenz.png": "08e5e8b01107bb6a8ff3e3a7d3b984cc6491f04e668b4ac18945c1ee8537b0e9"
+          }
+        },
+        {
+          "round": 2,
+          "device": "Mobil",
+          "position": 2,
+          "snapshotFingerprint": "2730464d8f3bdcb4",
+          "archiveHash": "9b01f44cd12e6d1a1ab3a0186980645b497d31ee2be8349b6260bc5c8826a1a3",
+          "archiveBytes": 1361627,
+          "checkedFiles": 7,
+          "storedContourPdf": null,
+          "storedPreview": "6736506db64828000af7e4faa491bf39aa3149d586b01d99292aa37f69d2ab02",
+          "media": {
+            "quellen/994bd7bd51d4cf21c6275f0812657089a131bd872fea4469d55ed84f48fe96dd-original.svg": "d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8",
+            "quellen/994bd7bd51d4cf21c6275f0812657089a131bd872fea4469d55ed84f48fe96dd-vorschau.svg": "ead6e79ae6969c6012c9df9cd4b191e559df01aa31e880d8d982b22b1974f0f1",
+            "gestaltung-kundenansicht.png": "ca8a5e95b88a49849d2476e38830239c7e3cbb3b17f10902362518dfe104070c",
+            "gestaltung-referenz.png": "5e015d3a692b9a0d92e2715f05920309c0226699b7eac151cdea3410208dc57c"
+          }
+        },
+        {
+          "round": 2,
+          "device": "PC",
+          "position": 1,
+          "snapshotFingerprint": "694992c766c8c96a",
+          "archiveHash": "de0d4731f4d381f866870407d4f7de3b635bdf639f3d721b27bb557661e3d2b3",
+          "archiveBytes": 1355732,
+          "checkedFiles": 5,
+          "storedContourPdf": null,
+          "storedPreview": "7a24507cb6ab62f8d9f8f0b7ce5ca996e4e44edb1ec47c8d5e52ccc9eb3ca6e7",
+          "media": {
+            "gestaltung-kundenansicht.png": "17024f5465084c1fef7a83f7e5196cb3f8ea45281caeb5ee15cf33246a43dc95",
+            "gestaltung-referenz.png": "08e5e8b01107bb6a8ff3e3a7d3b984cc6491f04e668b4ac18945c1ee8537b0e9"
+          }
+        },
+        {
+          "round": 2,
+          "device": "PC",
+          "position": 2,
+          "snapshotFingerprint": "f3d1bc54cad95681",
+          "archiveHash": "5275894c8de2e15d1b4ff60f48866bc704d4f1962fc48ed41638482e47213207",
+          "archiveBytes": 1361627,
+          "checkedFiles": 7,
+          "storedContourPdf": null,
+          "storedPreview": "6736506db64828000af7e4faa491bf39aa3149d586b01d99292aa37f69d2ab02",
+          "media": {
+            "quellen/994bd7bd51d4cf21c6275f0812657089a131bd872fea4469d55ed84f48fe96dd-original.svg": "d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8",
+            "quellen/994bd7bd51d4cf21c6275f0812657089a131bd872fea4469d55ed84f48fe96dd-vorschau.svg": "ead6e79ae6969c6012c9df9cd4b191e559df01aa31e880d8d982b22b1974f0f1",
+            "gestaltung-kundenansicht.png": "ca8a5e95b88a49849d2476e38830239c7e3cbb3b17f10902362518dfe104070c",
+            "gestaltung-referenz.png": "5e015d3a692b9a0d92e2715f05920309c0226699b7eac151cdea3410208dc57c"
+          }
+        },
+        {
+          "round": 3,
+          "device": "PC",
+          "position": 1,
+          "snapshotFingerprint": "72d9e7c3209dc7d1",
+          "archiveHash": "c7d0c42cee44e8055a60493fb90e6171e8171c9805c08549e16232824b057379",
+          "archiveBytes": 1355732,
+          "checkedFiles": 5,
+          "storedContourPdf": null,
+          "storedPreview": "7a24507cb6ab62f8d9f8f0b7ce5ca996e4e44edb1ec47c8d5e52ccc9eb3ca6e7",
+          "media": {
+            "gestaltung-kundenansicht.png": "17024f5465084c1fef7a83f7e5196cb3f8ea45281caeb5ee15cf33246a43dc95",
+            "gestaltung-referenz.png": "08e5e8b01107bb6a8ff3e3a7d3b984cc6491f04e668b4ac18945c1ee8537b0e9"
+          }
+        },
+        {
+          "round": 3,
+          "device": "PC",
+          "position": 2,
+          "snapshotFingerprint": "1c250d64b2f2caad",
+          "archiveHash": "ba4e267facdcbb0f881b66ad5d67d74097be5e9366efef4185de2671e0d40086",
+          "archiveBytes": 1361627,
+          "checkedFiles": 7,
+          "storedContourPdf": null,
+          "storedPreview": "6736506db64828000af7e4faa491bf39aa3149d586b01d99292aa37f69d2ab02",
+          "media": {
+            "quellen/994bd7bd51d4cf21c6275f0812657089a131bd872fea4469d55ed84f48fe96dd-original.svg": "d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8",
+            "quellen/994bd7bd51d4cf21c6275f0812657089a131bd872fea4469d55ed84f48fe96dd-vorschau.svg": "ead6e79ae6969c6012c9df9cd4b191e559df01aa31e880d8d982b22b1974f0f1",
+            "gestaltung-kundenansicht.png": "ca8a5e95b88a49849d2476e38830239c7e3cbb3b17f10902362518dfe104070c",
+            "gestaltung-referenz.png": "5e015d3a692b9a0d92e2715f05920309c0226699b7eac151cdea3410208dc57c"
+          }
+        },
+        {
+          "round": 3,
+          "device": "Mobil",
+          "position": 1,
+          "snapshotFingerprint": "e0d58c160e149a58",
+          "archiveHash": "d8c292cc32f1d828c96ba5311cf16c10f827ec8e135336badbd2c363640aa838",
+          "archiveBytes": 1355732,
+          "checkedFiles": 5,
+          "storedContourPdf": null,
+          "storedPreview": "7a24507cb6ab62f8d9f8f0b7ce5ca996e4e44edb1ec47c8d5e52ccc9eb3ca6e7",
+          "media": {
+            "gestaltung-kundenansicht.png": "17024f5465084c1fef7a83f7e5196cb3f8ea45281caeb5ee15cf33246a43dc95",
+            "gestaltung-referenz.png": "08e5e8b01107bb6a8ff3e3a7d3b984cc6491f04e668b4ac18945c1ee8537b0e9"
+          }
+        },
+        {
+          "round": 3,
+          "device": "Mobil",
+          "position": 2,
+          "snapshotFingerprint": "f60856c9c63fb240",
+          "archiveHash": "6cc2fa02a0bbe8394fb9aa596ca21566ed2a7aa523518d8d80152911c061849b",
+          "archiveBytes": 1361627,
+          "checkedFiles": 7,
+          "storedContourPdf": null,
+          "storedPreview": "6736506db64828000af7e4faa491bf39aa3149d586b01d99292aa37f69d2ab02",
+          "media": {
+            "quellen/994bd7bd51d4cf21c6275f0812657089a131bd872fea4469d55ed84f48fe96dd-original.svg": "d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8",
+            "quellen/994bd7bd51d4cf21c6275f0812657089a131bd872fea4469d55ed84f48fe96dd-vorschau.svg": "ead6e79ae6969c6012c9df9cd4b191e559df01aa31e880d8d982b22b1974f0f1",
+            "gestaltung-kundenansicht.png": "ca8a5e95b88a49849d2476e38830239c7e3cbb3b17f10902362518dfe104070c",
+            "gestaltung-referenz.png": "5e015d3a692b9a0d92e2715f05920309c0226699b7eac151cdea3410208dc57c"
+          }
+        }
+      ]
+    },
+    "stufe4": {
+      "checkedAt": "2026-11-19T18:39:08.983899+00:00",
+      "rows": [
+        {
+          "round": 1,
+          "device": "PC",
+          "position": 1,
+          "snapshotFingerprint": "6102985c369c5aff",
+          "archiveHash": "4c09bc6cc64294724f1caf9bc470ec3290043c3404bdf59ab3771ca23f26fe3e",
+          "archiveBytes": 1355732,
+          "checkedFiles": 5,
+          "storedContourPdf": null,
+          "storedPreview": "7a24507cb6ab62f8d9f8f0b7ce5ca996e4e44edb1ec47c8d5e52ccc9eb3ca6e7",
+          "media": {
+            "gestaltung-kundenansicht.png": "17024f5465084c1fef7a83f7e5196cb3f8ea45281caeb5ee15cf33246a43dc95",
+            "gestaltung-referenz.png": "08e5e8b01107bb6a8ff3e3a7d3b984cc6491f04e668b4ac18945c1ee8537b0e9"
+          }
+        },
+        {
+          "round": 1,
+          "device": "PC",
+          "position": 2,
+          "snapshotFingerprint": "f94fbaf3a2bab875",
+          "archiveHash": "0285c1a9eb07de6729750a225a80bc762f5a3829d0ef77109165cfd6c72f2dc9",
+          "archiveBytes": 1361627,
+          "checkedFiles": 7,
+          "storedContourPdf": null,
+          "storedPreview": "6736506db64828000af7e4faa491bf39aa3149d586b01d99292aa37f69d2ab02",
+          "media": {
+            "quellen/994bd7bd51d4cf21c6275f0812657089a131bd872fea4469d55ed84f48fe96dd-original.svg": "d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8",
+            "quellen/994bd7bd51d4cf21c6275f0812657089a131bd872fea4469d55ed84f48fe96dd-vorschau.svg": "ead6e79ae6969c6012c9df9cd4b191e559df01aa31e880d8d982b22b1974f0f1",
+            "gestaltung-kundenansicht.png": "ca8a5e95b88a49849d2476e38830239c7e3cbb3b17f10902362518dfe104070c",
+            "gestaltung-referenz.png": "5e015d3a692b9a0d92e2715f05920309c0226699b7eac151cdea3410208dc57c"
+          }
+        },
+        {
+          "round": 1,
+          "device": "Mobil",
+          "position": 1,
+          "snapshotFingerprint": "f3756b4e64394c0c",
+          "archiveHash": "f8e3b5ff15e9d3477e26c9dd03dd73658b75b49b3f168609e535c3bff5cbf2ee",
+          "archiveBytes": 1355732,
+          "checkedFiles": 5,
+          "storedContourPdf": null,
+          "storedPreview": "7a24507cb6ab62f8d9f8f0b7ce5ca996e4e44edb1ec47c8d5e52ccc9eb3ca6e7",
+          "media": {
+            "gestaltung-kundenansicht.png": "17024f5465084c1fef7a83f7e5196cb3f8ea45281caeb5ee15cf33246a43dc95",
+            "gestaltung-referenz.png": "08e5e8b01107bb6a8ff3e3a7d3b984cc6491f04e668b4ac18945c1ee8537b0e9"
+          }
+        },
+        {
+          "round": 1,
+          "device": "Mobil",
+          "position": 2,
+          "snapshotFingerprint": "ac0f74ab4b1ed1bd",
+          "archiveHash": "ed8833db29925390f8c562dc630939782c4b349ec63e2597a10dd08f9532c091",
+          "archiveBytes": 1361627,
+          "checkedFiles": 7,
+          "storedContourPdf": null,
+          "storedPreview": "6736506db64828000af7e4faa491bf39aa3149d586b01d99292aa37f69d2ab02",
+          "media": {
+            "quellen/994bd7bd51d4cf21c6275f0812657089a131bd872fea4469d55ed84f48fe96dd-original.svg": "d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8",
+            "quellen/994bd7bd51d4cf21c6275f0812657089a131bd872fea4469d55ed84f48fe96dd-vorschau.svg": "ead6e79ae6969c6012c9df9cd4b191e559df01aa31e880d8d982b22b1974f0f1",
+            "gestaltung-kundenansicht.png": "ca8a5e95b88a49849d2476e38830239c7e3cbb3b17f10902362518dfe104070c",
+            "gestaltung-referenz.png": "5e015d3a692b9a0d92e2715f05920309c0226699b7eac151cdea3410208dc57c"
+          }
+        },
+        {
+          "round": 2,
+          "device": "Mobil",
+          "position": 1,
+          "snapshotFingerprint": "a3f3585103ed5245",
+          "archiveHash": "fa9f3d1b8e9f1435ae2388d180aac5fc61d82d95cb20c8724d66b2272a40b32e",
+          "archiveBytes": 1355732,
+          "checkedFiles": 5,
+          "storedContourPdf": null,
+          "storedPreview": "7a24507cb6ab62f8d9f8f0b7ce5ca996e4e44edb1ec47c8d5e52ccc9eb3ca6e7",
+          "media": {
+            "gestaltung-kundenansicht.png": "17024f5465084c1fef7a83f7e5196cb3f8ea45281caeb5ee15cf33246a43dc95",
+            "gestaltung-referenz.png": "08e5e8b01107bb6a8ff3e3a7d3b984cc6491f04e668b4ac18945c1ee8537b0e9"
+          }
+        },
+        {
+          "round": 2,
+          "device": "Mobil",
+          "position": 2,
+          "snapshotFingerprint": "c2b009f0f5cde698",
+          "archiveHash": "e15cb31e0abb37e193f936d8a7f2f1ff0aad9b397c7ad149e48564141b437ca6",
+          "archiveBytes": 1361627,
+          "checkedFiles": 7,
+          "storedContourPdf": null,
+          "storedPreview": "6736506db64828000af7e4faa491bf39aa3149d586b01d99292aa37f69d2ab02",
+          "media": {
+            "quellen/994bd7bd51d4cf21c6275f0812657089a131bd872fea4469d55ed84f48fe96dd-original.svg": "d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8",
+            "quellen/994bd7bd51d4cf21c6275f0812657089a131bd872fea4469d55ed84f48fe96dd-vorschau.svg": "ead6e79ae6969c6012c9df9cd4b191e559df01aa31e880d8d982b22b1974f0f1",
+            "gestaltung-kundenansicht.png": "ca8a5e95b88a49849d2476e38830239c7e3cbb3b17f10902362518dfe104070c",
+            "gestaltung-referenz.png": "5e015d3a692b9a0d92e2715f05920309c0226699b7eac151cdea3410208dc57c"
+          }
+        },
+        {
+          "round": 2,
+          "device": "PC",
+          "position": 1,
+          "snapshotFingerprint": "4eb000b665e2e5a4",
+          "archiveHash": "68a6c11f00ed7c240834543cf4f0df3724a5cd0becb0266006a66145658e2a39",
+          "archiveBytes": 1355732,
+          "checkedFiles": 5,
+          "storedContourPdf": null,
+          "storedPreview": "7a24507cb6ab62f8d9f8f0b7ce5ca996e4e44edb1ec47c8d5e52ccc9eb3ca6e7",
+          "media": {
+            "gestaltung-kundenansicht.png": "17024f5465084c1fef7a83f7e5196cb3f8ea45281caeb5ee15cf33246a43dc95",
+            "gestaltung-referenz.png": "08e5e8b01107bb6a8ff3e3a7d3b984cc6491f04e668b4ac18945c1ee8537b0e9"
+          }
+        },
+        {
+          "round": 2,
+          "device": "PC",
+          "position": 2,
+          "snapshotFingerprint": "5a6ef027e1b0fd1f",
+          "archiveHash": "b453d24635c015e3d7caa3a6bc5a90fcfc1f515f9ec19b9d1050cbd4686866d8",
+          "archiveBytes": 1361627,
+          "checkedFiles": 7,
+          "storedContourPdf": null,
+          "storedPreview": "6736506db64828000af7e4faa491bf39aa3149d586b01d99292aa37f69d2ab02",
+          "media": {
+            "quellen/994bd7bd51d4cf21c6275f0812657089a131bd872fea4469d55ed84f48fe96dd-original.svg": "d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8",
+            "quellen/994bd7bd51d4cf21c6275f0812657089a131bd872fea4469d55ed84f48fe96dd-vorschau.svg": "ead6e79ae6969c6012c9df9cd4b191e559df01aa31e880d8d982b22b1974f0f1",
+            "gestaltung-kundenansicht.png": "ca8a5e95b88a49849d2476e38830239c7e3cbb3b17f10902362518dfe104070c",
+            "gestaltung-referenz.png": "5e015d3a692b9a0d92e2715f05920309c0226699b7eac151cdea3410208dc57c"
+          }
+        },
+        {
+          "round": 3,
+          "device": "PC",
+          "position": 1,
+          "snapshotFingerprint": "feb6c74bda337eda",
+          "archiveHash": "62269e1a1b424fc7b0f397ea73c2506924782bb6504b4b06ff927d5f4f0248a6",
+          "archiveBytes": 1355732,
+          "checkedFiles": 5,
+          "storedContourPdf": null,
+          "storedPreview": "7a24507cb6ab62f8d9f8f0b7ce5ca996e4e44edb1ec47c8d5e52ccc9eb3ca6e7",
+          "media": {
+            "gestaltung-kundenansicht.png": "17024f5465084c1fef7a83f7e5196cb3f8ea45281caeb5ee15cf33246a43dc95",
+            "gestaltung-referenz.png": "08e5e8b01107bb6a8ff3e3a7d3b984cc6491f04e668b4ac18945c1ee8537b0e9"
+          }
+        },
+        {
+          "round": 3,
+          "device": "PC",
+          "position": 2,
+          "snapshotFingerprint": "780a6e7641fd112a",
+          "archiveHash": "42ab69920a27c87bb5b391c4e755ed3339259b9525ee394eb5d12bd0a98cad1d",
+          "archiveBytes": 1361627,
+          "checkedFiles": 7,
+          "storedContourPdf": null,
+          "storedPreview": "6736506db64828000af7e4faa491bf39aa3149d586b01d99292aa37f69d2ab02",
+          "media": {
+            "quellen/994bd7bd51d4cf21c6275f0812657089a131bd872fea4469d55ed84f48fe96dd-original.svg": "d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8",
+            "quellen/994bd7bd51d4cf21c6275f0812657089a131bd872fea4469d55ed84f48fe96dd-vorschau.svg": "ead6e79ae6969c6012c9df9cd4b191e559df01aa31e880d8d982b22b1974f0f1",
+            "gestaltung-kundenansicht.png": "ca8a5e95b88a49849d2476e38830239c7e3cbb3b17f10902362518dfe104070c",
+            "gestaltung-referenz.png": "5e015d3a692b9a0d92e2715f05920309c0226699b7eac151cdea3410208dc57c"
+          }
+        },
+        {
+          "round": 3,
+          "device": "Mobil",
+          "position": 1,
+          "snapshotFingerprint": "81585508c38477ff",
+          "archiveHash": "d315d247719cbdd83a4012a355a4f466b3c4caa3116d6e8128ecf6621c29dad5",
+          "archiveBytes": 1355732,
+          "checkedFiles": 5,
+          "storedContourPdf": null,
+          "storedPreview": "7a24507cb6ab62f8d9f8f0b7ce5ca996e4e44edb1ec47c8d5e52ccc9eb3ca6e7",
+          "media": {
+            "gestaltung-kundenansicht.png": "17024f5465084c1fef7a83f7e5196cb3f8ea45281caeb5ee15cf33246a43dc95",
+            "gestaltung-referenz.png": "08e5e8b01107bb6a8ff3e3a7d3b984cc6491f04e668b4ac18945c1ee8537b0e9"
+          }
+        },
+        {
+          "round": 3,
+          "device": "Mobil",
+          "position": 2,
+          "snapshotFingerprint": "b26b770b899349d5",
+          "archiveHash": "7a201e5b4e1cc20f6a3a17b796c2929cc75fb95e9ba941d3ffcec2fff250c7d8",
+          "archiveBytes": 1361627,
+          "checkedFiles": 7,
+          "storedContourPdf": null,
+          "storedPreview": "6736506db64828000af7e4faa491bf39aa3149d586b01d99292aa37f69d2ab02",
+          "media": {
+            "quellen/994bd7bd51d4cf21c6275f0812657089a131bd872fea4469d55ed84f48fe96dd-original.svg": "d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8",
+            "quellen/994bd7bd51d4cf21c6275f0812657089a131bd872fea4469d55ed84f48fe96dd-vorschau.svg": "ead6e79ae6969c6012c9df9cd4b191e559df01aa31e880d8d982b22b1974f0f1",
+            "gestaltung-kundenansicht.png": "ca8a5e95b88a49849d2476e38830239c7e3cbb3b17f10902362518dfe104070c",
+            "gestaltung-referenz.png": "5e015d3a692b9a0d92e2715f05920309c0226699b7eac151cdea3410208dc57c"
+          }
+        }
+      ]
+    },
+    "fotoprobe": {
+      "checkedAt": "2026-11-19T18:54:31.962228+00:00",
+      "rows": [
+        {
+          "round": 1,
+          "device": "PC",
+          "position": 1,
+          "snapshotFingerprint": "d0839f6145cd2971",
+          "archiveHash": "44b23f73cb4381ea156b5245e6e68fdaae0578ec0ed612f4a78408cf90dad4b9",
+          "archiveBytes": 1355732,
+          "checkedFiles": 5,
+          "storedContourPdf": null,
+          "storedPreview": "7a24507cb6ab62f8d9f8f0b7ce5ca996e4e44edb1ec47c8d5e52ccc9eb3ca6e7",
+          "media": {
+            "gestaltung-kundenansicht.png": "17024f5465084c1fef7a83f7e5196cb3f8ea45281caeb5ee15cf33246a43dc95",
+            "gestaltung-referenz.png": "08e5e8b01107bb6a8ff3e3a7d3b984cc6491f04e668b4ac18945c1ee8537b0e9"
+          }
+        },
+        {
+          "round": 1,
+          "device": "PC",
+          "position": 2,
+          "snapshotFingerprint": "bb62c982210a5572",
+          "archiveHash": "3894e223c5e7f5dc6dc2532d103cd6ef0887319a36ae21de91478f4f995e84db",
+          "archiveBytes": 1361627,
+          "checkedFiles": 7,
+          "storedContourPdf": null,
+          "storedPreview": "6736506db64828000af7e4faa491bf39aa3149d586b01d99292aa37f69d2ab02",
+          "media": {
+            "quellen/994bd7bd51d4cf21c6275f0812657089a131bd872fea4469d55ed84f48fe96dd-original.svg": "d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8",
+            "quellen/994bd7bd51d4cf21c6275f0812657089a131bd872fea4469d55ed84f48fe96dd-vorschau.svg": "ead6e79ae6969c6012c9df9cd4b191e559df01aa31e880d8d982b22b1974f0f1",
+            "gestaltung-kundenansicht.png": "ca8a5e95b88a49849d2476e38830239c7e3cbb3b17f10902362518dfe104070c",
+            "gestaltung-referenz.png": "5e015d3a692b9a0d92e2715f05920309c0226699b7eac151cdea3410208dc57c"
+          }
+        },
+        {
+          "round": 1,
+          "device": "Mobil",
+          "position": 1,
+          "snapshotFingerprint": "982e064abceac118",
+          "archiveHash": "87412b88ed380519b7c007d09c2eedba91568e6a33ee34af4d312eba7ccd2930",
+          "archiveBytes": 1355732,
+          "checkedFiles": 5,
+          "storedContourPdf": null,
+          "storedPreview": "7a24507cb6ab62f8d9f8f0b7ce5ca996e4e44edb1ec47c8d5e52ccc9eb3ca6e7",
+          "media": {
+            "gestaltung-kundenansicht.png": "17024f5465084c1fef7a83f7e5196cb3f8ea45281caeb5ee15cf33246a43dc95",
+            "gestaltung-referenz.png": "08e5e8b01107bb6a8ff3e3a7d3b984cc6491f04e668b4ac18945c1ee8537b0e9"
+          }
+        },
+        {
+          "round": 1,
+          "device": "Mobil",
+          "position": 2,
+          "snapshotFingerprint": "c340549d5fdd5f23",
+          "archiveHash": "4dfe9bb9ed3aedd93890af8b51381abf12699a4cc90df48ac8946fe12ec5d524",
+          "archiveBytes": 1361627,
+          "checkedFiles": 7,
+          "storedContourPdf": null,
+          "storedPreview": "6736506db64828000af7e4faa491bf39aa3149d586b01d99292aa37f69d2ab02",
+          "media": {
+            "quellen/994bd7bd51d4cf21c6275f0812657089a131bd872fea4469d55ed84f48fe96dd-original.svg": "d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8",
+            "quellen/994bd7bd51d4cf21c6275f0812657089a131bd872fea4469d55ed84f48fe96dd-vorschau.svg": "ead6e79ae6969c6012c9df9cd4b191e559df01aa31e880d8d982b22b1974f0f1",
+            "gestaltung-kundenansicht.png": "ca8a5e95b88a49849d2476e38830239c7e3cbb3b17f10902362518dfe104070c",
+            "gestaltung-referenz.png": "5e015d3a692b9a0d92e2715f05920309c0226699b7eac151cdea3410208dc57c"
+          }
+        }
+      ]
+    },
+    "fotopruefung": {
+      "checkedAt": "2026-11-19T18:57:14.060123+00:00",
+      "rows": [
+        {
+          "round": 1,
+          "device": "PC",
+          "position": 1,
+          "snapshotFingerprint": "684b22801690dd77",
+          "archiveHash": "825b8446a2a656ac58bddac3a4088f6e783534edbe554a3474e7f4d6e9ba9cd8",
+          "archiveBytes": 1449937,
+          "checkedFiles": 5,
+          "storedContourPdf": null,
+          "storedPreview": "7a24507cb6ab62f8d9f8f0b7ce5ca996e4e44edb1ec47c8d5e52ccc9eb3ca6e7",
+          "media": {
+            "gestaltung-kundenansicht.png": "b1ed0cd08c5b530a6d278f73532d610aac6cc4bc17376d08726ebe998749bc9e",
+            "gestaltung-referenz.png": "08e5e8b01107bb6a8ff3e3a7d3b984cc6491f04e668b4ac18945c1ee8537b0e9"
+          }
+        },
+        {
+          "round": 1,
+          "device": "PC",
+          "position": 2,
+          "snapshotFingerprint": "9877347bc5f92fb7",
+          "archiveHash": "f6592e6d1703aa6c4f1b92fff24e080b108887d502d0381c0c1d5fcecb360801",
+          "archiveBytes": 1455809,
+          "checkedFiles": 7,
+          "storedContourPdf": null,
+          "storedPreview": "6736506db64828000af7e4faa491bf39aa3149d586b01d99292aa37f69d2ab02",
+          "media": {
+            "quellen/994bd7bd51d4cf21c6275f0812657089a131bd872fea4469d55ed84f48fe96dd-original.svg": "d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8",
+            "quellen/994bd7bd51d4cf21c6275f0812657089a131bd872fea4469d55ed84f48fe96dd-vorschau.svg": "ead6e79ae6969c6012c9df9cd4b191e559df01aa31e880d8d982b22b1974f0f1",
+            "gestaltung-kundenansicht.png": "fc31ce9cb9e6887b3fe26d11662cfe785a6039f403122ae04beb20954fc67e32",
+            "gestaltung-referenz.png": "5e015d3a692b9a0d92e2715f05920309c0226699b7eac151cdea3410208dc57c"
+          }
+        },
+        {
+          "round": 1,
+          "device": "Mobil",
+          "position": 1,
+          "snapshotFingerprint": "44ade47fa6ac9ee2",
+          "archiveHash": "ea71c5742a8c0e998d245d605ae45c23b0f21335825d2d7a4fffe11bf821e0ba",
+          "archiveBytes": 1449937,
+          "checkedFiles": 5,
+          "storedContourPdf": null,
+          "storedPreview": "7a24507cb6ab62f8d9f8f0b7ce5ca996e4e44edb1ec47c8d5e52ccc9eb3ca6e7",
+          "media": {
+            "gestaltung-kundenansicht.png": "b1ed0cd08c5b530a6d278f73532d610aac6cc4bc17376d08726ebe998749bc9e",
+            "gestaltung-referenz.png": "08e5e8b01107bb6a8ff3e3a7d3b984cc6491f04e668b4ac18945c1ee8537b0e9"
+          }
+        },
+        {
+          "round": 1,
+          "device": "Mobil",
+          "position": 2,
+          "snapshotFingerprint": "a516b848b579d0ea",
+          "archiveHash": "bc35354d0deacddcfab6fa4b6d915dc4bbc9db94dc756d12ec08e5a07364118e",
+          "archiveBytes": 1455809,
+          "checkedFiles": 7,
+          "storedContourPdf": null,
+          "storedPreview": "6736506db64828000af7e4faa491bf39aa3149d586b01d99292aa37f69d2ab02",
+          "media": {
+            "quellen/994bd7bd51d4cf21c6275f0812657089a131bd872fea4469d55ed84f48fe96dd-original.svg": "d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8",
+            "quellen/994bd7bd51d4cf21c6275f0812657089a131bd872fea4469d55ed84f48fe96dd-vorschau.svg": "ead6e79ae6969c6012c9df9cd4b191e559df01aa31e880d8d982b22b1974f0f1",
+            "gestaltung-kundenansicht.png": "fc31ce9cb9e6887b3fe26d11662cfe785a6039f403122ae04beb20954fc67e32",
+            "gestaltung-referenz.png": "5e015d3a692b9a0d92e2715f05920309c0226699b7eac151cdea3410208dc57c"
+          }
+        }
+      ]
+    },
+    "stufe5": {
+      "checkedAt": "2026-11-19T19:01:02.376681+00:00",
+      "rows": [
+        {
+          "round": 1,
+          "device": "PC",
+          "position": 1,
+          "snapshotFingerprint": "07c2d2b443dd60eb",
+          "archiveHash": "32437e89b81485a92f5b771f7ab06c66d4ceba3af69a6694d2fac3b7a9ba6cf4",
+          "archiveBytes": 1449937,
+          "checkedFiles": 5,
+          "storedContourPdf": null,
+          "storedPreview": "7a24507cb6ab62f8d9f8f0b7ce5ca996e4e44edb1ec47c8d5e52ccc9eb3ca6e7",
+          "media": {
+            "gestaltung-kundenansicht.png": "b1ed0cd08c5b530a6d278f73532d610aac6cc4bc17376d08726ebe998749bc9e",
+            "gestaltung-referenz.png": "08e5e8b01107bb6a8ff3e3a7d3b984cc6491f04e668b4ac18945c1ee8537b0e9"
+          }
+        },
+        {
+          "round": 1,
+          "device": "PC",
+          "position": 2,
+          "snapshotFingerprint": "831597670ca31f6c",
+          "archiveHash": "3d27d2c8cd980f5682b80a421a6c1c96592dc018734b8cc0c3ccf052fae7f569",
+          "archiveBytes": 1455809,
+          "checkedFiles": 7,
+          "storedContourPdf": null,
+          "storedPreview": "6736506db64828000af7e4faa491bf39aa3149d586b01d99292aa37f69d2ab02",
+          "media": {
+            "quellen/994bd7bd51d4cf21c6275f0812657089a131bd872fea4469d55ed84f48fe96dd-original.svg": "d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8",
+            "quellen/994bd7bd51d4cf21c6275f0812657089a131bd872fea4469d55ed84f48fe96dd-vorschau.svg": "ead6e79ae6969c6012c9df9cd4b191e559df01aa31e880d8d982b22b1974f0f1",
+            "gestaltung-kundenansicht.png": "fc31ce9cb9e6887b3fe26d11662cfe785a6039f403122ae04beb20954fc67e32",
+            "gestaltung-referenz.png": "5e015d3a692b9a0d92e2715f05920309c0226699b7eac151cdea3410208dc57c"
+          }
+        },
+        {
+          "round": 1,
+          "device": "Mobil",
+          "position": 1,
+          "snapshotFingerprint": "ac4d7391ac34d5c5",
+          "archiveHash": "510fc7d21d711f032b865b2308f8ca0d683834a007793b77647c6b768b9d9de0",
+          "archiveBytes": 1449937,
+          "checkedFiles": 5,
+          "storedContourPdf": null,
+          "storedPreview": "7a24507cb6ab62f8d9f8f0b7ce5ca996e4e44edb1ec47c8d5e52ccc9eb3ca6e7",
+          "media": {
+            "gestaltung-kundenansicht.png": "b1ed0cd08c5b530a6d278f73532d610aac6cc4bc17376d08726ebe998749bc9e",
+            "gestaltung-referenz.png": "08e5e8b01107bb6a8ff3e3a7d3b984cc6491f04e668b4ac18945c1ee8537b0e9"
+          }
+        },
+        {
+          "round": 1,
+          "device": "Mobil",
+          "position": 2,
+          "snapshotFingerprint": "286e520f5f6d378c",
+          "archiveHash": "994072c6b37f5a4fff45ccec9adbb11f98c110930371b2b49e0f30fa10013592",
+          "archiveBytes": 1455809,
+          "checkedFiles": 7,
+          "storedContourPdf": null,
+          "storedPreview": "6736506db64828000af7e4faa491bf39aa3149d586b01d99292aa37f69d2ab02",
+          "media": {
+            "quellen/994bd7bd51d4cf21c6275f0812657089a131bd872fea4469d55ed84f48fe96dd-original.svg": "d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8",
+            "quellen/994bd7bd51d4cf21c6275f0812657089a131bd872fea4469d55ed84f48fe96dd-vorschau.svg": "ead6e79ae6969c6012c9df9cd4b191e559df01aa31e880d8d982b22b1974f0f1",
+            "gestaltung-kundenansicht.png": "fc31ce9cb9e6887b3fe26d11662cfe785a6039f403122ae04beb20954fc67e32",
+            "gestaltung-referenz.png": "5e015d3a692b9a0d92e2715f05920309c0226699b7eac151cdea3410208dc57c"
+          }
+        },
+        {
+          "round": 2,
+          "device": "Mobil",
+          "position": 1,
+          "snapshotFingerprint": "23d28efaed2e1c4a",
+          "archiveHash": "4de4a66269e49b390664e1888fb1fa165d563a4a363be98f5f5ae20fe18f0af6",
+          "archiveBytes": 1449937,
+          "checkedFiles": 5,
+          "storedContourPdf": null,
+          "storedPreview": "7a24507cb6ab62f8d9f8f0b7ce5ca996e4e44edb1ec47c8d5e52ccc9eb3ca6e7",
+          "media": {
+            "gestaltung-kundenansicht.png": "b1ed0cd08c5b530a6d278f73532d610aac6cc4bc17376d08726ebe998749bc9e",
+            "gestaltung-referenz.png": "08e5e8b01107bb6a8ff3e3a7d3b984cc6491f04e668b4ac18945c1ee8537b0e9"
+          }
+        },
+        {
+          "round": 2,
+          "device": "Mobil",
+          "position": 2,
+          "snapshotFingerprint": "e7da5ead08500fa9",
+          "archiveHash": "b685faaabca419ebeaea1e513267ce3dc64eb9a48b77a5fce6a8393fe270abe7",
+          "archiveBytes": 1455809,
+          "checkedFiles": 7,
+          "storedContourPdf": null,
+          "storedPreview": "6736506db64828000af7e4faa491bf39aa3149d586b01d99292aa37f69d2ab02",
+          "media": {
+            "quellen/994bd7bd51d4cf21c6275f0812657089a131bd872fea4469d55ed84f48fe96dd-original.svg": "d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8",
+            "quellen/994bd7bd51d4cf21c6275f0812657089a131bd872fea4469d55ed84f48fe96dd-vorschau.svg": "ead6e79ae6969c6012c9df9cd4b191e559df01aa31e880d8d982b22b1974f0f1",
+            "gestaltung-kundenansicht.png": "fc31ce9cb9e6887b3fe26d11662cfe785a6039f403122ae04beb20954fc67e32",
+            "gestaltung-referenz.png": "5e015d3a692b9a0d92e2715f05920309c0226699b7eac151cdea3410208dc57c"
+          }
+        },
+        {
+          "round": 2,
+          "device": "PC",
+          "position": 1,
+          "snapshotFingerprint": "38f6da4289c73f2d",
+          "archiveHash": "5e9d1ff4f1bb3719fbdfa0001f5f24b3cfe62b204bd7010677d07c5d8b3b7fe4",
+          "archiveBytes": 1449937,
+          "checkedFiles": 5,
+          "storedContourPdf": null,
+          "storedPreview": "7a24507cb6ab62f8d9f8f0b7ce5ca996e4e44edb1ec47c8d5e52ccc9eb3ca6e7",
+          "media": {
+            "gestaltung-kundenansicht.png": "b1ed0cd08c5b530a6d278f73532d610aac6cc4bc17376d08726ebe998749bc9e",
+            "gestaltung-referenz.png": "08e5e8b01107bb6a8ff3e3a7d3b984cc6491f04e668b4ac18945c1ee8537b0e9"
+          }
+        },
+        {
+          "round": 2,
+          "device": "PC",
+          "position": 2,
+          "snapshotFingerprint": "4e24a8644db3ff86",
+          "archiveHash": "8e1751a3adfd5229e5de58d157ed2f3aef5ad6b02eb0bddd0c2e7f6bdb289bc0",
+          "archiveBytes": 1455809,
+          "checkedFiles": 7,
+          "storedContourPdf": null,
+          "storedPreview": "6736506db64828000af7e4faa491bf39aa3149d586b01d99292aa37f69d2ab02",
+          "media": {
+            "quellen/994bd7bd51d4cf21c6275f0812657089a131bd872fea4469d55ed84f48fe96dd-original.svg": "d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8",
+            "quellen/994bd7bd51d4cf21c6275f0812657089a131bd872fea4469d55ed84f48fe96dd-vorschau.svg": "ead6e79ae6969c6012c9df9cd4b191e559df01aa31e880d8d982b22b1974f0f1",
+            "gestaltung-kundenansicht.png": "fc31ce9cb9e6887b3fe26d11662cfe785a6039f403122ae04beb20954fc67e32",
+            "gestaltung-referenz.png": "5e015d3a692b9a0d92e2715f05920309c0226699b7eac151cdea3410208dc57c"
+          }
+        },
+        {
+          "round": 3,
+          "device": "PC",
+          "position": 1,
+          "snapshotFingerprint": "9e6e9317a429ad68",
+          "archiveHash": "9cadb048db67ec839fc206e8bbb55807112795181c607723ce1ff14f7722e213",
+          "archiveBytes": 1449937,
+          "checkedFiles": 5,
+          "storedContourPdf": null,
+          "storedPreview": "7a24507cb6ab62f8d9f8f0b7ce5ca996e4e44edb1ec47c8d5e52ccc9eb3ca6e7",
+          "media": {
+            "gestaltung-kundenansicht.png": "b1ed0cd08c5b530a6d278f73532d610aac6cc4bc17376d08726ebe998749bc9e",
+            "gestaltung-referenz.png": "08e5e8b01107bb6a8ff3e3a7d3b984cc6491f04e668b4ac18945c1ee8537b0e9"
+          }
+        },
+        {
+          "round": 3,
+          "device": "PC",
+          "position": 2,
+          "snapshotFingerprint": "c6eee678897a6cd2",
+          "archiveHash": "bd891552380fab18df1fb79b66d26c31b5835e5fc926d3a7fb0f7a9c96f1b5ca",
+          "archiveBytes": 1455809,
+          "checkedFiles": 7,
+          "storedContourPdf": null,
+          "storedPreview": "6736506db64828000af7e4faa491bf39aa3149d586b01d99292aa37f69d2ab02",
+          "media": {
+            "quellen/994bd7bd51d4cf21c6275f0812657089a131bd872fea4469d55ed84f48fe96dd-original.svg": "d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8",
+            "quellen/994bd7bd51d4cf21c6275f0812657089a131bd872fea4469d55ed84f48fe96dd-vorschau.svg": "ead6e79ae6969c6012c9df9cd4b191e559df01aa31e880d8d982b22b1974f0f1",
+            "gestaltung-kundenansicht.png": "fc31ce9cb9e6887b3fe26d11662cfe785a6039f403122ae04beb20954fc67e32",
+            "gestaltung-referenz.png": "5e015d3a692b9a0d92e2715f05920309c0226699b7eac151cdea3410208dc57c"
+          }
+        },
+        {
+          "round": 3,
+          "device": "Mobil",
+          "position": 1,
+          "snapshotFingerprint": "21eeb419e06f8177",
+          "archiveHash": "1fcfd45c502eade0daacbed8aca7bb190e136b1a84588da977799c2fd5756e99",
+          "archiveBytes": 1449937,
+          "checkedFiles": 5,
+          "storedContourPdf": null,
+          "storedPreview": "7a24507cb6ab62f8d9f8f0b7ce5ca996e4e44edb1ec47c8d5e52ccc9eb3ca6e7",
+          "media": {
+            "gestaltung-kundenansicht.png": "b1ed0cd08c5b530a6d278f73532d610aac6cc4bc17376d08726ebe998749bc9e",
+            "gestaltung-referenz.png": "08e5e8b01107bb6a8ff3e3a7d3b984cc6491f04e668b4ac18945c1ee8537b0e9"
+          }
+        },
+        {
+          "round": 3,
+          "device": "Mobil",
+          "position": 2,
+          "snapshotFingerprint": "77975b3316a9860d",
+          "archiveHash": "0019287cc029e10d58fe6ec67255ef1e56a067107f19762e7c674453df9f385f",
+          "archiveBytes": 1455809,
+          "checkedFiles": 7,
+          "storedContourPdf": null,
+          "storedPreview": "6736506db64828000af7e4faa491bf39aa3149d586b01d99292aa37f69d2ab02",
+          "media": {
+            "quellen/994bd7bd51d4cf21c6275f0812657089a131bd872fea4469d55ed84f48fe96dd-original.svg": "d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8",
+            "quellen/994bd7bd51d4cf21c6275f0812657089a131bd872fea4469d55ed84f48fe96dd-vorschau.svg": "ead6e79ae6969c6012c9df9cd4b191e559df01aa31e880d8d982b22b1974f0f1",
+            "gestaltung-kundenansicht.png": "fc31ce9cb9e6887b3fe26d11662cfe785a6039f403122ae04beb20954fc67e32",
+            "gestaltung-referenz.png": "5e015d3a692b9a0d92e2715f05920309c0226699b7eac151cdea3410208dc57c"
+          }
+        }
+      ]
+    }
+  },
+  "neuerzeugteAusgaben": {
+    "referenz": {
+      "checkedAt": "2026-11-19T18:30:04.624Z",
+      "renderer": "R15-Produktionsexport aus zwei eigenen festen Entwürfen; für den Zusatzvergleich nur Ziffern in /CreationDate ausgeblendet.",
+      "rows": [
+        {
+          "position": 1,
+          "name": "Nord",
+          "engravingSvg": "b52755637ed13379e8a40a0fb3eb1d4c9093f75c9f8134673105551afae39d83",
+          "cutSteelSvg": "2f7fc44a99f85230e496fea0103a015b611df1586df4069eb46cbdfef2ad71e0",
+          "cutAcrylicSvg": "5b696850a2834c2f6b296f3bfb422b8edc0475f6176fb64d3763e022fa6cba9a",
+          "cutSteelPdf": "2b6893aaaae706a15a1ee725cb5e03ae3b4b394f6728bc942c8cfd4dbb428fec",
+          "cutAcrylicPdf": "02935d7a6288600529dde876acf796a967e9cc71e1c9fa87f339c4b714186626",
+          "steelPdfContent": {
+            "sha256OutsideCreationTime": "82ef3d88c0e5b6e780baa42ba2011692ec39674018e0afae20554d1c0d6b2bd9",
+            "creationDate": "D:20261119193004+01'00"
+          },
+          "acrylicPdfContent": {
+            "sha256OutsideCreationTime": "92b401460e98eaa59be2cae43c929f7035de6d7697f3a49654a4748d6caefb50",
+            "creationDate": "D:20261119193004+01'00"
+          },
+          "widthMm": 160,
+          "heightMm": 280,
+          "textFields": 3
+        },
+        {
+          "position": 2,
+          "name": "Süd",
+          "engravingSvg": "7037bd5d30cce9a53a29a0fcbc2727d67670cdcd557cd049e957f1cd6d4a574b",
+          "cutSteelSvg": "2f7fc44a99f85230e496fea0103a015b611df1586df4069eb46cbdfef2ad71e0",
+          "cutAcrylicSvg": "5b696850a2834c2f6b296f3bfb422b8edc0475f6176fb64d3763e022fa6cba9a",
+          "cutSteelPdf": "2b6893aaaae706a15a1ee725cb5e03ae3b4b394f6728bc942c8cfd4dbb428fec",
+          "cutAcrylicPdf": "02935d7a6288600529dde876acf796a967e9cc71e1c9fa87f339c4b714186626",
+          "steelPdfContent": {
+            "sha256OutsideCreationTime": "82ef3d88c0e5b6e780baa42ba2011692ec39674018e0afae20554d1c0d6b2bd9",
+            "creationDate": "D:20261119193004+01'00"
+          },
+          "acrylicPdfContent": {
+            "sha256OutsideCreationTime": "92b401460e98eaa59be2cae43c929f7035de6d7697f3a49654a4748d6caefb50",
+            "creationDate": "D:20261119193004+01'00"
+          },
+          "widthMm": 160,
+          "heightMm": 280,
+          "textFields": 3
+        }
+      ]
+    },
+    "stufe1": {
+      "checkedAt": "2026-11-19T18:30:04.590Z",
+      "renderer": "R15-Produktionsexport aus zwei eigenen festen Entwürfen; für den Zusatzvergleich nur Ziffern in /CreationDate ausgeblendet.",
+      "rows": [
+        {
+          "position": 1,
+          "name": "Nord",
+          "engravingSvg": "b52755637ed13379e8a40a0fb3eb1d4c9093f75c9f8134673105551afae39d83",
+          "cutSteelSvg": "2f7fc44a99f85230e496fea0103a015b611df1586df4069eb46cbdfef2ad71e0",
+          "cutAcrylicSvg": "5b696850a2834c2f6b296f3bfb422b8edc0475f6176fb64d3763e022fa6cba9a",
+          "cutSteelPdf": "2b6893aaaae706a15a1ee725cb5e03ae3b4b394f6728bc942c8cfd4dbb428fec",
+          "cutAcrylicPdf": "02935d7a6288600529dde876acf796a967e9cc71e1c9fa87f339c4b714186626",
+          "steelPdfContent": {
+            "sha256OutsideCreationTime": "82ef3d88c0e5b6e780baa42ba2011692ec39674018e0afae20554d1c0d6b2bd9",
+            "creationDate": "D:20261119193004+01'00"
+          },
+          "acrylicPdfContent": {
+            "sha256OutsideCreationTime": "92b401460e98eaa59be2cae43c929f7035de6d7697f3a49654a4748d6caefb50",
+            "creationDate": "D:20261119193004+01'00"
+          },
+          "widthMm": 160,
+          "heightMm": 280,
+          "textFields": 3
+        },
+        {
+          "position": 2,
+          "name": "Süd",
+          "engravingSvg": "7037bd5d30cce9a53a29a0fcbc2727d67670cdcd557cd049e957f1cd6d4a574b",
+          "cutSteelSvg": "2f7fc44a99f85230e496fea0103a015b611df1586df4069eb46cbdfef2ad71e0",
+          "cutAcrylicSvg": "5b696850a2834c2f6b296f3bfb422b8edc0475f6176fb64d3763e022fa6cba9a",
+          "cutSteelPdf": "2b6893aaaae706a15a1ee725cb5e03ae3b4b394f6728bc942c8cfd4dbb428fec",
+          "cutAcrylicPdf": "02935d7a6288600529dde876acf796a967e9cc71e1c9fa87f339c4b714186626",
+          "steelPdfContent": {
+            "sha256OutsideCreationTime": "82ef3d88c0e5b6e780baa42ba2011692ec39674018e0afae20554d1c0d6b2bd9",
+            "creationDate": "D:20261119193004+01'00"
+          },
+          "acrylicPdfContent": {
+            "sha256OutsideCreationTime": "92b401460e98eaa59be2cae43c929f7035de6d7697f3a49654a4748d6caefb50",
+            "creationDate": "D:20261119193004+01'00"
+          },
+          "widthMm": 160,
+          "heightMm": 280,
+          "textFields": 3
+        }
+      ]
+    },
+    "stufe2": {
+      "checkedAt": "2026-11-19T18:30:04.648Z",
+      "renderer": "R15-Produktionsexport aus zwei eigenen festen Entwürfen; für den Zusatzvergleich nur Ziffern in /CreationDate ausgeblendet.",
+      "rows": [
+        {
+          "position": 1,
+          "name": "Nord",
+          "engravingSvg": "b52755637ed13379e8a40a0fb3eb1d4c9093f75c9f8134673105551afae39d83",
+          "cutSteelSvg": "2f7fc44a99f85230e496fea0103a015b611df1586df4069eb46cbdfef2ad71e0",
+          "cutAcrylicSvg": "5b696850a2834c2f6b296f3bfb422b8edc0475f6176fb64d3763e022fa6cba9a",
+          "cutSteelPdf": "2b6893aaaae706a15a1ee725cb5e03ae3b4b394f6728bc942c8cfd4dbb428fec",
+          "cutAcrylicPdf": "02935d7a6288600529dde876acf796a967e9cc71e1c9fa87f339c4b714186626",
+          "steelPdfContent": {
+            "sha256OutsideCreationTime": "82ef3d88c0e5b6e780baa42ba2011692ec39674018e0afae20554d1c0d6b2bd9",
+            "creationDate": "D:20261119193004+01'00"
+          },
+          "acrylicPdfContent": {
+            "sha256OutsideCreationTime": "92b401460e98eaa59be2cae43c929f7035de6d7697f3a49654a4748d6caefb50",
+            "creationDate": "D:20261119193004+01'00"
+          },
+          "widthMm": 160,
+          "heightMm": 280,
+          "textFields": 3
+        },
+        {
+          "position": 2,
+          "name": "Süd",
+          "engravingSvg": "7037bd5d30cce9a53a29a0fcbc2727d67670cdcd557cd049e957f1cd6d4a574b",
+          "cutSteelSvg": "2f7fc44a99f85230e496fea0103a015b611df1586df4069eb46cbdfef2ad71e0",
+          "cutAcrylicSvg": "5b696850a2834c2f6b296f3bfb422b8edc0475f6176fb64d3763e022fa6cba9a",
+          "cutSteelPdf": "2b6893aaaae706a15a1ee725cb5e03ae3b4b394f6728bc942c8cfd4dbb428fec",
+          "cutAcrylicPdf": "02935d7a6288600529dde876acf796a967e9cc71e1c9fa87f339c4b714186626",
+          "steelPdfContent": {
+            "sha256OutsideCreationTime": "82ef3d88c0e5b6e780baa42ba2011692ec39674018e0afae20554d1c0d6b2bd9",
+            "creationDate": "D:20261119193004+01'00"
+          },
+          "acrylicPdfContent": {
+            "sha256OutsideCreationTime": "92b401460e98eaa59be2cae43c929f7035de6d7697f3a49654a4748d6caefb50",
+            "creationDate": "D:20261119193004+01'00"
+          },
+          "widthMm": 160,
+          "heightMm": 280,
+          "textFields": 3
+        }
+      ]
+    },
+    "stufe3": {
+      "checkedAt": "2026-11-19T18:33:03.102Z",
+      "renderer": "R15-Produktionsexport aus zwei eigenen festen Entwürfen; für den Zusatzvergleich nur Ziffern in /CreationDate ausgeblendet.",
+      "rows": [
+        {
+          "position": 1,
+          "name": "Nord",
+          "engravingSvg": "b52755637ed13379e8a40a0fb3eb1d4c9093f75c9f8134673105551afae39d83",
+          "cutSteelSvg": "2f7fc44a99f85230e496fea0103a015b611df1586df4069eb46cbdfef2ad71e0",
+          "cutAcrylicSvg": "5b696850a2834c2f6b296f3bfb422b8edc0475f6176fb64d3763e022fa6cba9a",
+          "cutSteelPdf": "a209cc7742b752bce1aa47aa2493d89de13d893adfe25fe32384b37782c41ad5",
+          "cutAcrylicPdf": "ffbbc07ae3f8373f2c5a713a23d2f1717b313dbc9f308f23dff8c196258bcb9f",
+          "steelPdfContent": {
+            "sha256OutsideCreationTime": "82ef3d88c0e5b6e780baa42ba2011692ec39674018e0afae20554d1c0d6b2bd9",
+            "creationDate": "D:20261119193302+01'00"
+          },
+          "acrylicPdfContent": {
+            "sha256OutsideCreationTime": "92b401460e98eaa59be2cae43c929f7035de6d7697f3a49654a4748d6caefb50",
+            "creationDate": "D:20261119193302+01'00"
+          },
+          "widthMm": 160,
+          "heightMm": 280,
+          "textFields": 3
+        },
+        {
+          "position": 2,
+          "name": "Süd",
+          "engravingSvg": "7037bd5d30cce9a53a29a0fcbc2727d67670cdcd557cd049e957f1cd6d4a574b",
+          "cutSteelSvg": "2f7fc44a99f85230e496fea0103a015b611df1586df4069eb46cbdfef2ad71e0",
+          "cutAcrylicSvg": "5b696850a2834c2f6b296f3bfb422b8edc0475f6176fb64d3763e022fa6cba9a",
+          "cutSteelPdf": "6ef481000fe335ec4a7b79c1aa6613030822c9a431f863d7accfcc131b874cc7",
+          "cutAcrylicPdf": "00681ba8aca8ee846f5e57300fff0648a4fbe8986f99d4538705fcd67127cda9",
+          "steelPdfContent": {
+            "sha256OutsideCreationTime": "82ef3d88c0e5b6e780baa42ba2011692ec39674018e0afae20554d1c0d6b2bd9",
+            "creationDate": "D:20261119193303+01'00"
+          },
+          "acrylicPdfContent": {
+            "sha256OutsideCreationTime": "92b401460e98eaa59be2cae43c929f7035de6d7697f3a49654a4748d6caefb50",
+            "creationDate": "D:20261119193303+01'00"
+          },
+          "widthMm": 160,
+          "heightMm": 280,
+          "textFields": 3
+        }
+      ]
+    },
+    "stufe4": {
+      "checkedAt": "2026-11-19T18:39:10.049Z",
+      "renderer": "R15-Produktionsexport aus zwei eigenen festen Entwürfen; für den Zusatzvergleich nur Ziffern in /CreationDate ausgeblendet.",
+      "rows": [
+        {
+          "position": 1,
+          "name": "Nord",
+          "engravingSvg": "b52755637ed13379e8a40a0fb3eb1d4c9093f75c9f8134673105551afae39d83",
+          "cutSteelSvg": "2f7fc44a99f85230e496fea0103a015b611df1586df4069eb46cbdfef2ad71e0",
+          "cutAcrylicSvg": "5b696850a2834c2f6b296f3bfb422b8edc0475f6176fb64d3763e022fa6cba9a",
+          "cutSteelPdf": "ec2e23b90a8e5a26db98f3eda6fc9c1e901a3b12ecc5e5d3b186c8ec3d92da12",
+          "cutAcrylicPdf": "f36ab83ae7575507f652257155a7f9ad1938e5fd19c64ccc5740c3ea79db7548",
+          "steelPdfContent": {
+            "sha256OutsideCreationTime": "82ef3d88c0e5b6e780baa42ba2011692ec39674018e0afae20554d1c0d6b2bd9",
+            "creationDate": "D:20261119193909+01'00"
+          },
+          "acrylicPdfContent": {
+            "sha256OutsideCreationTime": "92b401460e98eaa59be2cae43c929f7035de6d7697f3a49654a4748d6caefb50",
+            "creationDate": "D:20261119193909+01'00"
+          },
+          "widthMm": 160,
+          "heightMm": 280,
+          "textFields": 3
+        },
+        {
+          "position": 2,
+          "name": "Süd",
+          "engravingSvg": "7037bd5d30cce9a53a29a0fcbc2727d67670cdcd557cd049e957f1cd6d4a574b",
+          "cutSteelSvg": "2f7fc44a99f85230e496fea0103a015b611df1586df4069eb46cbdfef2ad71e0",
+          "cutAcrylicSvg": "5b696850a2834c2f6b296f3bfb422b8edc0475f6176fb64d3763e022fa6cba9a",
+          "cutSteelPdf": "ec2e23b90a8e5a26db98f3eda6fc9c1e901a3b12ecc5e5d3b186c8ec3d92da12",
+          "cutAcrylicPdf": "6b73e877d4d460eadaf10a9009d576e6846db4d98d4ef1f710bbe9092b631b87",
+          "steelPdfContent": {
+            "sha256OutsideCreationTime": "82ef3d88c0e5b6e780baa42ba2011692ec39674018e0afae20554d1c0d6b2bd9",
+            "creationDate": "D:20261119193909+01'00"
+          },
+          "acrylicPdfContent": {
+            "sha256OutsideCreationTime": "92b401460e98eaa59be2cae43c929f7035de6d7697f3a49654a4748d6caefb50",
+            "creationDate": "D:20261119193910+01'00"
+          },
+          "widthMm": 160,
+          "heightMm": 280,
+          "textFields": 3
+        }
+      ]
+    },
+    "fotoprobe": {
+      "checkedAt": "2026-11-19T18:53:14.034Z",
+      "renderer": "R15-Produktionsexport aus zwei eigenen festen Entwürfen; für den Zusatzvergleich nur Ziffern in /CreationDate ausgeblendet.",
+      "rows": [
+        {
+          "position": 1,
+          "name": "Nord",
+          "engravingSvg": "b52755637ed13379e8a40a0fb3eb1d4c9093f75c9f8134673105551afae39d83",
+          "cutSteelSvg": "2f7fc44a99f85230e496fea0103a015b611df1586df4069eb46cbdfef2ad71e0",
+          "cutAcrylicSvg": "5b696850a2834c2f6b296f3bfb422b8edc0475f6176fb64d3763e022fa6cba9a",
+          "cutSteelPdf": "7026135887b4ffc7b2f95b471837f2bb4f9da7017170bc432f623edf40f06539",
+          "cutAcrylicPdf": "f5ec66e44f4c3910d666869db0278af46c063daa411aa68cd849e0a23ec5957f",
+          "steelPdfContent": {
+            "sha256OutsideCreationTime": "82ef3d88c0e5b6e780baa42ba2011692ec39674018e0afae20554d1c0d6b2bd9",
+            "creationDate": "D:20261119195313+01'00"
+          },
+          "acrylicPdfContent": {
+            "sha256OutsideCreationTime": "92b401460e98eaa59be2cae43c929f7035de6d7697f3a49654a4748d6caefb50",
+            "creationDate": "D:20261119195313+01'00"
+          },
+          "widthMm": 160,
+          "heightMm": 280,
+          "textFields": 3
+        },
+        {
+          "position": 2,
+          "name": "Süd",
+          "engravingSvg": "7037bd5d30cce9a53a29a0fcbc2727d67670cdcd557cd049e957f1cd6d4a574b",
+          "cutSteelSvg": "2f7fc44a99f85230e496fea0103a015b611df1586df4069eb46cbdfef2ad71e0",
+          "cutAcrylicSvg": "5b696850a2834c2f6b296f3bfb422b8edc0475f6176fb64d3763e022fa6cba9a",
+          "cutSteelPdf": "7026135887b4ffc7b2f95b471837f2bb4f9da7017170bc432f623edf40f06539",
+          "cutAcrylicPdf": "f5ec66e44f4c3910d666869db0278af46c063daa411aa68cd849e0a23ec5957f",
+          "steelPdfContent": {
+            "sha256OutsideCreationTime": "82ef3d88c0e5b6e780baa42ba2011692ec39674018e0afae20554d1c0d6b2bd9",
+            "creationDate": "D:20261119195313+01'00"
+          },
+          "acrylicPdfContent": {
+            "sha256OutsideCreationTime": "92b401460e98eaa59be2cae43c929f7035de6d7697f3a49654a4748d6caefb50",
+            "creationDate": "D:20261119195313+01'00"
+          },
+          "widthMm": 160,
+          "heightMm": 280,
+          "textFields": 3
+        }
+      ]
+    },
+    "fotopruefung": {
+      "checkedAt": "2026-11-19T18:56:32.064Z",
+      "renderer": "R15-Produktionsexport aus zwei eigenen festen Entwürfen; für den Zusatzvergleich nur Ziffern in /CreationDate ausgeblendet.",
+      "rows": [
+        {
+          "position": 1,
+          "name": "Nord",
+          "engravingSvg": "b52755637ed13379e8a40a0fb3eb1d4c9093f75c9f8134673105551afae39d83",
+          "cutSteelSvg": "2f7fc44a99f85230e496fea0103a015b611df1586df4069eb46cbdfef2ad71e0",
+          "cutAcrylicSvg": "5b696850a2834c2f6b296f3bfb422b8edc0475f6176fb64d3763e022fa6cba9a",
+          "cutSteelPdf": "6ffcb8e33aa9b77412f4c65f6d7e2552a693ea9cae5d216f431090b48b391956",
+          "cutAcrylicPdf": "a299cafc668997dd3690fcf3ea5f907b42c36a6e22c6aa3ac370772664e14d96",
+          "steelPdfContent": {
+            "sha256OutsideCreationTime": "82ef3d88c0e5b6e780baa42ba2011692ec39674018e0afae20554d1c0d6b2bd9",
+            "creationDate": "D:20261119195631+01'00"
+          },
+          "acrylicPdfContent": {
+            "sha256OutsideCreationTime": "92b401460e98eaa59be2cae43c929f7035de6d7697f3a49654a4748d6caefb50",
+            "creationDate": "D:20261119195631+01'00"
+          },
+          "widthMm": 160,
+          "heightMm": 280,
+          "textFields": 3
+        },
+        {
+          "position": 2,
+          "name": "Süd",
+          "engravingSvg": "7037bd5d30cce9a53a29a0fcbc2727d67670cdcd557cd049e957f1cd6d4a574b",
+          "cutSteelSvg": "2f7fc44a99f85230e496fea0103a015b611df1586df4069eb46cbdfef2ad71e0",
+          "cutAcrylicSvg": "5b696850a2834c2f6b296f3bfb422b8edc0475f6176fb64d3763e022fa6cba9a",
+          "cutSteelPdf": "9d328bf4a954bc46d40deb58d5f3bcd2ec2f2d03c6c2be846e8c1229c3c34a07",
+          "cutAcrylicPdf": "f5b92be7bc4dd2268d1d7f0665c5ba55c3fa7046e3220d528847743ec48a2627",
+          "steelPdfContent": {
+            "sha256OutsideCreationTime": "82ef3d88c0e5b6e780baa42ba2011692ec39674018e0afae20554d1c0d6b2bd9",
+            "creationDate": "D:20261119195632+01'00"
+          },
+          "acrylicPdfContent": {
+            "sha256OutsideCreationTime": "92b401460e98eaa59be2cae43c929f7035de6d7697f3a49654a4748d6caefb50",
+            "creationDate": "D:20261119195632+01'00"
+          },
+          "widthMm": 160,
+          "heightMm": 280,
+          "textFields": 3
+        }
+      ]
+    },
+    "stufe5": {
+      "checkedAt": "2026-11-19T19:01:03.404Z",
+      "renderer": "R15-Produktionsexport aus zwei eigenen festen Entwürfen; für den Zusatzvergleich nur Ziffern in /CreationDate ausgeblendet.",
+      "rows": [
+        {
+          "position": 1,
+          "name": "Nord",
+          "engravingSvg": "b52755637ed13379e8a40a0fb3eb1d4c9093f75c9f8134673105551afae39d83",
+          "cutSteelSvg": "2f7fc44a99f85230e496fea0103a015b611df1586df4069eb46cbdfef2ad71e0",
+          "cutAcrylicSvg": "5b696850a2834c2f6b296f3bfb422b8edc0475f6176fb64d3763e022fa6cba9a",
+          "cutSteelPdf": "1250fa3639055ac273220d93c3b8bed9038cc69fc44a11cf2ae5e79905b08312",
+          "cutAcrylicPdf": "77c29cb39cb6c8ab3619023aa6073728022fb2d0fc5fc114607ae15a35bced6f",
+          "steelPdfContent": {
+            "sha256OutsideCreationTime": "82ef3d88c0e5b6e780baa42ba2011692ec39674018e0afae20554d1c0d6b2bd9",
+            "creationDate": "D:20261119200102+01'00"
+          },
+          "acrylicPdfContent": {
+            "sha256OutsideCreationTime": "92b401460e98eaa59be2cae43c929f7035de6d7697f3a49654a4748d6caefb50",
+            "creationDate": "D:20261119200102+01'00"
+          },
+          "widthMm": 160,
+          "heightMm": 280,
+          "textFields": 3
+        },
+        {
+          "position": 2,
+          "name": "Süd",
+          "engravingSvg": "7037bd5d30cce9a53a29a0fcbc2727d67670cdcd557cd049e957f1cd6d4a574b",
+          "cutSteelSvg": "2f7fc44a99f85230e496fea0103a015b611df1586df4069eb46cbdfef2ad71e0",
+          "cutAcrylicSvg": "5b696850a2834c2f6b296f3bfb422b8edc0475f6176fb64d3763e022fa6cba9a",
+          "cutSteelPdf": "cb1167da0d5c617caf652c69a824518e9fafa1b56854911cf0cc62396029fc8a",
+          "cutAcrylicPdf": "a96d08d236a955e4bf88ca4f9a3cd0e67bb47f5d269cb3867f3c3111d4f46d07",
+          "steelPdfContent": {
+            "sha256OutsideCreationTime": "82ef3d88c0e5b6e780baa42ba2011692ec39674018e0afae20554d1c0d6b2bd9",
+            "creationDate": "D:20261119200103+01'00"
+          },
+          "acrylicPdfContent": {
+            "sha256OutsideCreationTime": "92b401460e98eaa59be2cae43c929f7035de6d7697f3a49654a4748d6caefb50",
+            "creationDate": "D:20261119200103+01'00"
+          },
+          "widthMm": 160,
+          "heightMm": 280,
+          "textFields": 3
+        }
+      ]
+    }
+  }
+}

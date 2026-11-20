@@ -1,0 +1,142 @@
+{
+  "application": "f7504182",
+  "source": "Getrennte lokale SQLite-Dateien des Ring-Tests mit zwei eigenen Gestaltungen. Es wurden nur Größen und standardisierte Dateinamen ausgewertet.",
+  "query": "SELECT json_extract(manifest,'$.source.designId'), count(*), min(length(manifest)),max(length(manifest)), min(length(preview)), max(length(preview)), min(length(package)), max(length(package)),min(length(photos)), max(length(photos)), min(length(contour_pdf)),max(length(contour_pdf)),min(length(CAST(manifest AS BLOB))+length(preview)+length(package)+length(photos)+length(contour_pdf)),max(length(CAST(manifest AS BLOB))+length(preview)+length(package)+length(photos)+length(contour_pdf))\nFROM form_review_snapshots WHERE json_extract(manifest,'$.source.designId') IN ('FK-SEITLICH','FK-RUNDUM') GROUP BY 1 ORDER BY 1",
+  "snapshotComponents": {
+    "FK-RUNDUM": {
+      "samples": 6,
+      "manifestChars": [
+        3699,
+        3699
+      ],
+      "previewBytes": [
+        7503,
+        7503
+      ],
+      "zipBytes": [
+        1619837,
+        1619837
+      ],
+      "photosZipBytes": [
+        22,
+        22
+      ],
+      "contourBytes": [
+        0,
+        0
+      ],
+      "totalBlobAndManifestBytes": [
+        1631069,
+        1631069
+      ],
+      "largestEntries": [
+        {
+          "file": "konfigurator-quellen.json",
+          "bytes": 779856,
+          "storedBytes": 779856,
+          "zipMethod": 0
+        },
+        {
+          "file": "gestaltung-kundenansicht.png",
+          "bytes": 488927,
+          "storedBytes": 488927,
+          "zipMethod": 0
+        },
+        {
+          "file": "produkt-und-gestaltung.json",
+          "bytes": 320992,
+          "storedBytes": 320992,
+          "zipMethod": 0
+        },
+        {
+          "file": "funkklingel-fertigung.json",
+          "bytes": 18125,
+          "storedBytes": 18125,
+          "zipMethod": 0
+        },
+        {
+          "file": "gestaltung-referenz.png",
+          "bytes": 5529,
+          "storedBytes": 5529,
+          "zipMethod": 0
+        },
+        {
+          "file": "manifest.json",
+          "bytes": 4623,
+          "storedBytes": 4623,
+          "zipMethod": 0
+        }
+      ]
+    },
+    "FK-SEITLICH": {
+      "samples": 6,
+      "manifestChars": [
+        3241,
+        3241
+      ],
+      "previewBytes": [
+        6031,
+        6031
+      ],
+      "zipBytes": [
+        1613820,
+        1613820
+      ],
+      "photosZipBytes": [
+        22,
+        22
+      ],
+      "contourBytes": [
+        0,
+        0
+      ],
+      "totalBlobAndManifestBytes": [
+        1623121,
+        1623121
+      ],
+      "largestEntries": [
+        {
+          "file": "konfigurator-quellen.json",
+          "bytes": 778644,
+          "storedBytes": 778644,
+          "zipMethod": 0
+        },
+        {
+          "file": "gestaltung-kundenansicht.png",
+          "bytes": 487203,
+          "storedBytes": 487203,
+          "zipMethod": 0
+        },
+        {
+          "file": "produkt-und-gestaltung.json",
+          "bytes": 320581,
+          "storedBytes": 320581,
+          "zipMethod": 0
+        },
+        {
+          "file": "funkklingel-fertigung.json",
+          "bytes": 18125,
+          "storedBytes": 18125,
+          "zipMethod": 0
+        },
+        {
+          "file": "gestaltung-referenz.png",
+          "bytes": 4425,
+          "storedBytes": 4425,
+          "zipMethod": 0
+        },
+        {
+          "file": "manifest.json",
+          "bytes": 4080,
+          "storedBytes": 4080,
+          "zipMethod": 0
+        }
+      ]
+    }
+  },
+  "storeAmounts": "Nutzdaten der SQLite-Spalten, ohne WAL, Dateisystem und Indizes.",
+  "remainingRingCartPngBytes": [
+    488927,
+    488927
+  ]
+}

@@ -13,7 +13,10 @@ import {createShopEntry} from './shop-entry.mjs';
 import {appProxySignature} from './shopify-app-proxy.mjs';
 import {workshopResources} from './catalog.mjs';
 import {newEditableObject} from '../configurator/variant-m/contract.mjs';
-import {readReviewPackage} from './review-package.mjs';
+import {digest,readReviewPackage} from './review-package.mjs';
+import {acrylicArtwork} from './acrylic-artwork.mjs';
+import {acrylicContourProof,createAcrylicPrintProof} from './acrylic-print-proof.mjs';
+import {execFileSync} from 'node:child_process';
 import {NATIVE_REVIEW_SCHEMAS} from './native-review-schema.mjs';
 import {createThemeCartClient} from './ui/theme-cart-client.mjs';
 import {prepareShopProduct} from './shop-preparation.mjs';
@@ -76,8 +79,9 @@ test('theme cart: signed entry, immutable design, edit, quantity 1 to 4 and sign
  };
  const store={storeId:'acryl',registry,workshop:w,apiPrefix:'/api/workshop/',nativeEditorPath:'/_merchant-editor.html',formEditorPath:'/_merchant-form-editor.html',cart:createBoundTestCart({workshop:w,registry,shopDomain,transportOptions:{fetchImpl}})};
  const registeredImage='https://cdn.shopify.com/s/files/1/0920/5550/3228/files/gravuru-gestaltung-'+'c'.repeat(64)+'.png';let imageCalls=0,imagePending=false;
- const timingEvents=[],imageSources=[];let afterImage=null;
- let now=1_800_000_000_000;const entry=createShopEntry({origin,shopDomain,secret,stores:[store],proxyPath,clock:()=>now,logger:event=>timingEvents.push(event),modelSlimmer:null,checkoutImage:async source=>{assert.ok(source.startsWith(origin+'/gestaltung/'));imageSources.push(source);if(imagePending)throw Object.assign(Error('Bild wird vorbereitet.'),{status:502,code:'checkout_image_pending'});imageCalls++;await Promise.resolve();afterImage?.();return registeredImage;}});
+ const timingEvents=[],imageSources=[],imageSteps=[];let afterImage=null;
+ const warmCheckoutAccess=async()=>{imageSteps.push('access');throw Error('Synthetic cold login failure');};
+ let now=1_800_000_000_000;const entry=createShopEntry({origin,shopDomain,secret,stores:[store],proxyPath,clock:()=>now,logger:event=>timingEvents.push(event),modelSlimmer:null,warmCheckoutAccess,checkoutImage:async source=>{imageSteps.push('saved image');assert.ok(source.startsWith(origin+'/gestaltung/'));imageSources.push(source);if(imagePending)throw Object.assign(Error('Bild wird vorbereitet.'),{status:502,code:'checkout_image_pending'});imageCalls++;await Promise.resolve();afterImage?.();return registeredImage;}});
  const webhook=createOrderWebhookHandler({intake:w.orderIntake,config:webhookConfig});
  const server=http.createServer((req,res)=>req.url===ORDER_WEBHOOK_PATH?webhook(req,res):entry.handle(req,res,new URL(req.url,origin)));server.listen(0,'127.0.0.1');await once(server,'listening');
  t.after(async()=>{server.closeAllConnections();await new Promise(r=>server.close(r));});
@@ -95,6 +99,7 @@ test('theme cart: signed entry, immutable design, edit, quantity 1 to 4 and sign
  const session={'X-Gravuru-Shop-Session':token};
  // 2. Modell: echtes Werkstattmodell der festen Revision, Ausführung der Seitenvariante vorausgewählt.
  const model=await request('/api/shop-entry/model',undefined,undefined,session);assert.equal(model.status,200,JSON.stringify(model.data));
+ assert.equal(model.data.savedCartImage,true);
  const config=model.data.model.universal;assert.equal(model.data.model.configuration.id,record.id);assert.equal(model.data.model.configuration.revision,record.revision);
  for(const group of config.profile.optionGroups)assert.equal(group.defaultValueId,variants[1].options[group.id]);
  assert.ok(!JSON.stringify(model.data).includes(secret));
@@ -103,11 +108,12 @@ test('theme cart: signed entry, immutable design, edit, quantity 1 to 4 and sign
  const input={productId:record.id,productRevision:record.revision,designId:source.id,objects:structuredClone(source.objects),options:structuredClone(chosen.options),quantity:2,media:[{id:'kundenfoto',original:png}],preview:png,customerPreview:webp};
  Object.assign(input.objects.find(o=>o.type==='photoSlot'),{uxUploadId:'kundenfoto',uxUploadKind:'photo'});
  const created=await request('/api/shop-entry/acrylic-drafts','POST',{input},session);assert.equal(created.status,201,JSON.stringify(created.data));
+ assert.deepEqual(imageSteps,['access','saved image'],'a failed early login lets the saved-image path try again');
  const draftTiming=timingEvents.find(e=>e.traceId===created.headers['x-gravuru-timing-id']);
  assert.equal(draftTiming.route,'acrylic-drafts');assert.equal(draftTiming.status,201);
  assert.equal(draftTiming.counts.request_bytes,Buffer.byteLength(JSON.stringify({input})));
  assert.equal(draftTiming.counts.response_bytes,created.body.length);
- for(const step of ['body_read','body_json','session_binding','model_build','review_validate','customer_preview','reference_preview','review_zip','draft_persist','response_json']){
+ for(const step of ['body_read','body_json','session_binding','model_build','review_validate','preview_pair','review_zip','draft_persist','response_json']){
   assert.equal(draftTiming.steps[step].calls,1,step);assert.ok(draftTiming.steps[step].durationMs>=0);assert.ok(created.headers['server-timing'].includes(step+';dur='));
  }
  const draft=created.data;assert.match(draft.id,/^adraft_/);assert.match(draft.token,/^[a-f0-9]{64}$/);assert.equal(draft.revision,1);
@@ -308,7 +314,11 @@ test('theme cart: signed entry, immutable design, edit, quantity 1 to 4 and sign
  // Edit the same draft; only its own prior cart line is replaced.
  const abandoned=await request('/api/shop-entry/acrylic-drafts/'+draft.id,'POST',{input:{...input,quantity:3},expectedRevision:1},headers);assert.equal(abandoned.status,200);
  const abandonedTransfer=await request('/api/shop-entry/theme-cart','POST',{draftId:draft.id,expectedRevision:2,quantity:3,configId:p.configuration.id,cartLineId:'theme',cartRevision:1},headers);assert.equal(abandonedTransfer.status,200);
- const edited=await request('/api/shop-entry/acrylic-drafts/'+draft.id,'POST',{input:{...input,quantity:3},expectedRevision:2},headers);assert.equal(edited.status,200,JSON.stringify(edited.data));
+ const revisedInput=structuredClone(input);
+ const changedText=revisedInput.objects.find(object=>object.type==='text');
+ changedText.text='Muster 267';
+ revisedInput.quantity=3;
+ const edited=await request('/api/shop-entry/acrylic-drafts/'+draft.id,'POST',{input:revisedInput,expectedRevision:2},headers);assert.equal(edited.status,200,JSON.stringify(edited.data));
  assert.notEqual(imageSources.at(-1),draftImageSource,'a later saved revision gets its own immutable image source');
  assert.ok(imageSources.at(-1).includes('/'+edited.data.snapshotId+'/'));
  const edit=await request('/api/shop-entry/theme-cart','POST',{draftId:draft.id,expectedRevision:3,quantity:3,configId:p.configuration.id,cartLineId:'theme',cartRevision:1,presentation:'prio-r15'},headers);assert.equal(edit.status,200,JSON.stringify(edit.data));
@@ -320,6 +330,49 @@ test('theme cart: signed entry, immutable design, edit, quantity 1 to 4 and sign
  const item=themeCart.items[1],paid={id:123456,test:true,financial_status:'paid',currency:'EUR',customer:{id:42},line_items:[{id:9001,product_id:Number(p.productId),variant_id:item.variant_id,quantity:3,price:euro(item.original_price),properties:Object.entries(item.properties).map(([name,value])=>({name,value}))}]};
  const raw=Buffer.from(JSON.stringify(paid)),received=w.orderIntake.receive(raw,{'x-shopify-hmac-sha256':createHmac('sha256',secret).update(raw).digest('base64'),'x-shopify-shop-domain':shopDomain,'x-shopify-api-version':'2026-07','x-shopify-topic':'orders/paid','x-shopify-webhook-id':'evt-theme-cart-0001'},{shopDomain,secret,apiVersion:'2026-07'});
  assert.equal(received.errors.length,0,JSON.stringify(received.errors));assert.equal(received.lines.length,1);assert.equal(received.lines[0].snapshotId,edited.data.snapshotId);assert.deepEqual(received.lines[0].configuration,{id:p.configuration.id,rev:3});assert.equal(received.lines[0].productionReady,false);
+
+ await t.test('ordered revision keeps its edited lettering, original photo and measured production files',async()=>{
+  const line=received.lines[0];
+  const review=w.customerDrafts.review(line.snapshotId).manifest;
+  const archive=w.customerDrafts.downloadSnapshot(line.snapshotId,'package');
+  assert.equal(digest(archive),review.packageSha256);
+  const artwork=await acrylicArtwork(archive,review.packageSha256);
+  const saved=JSON.parse(artwork.files.get('produkt-und-gestaltung.json')).state;
+  const textOf=state=>state.design.objects.find(object=>object.id===changedText.id).text;
+  assert.equal(textOf(saved),changedText.text);
+  const originalArchive=w.customerDrafts.downloadSnapshot(draft.snapshotId,'package');
+  const originalFiles=readReviewPackage(originalArchive,manifest.packageSha256,NATIVE_REVIEW_SCHEMAS).files;
+  assert.equal(textOf(JSON.parse(originalFiles.get('produkt-und-gestaltung.json')).state),source.objects.find(object=>object.id===changedText.id).text);
+  assert.deepEqual(saved.options,chosen.options);
+  assert.ok(artwork.textFields.length>0);
+  assert.ok(artwork.photoFields.length>0);
+  assert.deepEqual(artwork.files.get(artwork.photos[0].sourcePath),Buffer.from(png,'base64'));
+  assert.match(artwork.svg,/<path\b/);
+  assert.doesNotMatch(artwork.svg,/<text\b/);
+  const contour=await acrylicContourProof(archive,review.packageSha256);
+  const repeatedContour=await acrylicContourProof(archive,review.packageSha256);
+  assert.equal(digest(repeatedContour),digest(contour),'Re-exporting the same purchased contour must reproduce its bytes');
+  const print=await createAcrylicPrintProof(archive,review.packageSha256,{dpi:300,bleedMm:0,whiteBleedMm:0},{orderLines:[line]});
+  assert.equal(print.metadata.sourcePackageSha256,review.packageSha256);
+  assert.equal(print.metadata.geometrySha256,artwork.geometrySha256);
+  assert.ok(print.metadata.vectorGlyphs>0);
+  assert.equal(print.metadata.pdfSha256,digest(print.pdf));
+  // Read the actual PDF page boxes, independently of the source metadata.
+  const inspect='import sys,json,pymupdf; doc=pymupdf.open(stream=sys.stdin.buffer.read(),filetype="pdf"); p=doc[0]; print(json.dumps([len(doc),p.rect.width*25.4/72,p.rect.height*25.4/72,len(p.get_drawings())]))';
+  for(const bytes of [contour,print.pdf]){
+   const dimensions=JSON.parse(execFileSync(process.env.GRAVURU_PYTHON||(process.platform==='win32'?'python':'python3'),['-c',inspect],{input:bytes,windowsHide:true}));
+   assert.equal(dimensions[0],1);
+   assert.ok(Math.abs(dimensions[1]-review.product.widthMm)<0.02);
+   assert.ok(Math.abs(dimensions[2]-review.product.heightMm)<0.02);
+   assert.ok(dimensions[3]>0);
+  }
+  if(process.env.GRAVURU_BETA_EVIDENCE){
+   const dest=process.env.GRAVURU_BETA_EVIDENCE;
+   fs.mkdirSync(dest,{recursive:true});
+   for(const [file,bytes] of [['gestaltung.svg',artwork.svg],['kontur.pdf',contour],['druck.pdf',print.pdf],['kundenansicht.png',artwork.files.get('gestaltung-kundenansicht.png')]])fs.writeFileSync(path.join(dest,file),bytes);
+   fs.writeFileSync(path.join(dest,'dateipruefung.json'),JSON.stringify({synthetic:true,revision:line.configuration.rev,widthMm:review.product.widthMm,heightMm:review.product.heightMm,sourceSha256:review.packageSha256,svgSha256:digest(artwork.svg),contourSha256:digest(contour),printSha256:digest(print.pdf),vectorGlyphs:print.metadata.vectorGlyphs,photoSources:artwork.photos.length},null,2));
+  }
+ });
 
  await t.test('F01 changes quantity in the theme and accepts only the exact checkout tier at orders/paid',async()=>{
   themeCart.items.splice(1);

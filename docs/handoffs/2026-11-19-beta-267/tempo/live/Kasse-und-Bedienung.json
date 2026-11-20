@@ -1,0 +1,144 @@
+{
+  "vorEntfernungDesBearbeitenLinks": [
+    {
+      "device": "PC",
+      "dpr": 1,
+      "renderedWidth": 160,
+      "originalZoomPixels": [
+        952,
+        1600
+      ],
+      "drawer": "geöffnet, beide persönlichen Bilder zugeordnet",
+      "editLinks": 2,
+      "removedNorthAndReloadedSouth": false
+    },
+    {
+      "device": "Mobil",
+      "dpr": 3,
+      "renderedWidth": 480,
+      "originalZoomPixels": [
+        952,
+        1600
+      ],
+      "drawer": "geöffnet, beide persönlichen Bilder zugeordnet",
+      "editLinks": 2,
+      "removedNorthAndReloadedSouth": false
+    }
+  ],
+  "nachEntfernungDesBearbeitenLinks": [
+    {
+      "device": "PC",
+      "dpr": 1,
+      "renderedWidth": 160,
+      "originalZoomPixels": [
+        952,
+        1600
+      ],
+      "drawer": "geöffnet, beide persönlichen Bilder zugeordnet",
+      "editLinks": 0,
+      "removedNorthAndReloadedSouth": true
+    },
+    {
+      "device": "Mobil",
+      "dpr": 3,
+      "renderedWidth": 480,
+      "originalZoomPixels": [
+        952,
+        1600
+      ],
+      "drawer": "geöffnet, beide persönlichen Bilder zugeordnet",
+      "editLinks": 0,
+      "removedNorthAndReloadedSouth": true
+    }
+  ],
+  "danachMitGeraetefoto": [
+    {
+      "device": "PC",
+      "dpr": 1,
+      "renderedWidth": 160,
+      "originalZoomPixels": [
+        952,
+        1600
+      ],
+      "drawer": "geöffnet, beide persönlichen Bilder zugeordnet",
+      "editLinks": 0,
+      "removedNorthAndReloadedSouth": true
+    },
+    {
+      "device": "Mobil",
+      "dpr": 3,
+      "renderedWidth": 480,
+      "originalZoomPixels": [
+        952,
+        1600
+      ],
+      "drawer": "geöffnet, beide persönlichen Bilder zugeordnet",
+      "editLinks": 0,
+      "removedNorthAndReloadedSouth": true
+    }
+  ],
+  "sichtbareKassenbilderVorher": {
+    "checkoutPageOpened": true,
+    "matchedVisiblePersonalImages": 2,
+    "expected": 2,
+    "dimensions": [
+      [
+        38,
+        64
+      ],
+      [
+        38,
+        64
+      ]
+    ],
+    "orderPlaced": false
+  },
+  "sichtbareKassenbilderOhneBearbeitenLink": {
+    "checkoutPageOpened": true,
+    "matchedVisiblePersonalImages": 2,
+    "expected": 2,
+    "dimensions": [
+      [
+        38,
+        64
+      ],
+      [
+        38,
+        64
+      ]
+    ],
+    "orderPlaced": false
+  },
+  "pruefbrowserMitFoto": {
+    "checkoutPageOpened": true,
+    "matchedVisiblePersonalImages": 2,
+    "expected": 2,
+    "dimensions": [
+      [
+        38,
+        64
+      ],
+      [
+        38,
+        64
+      ]
+    ],
+    "orderPlaced": false
+  },
+  "sichtbareKassenbilderAktuell": {
+    "checkoutPageOpened": true,
+    "matchedVisiblePersonalImages": 2,
+    "expected": 2,
+    "dimensions": [
+      [
+        38,
+        64
+      ],
+      [
+        38,
+        64
+      ]
+    ],
+    "orderPlaced": false
+  }
+}

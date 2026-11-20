@@ -1,0 +1,630 @@
+{
+  "editor": {
+    "14b53038": {
+      "switchMs": {
+        "n": 24,
+        "median": 202.0,
+        "min": 159,
+        "max": 450
+      },
+      "svgParses": {
+        "n": 24,
+        "median": 63.0,
+        "min": 36,
+        "max": 95
+      }
+    },
+    "8a3d6c86": {
+      "switchMs": {
+        "n": 24,
+        "median": 194.0,
+        "min": 143,
+        "max": 435
+      },
+      "svgParses": {
+        "n": 24,
+        "median": 25.0,
+        "min": 16,
+        "max": 40
+      }
+    },
+    "3b3b4626": {
+      "switchMs": {
+        "n": 24,
+        "median": 192.0,
+        "min": 138,
+        "max": 291
+      },
+      "svgParses": {
+        "n": 24,
+        "median": 13.0,
+        "min": 12,
+        "max": 23
+      }
+    }
+  },
+  "editorReadings": [
+    {
+      "version": "14b53038",
+      "device": "PC",
+      "series": 1,
+      "served": [
+        "/_acryl-bundle/editor-7dfd6f600e080015.mjs"
+      ],
+      "readings": [
+        {
+          "design": "FK-SEITLICH",
+          "ms": 226,
+          "svgParses": 81
+        },
+        {
+          "design": "FK-RUNDUM",
+          "ms": 197,
+          "svgParses": 66
+        },
+        {
+          "design": "FK-SEITLICH",
+          "ms": 196,
+          "svgParses": 63
+        },
+        {
+          "design": "FK-RUNDUM",
+          "ms": 220,
+          "svgParses": 69
+        },
+        {
+          "design": "FK-SEITLICH",
+          "ms": 206,
+          "svgParses": 75
+        },
+        {
+          "design": "FK-RUNDUM",
+          "ms": 261,
+          "svgParses": 92
+        }
+      ]
+    },
+    {
+      "version": "8a3d6c86",
+      "device": "PC",
+      "series": 1,
+      "served": [
+        "/_acryl-bundle/editor-7dfd6f600e080015.mjs"
+      ],
+      "readings": [
+        {
+          "design": "FK-SEITLICH",
+          "ms": 202,
+          "svgParses": 34
+        },
+        {
+          "design": "FK-RUNDUM",
+          "ms": 163,
+          "svgParses": 25
+        },
+        {
+          "design": "FK-SEITLICH",
+          "ms": 176,
+          "svgParses": 25
+        },
+        {
+          "design": "FK-RUNDUM",
+          "ms": 211,
+          "svgParses": 29
+        },
+        {
+          "design": "FK-SEITLICH",
+          "ms": 197,
+          "svgParses": 30
+        },
+        {
+          "design": "FK-RUNDUM",
+          "ms": 182,
+          "svgParses": 28
+        }
+      ]
+    },
+    {
+      "version": "3b3b4626",
+      "device": "PC",
+      "series": 1,
+      "served": [
+        "/_acryl-bundle/editor-7dfd6f600e080015.mjs"
+      ],
+      "readings": [
+        {
+          "design": "FK-SEITLICH",
+          "ms": 146,
+          "svgParses": 14
+        },
+        {
+          "design": "FK-RUNDUM",
+          "ms": 155,
+          "svgParses": 13
+        },
+        {
+          "design": "FK-SEITLICH",
+          "ms": 166,
+          "svgParses": 12
+        },
+        {
+          "design": "FK-RUNDUM",
+          "ms": 208,
+          "svgParses": 14
+        },
+        {
+          "design": "FK-SEITLICH",
+          "ms": 234,
+          "svgParses": 17
+        },
+        {
+          "design": "FK-RUNDUM",
+          "ms": 175,
+          "svgParses": 12
+        }
+      ]
+    },
+    {
+      "version": "3b3b4626",
+      "device": "Mobil",
+      "series": 1,
+      "served": [
+        "/_acryl-bundle/editor-7dfd6f600e080015.mjs"
+      ],
+      "readings": [
+        {
+          "design": "FK-SEITLICH",
+          "ms": 181,
+          "svgParses": 17
+        },
+        {
+          "design": "FK-RUNDUM",
+          "ms": 176,
+          "svgParses": 14
+        },
+        {
+          "design": "FK-SEITLICH",
+          "ms": 187,
+          "svgParses": 13
+        },
+        {
+          "design": "FK-RUNDUM",
+          "ms": 138,
+          "svgParses": 13
+        },
+        {
+          "design": "FK-SEITLICH",
+          "ms": 163,
+          "svgParses": 12
+        },
+        {
+          "design": "FK-RUNDUM",
+          "ms": 174,
+          "svgParses": 13
+        }
+      ]
+    },
+    {
+      "version": "8a3d6c86",
+      "device": "Mobil",
+      "series": 1,
+      "served": [
+        "/_acryl-bundle/editor-7dfd6f600e080015.mjs"
+      ],
+      "readings": [
+        {
+          "design": "FK-SEITLICH",
+          "ms": 161,
+          "svgParses": 25
+        },
+        {
+          "design": "FK-RUNDUM",
+          "ms": 177,
+          "svgParses": 17
+        },
+        {
+          "design": "FK-SEITLICH",
+          "ms": 191,
+          "svgParses": 16
+        },
+        {
+          "design": "FK-RUNDUM",
+          "ms": 159,
+          "svgParses": 17
+        },
+        {
+          "design": "FK-SEITLICH",
+          "ms": 164,
+          "svgParses": 17
+        },
+        {
+          "design": "FK-RUNDUM",
+          "ms": 177,
+          "svgParses": 17
+        }
+      ]
+    },
+    {
+      "version": "14b53038",
+      "device": "Mobil",
+      "series": 1,
+      "served": [
+        "/_acryl-bundle/editor-7dfd6f600e080015.mjs"
+      ],
+      "readings": [
+        {
+          "design": "FK-SEITLICH",
+          "ms": 214,
+          "svgParses": 63
+        },
+        {
+          "design": "FK-RUNDUM",
+          "ms": 190,
+          "svgParses": 39
+        },
+        {
+          "design": "FK-SEITLICH",
+          "ms": 163,
+          "svgParses": 36
+        },
+        {
+          "design": "FK-RUNDUM",
+          "ms": 185,
+          "svgParses": 39
+        },
+        {
+          "design": "FK-SEITLICH",
+          "ms": 195,
+          "svgParses": 39
+        },
+        {
+          "design": "FK-RUNDUM",
+          "ms": 190,
+          "svgParses": 39
+        }
+      ]
+    },
+    {
+      "version": "14b53038",
+      "device": "Mobil",
+      "series": 2,
+      "served": [
+        "/_acryl-bundle/editor-7dfd6f600e080015.mjs"
+      ],
+      "readings": [
+        {
+          "design": "FK-SEITLICH",
+          "ms": 205,
+          "svgParses": 63
+        },
+        {
+          "design": "FK-RUNDUM",
+          "ms": 199,
+          "svgParses": 39
+        },
+        {
+          "design": "FK-SEITLICH",
+          "ms": 159,
+          "svgParses": 36
+        },
+        {
+          "design": "FK-RUNDUM",
+          "ms": 193,
+          "svgParses": 39
+        },
+        {
+          "design": "FK-SEITLICH",
+          "ms": 182,
+          "svgParses": 39
+        },
+        {
+          "design": "FK-RUNDUM",
+          "ms": 172,
+          "svgParses": 39
+        }
+      ]
+    },
+    {
+      "version": "8a3d6c86",
+      "device": "Mobil",
+      "series": 2,
+      "served": [
+        "/_acryl-bundle/editor-7dfd6f600e080015.mjs"
+      ],
+      "readings": [
+        {
+          "design": "FK-SEITLICH",
+          "ms": 199,
+          "svgParses": 25
+        },
+        {
+          "design": "FK-RUNDUM",
+          "ms": 161,
+          "svgParses": 17
+        },
+        {
+          "design": "FK-SEITLICH",
+          "ms": 143,
+          "svgParses": 16
+        },
+        {
+          "design": "FK-RUNDUM",
+          "ms": 260,
+          "svgParses": 17
+        },
+        {
+          "design": "FK-SEITLICH",
+          "ms": 167,
+          "svgParses": 17
+        },
+        {
+          "design": "FK-RUNDUM",
+          "ms": 209,
+          "svgParses": 17
+        }
+      ]
+    },
+    {
+      "version": "3b3b4626",
+      "device": "Mobil",
+      "series": 2,
+      "served": [
+        "/_acryl-bundle/editor-7dfd6f600e080015.mjs"
+      ],
+      "readings": [
+        {
+          "design": "FK-SEITLICH",
+          "ms": 226,
+          "svgParses": 17
+        },
+        {
+          "design": "FK-RUNDUM",
+          "ms": 224,
+          "svgParses": 13
+        },
+        {
+          "design": "FK-SEITLICH",
+          "ms": 206,
+          "svgParses": 14
+        },
+        {
+          "design": "FK-RUNDUM",
+          "ms": 179,
+          "svgParses": 13
+        },
+        {
+          "design": "FK-SEITLICH",
+          "ms": 203,
+          "svgParses": 13
+        },
+        {
+          "design": "FK-RUNDUM",
+          "ms": 192,
+          "svgParses": 13
+        }
+      ]
+    },
+    {
+      "version": "3b3b4626",
+      "device": "PC",
+      "series": 2,
+      "served": [
+        "/_acryl-bundle/editor-7dfd6f600e080015.mjs"
+      ],
+      "readings": [
+        {
+          "design": "FK-SEITLICH",
+          "ms": 211,
+          "svgParses": 13
+        },
+        {
+          "design": "FK-RUNDUM",
+          "ms": 196,
+          "svgParses": 14
+        },
+        {
+          "design": "FK-SEITLICH",
+          "ms": 243,
+          "svgParses": 14
+        },
+        {
+          "design": "FK-RUNDUM",
+          "ms": 291,
+          "svgParses": 23
+        },
+        {
+          "design": "FK-SEITLICH",
+          "ms": 212,
+          "svgParses": 12
+        },
+        {
+          "design": "FK-RUNDUM",
+          "ms": 192,
+          "svgParses": 12
+        }
+      ]
+    },
+    {
+      "version": "8a3d6c86",
+      "device": "PC",
+      "series": 2,
+      "served": [
+        "/_acryl-bundle/editor-7dfd6f600e080015.mjs"
+      ],
+      "readings": [
+        {
+          "design": "FK-SEITLICH",
+          "ms": 197,
+          "svgParses": 33
+        },
+        {
+          "design": "FK-RUNDUM",
+          "ms": 278,
+          "svgParses": 32
+        },
+        {
+          "design": "FK-SEITLICH",
+          "ms": 206,
+          "svgParses": 26
+        },
+        {
+          "design": "FK-RUNDUM",
+          "ms": 240,
+          "svgParses": 33
+        },
+        {
+          "design": "FK-SEITLICH",
+          "ms": 435,
+          "svgParses": 40
+        },
+        {
+          "design": "FK-RUNDUM",
+          "ms": 292,
+          "svgParses": 35
+        }
+      ]
+    },
+    {
+      "version": "14b53038",
+      "device": "PC",
+      "series": 2,
+      "served": [
+        "/_acryl-bundle/editor-7dfd6f600e080015.mjs"
+      ],
+      "readings": [
+        {
+          "design": "FK-SEITLICH",
+          "ms": 313,
+          "svgParses": 93
+        },
+        {
+          "design": "FK-RUNDUM",
+          "ms": 327,
+          "svgParses": 78
+        },
+        {
+          "design": "FK-SEITLICH",
+          "ms": 384,
+          "svgParses": 84
+        },
+        {
+          "design": "FK-RUNDUM",
+          "ms": 450,
+          "svgParses": 95
+        },
+        {
+          "design": "FK-SEITLICH",
+          "ms": 303,
+          "svgParses": 84
+        },
+        {
+          "design": "FK-RUNDUM",
+          "ms": 301,
+          "svgParses": 81
+        }
+      ]
+    }
+  ],
+  "imageWorker": {
+    "before": {
+      "n": 12,
+      "median": 362.825,
+      "min": 328.17,
+      "max": 1195.46
+    },
+    "after": {
+      "n": 12,
+      "median": 322.135,
+      "min": 271.37,
+      "max": 557.27
+    },
+    "unit": "ms",
+    "pairs": 2,
+    "runs": [
+      {
+        "round": 1,
+        "position": 1,
+        "before": 399.71,
+        "after": 330.19,
+        "matchingOutput": true
+      },
+      {
+        "round": 1,
+        "position": 2,
+        "after": 324.56,
+        "before": 399.05,
+        "matchingOutput": true
+      },
+      {
+        "round": 2,
+        "position": 1,
+        "after": 351.45,
+        "before": 375.76,
+        "matchingOutput": true
+      },
+      {
+        "round": 2,
+        "position": 2,
+        "before": 354.7,
+        "after": 293.87,
+        "matchingOutput": true
+      },
+      {
+        "round": 3,
+        "position": 1,
+        "before": 351.24,
+        "after": 335.5,
+        "matchingOutput": true
+      },
+      {
+        "round": 3,
+        "position": 2,
+        "after": 316.19,
+        "before": 347.15,
+        "matchingOutput": true
+      },
+      {
+        "round": 4,
+        "position": 1,
+        "after": 320.43,
+        "before": 336.4,
+        "matchingOutput": true
+      },
+      {
+        "round": 4,
+        "position": 2,
+        "before": 370.95,
+        "after": 280.6,
+        "matchingOutput": true
+      },
+      {
+        "round": 5,
+        "position": 1,
+        "before": 328.17,
+        "after": 323.84,
+        "matchingOutput": true
+      },
+      {
+        "round": 5,
+        "position": 2,
+        "after": 271.37,
+        "before": 351.33,
+        "matchingOutput": true
+      },
+      {
+        "round": 6,
+        "position": 1,
+        "after": 298.21,
+        "before": 430.39,
+        "matchingOutput": true
+      },
+      {
+        "round": 6,
+        "position": 2,
+        "before": 1195.46,
+        "after": 557.27,
+        "matchingOutput": true
+      }
+    ]
+  }
+}

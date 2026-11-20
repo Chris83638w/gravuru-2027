@@ -1,5 +1,6 @@
 import {contourPathWithHoles} from '../../platform/sources/app/shared/models/contour-geometry.mjs';
 import {escapeXml} from '../../platform/sources/app/shared/models/design-content.mjs';
+import {DOORBELL_STEEL_SURFACE,isDoorbellImagePath} from '../../platform/sources/app/shared/models/doorbell-image-paths.mjs';
 // Material photographs are preview resources; geometry and production paths remain separate.
 export const validSurface=url=>/^\/api\/workshop\/material-surfaces\/[a-f0-9]{64}\.png$/.test(url)||/^\/api\/product-workbench\/assets\/[a-f0-9]{64}\.(png|jpg|webp)$/.test(url)||/^\/produktvorschau\/[a-f0-9]{48}\/material\/[a-f0-9]{64}\.(png|jpg|webp)$/.test(url)||/^data:image\/(png|jpeg|webp);base64,[A-Za-z0-9+/=]+$/.test(url);
 // Leistung (20.10.2026): Eine als data:-URI gelieferte Rohlingtextur (oft ~2 MB) stand in jeder Vorschau-Zeichnung
@@ -46,5 +47,34 @@ export function scenePreview(svg,url){
  if(!box||box.length!==4||!box.every(Number.isFinite))throw Error('Szenenvorschau: Maße fehlen.');
  return svg.replace(/(<svg\b[^>]*>)/,'$1<image data-scene-background="true" href="'+url+'" x="'+box[0]+'" y="'+box[1]+'" width="'+box[2]+'" height="'+box[3]+'" preserveAspectRatio="xMidYMid slice" pointer-events="none"/>');
 }
-export async function embedSurface(svg,url){if(!url||!validSurface(url)||url.startsWith('data:'))return svg;const response=await fetch(url);if(!response.ok)throw Error('Rohlingbild konnte nicht geladen werden.');const blob=await response.blob();const data=await new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result);reader.onerror=reject;reader.readAsDataURL(blob);});return svg.replaceAll('href="'+url+'"','href="'+data+'"');}
+export async function embedSurface(svg,url,doorbell,motifs=[],doorbellCartPreview=false){
+ const sources=new Map();
+ if(url && validSurface(url) && !url.startsWith('data:'))sources.set(url,null);
+ if(doorbellCartPreview && svg.includes('data-doorbell-steel="textured"'))sources.set(DOORBELL_STEEL_SURFACE,null);
+ if(doorbell){
+  const {imageUrl,steelImageUrl=DOORBELL_STEEL_SURFACE}=doorbell;
+  if(isDoorbellImagePath(imageUrl))sources.set(imageUrl,null);
+  if(steelImageUrl===DOORBELL_STEEL_SURFACE || validSurface(steelImageUrl)&&!steelImageUrl.startsWith('data:'))sources.set(steelImageUrl,null);
+ }
+ for(const {artwork} of motifs){
+  if(artwork?.schema==='gravuru-imported-artwork/v1' && /^[a-f0-9]{64}$/.test(artwork.assetId) && /^[a-f0-9]{64}$/.test(artwork.previewSha256))
+   sources.set('/api/workshop/design-assets/'+artwork.assetId+'/preview.svg',artwork.previewSha256);
+ }
+ // SVG images rasterised through a Blob URL cannot load linked photos. Embed only the profile's known assets.
+ const used=[...sources].filter(([source])=>svg.includes('href="'+source+'"'));
+ const images=await Promise.all(used.map(async ([source,checksum])=>{
+  const request=checksum && window.parent.GravuruMerchantRequest || fetch;
+  const response=await request(source,{credentials:'same-origin'});
+  if(!response.ok)throw Error('Das Produktbild für die persönliche Vorschau konnte nicht geladen werden.');
+  const blob=await response.blob();
+  if(checksum){
+   const digest=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',await blob.arrayBuffer())),byte=>byte.toString(16).padStart(2,'0')).join('');
+   if(digest!==checksum)throw Error('Die Motivvorschau stimmt nicht mit dem gespeicherten Original überein.');
+  }
+  const data=await new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result);reader.onerror=reject;reader.readAsDataURL(blob);});
+  return [source,data];
+ }));
+ for(const [source,data] of images)svg=svg.replaceAll('href="'+source+'"','href="'+data+'"');
+ return svg;
+}
 

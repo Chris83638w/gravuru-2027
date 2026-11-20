@@ -1,0 +1,27 @@
+--- a/snippets/gravuru-warenkorb-bearbeiten.liquid
++++ b/snippets/gravuru-warenkorb-bearbeiten.liquid
+@@ -17,6 +17,16 @@
+   assign gv_preview = item.properties['_Entwurf']
+   if gv_legacy
+     assign gv_preview = item.properties['Entwurf']
++  endif
++  assign gv_thumb_query = ''
++  assign gv_media_root = 'https://cdn.shopify.com/s/files/1/0920/5550/3228/files/gravuru-gestaltung-'
++  assign gv_media_prefix = gv_preview | slice: 0, gv_media_root.size
++  if gv_native and gv_preview == item.properties['_gravuru_checkout_image'] and gv_media_prefix == gv_media_root
++    if gv_preview contains '?'
++      assign gv_thumb_query = '&amp;width='
++    else
++      assign gv_thumb_query = '?width='
++    endif
+   endif
+   assign gv_preview_prefix = gv_preview | slice: 0, 24
+   assign gv_relative_prefix = gv_preview | slice: 0, 9
+@@ -46,6 +56,7 @@
+     {%- if gv_preview_prefix == 'https://cdn.shopify.com/' or gv_relative_prefix == '/uploads/' -%}
+       <a class="gravuru-cart-preview-link" data-gravuru-preview data-close-label="{{ 'accessibility.close' | t | escape }}" href="{{ gv_preview | escape }}" target="_blank" rel="noopener">
+         <img class="gravuru-cart-preview" src="{{ gv_preview | escape }}" alt="{{ item.product.title | escape }}"
++             {% if gv_thumb_query != blank %}srcset="{{ gv_preview | escape }}{{ gv_thumb_query }}160 1x, {{ gv_preview | escape }}{{ gv_thumb_query }}320 2x, {{ gv_preview | escape }}{{ gv_thumb_query }}480 3x"{% endif %}
+              width="160" height="120" loading="lazy">
+       </a>
+     {%- elsif item.image -%}

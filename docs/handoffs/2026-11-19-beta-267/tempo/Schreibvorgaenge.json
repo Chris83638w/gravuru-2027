@@ -1,0 +1,348 @@
+{
+  "application": "f7504182",
+  "node": "v24.20.0",
+  "sqlite": "3.53.4",
+  "scope": "Lokale Schreiben über den vorhandenen R15-Entwurfsspeicher. Beim Kontrolllauf werden dieselben Daten zusätzlich zwischen den Speichervorgängen in die Hauptdatei übernommen. Größen sind beobachtetes Dateiwachstum, keine physischen Laufwerkszähler.",
+  "standard": {
+    "settings": {
+      "pageBytes": 4096,
+      "checkpointPages": 1000,
+      "journalMode": "wal"
+    },
+    "rows": [
+      {
+        "design": "FK-SEITLICH",
+        "archiveBytes": 1613820,
+        "saveMs": 21.77,
+        "walFrames": 408,
+        "checkpointedFrames": 0,
+        "mainGrowthDuringSaveBytes": 0
+      },
+      {
+        "design": "FK-RUNDUM",
+        "archiveBytes": 1619837,
+        "saveMs": 15.83,
+        "walFrames": 820,
+        "checkpointedFrames": 0,
+        "mainGrowthDuringSaveBytes": 0
+      },
+      {
+        "design": "FK-SEITLICH",
+        "archiveBytes": 1613820,
+        "saveMs": 37.08,
+        "walFrames": 1229,
+        "checkpointedFrames": 1229,
+        "mainGrowthDuringSaveBytes": 4886528
+      },
+      {
+        "design": "FK-RUNDUM",
+        "archiveBytes": 1619837,
+        "saveMs": 10.77,
+        "walFrames": 411,
+        "checkpointedFrames": 0,
+        "mainGrowthDuringSaveBytes": 0
+      },
+      {
+        "design": "FK-SEITLICH",
+        "archiveBytes": 1613820,
+        "saveMs": 9.54,
+        "walFrames": 820,
+        "checkpointedFrames": 0,
+        "mainGrowthDuringSaveBytes": 0
+      },
+      {
+        "design": "FK-RUNDUM",
+        "archiveBytes": 1619837,
+        "saveMs": 28.77,
+        "walFrames": 1231,
+        "checkpointedFrames": 1231,
+        "mainGrowthDuringSaveBytes": 4894720
+      },
+      {
+        "design": "FK-SEITLICH",
+        "archiveBytes": 1613820,
+        "saveMs": 10.78,
+        "walFrames": 409,
+        "checkpointedFrames": 0,
+        "mainGrowthDuringSaveBytes": 0
+      },
+      {
+        "design": "FK-RUNDUM",
+        "archiveBytes": 1619837,
+        "saveMs": 10.01,
+        "walFrames": 820,
+        "checkpointedFrames": 0,
+        "mainGrowthDuringSaveBytes": 0
+      },
+      {
+        "design": "FK-SEITLICH",
+        "archiveBytes": 1613820,
+        "saveMs": 30.19,
+        "walFrames": 1229,
+        "checkpointedFrames": 1229,
+        "mainGrowthDuringSaveBytes": 4886528
+      },
+      {
+        "design": "FK-RUNDUM",
+        "archiveBytes": 1619837,
+        "saveMs": 9.6,
+        "walFrames": 411,
+        "checkpointedFrames": 0,
+        "mainGrowthDuringSaveBytes": 0
+      },
+      {
+        "design": "FK-SEITLICH",
+        "archiveBytes": 1613820,
+        "saveMs": 8.36,
+        "walFrames": 820,
+        "checkpointedFrames": 0,
+        "mainGrowthDuringSaveBytes": 0
+      },
+      {
+        "design": "FK-RUNDUM",
+        "archiveBytes": 1619837,
+        "saveMs": 27.41,
+        "walFrames": 1231,
+        "checkpointedFrames": 1231,
+        "mainGrowthDuringSaveBytes": 4894720
+      }
+    ],
+    "reopenedExactArchives": 12
+  },
+  "control": {
+    "settings": {
+      "pageBytes": 4096,
+      "checkpointPages": 1000,
+      "journalMode": "wal"
+    },
+    "rows": [
+      {
+        "design": "FK-SEITLICH",
+        "archiveBytes": 1613820,
+        "saveMs": 15.56,
+        "walFrames": 408,
+        "checkpointedFrames": 0,
+        "mainGrowthDuringSaveBytes": 0,
+        "controlMs": 11.6,
+        "controlMainGrowthBytes": 1622016
+      },
+      {
+        "design": "FK-RUNDUM",
+        "archiveBytes": 1619837,
+        "saveMs": 13.22,
+        "walFrames": 412,
+        "checkpointedFrames": 0,
+        "mainGrowthDuringSaveBytes": 0,
+        "controlMs": 8.26,
+        "controlMainGrowthBytes": 1638400
+      },
+      {
+        "design": "FK-SEITLICH",
+        "archiveBytes": 1613820,
+        "saveMs": 10.44,
+        "walFrames": 409,
+        "checkpointedFrames": 0,
+        "mainGrowthDuringSaveBytes": 0,
+        "controlMs": 8.48,
+        "controlMainGrowthBytes": 1626112
+      },
+      {
+        "design": "FK-RUNDUM",
+        "archiveBytes": 1619837,
+        "saveMs": 10.18,
+        "walFrames": 411,
+        "checkpointedFrames": 0,
+        "mainGrowthDuringSaveBytes": 0,
+        "controlMs": 11.37,
+        "controlMainGrowthBytes": 1634304
+      },
+      {
+        "design": "FK-SEITLICH",
+        "archiveBytes": 1613820,
+        "saveMs": 10.74,
+        "walFrames": 409,
+        "checkpointedFrames": 0,
+        "mainGrowthDuringSaveBytes": 0,
+        "controlMs": 7.83,
+        "controlMainGrowthBytes": 1626112
+      },
+      {
+        "design": "FK-RUNDUM",
+        "archiveBytes": 1619837,
+        "saveMs": 10.29,
+        "walFrames": 411,
+        "checkpointedFrames": 0,
+        "mainGrowthDuringSaveBytes": 0,
+        "controlMs": 6.97,
+        "controlMainGrowthBytes": 1634304
+      },
+      {
+        "design": "FK-SEITLICH",
+        "archiveBytes": 1613820,
+        "saveMs": 8.36,
+        "walFrames": 409,
+        "checkpointedFrames": 0,
+        "mainGrowthDuringSaveBytes": 0,
+        "controlMs": 6.19,
+        "controlMainGrowthBytes": 1626112
+      },
+      {
+        "design": "FK-RUNDUM",
+        "archiveBytes": 1619837,
+        "saveMs": 8.87,
+        "walFrames": 411,
+        "checkpointedFrames": 0,
+        "mainGrowthDuringSaveBytes": 0,
+        "controlMs": 7.04,
+        "controlMainGrowthBytes": 1634304
+      },
+      {
+        "design": "FK-SEITLICH",
+        "archiveBytes": 1613820,
+        "saveMs": 7.66,
+        "walFrames": 409,
+        "checkpointedFrames": 0,
+        "mainGrowthDuringSaveBytes": 0,
+        "controlMs": 8.85,
+        "controlMainGrowthBytes": 1626112
+      },
+      {
+        "design": "FK-RUNDUM",
+        "archiveBytes": 1619837,
+        "saveMs": 7.96,
+        "walFrames": 411,
+        "checkpointedFrames": 0,
+        "mainGrowthDuringSaveBytes": 0,
+        "controlMs": 7.87,
+        "controlMainGrowthBytes": 1634304
+      },
+      {
+        "design": "FK-SEITLICH",
+        "archiveBytes": 1613820,
+        "saveMs": 8.53,
+        "walFrames": 409,
+        "checkpointedFrames": 0,
+        "mainGrowthDuringSaveBytes": 0,
+        "controlMs": 8.58,
+        "controlMainGrowthBytes": 1626112
+      },
+      {
+        "design": "FK-RUNDUM",
+        "archiveBytes": 1619837,
+        "saveMs": 7.66,
+        "walFrames": 411,
+        "checkpointedFrames": 0,
+        "mainGrowthDuringSaveBytes": 0,
+        "controlMs": 8.26,
+        "controlMainGrowthBytes": 1634304
+      }
+    ],
+    "reopenedExactArchives": 12
+  },
+  "compactSources": {
+    "settings": {
+      "pageBytes": 4096,
+      "checkpointPages": 1000,
+      "journalMode": "wal"
+    },
+    "rows": [
+      {
+        "design": "FK-SEITLICH",
+        "archiveBytes": 1297101,
+        "saveMs": 13.23,
+        "walFrames": 331,
+        "checkpointedFrames": 0,
+        "mainGrowthDuringSaveBytes": 0
+      },
+      {
+        "design": "FK-RUNDUM",
+        "archiveBytes": 1302651,
+        "saveMs": 12.5,
+        "walFrames": 664,
+        "checkpointedFrames": 0,
+        "mainGrowthDuringSaveBytes": 0
+      },
+      {
+        "design": "FK-SEITLICH",
+        "archiveBytes": 1297101,
+        "saveMs": 11.74,
+        "walFrames": 995,
+        "checkpointedFrames": 0,
+        "mainGrowthDuringSaveBytes": 0
+      },
+      {
+        "design": "FK-RUNDUM",
+        "archiveBytes": 1302651,
+        "saveMs": 29.67,
+        "walFrames": 1328,
+        "checkpointedFrames": 1328,
+        "mainGrowthDuringSaveBytes": 5242880
+      },
+      {
+        "design": "FK-SEITLICH",
+        "archiveBytes": 1297101,
+        "saveMs": 8.51,
+        "walFrames": 333,
+        "checkpointedFrames": 0,
+        "mainGrowthDuringSaveBytes": 0
+      },
+      {
+        "design": "FK-RUNDUM",
+        "archiveBytes": 1302651,
+        "saveMs": 8.85,
+        "walFrames": 666,
+        "checkpointedFrames": 0,
+        "mainGrowthDuringSaveBytes": 0
+      },
+      {
+        "design": "FK-SEITLICH",
+        "archiveBytes": 1297101,
+        "saveMs": 8.03,
+        "walFrames": 997,
+        "checkpointedFrames": 0,
+        "mainGrowthDuringSaveBytes": 0
+      },
+      {
+        "design": "FK-RUNDUM",
+        "archiveBytes": 1302651,
+        "saveMs": 32.64,
+        "walFrames": 1330,
+        "checkpointedFrames": 1330,
+        "mainGrowthDuringSaveBytes": 5251072
+      },
+      {
+        "design": "FK-SEITLICH",
+        "archiveBytes": 1297101,
+        "saveMs": 11.07,
+        "walFrames": 332,
+        "checkpointedFrames": 0,
+        "mainGrowthDuringSaveBytes": 0
+      },
+      {
+        "design": "FK-RUNDUM",
+        "archiveBytes": 1302651,
+        "saveMs": 8.5,
+        "walFrames": 665,
+        "checkpointedFrames": 0,
+        "mainGrowthDuringSaveBytes": 0
+      },
+      {
+        "design": "FK-SEITLICH",
+        "archiveBytes": 1297101,
+        "saveMs": 11.03,
+        "walFrames": 996,
+        "checkpointedFrames": 0,
+        "mainGrowthDuringSaveBytes": 0
+      },
+      {
+        "design": "FK-RUNDUM",
+        "archiveBytes": 1302651,
+        "saveMs": 33.38,
+        "walFrames": 1329,
+        "checkpointedFrames": 1329,
+        "mainGrowthDuringSaveBytes": 5246976
+      }
+    ],
+    "reopenedExactArchives": 12
+  }
+}

@@ -1,0 +1,126 @@
+{
+  "testCommand": "node --test --test-concurrency=6 --test-reporter=spec 'app/configurator/variant-m/*.test.mjs' 'app/workshop/*.test.mjs'",
+  "platform": "Windows, Node v24.20.0, Python mit openpyxl 3.1.5 und den Paketversionen aus requirements-logo.txt; gleicher Rechner und aufeinanderfolgende Durchläufe.",
+  "runs": {
+    "nachher": {
+      "commit": "f7504182d117ba60d16498ae8bb43ba29a75609f",
+      "tests": 2798,
+      "pass": 2779,
+      "fail": 8,
+      "skipped": 11,
+      "cancelled": 0,
+      "duration_ms": 586768.8621,
+      "failures": [
+        {
+          "file": "app/workshop/form-batch.test.mjs",
+          "test": "filled design Excel roundtrip edits names/defaults without exposing or altering source fields, rights or geometry"
+        },
+        {
+          "file": "app/workshop/form-variants.test.mjs",
+          "test": "filled Excel retains historical references, literal names, and round-trips mixed changed and unchanged groups"
+        },
+        {
+          "file": "app/workshop/form-variants.test.mjs",
+          "test": "Excel export of 100 groups preserves all references and a stale edit never overwrites a newer group"
+        },
+        {
+          "file": "app/workshop/konfis.test.mjs",
+          "test": "Werkstatt einheitlich: jede Werkstattseite trägt dieselbe erzeugte Kopfzeile und das gemeinsame Raster"
+        },
+        {
+          "file": "app/workshop/option-fields.test.mjs",
+          "test": "Excel-Rundlauf: Zusatzfelder mit Art, Bedingung, Zeichenlimit und offenem Aufpreis"
+        },
+        {
+          "file": "app/workshop/product-families.test.mjs",
+          "test": "K10: family process profile – id validated, null stays open, engraving side sets the mirror, Excel round trip keeps the column"
+        },
+        {
+          "file": "app/workshop/quantity-tiers.test.mjs",
+          "test": "Excel-Rundlauf: Blatt „Staffel“ je Familie und Größe, leerer Rabatt bleibt offen"
+        },
+        {
+          "file": "app/workshop/surfaces.test.mjs",
+          "test": "Familie: Flächen gehen ins Produkt, Briefing nennt Rückseite und offenen Aufpreis; Excel-Rundlauf"
+        }
+      ],
+      "windowsUtf8Retest": {
+        "environment": {
+          "PYTHONUTF8": "1",
+          "PYTHONIOENCODING": "utf-8"
+        },
+        "tests": 8,
+        "passed": 7,
+        "failed": 1,
+        "failures": [
+          {
+            "file": "app/workshop/konfis.test.mjs",
+            "test": "Werkstatt einheitlich: jede Werkstattseite trägt dieselbe erzeugte Kopfzeile und das gemeinsame Raster"
+          }
+        ],
+        "scope": "Alle acht abweichenden Fälle in identischer Umgebung mit UTF-8 erneut ausgeführt."
+      }
+    },
+    "vorher": {
+      "commit": "347aa63f53b9c751c887faf2ac5a28e79dc8d36e",
+      "tests": 2796,
+      "pass": 2777,
+      "fail": 8,
+      "skipped": 11,
+      "cancelled": 0,
+      "duration_ms": 517079.8584,
+      "failures": [
+        {
+          "file": "app/workshop/form-batch.test.mjs",
+          "test": "filled design Excel roundtrip edits names/defaults without exposing or altering source fields, rights or geometry"
+        },
+        {
+          "file": "app/workshop/form-variants.test.mjs",
+          "test": "filled Excel retains historical references, literal names, and round-trips mixed changed and unchanged groups"
+        },
+        {
+          "file": "app/workshop/form-variants.test.mjs",
+          "test": "Excel export of 100 groups preserves all references and a stale edit never overwrites a newer group"
+        },
+        {
+          "file": "app/workshop/konfis.test.mjs",
+          "test": "Werkstatt einheitlich: jede Werkstattseite trägt dieselbe erzeugte Kopfzeile und das gemeinsame Raster"
+        },
+        {
+          "file": "app/workshop/option-fields.test.mjs",
+          "test": "Excel-Rundlauf: Zusatzfelder mit Art, Bedingung, Zeichenlimit und offenem Aufpreis"
+        },
+        {
+          "file": "app/workshop/product-families.test.mjs",
+          "test": "K10: family process profile – id validated, null stays open, engraving side sets the mirror, Excel round trip keeps the column"
+        },
+        {
+          "file": "app/workshop/quantity-tiers.test.mjs",
+          "test": "Excel-Rundlauf: Blatt „Staffel“ je Familie und Größe, leerer Rabatt bleibt offen"
+        },
+        {
+          "file": "app/workshop/surfaces.test.mjs",
+          "test": "Familie: Flächen gehen ins Produkt, Briefing nennt Rückseite und offenen Aufpreis; Excel-Rundlauf"
+        }
+      ],
+      "windowsUtf8Retest": {
+        "environment": {
+          "PYTHONUTF8": "1",
+          "PYTHONIOENCODING": "utf-8"
+        },
+        "tests": 8,
+        "passed": 7,
+        "failed": 1,
+        "failures": [
+          {
+            "file": "app/workshop/konfis.test.mjs",
+            "test": "Werkstatt einheitlich: jede Werkstattseite trägt dieselbe erzeugte Kopfzeile und das gemeinsame Raster"
+          }
+        ],
+        "scope": "Alle acht abweichenden Fälle in identischer Umgebung mit UTF-8 erneut ausgeführt."
+      }
+    }
+  },
+  "failuresOnlyInCandidate": [],
+  "failuresOnlyInReference": []
+}

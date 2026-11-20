@@ -95,7 +95,7 @@ test('signed start resolves the binding through the registry and redirects with 
  const r=await open();
  assert.equal(r.status,302);assert.match(r.headers['content-type'],/text\/html/);assert.equal(r.headers['x-robots-tag'],'noindex, nofollow, noarchive');
  const target=new URL(r.headers.location);assert.equal(target.origin,origin);assert.equal(target.pathname,'/konfigurator/shop/');assert.equal(target.search,'');
- const fragment=new URLSearchParams(target.hash.slice(1));assert.match(fragment.get('s'),/^gse1\./);assert.deepEqual([...fragment.keys()],['s']);
+ const fragment=new URLSearchParams(target.hash.slice(1));assert.match(fragment.get('s'),/^gse1\./);assert.deepEqual([...fragment.keys()],['s','ui']);assert.equal(fragment.get('ui'),'prio-r15');
  assert.ok(r.body.toString().includes(r.headers.location.replace(/&/g,'&amp;')),'Rückfall-Link enthalten');
  // Bearbeiten-Verweis (K8) und Rücksprung werden unverändert durchgereicht; fremde Adressen nicht.
  const edit=await token({config:'konfig_'+uuid(9),rev:'2',line:'1234:abcd',back:'/products/tuerschild-edelstahl-v2a-personalisiert-7x2?variant=1'});
@@ -104,18 +104,18 @@ test('signed start resolves the binding through the registry and redirects with 
  // Alle 15 Varianten der drei Hauptprodukte sind erreichbar; jedes Token nennt den eigenen cfg-Stand.
  for(const product of f.models.keys()){const p=mapping.products.find(x=>x.localWorkshopRecord===product);for(const v of p.variants){const t=await token({product:p.shopifyProductId.split('/').at(-1),variant:v.shopifyVariantId.split('/').at(-1)});const payload=JSON.parse(Buffer.from(t.token.split('.')[1],'base64url').toString());assert.equal(payload.c,product);assert.equal(payload.va,v.shopifyVariantId.split('/').at(-1));}}
 }));
-test('approved presentation opt-in survives signed start and prefetch without granting new session rights',()=>run(async(f,request,{open,token})=>{
+test('each signed storefront entry uses Prio for its own binding, including prefetch and older links',()=>run(async(f,request,{open,token})=>{
  const original=await token(),updated=await token({ui:'prio-r15'});
- assert.equal(original.fragment.get('ui'),null);assert.equal(updated.fragment.get('ui'),'prio-r15');
+ assert.equal(original.fragment.get('ui'),'prio-r15');assert.equal(updated.fragment.get('ui'),'prio-r15');
  const decode=value=>JSON.parse(Buffer.from(value.token.split('.')[1],'base64url').toString());
  for(const key of ['st','p','va','c','r','b','a','cu'])assert.deepEqual(decode(updated)[key],decode(original)[key]);
- const ticket=await open({ui:'prio-r15',format:'json'});assert.equal(ticket.status,200);
+ const ticket=await open({embed:'1',format:'json'});assert.equal(ticket.status,200);
  assert.equal(new URLSearchParams(new URL(ticket.data.url).hash.slice(1)).get('ui'),'prio-r15');
- for(const ui of ['demo','https://foreign.example/a.mjs','PRIO-R15'])assert.equal((await token({ui})).fragment.get('ui'),null);
+ for(const ui of ['demo','https://foreign.example/a.mjs','PRIO-R15'])assert.equal((await token({ui})).fragment.get('ui'),'prio-r15');
  const duplicate=signed(f,{product:f.ids.shopifyProductId.split('/').at(-1),variant:f.ids.shopifyVariantId.split('/').at(-1),ui:'prio-r15'});
  duplicate.append('ui','prio-r15');duplicate.set('signature',appProxySignature(duplicate,secret));
  const repeated=await request(proxyPath+'/start?'+duplicate);assert.equal(repeated.status,302);
- assert.equal(new URLSearchParams(new URL(repeated.headers.location).hash.slice(1)).get('ui'),null);
+ assert.equal(new URLSearchParams(new URL(repeated.headers.location).hash.slice(1)).get('ui'),'prio-r15');
  const forged=signed(f,{product:f.ids.shopifyProductId.split('/').at(-1),variant:f.ids.shopifyVariantId.split('/').at(-1)});
  forged.set('ui','prio-r15');assert.equal((await request(proxyPath+'/start?'+forged)).status,401);
  assert.equal(f.cartCalls.length,0);

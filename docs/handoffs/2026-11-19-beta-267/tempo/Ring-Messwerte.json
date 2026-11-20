@@ -1,0 +1,3826 @@
+{
+  "browser": "157.0.8103.78",
+  "deviceProfiles": {
+    "PC": "1365x900, ungedrosselt",
+    "Mobil": "390x844 Touch, CPU x4, RTT 80 ms, 8 Mbit/s ab, 2 Mbit/s auf"
+  },
+  "saveData": true,
+  "samples": [
+    {
+      "build": "ref",
+      "run": 1,
+      "device": "PC",
+      "cache": "kalt",
+      "clickThroughPaintMs": 1557.1,
+      "editorReadyMs": 893.2,
+      "cardMs": 46.6,
+      "entryThroughCardMs": 1223.7,
+      "switchMs": 371.4,
+      "switchDesign": "FK-SEITLICH",
+      "resourceEntriesDuringSwitch": 5,
+      "startedByRouteDuringSwitch": [
+        "Motiv",
+        "Motiv",
+        "Motiv",
+        "Motiv",
+        "Motiv"
+      ],
+      "draftTtfbMs": 1029.4,
+      "draftHandlerMs": 1028.8,
+      "draftPhases": {
+        "beta_app": 1028.8,
+        "total": 1028.58,
+        "review_config": 2.95,
+        "review_validate": 79.31,
+        "review_sources": 1.66,
+        "customer_preview": 588.68,
+        "reference_preview": 279.32,
+        "review_zip": 0.9,
+        "originals_zip": 0.01
+      },
+      "cartHandlerMs": 30.5,
+      "cartPhaseThroughPaint": [
+        [
+          "Gerätefoto",
+          "GET",
+          52.3,
+          0.1
+        ],
+        [
+          "Oberfläche",
+          "GET",
+          52.9,
+          0
+        ],
+        [
+          "Oberfläche",
+          "GET",
+          61.5,
+          0.1
+        ],
+        [
+          "Gerätefoto",
+          "GET",
+          62.1,
+          0
+        ],
+        [
+          "Entwurf",
+          "POST",
+          387.8,
+          1029.4
+        ],
+        [
+          "Warenkorb",
+          "POST",
+          1419.3,
+          31.1
+        ],
+        [
+          "Warenkorbseite",
+          "GET",
+          1458.6,
+          0.6
+        ],
+        [
+          "Beta-Client",
+          "GET",
+          1475.5,
+          0.6
+        ],
+        [
+          "Warenkorb",
+          "GET",
+          1485.4,
+          0.7
+        ],
+        [
+          "Positionsbild",
+          "GET",
+          1494.1,
+          0.8
+        ]
+      ],
+      "entryRequests": {
+        "Produktseite": {
+          "count": 1,
+          "responseBytes": 3674
+        },
+        "Beta-Client": {
+          "count": 1,
+          "responseBytes": 9045
+        },
+        "Produktbindung": {
+          "count": 1,
+          "responseBytes": 73
+        },
+        "Prüfsitzung": {
+          "count": 1,
+          "responseBytes": 172
+        },
+        "Produktmodell": {
+          "count": 1,
+          "responseBytes": 17499
+        },
+        "Editor": {
+          "count": 1,
+          "responseBytes": 99790
+        },
+        "Ressource": {
+          "count": 14,
+          "responseBytes": 1275623
+        },
+        "Oberfläche": {
+          "count": 1,
+          "responseBytes": 97754
+        },
+        "Motiv": {
+          "count": 11,
+          "responseBytes": 2641
+        },
+        "Gerätefoto": {
+          "count": 1,
+          "responseBytes": 63482
+        }
+      },
+      "pictureSha256": "9119f711db9ea494875043469238cba2492823a631c92dedfc1987de2f6877e5",
+      "pixelSha256": "c5ebe87773642884b29af2293735266d51877a256114c9844aecc66872ac6630",
+      "angle": {
+        "horizontal": 0,
+        "vertical": 0
+      },
+      "matchedCameraSamples": 24,
+      "sku": "FK-AV2A-16x28-1441",
+      "variant": "57471227756924",
+      "totalCents": 9998
+    },
+    {
+      "build": "ref",
+      "run": 1,
+      "device": "PC",
+      "cache": "warm",
+      "clickThroughPaintMs": 1319.8,
+      "editorReadyMs": 891.5,
+      "cardMs": 22.3,
+      "entryThroughCardMs": 1397.0,
+      "switchMs": 211.5,
+      "switchDesign": "FK-RUNDUM",
+      "resourceEntriesDuringSwitch": 5,
+      "startedByRouteDuringSwitch": [
+        "Motiv",
+        "Motiv",
+        "Motiv",
+        "Motiv",
+        "Motiv"
+      ],
+      "draftTtfbMs": 840.8,
+      "draftHandlerMs": 840,
+      "draftPhases": {
+        "beta_app": 840,
+        "total": 839.83,
+        "review_config": 2.35,
+        "review_validate": 68.03,
+        "review_sources": 1.52,
+        "customer_preview": 482.16,
+        "reference_preview": 249.62,
+        "review_zip": 0.81,
+        "originals_zip": 0.01
+      },
+      "cartHandlerMs": 34.5,
+      "cartPhaseThroughPaint": [
+        [
+          "Gerätefoto",
+          "GET",
+          51.1,
+          0.1
+        ],
+        [
+          "Oberfläche",
+          "GET",
+          51.6,
+          1
+        ],
+        [
+          "Motiv",
+          "GET",
+          51.7,
+          1.5
+        ],
+        [
+          "Motiv",
+          "GET",
+          56.7,
+          0.7
+        ],
+        [
+          "Oberfläche",
+          "GET",
+          62.3,
+          0.1
+        ],
+        [
+          "Motiv",
+          "GET",
+          62.7,
+          0.9
+        ],
+        [
+          "Gerätefoto",
+          "GET",
+          63,
+          0
+        ],
+        [
+          "Entwurf",
+          "POST",
+          301.3,
+          840.8
+        ],
+        [
+          "Warenkorb",
+          "POST",
+          1145.4,
+          35.2
+        ],
+        [
+          "Warenkorbseite",
+          "GET",
+          1189.6,
+          0.8
+        ],
+        [
+          "Beta-Client",
+          "GET",
+          1205.3,
+          0.6
+        ],
+        [
+          "Warenkorb",
+          "GET",
+          1222.4,
+          0.7
+        ],
+        [
+          "Positionsbild",
+          "GET",
+          1226.8,
+          1
+        ],
+        [
+          "Positionsbild",
+          "GET",
+          1227.4,
+          1.5
+        ]
+      ],
+      "entryRequests": {
+        "Produktseite": {
+          "count": 1,
+          "responseBytes": 3674
+        },
+        "Beta-Client": {
+          "count": 1,
+          "responseBytes": 9045
+        },
+        "Produktbindung": {
+          "count": 1,
+          "responseBytes": 73
+        },
+        "Prüfsitzung": {
+          "count": 1,
+          "responseBytes": 172
+        },
+        "Produktmodell": {
+          "count": 1,
+          "responseBytes": 17499
+        },
+        "Ressource": {
+          "count": 14,
+          "responseBytes": 789170
+        },
+        "Editor": {
+          "count": 1,
+          "responseBytes": 99790
+        },
+        "Oberfläche": {
+          "count": 1,
+          "responseBytes": -501
+        },
+        "Gerätefoto": {
+          "count": 1,
+          "responseBytes": -501
+        },
+        "Motiv": {
+          "count": 11,
+          "responseBytes": 2641
+        }
+      },
+      "pictureSha256": "84cf1104f53177ffd0b1db0ec71a8be933dd1d1f2e19e8dff606e175c513ed22",
+      "pixelSha256": "0f3997d621452d71bc21c739675f8a8fa8b07843194aa0a274eadf31e4523e7f",
+      "angle": {
+        "horizontal": 16,
+        "vertical": 16
+      },
+      "matchedCameraSamples": 24,
+      "sku": "FK-AV2A-16x28-1441",
+      "variant": "57471227756924",
+      "totalCents": 9998
+    },
+    {
+      "build": "ref",
+      "run": 1,
+      "device": "Mobil",
+      "cache": "kalt",
+      "clickThroughPaintMs": 3288.8,
+      "editorReadyMs": 7659.6,
+      "cardMs": 272.2,
+      "entryThroughCardMs": 8158.6,
+      "switchMs": 1317.9,
+      "switchDesign": "FK-SEITLICH",
+      "resourceEntriesDuringSwitch": 4,
+      "startedByRouteDuringSwitch": [
+        "Motiv",
+        "Motiv",
+        "Motiv",
+        "Motiv"
+      ],
+      "draftTtfbMs": 1219.5,
+      "draftHandlerMs": 1209.1,
+      "draftPhases": {
+        "beta_app": 1209.1,
+        "total": 1208.92,
+        "review_config": 3.26,
+        "review_validate": 67.44,
+        "review_sources": 2,
+        "customer_preview": 471.64,
+        "reference_preview": 198.58,
+        "review_zip": 0.82,
+        "originals_zip": 0.01
+      },
+      "cartHandlerMs": 33.1,
+      "cartPhaseThroughPaint": [
+        [
+          "Gerätefoto",
+          "GET",
+          334.4,
+          0.1
+        ],
+        [
+          "Oberfläche",
+          "GET",
+          335.4,
+          0
+        ],
+        [
+          "Oberfläche",
+          "GET",
+          373.4,
+          0.1
+        ],
+        [
+          "Gerätefoto",
+          "GET",
+          374.7,
+          0
+        ],
+        [
+          "Entwurf",
+          "POST",
+          881.8,
+          1219.5
+        ],
+        [
+          "Warenkorb",
+          "POST",
+          2114.8,
+          103.5
+        ],
+        [
+          "Warenkorbseite",
+          "GET",
+          2232.5,
+          108.8
+        ],
+        [
+          "Beta-Client",
+          "GET",
+          2403,
+          92.6
+        ],
+        [
+          "Warenkorb",
+          "GET",
+          2534.1,
+          99.2
+        ],
+        [
+          "Positionsbild",
+          "GET",
+          2646.9,
+          92.9
+        ]
+      ],
+      "entryRequests": {
+        "Produktseite": {
+          "count": 1,
+          "responseBytes": 3674
+        },
+        "Beta-Client": {
+          "count": 1,
+          "responseBytes": 9045
+        },
+        "Prüfsitzung": {
+          "count": 1,
+          "responseBytes": 172
+        },
+        "Produktbindung": {
+          "count": 1,
+          "responseBytes": 73
+        },
+        "Produktmodell": {
+          "count": 1,
+          "responseBytes": 17499
+        },
+        "Editor": {
+          "count": 1,
+          "responseBytes": 99790
+        },
+        "Ressource": {
+          "count": 9,
+          "responseBytes": 689976
+        },
+        "Gerätefoto": {
+          "count": 1,
+          "responseBytes": 63482
+        },
+        "Oberfläche": {
+          "count": 1,
+          "responseBytes": 97754
+        },
+        "Motiv": {
+          "count": 5,
+          "responseBytes": 1155
+        }
+      },
+      "pictureSha256": "9119f711db9ea494875043469238cba2492823a631c92dedfc1987de2f6877e5",
+      "pixelSha256": "c5ebe87773642884b29af2293735266d51877a256114c9844aecc66872ac6630",
+      "angle": {
+        "horizontal": 0,
+        "vertical": 0
+      },
+      "matchedCameraSamples": 24,
+      "sku": "FK-AV2A-16x28-1441",
+      "variant": "57471227756924",
+      "totalCents": 9998
+    },
+    {
+      "build": "ref",
+      "run": 1,
+      "device": "Mobil",
+      "cache": "warm",
+      "clickThroughPaintMs": 3978.2,
+      "editorReadyMs": 7852.5,
+      "cardMs": 247.8,
+      "entryThroughCardMs": 8462.9,
+      "switchMs": 1668.7,
+      "switchDesign": "FK-RUNDUM",
+      "resourceEntriesDuringSwitch": 4,
+      "startedByRouteDuringSwitch": [
+        "Motiv",
+        "Motiv",
+        "Motiv",
+        "Motiv"
+      ],
+      "draftTtfbMs": 1235.4,
+      "draftHandlerMs": 1219.9,
+      "draftPhases": {
+        "beta_app": 1219.9,
+        "total": 1219.66,
+        "review_config": 5.68,
+        "review_validate": 71.76,
+        "review_sources": 2.19,
+        "customer_preview": 475.53,
+        "reference_preview": 180.23,
+        "review_zip": 0.8,
+        "originals_zip": 0.01
+      },
+      "cartHandlerMs": 79.6,
+      "cartPhaseThroughPaint": [
+        [
+          "Gerätefoto",
+          "GET",
+          473,
+          0.1
+        ],
+        [
+          "Oberfläche",
+          "GET",
+          474.3,
+          0.1
+        ],
+        [
+          "Motiv",
+          "GET",
+          476.8,
+          100.2
+        ],
+        [
+          "Motiv",
+          "GET",
+          496,
+          98.2
+        ],
+        [
+          "Oberfläche",
+          "GET",
+          527.2,
+          0.1
+        ],
+        [
+          "Motiv",
+          "GET",
+          528.2,
+          105.9
+        ],
+        [
+          "Gerätefoto",
+          "GET",
+          528.5,
+          0.1
+        ],
+        [
+          "Entwurf",
+          "POST",
+          1003.8,
+          1235.4
+        ],
+        [
+          "Warenkorb",
+          "POST",
+          2248.2,
+          119.9
+        ],
+        [
+          "Warenkorbseite",
+          "GET",
+          2382.2,
+          93.4
+        ],
+        [
+          "Beta-Client",
+          "GET",
+          2553.3,
+          104.3
+        ],
+        [
+          "Warenkorb",
+          "GET",
+          2673.5,
+          89.2
+        ],
+        [
+          "Positionsbild",
+          "GET",
+          2780.2,
+          99.2
+        ],
+        [
+          "Positionsbild",
+          "GET",
+          2780.7,
+          99.3
+        ]
+      ],
+      "entryRequests": {
+        "Produktseite": {
+          "count": 1,
+          "responseBytes": 3674
+        },
+        "Beta-Client": {
+          "count": 1,
+          "responseBytes": 9045
+        },
+        "Prüfsitzung": {
+          "count": 1,
+          "responseBytes": 172
+        },
+        "Produktbindung": {
+          "count": 1,
+          "responseBytes": 73
+        },
+        "Produktmodell": {
+          "count": 1,
+          "responseBytes": 17499
+        },
+        "Ressource": {
+          "count": 9,
+          "responseBytes": 203523
+        },
+        "Editor": {
+          "count": 1,
+          "responseBytes": 99790
+        },
+        "Oberfläche": {
+          "count": 1,
+          "responseBytes": -501
+        },
+        "Gerätefoto": {
+          "count": 1,
+          "responseBytes": -501
+        },
+        "Motiv": {
+          "count": 5,
+          "responseBytes": 1155
+        }
+      },
+      "pictureSha256": "84cf1104f53177ffd0b1db0ec71a8be933dd1d1f2e19e8dff606e175c513ed22",
+      "pixelSha256": "0f3997d621452d71bc21c739675f8a8fa8b07843194aa0a274eadf31e4523e7f",
+      "angle": {
+        "horizontal": 16,
+        "vertical": 16
+      },
+      "matchedCameraSamples": 24,
+      "sku": "FK-AV2A-16x28-1441",
+      "variant": "57471227756924",
+      "totalCents": 9998
+    },
+    {
+      "build": "neu",
+      "run": 1,
+      "device": "PC",
+      "cache": "kalt",
+      "clickThroughPaintMs": 1304.1,
+      "editorReadyMs": 916.4,
+      "cardMs": 38.6,
+      "entryThroughCardMs": 1129.4,
+      "switchMs": 164.8,
+      "switchDesign": "FK-SEITLICH",
+      "resourceEntriesDuringSwitch": 5,
+      "startedByRouteDuringSwitch": [
+        "Motiv",
+        "Motiv",
+        "Motiv",
+        "Motiv",
+        "Motiv"
+      ],
+      "draftTtfbMs": 790.8,
+      "draftHandlerMs": 790.2,
+      "draftPhases": {
+        "beta_app": 790.2,
+        "total": 789.47,
+        "review_config": 4.26,
+        "review_validate": 71.19,
+        "review_sources": 2.09,
+        "preview_pair": 670.87,
+        "review_zip": 1.31,
+        "originals_zip": 0.05
+      },
+      "cartHandlerMs": 34.8,
+      "cartPhaseThroughPaint": [
+        [
+          "Gerätefoto",
+          "GET",
+          40.9,
+          0.1
+        ],
+        [
+          "Oberfläche",
+          "GET",
+          41.5,
+          0
+        ],
+        [
+          "Oberfläche",
+          "GET",
+          50,
+          0.1
+        ],
+        [
+          "Gerätefoto",
+          "GET",
+          50.8,
+          0
+        ],
+        [
+          "Entwurf",
+          "POST",
+          364.8,
+          790.8
+        ],
+        [
+          "Warenkorb",
+          "POST",
+          1157.7,
+          35.3
+        ],
+        [
+          "Warenkorbseite",
+          "GET",
+          1199.5,
+          0.5
+        ],
+        [
+          "Beta-Client",
+          "GET",
+          1212.6,
+          0.5
+        ],
+        [
+          "Warenkorb",
+          "GET",
+          1224.7,
+          1.1
+        ],
+        [
+          "Positionsbild",
+          "GET",
+          1229.8,
+          1.2
+        ]
+      ],
+      "entryRequests": {
+        "Produktseite": {
+          "count": 1,
+          "responseBytes": 3674
+        },
+        "Beta-Client": {
+          "count": 1,
+          "responseBytes": 9045
+        },
+        "Produktbindung": {
+          "count": 1,
+          "responseBytes": 73
+        },
+        "Prüfsitzung": {
+          "count": 1,
+          "responseBytes": 172
+        },
+        "Produktmodell": {
+          "count": 1,
+          "responseBytes": 17502
+        },
+        "Editor": {
+          "count": 1,
+          "responseBytes": 99790
+        },
+        "Ressource": {
+          "count": 14,
+          "responseBytes": 1275755
+        },
+        "Oberfläche": {
+          "count": 1,
+          "responseBytes": 97754
+        },
+        "Motiv": {
+          "count": 11,
+          "responseBytes": 2641
+        },
+        "Gerätefoto": {
+          "count": 1,
+          "responseBytes": 63482
+        }
+      },
+      "pictureSha256": "9119f711db9ea494875043469238cba2492823a631c92dedfc1987de2f6877e5",
+      "pixelSha256": "c5ebe87773642884b29af2293735266d51877a256114c9844aecc66872ac6630",
+      "angle": {
+        "horizontal": 0,
+        "vertical": 0
+      },
+      "matchedCameraSamples": 24,
+      "sku": "FK-AV2A-16x28-1441",
+      "variant": "57471227756924",
+      "totalCents": 9998
+    },
+    {
+      "build": "neu",
+      "run": 1,
+      "device": "PC",
+      "cache": "warm",
+      "clickThroughPaintMs": 1415.3,
+      "editorReadyMs": 756,
+      "cardMs": 41.1,
+      "entryThroughCardMs": 1298.4,
+      "switchMs": 271.6,
+      "switchDesign": "FK-RUNDUM",
+      "resourceEntriesDuringSwitch": 5,
+      "startedByRouteDuringSwitch": [
+        "Motiv",
+        "Motiv",
+        "Motiv",
+        "Motiv",
+        "Motiv"
+      ],
+      "draftTtfbMs": 843.4,
+      "draftHandlerMs": 839.9,
+      "draftPhases": {
+        "beta_app": 839.9,
+        "total": 839.24,
+        "review_config": 4.03,
+        "review_validate": 83.74,
+        "review_sources": 3.51,
+        "preview_pair": 655.41,
+        "review_zip": 0.88,
+        "originals_zip": 0.02
+      },
+      "cartHandlerMs": 45.6,
+      "cartPhaseThroughPaint": [
+        [
+          "Gerätefoto",
+          "GET",
+          62.2,
+          0.1
+        ],
+        [
+          "Motiv",
+          "GET",
+          62.9,
+          1.2
+        ],
+        [
+          "Oberfläche",
+          "GET",
+          63.4,
+          0.1
+        ],
+        [
+          "Motiv",
+          "GET",
+          68,
+          1
+        ],
+        [
+          "Oberfläche",
+          "GET",
+          73.6,
+          0.1
+        ],
+        [
+          "Motiv",
+          "GET",
+          74.3,
+          1.1
+        ],
+        [
+          "Gerätefoto",
+          "GET",
+          74.7,
+          0.1
+        ],
+        [
+          "Entwurf",
+          "POST",
+          374.6,
+          843.4
+        ],
+        [
+          "Warenkorb",
+          "POST",
+          1220.5,
+          46.3
+        ],
+        [
+          "Warenkorbseite",
+          "GET",
+          1276,
+          0.8
+        ],
+        [
+          "Beta-Client",
+          "GET",
+          1294.7,
+          0.8
+        ],
+        [
+          "Warenkorb",
+          "GET",
+          1312.2,
+          1.2
+        ],
+        [
+          "Positionsbild",
+          "GET",
+          1322.3,
+          1.4
+        ],
+        [
+          "Positionsbild",
+          "GET",
+          1323,
+          2.7
+        ]
+      ],
+      "entryRequests": {
+        "Produktseite": {
+          "count": 1,
+          "responseBytes": 3674
+        },
+        "Beta-Client": {
+          "count": 1,
+          "responseBytes": 9045
+        },
+        "Produktbindung": {
+          "count": 1,
+          "responseBytes": 73
+        },
+        "Prüfsitzung": {
+          "count": 1,
+          "responseBytes": 172
+        },
+        "Produktmodell": {
+          "count": 1,
+          "responseBytes": 17502
+        },
+        "Ressource": {
+          "count": 14,
+          "responseBytes": 789170
+        },
+        "Editor": {
+          "count": 1,
+          "responseBytes": 99790
+        },
+        "Oberfläche": {
+          "count": 1,
+          "responseBytes": -501
+        },
+        "Gerätefoto": {
+          "count": 1,
+          "responseBytes": -501
+        },
+        "Motiv": {
+          "count": 11,
+          "responseBytes": 2641
+        }
+      },
+      "pictureSha256": "84cf1104f53177ffd0b1db0ec71a8be933dd1d1f2e19e8dff606e175c513ed22",
+      "pixelSha256": "0f3997d621452d71bc21c739675f8a8fa8b07843194aa0a274eadf31e4523e7f",
+      "angle": {
+        "horizontal": 16,
+        "vertical": 16
+      },
+      "matchedCameraSamples": 24,
+      "sku": "FK-AV2A-16x28-1441",
+      "variant": "57471227756924",
+      "totalCents": 9998
+    },
+    {
+      "build": "neu",
+      "run": 1,
+      "device": "Mobil",
+      "cache": "kalt",
+      "clickThroughPaintMs": 2955.2,
+      "editorReadyMs": 5657.1,
+      "cardMs": 260.8,
+      "entryThroughCardMs": 6406.6,
+      "switchMs": 1071.3,
+      "switchDesign": "FK-SEITLICH",
+      "resourceEntriesDuringSwitch": 4,
+      "startedByRouteDuringSwitch": [
+        "Motiv",
+        "Motiv",
+        "Motiv",
+        "Motiv"
+      ],
+      "draftTtfbMs": 958.7,
+      "draftHandlerMs": 938.7,
+      "draftPhases": {
+        "beta_app": 938.7,
+        "total": 938.29,
+        "review_config": 2.55,
+        "review_validate": 61.91,
+        "review_sources": 1.62,
+        "preview_pair": 419.15,
+        "review_zip": 0.85,
+        "originals_zip": 0.01
+      },
+      "cartHandlerMs": 36.6,
+      "cartPhaseThroughPaint": [
+        [
+          "Gerätefoto",
+          "GET",
+          259.9,
+          0
+        ],
+        [
+          "Oberfläche",
+          "GET",
+          260.4,
+          0
+        ],
+        [
+          "Oberfläche",
+          "GET",
+          310.8,
+          0.1
+        ],
+        [
+          "Gerätefoto",
+          "GET",
+          311.5,
+          0
+        ],
+        [
+          "Entwurf",
+          "POST",
+          797.3,
+          958.7
+        ],
+        [
+          "Warenkorb",
+          "POST",
+          1765,
+          114.6
+        ],
+        [
+          "Warenkorbseite",
+          "GET",
+          1893.3,
+          111
+        ],
+        [
+          "Beta-Client",
+          "GET",
+          2086.7,
+          98.2
+        ],
+        [
+          "Warenkorb",
+          "GET",
+          2194.1,
+          89.1
+        ],
+        [
+          "Positionsbild",
+          "GET",
+          2289.8,
+          101.6
+        ]
+      ],
+      "entryRequests": {
+        "Produktseite": {
+          "count": 1,
+          "responseBytes": 3674
+        },
+        "Beta-Client": {
+          "count": 1,
+          "responseBytes": 9045
+        },
+        "Prüfsitzung": {
+          "count": 1,
+          "responseBytes": 172
+        },
+        "Produktbindung": {
+          "count": 1,
+          "responseBytes": 73
+        },
+        "Produktmodell": {
+          "count": 1,
+          "responseBytes": 17502
+        },
+        "Editor": {
+          "count": 1,
+          "responseBytes": 99790
+        },
+        "Ressource": {
+          "count": 9,
+          "responseBytes": 690108
+        },
+        "Gerätefoto": {
+          "count": 1,
+          "responseBytes": 63482
+        },
+        "Oberfläche": {
+          "count": 1,
+          "responseBytes": 97754
+        },
+        "Motiv": {
+          "count": 5,
+          "responseBytes": 1155
+        }
+      },
+      "pictureSha256": "9119f711db9ea494875043469238cba2492823a631c92dedfc1987de2f6877e5",
+      "pixelSha256": "c5ebe87773642884b29af2293735266d51877a256114c9844aecc66872ac6630",
+      "angle": {
+        "horizontal": 0,
+        "vertical": 0
+      },
+      "matchedCameraSamples": 24,
+      "sku": "FK-AV2A-16x28-1441",
+      "variant": "57471227756924",
+      "totalCents": 9998
+    },
+    {
+      "build": "neu",
+      "run": 1,
+      "device": "Mobil",
+      "cache": "warm",
+      "clickThroughPaintMs": 3556.5,
+      "editorReadyMs": 5937.8,
+      "cardMs": 276.4,
+      "entryThroughCardMs": 6781.8,
+      "switchMs": 1024.7,
+      "switchDesign": "FK-RUNDUM",
+      "resourceEntriesDuringSwitch": 4,
+      "startedByRouteDuringSwitch": [
+        "Motiv",
+        "Motiv",
+        "Motiv",
+        "Motiv"
+      ],
+      "draftTtfbMs": 987.7,
+      "draftHandlerMs": 980.8,
+      "draftPhases": {
+        "beta_app": 980.8,
+        "total": 980.48,
+        "review_config": 2.42,
+        "review_validate": 66.38,
+        "review_sources": 2.26,
+        "preview_pair": 481.29,
+        "review_zip": 1.19,
+        "originals_zip": 0.03
+      },
+      "cartHandlerMs": 59.4,
+      "cartPhaseThroughPaint": [
+        [
+          "Gerätefoto",
+          "GET",
+          244.1,
+          0
+        ],
+        [
+          "Oberfläche",
+          "GET",
+          245.6,
+          0
+        ],
+        [
+          "Motiv",
+          "GET",
+          245.9,
+          105.6
+        ],
+        [
+          "Motiv",
+          "GET",
+          259.7,
+          99.7
+        ],
+        [
+          "Oberfläche",
+          "GET",
+          285.9,
+          0.1
+        ],
+        [
+          "Motiv",
+          "GET",
+          286.5,
+          106.3
+        ],
+        [
+          "Gerätefoto",
+          "GET",
+          286.6,
+          0
+        ],
+        [
+          "Entwurf",
+          "POST",
+          769.9,
+          987.7
+        ],
+        [
+          "Warenkorb",
+          "POST",
+          1761,
+          125.6
+        ],
+        [
+          "Warenkorbseite",
+          "GET",
+          1901.3,
+          101.7
+        ],
+        [
+          "Beta-Client",
+          "GET",
+          2094.1,
+          92.1
+        ],
+        [
+          "Warenkorb",
+          "GET",
+          2240.6,
+          96.6
+        ],
+        [
+          "Positionsbild",
+          "GET",
+          2354,
+          112.7
+        ],
+        [
+          "Positionsbild",
+          "GET",
+          2360.4,
+          105.3
+        ]
+      ],
+      "entryRequests": {
+        "Produktseite": {
+          "count": 1,
+          "responseBytes": 3674
+        },
+        "Beta-Client": {
+          "count": 1,
+          "responseBytes": 9045
+        },
+        "Prüfsitzung": {
+          "count": 1,
+          "responseBytes": 172
+        },
+        "Produktbindung": {
+          "count": 1,
+          "responseBytes": 73
+        },
+        "Produktmodell": {
+          "count": 1,
+          "responseBytes": 17502
+        },
+        "Ressource": {
+          "count": 9,
+          "responseBytes": 203523
+        },
+        "Editor": {
+          "count": 1,
+          "responseBytes": 99790
+        },
+        "Oberfläche": {
+          "count": 1,
+          "responseBytes": -501
+        },
+        "Gerätefoto": {
+          "count": 1,
+          "responseBytes": -501
+        },
+        "Motiv": {
+          "count": 5,
+          "responseBytes": 1155
+        }
+      },
+      "pictureSha256": "84cf1104f53177ffd0b1db0ec71a8be933dd1d1f2e19e8dff606e175c513ed22",
+      "pixelSha256": "0f3997d621452d71bc21c739675f8a8fa8b07843194aa0a274eadf31e4523e7f",
+      "angle": {
+        "horizontal": 16,
+        "vertical": 16
+      },
+      "matchedCameraSamples": 24,
+      "sku": "FK-AV2A-16x28-1441",
+      "variant": "57471227756924",
+      "totalCents": 9998
+    },
+    {
+      "build": "ref",
+      "run": 2,
+      "device": "PC",
+      "cache": "kalt",
+      "clickThroughPaintMs": 2127.2,
+      "editorReadyMs": 979.1,
+      "cardMs": 105.5,
+      "entryThroughCardMs": 1298.3,
+      "switchMs": 232.4,
+      "switchDesign": "FK-SEITLICH",
+      "resourceEntriesDuringSwitch": 5,
+      "startedByRouteDuringSwitch": [
+        "Motiv",
+        "Motiv",
+        "Motiv",
+        "Motiv",
+        "Motiv"
+      ],
+      "draftTtfbMs": 1246.7,
+      "draftHandlerMs": 1245.5,
+      "draftPhases": {
+        "beta_app": 1245.5,
+        "total": 1245.14,
+        "review_config": 6.36,
+        "review_validate": 186.02,
+        "review_sources": 5.38,
+        "customer_preview": 680.84,
+        "reference_preview": 297.5,
+        "review_zip": 0.95,
+        "originals_zip": 0.03
+      },
+      "cartHandlerMs": 53,
+      "cartPhaseThroughPaint": [
+        [
+          "Gerätefoto",
+          "GET",
+          90.8,
+          0.1
+        ],
+        [
+          "Oberfläche",
+          "GET",
+          91.7,
+          0.1
+        ],
+        [
+          "Oberfläche",
+          "GET",
+          103.8,
+          0.1
+        ],
+        [
+          "Gerätefoto",
+          "GET",
+          104.7,
+          0.1
+        ],
+        [
+          "Entwurf",
+          "POST",
+          618.2,
+          1246.7
+        ],
+        [
+          "Warenkorb",
+          "POST",
+          1869.9,
+          53.8
+        ],
+        [
+          "Warenkorbseite",
+          "GET",
+          1941,
+          0.9
+        ],
+        [
+          "Beta-Client",
+          "GET",
+          1967.8,
+          1.1
+        ],
+        [
+          "Warenkorb",
+          "GET",
+          1995.9,
+          1.1
+        ],
+        [
+          "Positionsbild",
+          "GET",
+          2004,
+          2.2
+        ]
+      ],
+      "entryRequests": {
+        "Produktseite": {
+          "count": 1,
+          "responseBytes": 3674
+        },
+        "Beta-Client": {
+          "count": 1,
+          "responseBytes": 9045
+        },
+        "Produktbindung": {
+          "count": 1,
+          "responseBytes": 73
+        },
+        "Prüfsitzung": {
+          "count": 1,
+          "responseBytes": 172
+        },
+        "Produktmodell": {
+          "count": 1,
+          "responseBytes": 17499
+        },
+        "Editor": {
+          "count": 1,
+          "responseBytes": 99790
+        },
+        "Ressource": {
+          "count": 14,
+          "responseBytes": 1275623
+        },
+        "Oberfläche": {
+          "count": 1,
+          "responseBytes": 97754
+        },
+        "Motiv": {
+          "count": 11,
+          "responseBytes": 2641
+        },
+        "Gerätefoto": {
+          "count": 1,
+          "responseBytes": 63482
+        }
+      },
+      "pictureSha256": "9119f711db9ea494875043469238cba2492823a631c92dedfc1987de2f6877e5",
+      "pixelSha256": "c5ebe87773642884b29af2293735266d51877a256114c9844aecc66872ac6630",
+      "angle": {
+        "horizontal": 0,
+        "vertical": 0
+      },
+      "matchedCameraSamples": 24,
+      "sku": "FK-AV2A-16x28-1441",
+      "variant": "57471227756924",
+      "totalCents": 9998
+    },
+    {
+      "build": "ref",
+      "run": 2,
+      "device": "PC",
+      "cache": "warm",
+      "clickThroughPaintMs": 1728.9,
+      "editorReadyMs": 2010.4,
+      "cardMs": 92.9,
+      "entryThroughCardMs": 2240.9,
+      "switchMs": 459.6,
+      "switchDesign": "FK-RUNDUM",
+      "resourceEntriesDuringSwitch": 5,
+      "startedByRouteDuringSwitch": [
+        "Motiv",
+        "Motiv",
+        "Motiv",
+        "Motiv",
+        "Motiv"
+      ],
+      "draftTtfbMs": 917.6,
+      "draftHandlerMs": 916.6,
+      "draftPhases": {
+        "beta_app": 916.6,
+        "total": 915.9,
+        "review_config": 6.51,
+        "review_validate": 127.35,
+        "review_sources": 2.93,
+        "customer_preview": 489.15,
+        "reference_preview": 199.2,
+        "review_zip": 1.15,
+        "originals_zip": 0.02
+      },
+      "cartHandlerMs": 67.1,
+      "cartPhaseThroughPaint": [
+        [
+          "Gerätefoto",
+          "GET",
+          107.6,
+          0.1
+        ],
+        [
+          "Oberfläche",
+          "GET",
+          108.5,
+          0.1
+        ],
+        [
+          "Motiv",
+          "GET",
+          109.4,
+          1.3
+        ],
+        [
+          "Motiv",
+          "GET",
+          117.8,
+          1.3
+        ],
+        [
+          "Oberfläche",
+          "GET",
+          127.9,
+          0.1
+        ],
+        [
+          "Motiv",
+          "GET",
+          130.5,
+          1
+        ],
+        [
+          "Gerätefoto",
+          "GET",
+          130.8,
+          0.2
+        ],
+        [
+          "Entwurf",
+          "POST",
+          515.5,
+          917.6
+        ],
+        [
+          "Warenkorb",
+          "POST",
+          1438.4,
+          68.9
+        ],
+        [
+          "Warenkorbseite",
+          "GET",
+          1531.5,
+          1.2
+        ],
+        [
+          "Beta-Client",
+          "GET",
+          1557.3,
+          0.8
+        ],
+        [
+          "Warenkorb",
+          "GET",
+          1586,
+          1.4
+        ],
+        [
+          "Positionsbild",
+          "GET",
+          1599.3,
+          1.8
+        ],
+        [
+          "Positionsbild",
+          "GET",
+          1599.9,
+          3.8
+        ]
+      ],
+      "entryRequests": {
+        "Produktseite": {
+          "count": 1,
+          "responseBytes": 3674
+        },
+        "Beta-Client": {
+          "count": 1,
+          "responseBytes": 9045
+        },
+        "Produktbindung": {
+          "count": 1,
+          "responseBytes": 73
+        },
+        "Prüfsitzung": {
+          "count": 1,
+          "responseBytes": 172
+        },
+        "Produktmodell": {
+          "count": 1,
+          "responseBytes": 17499
+        },
+        "Ressource": {
+          "count": 14,
+          "responseBytes": 789170
+        },
+        "Editor": {
+          "count": 1,
+          "responseBytes": 99790
+        },
+        "Oberfläche": {
+          "count": 1,
+          "responseBytes": -501
+        },
+        "Gerätefoto": {
+          "count": 1,
+          "responseBytes": -501
+        },
+        "Motiv": {
+          "count": 11,
+          "responseBytes": 2641
+        }
+      },
+      "pictureSha256": "84cf1104f53177ffd0b1db0ec71a8be933dd1d1f2e19e8dff606e175c513ed22",
+      "pixelSha256": "0f3997d621452d71bc21c739675f8a8fa8b07843194aa0a274eadf31e4523e7f",
+      "angle": {
+        "horizontal": 16,
+        "vertical": 16
+      },
+      "matchedCameraSamples": 24,
+      "sku": "FK-AV2A-16x28-1441",
+      "variant": "57471227756924",
+      "totalCents": 9998
+    },
+    {
+      "build": "ref",
+      "run": 2,
+      "device": "Mobil",
+      "cache": "kalt",
+      "clickThroughPaintMs": 4251.9,
+      "editorReadyMs": 9166.6,
+      "cardMs": 706.5,
+      "entryThroughCardMs": 11192.8,
+      "switchMs": 2246.6,
+      "switchDesign": "FK-SEITLICH",
+      "resourceEntriesDuringSwitch": 4,
+      "startedByRouteDuringSwitch": [
+        "Motiv",
+        "Motiv",
+        "Motiv",
+        "Motiv"
+      ],
+      "draftTtfbMs": 1350,
+      "draftHandlerMs": 1337.3,
+      "draftPhases": {
+        "beta_app": 1337.3,
+        "total": 1336.93,
+        "review_config": 3.99,
+        "review_validate": 147.02,
+        "review_sources": 3.73,
+        "customer_preview": 457.2,
+        "reference_preview": 200.64,
+        "review_zip": 1.56,
+        "originals_zip": 0.04
+      },
+      "cartHandlerMs": 73.4,
+      "cartPhaseThroughPaint": [
+        [
+          "Gerätefoto",
+          "GET",
+          630.3,
+          0.1
+        ],
+        [
+          "Oberfläche",
+          "GET",
+          632.8,
+          0.1
+        ],
+        [
+          "Oberfläche",
+          "GET",
+          705.1,
+          0.1
+        ],
+        [
+          "Gerätefoto",
+          "GET",
+          706.3,
+          0.1
+        ],
+        [
+          "Entwurf",
+          "POST",
+          1447.6,
+          1350
+        ],
+        [
+          "Warenkorb",
+          "POST",
+          2832.4,
+          107.3
+        ],
+        [
+          "Warenkorbseite",
+          "GET",
+          2969.3,
+          99.6
+        ],
+        [
+          "Beta-Client",
+          "GET",
+          3192.2,
+          96.5
+        ],
+        [
+          "Warenkorb",
+          "GET",
+          3327.3,
+          108.5
+        ],
+        [
+          "Positionsbild",
+          "GET",
+          3522.4,
+          97
+        ]
+      ],
+      "entryRequests": {
+        "Produktseite": {
+          "count": 1,
+          "responseBytes": 3674
+        },
+        "Beta-Client": {
+          "count": 1,
+          "responseBytes": 9045
+        },
+        "Produktbindung": {
+          "count": 1,
+          "responseBytes": 73
+        },
+        "Prüfsitzung": {
+          "count": 1,
+          "responseBytes": 172
+        },
+        "Produktmodell": {
+          "count": 1,
+          "responseBytes": 17499
+        },
+        "Editor": {
+          "count": 1,
+          "responseBytes": 99790
+        },
+        "Ressource": {
+          "count": 9,
+          "responseBytes": 689976
+        },
+        "Gerätefoto": {
+          "count": 1,
+          "responseBytes": 63482
+        },
+        "Oberfläche": {
+          "count": 1,
+          "responseBytes": 97754
+        },
+        "Motiv": {
+          "count": 5,
+          "responseBytes": 1155
+        }
+      },
+      "pictureSha256": "9119f711db9ea494875043469238cba2492823a631c92dedfc1987de2f6877e5",
+      "pixelSha256": "c5ebe87773642884b29af2293735266d51877a256114c9844aecc66872ac6630",
+      "angle": {
+        "horizontal": 0,
+        "vertical": 0
+      },
+      "matchedCameraSamples": 24,
+      "sku": "FK-AV2A-16x28-1441",
+      "variant": "57471227756924",
+      "totalCents": 9998
+    },
+    {
+      "build": "ref",
+      "run": 2,
+      "device": "Mobil",
+      "cache": "warm",
+      "clickThroughPaintMs": 5336.8,
+      "editorReadyMs": 10131.7,
+      "cardMs": 268.7,
+      "entryThroughCardMs": 11173.2,
+      "switchMs": 2406.8,
+      "switchDesign": "FK-RUNDUM",
+      "resourceEntriesDuringSwitch": 4,
+      "startedByRouteDuringSwitch": [
+        "Motiv",
+        "Motiv",
+        "Motiv",
+        "Motiv"
+      ],
+      "draftTtfbMs": 1740.2,
+      "draftHandlerMs": 1734.8,
+      "draftPhases": {
+        "beta_app": 1734.8,
+        "total": 1734.38,
+        "review_config": 8.41,
+        "review_validate": 219.37,
+        "review_sources": 3.33,
+        "customer_preview": 755.89,
+        "reference_preview": 308.86,
+        "review_zip": 2.47,
+        "originals_zip": 0.04
+      },
+      "cartHandlerMs": 116.5,
+      "cartPhaseThroughPaint": [
+        [
+          "Gerätefoto",
+          "GET",
+          813.6,
+          0.1
+        ],
+        [
+          "Oberfläche",
+          "GET",
+          817.7,
+          0.1
+        ],
+        [
+          "Motiv",
+          "GET",
+          823.3,
+          109.7
+        ],
+        [
+          "Motiv",
+          "GET",
+          879.7,
+          103.8
+        ],
+        [
+          "Oberfläche",
+          "GET",
+          954.5,
+          0.1
+        ],
+        [
+          "Motiv",
+          "GET",
+          956.3,
+          88.6
+        ],
+        [
+          "Gerätefoto",
+          "GET",
+          958.2,
+          0.1
+        ],
+        [
+          "Entwurf",
+          "POST",
+          1840.3,
+          1740.2
+        ],
+        [
+          "Warenkorb",
+          "POST",
+          3584.8,
+          123
+        ],
+        [
+          "Warenkorbseite",
+          "GET",
+          3730.9,
+          91.1
+        ],
+        [
+          "Beta-Client",
+          "GET",
+          3901.9,
+          91.3
+        ],
+        [
+          "Warenkorb",
+          "GET",
+          4009.4,
+          106.8
+        ],
+        [
+          "Positionsbild",
+          "GET",
+          4128.4,
+          98.4
+        ],
+        [
+          "Positionsbild",
+          "GET",
+          4130.4,
+          95.7
+        ]
+      ],
+      "entryRequests": {
+        "Produktseite": {
+          "count": 1,
+          "responseBytes": 3674
+        },
+        "Beta-Client": {
+          "count": 1,
+          "responseBytes": 9045
+        },
+        "Produktbindung": {
+          "count": 1,
+          "responseBytes": 73
+        },
+        "Prüfsitzung": {
+          "count": 1,
+          "responseBytes": 172
+        },
+        "Produktmodell": {
+          "count": 1,
+          "responseBytes": 17499
+        },
+        "Ressource": {
+          "count": 9,
+          "responseBytes": 203523
+        },
+        "Editor": {
+          "count": 1,
+          "responseBytes": 99790
+        },
+        "Oberfläche": {
+          "count": 1,
+          "responseBytes": -501
+        },
+        "Gerätefoto": {
+          "count": 1,
+          "responseBytes": -501
+        },
+        "Motiv": {
+          "count": 5,
+          "responseBytes": 1155
+        }
+      },
+      "pictureSha256": "84cf1104f53177ffd0b1db0ec71a8be933dd1d1f2e19e8dff606e175c513ed22",
+      "pixelSha256": "0f3997d621452d71bc21c739675f8a8fa8b07843194aa0a274eadf31e4523e7f",
+      "angle": {
+        "horizontal": 16,
+        "vertical": 16
+      },
+      "matchedCameraSamples": 24,
+      "sku": "FK-AV2A-16x28-1441",
+      "variant": "57471227756924",
+      "totalCents": 9998
+    },
+    {
+      "build": "neu",
+      "run": 2,
+      "device": "PC",
+      "cache": "kalt",
+      "clickThroughPaintMs": 1104,
+      "editorReadyMs": 782.9,
+      "cardMs": 35.3,
+      "entryThroughCardMs": 1374.5,
+      "switchMs": 183.4,
+      "switchDesign": "FK-SEITLICH",
+      "resourceEntriesDuringSwitch": 5,
+      "startedByRouteDuringSwitch": [
+        "Motiv",
+        "Motiv",
+        "Motiv",
+        "Motiv",
+        "Motiv"
+      ],
+      "draftTtfbMs": 609.8,
+      "draftHandlerMs": 608.6,
+      "draftPhases": {
+        "beta_app": 608.6,
+        "total": 608.15,
+        "review_config": 5.42,
+        "review_validate": 69.44,
+        "review_sources": 1.74,
+        "preview_pair": 478.31,
+        "review_zip": 0.81,
+        "originals_zip": 0.01
+      },
+      "cartHandlerMs": 33.3,
+      "cartPhaseThroughPaint": [
+        [
+          "Gerätefoto",
+          "GET",
+          37.9,
+          0.1
+        ],
+        [
+          "Oberfläche",
+          "GET",
+          38.4,
+          0
+        ],
+        [
+          "Oberfläche",
+          "GET",
+          44.1,
+          0.1
+        ],
+        [
+          "Gerätefoto",
+          "GET",
+          44.6,
+          0
+        ],
+        [
+          "Entwurf",
+          "POST",
+          345.1,
+          609.8
+        ],
+        [
+          "Warenkorb",
+          "POST",
+          958.2,
+          34
+        ],
+        [
+          "Warenkorbseite",
+          "GET",
+          999.5,
+          0.5
+        ],
+        [
+          "Beta-Client",
+          "GET",
+          1013.1,
+          0.8
+        ],
+        [
+          "Warenkorb",
+          "GET",
+          1025.5,
+          1.5
+        ],
+        [
+          "Positionsbild",
+          "GET",
+          1031.1,
+          1.2
+        ]
+      ],
+      "entryRequests": {
+        "Produktseite": {
+          "count": 1,
+          "responseBytes": 3674
+        },
+        "Beta-Client": {
+          "count": 1,
+          "responseBytes": 9045
+        },
+        "Produktbindung": {
+          "count": 1,
+          "responseBytes": 73
+        },
+        "Prüfsitzung": {
+          "count": 1,
+          "responseBytes": 172
+        },
+        "Produktmodell": {
+          "count": 1,
+          "responseBytes": 17502
+        },
+        "Editor": {
+          "count": 1,
+          "responseBytes": 99790
+        },
+        "Ressource": {
+          "count": 14,
+          "responseBytes": 1275755
+        },
+        "Oberfläche": {
+          "count": 1,
+          "responseBytes": 97754
+        },
+        "Motiv": {
+          "count": 11,
+          "responseBytes": 2641
+        },
+        "Gerätefoto": {
+          "count": 1,
+          "responseBytes": 63482
+        }
+      },
+      "pictureSha256": "9119f711db9ea494875043469238cba2492823a631c92dedfc1987de2f6877e5",
+      "pixelSha256": "c5ebe87773642884b29af2293735266d51877a256114c9844aecc66872ac6630",
+      "angle": {
+        "horizontal": 0,
+        "vertical": 0
+      },
+      "matchedCameraSamples": 24,
+      "sku": "FK-AV2A-16x28-1441",
+      "variant": "57471227756924",
+      "totalCents": 9998
+    },
+    {
+      "build": "neu",
+      "run": 2,
+      "device": "PC",
+      "cache": "warm",
+      "clickThroughPaintMs": 1383.2,
+      "editorReadyMs": 764.3,
+      "cardMs": 36,
+      "entryThroughCardMs": 890,
+      "switchMs": 317.6,
+      "switchDesign": "FK-RUNDUM",
+      "resourceEntriesDuringSwitch": 5,
+      "startedByRouteDuringSwitch": [
+        "Motiv",
+        "Motiv",
+        "Motiv",
+        "Motiv",
+        "Motiv"
+      ],
+      "draftTtfbMs": 832.6,
+      "draftHandlerMs": 831.8,
+      "draftPhases": {
+        "beta_app": 831.8,
+        "total": 831.55,
+        "review_config": 5.56,
+        "review_validate": 95.28,
+        "review_sources": 3.03,
+        "preview_pair": 686.06,
+        "review_zip": 0.89,
+        "originals_zip": 0.01
+      },
+      "cartHandlerMs": 33,
+      "cartPhaseThroughPaint": [
+        [
+          "Gerätefoto",
+          "GET",
+          62.8,
+          0.1
+        ],
+        [
+          "Oberfläche",
+          "GET",
+          63.5,
+          0.1
+        ],
+        [
+          "Motiv",
+          "GET",
+          64.1,
+          2
+        ],
+        [
+          "Motiv",
+          "GET",
+          68.8,
+          1
+        ],
+        [
+          "Oberfläche",
+          "GET",
+          75.3,
+          0.1
+        ],
+        [
+          "Motiv",
+          "GET",
+          76,
+          1
+        ],
+        [
+          "Gerätefoto",
+          "GET",
+          76.4,
+          0.1
+        ],
+        [
+          "Entwurf",
+          "POST",
+          388.5,
+          832.6
+        ],
+        [
+          "Warenkorb",
+          "POST",
+          1223.3,
+          33.8
+        ],
+        [
+          "Warenkorbseite",
+          "GET",
+          1265.5,
+          0.9
+        ],
+        [
+          "Beta-Client",
+          "GET",
+          1279.5,
+          0.7
+        ],
+        [
+          "Warenkorb",
+          "GET",
+          1292.4,
+          1.1
+        ],
+        [
+          "Positionsbild",
+          "GET",
+          1296.8,
+          3.5
+        ],
+        [
+          "Positionsbild",
+          "GET",
+          1301.8,
+          2
+        ]
+      ],
+      "entryRequests": {
+        "Produktseite": {
+          "count": 1,
+          "responseBytes": 3674
+        },
+        "Beta-Client": {
+          "count": 1,
+          "responseBytes": 9045
+        },
+        "Produktbindung": {
+          "count": 1,
+          "responseBytes": 73
+        },
+        "Prüfsitzung": {
+          "count": 1,
+          "responseBytes": 172
+        },
+        "Produktmodell": {
+          "count": 1,
+          "responseBytes": 17502
+        },
+        "Ressource": {
+          "count": 14,
+          "responseBytes": 789170
+        },
+        "Editor": {
+          "count": 1,
+          "responseBytes": 99790
+        },
+        "Oberfläche": {
+          "count": 1,
+          "responseBytes": -501
+        },
+        "Gerätefoto": {
+          "count": 1,
+          "responseBytes": -501
+        },
+        "Motiv": {
+          "count": 11,
+          "responseBytes": 2641
+        }
+      },
+      "pictureSha256": "84cf1104f53177ffd0b1db0ec71a8be933dd1d1f2e19e8dff606e175c513ed22",
+      "pixelSha256": "0f3997d621452d71bc21c739675f8a8fa8b07843194aa0a274eadf31e4523e7f",
+      "angle": {
+        "horizontal": 16,
+        "vertical": 16
+      },
+      "matchedCameraSamples": 24,
+      "sku": "FK-AV2A-16x28-1441",
+      "variant": "57471227756924",
+      "totalCents": 9998
+    },
+    {
+      "build": "neu",
+      "run": 2,
+      "device": "Mobil",
+      "cache": "kalt",
+      "clickThroughPaintMs": 3005.9,
+      "editorReadyMs": 5782.6,
+      "cardMs": 247.8,
+      "entryThroughCardMs": 6416.3,
+      "switchMs": 1110.4,
+      "switchDesign": "FK-SEITLICH",
+      "resourceEntriesDuringSwitch": 4,
+      "startedByRouteDuringSwitch": [
+        "Motiv",
+        "Motiv",
+        "Motiv",
+        "Motiv"
+      ],
+      "draftTtfbMs": 995.6,
+      "draftHandlerMs": 994.8,
+      "draftPhases": {
+        "beta_app": 994.8,
+        "total": 994.58,
+        "review_config": 2.72,
+        "review_validate": 66.68,
+        "review_sources": 3.32,
+        "preview_pair": 470.48,
+        "review_zip": 1.63,
+        "originals_zip": 0.03
+      },
+      "cartHandlerMs": 35.2,
+      "cartPhaseThroughPaint": [
+        [
+          "Gerätefoto",
+          "GET",
+          230.6,
+          0.1
+        ],
+        [
+          "Oberfläche",
+          "GET",
+          231.3,
+          0
+        ],
+        [
+          "Oberfläche",
+          "GET",
+          269,
+          0.1
+        ],
+        [
+          "Gerätefoto",
+          "GET",
+          269.7,
+          0
+        ],
+        [
+          "Entwurf",
+          "POST",
+          808.3,
+          995.6
+        ],
+        [
+          "Warenkorb",
+          "POST",
+          1815.6,
+          108.9
+        ],
+        [
+          "Warenkorbseite",
+          "GET",
+          1946.7,
+          98.4
+        ],
+        [
+          "Beta-Client",
+          "GET",
+          2125.4,
+          109.1
+        ],
+        [
+          "Warenkorb",
+          "GET",
+          2244,
+          87.6
+        ],
+        [
+          "Positionsbild",
+          "GET",
+          2340.2,
+          104.3
+        ]
+      ],
+      "entryRequests": {
+        "Produktseite": {
+          "count": 1,
+          "responseBytes": 3674
+        },
+        "Beta-Client": {
+          "count": 1,
+          "responseBytes": 9045
+        },
+        "Produktbindung": {
+          "count": 1,
+          "responseBytes": 73
+        },
+        "Prüfsitzung": {
+          "count": 1,
+          "responseBytes": 172
+        },
+        "Produktmodell": {
+          "count": 1,
+          "responseBytes": 17502
+        },
+        "Editor": {
+          "count": 1,
+          "responseBytes": 99790
+        },
+        "Ressource": {
+          "count": 9,
+          "responseBytes": 690108
+        },
+        "Gerätefoto": {
+          "count": 1,
+          "responseBytes": 63482
+        },
+        "Oberfläche": {
+          "count": 1,
+          "responseBytes": 97754
+        },
+        "Motiv": {
+          "count": 5,
+          "responseBytes": 1155
+        }
+      },
+      "pictureSha256": "9119f711db9ea494875043469238cba2492823a631c92dedfc1987de2f6877e5",
+      "pixelSha256": "c5ebe87773642884b29af2293735266d51877a256114c9844aecc66872ac6630",
+      "angle": {
+        "horizontal": 0,
+        "vertical": 0
+      },
+      "matchedCameraSamples": 24,
+      "sku": "FK-AV2A-16x28-1441",
+      "variant": "57471227756924",
+      "totalCents": 9998
+    },
+    {
+      "build": "neu",
+      "run": 2,
+      "device": "Mobil",
+      "cache": "warm",
+      "clickThroughPaintMs": 4446.2,
+      "editorReadyMs": 5558.9,
+      "cardMs": 240.3,
+      "entryThroughCardMs": 6196.9,
+      "switchMs": 1471.4,
+      "switchDesign": "FK-RUNDUM",
+      "resourceEntriesDuringSwitch": 4,
+      "startedByRouteDuringSwitch": [
+        "Motiv",
+        "Motiv",
+        "Motiv",
+        "Motiv"
+      ],
+      "draftTtfbMs": 1205.2,
+      "draftHandlerMs": 1189.9,
+      "draftPhases": {
+        "beta_app": 1189.9,
+        "total": 1189.52,
+        "review_config": 7.01,
+        "review_validate": 135.29,
+        "review_sources": 3.84,
+        "preview_pair": 545.26,
+        "review_zip": 11.04,
+        "originals_zip": 0.05
+      },
+      "cartHandlerMs": 89.2,
+      "cartPhaseThroughPaint": [
+        [
+          "Gerätefoto",
+          "GET",
+          479,
+          0.1
+        ],
+        [
+          "Oberfläche",
+          "GET",
+          484,
+          0.1
+        ],
+        [
+          "Motiv",
+          "GET",
+          486,
+          94.6
+        ],
+        [
+          "Motiv",
+          "GET",
+          530.9,
+          88.6
+        ],
+        [
+          "Oberfläche",
+          "GET",
+          581.3,
+          1.4
+        ],
+        [
+          "Motiv",
+          "GET",
+          584,
+          99.3
+        ],
+        [
+          "Gerätefoto",
+          "GET",
+          584.3,
+          0.1
+        ],
+        [
+          "Entwurf",
+          "POST",
+          1413.9,
+          1205.2
+        ],
+        [
+          "Warenkorb",
+          "POST",
+          2642.5,
+          97.9
+        ],
+        [
+          "Warenkorbseite",
+          "GET",
+          2765.3,
+          106.9
+        ],
+        [
+          "Beta-Client",
+          "GET",
+          2966.6,
+          88.7
+        ],
+        [
+          "Warenkorb",
+          "GET",
+          3074.9,
+          98.6
+        ],
+        [
+          "Positionsbild",
+          "GET",
+          3242.8,
+          105
+        ],
+        [
+          "Positionsbild",
+          "GET",
+          3248.5,
+          97.9
+        ]
+      ],
+      "entryRequests": {
+        "Produktseite": {
+          "count": 1,
+          "responseBytes": 3674
+        },
+        "Beta-Client": {
+          "count": 1,
+          "responseBytes": 9045
+        },
+        "Prüfsitzung": {
+          "count": 1,
+          "responseBytes": 172
+        },
+        "Produktbindung": {
+          "count": 1,
+          "responseBytes": 73
+        },
+        "Produktmodell": {
+          "count": 1,
+          "responseBytes": 17502
+        },
+        "Ressource": {
+          "count": 9,
+          "responseBytes": 203523
+        },
+        "Editor": {
+          "count": 1,
+          "responseBytes": 99790
+        },
+        "Oberfläche": {
+          "count": 1,
+          "responseBytes": -501
+        },
+        "Gerätefoto": {
+          "count": 1,
+          "responseBytes": -501
+        },
+        "Motiv": {
+          "count": 5,
+          "responseBytes": 1155
+        }
+      },
+      "pictureSha256": "84cf1104f53177ffd0b1db0ec71a8be933dd1d1f2e19e8dff606e175c513ed22",
+      "pixelSha256": "0f3997d621452d71bc21c739675f8a8fa8b07843194aa0a274eadf31e4523e7f",
+      "angle": {
+        "horizontal": 16,
+        "vertical": 16
+      },
+      "matchedCameraSamples": 24,
+      "sku": "FK-AV2A-16x28-1441",
+      "variant": "57471227756924",
+      "totalCents": 9998
+    },
+    {
+      "build": "ref",
+      "run": 3,
+      "device": "PC",
+      "cache": "kalt",
+      "clickThroughPaintMs": 1238.9,
+      "editorReadyMs": 889.3,
+      "cardMs": 31,
+      "entryThroughCardMs": 1165.9,
+      "switchMs": 272.4,
+      "switchDesign": "FK-SEITLICH",
+      "resourceEntriesDuringSwitch": 5,
+      "startedByRouteDuringSwitch": [
+        "Motiv",
+        "Motiv",
+        "Motiv",
+        "Motiv",
+        "Motiv"
+      ],
+      "draftTtfbMs": 735.1,
+      "draftHandlerMs": 734.3,
+      "draftPhases": {
+        "beta_app": 734.3,
+        "total": 734.08,
+        "review_config": 2.6,
+        "review_validate": 64.8,
+        "review_sources": 1.82,
+        "customer_preview": 437.45,
+        "reference_preview": 193.7,
+        "review_zip": 0.9,
+        "originals_zip": 0.03
+      },
+      "cartHandlerMs": 29.1,
+      "cartPhaseThroughPaint": [
+        [
+          "Gerätefoto",
+          "GET",
+          44.9,
+          0.1
+        ],
+        [
+          "Oberfläche",
+          "GET",
+          45.4,
+          0
+        ],
+        [
+          "Oberfläche",
+          "GET",
+          51.9,
+          0.1
+        ],
+        [
+          "Gerätefoto",
+          "GET",
+          52.3,
+          0
+        ],
+        [
+          "Entwurf",
+          "POST",
+          366.8,
+          735.1
+        ],
+        [
+          "Warenkorb",
+          "POST",
+          1104.9,
+          30
+        ],
+        [
+          "Warenkorbseite",
+          "GET",
+          1143.5,
+          0.6
+        ],
+        [
+          "Beta-Client",
+          "GET",
+          1159.1,
+          0.8
+        ],
+        [
+          "Warenkorb",
+          "GET",
+          1174.4,
+          1
+        ],
+        [
+          "Positionsbild",
+          "GET",
+          1180.3,
+          0.9
+        ]
+      ],
+      "entryRequests": {
+        "Produktseite": {
+          "count": 1,
+          "responseBytes": 3674
+        },
+        "Beta-Client": {
+          "count": 1,
+          "responseBytes": 9045
+        },
+        "Produktbindung": {
+          "count": 1,
+          "responseBytes": 73
+        },
+        "Prüfsitzung": {
+          "count": 1,
+          "responseBytes": 172
+        },
+        "Produktmodell": {
+          "count": 1,
+          "responseBytes": 17499
+        },
+        "Editor": {
+          "count": 1,
+          "responseBytes": 99790
+        },
+        "Ressource": {
+          "count": 14,
+          "responseBytes": 1275623
+        },
+        "Oberfläche": {
+          "count": 1,
+          "responseBytes": 97754
+        },
+        "Motiv": {
+          "count": 11,
+          "responseBytes": 2641
+        },
+        "Gerätefoto": {
+          "count": 1,
+          "responseBytes": 63482
+        }
+      },
+      "pictureSha256": "9119f711db9ea494875043469238cba2492823a631c92dedfc1987de2f6877e5",
+      "pixelSha256": "c5ebe87773642884b29af2293735266d51877a256114c9844aecc66872ac6630",
+      "angle": {
+        "horizontal": 0,
+        "vertical": 0
+      },
+      "matchedCameraSamples": 24,
+      "sku": "FK-AV2A-16x28-1441",
+      "variant": "57471227756924",
+      "totalCents": 9998
+    },
+    {
+      "build": "ref",
+      "run": 3,
+      "device": "PC",
+      "cache": "warm",
+      "clickThroughPaintMs": 1372.7,
+      "editorReadyMs": 840,
+      "cardMs": 42.9,
+      "entryThroughCardMs": 1312.2,
+      "switchMs": 211.6,
+      "switchDesign": "FK-RUNDUM",
+      "resourceEntriesDuringSwitch": 5,
+      "startedByRouteDuringSwitch": [
+        "Motiv",
+        "Motiv",
+        "Motiv",
+        "Motiv",
+        "Motiv"
+      ],
+      "draftTtfbMs": 914.8,
+      "draftHandlerMs": 914.2,
+      "draftPhases": {
+        "beta_app": 914.2,
+        "total": 913.9,
+        "review_config": 3.25,
+        "review_validate": 61.37,
+        "review_sources": 1.83,
+        "customer_preview": 531.98,
+        "reference_preview": 218.93,
+        "review_zip": 0.79,
+        "originals_zip": 0.01
+      },
+      "cartHandlerMs": 35.5,
+      "cartPhaseThroughPaint": [
+        [
+          "Gerätefoto",
+          "GET",
+          54.5,
+          0
+        ],
+        [
+          "Oberfläche",
+          "GET",
+          54.9,
+          0.3
+        ],
+        [
+          "Motiv",
+          "GET",
+          55,
+          1.6
+        ],
+        [
+          "Motiv",
+          "GET",
+          59,
+          1.1
+        ],
+        [
+          "Oberfläche",
+          "GET",
+          64,
+          0
+        ],
+        [
+          "Motiv",
+          "GET",
+          64.5,
+          1
+        ],
+        [
+          "Gerätefoto",
+          "GET",
+          64.6,
+          0.1
+        ],
+        [
+          "Entwurf",
+          "POST",
+          297.6,
+          914.8
+        ],
+        [
+          "Warenkorb",
+          "POST",
+          1215.3,
+          36
+        ],
+        [
+          "Warenkorbseite",
+          "GET",
+          1260.2,
+          0.5
+        ],
+        [
+          "Beta-Client",
+          "GET",
+          1277.8,
+          1
+        ],
+        [
+          "Warenkorb",
+          "GET",
+          1287.2,
+          2.2
+        ],
+        [
+          "Positionsbild",
+          "GET",
+          1293.3,
+          0.9
+        ],
+        [
+          "Positionsbild",
+          "GET",
+          1295.1,
+          1.2
+        ]
+      ],
+      "entryRequests": {
+        "Produktseite": {
+          "count": 1,
+          "responseBytes": 3674
+        },
+        "Beta-Client": {
+          "count": 1,
+          "responseBytes": 9045
+        },
+        "Produktbindung": {
+          "count": 1,
+          "responseBytes": 73
+        },
+        "Prüfsitzung": {
+          "count": 1,
+          "responseBytes": 172
+        },
+        "Produktmodell": {
+          "count": 1,
+          "responseBytes": 17499
+        },
+        "Ressource": {
+          "count": 14,
+          "responseBytes": 789170
+        },
+        "Editor": {
+          "count": 1,
+          "responseBytes": 99790
+        },
+        "Oberfläche": {
+          "count": 1,
+          "responseBytes": -501
+        },
+        "Gerätefoto": {
+          "count": 1,
+          "responseBytes": -501
+        },
+        "Motiv": {
+          "count": 11,
+          "responseBytes": 2641
+        }
+      },
+      "pictureSha256": "84cf1104f53177ffd0b1db0ec71a8be933dd1d1f2e19e8dff606e175c513ed22",
+      "pixelSha256": "0f3997d621452d71bc21c739675f8a8fa8b07843194aa0a274eadf31e4523e7f",
+      "angle": {
+        "horizontal": 16,
+        "vertical": 16
+      },
+      "matchedCameraSamples": 24,
+      "sku": "FK-AV2A-16x28-1441",
+      "variant": "57471227756924",
+      "totalCents": 9998
+    },
+    {
+      "build": "ref",
+      "run": 3,
+      "device": "Mobil",
+      "cache": "kalt",
+      "clickThroughPaintMs": 3331.6,
+      "editorReadyMs": 5773.8,
+      "cardMs": 114.5,
+      "entryThroughCardMs": 6312.3,
+      "switchMs": 1351.9,
+      "switchDesign": "FK-SEITLICH",
+      "resourceEntriesDuringSwitch": 4,
+      "startedByRouteDuringSwitch": [
+        "Motiv",
+        "Motiv",
+        "Motiv",
+        "Motiv"
+      ],
+      "draftTtfbMs": 1541.9,
+      "draftHandlerMs": 1532.9,
+      "draftPhases": {
+        "beta_app": 1532.9,
+        "total": 1532.56,
+        "review_config": 2.18,
+        "review_validate": 63.2,
+        "review_sources": 1.82,
+        "customer_preview": 834.29,
+        "reference_preview": 207.48,
+        "review_zip": 1.34,
+        "originals_zip": 0.02
+      },
+      "cartHandlerMs": 33.3,
+      "cartPhaseThroughPaint": [
+        [
+          "Gerätefoto",
+          "GET",
+          220.1,
+          0.1
+        ],
+        [
+          "Oberfläche",
+          "GET",
+          222.1,
+          0
+        ],
+        [
+          "Oberfläche",
+          "GET",
+          258.6,
+          0
+        ],
+        [
+          "Gerätefoto",
+          "GET",
+          259.9,
+          0
+        ],
+        [
+          "Entwurf",
+          "POST",
+          609.1,
+          1541.9
+        ],
+        [
+          "Warenkorb",
+          "POST",
+          2175.2,
+          92.6
+        ],
+        [
+          "Warenkorbseite",
+          "GET",
+          2279.5,
+          91.1
+        ],
+        [
+          "Beta-Client",
+          "GET",
+          2440,
+          101.6
+        ],
+        [
+          "Warenkorb",
+          "GET",
+          2561.4,
+          101.7
+        ],
+        [
+          "Positionsbild",
+          "GET",
+          2675.8,
+          100.2
+        ]
+      ],
+      "entryRequests": {
+        "Produktseite": {
+          "count": 1,
+          "responseBytes": 3674
+        },
+        "Beta-Client": {
+          "count": 1,
+          "responseBytes": 9045
+        },
+        "Prüfsitzung": {
+          "count": 1,
+          "responseBytes": 172
+        },
+        "Produktbindung": {
+          "count": 1,
+          "responseBytes": 73
+        },
+        "Produktmodell": {
+          "count": 1,
+          "responseBytes": 17499
+        },
+        "Editor": {
+          "count": 1,
+          "responseBytes": 99790
+        },
+        "Ressource": {
+          "count": 9,
+          "responseBytes": 689976
+        },
+        "Gerätefoto": {
+          "count": 1,
+          "responseBytes": 63482
+        },
+        "Oberfläche": {
+          "count": 1,
+          "responseBytes": 97754
+        },
+        "Motiv": {
+          "count": 5,
+          "responseBytes": 1155
+        }
+      },
+      "pictureSha256": "9119f711db9ea494875043469238cba2492823a631c92dedfc1987de2f6877e5",
+      "pixelSha256": "c5ebe87773642884b29af2293735266d51877a256114c9844aecc66872ac6630",
+      "angle": {
+        "horizontal": 0,
+        "vertical": 0
+      },
+      "matchedCameraSamples": 24,
+      "sku": "FK-AV2A-16x28-1441",
+      "variant": "57471227756924",
+      "totalCents": 9998
+    },
+    {
+      "build": "ref",
+      "run": 3,
+      "device": "Mobil",
+      "cache": "warm",
+      "clickThroughPaintMs": 3690.2,
+      "editorReadyMs": 5484.2,
+      "cardMs": 244.9,
+      "entryThroughCardMs": 6071.3,
+      "switchMs": 1084.2,
+      "switchDesign": "FK-RUNDUM",
+      "resourceEntriesDuringSwitch": 4,
+      "startedByRouteDuringSwitch": [
+        "Motiv",
+        "Motiv",
+        "Motiv",
+        "Motiv"
+      ],
+      "draftTtfbMs": 1083.6,
+      "draftHandlerMs": 1073.6,
+      "draftPhases": {
+        "beta_app": 1073.6,
+        "total": 1073.42,
+        "review_config": 2.52,
+        "review_validate": 64.17,
+        "review_sources": 2.75,
+        "customer_preview": 410.29,
+        "reference_preview": 172.93,
+        "review_zip": 0.79,
+        "originals_zip": 0.01
+      },
+      "cartHandlerMs": 36.1,
+      "cartPhaseThroughPaint": [
+        [
+          "Gerätefoto",
+          "GET",
+          269.6,
+          0
+        ],
+        [
+          "Oberfläche",
+          "GET",
+          270.6,
+          0
+        ],
+        [
+          "Motiv",
+          "GET",
+          271.3,
+          113.9
+        ],
+        [
+          "Motiv",
+          "GET",
+          287,
+          97.8
+        ],
+        [
+          "Oberfläche",
+          "GET",
+          314,
+          0.1
+        ],
+        [
+          "Motiv",
+          "GET",
+          314.3,
+          102.4
+        ],
+        [
+          "Gerätefoto",
+          "GET",
+          314.4,
+          0
+        ],
+        [
+          "Entwurf",
+          "POST",
+          865.4,
+          1083.6
+        ],
+        [
+          "Warenkorb",
+          "POST",
+          1957.7,
+          107.7
+        ],
+        [
+          "Warenkorbseite",
+          "GET",
+          2077.3,
+          108.8
+        ],
+        [
+          "Beta-Client",
+          "GET",
+          2238,
+          87.9
+        ],
+        [
+          "Warenkorb",
+          "GET",
+          2346.4,
+          90.9
+        ],
+        [
+          "Positionsbild",
+          "GET",
+          2440.6,
+          102.5
+        ],
+        [
+          "Positionsbild",
+          "GET",
+          2441.6,
+          101.8
+        ]
+      ],
+      "entryRequests": {
+        "Produktseite": {
+          "count": 1,
+          "responseBytes": 3674
+        },
+        "Beta-Client": {
+          "count": 1,
+          "responseBytes": 9045
+        },
+        "Produktbindung": {
+          "count": 1,
+          "responseBytes": 73
+        },
+        "Prüfsitzung": {
+          "count": 1,
+          "responseBytes": 172
+        },
+        "Produktmodell": {
+          "count": 1,
+          "responseBytes": 17499
+        },
+        "Ressource": {
+          "count": 9,
+          "responseBytes": 203523
+        },
+        "Editor": {
+          "count": 1,
+          "responseBytes": 99790
+        },
+        "Oberfläche": {
+          "count": 1,
+          "responseBytes": -501
+        },
+        "Gerätefoto": {
+          "count": 1,
+          "responseBytes": -501
+        },
+        "Motiv": {
+          "count": 5,
+          "responseBytes": 1155
+        }
+      },
+      "pictureSha256": "84cf1104f53177ffd0b1db0ec71a8be933dd1d1f2e19e8dff606e175c513ed22",
+      "pixelSha256": "0f3997d621452d71bc21c739675f8a8fa8b07843194aa0a274eadf31e4523e7f",
+      "angle": {
+        "horizontal": 16,
+        "vertical": 16
+      },
+      "matchedCameraSamples": 24,
+      "sku": "FK-AV2A-16x28-1441",
+      "variant": "57471227756924",
+      "totalCents": 9998
+    },
+    {
+      "build": "neu",
+      "run": 3,
+      "device": "PC",
+      "cache": "kalt",
+      "clickThroughPaintMs": 1124.7,
+      "editorReadyMs": 872.1,
+      "cardMs": 39.5,
+      "entryThroughCardMs": 1365.1,
+      "switchMs": 196,
+      "switchDesign": "FK-SEITLICH",
+      "resourceEntriesDuringSwitch": 5,
+      "startedByRouteDuringSwitch": [
+        "Motiv",
+        "Motiv",
+        "Motiv",
+        "Motiv",
+        "Motiv"
+      ],
+      "draftTtfbMs": 595.4,
+      "draftHandlerMs": 594.5,
+      "draftPhases": {
+        "beta_app": 594.5,
+        "total": 594.36,
+        "review_config": 3.6,
+        "review_validate": 86.18,
+        "review_sources": 1.67,
+        "preview_pair": 472.45,
+        "review_zip": 1.08,
+        "originals_zip": 0.03
+      },
+      "cartHandlerMs": 33.8,
+      "cartPhaseThroughPaint": [
+        [
+          "Gerätefoto",
+          "GET",
+          38.1,
+          0.2
+        ],
+        [
+          "Oberfläche",
+          "GET",
+          39.2,
+          0.1
+        ],
+        [
+          "Oberfläche",
+          "GET",
+          47,
+          0.1
+        ],
+        [
+          "Gerätefoto",
+          "GET",
+          47.5,
+          0
+        ],
+        [
+          "Entwurf",
+          "POST",
+          364.8,
+          595.4
+        ],
+        [
+          "Warenkorb",
+          "POST",
+          962.9,
+          34.5
+        ],
+        [
+          "Warenkorbseite",
+          "GET",
+          1007.7,
+          0.7
+        ],
+        [
+          "Beta-Client",
+          "GET",
+          1022.6,
+          1.2
+        ],
+        [
+          "Warenkorb",
+          "GET",
+          1029.4,
+          0.7
+        ],
+        [
+          "Positionsbild",
+          "GET",
+          1039.8,
+          1.7
+        ]
+      ],
+      "entryRequests": {
+        "Produktseite": {
+          "count": 1,
+          "responseBytes": 3674
+        },
+        "Beta-Client": {
+          "count": 1,
+          "responseBytes": 9045
+        },
+        "Produktbindung": {
+          "count": 1,
+          "responseBytes": 73
+        },
+        "Prüfsitzung": {
+          "count": 1,
+          "responseBytes": 172
+        },
+        "Produktmodell": {
+          "count": 1,
+          "responseBytes": 17502
+        },
+        "Editor": {
+          "count": 1,
+          "responseBytes": 99790
+        },
+        "Ressource": {
+          "count": 14,
+          "responseBytes": 1275755
+        },
+        "Oberfläche": {
+          "count": 1,
+          "responseBytes": 97754
+        },
+        "Motiv": {
+          "count": 11,
+          "responseBytes": 2641
+        },
+        "Gerätefoto": {
+          "count": 1,
+          "responseBytes": 63482
+        }
+      },
+      "pictureSha256": "9119f711db9ea494875043469238cba2492823a631c92dedfc1987de2f6877e5",
+      "pixelSha256": "c5ebe87773642884b29af2293735266d51877a256114c9844aecc66872ac6630",
+      "angle": {
+        "horizontal": 0,
+        "vertical": 0
+      },
+      "matchedCameraSamples": 24,
+      "sku": "FK-AV2A-16x28-1441",
+      "variant": "57471227756924",
+      "totalCents": 9998
+    },
+    {
+      "build": "neu",
+      "run": 3,
+      "device": "PC",
+      "cache": "warm",
+      "clickThroughPaintMs": 1315.1,
+      "editorReadyMs": 834.2,
+      "cardMs": 46.9,
+      "entryThroughCardMs": 1181.9,
+      "switchMs": 177.5,
+      "switchDesign": "FK-RUNDUM",
+      "resourceEntriesDuringSwitch": 5,
+      "startedByRouteDuringSwitch": [
+        "Motiv",
+        "Motiv",
+        "Motiv",
+        "Motiv",
+        "Motiv"
+      ],
+      "draftTtfbMs": 691.7,
+      "draftHandlerMs": 691.1,
+      "draftPhases": {
+        "beta_app": 691.1,
+        "total": 690.88,
+        "review_config": 3.55,
+        "review_validate": 91.92,
+        "review_sources": 2.53,
+        "preview_pair": 517.25,
+        "review_zip": 0.81,
+        "originals_zip": 0.01
+      },
+      "cartHandlerMs": 54,
+      "cartPhaseThroughPaint": [
+        [
+          "Gerätefoto",
+          "GET",
+          61,
+          0.1
+        ],
+        [
+          "Oberfläche",
+          "GET",
+          61.8,
+          0.1
+        ],
+        [
+          "Motiv",
+          "GET",
+          63.3,
+          1.9
+        ],
+        [
+          "Motiv",
+          "GET",
+          67.4,
+          0.9
+        ],
+        [
+          "Oberfläche",
+          "GET",
+          73.9,
+          0.1
+        ],
+        [
+          "Motiv",
+          "GET",
+          74.5,
+          1
+        ],
+        [
+          "Gerätefoto",
+          "GET",
+          74.7,
+          0.2
+        ],
+        [
+          "Entwurf",
+          "POST",
+          378.7,
+          691.7
+        ],
+        [
+          "Warenkorb",
+          "POST",
+          1072.4,
+          54.7
+        ],
+        [
+          "Warenkorbseite",
+          "GET",
+          1143.8,
+          1.2
+        ],
+        [
+          "Beta-Client",
+          "GET",
+          1167.7,
+          0.7
+        ],
+        [
+          "Warenkorb",
+          "GET",
+          1189.2,
+          1.1
+        ],
+        [
+          "Positionsbild",
+          "GET",
+          1199.8,
+          1.3
+        ],
+        [
+          "Positionsbild",
+          "GET",
+          1202.9,
+          1.2
+        ]
+      ],
+      "entryRequests": {
+        "Produktseite": {
+          "count": 1,
+          "responseBytes": 3674
+        },
+        "Beta-Client": {
+          "count": 1,
+          "responseBytes": 9045
+        },
+        "Produktbindung": {
+          "count": 1,
+          "responseBytes": 73
+        },
+        "Prüfsitzung": {
+          "count": 1,
+          "responseBytes": 172
+        },
+        "Produktmodell": {
+          "count": 1,
+          "responseBytes": 17502
+        },
+        "Ressource": {
+          "count": 14,
+          "responseBytes": 789170
+        },
+        "Editor": {
+          "count": 1,
+          "responseBytes": 99790
+        },
+        "Oberfläche": {
+          "count": 1,
+          "responseBytes": -501
+        },
+        "Gerätefoto": {
+          "count": 1,
+          "responseBytes": -501
+        },
+        "Motiv": {
+          "count": 11,
+          "responseBytes": 2641
+        }
+      },
+      "pictureSha256": "84cf1104f53177ffd0b1db0ec71a8be933dd1d1f2e19e8dff606e175c513ed22",
+      "pixelSha256": "0f3997d621452d71bc21c739675f8a8fa8b07843194aa0a274eadf31e4523e7f",
+      "angle": {
+        "horizontal": 16,
+        "vertical": 16
+      },
+      "matchedCameraSamples": 24,
+      "sku": "FK-AV2A-16x28-1441",
+      "variant": "57471227756924",
+      "totalCents": 9998
+    },
+    {
+      "build": "neu",
+      "run": 3,
+      "device": "Mobil",
+      "cache": "kalt",
+      "clickThroughPaintMs": 2771.2,
+      "editorReadyMs": 5263.7,
+      "cardMs": 258.9,
+      "entryThroughCardMs": 5983.7,
+      "switchMs": 1028.6,
+      "switchDesign": "FK-SEITLICH",
+      "resourceEntriesDuringSwitch": 4,
+      "startedByRouteDuringSwitch": [
+        "Motiv",
+        "Motiv",
+        "Motiv",
+        "Motiv"
+      ],
+      "draftTtfbMs": 947,
+      "draftHandlerMs": 938.8,
+      "draftPhases": {
+        "beta_app": 938.8,
+        "total": 938.62,
+        "review_config": 3.18,
+        "review_validate": 60.26,
+        "review_sources": 1.91,
+        "preview_pair": 440.12,
+        "review_zip": 0.91,
+        "originals_zip": 0.01
+      },
+      "cartHandlerMs": 40.6,
+      "cartPhaseThroughPaint": [
+        [
+          "Gerätefoto",
+          "GET",
+          168.2,
+          0
+        ],
+        [
+          "Oberfläche",
+          "GET",
+          169.3,
+          0
+        ],
+        [
+          "Oberfläche",
+          "GET",
+          195.1,
+          0
+        ],
+        [
+          "Gerätefoto",
+          "GET",
+          195.4,
+          0
+        ],
+        [
+          "Entwurf",
+          "POST",
+          612.6,
+          947
+        ],
+        [
+          "Warenkorb",
+          "POST",
+          1569.6,
+          105.7
+        ],
+        [
+          "Warenkorbseite",
+          "GET",
+          1692.9,
+          97.1
+        ],
+        [
+          "Beta-Client",
+          "GET",
+          1893.1,
+          103.5
+        ],
+        [
+          "Warenkorb",
+          "GET",
+          2024.2,
+          89.9
+        ],
+        [
+          "Positionsbild",
+          "GET",
+          2122,
+          110.3
+        ]
+      ],
+      "entryRequests": {
+        "Produktseite": {
+          "count": 1,
+          "responseBytes": 3674
+        },
+        "Beta-Client": {
+          "count": 1,
+          "responseBytes": 9045
+        },
+        "Prüfsitzung": {
+          "count": 1,
+          "responseBytes": 172
+        },
+        "Produktbindung": {
+          "count": 1,
+          "responseBytes": 73
+        },
+        "Produktmodell": {
+          "count": 1,
+          "responseBytes": 17502
+        },
+        "Editor": {
+          "count": 1,
+          "responseBytes": 99790
+        },
+        "Ressource": {
+          "count": 9,
+          "responseBytes": 690108
+        },
+        "Oberfläche": {
+          "count": 1,
+          "responseBytes": 97754
+        },
+        "Motiv": {
+          "count": 5,
+          "responseBytes": 1155
+        },
+        "Gerätefoto": {
+          "count": 1,
+          "responseBytes": 63482
+        }
+      },
+      "pictureSha256": "9119f711db9ea494875043469238cba2492823a631c92dedfc1987de2f6877e5",
+      "pixelSha256": "c5ebe87773642884b29af2293735266d51877a256114c9844aecc66872ac6630",
+      "angle": {
+        "horizontal": 0,
+        "vertical": 0
+      },
+      "matchedCameraSamples": 24,
+      "sku": "FK-AV2A-16x28-1441",
+      "variant": "57471227756924",
+      "totalCents": 9998
+    },
+    {
+      "build": "neu",
+      "run": 3,
+      "device": "Mobil",
+      "cache": "warm",
+      "clickThroughPaintMs": 3835.9,
+      "editorReadyMs": 6462.2,
+      "cardMs": 239.4,
+      "entryThroughCardMs": 7017.2,
+      "switchMs": 1736.6,
+      "switchDesign": "FK-RUNDUM",
+      "resourceEntriesDuringSwitch": 4,
+      "startedByRouteDuringSwitch": [
+        "Motiv",
+        "Motiv",
+        "Motiv",
+        "Motiv"
+      ],
+      "draftTtfbMs": 982.7,
+      "draftHandlerMs": 979.8,
+      "draftPhases": {
+        "beta_app": 979.8,
+        "total": 979.02,
+        "review_config": 4.47,
+        "review_validate": 68.02,
+        "review_sources": 2.16,
+        "preview_pair": 482.93,
+        "review_zip": 1.17,
+        "originals_zip": 0.02
+      },
+      "cartHandlerMs": 45.2,
+      "cartPhaseThroughPaint": [
+        [
+          "Gerätefoto",
+          "GET",
+          214.3,
+          0
+        ],
+        [
+          "Oberfläche",
+          "GET",
+          214.6,
+          0
+        ],
+        [
+          "Motiv",
+          "GET",
+          215.4,
+          104
+        ],
+        [
+          "Motiv",
+          "GET",
+          225.1,
+          103.1
+        ],
+        [
+          "Oberfläche",
+          "GET",
+          280.5,
+          0.1
+        ],
+        [
+          "Gerätefoto",
+          "GET",
+          286.5,
+          0.1
+        ],
+        [
+          "Motiv",
+          "GET",
+          290.7,
+          93.4
+        ],
+        [
+          "Entwurf",
+          "POST",
+          1191.3,
+          982.7
+        ],
+        [
+          "Warenkorb",
+          "POST",
+          2183.6,
+          112.5
+        ],
+        [
+          "Warenkorbseite",
+          "GET",
+          2307.3,
+          101.7
+        ],
+        [
+          "Beta-Client",
+          "GET",
+          2468.4,
+          98.2
+        ],
+        [
+          "Warenkorb",
+          "GET",
+          2579.1,
+          109.3
+        ],
+        [
+          "Positionsbild",
+          "GET",
+          2694.6,
+          99.2
+        ],
+        [
+          "Positionsbild",
+          "GET",
+          2697.7,
+          96.4
+        ]
+      ],
+      "entryRequests": {
+        "Produktseite": {
+          "count": 1,
+          "responseBytes": 3674
+        },
+        "Beta-Client": {
+          "count": 1,
+          "responseBytes": 9045
+        },
+        "Prüfsitzung": {
+          "count": 1,
+          "responseBytes": 172
+        },
+        "Produktbindung": {
+          "count": 1,
+          "responseBytes": 73
+        },
+        "Produktmodell": {
+          "count": 1,
+          "responseBytes": 17502
+        },
+        "Ressource": {
+          "count": 9,
+          "responseBytes": 203523
+        },
+        "Editor": {
+          "count": 1,
+          "responseBytes": 99790
+        },
+        "Oberfläche": {
+          "count": 1,
+          "responseBytes": -501
+        },
+        "Gerätefoto": {
+          "count": 1,
+          "responseBytes": -501
+        },
+        "Motiv": {
+          "count": 5,
+          "responseBytes": 1155
+        }
+      },
+      "pictureSha256": "84cf1104f53177ffd0b1db0ec71a8be933dd1d1f2e19e8dff606e175c513ed22",
+      "pixelSha256": "0f3997d621452d71bc21c739675f8a8fa8b07843194aa0a274eadf31e4523e7f",
+      "angle": {
+        "horizontal": 16,
+        "vertical": 16
+      },
+      "matchedCameraSamples": 24,
+      "sku": "FK-AV2A-16x28-1441",
+      "variant": "57471227756924",
+      "totalCents": 9998
+    }
+  ]
+}

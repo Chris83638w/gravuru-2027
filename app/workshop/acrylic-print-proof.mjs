@@ -1,6 +1,6 @@
 import {PRODUCT_DOCUMENT_FILE,productDocumentJson} from './review-product.mjs';
 import {renderDoorbellCutPdfs} from './doorbell-artwork.mjs';
-import {printDelivery,ORDER_FILES_SCHEMA,contourStroke,svgWithContour,orderFileSet} from './print-delivery.mjs';
+import {printDelivery,ORDER_FILES_SCHEMA,printSvgWithContour,orderFileSet} from './print-delivery.mjs';
 import {acrylicArtwork} from './acrylic-artwork.mjs';
 import {rasterizePrint,formPrintSettings} from './form-print-proof.mjs';
 import {digest} from './review-package.mjs';
@@ -8,11 +8,12 @@ import {geometryContourPdf} from './form-contour-pdf.mjs';
 import {exportSettings} from '../configurator/variant-m/print-export-model.mjs';
 import {productionPackage} from './production-summary.mjs';
 import {surfaceFileName} from '../configurator/variant-m/surfaces.mjs';
-// v9 (#265, ENTSCHEIDUNGEN 3.61): Die Bestellansicht führt je Fläche nur noch „PDF“ und „SVG“, beide immer mit Kontur: die
-// Druckdatei mit der Schnittlinie als Haarlinie (`druck-1zu1-mit-kontur.pdf`) und die gesicherte Gestaltung mit Kontur
-// (`druck-1zu1-mit-kontur.svg`). Die Druckdatei ohne Schnittlinie (v8) entsteht nicht mehr. Die übrigen Dateien bleiben
-// Byte für Byte gleich; Ausgaben der Vorversion bleiben unter ihrem Schlüssel gültig und abrufbar.
-export const ACRYLIC_PRINT_RECIPE='gravuru-acrylic-print-proof/v9';
+// v10 (#265, ENTSCHEIDUNGEN 3.61/3.62): Die Bestellansicht führt je Fläche „PDF“ und „SVG“, beide immer mit Kontur und nie
+// gespiegelt (Chris, 21.11.2026: „bei der ausgabe muss der druck zu sehen. Wir drehen es dann in corel draw um“): die
+// Druckdatei mit der Schnittkontur als Linie von 0,001 mm in der Roland-Schmuckfarbe `CutContour`
+// (`druck-1zu1-mit-kontur.pdf`) und die gesicherte Gestaltung mit Kontur (`druck-1zu1-mit-kontur.svg`). Die übrigen Dateien
+// bleiben Byte für Byte gleich; Ausgaben der Vorversion bleiben unter ihrem Schlüssel gültig und abrufbar.
+export const ACRYLIC_PRINT_RECIPE='gravuru-acrylic-print-proof/v10';
 export const acrylicPrintKey=settings=>digest(JSON.stringify({recipe:ACRYLIC_PRINT_RECIPE,settings:formPrintSettings(settings)}));
 // `context.productDocument`: Zugriff auf den Produktstand der Werkstatt für Pakete mit Verweis (review-product.mjs).
 export async function acrylicContourProof(archive,archiveHash,context={}){
@@ -49,12 +50,11 @@ export async function createAcrylicPrintProof(archive,archiveHash,input={},conte
   metadata.surfaces=sides.map(s=>({id:s.id,pdf:s.side.settings.profile==='mimaki'?s.side.delivery.downloads.pdf.name:name('technische-druckpruefung.pdf',s.id),pdfSha256:digest(s.side.pdf),mirror:s.side.settings.mirror,geometrySha256:s.a.geometrySha256,...(s.side.delivery.downloads.white?{white:s.side.delivery.downloads.white.name}:{})}));
   metadata.photoSources.push(...sides[1].a.photos.map(p=>({fieldId:'back-'+p.fieldId,path:p.sourcePath,width:p.width,height:p.height})));
  }
- // #265, ENTSCHEIDUNGEN 3.61: die zwei Downloads je Fläche – immer mit Kontur. „SVG“ ist die gesicherte Gestaltung
- // (seitenrichtig, nicht gespiegelt) plus Kontur in derselben Ausrichtung; „PDF“ folgt der Druckdatei (gespiegelt nach Profil)
- // und trägt die Schnittlinie als Haarlinie. Die Druckdatei selbst (Schnittlinie 0,05 mm) und die gesicherte Gestaltung ohne
- // Kontur bleiben unverändert im Paket (Seite „Ausgaben“).
- const stroke=contourStroke(a);
- for(const s of sides)s.order={pdf:[name('druck-1zu1-mit-kontur.pdf',s.id),s.side.delivery.order.pdf],svg:[name('druck-1zu1-mit-kontur.svg',s.id),Buffer.from(svgWithContour(s.a.svg,s.a.geometry,{stroke}))]};
+ // #265, ENTSCHEIDUNGEN 3.61/3.62: die zwei Downloads je Fläche – immer mit Kontur, nie gespiegelt. „SVG“ ist die gesicherte
+ // Gestaltung plus Schnittkontur; „PDF“ hat den Aufbau der Druckdatei (Farbe sichtbar über Weiß), ist aber seitenrichtig und
+ // trägt die Schnittkontur als Linie von 0,001 mm. Die Druckdatei selbst (nach Profil gespiegelt, Schnittlinie 0,05 mm) und die
+ // gesicherte Gestaltung ohne Kontur bleiben unverändert im Paket (Seite „Ausgaben“).
+ for(const s of sides)s.order={pdf:[name('druck-1zu1-mit-kontur.pdf',s.id),s.side.delivery.order.pdf],svg:[name('druck-1zu1-mit-kontur.svg',s.id),Buffer.from(printSvgWithContour(s.a.svg,s.a.geometry))]};
  metadata.orderFiles={schema:ORDER_FILES_SCHEMA,surfaces:sides.map(s=>orderFileSet(s.id,s.order))};
  const extras=[];
  for(const s of sides){

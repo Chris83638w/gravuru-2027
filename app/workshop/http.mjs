@@ -256,10 +256,10 @@ function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConvert
     try{orderOutputRequest(line);}catch(error){return outputStateFromJobs([],Number.isInteger(error.status)&&error.status<500?error.message:'Die Fertigungsdatei lässt sich derzeit nicht vorbereiten.');}
     return outputStateFromJobs([],'Für diese Position gibt es noch keinen Ausgabeauftrag. Er wird beim Öffnen der Ausgaben angelegt.');
   }
-  // #265, ENTSCHEIDUNGEN 3.61: Die zwei Downloads einer Position (PDF und SVG, beide immer mit Kontur) stammen aus dem Auftrag
-  // der Position (Schlüssel wie `ensureOrderOutput`); ist der nicht fertig, aus der neuesten fertigen Ausgabe des Prüfstands, die
-  // die Dateien führt (auch eine Ausgabe des Stands 3.57: aus ihr kommt nur die Fassung mit Kontur). Ausgaben ohne Dateinachweis
-  // führen sie nicht: Der Auftrag mit dem neuen Rezeptstand entsteht beim Öffnen der Ausgaben von selbst – für native Produkte und
+  // #265, ENTSCHEIDUNGEN 3.61/3.62: Die zwei Downloads einer Position (PDF und SVG, immer mit Kontur, im Aufbau der Musterdatei)
+  // stammen aus dem Auftrag der Position (Schlüssel wie `ensureOrderOutput`); ist der nicht fertig, aus der neuesten fertigen
+  // Ausgabe des Prüfstands, die die Dateien im heutigen Dateinachweis führt. Ausgaben mit einem Nachweis davor (gespiegelt nach
+  // Profil, andere Konturfarben) und Ausgaben ohne Dateinachweis führen sie nicht: Der Auftrag mit dem neuen Rezeptstand entsteht beim Öffnen der Ausgaben von selbst – für native Produkte und
   // Formprodukte alter Art –, bis dahin nennt `note` den Stand („wird neu erstellt“) statt eines Fehlers.
   function orderDownloadSource(line,jobs=exportJobs.forSnapshot(line.snapshotId).jobs){
     let own=null;try{const key=orderOutputRequest(line).recipeKey;own=jobs.find(job=>job.recipeKey===key)||null;}catch{/* Grund steht im Kennzeichen. */}

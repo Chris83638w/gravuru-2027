@@ -1,6 +1,9 @@
-// #265 Stufe B (ENTSCHEIDUNGEN 3.61, ersetzt die vier Downloads aus 3.57): zwei Downloads je Bestellposition – PDF und SVG,
-// beide immer mit Kontur als Haarlinie, für jede Produktart (native Produkte und Formprodukte alter Art).
-// Alle Daten sind synthetisch (Mustermodell des Builds, Testbild aus zwei Farbflächen); keine Kunden- und keine Katalogdaten.
+// #265 Stufe B (ENTSCHEIDUNGEN 3.61 und 3.62): zwei Downloads je Bestellposition – PDF und SVG, immer mit Kontur, nie gespiegelt,
+// im Aufbau der Musterdatei von Chris vom 21.11.2026 (test-fixtures/musterdatei-gravur-chris-20261121.pdf, „so müssen die dateien
+// aussehen“) – für jede Produktart (native Produkte und Formprodukte alter Art). Gravur: Inhalt in der Ebene „03 Gravur“ in reinem
+// Schwarz; blaue Linie = Kontur zum Anlegen, rote Linie = Schnitt nach der Gravur (Löcher bei Acrylglas); Druck: jede Kontur in der
+// Roland-Schmuckfarbe `CutContour`. Alle Linien 0,001 mm.
+// Alle Daten sind synthetisch oder stammen aus den Testvorlagen des Repos; keine Kundendaten.
 import test,{after} from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -11,11 +14,12 @@ import {once} from 'node:events';
 import {execFileSync} from 'node:child_process';
 import {createHmac,randomUUID} from 'node:crypto';
 import {build} from '../configurator/variant-m/build.mjs';
-import {exportSettings} from '../configurator/variant-m/print-export-model.mjs';
-import {selectedProfile} from '../configurator/variant-m/contract.mjs';
+import {exportSettings,printPDF} from '../configurator/variant-m/print-export-model.mjs';
+import {selectedProfile,prepareConfig} from '../configurator/variant-m/contract.mjs';
 import {artworkFragment} from '../configurator/variant-m/artwork-resource.mjs';
 import {createWorkshop} from './http.mjs';
 import {makeProductDocument} from './product-model.mjs';
+import {familyProductConfig} from './product-families.mjs';
 import {prepareAcrylicReview} from './acrylic-review.mjs';
 import {acrylicArtwork} from './acrylic-artwork.mjs';
 import {importEnvironment} from './design-assets.mjs';
@@ -25,7 +29,7 @@ import {FORM_ENGRAVING_RECIPE,formEngravingKey,formEngravingSettings,renderEngra
 import {FORM_PRINT_RECIPE,formPrintKey,formPrintSettings,createFormPrintProof} from './form-print-proof.mjs';
 import {ACRYLIC_ENGRAVING_RECIPE,acrylicEngravingKey,acrylicEngravingSettings,createAcrylicEngravingProof} from './acrylic-engraving-proof.mjs';
 import {ACRYLIC_PRINT_RECIPE,acrylicPrintKey,createAcrylicPrintProof} from './acrylic-print-proof.mjs';
-import {printDelivery,orderDownload,orderFileSets,svgWithContour,contourStroke,ORDER_FORMATS,ORDER_FILES_SCHEMA,ORDER_FILE_MISSING,ORDER_FORMAT_REQUIRED} from './print-delivery.mjs';
+import {printDelivery,orderDownload,orderFileSets,printSvgWithContour,withOrderCutLine,orderHoleLines,orderPlate,orderEngravingFiles,ORDER_HOLES_ACRYLIC,ORDER_HOLES_OTHER,ORDER_LINE_MM,CUT_CONTOUR_RGB,ORDER_FORMATS,ORDER_FILES_SCHEMA,ORDER_FILE_MISSING,ORDER_FORMAT_REQUIRED} from './print-delivery.mjs';
 import {doorbellFixture} from './test-fixtures/doorbell-config.mjs';
 import {orderFileButtons,orderFilesNote,ORDER_FILE_LABELS} from './ui/order-store-context.mjs';
 import {missingOrderFilesNote} from './cross-store-orders.mjs';
@@ -36,9 +40,12 @@ import {prepareCustomerPhoto} from './customer-photo.mjs';
 import {prepareFormReview} from './form-review-snapshot.mjs';
 
 const python=process.env.GRAVURU_PYTHON||'python3';
-// Liest eine PDF maßlich: Seitenmaß in mm, Bilder (Farbraum und Prüfsumme der Pixel), Ebenen und jede Zeichnung mit Linienbreite,
-// Farbe, Ebene, Rahmen und der Menge ihrer Stützpunkte in mm (unabhängig von Zeichenrichtung und Aufteilung in Teilpfade).
-const INSPECT=`import sys,json,hashlib,pymupdf as f
+// Liest eine PDF maßlich: Seitenmaß in mm, Bilder (Farbraum, Prüfsumme der Pixel und ihres Spiegelbilds, ob sie im Seiteninhalt
+// innerhalb eines Ebenenblocks `/OC … BDC … EMC` gezeichnet werden), Formobjekte der Seite, Ebenenblöcke des Seiteninhalts, Ebenen,
+// ob das Endformat (TrimBox) ausdrücklich gesetzt und gleich der Seite ist, jede Zeichnung in Zeichenreihenfolge mit Linienbreite,
+// Farbe, Ebene, Rahmen und der Menge ihrer Stützpunkte in mm, dazu jede
+// Angabe einer Linienfarbe im Seiteninhalt (`strokes`) – daran ist zu sehen, ob eine Linie in einer druckenden Farbe steht.
+const INSPECT=`import sys,json,hashlib,re,numpy as np,pymupdf as f
 p=f.open(stream=sys.stdin.buffer.read(),filetype='pdf');page=p[0];k=72/25.4;r=lambda v:round(v/k,2)
 def pts(d):
  out=set()
@@ -48,12 +55,29 @@ def pts(d):
    elif isinstance(v,f.Rect):out.update([(r(v.x0),r(v.y0)),(r(v.x1),r(v.y0)),(r(v.x1),r(v.y1)),(r(v.x0),r(v.y1))])
    elif isinstance(v,f.Quad):out.update([(r(q.x),r(q.y)) for q in v])
  return sorted(out)
+own=b'\\n'.join(p.xref_stream(x) for x in page.get_contents());blocks=[(m.end(),own.find(b'EMC',m.end())) for m in re.finditer(rb'/OC\\s*/\\w+\\s+BDC',own)]
+def in_block(name):
+ hits=[m.start() for m in re.finditer(rb'/'+re.escape(name.encode())+rb'\\s+Do\\b',own)]
+ return bool(hits) and all(any(a<=h<b for a,b in blocks) for h in hits)
+def outline(d):
+ out=[]
+ for item in d['items']:
+  if item[0]=='l':out.append([item[1],item[2]])
+  elif item[0]=='c':
+   a,b,c,e=item[1:5];n=max(8,min(400,int((abs(b-a)+abs(c-b)+abs(e-c))/k/.5)+1))
+   out.append([f.Point((1-t)**3*a.x+3*(1-t)**2*t*b.x+3*(1-t)*t*t*c.x+t**3*e.x,(1-t)**3*a.y+3*(1-t)**2*t*b.y+3*(1-t)*t*t*c.y+t**3*e.y) for t in [j/n for j in range(n+1)]])
+  elif item[0]=='re':v=item[1];out.append([f.Point(v.x0,v.y0),f.Point(v.x1,v.y0),f.Point(v.x1,v.y1),f.Point(v.x0,v.y1),f.Point(v.x0,v.y0)])
+  elif item[0]=='qu':q=item[1];out.append([q.ul,q.ur,q.lr,q.ll,q.ul])
+ return [[[round(pt.x/k,3),round(pt.y/k,3)] for pt in line] for line in out]
 images=[]
 for i in page.get_images(full=True):
- pix=f.Pixmap(p,i[0]);images.append({'colorSpace':i[5],'width':pix.width,'height':pix.height,'sha256':hashlib.sha256(pix.samples).hexdigest()})
+ pix=f.Pixmap(p,i[0]);a=np.frombuffer(pix.samples,dtype=np.uint8).reshape(pix.height,pix.stride)[:,:pix.width*pix.n].reshape(pix.height,pix.width,pix.n)
+ images.append({'colorSpace':i[5],'width':pix.width,'height':pix.height,'sha256':hashlib.sha256(a.tobytes()).hexdigest(),'mirroredSha256':hashlib.sha256(a[:,::-1].tobytes()).hexdigest(),'layered':in_block(i[7])})
 objects='\\n'.join(p.xref_object(i) for i in range(1,p.xref_length()))
-print(json.dumps({'pages':len(p),'repaired':p.is_repaired,'widthMm':round(page.rect.width/k,3),'heightMm':round(page.rect.height/k,3),'images':images,'fonts':len(page.get_fonts()),'layers':[o['name'] for o in (p.get_ocgs() or {}).values()],'cutSpot':'/CutContour' in objects,'whiteSpot':'/RDG_WHITE' in objects,
- 'drawings':[{'type':d['type'],'width':d.get('width'),'color':d.get('color'),'fill':d.get('fill'),'layer':d.get('layer') or '','rect':[r(v) for v in d['rect']],'points':pts(d)} for d in page.get_drawings()]}))`;
+content=b'\\n'.join(p.xref_stream(i) for i in range(1,p.xref_length()) if p.xref_is_stream(i) and '/Image' not in p.xref_object(i) and ('/Form' in p.xref_object(i) or i in page.get_contents()))
+strokes=sorted(set(' '.join(m.decode().split()) for m in re.findall(rb'(?:(?:\\d*\\.?\\d+)\\s+){1,4}(?:RG|K|G)\\b|/\\w+\\s+CS\\s+(?:\\d*\\.?\\d+\\s+)+SCN',content)))
+print(json.dumps({'pages':len(p),'repaired':p.is_repaired,'widthMm':round(page.rect.width/k,3),'heightMm':round(page.rect.height/k,3),'trimIsMedia':'/TrimBox' in p.xref_object(page.xref) and [round(v,2) for v in page.trimbox]==[round(v,2) for v in page.mediabox],'images':images,'fonts':len(page.get_fonts()),'layers':[o['name'] for o in (p.get_ocgs() or {}).values()],'forms':len(page.get_xobjects()),'marked':[m.decode() for m in re.findall(rb'/OC\\s*/(\\w+)\\s+BDC',own)],'closed':len(re.findall(rb'\\bEMC\\b',own)),'cutSpot':'/CutContour' in objects,'whiteSpot':'/RDG_WHITE' in objects,'strokes':strokes,
+ 'drawings':[{'type':d['type'],'width':d.get('width'),'color':d.get('color'),'fill':d.get('fill'),'layer':d.get('layer') or '','rect':[r(v) for v in d['rect']],'points':pts(d),**({'outline':outline(d)} if d['type']=='s' else {})} for d in page.get_drawings()]}))`;
 const inspect=bytes=>{assert.equal(bytes.subarray(0,5).toString(),'%PDF-');return JSON.parse(execFileSync(python,['-c',INSPECT],{input:bytes,env:importEnvironment(),maxBuffer:64*1024*1024}).toString());};
 const unpack=result=>readReviewPackage(result.archive,digest(result.archive),[...NATIVE_REVIEW_SCHEMAS,'gravuru-form-review/v1']).files;
 const points=drawings=>[...new Set(drawings.flatMap(d=>d.points.map(p=>p.join(' '))))].sort();
@@ -61,11 +85,76 @@ const mirrored=(list,widthMm)=>[...new Set(list.map(p=>{const [x,y]=p.split(' ')
 // Nachbarpunkte dürfen um die Rundung (0,01 mm) abweichen; verglichen wird Punkt für Punkt in sortierter Reihenfolge.
 const samePoints=(a,b,message)=>{assert.equal(a.length,b.length,message);const xy=list=>list.map(p=>p.split(' ').map(Number)).sort((p,q)=>p[0]-q[0]||p[1]-q[1]);const x=xy(a),y=xy(b);for(let i=0;i<x.length;i++)assert.ok(Math.abs(x[i][0]-y[i][0])<=.02&&Math.abs(x[i][1]-y[i][1])<=.02,message+' '+a[i]+' / '+b[i]);};
 const withoutLayer=(info,layer)=>info.drawings.filter(d=>d.layer!==layer).map(d=>({...d,layer:''}));
-// Die zwei Dateien einer Fläche samt Dateinachweis; jede liegt im Paket und stimmt mit ihrer Prüfsumme überein. Der Nachweis
-// kennt genau diese zwei Formate – eine Datei ohne Kontur führt er nicht mehr.
+const MM=72/25.4,LAYER='03 Gravur',BLACK=[0,0,0],WHITE=[1,1,1],BLUE=[0,0,1],RED=[1,0,0],same=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
+const isOrderLine=d=>Math.abs(d.width/MM-ORDER_LINE_MM)<2e-5;
+// Die Musterdatei von Chris vom 21.11.2026 – der verbindliche Aufbau jeder Gravur-Bestelldatei.
+const REFERENCE=fs.readFileSync(new URL('./test-fixtures/musterdatei-gravur-chris-20261121.pdf',import.meta.url));
+// Gravur-PDF der Bestellansicht im Aufbau der Musterdatei. `holes`: 'none' (die Platte hat keine Innenkontur), 'cut' (rot),
+// 'contour' (blau) oder 'omit' (nicht gezeichnet). Dieselbe Prüfung besteht die Musterdatei selbst.
+function checkEngravingPdf(info,{widthMm,heightMm,holes,raster=false,outer=[0,0,widthMm,heightMm]},label=''){
+ assert.equal(info.pages,1,label);assert.equal(info.repaired,false,label);assert.deepEqual([info.widthMm,info.heightMm],[widthMm,heightMm],label+' Seite = Plattenmaß');assert.equal(info.trimIsMedia,true,label+' Endformat ausdrücklich = Seite');assert.equal(info.fonts,0,label+' keine Schriften');
+ assert.deepEqual(info.layers,[LAYER],label+' genau eine Ebene');
+ // Wie die Musterdatei: alles direkt im Inhaltsstrom der Seite – ein Block `/OC /gravur BDC … EMC`, keine eingebetteten Formobjekte.
+ assert.equal(info.forms,0,label+' keine Formobjekte auf der Seite');assert.deepEqual(info.marked,['gravur'],label+' ein Ebenenblock im Seiteninhalt');assert.equal(info.closed,1,label+' BDC und EMC paarweise');
+ const content=info.drawings.filter(d=>d.layer===LAYER),lines=info.drawings.filter(d=>d.layer!==LAYER);
+ assert.deepEqual(info.drawings.map(d=>d.layer),[...content.map(()=>LAYER),...lines.map(()=>'')],label+' erst die Ebene, danach die Konturen außerhalb jeder Ebene');
+ if(raster){assert.equal(content.length,0,label);assert.deepEqual(info.images.map(i=>[i.colorSpace,i.layered]),[['DeviceGray',true]],label+' Graustufenbild als Bildobjekt im Ebenenblock');}
+ else{
+  assert.equal(info.images.length,0,label+' keine Bilder');assert.ok(content.length>0,label);
+  for(const d of content){if(d.fill)assert.ok(same(d.fill,BLACK)||same(d.fill,WHITE),label+' Fläche reines Schwarz: '+d.fill);if(d.color)assert.ok(same(d.color,BLACK)||same(d.color,WHITE),label+' Linie reines Schwarz: '+d.color);}
+ }
+ for(const d of lines){assert.equal(d.type,'s',label);assert.equal(d.fill,null,label);assert.ok(isOrderLine(d),label+' Linie 0,001 mm, ist '+d.width/MM);}
+ assert.ok(lines.length>=1,label);assert.deepEqual(lines[0].color,BLUE,label+' Außenkontur reines Blau');assert.ok(lines[0].rect.every((v,i)=>Math.abs(v-outer[i])<=.02),label+' Außenkontur = Plattenmaß: '+lines[0].rect);
+ const inner=lines.slice(1);
+ if(holes==='none'||holes==='omit')assert.equal(inner.length,0,label+' keine Innenkontur gezeichnet');
+ else{assert.ok(inner.length>=1,label+' Innenkonturen gezeichnet');for(const d of inner)assert.deepEqual(d.color,holes==='cut'?RED:BLUE,label+' Innenkontur '+(holes==='cut'?'rot (Schnitt)':'blau (Anlegen)'));}
+ assert.deepEqual(info.strokes.filter(s=>!/^0 0 0 RG$|^0 G$/.test(s)).sort(),[...new Set(lines.map(d=>d.color.join(' ')+' RG'))].sort(),label+' außer Schwarz nur die Konturfarben');
+ return {content,lines};
+}
+// Gravur-SVG der Bestellansicht: Gestaltung in der Gruppe „03 Gravur“, danach die Konturgruppen – seitenrichtig, in Millimetern.
+// `plate`: die Platte ist kleiner als das Format der Gestaltung (Acrylauflage der Funkklingel) – Seite = Platte, die Gruppen
+// behalten die Koordinaten des Formats und sind als Ganzes an den Ursprung der Platte geschoben.
+function checkEngravingSvg(svg,{widthMm,heightMm,geometry,holes,plate=null},label=''){
+ const text=svg.toString(),root=text.match(/^<svg [^>]*>/)[0],shift=plate?' transform="translate('+(-plate.x||0)+' '+(-plate.y||0)+')"':'',page=plate?[plate.width,plate.height]:[widthMm,heightMm];
+ for(const attribute of ['width="'+page[0]+'mm"','height="'+page[1]+'mm"','viewBox="0 0 '+page[0]+' '+page[1]+'"','xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"'])assert.ok(root.includes(attribute),label+' '+attribute);
+ const open='<g id="gravur" data-layer="03 Gravur" inkscape:groupmode="layer" inkscape:label="03 Gravur"'+shift+'>';
+ assert.ok(text.startsWith(root+open),label+' Gestaltung in der Gruppe „03 Gravur“');assert.equal(text.split('id="gravur"').length,2,label);
+ assert.ok(!text.startsWith(root+open+'<g transform="translate('+widthMm+' 0) scale(-1 1)">'),label+' nicht gespiegelt');
+ const outer='<g id="aussenkontur" data-layer="Außenkontur (Anlegen)" fill="none" stroke="#0000ff" stroke-width="0.001"'+shift+'><path d="'+geometry.contours[0].d+' Z" /></g>';
+ const inner=geometry.contours.slice(1).map(c=>c.d+' Z').join(' '),rule={cut:['ausschnitte','Ausschnitte (Schnitt)','#ff0000'],contour:['innenkonturen','Innenkonturen (Anlegen)','#0000ff']}[holes];
+ const innerGroup=rule?'<g id="'+rule[0]+'" data-layer="'+rule[1]+'" fill="none" stroke="'+rule[2]+'" stroke-width="0.001"'+shift+'><path d="'+inner+'" /></g>':'';
+ if(rule)assert.ok(geometry.contours.length>1,label+' Prüffall mit Innenkontur');if(holes==='none')assert.equal(geometry.contours.length,1,label);
+ assert.ok(text.endsWith('</g>'+outer+innerGroup+'</svg>'),label+' Konturgruppen nach der Gestaltung: '+text.slice(-260));
+ for(const id of ['aussenkontur','ausschnitte','innenkonturen','kontur','CutContour'])assert.equal(text.split('id="'+id+'"').length-1,id==='aussenkontur'||id===rule?.[0]?1:0,label+' '+id);
+ // Inhalt der Gruppe = alles zwischen ihrem Anfang und der Außenkontur.
+ return text.slice((root+open).length,text.length-('</g>'+outer+innerGroup+'</svg>').length);
+}
+const svgInner=svg=>{const text=svg.toString(),root=text.match(/^<svg [^>]*>/)[0];assert.ok(text.endsWith('</svg>'));return text.slice(root.length,-6);};
+// Druck-PDF der Bestellansicht: jede Linie steht in der Schmuckfarbe `CutContour` (eine normale Farbe würde mitgedruckt –
+// Chris, 21.11.2026, 17:18 Uhr), Breite 0,001 mm; kein Blau, kein Rot, keine Ebene der Gravur.
+function checkPrintPdf(info,{widthMm,heightMm,white},label=''){
+ assert.equal(info.pages,1,label);assert.equal(info.repaired,false,label);assert.deepEqual([info.widthMm,info.heightMm],[widthMm,heightMm],label);assert.equal(info.fonts,0,label);
+ assert.equal(info.cutSpot,true,label+' Schmuckfarbe CutContour');assert.equal(info.whiteSpot,white,label+' RDG_WHITE');
+ assert.deepEqual(info.layers,white?['Farbmotiv','RDG_WHITE','CutContour']:['Farbmotiv','CutContour'],label+' Ebenen: erst Farbe, dann Weiß, dann Schnittkontur');
+ assert.deepEqual(info.strokes,['/Cut CS 1 SCN'],label+' einzige Linienfarbe ist die Schmuckfarbe');
+ const stroked=info.drawings.filter(d=>d.type!=='f');assert.equal(stroked.length,1,label+' genau eine Kontur');
+ assert.equal(stroked[0].layer,'CutContour',label);assert.equal(stroked[0].type,'s',label);assert.equal(stroked[0].fill,null,label);assert.ok(isOrderLine(stroked[0]),label+' Linie 0,001 mm');
+ for(const d of info.drawings)for(const rgb of [d.color,d.fill])if(rgb&&d.layer==='CutContour')assert.ok(!same(rgb,BLUE)&&!same(rgb,RED),label+' kein Blau/Rot in der Kontur');
+ return stroked[0];
+}
+// Druck-SVG: die gesicherte Gestaltung (`plain`) plus genau eine Gruppe `CutContour` mit allen Ringen der Form.
+function checkPrintSvg(svg,{widthMm,heightMm,geometry,plain},label=''){
+ const text=svg.toString();
+ for(const source of [text,plain.toString()]){assert.match(source,new RegExp('^<svg [^>]*width="'+widthMm+'mm"'),label);assert.match(source,new RegExp('^<svg [^>]*height="'+heightMm+'mm"'),label);assert.match(source,new RegExp('^<svg [^>]*viewBox="0 0 '+widthMm+' '+heightMm+'"'),label);}
+ const group='<g id="CutContour" data-layer="CutContour" fill="none" stroke="'+CUT_CONTOUR_RGB+'" stroke-width="0.001"><path d="'+geometry.contours.map(c=>c.d+' Z').join(' ')+'"/></g>';
+ assert.equal(CUT_CONTOUR_RGB,'#ff00ff');assert.ok(text.endsWith(group+'</svg>'),label+' Schnittkontur als letzte Gruppe');assert.equal(text.replace(group,''),plain.toString(),label+' ohne die Kontur ist „SVG“ die gesicherte Gestaltung (seitenrichtig)');
+ for(const id of ['aussenkontur','ausschnitte','innenkonturen','gravur','kontur'])assert.ok(!text.includes('id="'+id+'"'),label+' keine Gruppe der Gravurdatei: '+id);
+ assert.doesNotMatch(group,/#0000ff|#ff0000/,label+' Blau und Rot nur in Gravurdateien');
+}
+// Die zwei Dateien einer Fläche samt Dateinachweis; jede liegt im Paket und stimmt mit ihrer Prüfsumme überein.
 function twoFiles(result,surfaceId='front'){
  const files=unpack(result),sets=orderFileSets(result.metadata),set=sets.find(s=>s.id===surfaceId);
- assert.deepEqual([...ORDER_FORMATS],['pdf','svg']);assert.equal(result.metadata.orderFiles.schema,ORDER_FILES_SCHEMA);assert.equal(ORDER_FILES_SCHEMA,'gravuru-order-files/v2');
+ assert.deepEqual([...ORDER_FORMATS],['pdf','svg']);assert.equal(result.metadata.orderFiles.schema,ORDER_FILES_SCHEMA);assert.equal(ORDER_FILES_SCHEMA,'gravuru-order-files/v3');
  assert.ok(set,'Dateinachweis der Fläche');assert.deepEqual(set.formats,[...ORDER_FORMATS]);
  assert.deepEqual(Object.keys(result.metadata.orderFiles.surfaces.find(s=>s.id===surfaceId).files),[...ORDER_FORMATS]);
  const out={files};
@@ -75,17 +164,6 @@ function twoFiles(result,surfaceId='front'){
   assert.deepEqual(orderDownload(result,format,surfaceId).bytes,bytes);out[format]={name:descriptor.name,bytes};
  }
  return out;
-}
-// SVG 1:1 in Millimetern: Breite/Höhe in mm und derselbe Zahlenraum im viewBox – damit liegt die Kontur (ebenfalls in mm)
-// deckungsgleich auf der Gestaltung. „SVG“ = die Gestaltung (`plain`: die Datei ohne Kontur, wo das Paket sie führt) plus genau
-// die Konturebene als letzte Ebene.
-function checkSvg(two,{widthMm,heightMm,geometry,stroke,mirror=false,plain=null}){
- const contour=two.svg.bytes.toString();
- for(const text of [contour,...(plain===null?[]:[plain.toString()])]){assert.match(text,new RegExp('^<svg [^>]*width="'+widthMm+'mm"'));assert.match(text,new RegExp('^<svg [^>]*height="'+heightMm+'mm"'));assert.match(text,new RegExp('^<svg [^>]*viewBox="0 0 '+widthMm+' '+heightMm+'"'));}
- const group=contour.match(/<g id="kontur"[^>]*>.*?<\/g>(?=<\/svg>$)/s)?.[0];assert.ok(group,'Konturebene als letzte Ebene');assert.equal(contour.match(/id="kontur"/g).length,1);
- if(plain!==null){assert.doesNotMatch(plain.toString(),/id="kontur"/);assert.equal(contour.replace(group,''),plain.toString(),'ohne die Konturebene ist „SVG“ die Gestaltung des Pakets');}
- assert.match(group,new RegExp('^<g id="kontur" fill="none" stroke="'+stroke+'" stroke-width="0\\.05"'+(mirror?' transform="translate\\('+widthMm+' 0\\) scale\\(-1 1\\)"':'')+'><path d="'));
- assert.equal(group.match(/<path d="([^"]*)"/)[1],geometry.contours.map(c=>c.d+' Z').join(' '),'derselbe Pfad wie die getrennte Konturdatei');
 }
 
 let shared=null;
@@ -109,9 +187,54 @@ async function nativeBundle({engraving,photo,text='Oa',workshop=seedWorkshop().w
  const input={productId:record.id,productRevision:1,designId:d.id,objects,options:{size:'small',base:'none',wall:'none'},quantity:1,media:photo?[{id:'photo-test',original:png}]:[],preview:png};
  return {record,bundle:await prepareAcrylicReview({record,config,input,assets:workshop.assets})};
 }
+// Natives Produkt aus einer Katalogfamilie der Testvorlagen: Türschild 120 × 80 mm mit der Befestigung „zwei Bohrlöcher“ –
+// `steel.json` (Edelstahl) bzw. `schwarz.json` (Acrylglas). So entsteht ein echtes Produkt mit Innenkonturen je Material.
+async function familyBundle(file){
+ const f=JSON.parse(fs.readFileSync(new URL('./test-fixtures/acryl3-rear/'+file,import.meta.url))),s=f.sizes.find(x=>x.widthMm===120&&x.heightMm===80&&x.mounting.some(m=>m.startsWith('B02')));assert.ok(s,file);
+ const view={...f,groups:f.groups.filter(g=>g.key===s.groupKey),sizes:[s],mountingRules:f.mountingRules.filter(r=>s.mounting.includes(r.id))},config=prepareConfig(familyProductConfig(view,s,1)),p=config.profile;
+ const group=p.optionGroups.find(g=>g.values.some(v=>v.holes?.length)),mounting=group.values.find(v=>v.holes?.length),selection=Object.fromEntries(p.optionGroups.map(g=>[g.id,g===group?mounting.id:g.defaultValueId]));
+ const profile=selectedProfile(config,selection),source=profile.designs.find(d=>d.id===profile.defaultDesignId)||profile.designs[0],document=makeProductDocument(config),record={id:p.id,revision:1,document};
+ const png='iVBORw0KGgoAAAANSUhEUgAAACgAAAA8CAIAAACb22+3AAAAOklEQVR4nO3NIQEAMAgAsPOEaDT9M9ABg9kKLLL6Xfgnq1gsFovFYrFYLBaLxWKxWCwWi8VisVgsXhqq4AGG9djEFQAAAABJRU5ErkJggg==';
+ return prepareAcrylicReview({record,config:document.config,input:{productId:record.id,productRevision:1,designId:source.id,objects:structuredClone(source.objects),options:selection,quantity:1,media:[],preview:png},assets:{get:()=>null,read:()=>null}});
+}
+// Deckungsgleich: jeder Punkt der einen Menge hat einen Nachbarn der anderen innerhalb der Rundung (0,02 mm) – und umgekehrt.
+function sameShape(a,b,message){
+ const xy=list=>list.map(p=>p.split(' ').map(Number)),A=xy(a),B=xy(b);assert.ok(A.length>0&&B.length>0,message+' (leer)');
+ for(const [from,to,side] of [[A,B,'→'],[B,A,'←']])for(const p of from)assert.ok(to.some(q=>Math.abs(p[0]-q[0])<=.02&&Math.abs(p[1]-q[1])<=.02),message+' '+side+' '+p.join(' '));
+}
+const near=(rect,expected)=>rect.every((v,i)=>Math.abs(v-expected[i])<=.02);
+// Deckungsgleiche Linien, unabhängig davon, wie ein Zeichner Bögen in Kurvenstücke teilt: Jeder Punkt des einen Linienzugs liegt
+// höchstens 0,02 mm neben dem anderen – in beiden Richtungen. `map` bildet die Punkte von `b` vorher ab (Spiegelung, Verschiebung).
+function sameOutline(a,b,message,map=null){
+ const lines=(list,f)=>list.flatMap(d=>d.outline).map(line=>f?line.map(f):line),A=lines(a),B=lines(b,map);assert.ok(A.length>0&&B.length>0,message+' (leer)');
+ const far=(from,to)=>{const segments=to.flatMap(line=>line.slice(1).map((q,i)=>[line[i],q]));
+  for(const point of from.flat()){let best=Infinity;for(const [[x1,y1],[x2,y2]] of segments){const dx=x2-x1,dy=y2-y1,s=dx*dx+dy*dy,t=s?Math.max(0,Math.min(1,((point[0]-x1)*dx+(point[1]-y1)*dy)/s)):0,d=Math.hypot(point[0]-x1-t*dx,point[1]-y1-t*dy);if(d<best){best=d;if(d<=.02)break;}}if(best>.02)return point.join(' ')+' ('+best.toFixed(3)+' mm)';}
+  return null;};
+ assert.equal(far(A,B),null,message+' →');assert.equal(far(B,A),null,message+' ←');
+}
+const mirrorAt=width=>([x,y])=>[width-x,y];
+// Was beim Öffnen der Datei zu sehen ist: Fläche der roten Bildpunkte (Anzahl, Schwerpunkt in mm) und die Farbe an einzelnen Stellen.
+const LOOK=`import sys,json,numpy as np,pymupdf as f
+p=f.open(stream=sys.stdin.buffer.read(),filetype='pdf');pix=p[0].get_pixmap(dpi=127,colorspace=f.csRGB,alpha=False);k=5
+a=np.frombuffer(pix.samples,dtype=np.uint8).reshape(pix.height,pix.stride)[:,:pix.width*3].reshape(pix.height,pix.width,3).astype(int)
+red=(a[:,:,0]>170)&(a[:,:,1]<100)&(a[:,:,2]<100);ys,xs=np.nonzero(red);n=int(red.sum())
+print(json.dumps({'count':n,'xMm':round(float(xs.mean()+.5)/k,1) if n else None,'yMm':round(float(ys.mean()+.5)/k,1) if n else None,'points':[[int(v) for v in a[min(int(y*k),pix.height-1),min(int(x*k),pix.width-1)]] for x,y in json.loads(sys.argv[1])]}))`;
+const look=(bytes,at=[])=>JSON.parse(execFileSync(python,['-c',LOOK,JSON.stringify(at)],{input:bytes,env:importEnvironment(),maxBuffer:64*1024*1024}).toString());
 
-test('Gravur ohne Fertigungsprofil: `auto` nur ohne Profil und ohne Wahl; das Profil und eine ausdrückliche Wahl gelten unverändert',()=>{
- assert.equal(ACRYLIC_ENGRAVING_RECIPE,'gravuru-acrylic-engraving-proof/v8');
+test('Musterdatei von Chris (21.11.2026): eine Ebene „03 Gravur“ in Schwarz, danach außerhalb jeder Ebene eine blaue und rote Linien von 0,001 mm; unsere Gravurdatei hat denselben Aufbau',async()=>{
+ const reference=inspect(REFERENCE),{content,lines}=checkEngravingPdf(reference,{widthMm:160,heightMm:260,holes:'cut'},'Musterdatei');
+ assert.ok(content.some(d=>d.type==='f'&&same(d.fill,BLACK)),'Gravur der Musterdatei: schwarze Vektorflächen');assert.ok(content.every(d=>same(d.fill||d.color,BLACK)&&(!d.fill||!d.color||same(d.color,BLACK))),'in der Ebene nur reines Schwarz');
+ assert.deepEqual(lines.map(d=>d.color.join(' ')),['0 0 1',...Array(7).fill('1 0 0')],'eine blaue Außenkontur, danach sieben rote Schnitte');
+ assert.equal(ORDER_LINE_MM,.001);for(const d of lines)assert.ok(Math.abs(d.width-.0028346)<2e-6,'Linienbreite der Musterdatei: 0,0028346 pt = 0,001 mm');
+ // Derselbe Aufbau bei uns – am echten Produkt aus Acrylglas mit Bohrlöchern (Kennzeichen ohne Seitenmaß und Anzahl der Schnitte).
+ const aufbau=info=>({layers:info.layers,trimIsMedia:info.trimIsMedia,fonts:info.fonts,images:info.images.length,pages:info.pages,order:[...new Set(info.drawings.map(d=>d.layer?'Ebene '+d.layer:'Linie '+d.color.join(' ')+' · '+(d.width/MM).toFixed(4)+' mm'))]});
+ const bundle=await familyBundle('schwarz.json'),ours=inspect(twoFiles(await createAcrylicEngravingProof(bundle.package,bundle.manifest.packageSha256,{mirror:true})).pdf.bytes);
+ assert.deepEqual(aufbau(ours),aufbau(reference));
+ assert.deepEqual(aufbau(reference).order,['Ebene 03 Gravur','Linie 0 0 1 · 0.0010 mm','Linie 1 0 0 · 0.0010 mm']);
+});
+
+test('Rezeptstände: neuer Stand und eigener Schlüssel bei allen vier Ausgaben (3.62); `auto` nur ohne Profil und ohne Wahl, das Profil und eine ausdrückliche Wahl gelten unverändert',()=>{
+ assert.equal(ACRYLIC_ENGRAVING_RECIPE,'gravuru-acrylic-engraving-proof/v9');
  assert.deepEqual(acrylicEngravingSettings(undefined,{mirror:true}),{mode:'auto',dpi:300,mirror:true});
  assert.deepEqual(acrylicEngravingSettings(null),{mode:'auto',dpi:300,mirror:false});
  for(const mode of ['raster','vector'])assert.deepEqual(acrylicEngravingSettings(undefined,{mode,mirror:true}),formEngravingSettings({mode,mirror:true}));
@@ -120,197 +243,348 @@ test('Gravur ohne Fertigungsprofil: `auto` nur ohne Profil und ohne Wahl; das Pr
  assert.deepEqual(acrylicEngravingSettings({mode:'vector',dpi:300,mirror:false},{dpi:600}),{mode:'vector',dpi:600,mirror:false});
  assert.throws(()=>acrylicEngravingSettings(profile,{mode:'auto'}),/Gravureinstellungen/,'mit Profil gibt es keine Regel statt des Profils');
  assert.throws(()=>acrylicEngravingSettings(undefined,{mode:'auto',white:'full'}),/Gravureinstellungen/);assert.throws(()=>formEngravingSettings({mode:'auto'}),/Gravureinstellungen/,'Formprodukte alter Art kennen die Regel nicht');
- // Eigener Schlüssel je Wahl; Ausgaben der Rezeptstände v6 und v7 behalten ihren Schlüssel und bleiben abrufbar.
+ // Eigener Schlüssel je Wahl; Ausgaben früherer Rezeptstände behalten ihren Schlüssel und bleiben auf der Seite „Ausgaben“ abrufbar.
  const keys=['auto','raster','vector'].map(mode=>acrylicEngravingKey({mode,mirror:true}));assert.equal(new Set(keys).size,3);
  assert.equal(acrylicEngravingKey(acrylicEngravingSettings(undefined,{mirror:true})),keys[0]);
- for(const old of ['v6','v7'])assert.notEqual(keys[1],digest(JSON.stringify({recipe:'gravuru-acrylic-engraving-proof/'+old,settings:formEngravingSettings({mode:'raster',mirror:true})})));
- // ENTSCHEIDUNGEN 3.61: neuer Rezeptstand bei allen vier Ausgaben – auch den Formprodukten alter Art –, jeweils mit eigenem Schlüssel.
- assert.equal(ACRYLIC_PRINT_RECIPE,'gravuru-acrylic-print-proof/v9');assert.equal(FORM_ENGRAVING_RECIPE,'gravuru-form-engraving-proof/v2');assert.equal(FORM_PRINT_RECIPE,'gravuru-form-print-proof/v6');
- assert.notEqual(acrylicPrintKey({}),digest(JSON.stringify({recipe:'gravuru-acrylic-print-proof/v8',settings:formPrintSettings({})})));
- assert.notEqual(formEngravingKey({}),digest(JSON.stringify({recipe:'gravuru-form-engraving-proof/v1',settings:formEngravingSettings({})})));assert.equal(formEngravingKey({}),digest(JSON.stringify({recipe:'gravuru-form-engraving-proof/v2',settings:formEngravingSettings({})})));
- assert.notEqual(formPrintKey({}),digest(JSON.stringify({recipe:'gravuru-form-print-proof/v5',settings:formPrintSettings({})})));assert.equal(formPrintKey({}),digest(JSON.stringify({recipe:'gravuru-form-print-proof/v6',settings:formPrintSettings({})})));
+ const key=(recipe,settings)=>digest(JSON.stringify({recipe,settings}));
+ assert.equal(keys[1],key('gravuru-acrylic-engraving-proof/v9',formEngravingSettings({mode:'raster',mirror:true})));
+ for(const old of ['v6','v7','v8'])assert.notEqual(keys[1],key('gravuru-acrylic-engraving-proof/'+old,formEngravingSettings({mode:'raster',mirror:true})));
+ // ENTSCHEIDUNGEN 3.62: neuer Rezeptstand bei allen vier Ausgaben – auch den Formprodukten alter Art –, jeweils mit eigenem Schlüssel.
+ assert.equal(ACRYLIC_PRINT_RECIPE,'gravuru-acrylic-print-proof/v10');assert.equal(FORM_ENGRAVING_RECIPE,'gravuru-form-engraving-proof/v3');assert.equal(FORM_PRINT_RECIPE,'gravuru-form-print-proof/v7');
+ assert.equal(acrylicPrintKey({}),key('gravuru-acrylic-print-proof/v10',formPrintSettings({})));for(const old of ['v8','v9'])assert.notEqual(acrylicPrintKey({}),key('gravuru-acrylic-print-proof/'+old,formPrintSettings({})));
+ assert.equal(formEngravingKey({}),key('gravuru-form-engraving-proof/v3',formEngravingSettings({})));for(const old of ['v1','v2'])assert.notEqual(formEngravingKey({}),key('gravuru-form-engraving-proof/'+old,formEngravingSettings({})));
+ assert.equal(formPrintKey({}),key('gravuru-form-print-proof/v7',formPrintSettings({})));for(const old of ['v5','v6'])assert.notEqual(formPrintKey({}),key('gravuru-form-print-proof/'+old,formPrintSettings({})));
 });
 
-test('Bestellansicht: zwei Knöpfe je Fläche – PDF und SVG, beide mit Kontur –, nur aktiv bei „fertig“ und vorhandener Datei; sonst ein verständlicher Hinweis',()=>{
+test('Bestellansicht: zwei Knöpfe je Fläche – PDF und SVG –, nur aktiv bei „fertig“ und vorhandener Datei; sonst ein verständlicher Hinweis; der Hilfetext nennt die Regel je Verfahren',()=>{
  const all={jobId:'job_1',surfaces:[{id:'front',formats:[...ORDER_FORMATS]}],pending:false,note:null},done={state:'fertig',reason:null,jobId:'job_1'};
  assert.deepEqual(Object.keys(ORDER_FILE_LABELS),[...ORDER_FORMATS]);
  assert.deepEqual(orderFileButtons(done,all),[{surface:'front',label:'',buttons:[{format:'pdf',label:'PDF',enabled:true},{format:'svg',label:'SVG',enabled:true}]}]);
  assert.equal(orderFilesNote(done,all),'');
  for(const state of [{state:'wird erstellt'},{state:'bitte prüfen',reason:'Die Schrift fehlt.'},undefined]){assert.ok(orderFileButtons(state,all)[0].buttons.every(b=>!b.enabled));assert.match(orderFilesNote(state,all),/^PDF und SVG sind aktiv, sobald die Fertigungsdatei fertig ist/);}
- // Ausgabe ohne Dateinachweis: keine Fläche mit Dateien → zwei inaktive Knöpfe und der Hinweis des Servers, kein Fehler.
+ // Ausgabe ohne heutigen Dateinachweis: keine Fläche mit Dateien → zwei inaktive Knöpfe und der Hinweis des Servers, kein Fehler.
  const old={jobId:null,surfaces:[],pending:true,note:'PDF und SVG werden für diese Position neu erstellt.'};
  assert.equal(orderFileButtons(done,old)[0].buttons.length,2);assert.ok(orderFileButtons(done,old)[0].buttons.every(b=>!b.enabled));assert.equal(orderFilesNote(done,old),old.note);
  assert.ok(orderFileButtons(done,undefined)[0].buttons.every(b=>!b.enabled));
  const partial={...all,surfaces:[{id:'front',formats:['pdf']}]};assert.deepEqual(orderFileButtons(done,partial)[0].buttons.map(b=>b.enabled),[true,false]);assert.match(orderFilesNote(done,partial),/neu erstellen/);
  const both={...all,surfaces:[{id:'front',formats:[...ORDER_FORMATS]},{id:'back',formats:[...ORDER_FORMATS]}]};assert.deepEqual(orderFileButtons(done,both).map(s=>[s.surface,s.label,s.buttons.length]),[['front','Vorderseite',2],['back','Rückseite',2]]);
- // Einen eigenen Knopf „mit Kontur“ oder eine Datei ohne Kontur gibt es nicht mehr – auch nicht, wenn eine Antwort die früheren Formate nennt.
+ // Einen eigenen Knopf „mit Kontur“ oder eine Datei ohne Kontur gibt es nicht – auch nicht, wenn eine Antwort die früheren Formate nennt.
  const former=orderFileButtons(done,{...all,surfaces:[{id:'front',formats:['pdf','pdf-contour','svg','svg-contour']}]})[0].buttons;assert.deepEqual(former.map(b=>[b.format,b.label]),[['pdf','PDF'],['svg','SVG']]);
- // Hinweis des Servers je Lage: wird neu erstellt | nicht baubar mit Grund | fertige Ausgabe ohne die Dateien | nichts.
+ // Hinweis des Servers je Lage: wird neu erstellt | nicht baubar mit Grund | fertige Ausgabe ohne die heutigen Dateien | nichts.
  assert.equal(missingOrderFilesNote({own:{status:'queued'},completed:1}),'PDF und SVG werden für diese Position neu erstellt.');assert.equal(missingOrderFilesNote({own:{status:'running'}}),'PDF und SVG werden für diese Position gerade erstellt.');
  assert.equal(missingOrderFilesNote({own:{status:'failed',error:'Die gesicherte Schrift fehlt.'},completed:1}),'PDF und SVG ließen sich für diese Position nicht erstellen: Die gesicherte Schrift fehlt.');
- // Kein Sonderfall „Formprodukt alter Art“ mehr: auch dort entstehen die Dateien (ENTSCHEIDUNGEN 3.61).
- for(const own of [{status:'completed'},null]){const note=missingOrderFilesNote({own,completed:1});assert.match(note,/enthält PDF und SVG mit Kontur nicht.*neu erstellen/);assert.doesNotMatch(note,/Formprodukt|vier/);}
+ for(const own of [{status:'completed'},null]){const note=missingOrderFilesNote({own,completed:1});assert.equal(note,'Die gespeicherte Ausgabe dieser Position enthält PDF und SVG im heutigen Aufbau nicht. Bitte die Ausgabe für diese Position neu erstellen.');assert.doesNotMatch(note,/Formprodukt|vier/);}
  assert.equal(missingOrderFilesNote({own:null,completed:0}),null);assert.equal(missingOrderFilesNote(),null);
  const page=fs.readFileSync(new URL('./ui/orders.html',import.meta.url),'utf8');for(const id of ['order-files','order-file-rows','order-files-note'])assert.match(page,new RegExp('id="'+id+'"'));
- assert.match(page,/Beide enthalten immer die Kontur als Haarlinie/);assert.doesNotMatch(page,/„Mit Kontur“ enthält zusätzlich/);
+ // Hilfetext: kurz und je Verfahren richtig (3.62) – nie gespiegelt; Gravur schwarz in „03 Gravur“, Anlegen blau, Löcher bei
+ // Acrylglas rot; Druck alle Konturen in CutContour; Linien 0,001 mm. Die Aussagen der Stände davor stehen dort nicht mehr.
+ const help=page.match(/<p class="help">(PDF und SVG in Originalgröße[^<]*)</)?.[1];
+ assert.equal(help,'PDF und SVG in Originalgröße (1:1), nie gespiegelt. Gravur: schwarz in der Ebene „03 Gravur“, Kontur zum Anlegen blau, Löcher bei Acrylglas rot (Schnitt nach der Gravur). Druck: alle Konturen in der Roland-Schmuckfarbe CutContour (rosa). Konturlinien 0,001 mm.');
+ assert.doesNotMatch(page,/Beide enthalten immer die Kontur als Haarlinie|„Mit Kontur“ enthält zusätzlich|gespiegelt wie die/);
 });
 
-test('Dateinachweis und Download: ohne Nachweis ein klarer Hinweis; nur PDF und SVG; eine Farbregel der Kontur für alle Produktarten',async()=>{
+test('Dateinachweis und Download: nur PDF und SVG; ohne den heutigen Nachweis – auch mit dem der Stände 3.57 und 3.61 – keine Datei, sondern ein klarer Hinweis',()=>{
  assert.deepEqual(orderFileSets({}),[]);assert.deepEqual(orderFileSets({orderFiles:{schema:'fremd',surfaces:[{id:'front',files:{}}]}}),[]);
  for(const format of ORDER_FORMATS)assert.throws(()=>orderDownload({metadata:{schema:'gravuru-acrylic-engraving-proof/v6',pdfSha256:'a'.repeat(64)},pdf:Buffer.from('%PDF-alt'),archive:Buffer.alloc(0)},format),{status:409,code:'order_file_missing',message:ORDER_FILE_MISSING});
  // Die früheren Formate („mit Kontur“ als eigene Wahl) und fremde Formate gibt es nicht.
  assert.equal(ORDER_FORMAT_REQUIRED,'Bitte PDF oder SVG auswählen.');
  for(const format of ['pdf-contour','svg-contour','zip','white-pdf',undefined])assert.throws(()=>orderDownload({metadata:{}},format),{status:422,code:'print_delivery',message:ORDER_FORMAT_REQUIRED});
+ const sha='a'.repeat(64),files={pdf:{name:'gravur-1zu1-mit-kontur.pdf',sha256:sha},svg:{name:'gravur-1zu1-mit-kontur.svg',sha256:sha}};
+ assert.equal(ORDER_FILES_SCHEMA,'gravuru-order-files/v3');assert.deepEqual(orderFileSets({orderFiles:{schema:ORDER_FILES_SCHEMA,surfaces:[{id:'front',files}]}}),[{id:'front',formats:['pdf','svg']}]);
+ // Nachweise der Stände davor – v1: vier Dateien (3.57), v2: zwei Dateien (3.61) – nennen Dateien, die nach Profil gespiegelt sind
+ // und die Kontur schwarz mit Breite 0 führen. Sie werden über die Bestellansicht nicht mehr abgegeben, auch nicht ersatzweise.
+ for(const [schema,former] of [['gravuru-order-files/v1',{...files,'pdf-contour':files.pdf,'svg-contour':files.svg}],['gravuru-order-files/v2',files]]){
+  const metadata={orderFiles:{schema,surfaces:[{id:'front',files:former}]}};assert.deepEqual(orderFileSets(metadata),[],schema);
+  for(const format of ORDER_FORMATS)assert.throws(()=>orderDownload({metadata,pdf:Buffer.from('%PDF-alt'),archive:Buffer.alloc(0)},format),{status:409,code:'order_file_missing',message:ORDER_FILE_MISSING},schema);
+ }
  // Ein heutiger Nachweis, der nur die früheren Schlüssel trägt, führt keine Datei; geerbte Eigenschaften zählen nicht.
- const sha='a'.repeat(64);assert.deepEqual(orderFileSets({orderFiles:{schema:ORDER_FILES_SCHEMA,surfaces:[{id:'front',files:{'pdf-contour':{name:'x.pdf',sha256:sha},'svg-contour':{name:'x.svg',sha256:sha}}}]}}),[{id:'front',formats:[]}]);
- assert.deepEqual(orderFileSets({orderFiles:{schema:'gravuru-order-files/v1',surfaces:[{id:'front',files:Object.create({'pdf-contour':{name:'x.pdf',sha256:sha}})}]}}),[{id:'front',formats:[]}]);
- assert.throws(()=>svgWithContour('<svg></svg> <!-- x -->',{widthMm:1,contours:[]},{stroke:'#000000'}),/nicht mit Kontur/);assert.throws(()=>svgWithContour('<svg></svg>',{widthMm:1,contours:[]},{stroke:'red'}),/nicht mit Kontur/);
- // Farbregel: Funkklingel rot, Schiefergravur blau, sonst schwarz. Schiefer heißt beim nativen Produkt `kind`, beim Formprodukt `id`.
- const art=(material,doorbell=false)=>({manifest:{product:{material}},...(doorbell?{doorbellLayers:{}}:{})});
- assert.equal(contourStroke(art({kind:'slate'}),{engraving:true}),'#0000ff');assert.equal(contourStroke(art({id:'slate',thicknessMm:5,surfaceNotes:''}),{engraving:true}),'#0000ff','Formprodukt aus Schiefer');
- assert.equal(contourStroke(art({kind:'slate'})),'#000000','Schieferdruck: schwarz');assert.equal(contourStroke(art({id:'slate'})),'#000000');
- for(const material of [{kind:'acrylic'},{kind:'steel'},{id:'steel'},{id:'acrylic-black'},undefined,null])for(const engraving of [true,false])assert.equal(contourStroke(art(material),{engraving}),'#000000',JSON.stringify(material));
- for(const engraving of [true,false])assert.equal(contourStroke(art({kind:'slate'},true),{engraving}),'#ff0000','Funkklingel: rot wie die Schnittdatei der Acrylauflage');
+ assert.deepEqual(orderFileSets({orderFiles:{schema:ORDER_FILES_SCHEMA,surfaces:[{id:'front',files:{'pdf-contour':files.pdf,'svg-contour':files.svg}}]}}),[{id:'front',formats:[]}]);
+ assert.deepEqual(orderFileSets({orderFiles:{schema:ORDER_FILES_SCHEMA,surfaces:[{id:'front',files:Object.create(files)}]}}),[{id:'front',formats:[]}]);
 });
 
-// Synthetische Druckdaten wie in print-delivery-vector.test.mjs: Kontur mit Bohrloch, zwei Schriftfelder.
+test('Regel der Innenkonturen (Chris, 21.11.2026, 17:17 Uhr): rot nur bei Acrylglas – Material der Platte, nicht der Produktname; sonst blau (Annahme); an genau einer Stelle',()=>{
+ const art=(material,doorbell=false)=>({manifest:{product:{name:'Acrylglas Edelstahl Schiefer Türschild',material}},...(doorbell?{doorbellLayers:{}}:{})});
+ assert.deepEqual([ORDER_HOLES_ACRYLIC,ORDER_HOLES_OTHER],['cut','contour']);
+ // Natives Produkt: `material.kind`; Formprodukt alter Art: `material.id` (FORM_MATERIALS führt Acrylglas als `acrylic-…`).
+ for(const material of [{kind:'acrylic'},{kind:'acrylic',id:'acryl-3mm-schwarz'},{id:'acrylic-clear',thicknessMm:3,surfaceNotes:''},{id:'acrylic-anthracite'},{id:'acrylic-black'},{id:'acrylic-satin'}])assert.equal(orderHoleLines(art(material)),'cut',JSON.stringify(material));
+ for(const material of [{kind:'steel'},{kind:'slate'},{kind:'wood'},{id:'steel',thicknessMm:1.5,surfaceNotes:''},{id:'slate'},{id:'oak'},{id:'leather'},{id:'acrylic'},{kind:'acrylic-like'},{kind:'steel',name:'Acrylglas-Optik'},undefined,null])assert.equal(orderHoleLines(art(material)),'contour',JSON.stringify(material));
+ // Zweischichtige Funkklingel: Die Gestaltung trägt die Acrylauflage – ihre Ausschnitte werden nach der Gravur geschnitten.
+ for(const material of [{kind:'steel'},{kind:'slate'},undefined])assert.equal(orderHoleLines(art(material,true)),'cut','Funkklingel '+JSON.stringify(material));
+ assert.equal(orderHoleLines({}),'contour');assert.equal(orderHoleLines({manifest:null,doorbellLayers:null}),'contour');
+ // Seite = Plattenmaß: sonst das ganze Format; bei der Funkklingel die Acrylauflage (Lage und Maß im gemeinsamen Format).
+ const overlay={doorbellLayers:{acrylicBoundsMm:{x:0,y:10,width:160,height:260,thicknessMm:3}},manifest:{product:{material:{kind:'steel'}}}};
+ assert.deepEqual(orderPlate(overlay),{x:0,y:10,width:160,height:260});assert.equal(orderPlate(art({kind:'acrylic'})),null);assert.equal(orderPlate({}),null);assert.equal(orderPlate({doorbellLayers:{}}),null);
+ assert.deepEqual(orderEngravingFiles(overlay),{holes:'cut',plate:{x:0,y:10,width:160,height:260}});assert.deepEqual(orderEngravingFiles(art({kind:'acrylic'})),{holes:'cut'});assert.deepEqual(orderEngravingFiles(art({id:'slate'})),{holes:'contour'});
+ // Die Regel steht nur in print-delivery.mjs: Die Ausgaben reichen ihr Ergebnis durch, der Worker zeichnet, was er bekommt.
+ const read=name=>fs.readFileSync(new URL('./'+name,import.meta.url),'utf8');
+ for(const name of ['acrylic-engraving-proof.mjs','form-engraving-proof.mjs']){const source=read(name);assert.match(source,/orderEngravingFiles\(/,name);assert.doesNotMatch(source,/'cut'|'contour'|'omit'|#0000ff|#ff0000/,name+' kennt weder die Rollen noch die Farben');}
+ const worker=read('form-engraving-worker.py');assert.doesNotMatch(worker.replace(/^#.*$/gm,''),/acrylic|Acryl|material\b.*holes/,'der Worker entscheidet nicht nach Material');
+ for(const name of ['acrylic-print-proof.mjs','form-print-proof.mjs','form-print-worker.py'])assert.doesNotMatch(read(name),/orderHoleLines|#0000ff|#ff0000|aussenkontur|03 Gravur/,name+': Blau und Rot nur in Gravurdateien');
+});
+
+// Synthetische Druckdaten wie in print-delivery-vector.test.mjs: Kontur mit Bohrloch (links oben), Schriftfelder, Farbe und Weiß nur
+// in den linken acht Spalten – jede Spiegelung fällt auf. Wie der Druck-Worker (form-print-worker.py) liefert `printInput` bei
+// gespiegeltem Profil die Pixelfelder zeilenweise gespiegelt; Pfade und Schrift bleiben seitenrichtig und werden in printPDF gespiegelt.
 const cutPath='0 0 m 20 0 l 20 30 l 0 30 l h\n4 4 m 6 4 l 6 6 l 4 6 l h',glyph=(x,y)=>`${x} ${y} m ${x+2} ${y} l ${x+2} ${y+3} l ${x} ${y+3} l h`;
-function printInput(options){
- const width=20,height=30,alpha=new Uint8Array(width*height),rgb=new Uint8Array(width*height*3);
- return {settings:exportSettings({width,height},options),pixels:{width,height,rgb,alpha,whiteAlpha:alpha,whiteAllowed:new Uint8Array(width*height).fill(255)},paths:{cut:cutPath,color:cutPath,white:cutPath},artwork:[{type:'text',paths:[{path:glyph(2,10),rgb:[0,0,0]},{path:glyph(5,10),rgb:[0,0,0]}]},{type:'text',paths:[{path:glyph(10,20),rgb:[120,50,30]}]}]};
+const flippedRows=(source,width,height,channels)=>{const out=new Uint8Array(source.length);for(let y=0;y<height;y++)for(let x=0;x<width;x++)for(let c=0;c<channels;c++)out[(y*width+width-1-x)*channels+c]=source[(y*width+x)*channels+c];return out;};
+function printInput(options,{artwork=true}={}){
+ const width=20,height=30,alpha=new Uint8Array(width*height),rgb=new Uint8Array(width*height*3),whiteAlpha=new Uint8Array(width*height),whiteAllowed=new Uint8Array(width*height).fill(255);
+ for(let y=0;y<height;y++)for(let x=0;x<8;x++){const i=y*width+x;alpha[i]=whiteAlpha[i]=255;rgb[i*3]=255;}
+ const settings=exportSettings({width,height},options),flip=(a,channels)=>settings.mirror?flippedRows(a,width,height,channels):a;
+ return {settings,pixels:{width,height,rgb:flip(rgb,3),alpha:flip(alpha,1),whiteAlpha:flip(whiteAlpha,1),whiteAllowed:flip(whiteAllowed,1)},paths:{cut:cutPath,color:cutPath,white:cutPath},...(artwork?{artwork:[{type:'text',paths:[{path:glyph(2,10),rgb:[0,0,0]},{path:glyph(5,10),rgb:[0,0,0]}]},{type:'text',paths:[{path:glyph(10,20),rgb:[120,50,30]}]}]}:{})};
 }
-test('Druck: die Druckdatei bleibt Byte für Byte gleich; die „PDF“ der Bestellansicht ist sie mit der Schnittlinie als Haarlinie – eine Fassung ohne Schnittlinie entsteht nicht',async()=>{
- for(const profile of ['roland','mimaki'])for(const mirror of [false,true])for(const bleedMm of [0,1]){
-  const options={profile,mirror,bleedMm},before=await printDelivery(printInput(options)),result=await printDelivery(printInput(options),{orderFiles:true}),label=JSON.stringify(options);
-  assert.equal(before.order,undefined,'ohne Schalter entsteht nichts Neues');assert.deepEqual(result.pdf,before.pdf,label);assert.deepEqual(result.downloads,before.downloads,label);
-  assert.equal(result.extras.length,before.extras.length);for(const [i,e] of result.extras.entries())assert.deepEqual(Buffer.from(await e.blob.arrayBuffer()),Buffer.from(await before.extras[i].blob.arrayBuffer()));
-  assert.deepEqual(Object.keys(result.order),['pdf'],'nur die Fassung mit Kontur');
-  const main=inspect(result.pdf),order=inspect(result.order.pdf),page=[20+2*bleedMm,30+2*bleedMm];
-  for(const info of [main,order]){assert.equal(info.repaired,false);assert.deepEqual([info.widthMm,info.heightMm],page,label);assert.equal(info.fonts,0);assert.equal(info.pages,1);}
-  // Derselbe Inhalt wie die Druckdatei – Ebenen, Sonderfarben, Farbe und Weiß – und genau eine Schnittlinie der Breite 0 auf
-  // demselben Pfad wie in der Druckdatei (dort 0,05 mm).
-  assert.equal(order.cutSpot,true);assert.equal(order.whiteSpot,main.whiteSpot);assert.deepEqual(order.layers,main.layers);assert.ok(order.layers.includes('CutContour'));assert.deepEqual(order.images,main.images);
-  assert.deepEqual(withoutLayer(order,'CutContour'),withoutLayer(main,'CutContour'),label);
-  const cut=order.drawings.filter(d=>d.layer==='CutContour'),existing=main.drawings.filter(d=>d.layer==='CutContour');
-  assert.equal(cut.length,1);assert.equal(existing.length,1);assert.equal(cut[0].width,0,'Haarlinie: Breite 0');assert.ok(Math.abs(existing[0].width-.05*72/25.4)<1e-4,'bestehende Druckdatei: 0,05 mm');
-  assert.equal(cut[0].type,'s');assert.deepEqual(cut[0].points,existing[0].points,label);assert.deepEqual(cut[0].rect,existing[0].rect);assert.deepEqual(cut[0].color,existing[0].color);
+test('Druck: die Druckdatei bleibt Byte für Byte gleich; die „PDF“ der Bestellansicht ist nie gespiegelt, zeigt den Druck (Farbe über Weiß) und führt die Schnittkontur als Linie von 0,001 mm in CutContour',async()=>{
+ for(const profile of ['roland','mimaki'])for(const bleedMm of [0,1])for(const artwork of [true,false]){
+  const orders=[];
+  for(const mirror of [false,true]){
+   const options={profile,mirror,bleedMm},before=await printDelivery(printInput(options,{artwork})),result=await printDelivery(printInput(options,{artwork}),{orderFiles:true}),label=JSON.stringify({...options,artwork});
+   assert.equal(before.order,undefined,'ohne Schalter entsteht nichts Neues');assert.deepEqual(result.pdf,before.pdf,label);assert.deepEqual(result.downloads,before.downloads,label);
+   assert.equal(result.extras.length,before.extras.length);for(const [i,e] of result.extras.entries())assert.deepEqual(Buffer.from(await e.blob.arrayBuffer()),Buffer.from(await before.extras[i].blob.arrayBuffer()));
+   assert.deepEqual(Object.keys(result.order),['pdf'],'genau eine Fassung');
+   const main=inspect(result.pdf),order=inspect(result.order.pdf),page=[20+2*bleedMm,30+2*bleedMm],roland=profile==='roland';
+   for(const info of [main,order]){assert.equal(info.repaired,false);assert.deepEqual([info.widthMm,info.heightMm],page,label);assert.equal(info.fonts,0);assert.equal(info.pages,1);}
+   // Aufbau wie die Druckdatei – Ebenen in der Reihenfolge Farbe, Weiß, Schnittkontur; Sonderfarben wie dort.
+   const cut=checkPrintPdf(order,{widthMm:page[0],heightMm:page[1],white:roland},label);assert.deepEqual(order.layers,main.layers,label);assert.equal(order.whiteSpot,main.whiteSpot);
+   const existing=main.drawings.filter(d=>d.layer==='CutContour');assert.equal(existing.length,1);assert.ok(Math.abs(existing[0].width-.05*MM)<1e-4,'bestehende Druckdatei: 0,05 mm');
+   // Seitenrichtig: das Bohrloch der Kontur liegt links (4…6 mm), die Schrift bei 2…4 mm – in der gespiegelten Druckdatei rechts.
+   assert.ok(near(cut.rect,[bleedMm,bleedMm,20+bleedMm,30+bleedMm]),label);assert.ok(cut.points.some(([x,y])=>near([x,y],[4+bleedMm,4+bleedMm])),label+' Bohrloch links');assert.ok(!cut.points.some(([x])=>Math.abs(x-(14+bleedMm))<=.02),label);
+   sameShape(points([cut]),mirror?mirrored(points(existing),page[0]):points(existing),label+' Schnittkontur');
+   if(mirror)assert.ok(existing[0].points.some(([x,y])=>near([x,y],[14+bleedMm,4+bleedMm])),label+' Druckdatei bleibt gespiegelt');
+   else{assert.deepEqual(withoutLayer(order,'CutContour'),withoutLayer(main,'CutContour'),label+' ungespiegelt: derselbe Inhalt wie die Druckdatei');assert.deepEqual(order.images,main.images);assert.deepEqual({...cut,width:null},{...existing[0],width:null});}
+   // Der Druck ist beim Öffnen zu sehen: Weiß liegt unter der Farbe, nicht darüber.
+   if(artwork){const [ink,paper]=look(result.order.pdf,[[11+bleedMm,21.5+bleedMm],[17+bleedMm,25+bleedMm]]).points;assert.ok(ink[0]<190&&ink[1]<120&&ink[2]<100,label+' Schriftfarbe sichtbar: '+ink);assert.deepEqual(paper,[255,255,255]);}
+   else{const seen=look(result.order.pdf),shown=look(result.pdf);assert.ok(seen.count>100,label+' rote Fläche sichtbar');assert.ok(Math.abs(seen.xMm-(4+bleedMm))<=.6,label+' links: '+seen.xMm);assert.ok(Math.abs(shown.xMm-(mirror?16+bleedMm:4+bleedMm))<=.6,label+' Druckdatei: '+shown.xMm);}
+   orders.push(result.order.pdf);
+  }
+  assert.deepEqual(orders[1],orders[0],'gespiegeltes Profil: dieselbe Bestell-PDF, Byte für Byte – '+JSON.stringify({profile,bleedMm,artwork}));
  }
 });
 
-test('Gravur-Worker: `auto` wird Vektor ohne Foto, Raster mit Foto oder mit Rasterbild in der Gestaltung; ausdrücklicher Vektor lehnt weiter ab',async()=>{
- const geometry={schema:'gravuru-contour/v1',widthMm:40,heightMm:30,holeCount:1,contours:[{role:'outer',d:'M0 0H40V30H0Z'},{role:'hole',d:'M5 5V8H8V5Z'}]},{png}=seedWorkshop();
- const svg=body=>'<svg xmlns="http://www.w3.org/2000/svg" width="40mm" height="30mm" viewBox="0 0 40 30"><g data-native-design="true">'+body+'</g></svg>';
- const vector=svg('<g data-field="native-0"><path d="M10 10H20V20H10Z" fill="none" stroke="#000000" stroke-width="1"/></g>'),raster=svg('<g data-field="native-0"><image href="data:image/png;base64,'+png+'" x="10" y="10" width="10" height="10"/></g>');
- const run=(source,mode,extra={})=>renderEngraving({svg:source,geometry,settings:{mode,dpi:300,mirror:false},photoFields:[],photos:[],contourStroke:'#000000',...extra});
- const a=await run(vector,'auto');assert.equal(a.mode,'vector');assert.equal(a.pixelWidth,null);
- const plain=inspect(Buffer.from(a.pdf,'base64')),contour=inspect(Buffer.from(a.pdfContour,'base64')),separate=inspect(Buffer.from(a.contour,'base64'));
- assert.equal(plain.images.length,0);assert.deepEqual([plain.widthMm,plain.heightMm,contour.widthMm,contour.heightMm],[40,30,40,30]);
- // Die Gestaltung behält ihre eigene Strichstärke (1 mm); nur die Konturebene ist die Haarlinie.
- assert.deepEqual(withoutLayer(contour,'Kontur'),plain.drawings);assert.ok(Math.abs(plain.drawings[0].width-72/25.4)<1e-3);
- const line=contour.drawings.filter(d=>d.layer==='Kontur');assert.equal(line.length,1);assert.equal(line[0].width,0);assert.equal(line[0].type,'s');assert.deepEqual(contour.layers,['Kontur']);
- assert.deepEqual(line[0].points,separate.drawings[0].points,'deckungsgleich mit der getrennten Konturdatei');assert.deepEqual(line[0].rect,separate.drawings[0].rect);
- assert.ok(Math.abs(separate.drawings[0].width-.05*72/25.4)<1e-4,'getrennte Konturdatei bleibt bei 0,05 mm');
- // Rasterbild ohne Kundenfoto (z. B. eingefärbte Designquelle): Vektor wäre ein Fehlschlag, die Regel nimmt Raster 300 dpi.
- const b=await run(raster,'auto');assert.equal(b.mode,'raster');assert.equal(b.pixelWidth,Math.ceil(40*300/25.4));assert.deepEqual(inspect(Buffer.from(b.pdf,'base64')).images.map(i=>i.colorSpace),['DeviceGray']);
- await assert.rejects(()=>run(raster,'vector'),/Rasterbilder/);
- const explicit=await run(vector,'raster');assert.equal(explicit.mode,'raster');assert.equal(explicit.pixelWidth,Math.ceil(40*300/25.4));
- // Ohne Konturfarbe entsteht keine Datei mit Kontur (seit ENTSCHEIDUNGEN 3.61 nennt jede Ausgabe eine Farbe, auch die der
- // Formprodukte alter Art); eine fremde Farbangabe wird abgelehnt.
- assert.equal((await run(vector,'vector',{contourStroke:undefined})).pdfContour,undefined);await assert.rejects(()=>run(vector,'vector',{contourStroke:'red'}),/Konturfarbe/);
+test('Schnittkontur der Druck-Bestelldatei: nur die Breite der einen Schnittkontur wird 0,001 mm, jedes andere Objekt bleibt Byte für Byte; ein fremder Aufbau wird abgelehnt',async()=>{
+ const input=printInput({profile:'roland'}),pdf=async extra=>Buffer.from(await (await printPDF({...input,...extra})).arrayBuffer());
+ const hairline=await pdf({kind:'combined',cut:'hairline'}),line=await pdf({kind:'combined'}),none=await pdf({kind:'color'}),out=withOrderCutLine(hairline);
+ const a=inspect(hairline),b=inspect(out);assert.equal(b.repaired,false);assert.deepEqual(b.layers,a.layers);assert.deepEqual(b.images,a.images);assert.deepEqual(withoutLayer(b,'CutContour'),withoutLayer(a,'CutContour'));
+ const [before]=a.drawings.filter(d=>d.layer==='CutContour'),[after]=b.drawings.filter(d=>d.layer==='CutContour');
+ assert.equal(before.width,0,'printPDF: Geräte-Haarlinie (Breite 0)');assert.ok(isOrderLine(after),'Bestelldatei: 0,001 mm');assert.deepEqual({...after,width:0},before);
+ // Objekt für Objekt: genau eines ändert sich (der Seiteninhalt).
+ const objects=bytes=>{const text=bytes.toString('latin1');return text.slice(0,text.lastIndexOf('\nxref\n')).split(/\n(?=\d+ 0 obj\n)/);},x=objects(hairline),y=objects(out);
+ assert.equal(y.length,x.length);assert.equal(x.filter((object,i)=>object!==y[i]).length,1);
+ for(const [bytes,message] of [[line,/Schnittkontur nicht genau einmal/],[none,/Schnittkontur nicht genau einmal/],[out,/Schnittkontur nicht genau einmal/],[REFERENCE,/Schnittkontur nicht genau einmal/],[Buffer.from('%PDF-1.7\nkein Aufbau'),/nicht den erwarteten Aufbau/],[hairline.subarray(0,hairline.length-3),/nicht den erwarteten Aufbau/],[Buffer.concat([hairline,Buffer.from('\n')]),/nicht den erwarteten Aufbau/]])
+  assert.throws(()=>withOrderCutLine(bytes),e=>e.status===422&&e.code==='print_delivery'&&message.test(e.message));
 });
 
-test('Gravur: zwei Dateien 1:1, beide mit Kontur; ohne Fertigungsprofil Vektor ohne Foto und Raster 300 dpi mit Foto; Kontur als Haarlinie deckungsgleich',async()=>{
+test('Druck-SVG: die gesicherte Gestaltung plus genau eine Gruppe CutContour mit allen Ringen, Linie 0,001; kein Blau, kein Rot',()=>{
+ const geometry={widthMm:40,heightMm:30,contours:[{role:'outer',d:'M0 0H40V30H0Z'},{role:'hole',d:'M5 5V8H8V5Z'}]},plain='<svg xmlns="http://www.w3.org/2000/svg" width="40mm" height="30mm" viewBox="0 0 40 30"><path d="M1 1H2V2Z" fill="#0000ff"/></svg>';
+ const svg=printSvgWithContour(plain,geometry);checkPrintSvg(svg,{widthMm:40,heightMm:30,geometry,plain});
+ assert.ok(svg.endsWith('<g id="CutContour" data-layer="CutContour" fill="none" stroke="#ff00ff" stroke-width="0.001"><path d="M0 0H40V30H0Z Z M5 5V8H8V5Z Z"/></g></svg>'));
+ assert.equal(printSvgWithContour(plain+'\n',geometry).replace(/\n$/,''),svg);
+ for(const broken of ['<svg></svg> <!-- x -->','<svg>','kein SVG'])assert.throws(()=>printSvgWithContour(broken,geometry),/nicht mit Kontur/);
+});
+
+test('Gravur-Worker: Bestelldateien im Aufbau der Musterdatei – Ebene „03 Gravur“ in reinem Schwarz, Außenkontur blau, Innenkonturen nach `orderFiles.holes`, nie gespiegelt; `auto` und die Dateien der „Ausgaben“ wie bisher',async()=>{
+ const geometry={schema:'gravuru-contour/v1',widthMm:40,heightMm:30,holeCount:1,contours:[{role:'outer',d:'M0 0H40V30H0Z'},{role:'hole',d:'M5 5V8H8V5Z'}]},{png}=seedWorkshop();
+ const svg=body=>'<svg xmlns="http://www.w3.org/2000/svg" width="40mm" height="30mm" viewBox="0 0 40 30"><g data-native-design="true">'+body+'</g></svg>';
+ // Links der Mitte: eine schwarze Linie von 1 mm, eine Fläche in Vorschaufarbe (kein Maschinenwert), darin eine weiße (keine Gravur).
+ const vector=svg('<g data-field="native-0"><path d="M10 10H20V20H10Z" fill="none" stroke="#000000" stroke-width="1"/><path d="M3 22H9V27H3Z" fill="#b56943"/><path d="M4 23H6V25H4Z" fill="#ffffff"/></g>'),raster=svg('<g data-field="native-0"><image href="data:image/png;base64,'+png+'" x="10" y="10" width="10" height="10"/></g>');
+ const run=(source,mode,extra={})=>renderEngraving({svg:source,geometry,settings:{mode,dpi:300,mirror:false},photoFields:[],photos:[],orderFiles:{holes:'cut'},...extra});
+ const a=await run(vector,'auto');assert.equal(a.mode,'vector');assert.equal(a.pixelWidth,null);
+ // Die Dateien der Seite „Ausgaben“: Gravur-PDF ohne Ebene und ohne Kontur, getrennte Konturdatei 0,05 mm; die Vorschaufarbe bleibt dort ein eigener Wert.
+ const plain=inspect(Buffer.from(a.pdf,'base64')),separate=inspect(Buffer.from(a.contour,'base64'));
+ assert.equal(plain.images.length,0);assert.deepEqual([plain.widthMm,plain.heightMm,separate.widthMm,separate.heightMm],[40,30,40,30]);assert.deepEqual(plain.layers,[]);assert.equal(plain.drawings.length,3);
+ assert.ok(Math.abs(plain.drawings[0].width-MM)<1e-3);assert.ok(plain.drawings.some(d=>d.fill&&!same(d.fill,BLACK)&&!same(d.fill,WHITE)),'Gravur-PDF der „Ausgaben“ führt die Vorschaufarbe weiter als eigenen Wert');
+ assert.equal(separate.drawings.length,1);assert.ok(Math.abs(separate.drawings[0].width-.05*MM)<1e-4,'getrennte Konturdatei bleibt bei 0,05 mm');
+ for(const holes of ['cut','contour','omit']){
+  const r=holes==='cut'?a:await run(vector,'auto',{orderFiles:{holes}}),{content,lines}=checkEngravingPdf(inspect(Buffer.from(r.orderPdf,'base64')),{widthMm:40,heightMm:30,holes},holes);
+  assert.equal(lines.length,holes==='omit'?1:2,holes);if(holes!=='omit')assert.ok(near(lines[1].rect,[5,5,8,8]),holes);
+  // Inhalt: dieselbe Lage und dieselbe Strichstärke wie die Gestaltung (1 mm bleibt 1 mm), jede Farbe reines Schwarz, Weiß bleibt Weiß.
+  sameShape(points(content),points(plain.drawings),holes);assert.equal(content.length,3);assert.ok(Math.abs(content[0].width-MM)<1e-3,'Strichstärke der Gestaltung');
+  assert.deepEqual(content.map(d=>d.color||d.fill),[BLACK,BLACK,WHITE],holes);
+  checkEngravingSvg(r.orderSvg,{widthMm:40,heightMm:30,geometry,holes},holes);
+  // Die Angabe ändert nur die Bestelldateien.
+  assert.equal(r.svg,a.svg);assert.deepEqual(inspect(Buffer.from(r.pdf,'base64')).drawings,plain.drawings);assert.deepEqual(inspect(Buffer.from(r.contour,'base64')).drawings,separate.drawings);
+ }
+ // Die Konturlinien stehen wie in der Musterdatei als Pfadoperatoren direkt im Seiteninhalt (contour-pdf-path.mjs setzt die Befehle
+ // des Konturformats um). Bögen, relative Befehle, H/V, Q/T, C/S und ein nicht geschlossener Ring ergeben dieselbe Linie wie die
+ // getrennte Konturdatei, die cairo unabhängig davon aus demselben `d` zeichnet – als Kurven, nicht als Vieleck.
+ const curved={...geometry,holeCount:2,contours:[{role:'outer',d:'M2 0H38A2 2 0 0 1 40 2V28A2 2 0 0 1 38 30H2A2 2 0 0 1 0 28V2A2 2 0 0 1 2 0Z'},{role:'hole',d:'M10 10q2 -2 4 0t4 0v4h-8z'},{role:'hole',d:'M24 18c1 -2 3 -2 4 0s3 2 4 0l0 4h-8'}]};
+ const curvedRun=await run(vector,'auto',{geometry:curved}),curvedLines=checkEngravingPdf(inspect(Buffer.from(curvedRun.orderPdf,'base64')),{widthMm:40,heightMm:30,holes:'cut'},'Kurven').lines;
+ sameOutline(curvedLines,inspect(Buffer.from(curvedRun.contour,'base64')).drawings,'Konturlinien deckungsgleich mit der getrennten Konturdatei');
+ assert.ok(curvedLines.every(d=>d.outline.some(line=>line.length>2)),'Kurven bleiben Kurven');assert.equal(curvedLines.length,2);assert.ok(near(curvedLines[0].rect,[0,0,40,30]));assert.ok(Math.abs(curvedLines[1].rect[0]-10)<=.02&&Math.abs(curvedLines[1].rect[2]-32)<=.02,'beide Innenkonturen in einer Linie: '+curvedLines[1].rect);
+ await assert.rejects(()=>run(vector,'auto',{geometry:{...geometry,contours:[{role:'outer',d:'M0 0K5 5Z'}]}}),/Kontur lässt sich nicht in die Bestelldatei übernehmen/);
+ // Die SVG trägt die Farben der Gestaltung unverändert (dort ist Schwarz die Angabe der Gestaltung selbst); Inhalt = Fertigungs-SVG.
+ assert.equal(checkEngravingSvg(a.orderSvg,{widthMm:40,heightMm:30,geometry,holes:'cut'}),svgInner(a.svg));
+ // Ohne die Angabe entsteht nichts Neues; eine fremde Angabe und eine Kontur ohne eindeutige Außenform werden abgelehnt.
+ const none=await run(vector,'auto',{orderFiles:undefined});assert.equal(none.orderPdf,undefined);assert.equal(none.orderSvg,undefined);assert.equal(none.svg,a.svg);assert.deepEqual(inspect(Buffer.from(none.pdf,'base64')).drawings,plain.drawings);
+ await assert.rejects(()=>run(vector,'auto',{orderFiles:{holes:'red'}}),/Innenkonturen der Bestelldatei/);await assert.rejects(()=>run(vector,'auto',{orderFiles:{holes:'cut',mirror:true}}),/Angabe zur Bestelldatei/);await assert.rejects(()=>run(vector,'auto',{orderFiles:'cut'}),/Angabe zur Bestelldatei/);
+ await assert.rejects(()=>run(vector,'auto',{geometry:{...geometry,contours:[...geometry.contours].reverse()}}),/eindeutige Außenform/);
+ // Nie gespiegelt: Mit gespiegeltem Fertigungsprofil ändern sich Gravur-PDF, Konturdatei und Fertigungs-SVG – die Bestelldateien nicht.
+ const m=await run(vector,'auto',{settings:{mode:'auto',dpi:300,mirror:true}}),mirroredPlain=inspect(Buffer.from(m.pdf,'base64'));
+ sameShape(points(mirroredPlain.drawings),mirrored(points(plain.drawings),40),'Gravur-PDF gespiegelt');assert.ok(m.svg.includes('<g transform="translate(40 0) scale(-1 1)">'));assert.notEqual(m.svg,a.svg);
+ assert.equal(m.orderSvg,a.orderSvg,'SVG der Bestellansicht: unabhängig von der Spiegelung');assert.ok(!m.orderSvg.includes('scale(-1 1)'));
+ assert.deepEqual(inspect(Buffer.from(m.orderPdf,'base64')).drawings,inspect(Buffer.from(a.orderPdf,'base64')).drawings,'PDF der Bestellansicht: unabhängig von der Spiegelung');
+ // Rasterbild ohne Kundenfoto (z. B. eingefärbte Designquelle): Vektor wäre ein Fehlschlag, die Regel nimmt Raster 300 dpi. Die
+ // Bestell-PDF trägt dieselben Pixel als Graustufenbild in der Ebene, darüber die Konturen als Vektor.
+ const b=await run(raster,'auto');assert.equal(b.mode,'raster');assert.equal(b.pixelWidth,Math.ceil(40*300/25.4));
+ const rasterPlain=inspect(Buffer.from(b.pdf,'base64')),rasterOrder=inspect(Buffer.from(b.orderPdf,'base64'));assert.deepEqual(rasterPlain.images.map(i=>[i.colorSpace,i.layered]),[['DeviceGray',false]]);
+ assert.equal(checkEngravingPdf(rasterOrder,{widthMm:40,heightMm:30,holes:'cut',raster:true},'Raster').lines.length,2);assert.equal(rasterOrder.images[0].sha256,rasterPlain.images[0].sha256,'dieselben Pixel wie die Gravurseite');
+ const bm=await run(raster,'auto',{settings:{mode:'auto',dpi:300,mirror:true}}),flippedPlain=inspect(Buffer.from(bm.pdf,'base64')),flippedOrder=inspect(Buffer.from(bm.orderPdf,'base64'));
+ assert.notEqual(flippedPlain.images[0].sha256,flippedPlain.images[0].mirroredSha256,'das Prüfbild ist nicht symmetrisch');
+ assert.equal(flippedOrder.images[0].sha256,flippedPlain.images[0].mirroredSha256,'gespiegelte Gravurseite: die Bestell-PDF trägt ihre Pixel seitenrichtig');checkEngravingPdf(flippedOrder,{widthMm:40,heightMm:30,holes:'cut',raster:true},'Raster gespiegelt');assert.equal(bm.orderSvg,b.orderSvg);
+ await assert.rejects(()=>run(raster,'vector'),/Rasterbilder/);
+ const explicit=await run(vector,'raster');assert.equal(explicit.mode,'raster');assert.equal(explicit.pixelWidth,Math.ceil(40*300/25.4));checkEngravingPdf(inspect(Buffer.from(explicit.orderPdf,'base64')),{widthMm:40,heightMm:30,holes:'cut',raster:true},'Raster gewählt');
+ // Seite = Plattenmaß: Ist die Platte kleiner als das Format (Acrylauflage der Funkklingel), wird sie die Seite – 1:1, der Inhalt
+ // um ihre Lage verschoben, die Außenkontur auf dem Seitenrand. Die Dateien der „Ausgaben“ bleiben im Format.
+ const inset={...geometry,contours:[{role:'outer',d:'M4 2H34V28H4Z'},{role:'hole',d:'M9 7V10H12V7Z'}]},plate={x:4,y:2,width:30,height:26},shifted=list=>list.map(point=>{const [x,y]=point.split(' ').map(Number);return Number((x-4).toFixed(2))+' '+Number((y-2).toFixed(2));});
+ const whole=await run(vector,'auto',{geometry:inset}),cropped=await run(vector,'auto',{geometry:inset,orderFiles:{holes:'cut',plate}}),croppedPdf=inspect(Buffer.from(cropped.orderPdf,'base64'));
+ assert.deepEqual([inspect(Buffer.from(whole.orderPdf,'base64')).widthMm,inspect(Buffer.from(whole.orderPdf,'base64')).heightMm],[40,30],'ohne Angabe: das ganze Format');
+ const croppedParts=checkEngravingPdf(croppedPdf,{widthMm:30,heightMm:26,holes:'cut'},'Platte');assert.ok(near(croppedParts.lines[1].rect,[5,5,8,8]));
+ sameShape(points(croppedParts.content),shifted(points(checkEngravingPdf(inspect(Buffer.from(whole.orderPdf,'base64')),{widthMm:40,heightMm:30,holes:'cut',outer:[4,2,34,28]},'Format').content)),'Inhalt um die Lage der Platte verschoben');
+ checkEngravingSvg(cropped.orderSvg,{widthMm:40,heightMm:30,geometry:inset,holes:'cut',plate},'Platte');assert.equal(cropped.svg,whole.svg);assert.deepEqual(inspect(Buffer.from(cropped.pdf,'base64')).drawings,inspect(Buffer.from(whole.pdf,'base64')).drawings);
+ assert.equal((await run(vector,'auto',{geometry:inset,orderFiles:{holes:'cut',plate,}, settings:{mode:'auto',dpi:300,mirror:true}})).orderSvg,cropped.orderSvg,'Platte: unabhängig von der Spiegelung');
+ const full=await run(vector,'auto',{orderFiles:{holes:'cut',plate:{x:0,y:0,width:40,height:30}}});assert.equal(full.orderSvg,a.orderSvg,'Platte = Format: wie ohne Angabe');
+ const croppedRaster=inspect(Buffer.from((await run(raster,'auto',{geometry:inset,orderFiles:{holes:'cut',plate}})).orderPdf,'base64'));checkEngravingPdf(croppedRaster,{widthMm:30,heightMm:26,holes:'cut',raster:true},'Platte, Raster');
+ assert.deepEqual([croppedRaster.images[0].width,croppedRaster.images[0].height],[403-47,332-23],'Raster auf ganze Pixel um die Platte beschnitten, nicht umgerechnet');
+ // Lage 1:1: Die dunkle Bildhälfte (im Format bei 10…15 mm) liegt auf der Seite der Platte bei 6…11 mm.
+ const [dark,light,paper]=look(Buffer.from((await run(raster,'auto',{geometry:inset,orderFiles:{holes:'cut',plate}})).orderPdf,'base64'),[[8.5,13],[13.5,13],[3,13]]).points;assert.ok(dark[0]<120,'dunkel: '+dark);assert.ok(light[0]>240&&paper[0]>240);
+ for(const bad of [{x:4,y:2,width:40,height:26},{x:-1,y:2,width:30,height:26},{x:4,y:2,width:0,height:26},{x:4,y:2,width:30},{x:'4',y:2,width:30,height:26},[4,2,30,26],'A4'])await assert.rejects(()=>run(vector,'auto',{orderFiles:{holes:'cut',plate:bad}}),/Plattenmaß der Bestelldatei/,JSON.stringify(bad));
+ // Führt die Gestaltung zufällig eine Kennung der Bestelldatei, weicht die Ebene aus; die Ausgabe scheitert daran nicht.
+ const clash=await run(svg('<g id="gravur"><path id="aussenkontur" d="M10 10H20V20H10Z" fill="#000000"/></g>'),'vector',{orderFiles:{holes:'contour'}});
+ assert.match(clash.orderSvg,/<g id="gravur-2" data-layer="03 Gravur" /);assert.match(clash.orderSvg,/<g id="aussenkontur-2" data-layer="Außenkontur \(Anlegen\)" /);assert.match(clash.orderSvg,/<g id="innenkonturen" data-layer="Innenkonturen \(Anlegen\)" /);
+ for(const id of ['gravur','gravur-2','aussenkontur','aussenkontur-2','innenkonturen'])assert.equal(clash.orderSvg.split('id="'+id+'"').length,2,id);
+ checkEngravingPdf(inspect(Buffer.from(clash.orderPdf,'base64')),{widthMm:40,heightMm:30,holes:'contour'},'Kennung belegt');
+});
+
+test('Gravur, natives Produkt: zwei Dateien 1:1 im Aufbau der Musterdatei – nie gespiegelt, auch wenn die Gravur-PDF der „Ausgaben“ nach Profil gespiegelt ist; mit Foto Raster in der Ebene, Kontur als Vektor',async()=>{
  const noPhoto=(await nativeBundle({engraving:true,photo:false})).bundle,withPhoto=(await nativeBundle({engraving:true,photo:true})).bundle;
- // Ohne Foto, gespiegelt wie über die Werkstatt (Acrylgravur von hinten): Regel → Vektor.
- const v=await createAcrylicEngravingProof(noPhoto.package,noPhoto.manifest.packageSha256,{mirror:true}),two=twoFiles(v);
- assert.deepEqual(v.metadata.settings,{mode:'vector',dpi:300,mirror:true});assert.deepEqual(v.metadata.modeRule.applied,'vector');assert.equal(v.metadata.pixelWidth,null);assert.equal(v.metadata.schema,ACRYLIC_ENGRAVING_RECIPE);
- assert.deepEqual(Object.fromEntries(ORDER_FORMATS.map(f=>[f,two[f].name])),{pdf:'gravur-1zu1-mit-kontur.pdf',svg:'gravur-1zu1-mit-kontur.svg'});
- // Die Dateien der Seite „Ausgaben“ bleiben im Paket: Gravur-PDF, getrennte Konturdatei, Fertigungs-SVG.
- const base=two.files.get('technische-gravurpruefung.pdf'),baseSvg=two.files.get('gravur-fertigung.svg');
- assert.deepEqual(base,v.pdf);assert.equal(v.metadata.pdfSha256,digest(base));assert.equal(v.metadata.productionSvg[0].sha256,digest(baseSvg));
- const plain=inspect(base),contour=inspect(two.pdf.bytes),separate=inspect(two.files.get('gravur-kontur-1zu1.pdf'));
- for(const info of [plain,contour,separate]){assert.deepEqual([info.widthMm,info.heightMm],[150,200]);assert.equal(info.fonts,0);assert.equal(info.images.length,0);assert.equal(info.pages,1);}
- assert.ok(plain.drawings.length>1);assert.deepEqual(withoutLayer(contour,'Kontur'),plain.drawings,'derselbe Inhalt wie die Gravur-PDF');
- const line=contour.drawings.filter(d=>d.layer==='Kontur');assert.equal(line.length,1);assert.equal(line[0].width,0,'Haarlinie: Breite 0');assert.deepEqual(line[0].color,[0,0,0]);assert.equal(line[0].fill,null);
- assert.equal(separate.drawings.length,1);assert.deepEqual(line[0].points,separate.drawings[0].points,'deckungsgleich mit gravur-kontur-1zu1.pdf');assert.deepEqual(line[0].rect,separate.drawings[0].rect);
- assert.equal(v.metadata.contourSha256,digest(two.files.get('gravur-kontur-1zu1.pdf')));
- const artwork=JSON.parse(two.files.get('gravurpruefung.json'));assert.deepEqual(artwork.orderFiles,v.metadata.orderFiles);
- // Die Kontur der SVG ist die gesicherte Geometrie des Prüfstands (unabhängig gelesen), gespiegelt wie die Gravur.
- const {geometry}=await acrylicArtwork(noPhoto.package,noPhoto.manifest.packageSha256,{engraving:true});assert.deepEqual([geometry.widthMm,geometry.heightMm],[150,200]);
- checkSvg(two,{widthMm:150,heightMm:200,geometry,stroke:'#000000',mirror:true,plain:baseSvg});
- // Ausgabe des Stands 3.57 (Dateinachweis v1 mit vier Dateien, hier aus denselben Paketdateien nachgestellt): Aus ihr kommt nur
- // noch die Fassung mit Kontur – sofort, ohne Neuaufbau. Die Datei ohne Kontur wird nicht mehr ausgeliefert.
- const current=v.metadata.orderFiles.surfaces[0].files,v1={...v,metadata:{...v.metadata,schema:'gravuru-acrylic-engraving-proof/v7',orderFiles:{schema:'gravuru-order-files/v1',surfaces:[{id:'front',files:{pdf:{name:'technische-gravurpruefung.pdf',sha256:digest(base)},'pdf-contour':current.pdf,svg:{name:'gravur-fertigung.svg',sha256:digest(baseSvg)},'svg-contour':current.svg}}]}}};
- assert.deepEqual(orderFileSets(v1.metadata),[{id:'front',formats:['pdf','svg']}]);
- assert.deepEqual(orderDownload(v1,'pdf').bytes,two.pdf.bytes);assert.equal(orderDownload(v1,'pdf').suffix,'gravur-1zu1-mit-kontur.pdf');assert.equal(orderDownload(v1,'pdf').sha256,current.pdf.sha256);
- assert.deepEqual(orderDownload(v1,'svg').bytes,two.svg.bytes);assert.equal(orderDownload(v1,'svg').mime,'image/svg+xml');
- assert.notDeepEqual(orderDownload(v1,'pdf').bytes,base,'nicht die Gravur-PDF ohne Kontur');assert.notDeepEqual(orderDownload(v1,'svg').bytes,baseSvg);
- for(const format of ['pdf-contour','svg-contour'])assert.throws(()=>orderDownload(v1,format),{status:422,message:ORDER_FORMAT_REQUIRED});
- // Fehlt im alten Nachweis die Fassung mit Kontur, fehlt die Datei – die Fassung ohne Kontur rückt nicht nach.
- const partial=structuredClone(v1.metadata);delete partial.orderFiles.surfaces[0].files['pdf-contour'];
- assert.deepEqual(orderFileSets(partial),[{id:'front',formats:['svg']}]);assert.throws(()=>orderDownload({...v1,metadata:partial},'pdf'),{status:409,code:'order_file_missing'});
- // Mit Foto: Regel → Raster 300 dpi; die „PDF“ trägt dasselbe Graustufenbild und darüber die Haarlinie.
- const r=await createAcrylicEngravingProof(withPhoto.package,withPhoto.manifest.packageSha256),photo=twoFiles(r);
- assert.deepEqual(r.metadata.settings,{mode:'raster',dpi:300,mirror:false});assert.equal(r.metadata.modeRule.applied,'raster');assert.equal(r.metadata.pixelWidth,Math.ceil(150*300/25.4));assert.equal(r.metadata.pixelHeight,Math.ceil(200*300/25.4));
- const rp=inspect(photo.files.get('technische-gravurpruefung.pdf')),rc=inspect(photo.pdf.bytes);assert.deepEqual(photo.files.get('technische-gravurpruefung.pdf'),r.pdf);assert.deepEqual(rp.images.map(i=>[i.colorSpace,i.width,i.height]),[['DeviceGray',1772,2363]]);assert.deepEqual(rc.images,rp.images);
- assert.deepEqual([rc.widthMm,rc.heightMm],[150,200]);assert.equal(rp.drawings.length,0);assert.deepEqual(rc.drawings.map(d=>[d.layer,d.width,d.type]),[['Kontur',0,'s']]);
- assert.deepEqual(rc.drawings[0].points,inspect(photo.files.get('gravur-kontur-1zu1.pdf')).drawings[0].points);
- checkSvg(photo,{widthMm:150,heightMm:200,geometry,stroke:'#000000',plain:photo.files.get('gravur-fertigung.svg')});
+ const {geometry}=await acrylicArtwork(noPhoto.package,noPhoto.manifest.packageSha256,{engraving:true});assert.deepEqual([geometry.widthMm,geometry.heightMm,geometry.contours.length],[150,200,1]);
+ assert.equal(noPhoto.manifest.product.material.kind,'acrylic');
+ const made={};
+ for(const mirror of [false,true]){
+  // Ohne Foto und ohne Fertigungsprofil: Regel → Vektor. `mirror:true` ist der Stand über die Werkstatt (Acrylgravur von hinten).
+  const v=await createAcrylicEngravingProof(noPhoto.package,noPhoto.manifest.packageSha256,{mirror}),two=twoFiles(v),label='gespiegelt: '+mirror;made[mirror]=two;
+  assert.deepEqual(v.metadata.settings,{mode:'vector',dpi:300,mirror});assert.deepEqual(v.metadata.modeRule.applied,'vector');assert.equal(v.metadata.pixelWidth,null);assert.equal(v.metadata.schema,ACRYLIC_ENGRAVING_RECIPE);
+  assert.deepEqual(Object.fromEntries(ORDER_FORMATS.map(f=>[f,two[f].name])),{pdf:'gravur-1zu1-mit-kontur.pdf',svg:'gravur-1zu1-mit-kontur.svg'});
+  // Die Dateien der Seite „Ausgaben“ bleiben im Paket: Gravur-PDF, getrennte Konturdatei, Fertigungs-SVG – nach Profil gespiegelt.
+  const base=two.files.get('technische-gravurpruefung.pdf'),baseSvg=two.files.get('gravur-fertigung.svg');
+  assert.deepEqual(base,v.pdf);assert.equal(v.metadata.pdfSha256,digest(base));assert.equal(v.metadata.productionSvg[0].sha256,digest(baseSvg));assert.equal(v.metadata.productionSvg[0].mirror,mirror);assert.equal(v.metadata.contourSha256,digest(two.files.get('gravur-kontur-1zu1.pdf')));
+  const plain=inspect(base),separate=inspect(two.files.get('gravur-kontur-1zu1.pdf'));
+  for(const info of [plain,separate]){assert.deepEqual([info.widthMm,info.heightMm],[150,200]);assert.equal(info.fonts,0);assert.equal(info.images.length,0);assert.equal(info.pages,1);assert.deepEqual(info.layers,[]);}
+  assert.ok(plain.drawings.length>1);assert.equal(separate.drawings.length,1);assert.ok(Math.abs(separate.drawings[0].width-.05*MM)<1e-4);
+  // „PDF“: Aufbau der Musterdatei; die Platte hat keine Innenkontur → genau eine blaue Linie auf dem Plattenrand.
+  const {content,lines}=checkEngravingPdf(inspect(two.pdf.bytes),{widthMm:150,heightMm:200,holes:'none'},label);assert.equal(lines.length,1);
+  // Deckungsgleich mit der getrennten Konturdatei (dort zeichnet cairo den Pfad, hier stehen die Pfadoperatoren direkt im Seiteninhalt).
+  sameOutline(lines,separate.drawings,label+' Außenkontur deckungsgleich mit gravur-kontur-1zu1.pdf',mirror?mirrorAt(150):null);assert.deepEqual(lines[0].rect,separate.drawings[0].rect);
+  // Inhalt seitenrichtig: ungespiegelt derselbe wie die Gravur-PDF, gespiegelt deren Spiegelbild.
+  assert.equal(content.length,plain.drawings.length,label);sameShape(points(content),mirror?mirrored(points(plain.drawings),150):points(plain.drawings),label+' Inhalt');
+  if(mirror)assert.throws(()=>sameShape(points(content),points(plain.drawings),''),undefined,'das Prüfmotiv ist nicht symmetrisch');
+  // „SVG“: Gruppe „03 Gravur“ mit dem Inhalt der Fertigungs-SVG (seitenrichtig), danach die blaue Außenkontur der gesicherten Geometrie.
+  const inner=checkEngravingSvg(two.svg.bytes,{widthMm:150,heightMm:200,geometry,holes:'none'},label);
+  if(mirror){assert.ok(baseSvg.toString().includes('<g transform="translate(150 0) scale(-1 1)">'),'die Fertigungs-SVG der „Ausgaben“ bleibt gespiegelt');assert.ok(!two.svg.bytes.toString().includes('scale(-1 1)'));}
+  else assert.equal(inner,svgInner(baseSvg),'Inhalt der Gruppe = Fertigungs-SVG');
+  assert.deepEqual(JSON.parse(two.files.get('gravurpruefung.json')).orderFiles,v.metadata.orderFiles);
+ }
+ assert.equal(made.true.svg.bytes.toString(),made.false.svg.bytes.toString(),'SVG: das gespiegelte Profil ändert die Bestelldatei nicht');
+ assert.deepEqual(inspect(made.true.pdf.bytes).drawings,inspect(made.false.pdf.bytes).drawings,'PDF: das gespiegelte Profil ändert die Bestelldatei nicht');
+ // Mit Foto: Regel → Raster 300 dpi (3.57 (5) bleibt). Die „PDF“ trägt dieselben Pixel als Graustufenbild in der Ebene „03 Gravur“ –
+ // bei gespiegelter Gravurseite seitenrichtig –, darüber die Außenkontur als Vektorlinie.
+ for(const mirror of [false,true]){
+  const r=await createAcrylicEngravingProof(withPhoto.package,withPhoto.manifest.packageSha256,{mirror}),photo=twoFiles(r),label='Foto, gespiegelt: '+mirror;made['photo'+mirror]=photo;
+  assert.deepEqual(r.metadata.settings,{mode:'raster',dpi:300,mirror});assert.equal(r.metadata.modeRule.applied,'raster');assert.equal(r.metadata.pixelWidth,Math.ceil(150*300/25.4));assert.equal(r.metadata.pixelHeight,Math.ceil(200*300/25.4));
+  const rp=inspect(photo.files.get('technische-gravurpruefung.pdf')),rc=inspect(photo.pdf.bytes);assert.deepEqual(photo.files.get('technische-gravurpruefung.pdf'),r.pdf);
+  assert.deepEqual(rp.images.map(i=>[i.colorSpace,i.width,i.height,i.layered]),[['DeviceGray',1772,2363,false]]);assert.equal(rp.drawings.length,0);
+  const {lines}=checkEngravingPdf(rc,{widthMm:150,heightMm:200,holes:'none',raster:true},label);assert.equal(lines.length,1);sameOutline(lines,inspect(photo.files.get('gravur-kontur-1zu1.pdf')).drawings,label,mirror?mirrorAt(150):null);
+  assert.deepEqual([rc.images[0].width,rc.images[0].height],[1772,2363]);assert.notEqual(rp.images[0].sha256,rp.images[0].mirroredSha256);assert.equal(rc.images[0].sha256,mirror?rp.images[0].mirroredSha256:rp.images[0].sha256,label+' dieselben Pixel, seitenrichtig');
+  checkEngravingSvg(photo.svg.bytes,{widthMm:150,heightMm:200,geometry,holes:'none'},label);
+ }
+ assert.equal(made.phototrue.svg.bytes.toString(),made.photofalse.svg.bytes.toString());
  // Eine ausdrückliche Wahl gilt unverändert: Raster ohne Foto bleibt Raster, Vektor mit Foto wird weiter abgelehnt.
  const explicit=await createAcrylicEngravingProof(noPhoto.package,noPhoto.manifest.packageSha256,{mode:'raster'});assert.deepEqual(explicit.metadata.settings,{mode:'raster',dpi:300,mirror:false});assert.equal(explicit.metadata.modeRule,undefined);
- assert.deepEqual(inspect(explicit.pdf).images.map(i=>i.colorSpace),['DeviceGray']);twoFiles(explicit);
+ assert.deepEqual(inspect(explicit.pdf).images.map(i=>i.colorSpace),['DeviceGray']);checkEngravingPdf(inspect(twoFiles(explicit).pdf.bytes),{widthMm:150,heightMm:200,holes:'none',raster:true},'Raster gewählt');
  await assert.rejects(()=>createAcrylicEngravingProof(withPhoto.package,withPhoto.manifest.packageSha256,{mode:'vector'}),/Fotos benötigen Rastergravur/);
 });
 
-test('Druck: zwei Dateien 1:1 für Roland und Mimaki, beide mit Kontur; Schnittlinie als Haarlinie deckungsgleich mit der Druckdatei; keine Datei ohne Schnittlinie',async()=>{
- const {bundle}=await nativeBundle({engraving:false,photo:true});
- for(const settings of [{mirror:true},{profile:'mimaki'}]){
-  const result=await createAcrylicPrintProof(bundle.package,bundle.manifest.packageSha256,settings),two=twoFiles(result),mimaki=settings.profile==='mimaki',label=JSON.stringify(settings);
-  assert.equal(result.metadata.schema,'gravuru-acrylic-print-proof/v9');
-  assert.deepEqual(Object.fromEntries(ORDER_FORMATS.map(f=>[f,two[f].name])),{pdf:'druck-1zu1-mit-kontur.pdf',svg:'druck-1zu1-mit-kontur.svg'});
-  assert.ok(![...two.files.keys()].some(name=>/ohne-schnittlinie/.test(name)),'keine Druckdatei ohne Schnittlinie im Paket');
-  // Die Druckdatei der „Ausgaben“ bleibt die bisherige Datei mit ihrem Dateinachweis.
-  const mainName=mimaki?'Mimaki-FARBE-ohne-RDG_WHITE.pdf':'technische-druckpruefung.pdf';assert.deepEqual(two.files.get(mainName),result.pdf);assert.equal(result.metadata.downloads.pdf.sha256,digest(result.pdf));assert.equal(result.metadata.pdfSha256,digest(result.pdf));
-  const main=inspect(result.pdf),order=inspect(two.pdf.bytes);
-  for(const info of [main,order]){assert.deepEqual([info.widthMm,info.heightMm],[150,200],label);assert.equal(info.fonts,0);assert.equal(info.repaired,false);}
-  assert.ok(main.images.length>0,'Foto als Bildebene');assert.deepEqual(order.images,main.images);
-  // Farbe und Weiß wie die Druckdatei: Roland führt beides in einer Datei, bei Mimaki bleibt Weiß die eigene Datei.
-  assert.equal(order.whiteSpot,main.whiteSpot);assert.equal(order.whiteSpot,!mimaki);assert.deepEqual(order.layers,main.layers);assert.equal(order.layers.includes('RDG_WHITE'),!mimaki);if(mimaki)assert.ok(two.files.has('Mimaki-NUR-RDG_WHITE.pdf'));
-  assert.equal(order.cutSpot,true);assert.deepEqual(withoutLayer(order,'CutContour'),withoutLayer(main,'CutContour'),label);
-  const cut=order.drawings.filter(d=>d.layer==='CutContour'),existing=main.drawings.filter(d=>d.layer==='CutContour');
-  assert.equal(cut.length,1);assert.equal(cut[0].width,0);assert.deepEqual(cut[0].points,existing[0].points,'deckungsgleich mit der Schnittlinie der Druckdatei');assert.deepEqual(cut[0].rect,existing[0].rect);
-  // SVG: die gesicherte Gestaltung (nicht gespiegelt) plus Kontur; die Gestaltung ohne Kontur bleibt als Quelle im Paket.
-  const {geometry}=await acrylicArtwork(bundle.package,bundle.manifest.packageSha256);assert.deepEqual([geometry.widthMm,geometry.heightMm],[150,200]);
-  checkSvg(two,{widthMm:150,heightMm:200,geometry,stroke:'#000000',plain:two.files.get('gesicherte-gestaltung.svg')});
-  assert.deepEqual(JSON.parse(two.files.get('druckpruefung.json')).orderFiles,result.metadata.orderFiles);
+test('Gravur, echtes Türschild 120 × 80 mm mit zwei Bohrlöchern: Edelstahl – Löcher blau (Anlegen, Annahme); Acrylglas – Löcher rot (Schnitt nach der Gravur)',async()=>{
+ for(const [file,kind,holes] of [['steel.json','steel','contour'],['schwarz.json','acrylic','cut']]){
+  const bundle=await familyBundle(file),{geometry}=await acrylicArtwork(bundle.package,bundle.manifest.packageSha256,{engraving:true});
+  assert.equal(bundle.manifest.product.material.kind,kind);assert.equal(orderHoleLines({manifest:bundle.manifest}),holes);
+  assert.deepEqual([geometry.widthMm,geometry.heightMm,geometry.contours.map(c=>c.role).join()],[120,80,'outer,hole,hole'],file);
+  const made=[];
+  for(const mirror of [false,true]){
+   const result=await createAcrylicEngravingProof(bundle.package,bundle.manifest.packageSha256,{mirror}),two=twoFiles(result),label=file+' gespiegelt: '+mirror;made.push(two);
+   assert.equal(result.metadata.settings.mode,'vector',label);
+   const {content,lines}=checkEngravingPdf(inspect(two.pdf.bytes),{widthMm:120,heightMm:80,holes},label),plain=inspect(result.pdf),separate=inspect(two.files.get('gravur-kontur-1zu1.pdf'));
+   // Außenkontur und beide Bohrlöcher, deckungsgleich mit der getrennten Konturdatei (Bohrbild symmetrisch).
+   assert.deepEqual(lines.map(d=>d.color),[BLUE,holes==='cut'?RED:BLUE],label);assert.ok(lines[1].rect[2]-lines[1].rect[0]>60,label+' beide Bohrlöcher in einer Linie');
+   sameOutline(lines,separate.drawings,label+' Konturen',mirror?mirrorAt(120):null);
+   assert.ok(content.length>0);sameShape(points(content),mirror?mirrored(points(plain.drawings),120):points(plain.drawings),label+' Inhalt');
+   checkEngravingSvg(two.svg.bytes,{widthMm:120,heightMm:80,geometry,holes},label);
+  }
+  assert.equal(made[1].svg.bytes.toString(),made[0].svg.bytes.toString(),file);assert.deepEqual(inspect(made[1].pdf.bytes).drawings,inspect(made[0].pdf.bytes).drawings,file);
  }
 });
 
-test('Funkklingel zweischichtig: PDF und SVG zeigen die Acrylauflage (sie trägt die Gestaltung) als rote Haarlinie; die Schnittdateien bleiben getrennt',async()=>{
- const fixture=doorbellFixture(),decoration=Buffer.from('<svg xmlns="http://www.w3.org/2000/svg" width="30mm" height="1mm" viewBox="0 0 30 1"><path d="M.5 .5L29.5 .5" fill="none" stroke="#000000" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg>'),hash=digest(decoration);
- fixture.localResources.motifs.push({key:'artwork-'+hash,bounds:[0,0,30,1],svgFragment:artworkFragment(hash,30,1),embeddedOnly:true,vectorOnly:true,artwork:{schema:'gravuru-imported-artwork/v1',assetId:hash,sourceSha256:hash,previewSha256:hash,format:'svg',page:1,pageCount:1,widthMm:30,heightMm:1}});
- for(const p of [fixture.profile,...fixture.doorbell.formats.map(f=>f.profile)])p.designs[0].objects.find(o=>o.id==='mark-0').motif='artwork-'+hash;
- const document=makeProductDocument(fixture),config=document.config,record={id:config.profile.id,revision:1,document},selection={format:'35x18',frame:'FK-VERDECKT',color:'schwarz',mounting:'B04S',position:'opposite'},source=selectedProfile(config,selection).designs[0];
+test('Druck, natives Produkt: zwei Dateien 1:1 für Roland und Mimaki – nie gespiegelt, der Druck ist zu sehen, jede Kontur in CutContour als Linie von 0,001 mm; die Druckdateien der „Ausgaben“ bleiben',async()=>{
+ const {bundle}=await nativeBundle({engraving:false,photo:true}),{geometry}=await acrylicArtwork(bundle.package,bundle.manifest.packageSha256);assert.deepEqual([geometry.widthMm,geometry.heightMm],[150,200]);
+ const made={};
+ for(const settings of [{},{mirror:true},{profile:'mimaki'},{profile:'mimaki',mirror:true}]){
+  const result=await createAcrylicPrintProof(bundle.package,bundle.manifest.packageSha256,settings),two=twoFiles(result),mimaki=settings.profile==='mimaki',mirror=settings.mirror===true,label=JSON.stringify(settings);made[label]=two;
+  assert.equal(result.metadata.schema,'gravuru-acrylic-print-proof/v10');assert.equal(result.metadata.settings.mirror,mirror);
+  assert.deepEqual(Object.fromEntries(ORDER_FORMATS.map(f=>[f,two[f].name])),{pdf:'druck-1zu1-mit-kontur.pdf',svg:'druck-1zu1-mit-kontur.svg'});
+  assert.ok(![...two.files.keys()].some(name=>/ohne-schnittlinie/.test(name)),'keine Druckdatei ohne Schnittlinie im Paket');
+  // Die Druckdatei der „Ausgaben“ bleibt die bisherige Datei mit ihrem Dateinachweis (nach Profil gespiegelt, Schnittlinie 0,05 mm).
+  const mainName=mimaki?'Mimaki-FARBE-ohne-RDG_WHITE.pdf':'technische-druckpruefung.pdf';assert.deepEqual(two.files.get(mainName),result.pdf);assert.equal(result.metadata.downloads.pdf.sha256,digest(result.pdf));assert.equal(result.metadata.pdfSha256,digest(result.pdf));
+  const main=inspect(result.pdf),order=inspect(two.pdf.bytes);assert.deepEqual([main.widthMm,main.heightMm],[150,200],label);assert.ok(main.images.length>0,'Foto als Bildebene');
+  const existing=main.drawings.filter(d=>d.layer==='CutContour');assert.equal(existing.length,1);assert.ok(Math.abs(existing[0].width-.05*MM)<1e-4);
+  // „PDF“: Aufbau der Druckdatei – Farbe und Weiß in einer Datei bei Roland, bei Mimaki bleibt Weiß die eigene Datei der „Ausgaben“.
+  const cut=checkPrintPdf(order,{widthMm:150,heightMm:200,white:!mimaki},label);assert.deepEqual(order.layers,main.layers);assert.equal(order.images.length,main.images.length);if(mimaki)assert.ok(two.files.has('Mimaki-NUR-RDG_WHITE.pdf'));
+  sameShape(points([cut]),points(existing),label+' Schnittkontur deckungsgleich mit der Druckdatei');assert.ok(near(cut.rect,[0,0,150,200]));
+  // Der Druck ist zu sehen und steht seitenrichtig: Die rote Hälfte des Fotos liegt in der Bestell-PDF immer an derselben Stelle,
+  // in der gespiegelten Druckdatei spiegelbildlich.
+  const seen=look(two.pdf.bytes),shown=look(result.pdf),plain=made[JSON.stringify(mimaki?{profile:'mimaki'}:{})];made[label+' rot']=seen;
+  assert.ok(seen.count>500,label+' der Druck ist zu sehen');assert.ok(Math.abs(shown.xMm-(mirror?150-seen.xMm:seen.xMm))<=.4,label+' Druckdatei '+shown.xMm+' / Bestelldatei '+seen.xMm);assert.ok(Math.abs(seen.xMm-75)>2,'das Prüfmotiv liegt nicht mittig');
+  assert.deepEqual(two.pdf.bytes,plain.pdf.bytes,label+': dieselbe Bestell-PDF wie ungespiegelt, Byte für Byte');
+  // „SVG“: die gesicherte Gestaltung (seitenrichtig) plus Schnittkontur in der Farbe von CutContour; die Gestaltung ohne Kontur bleibt im Paket.
+  checkPrintSvg(two.svg.bytes,{widthMm:150,heightMm:200,geometry,plain:two.files.get('gesicherte-gestaltung.svg')},label);assert.deepEqual(two.svg.bytes,plain.svg.bytes);
+  assert.deepEqual(JSON.parse(two.files.get('druckpruefung.json')).orderFiles,result.metadata.orderFiles);
+ }
+ assert.deepEqual(made['{} rot'],made['{"profile":"mimaki"} rot'],'Roland und Mimaki zeigen denselben Druck an derselben Stelle');
+});
+
+test('Funkklingel zweischichtig: PDF und SVG zeigen die Acrylauflage (sie trägt die Gestaltung) – Seite = Auflage, Außenform blau, Ausschnitte rot; nie gespiegelt; die Schnittdateien bleiben getrennt',async()=>{
+ const decoration=Buffer.from('<svg xmlns="http://www.w3.org/2000/svg" width="30mm" height="1mm" viewBox="0 0 30 1"><path d="M.5 .5L29.5 .5" fill="none" stroke="#000000" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg>'),hash=digest(decoration);
  const png=Buffer.from('iVBORw0KGgoAAAANSUhEUgAAACgAAAA8CAIAAACb22+3AAAAOklEQVR4nO3NIQEAMAgAsPOEaDT9M9ABg9kKLLL6Xfgnq1gsFovFYrFYLBaLxWKxWCwWi8VisVgsXhqq4AGG9djEFQAAAABJRU5ErkJggg==','base64');
- const bundle=await prepareAcrylicReview({record,config,input:{productId:record.id,productRevision:1,designId:source.id,objects:structuredClone(source.objects),options:selection,quantity:1,media:[],preview:png.toString('base64')},assets:{get:()=>({format:'svg'}),read:()=>decoration},preparePhoto:async()=>({original:png,preview:png,width:40,height:60})});
- const frozen=JSON.parse(readReviewPackage(bundle.package,bundle.manifest.packageSha256,NATIVE_REVIEW_SCHEMAS).files.get('funkklingel-fertigung.json'));
- for(const mirror of [false,true]){
-  const result=await createAcrylicEngravingProof(bundle.package,bundle.manifest.packageSha256,{mirror}),two=twoFiles(result),label='gespiegelt: '+mirror;
-  assert.equal(result.metadata.settings.mode,'vector','ohne Foto und ohne Rasterbild: Vektor');assert.equal(result.metadata.layered.cutMirror,false);
-  assert.deepEqual(two.files.get('technische-gravurpruefung.pdf'),result.pdf);
-  const plain=inspect(result.pdf),contour=inspect(two.pdf.bytes),acrylic=inspect(two.files.get('acrylauflage-schnitt-1zu1.pdf')),steel=inspect(two.files.get('edelstahltraeger-schnitt-1zu1.pdf'));
-  for(const info of [plain,contour,acrylic,steel])assert.deepEqual([info.widthMm,info.heightMm],[350,180],label);
-  assert.deepEqual(withoutLayer(contour,'Kontur'),plain.drawings,label);
-  const line=contour.drawings.filter(d=>d.layer==='Kontur');assert.equal(line.length,1);assert.equal(line[0].width,0);assert.deepEqual(line[0].color,[1,0,0],'rot wie die Schnittdatei der Acrylauflage');
-  // Deckungsgleich mit der Schnittdatei der Acrylauflage – in der Ausrichtung der Gravur (die Schnittdateien werden nie gespiegelt).
-  const cut=points(acrylic.drawings),carrier=points(steel.drawings);
-  samePoints(points(line),mirror?mirrored(cut,350):cut,label);
-  assert.notDeepEqual(cut,carrier,'der Edelstahlträger ist ein anderes Teil und bleibt getrennt');
-  const a=frozen.acrylicBoundsMm,outer=mirror?[350-a.x-a.width,a.y,350-a.x,a.y+a.height]:[a.x,a.y,a.x+a.width,a.y+a.height];
-  for(const [i,v] of outer.entries())assert.ok(Math.abs(line[0].rect[i]-v)<=.02,label+' Außenmaß der Acrylauflage');
-  for(const name of ['edelstahltraeger-schnitt-1zu1.pdf','acrylauflage-schnitt-1zu1.pdf','edelstahltraeger-schnitt.svg','acrylauflage-schnitt.svg','gravur-kontur-1zu1.pdf'])assert.ok(two.files.has(name),name);
-  assert.equal(two.files.get('acrylauflage-schnitt.svg').toString(),frozen.acrylic.svg);assert.equal(two.files.get('edelstahltraeger-schnitt.svg').toString(),frozen.steel.svg);
-  checkSvg(two,{widthMm:350,heightMm:180,geometry:frozen.geometry,stroke:'#ff0000',mirror,plain:two.files.get('gravur-fertigung.svg')});
+ // 35 × 18 cm verdeckt: die Auflage ist so groß wie das gemeinsame Format. 16 × 28 cm mit Rahmen oben und unten: die Auflage ist
+ // 160 × 260 mm – das Maß der Musterdatei von Chris – und liegt im Format um 10 mm nach unten versetzt.
+ for(const [selection,format,bounds] of [[{format:'35x18',frame:'FK-VERDECKT',color:'schwarz',mounting:'B04S',position:'opposite'},[350,180],{x:0,y:0,width:350,height:180}],[{format:'16x28',frame:'FK-OBENUNTEN',color:'schwarz',mounting:'K00',position:'opposite'},[160,280],{x:0,y:10,width:160,height:260}]]){
+  const fixture=doorbellFixture();
+  fixture.localResources.motifs.push({key:'artwork-'+hash,bounds:[0,0,30,1],svgFragment:artworkFragment(hash,30,1),embeddedOnly:true,vectorOnly:true,artwork:{schema:'gravuru-imported-artwork/v1',assetId:hash,sourceSha256:hash,previewSha256:hash,format:'svg',page:1,pageCount:1,widthMm:30,heightMm:1}});
+  for(const p of [fixture.profile,...fixture.doorbell.formats.map(f=>f.profile)])p.designs[0].objects.find(o=>o.id==='mark-0').motif='artwork-'+hash;
+  const document=makeProductDocument(fixture),config=document.config,record={id:config.profile.id,revision:1,document},source=selectedProfile(config,selection).designs[0];
+  const bundle=await prepareAcrylicReview({record,config,input:{productId:record.id,productRevision:1,designId:source.id,objects:structuredClone(source.objects),options:selection,quantity:1,media:[],preview:png.toString('base64')},assets:{get:()=>({format:'svg'}),read:()=>decoration},preparePhoto:async()=>({original:png,preview:png,width:40,height:60})});
+  const frozen=JSON.parse(readReviewPackage(bundle.package,bundle.manifest.packageSha256,NATIVE_REVIEW_SCHEMAS).files.get('funkklingel-fertigung.json')),made=[],a=frozen.acrylicBoundsMm,name=selection.format+' '+selection.frame;
+  assert.deepEqual(frozen.geometry.contours.map(c=>c.role).slice(0,2),['outer','hole'],'Acrylauflage mit Ausschnitt');assert.deepEqual({x:a.x,y:a.y,width:a.width,height:a.height},bounds,name);
+  const whole=a.x===0&&a.y===0&&a.width===format[0]&&a.height===format[1],plate=whole?null:bounds,shifted=list=>list.map(point=>{const [x,y]=point.split(' ').map(Number);return Number((x-a.x).toFixed(2))+' '+Number((y-a.y).toFixed(2));});
+  for(const mirror of [false,true]){
+   const result=await createAcrylicEngravingProof(bundle.package,bundle.manifest.packageSha256,{mirror}),two=twoFiles(result),label=name+' gespiegelt: '+mirror;made.push(two);
+   assert.equal(result.metadata.settings.mode,'vector','ohne Foto und ohne Rasterbild: Vektor');assert.equal(result.metadata.layered.cutMirror,false);assert.equal(result.metadata.layered.engravingMirror,mirror);
+   assert.deepEqual(two.files.get('technische-gravurpruefung.pdf'),result.pdf);
+   // Die Dateien der „Ausgaben“ bleiben im gemeinsamen Format von Träger und Auflage.
+   const plain=inspect(result.pdf),acrylic=inspect(two.files.get('acrylauflage-schnitt-1zu1.pdf')),steel=inspect(two.files.get('edelstahltraeger-schnitt-1zu1.pdf'));
+   for(const info of [plain,acrylic,steel])assert.deepEqual([info.widthMm,info.heightMm],format,label);
+   // „PDF“: Seite = Acrylauflage (wie die Musterdatei). Die blaue Außenform liegt auf dem Seitenrand, die roten Linien sind ihre
+   // Ausschnitte – zusammen deckungsgleich mit der Schnittdatei der Acrylauflage, um die Lage der Auflage verschoben.
+   const order=inspect(two.pdf.bytes),{content,lines}=checkEngravingPdf(order,{widthMm:a.width,heightMm:a.height,holes:'cut'},label);
+   assert.deepEqual(lines.map(d=>d.color),[BLUE,RED],label);
+   const cut=points(acrylic.drawings),carrier=points(steel.drawings);sameOutline(lines,acrylic.drawings,label+' Schnittdatei der Acrylauflage',([x,y])=>[x-a.x,y-a.y]);
+   assert.notDeepEqual(cut,carrier,'der Edelstahlträger ist ein anderes Teil und bleibt getrennt');
+   sameShape(points(content),shifted(mirror?mirrored(points(plain.drawings),format[0]):points(plain.drawings)),label+' Inhalt seitenrichtig');
+   for(const file of ['edelstahltraeger-schnitt-1zu1.pdf','acrylauflage-schnitt-1zu1.pdf','edelstahltraeger-schnitt.svg','acrylauflage-schnitt.svg','gravur-kontur-1zu1.pdf'])assert.ok(two.files.has(file),file);
+   assert.equal(two.files.get('acrylauflage-schnitt.svg').toString(),frozen.acrylic.svg);assert.equal(two.files.get('edelstahltraeger-schnitt.svg').toString(),frozen.steel.svg);
+   checkEngravingSvg(two.svg.bytes,{widthMm:format[0],heightMm:format[1],geometry:frozen.geometry,holes:'cut',plate},label);
+   // Dieselbe Seite wie die Musterdatei, wenn es dieselbe Auflage ist.
+   if(selection.format==='16x28'){const reference=inspect(REFERENCE);assert.deepEqual([order.widthMm,order.heightMm],[reference.widthMm,reference.heightMm],'160 × 260 mm wie die Musterdatei');}
+  }
+  assert.equal(made[1].svg.bytes.toString(),made[0].svg.bytes.toString(),name);assert.deepEqual(inspect(made[1].pdf.bytes).drawings,inspect(made[0].pdf.bytes).drawings,name);
  }
 });
 
@@ -332,72 +606,88 @@ async function formBundle({method,photo=false,material='steel',workshop=seedWork
  return {record,bundle,geometry:JSON.parse(saved.get('produkt-und-gestaltung.json')).product.form.geometry,source:saved.get('gestaltung-vorschau.svg'),capture:()=>workshop.customerDrafts.capture(created.id,created.token,draft.revision,bundle)};
 }
 // Die Gestaltung des Formprodukts ist selbst auf die Kontur beschnitten (clipPath `form-design-clip`, form-review-snapshot.mjs).
-// Trägt die Konturebene denselben Pfad im selben Zahlenraum (viewBox in mm), liegt sie deckungsgleich auf der Gestaltung.
+// Die Gestaltung des Formprodukts ist selbst auf die Kontur beschnitten (clipPath `form-design-clip`, form-review-snapshot.mjs).
+// Tragen die Konturgruppen dieselben Pfade im selben Zahlenraum (viewBox in mm), liegen sie deckungsgleich auf der Gestaltung.
 const clipPathOf=svg=>svg.toString().match(/<clipPath id="form-design-clip"><path d="([^"]*)"/)?.[1];
-const contourPathOf=svg=>svg.toString().match(/<g id="kontur"[^>]*><path d="([^"]*)"/)?.[1];
+const cutPathOf=svg=>svg.toString().match(/<g id="CutContour"[^>]*><path d="([^"]*)"/)?.[1];
+const ringsOf=geometry=>geometry.contours.map(c=>c.d+' Z').join(' ');
 
-test('Formprodukt alter Art, Gravur: dieselben zwei Dateien mit Kontur (Schiefer blau, sonst schwarz); die bisherigen Dateien bleiben; Kontur deckungsgleich zur Gestaltung',async()=>{
- for(const [material,stroke,rgb] of [['steel','#000000',[0,0,0]],['slate','#0000ff',[0,0,1]]]){
-  const {bundle,geometry,source}=await formBundle({method:'engraving',material});
-  assert.deepEqual([geometry.schema,geometry.widthMm,geometry.heightMm],['gravuru-contour/v1',60,40]);assert.match(source.toString(),/^<svg [^>]*width="60mm" height="40mm" viewBox="0 0 60 40">/,'Gestaltung in Millimetern');
-  for(const settings of [{mode:'vector'},{mode:'vector',mirror:true},{}]){
-   const result=await createFormEngravingProof(bundle.package,bundle.manifest.packageSha256,settings),two=twoFiles(result),mirror=settings.mirror===true,vector=settings.mode==='vector',label=material+' '+JSON.stringify(settings);
-   assert.equal(result.metadata.schema,'gravuru-form-engraving-proof/v2');assert.equal(result.metadata.settings.mode,vector?'vector':'raster');
+test('Formprodukt alter Art, Gravur: dieselben zwei Dateien im Aufbau der Musterdatei – Innenkonturen bei Acrylglas rot, bei Edelstahl und Schiefer blau (Annahme); nie gespiegelt; die bisherigen Dateien bleiben',async()=>{
+ for(const [material,holes] of [['steel','contour'],['slate','contour'],['acrylic-black','cut']]){
+  const {bundle,geometry,source}=await formBundle({method:'engraving',material}),made={};
+  assert.deepEqual([geometry.schema,geometry.widthMm,geometry.heightMm,geometry.contours.map(c=>c.role).join()],['gravuru-contour/v1',60,40,'outer,hole']);assert.match(source.toString(),/^<svg [^>]*width="60mm" height="40mm" viewBox="0 0 60 40">/,'Gestaltung in Millimetern');
+  assert.equal(bundle.manifest.product.material.id,material);assert.equal(orderHoleLines({manifest:bundle.manifest}),holes,material);
+  for(const settings of [{mode:'vector'},{mode:'vector',mirror:true},{},{mirror:true}]){
+   const result=await createFormEngravingProof(bundle.package,bundle.manifest.packageSha256,settings),two=twoFiles(result),mirror=settings.mirror===true,vector=settings.mode==='vector',label=material+' '+JSON.stringify(settings);(made[vector]??=[]).push(two);
+   assert.equal(result.metadata.schema,'gravuru-form-engraving-proof/v3');assert.equal(result.metadata.settings.mode,vector?'vector':'raster');assert.equal(result.metadata.settings.mirror,mirror);
    assert.deepEqual(Object.fromEntries(ORDER_FORMATS.map(f=>[f,two[f].name])),{pdf:'gravur-1zu1-mit-kontur.pdf',svg:'gravur-1zu1-mit-kontur.svg'});
-   // Die bisherigen Dateien des Pakets bleiben: Gravur-PDF (die Datei der „Ausgaben“) und die getrennte Konturdatei (schwarz, 0,05 mm).
+   // Die bisherigen Dateien des Pakets bleiben: Gravur-PDF (die Datei der „Ausgaben“, nach Profil gespiegelt, ohne Ebene) und die
+   // getrennte Konturdatei (schwarz, 0,05 mm).
    assert.deepEqual(two.files.get('technische-gravurpruefung.pdf'),result.pdf);assert.equal(result.metadata.pdfSha256,digest(result.pdf));assert.equal(result.metadata.contourSha256,digest(two.files.get('gravur-kontur-1zu1.pdf')));
-   const plain=inspect(result.pdf),contour=inspect(two.pdf.bytes),separate=inspect(two.files.get('gravur-kontur-1zu1.pdf'));
-   for(const info of [plain,contour,separate]){assert.deepEqual([info.widthMm,info.heightMm],[60,40],label);assert.equal(info.fonts,0);assert.equal(info.pages,1);}
-   assert.deepEqual(separate.drawings.map(d=>[d.type,d.color]),[['s',[0,0,0]]]);assert.ok(Math.abs(separate.drawings[0].width-.05*72/25.4)<1e-4,'getrennte Konturdatei bleibt bei 0,05 mm');
-   // „PDF“: derselbe Inhalt wie die Gravur-PDF plus genau eine Haarlinie in der Farbe der Regel, deckungsgleich mit der Konturdatei.
-   assert.deepEqual(withoutLayer(contour,'Kontur'),plain.drawings,label);assert.deepEqual(contour.images,plain.images);assert.deepEqual(contour.layers,['Kontur']);
-   const line=contour.drawings.filter(d=>d.layer==='Kontur');assert.equal(line.length,1);assert.equal(line[0].width,0,'Haarlinie: Breite 0');assert.equal(line[0].type,'s');assert.equal(line[0].fill,null);assert.deepEqual(line[0].color,rgb,label);
-   assert.deepEqual(line[0].points,separate.drawings[0].points,'deckungsgleich mit gravur-kontur-1zu1.pdf');assert.deepEqual(line[0].rect,separate.drawings[0].rect);assert.deepEqual(line[0].rect,[0,0,60,40]);
+   const plain=inspect(result.pdf),separate=inspect(two.files.get('gravur-kontur-1zu1.pdf'));
+   for(const info of [plain,separate]){assert.deepEqual([info.widthMm,info.heightMm],[60,40],label);assert.equal(info.fonts,0);assert.equal(info.pages,1);assert.deepEqual(info.layers,[]);}
+   assert.deepEqual(separate.drawings.map(d=>[d.type,d.color]),[['s',[0,0,0]]]);assert.ok(Math.abs(separate.drawings[0].width-.05*MM)<1e-4,'getrennte Konturdatei bleibt bei 0,05 mm');
+   // „PDF“: Aufbau der Musterdatei. Außenform blau, das Bohrloch nach der Regel des Materials; zusammen deckungsgleich mit der
+   // Konturdatei – seitenrichtig, also bei gespiegeltem Profil mit deren Spiegelbild.
+   const {content,lines}=checkEngravingPdf(inspect(two.pdf.bytes),{widthMm:60,heightMm:40,holes,raster:!vector},label);
+   assert.deepEqual(lines.map(d=>d.color),[BLUE,holes==='cut'?RED:BLUE],label);assert.ok(near(lines[1].rect,[6,18,10,22]),label+' Bohrloch links: '+lines[1].rect);
+   sameOutline(lines,separate.drawings,label+' Konturen',mirror?mirrorAt(60):null);
    if(vector){
-    // Lage der Gestaltung im selben Maß: die rote Fläche der Designquelle (3…17 × 3…23 mm), gespiegelt 43…57 mm.
-    assert.equal(plain.images.length,0);assert.ok(plain.drawings.some(d=>d.type==='f'&&d.rect.every((v,i)=>Math.abs(v-(mirror?[43,3,57,23]:[3,3,17,23])[i])<=.02)),label+' Designfläche');
-   }else assert.deepEqual(plain.images.map(i=>i.colorSpace),['DeviceGray']);
-   // „SVG“: die Gravurgestaltung in mm plus Konturebene; die Kontur ist der Pfad, auf den die Gestaltung selbst beschnitten ist.
-   checkSvg(two,{widthMm:60,heightMm:40,geometry,stroke,mirror});
-   const svg=two.svg.bytes.toString();assert.equal(contourPathOf(svg),clipPathOf(svg),'Kontur = Beschnitt der Gestaltung');assert.equal(clipPathOf(svg),clipPathOf(source));
-   // Gespiegelt liegen Gestaltung und Kontur unter derselben Spiegelung; sonst trägt keine von beiden eine.
-   const flip='transform="translate(60 0) scale(-1 1)"';assert.equal(svg.includes('<g '+flip+'><defs>'),mirror,label);assert.equal(svg.includes('stroke-width="0.05" '+flip+'>'),mirror,label);
-   assert.match(svg,/data-design="design-engraving"/);
+    // Die rote Fläche der Designquelle (3…17 × 3…23 mm): in der Bestelldatei an ihrem Platz und reines Schwarz; in der Gravur-PDF der
+    // „Ausgaben“ bei gespiegeltem Profil bei 43…57 mm und als Grauwert der Gestaltungsfarbe (kein Maschinenwert).
+    assert.ok(content.some(d=>d.type==='f'&&same(d.fill,BLACK)&&near(d.rect,[3,3,17,23])),label+' Designfläche seitenrichtig und schwarz');
+    assert.ok(plain.drawings.some(d=>d.type==='f'&&d.fill[0]>.2&&d.fill[0]<.22&&d.fill[0]===d.fill[1]&&d.fill[1]===d.fill[2]&&near(d.rect,mirror?[43,3,57,23]:[3,3,17,23])),label+' Gravur-PDF der „Ausgaben“: Grauwert der Gestaltungsfarbe, Lage nach Profil');
+    assert.equal(plain.images.length,0);sameShape(points(content),mirror?mirrored(points(plain.drawings),60):points(plain.drawings),label+' Inhalt');
+   }else{
+    const image=inspect(two.pdf.bytes).images[0];assert.deepEqual(plain.images.map(i=>[i.colorSpace,i.layered]),[['DeviceGray',false]]);
+    assert.notEqual(plain.images[0].sha256,plain.images[0].mirroredSha256);assert.equal(image.sha256,mirror?plain.images[0].mirroredSha256:plain.images[0].sha256,label+' dieselben Pixel, seitenrichtig');
+   }
+   // „SVG“: die Gestaltung in mm in der Gruppe „03 Gravur“, danach Außenform und Bohrloch – zusammen der Pfad, auf den die
+   // Gestaltung selbst beschnitten ist. Nichts ist gespiegelt.
+   checkEngravingSvg(two.svg.bytes,{widthMm:60,heightMm:40,geometry,holes},label);
+   const svg=two.svg.bytes.toString();assert.equal(clipPathOf(svg),ringsOf(geometry),'Außenform und Bohrloch = Beschnitt der Gestaltung');assert.equal(clipPathOf(svg),clipPathOf(source));
+   assert.ok(!svg.includes('scale(-1 1)'),label);assert.match(svg,/data-design="design-engraving"/);
    assert.deepEqual(JSON.parse(two.files.get('gravurpruefung.json')).orderFiles,result.metadata.orderFiles);
   }
+  for(const pair of Object.values(made)){assert.equal(pair[1].svg.bytes.toString(),pair[0].svg.bytes.toString(),material);assert.deepEqual(inspect(pair[1].pdf.bytes).drawings,inspect(pair[0].pdf.bytes).drawings,material);}
+  assert.equal(made.true[0].svg.bytes.toString(),made.false[0].svg.bytes.toString(),'die SVG hängt nicht von Vektor oder Raster ab');
  }
- // Mit Kundenfoto: Raster; die „PDF“ trägt dasselbe Graustufenbild und darüber die Haarlinie.
+ // Mit Kundenfoto: Raster; die „PDF“ trägt dasselbe Graustufenbild in der Ebene und darüber die Konturen als Vektor.
  const {bundle}=await formBundle({method:'engraving',photo:true}),result=await createFormEngravingProof(bundle.package,bundle.manifest.packageSha256),two=twoFiles(result);
- const plain=inspect(result.pdf),contour=inspect(two.pdf.bytes);assert.equal(plain.drawings.length,0);assert.deepEqual(contour.images,plain.images);assert.deepEqual(contour.drawings.map(d=>[d.layer,d.width,d.type]),[['Kontur',0,'s']]);
+ const plain=inspect(result.pdf),order=inspect(two.pdf.bytes);assert.equal(plain.drawings.length,0);assert.equal(checkEngravingPdf(order,{widthMm:60,heightMm:40,holes:'contour',raster:true},'Foto').lines.length,2);assert.equal(order.images[0].sha256,plain.images[0].sha256);
  await assert.rejects(()=>createFormEngravingProof(bundle.package,bundle.manifest.packageSha256,{mode:'vector'}),/Fotos benötigen Rastergravur/);
 });
 
-test('Formprodukt alter Art, Druck: dieselben zwei Dateien mit Kontur für Roland und Mimaki; die Druckdateien bleiben; Kontur deckungsgleich zur Gestaltung',async()=>{
- const {bundle,geometry,source}=await formBundle({method:'print',photo:true,material:'slate'});
- for(const settings of [{},{mirror:true},{profile:'mimaki'}]){
-  const result=await createFormPrintProof(bundle.package,bundle.manifest.packageSha256,settings),two=twoFiles(result),mimaki=settings.profile==='mimaki',label=JSON.stringify(settings);
-  assert.equal(result.metadata.schema,'gravuru-form-print-proof/v6');
-  assert.deepEqual(Object.fromEntries(ORDER_FORMATS.map(f=>[f,two[f].name])),{pdf:'druck-1zu1-mit-kontur.pdf',svg:'druck-1zu1-mit-kontur.svg'});
-  assert.ok(![...two.files.keys()].some(name=>/ohne-schnittlinie/.test(name)));
-  // Die Druckdatei der „Ausgaben“ bleibt die bisherige Datei mit ihrem Dateinachweis; bei Mimaki bleibt Weiß die eigene Datei.
-  const mainName=mimaki?'Mimaki-FARBE-ohne-RDG_WHITE.pdf':'technische-druckpruefung.pdf';assert.deepEqual(two.files.get(mainName),result.pdf);assert.equal(result.metadata.downloads.pdf.sha256,digest(result.pdf));assert.equal(result.metadata.pdfSha256,digest(result.pdf));
-  if(mimaki)assert.equal(digest(two.files.get('Mimaki-NUR-RDG_WHITE.pdf')),result.metadata.downloads.white.sha256);
-  const main=inspect(result.pdf),order=inspect(two.pdf.bytes);
-  for(const info of [main,order]){assert.deepEqual([info.widthMm,info.heightMm],[60,40],label);assert.equal(info.fonts,0);assert.equal(info.repaired,false);}
-  assert.ok(main.images.length>0);assert.deepEqual(order.images,main.images);assert.equal(order.whiteSpot,main.whiteSpot);assert.equal(order.whiteSpot,!mimaki);assert.deepEqual(order.layers,main.layers);
-  assert.equal(order.cutSpot,true);assert.deepEqual(withoutLayer(order,'CutContour'),withoutLayer(main,'CutContour'),label);
-  const cut=order.drawings.filter(d=>d.layer==='CutContour'),existing=main.drawings.filter(d=>d.layer==='CutContour');
-  assert.equal(cut.length,1);assert.equal(existing.length,1);assert.equal(cut[0].width,0,'Haarlinie: Breite 0');assert.ok(Math.abs(existing[0].width-.05*72/25.4)<1e-4);
-  assert.deepEqual(cut[0].points,existing[0].points,'deckungsgleich mit der Schnittlinie der Druckdatei');assert.deepEqual(cut[0].rect,existing[0].rect);assert.deepEqual(cut[0].rect,[0,0,60,40]);
-  // „SVG“: die gesicherte Gestaltung (seitenrichtig, auch bei gespiegeltem Druck) plus Kontur – schwarz, auch auf Schiefer (Druck).
-  checkSvg(two,{widthMm:60,heightMm:40,geometry,stroke:'#000000',plain:source});
-  const svg=two.svg.bytes.toString();assert.equal(contourPathOf(svg),clipPathOf(svg),'Kontur = Beschnitt der Gestaltung');assert.doesNotMatch(svg,/<g id="kontur"[^>]* transform=/);
-  assert.deepEqual(JSON.parse(two.files.get('druckpruefung.json')).orderFiles,result.metadata.orderFiles);
+test('Formprodukt alter Art, Druck: dieselben zwei Dateien für Roland und Mimaki – nie gespiegelt, der Druck ist zu sehen, Außenform und Bohrloch in CutContour; kein Blau, kein Rot als Kontur – auch nicht auf Schiefer oder Acrylglas',async()=>{
+ for(const material of ['slate','acrylic-clear']){
+  const {bundle,geometry,source}=await formBundle({method:'print',photo:true,material}),made={};
+  for(const settings of [{},{mirror:true},{profile:'mimaki'},{profile:'mimaki',mirror:true}]){
+   const result=await createFormPrintProof(bundle.package,bundle.manifest.packageSha256,settings),two=twoFiles(result),mimaki=settings.profile==='mimaki',mirror=settings.mirror===true,label=material+' '+JSON.stringify(settings);made[JSON.stringify(settings)]=two;
+   assert.equal(result.metadata.schema,'gravuru-form-print-proof/v7');
+   assert.deepEqual(Object.fromEntries(ORDER_FORMATS.map(f=>[f,two[f].name])),{pdf:'druck-1zu1-mit-kontur.pdf',svg:'druck-1zu1-mit-kontur.svg'});
+   assert.ok(![...two.files.keys()].some(name=>/ohne-schnittlinie/.test(name)));
+   // Die Druckdatei der „Ausgaben“ bleibt die bisherige Datei mit ihrem Dateinachweis; bei Mimaki bleibt Weiß die eigene Datei.
+   const mainName=mimaki?'Mimaki-FARBE-ohne-RDG_WHITE.pdf':'technische-druckpruefung.pdf';assert.deepEqual(two.files.get(mainName),result.pdf);assert.equal(result.metadata.downloads.pdf.sha256,digest(result.pdf));assert.equal(result.metadata.pdfSha256,digest(result.pdf));
+   if(mimaki)assert.equal(digest(two.files.get('Mimaki-NUR-RDG_WHITE.pdf')),result.metadata.downloads.white.sha256);
+   const main=inspect(result.pdf),order=inspect(two.pdf.bytes);assert.deepEqual([main.widthMm,main.heightMm],[60,40],label);assert.ok(main.images.length>0);
+   const existing=main.drawings.filter(d=>d.layer==='CutContour');assert.equal(existing.length,1);assert.ok(Math.abs(existing[0].width-.05*MM)<1e-4);
+   // „PDF“: eine Linie in CutContour mit Außenform und Bohrloch (links bei 6…10 mm), seitenrichtig; die Druckdatei bleibt nach Profil gespiegelt.
+   const cut=checkPrintPdf(order,{widthMm:60,heightMm:40,white:!mimaki},label);assert.deepEqual(order.layers,main.layers);assert.ok(near(cut.rect,[0,0,60,40]));
+   assert.ok(cut.points.some(([x])=>Math.abs(x-6)<=.02)&&!cut.points.some(([x])=>Math.abs(x-54)<=.02),label+' Bohrloch links');assert.equal(existing[0].points.some(([x])=>Math.abs(x-54)<=.02),mirror,label);
+   sameShape(points([cut]),mirror?mirrored(points(existing),60):points(existing),label+' Schnittkontur');
+   // Der Druck ist zu sehen und steht seitenrichtig: die rote Fläche der Designquelle (3…17 mm) links, in der gespiegelten Druckdatei rechts.
+   const seen=look(two.pdf.bytes),shown=look(result.pdf);assert.ok(seen.count>500,label+' der Druck ist zu sehen');assert.ok(Math.abs(seen.xMm-10)<=1,label+' rote Fläche links: '+seen.xMm);assert.ok(Math.abs(shown.xMm-(mirror?50:10))<=1,label+' Druckdatei: '+shown.xMm);
+   const plain=made[JSON.stringify(mimaki?{profile:'mimaki'}:{})];assert.deepEqual(two.pdf.bytes,plain.pdf.bytes,label+': dieselbe Bestell-PDF wie ungespiegelt, Byte für Byte');
+   // „SVG“: die gesicherte Gestaltung (seitenrichtig) plus Schnittkontur – derselbe Pfad, auf den die Gestaltung beschnitten ist.
+   checkPrintSvg(two.svg.bytes,{widthMm:60,heightMm:40,geometry,plain:source},label);
+   const svg=two.svg.bytes.toString();assert.equal(cutPathOf(svg),clipPathOf(svg),'Schnittkontur = Beschnitt der Gestaltung');assert.equal(cutPathOf(svg),ringsOf(geometry));assert.doesNotMatch(svg,/<g id="CutContour"[^>]* transform=/);assert.deepEqual(two.svg.bytes,plain.svg.bytes);
+   assert.deepEqual(JSON.parse(two.files.get('druckpruefung.json')).orderFiles,result.metadata.orderFiles);
+  }
  }
 });
 
 // Werkstatt wie im Büro: Händlersitzung und CSRF. Eine bezahlte Testbestellung je Prüfstand; der Auftrag entsteht mit dem Eingang.
-test('Download der Bestellposition: nur angemeldet und mit CSRF, zwei Formate mit geprüfter Prüfsumme; frühere Ausgaben → Konturfassung sofort bzw. Hinweis und Neuaufbau; Formprodukt wie natives Produkt',async t=>{
+test('Download der Bestellposition: nur angemeldet und mit CSRF, zwei Formate mit geprüfter Prüfsumme, seitenrichtig im Aufbau der Musterdatei; Ausgaben früherer Stände → Hinweis und Neuaufbau statt einer Datei im alten Aufbau; Formprodukt wie natives Produkt',async t=>{
  const {dir,seed}=seedWorkshop(),shopDomain='synthetic.myshopify.com',secret='synthetic-app-secret-value-265',origin='https://work.example';
  const w=createWorkshop({filename:path.join(dir,'route.sqlite'),seedConfig:seed.universal,legacy:seed.legacy,shopifySessions:{mode:'test-only',shopDomain,clientId:'synthetic-client',secret}});
  const api=http.createServer((req,res)=>w.handle(req,res,new URL(req.url,origin)));api.listen(0,'127.0.0.1');await once(api,'listening');
@@ -423,7 +713,7 @@ test('Download der Bestellposition: nur angemeldet und mit CSRF, zwei Formate mi
  // Solange gebaut wird: Kennzeichen „wird erstellt“, noch keine Datei – der Abruf nennt das, statt etwas Halbes zu liefern.
  const early=await call(route(first),{format:'pdf'});assert.equal(early.status,409);assert.equal(early.json.error.code,'order_file_missing');assert.equal(early.json.error.message,'PDF und SVG werden für diese Position gerade erstellt.');
  await w.exportWorker.wait(job.id);
- const proof=w.customerDrafts.printProof(first.snapshotId,job.recipeKey),files=unpack(proof);assert.equal(proof.metadata.settings.mode,'vector');
+ const proof=w.customerDrafts.printProof(first.snapshotId,job.recipeKey),files=unpack(proof);assert.equal(proof.metadata.settings.mode,'vector');assert.equal(proof.metadata.settings.mirror,true);assert.equal(proof.metadata.orderFiles.schema,ORDER_FILES_SCHEMA);
  const ready=await outputs(first);assert.deepEqual(ready.outputState,{state:'fertig',reason:null,jobId:job.id});
  assert.deepEqual(ready.downloads,{jobId:job.id,formats:[...ORDER_FORMATS],surfaces:[{id:'front',formats:[...ORDER_FORMATS]}],pending:false,note:null});assert.equal(ready.total,1);
  // Nur angemeldet, nur mit CSRF, nur per POST, nur die zwei Formate – auch die früheren Formate werden abgelehnt.
@@ -438,51 +728,56 @@ test('Download der Bestellposition: nur angemeldet und mit CSRF, zwei Formate mi
   assert.equal(r.status,200,format);assert.equal(r.headers.get('content-type'),mime);assert.equal(r.headers.get('content-disposition'),'attachment; filename="'+job.id+'-'+name+'"');assert.equal(r.headers.get('cache-control'),'no-store');assert.equal(r.headers.get('x-content-type-options'),'nosniff');
   assert.deepEqual(r.bytes,files.get(name),format);assert.equal(digest(r.bytes),descriptor.sha256);assert.equal(r.headers.get('x-gravuru-file-sha256'),descriptor.sha256);
  }
- // „PDF“ ist die Gravur mit Kontur als Haarlinie – nicht die Gravur-PDF der Seite „Ausgaben“; „SVG“ trägt die Konturebene.
- const withContour=(await call(route(first),{format:'pdf'})).bytes;assert.notDeepEqual(withContour,proof.pdf);assert.deepEqual(inspect(withContour).drawings.filter(d=>d.layer==='Kontur').map(d=>d.width),[0]);
- assert.match((await call(route(first),{format:'svg'})).bytes.toString(),/<g id="kontur" fill="none" stroke="#000000" stroke-width="0\.05" transform="translate\(150 0\) scale\(-1 1\)"><path d="[^"]+"\/><\/g><\/svg>$/);
+ // „PDF“ ist die Bestelldatei im Aufbau der Musterdatei – nicht die Gravur-PDF der Seite „Ausgaben“ – und trotz gespiegeltem
+ // Verfahrensprofil seitenrichtig; „SVG“ trägt die Gruppe „03 Gravur“ und die blaue Außenkontur.
+ const orderPdf=(await call(route(first),{format:'pdf'})).bytes,orderSvg=(await call(route(first),{format:'svg'})).bytes.toString();assert.notDeepEqual(orderPdf,proof.pdf);
+ const {content:firstContent}=checkEngravingPdf(inspect(orderPdf),{widthMm:150,heightMm:200,holes:'none'},'Download');
+ sameShape(points(firstContent),mirrored(points(inspect(proof.pdf).drawings),150),'Download: seitenrichtig, die Gravur-PDF der „Ausgaben“ ist gespiegelt');
+ assert.match(orderSvg,/^<svg [^>]*><g id="gravur" data-layer="03 Gravur" inkscape:groupmode="layer" inkscape:label="03 Gravur">/);assert.match(orderSvg,/<\/g><g id="aussenkontur" data-layer="Außenkontur \(Anlegen\)" fill="none" stroke="#0000ff" stroke-width="0\.001"><path d="[^"]+" \/><\/g><\/svg>$/);assert.ok(!orderSvg.includes('scale(-1 1)'));
+ assert.ok(files.get('gravur-fertigung.svg').toString().includes('<g transform="translate(150 0) scale(-1 1)">'),'die Fertigungs-SVG der „Ausgaben“ bleibt gespiegelt');
  assert.equal((await call(route(first),{format:'pdf',surface:'back'})).status,409,'keine Rückseite gestaltet');
  // Die bestehenden Ausgabe-Downloads bleiben unverändert.
  assert.deepEqual((await call('/api/workshop/export-jobs/'+job.id+'/download',{format:'pdf'})).bytes,proof.pdf);assert.deepEqual((await call('/api/workshop/export-jobs/'+job.id+'/download',{format:'zip'})).bytes,proof.archive);
 
  // 2. Ausgabe ohne Dateinachweis (Rezeptstand v6, vor 3.57): bleibt gültig und abrufbar; die Position bekommt statt eines
  // Fehlers den Hinweis, und der Auftrag mit dem neuen Rezeptstand entsteht beim Öffnen der Ausgaben von selbst.
+ const NOT_TODAY='Die gespeicherte Ausgabe dieser Position enthält PDF und SVG im heutigen Aufbau nicht. Bitte die Ausgabe für diese Position neu erstellen.',REBUILDING={jobId:null,formats:[...ORDER_FORMATS],surfaces:[],pending:true,note:'PDF und SVG werden für diese Position neu erstellt.'};
  const old=await position('Cd',{quiet:true}),oldSettings={mode:'raster',dpi:300,mirror:true},oldKey=digest(JSON.stringify({recipe:'gravuru-acrylic-engraving-proof/v6',settings:oldSettings}));
  assert.equal(w.exportJobs.forSnapshot(old.snapshotId).total,0);
  w.customerDrafts.savePrintProof(old.snapshotId,oldKey,{metadata:{schema:'gravuru-acrylic-engraving-proof/v6',settings:oldSettings,pdfSha256:digest(Buffer.from('%PDF-alt')),warnings:[]},pdf:Buffer.from('%PDF-alt'),archive:Buffer.from('altes Paket')});
  const oldJob=w.exportJobs.enqueue({snapshotId:old.snapshotId,recipeKey:oldKey,recipe:'gravuru-acrylic-engraving-proof/v6',settings:oldSettings});assert.equal(oldJob.status,'completed');
  assert.deepEqual(w.orderOutputState(old),{state:'fertig',reason:null,jobId:oldJob.id});
- const missing=await call(route(old),{format:'pdf'});assert.equal(missing.status,409);assert.equal(missing.json.error.code,'order_file_missing');assert.match(missing.json.error.message,/enthält PDF und SVG mit Kontur nicht.*neu erstellen/);
+ const missing=await call(route(old),{format:'pdf'});assert.equal(missing.status,409);assert.equal(missing.json.error.code,'order_file_missing');assert.equal(missing.json.error.message,NOT_TODAY);
  assert.deepEqual((await call('/api/workshop/export-jobs/'+oldJob.id+'/download',{format:'pdf'})).bytes,Buffer.from('%PDF-alt'),'die alte Ausgabe bleibt abrufbar');
- const opened=await outputs(old);assert.equal(opened.total,2);assert.equal(opened.outputState.state,'fertig');
- assert.deepEqual(opened.downloads,{jobId:null,formats:[...ORDER_FORMATS],surfaces:[],pending:true,note:'PDF und SVG werden für diese Position neu erstellt.'});
+ const opened=await outputs(old);assert.equal(opened.total,2);assert.equal(opened.outputState.state,'fertig');assert.deepEqual(opened.downloads,REBUILDING);
  assert.ok(orderFileButtons(opened.outputState,opened.downloads)[0].buttons.every(b=>!b.enabled));assert.equal(orderFilesNote(opened.outputState,opened.downloads),opened.downloads.note);
  const rebuilt=opened.jobs.find(j=>j.id!==oldJob.id);assert.equal(rebuilt.recipe,ACRYLIC_ENGRAVING_RECIPE);assert.equal((await outputs(old)).total,2,'wiederholtes Öffnen legt nichts doppelt an');
  await w.exportWorker.wait(rebuilt.id);
  const renewed=await outputs(old);assert.deepEqual(renewed.downloads,{jobId:rebuilt.id,formats:[...ORDER_FORMATS],surfaces:[{id:'front',formats:[...ORDER_FORMATS]}],pending:false,note:null});
  assert.ok(orderFileButtons(renewed.outputState,renewed.downloads)[0].buttons.every(b=>b.enabled));
- const fresh=await call(route(old),{format:'pdf'});assert.equal(fresh.status,200);assert.equal(inspect(fresh.bytes).drawings.filter(d=>d.layer==='Kontur')[0].width,0);
+ const fresh=await call(route(old),{format:'pdf'});assert.equal(fresh.status,200);checkEngravingPdf(inspect(fresh.bytes),{widthMm:150,heightMm:200,holes:'none'},'neu aufgebaut');
  assert.deepEqual((await call('/api/workshop/export-jobs/'+oldJob.id+'/download',{format:'pdf'})).bytes,Buffer.from('%PDF-alt'));
 
- // 2b. Ausgabe des Stands 3.57 (Rezeptstand v7, Dateinachweis mit vier Dateien – so liegen die Ausgaben vom 21.11.2026 vor):
- // „PDF“ und „SVG“ kommen sofort aus ihr, als Fassung mit Kontur; die Fassungen ohne Kontur werden nicht mehr abgegeben. Beim
- // Öffnen entsteht der Auftrag mit dem heutigen Rezeptstand; bis er fertig ist, bleibt die vorhandene Ausgabe die Quelle.
- const seven=await position('Ij',{quiet:true}),sevenKey=digest(JSON.stringify({recipe:'gravuru-acrylic-engraving-proof/v7',settings:job.settings})),present=proof.metadata.orderFiles.surfaces[0].files;
- assert.notEqual(sevenKey,job.recipeKey);
- const sevenMetadata={...structuredClone(proof.metadata),schema:'gravuru-acrylic-engraving-proof/v7',orderFiles:{schema:'gravuru-order-files/v1',surfaces:[{id:'front',files:{pdf:{name:'technische-gravurpruefung.pdf',sha256:digest(files.get('technische-gravurpruefung.pdf'))},'pdf-contour':present.pdf,svg:{name:'gravur-fertigung.svg',sha256:digest(files.get('gravur-fertigung.svg'))},'svg-contour':present.svg}}]}};
- w.customerDrafts.savePrintProof(seven.snapshotId,sevenKey,{metadata:sevenMetadata,pdf:proof.pdf,archive:proof.archive});
- const sevenJob=w.exportJobs.enqueue({snapshotId:seven.snapshotId,recipeKey:sevenKey,recipe:'gravuru-acrylic-engraving-proof/v7',settings:job.settings});assert.equal(sevenJob.status,'completed');
- for(const format of ORDER_FORMATS){
-  const r=await call(route(seven),{format}),[name]=expected[format];assert.equal(r.status,200,format);assert.deepEqual(r.bytes,files.get(name),format);
-  assert.equal(r.headers.get('content-disposition'),'attachment; filename="'+sevenJob.id+'-'+name+'"');assert.equal(r.headers.get('x-gravuru-file-sha256'),present[format].sha256);
+ // 2b. Ausgaben der Stände 3.57 (Rezept v7, Nachweis v1 mit vier Dateien) und 3.61 (Rezept v8, Nachweis v2 mit zwei Dateien) – so
+ // liegen die Ausgaben vom 21.11.2026 vor. Ihre Dateien sind nach Profil gespiegelt und führen die Kontur schwarz mit Breite 0;
+ // über die Bestellansicht werden sie nicht mehr abgegeben, auch nicht übergangsweise. Die Position nennt den Stand, der Auftrag
+ // mit dem heutigen Rezeptstand entsteht beim Öffnen von selbst, danach kommen PDF und SVG aus ihm. Auf der Seite „Ausgaben“
+ // bleibt die frühere Ausgabe abrufbar.
+ const present=proof.metadata.orderFiles.surfaces[0].files;
+ for(const [text,recipe,orderFiles] of [['Ij','gravuru-acrylic-engraving-proof/v7',{schema:'gravuru-order-files/v1',surfaces:[{id:'front',files:{pdf:{name:'technische-gravurpruefung.pdf',sha256:digest(files.get('technische-gravurpruefung.pdf'))},'pdf-contour':present.pdf,svg:{name:'gravur-fertigung.svg',sha256:digest(files.get('gravur-fertigung.svg'))},'svg-contour':present.svg}}]}],['Kl','gravuru-acrylic-engraving-proof/v8',{schema:'gravuru-order-files/v2',surfaces:[{id:'front',files:present}]}]]){
+  const former=await position(text,{quiet:true}),formerKey=digest(JSON.stringify({recipe,settings:job.settings}));assert.notEqual(formerKey,job.recipeKey);
+  w.customerDrafts.savePrintProof(former.snapshotId,formerKey,{metadata:{...structuredClone(proof.metadata),schema:recipe,orderFiles},pdf:proof.pdf,archive:proof.archive});
+  const formerJob=w.exportJobs.enqueue({snapshotId:former.snapshotId,recipeKey:formerKey,recipe,settings:job.settings});assert.equal(formerJob.status,'completed');
+  for(const format of [...ORDER_FORMATS]){const r=await call(route(former),{format});assert.equal(r.status,409,recipe+' '+format);assert.equal(r.json.error.code,'order_file_missing');assert.equal(r.json.error.message,NOT_TODAY);assert.ok(!r.bytes.includes('%PDF-'));}
+  for(const format of ['pdf-contour','svg-contour'])assert.equal((await call(route(former),{format})).status,422,format);
+  const openedFormer=await outputs(former);assert.equal(openedFormer.total,2,recipe);assert.deepEqual(openedFormer.downloads,REBUILDING,recipe);
+  const renewedJob=openedFormer.jobs.find(j=>j.id!==formerJob.id);assert.equal(renewedJob.recipe,ACRYLIC_ENGRAVING_RECIPE);assert.equal(renewedJob.recipeKey,job.recipeKey);
+  await w.exportWorker.wait(renewedJob.id);
+  const after=await outputs(former);assert.deepEqual(after.downloads,{jobId:renewedJob.id,formats:[...ORDER_FORMATS],surfaces:[{id:'front',formats:[...ORDER_FORMATS]}],pending:false,note:null});assert.equal(after.total,2);
+  assert.equal(w.customerDrafts.printProof(former.snapshotId,renewedJob.recipeKey).metadata.orderFiles.schema,ORDER_FILES_SCHEMA);
+  const now=await call(route(former),{format:'pdf'});assert.equal(now.status,200);assert.equal(now.headers.get('content-disposition'),'attachment; filename="'+renewedJob.id+'-gravur-1zu1-mit-kontur.pdf"');checkEngravingPdf(inspect(now.bytes),{widthMm:150,heightMm:200,holes:'none'},recipe);
+  assert.deepEqual((await call('/api/workshop/export-jobs/'+formerJob.id+'/download',{format:'pdf'})).bytes,proof.pdf,'die frühere Ausgabe bleibt auf der Seite „Ausgaben“ abrufbar');
  }
- assert.notDeepEqual((await call(route(seven),{format:'pdf'})).bytes,files.get('technische-gravurpruefung.pdf'),'nicht die Datei ohne Kontur');
- for(const format of ['pdf-contour','svg-contour'])assert.equal((await call(route(seven),{format})).status,422,format);
- const openedSeven=await outputs(seven);assert.equal(openedSeven.total,2);
- assert.deepEqual(openedSeven.downloads,{jobId:sevenJob.id,formats:[...ORDER_FORMATS],surfaces:[{id:'front',formats:[...ORDER_FORMATS]}],pending:false,note:null});
- const renewedJob=openedSeven.jobs.find(j=>j.id!==sevenJob.id);assert.equal(renewedJob.recipe,ACRYLIC_ENGRAVING_RECIPE);assert.equal(renewedJob.recipeKey,job.recipeKey);
- await w.exportWorker.wait(renewedJob.id);assert.equal((await outputs(seven)).downloads.jobId,renewedJob.id,'danach gilt der Auftrag der Position');assert.equal((await outputs(seven)).total,2);
- assert.equal(w.customerDrafts.printProof(seven.snapshotId,renewedJob.recipeKey).metadata.orderFiles.schema,ORDER_FILES_SCHEMA);
 
  // 3. Falsche Prüfsumme: Der Dateinachweis des Auftrags passt nicht zu den Bytes im Paket → Fehler wie bei der Weißdatei, keine Datei.
  const tampered=await position('Ef',{quiet:true}),metadata=structuredClone(proof.metadata);metadata.orderFiles.surfaces[0].files.pdf.sha256='0'.repeat(64);
@@ -496,8 +791,8 @@ test('Download der Bestellposition: nur angemeldet und mit CSRF, zwei Formate mi
  const damaged=await call(route(broken),{format:'svg'});assert.equal(damaged.status,422);assert.match(damaged.json.error.message,/Ausgabepaket ist unvollständig oder verändert/);
 
  // 4. Formprodukt alter Art (ENTSCHEIDUNGEN 3.61: „alles andere auch“): Der Auftrag entsteht mit dem Eingang wie beim nativen
- // Produkt; PDF und SVG tragen die Kontur. Eine fertige Ausgabe des früheren Rezeptstands (ohne die Dateien) wird beim Öffnen
- // von selbst neu aufgebaut – kein Sonderfall „Formprodukt alter Art“ mehr.
+ // Produkt; PDF und SVG haben denselben Aufbau. Eine fertige Ausgabe eines früheren Rezeptstands wird beim Öffnen von selbst
+ // neu aufgebaut – kein Sonderfall „Formprodukt alter Art“.
  async function formPosition(material,{quiet=false}={}){
   const {record,bundle,capture}=await formBundle({method:'engraving',material,workshop:w});capture();
   const n=++serial,binding=w.orderIntake.bind({shopDomain,variantId:String(300+n),record}),offer=w.orderIntake.offer({bindingId:binding.id,snapshotId:bundle.manifest.id,quantity:1});
@@ -505,25 +800,30 @@ test('Download der Bestellposition: nur angemeldet und mit CSRF, zwei Formate mi
   const deliver=()=>w.orderIntake.receive(raw,{'x-shopify-hmac-sha256':createHmac('sha256',secret).update(raw).digest('base64'),'x-shopify-shop-domain':shopDomain,'x-shopify-api-version':'2026-07','x-shopify-topic':'orders/paid','x-shopify-webhook-id':'evt-order-files-form-'+n},{shopDomain,secret,apiVersion:'2026-07'});
   const result=quiet?w.orderIntake.withBindingTransaction(deliver):deliver();assert.equal(result.errors.length,0);return result.lines[0];
  }
- const form=await formPosition('slate'),[formJob]=w.exportJobs.forSnapshot(form.snapshotId).jobs;
+ // Acrylglas: Außenform blau, Bohrloch rot (wird nach der Gravur geschnitten).
+ const form=await formPosition('acrylic-black'),[formJob]=w.exportJobs.forSnapshot(form.snapshotId).jobs;
  assert.equal(formJob.recipe,FORM_ENGRAVING_RECIPE);assert.equal(formJob.recipeKey,formEngravingKey(formJob.settings));
  await w.exportWorker.wait(formJob.id);
  const formReady=await outputs(form);assert.deepEqual(formReady.outputState,{state:'fertig',reason:null,jobId:formJob.id});
  assert.deepEqual(formReady.downloads,{jobId:formJob.id,formats:[...ORDER_FORMATS],surfaces:[{id:'front',formats:[...ORDER_FORMATS]}],pending:false,note:null});assert.equal(formReady.total,1);
  const formProof=w.customerDrafts.printProof(form.snapshotId,formJob.recipeKey),formPdf=await call(route(form),{format:'pdf'}),formSvg=await call(route(form),{format:'svg'});
  assert.equal(formPdf.status,200);assert.equal(formPdf.headers.get('content-disposition'),'attachment; filename="'+formJob.id+'-gravur-1zu1-mit-kontur.pdf"');assert.equal(formPdf.headers.get('x-gravuru-file-sha256'),formProof.metadata.orderFiles.surfaces[0].files.pdf.sha256);
- assert.deepEqual(inspect(formPdf.bytes).drawings.filter(d=>d.layer==='Kontur').map(d=>[d.width,d.color]),[[0,[0,0,1]]],'Schiefer: blaue Haarlinie');
- assert.equal(formSvg.status,200);assert.equal(formSvg.headers.get('content-type'),'image/svg+xml');assert.match(formSvg.bytes.toString(),/<g id="kontur" fill="none" stroke="#0000ff" stroke-width="0\.05"/);
+ assert.deepEqual(checkEngravingPdf(inspect(formPdf.bytes),{widthMm:60,heightMm:40,holes:'cut',raster:formProof.metadata.settings.mode==='raster'},'Formprodukt Acrylglas').lines.map(d=>d.color),[BLUE,RED]);
+ assert.equal(formSvg.status,200);assert.equal(formSvg.headers.get('content-type'),'image/svg+xml');assert.match(formSvg.bytes.toString(),/<g id="aussenkontur" [^>]*stroke="#0000ff" stroke-width="0\.001"><path d="[^"]+" \/><\/g><g id="ausschnitte" [^>]*stroke="#ff0000" stroke-width="0\.001"><path d="[^"]+" \/><\/g><\/svg>$/);
  assert.deepEqual((await call('/api/workshop/export-jobs/'+formJob.id+'/download',{format:'pdf'})).bytes,formProof.pdf,'die Ausgabe der Seite „Ausgaben“ bleibt die Gravur-PDF');
- // Frühere Formausgabe (Rezept v1, ohne Dateinachweis): Hinweis statt Fehler, Neuaufbau beim Öffnen.
- const formOld=await formPosition('steel',{quiet:true}),formOldSettings=formEngravingSettings({}),formOldKey=digest(JSON.stringify({recipe:'gravuru-form-engraving-proof/v1',settings:formOldSettings}));
- assert.equal(w.exportJobs.forSnapshot(formOld.snapshotId).total,0);
- w.customerDrafts.savePrintProof(formOld.snapshotId,formOldKey,{metadata:{schema:'gravuru-form-engraving-proof/v1',settings:formOldSettings,pdfSha256:digest(Buffer.from('%PDF-form-alt')),warnings:[]},pdf:Buffer.from('%PDF-form-alt'),archive:Buffer.from('altes Formpaket')});
- const formOldJob=w.exportJobs.enqueue({snapshotId:formOld.snapshotId,recipeKey:formOldKey,recipe:'gravuru-form-engraving-proof/v1',settings:formOldSettings});assert.equal(formOldJob.status,'completed');
- const formMissing=await call(route(formOld),{format:'pdf'});assert.equal(formMissing.status,409);assert.match(formMissing.json.error.message,/enthält PDF und SVG mit Kontur nicht.*neu erstellen/);assert.doesNotMatch(formMissing.json.error.message,/Formprodukt/);
- const formOpened=await outputs(formOld);assert.equal(formOpened.total,2);assert.deepEqual(formOpened.downloads,{jobId:null,formats:[...ORDER_FORMATS],surfaces:[],pending:true,note:'PDF und SVG werden für diese Position neu erstellt.'});
- const formRebuilt=formOpened.jobs.find(j=>j.id!==formOldJob.id);assert.equal(formRebuilt.recipe,FORM_ENGRAVING_RECIPE);await w.exportWorker.wait(formRebuilt.id);
- const formRenewed=await outputs(formOld);assert.deepEqual(formRenewed.downloads,{jobId:formRebuilt.id,formats:[...ORDER_FORMATS],surfaces:[{id:'front',formats:[...ORDER_FORMATS]}],pending:false,note:null});
- assert.deepEqual(inspect((await call(route(formOld),{format:'pdf'})).bytes).drawings.filter(d=>d.layer==='Kontur').map(d=>[d.width,d.color]),[[0,[0,0,0]]],'Edelstahl: schwarze Haarlinie');
- assert.deepEqual((await call('/api/workshop/export-jobs/'+formOldJob.id+'/download',{format:'pdf'})).bytes,Buffer.from('%PDF-form-alt'),'die frühere Ausgabe bleibt abrufbar');
+ // Frühere Formausgaben – Rezept v1 ohne Dateinachweis und Rezept v2 mit dem Nachweis des Stands 3.61: Hinweis statt Datei,
+ // Neuaufbau beim Öffnen. Edelstahl: Außenform und Bohrloch blau (Anlegen).
+ for(const [recipe,orderFiles] of [['gravuru-form-engraving-proof/v1',null],['gravuru-form-engraving-proof/v2',{schema:'gravuru-order-files/v2',surfaces:[{id:'front',files:formProof.metadata.orderFiles.surfaces[0].files}]}]]){
+  const formOld=await formPosition('steel',{quiet:true}),formOldSettings=formEngravingSettings({}),formOldKey=digest(JSON.stringify({recipe,settings:formOldSettings}));
+  assert.equal(w.exportJobs.forSnapshot(formOld.snapshotId).total,0);
+  w.customerDrafts.savePrintProof(formOld.snapshotId,formOldKey,{metadata:{schema:recipe,settings:formOldSettings,pdfSha256:digest(Buffer.from('%PDF-form-alt')),warnings:[],...(orderFiles?{orderFiles}:{})},pdf:Buffer.from('%PDF-form-alt'),archive:orderFiles?formProof.archive:Buffer.from('altes Formpaket')});
+  const formOldJob=w.exportJobs.enqueue({snapshotId:formOld.snapshotId,recipeKey:formOldKey,recipe,settings:formOldSettings});assert.equal(formOldJob.status,'completed');
+  const formMissing=await call(route(formOld),{format:'pdf'});assert.equal(formMissing.status,409,recipe);assert.equal(formMissing.json.error.message,NOT_TODAY);assert.doesNotMatch(formMissing.json.error.message,/Formprodukt/);
+  const formOpened=await outputs(formOld);assert.equal(formOpened.total,2);assert.deepEqual(formOpened.downloads,REBUILDING);
+  const formRebuilt=formOpened.jobs.find(j=>j.id!==formOldJob.id);assert.equal(formRebuilt.recipe,FORM_ENGRAVING_RECIPE);await w.exportWorker.wait(formRebuilt.id);
+  const formRenewed=await outputs(formOld);assert.deepEqual(formRenewed.downloads,{jobId:formRebuilt.id,formats:[...ORDER_FORMATS],surfaces:[{id:'front',formats:[...ORDER_FORMATS]}],pending:false,note:null});
+  const rebuiltMode=w.customerDrafts.printProof(formOld.snapshotId,formRebuilt.recipeKey).metadata.settings.mode;
+  assert.deepEqual(checkEngravingPdf(inspect((await call(route(formOld),{format:'pdf'})).bytes),{widthMm:60,heightMm:40,holes:'contour',raster:rebuiltMode==='raster'},'Formprodukt Edelstahl').lines.map(d=>d.color),[BLUE,BLUE]);
+  assert.deepEqual((await call('/api/workshop/export-jobs/'+formOldJob.id+'/download',{format:'pdf'})).bytes,Buffer.from('%PDF-form-alt'),'die frühere Ausgabe bleibt abrufbar');
+ }
 });

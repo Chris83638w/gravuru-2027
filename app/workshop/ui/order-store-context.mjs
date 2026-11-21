@@ -21,8 +21,8 @@ export async function orderRequest(row,path,data,request=merchantRequest){
  return request(prefix+path,options);
 }
 
-// #265, ENTSCHEIDUNGEN 3.61: zwei Downloads je Position (bei gestalteter Rückseite je Fläche) – PDF und SVG, beide immer mit
-// Kontur; Dateien ohne Kontur gibt es hier nicht mehr. Ein Knopf ist nur aktiv, wenn das Kennzeichen „fertig“ lautet und die
+// #265, ENTSCHEIDUNGEN 3.61/3.62: zwei Downloads je Position (bei gestalteter Rückseite je Fläche) – PDF und SVG, beide immer
+// mit Kontur und nie gespiegelt, im Aufbau der Musterdatei von Chris; Dateien ohne Kontur gibt es hier nicht mehr. Ein Knopf ist nur aktiv, wenn das Kennzeichen „fertig“ lautet und die
 // Ausgabe diese Datei führt; sonst sagt der Hinweis, woran es liegt (z. B. Ausgabe alter Art: „für diese Position neu
 // erstellen“), statt beim Klick einen Fehler zu zeigen.
 export const ORDER_FILE_LABELS=Object.freeze({pdf:'PDF',svg:'SVG'});

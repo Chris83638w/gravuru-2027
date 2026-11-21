@@ -843,8 +843,35 @@ Keine. Gelöscht wird nichts (die Testbilder bei Shopify bleiben).
 
 **Stufe A, Teil 2** (`2f43b0fa`, Zweig `dev/claude-warenkorb2-20261121`, nicht aufgespielt): siehe `STATUS.md`.
 
+### Offene Fragen an Chris (Stand 08:30 Uhr)
+
+Keine. Die Freigabe für den Theme-Baustein ist erteilt (21.11., 08:24 Uhr, ENTSCHEIDUNGEN 3.54); Astra ist beauftragt (#267).
+
+## Nach der Theme-Korrektur (21.11.2026, 08:36 Uhr) – Prüfung am echten Shop, PC und Handy
+
+**Stand.** Server `9ada257d`; Theme-Baustein `gravuru-warenkorb-bearbeiten` im veröffentlichten Theme mit der Bildauswahl für `_gravuru_bild` (Astra, `f0e328d5`, Sicherung `bde78331`).
+
+**Geprüft (je ein Lauf, Testgestaltung „Claudetest“, ohne Kasse):**
+
+| Lauf | Klick bis Warenkorb | Warenkorbseite | Seitenwarenkorb | Bearbeiten-Adresse der Zeile |
+| --- | --- | --- | --- | --- |
+| Acrylglas, PC, 08:48 Uhr | 6,6 s | Bild `26-…`: Gestaltung vom eigenen Server | Bild `27-…`: Gestaltung | öffnet die gesicherte Gestaltung nach 3,2 s |
+| Edelstahl, Handyansicht, 08:49 Uhr | 4,6 s | Bild `28-…`: Gestaltung | Bild `29-…`: Gestaltung | Bild `30-…`: öffnet die gesicherte Gestaltung nach 2,6 s |
+
+Schritte Edelstahl, Handyansicht (Dauer des Abrufs): Entwurf sichern 2,0 s, Warenkorb vorbereiten 0,44 s, Daten für die Shop-Seite 0,30 s, Bestätigen 0,32 s, Shopify 0,68 s.
+
+**Kein Bearbeiten-Link im Warenkorb.** Für R15-Zeilen ist das seit dem 19.11. so festgelegt (ENTSCHEIDUNGEN 3.55; Astra hat den Link mit `98ecce47` aus dem veröffentlichten Baustein genommen). Die Adresse `_gravuru_bearbeiten` steht weiter an der Zeile; sie hat dieselbe Form wie der Link der Repo-Fassung (`/apps/konfigurator/start?product=…&variant=…&config=…&rev=…&line=theme`, dazu `ui=prio-r15`), nur ohne `back`. Wer den Baustein künftig anfasst: Die Fassung unter `ops/shopify/theme-block/snippets/` enthält den Link (Zeilen 32–51, 69–72) und weicht damit vom veröffentlichten Stand ab – nur einzelne Zeilen übertragen, nie die ganze Datei.
+
+**Lehre aus meinem Fehler von heute früh, erweitert:** Vor einer Aussage an Chris über das, was der Kunde im Shop sieht, das veröffentlichte Theme ablesen lassen und die Freigaben in #267 lesen, nicht nur `ENTSCHEIDUNGEN.md` und das Repo. Die Freigabe vom 19.11. stand nur im Issue.
+
+**Stufe A, Teil 2** (`2f43b0fa`) ist bei Astra beauftragt (#267); Rückweg `9ada257d`. Beide Editor-Pakete bleiben `editor-6f2e52f6bb197537` und `editor-d6521828989e096a` (für diesen Stand nachgebaut).
+
 ### Offene Fragen an Chris
 
-Keine. Die Freigabe für den Theme-Baustein ist erteilt (21.11., 08:24 Uhr, ENTSCHEIDUNGEN 3.54); Astra ist beauftragt (#267). Danach am echten Shop zu prüfen: Warenkorbseite, Seitenwarenkorb, Kasse, Danke-Seite, „Bearbeiten“ aus dem Warenkorb, Handy.
+Keine.
+
+### Noch nicht geprüft
+
+Kasse, Danke-Seite, Bestell-E-Mail, Kundenkonto. An Astra als Lesefrage: was Kasse und Bestellansicht aus der sichtbaren Zeilenangabe „Bearbeitbarer Entwurf“ anzeigen (im Warenkorb blenden die beiden Sections sie aus).
 
 Der [Design-Master](https://github.com/Chris83638w/gravuru-katalog./blob/main/designs/DESIGN-MASTER.md) gilt unverändert; an Designs wurde nichts geändert.

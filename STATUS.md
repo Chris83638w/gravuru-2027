@@ -1,3 +1,20 @@
+## 21.11.2026 · Claude (Operator, technische Gesamtverantwortung) · #265/#267: Warenkorbbild nach der Theme-Korrektur am echten Shop geprüft (PC und Handy); Stufe A, Teil 2 bei Astra beauftragt
+
+- **Theme-Korrektur:** Astra, 08:36:33 Uhr, veröffentlichtes Theme `190984126844`, nur die Bildauswahl in `snippets/gravuru-warenkorb-bearbeiten.liquid`; vorherige Fassung gesichert in `bde78331`, Änderung `f0e328d5` (#267, Kommentar 7058724012). Grundlage: ENTSCHEIDUNGEN 3.54.
+- **Prüfung am echten Shop, je ein Lauf, Wegwerf-Browser, Testgestaltung „Claudetest“ (zwei weitere kleine Testentwürfe; keine Kasse, keine Bestellung):**
+
+| Lauf | Klick bis Warenkorb | Bild auf der Warenkorbseite | Bild im Seitenwarenkorb | Bearbeiten-Adresse der Zeile |
+| --- | --- | --- | --- | --- |
+| Acrylglas-Familienschild, PC, 08:48 Uhr | 6,6 s | Gestaltung, vom eigenen Server, geladen | Gestaltung, geladen | öffnet die Gestaltung nach 3,2 s (Texte „Claudetest“, „Altmann“, „Hier wohnt das“, „Glück“) |
+| Edelstahl-Türschild, Handyansicht 390 × 844, 08:49 Uhr | 4,6 s | Gestaltung, geladen | Gestaltung, geladen | öffnet die Gestaltung nach 2,6 s (Texte „Claudetest“, „Familie“) |
+
+  Bilder 26 bis 30 unter `docs/handoffs/2026-11-20-prio-c-technik-claude/bilder/`. Die Zeilen tragen weiter weder `_Entwurf` noch `_gravuru_checkout_image`. Das kleine Prüfpaket reicht zum Wiederöffnen der Gestaltung.
+- **Kein Bearbeiten-Link im Warenkorb – so gewollt:** Für R15-Zeilen zeigt der Warenkorb seit dem 19.11. nur die Vorschau (ENTSCHEIDUNGEN 3.55, nachgetragen; #267, Kommentar 7017499306; Astra `98ecce47`). Bild 23 (Stand `9bfc281b`) zeigt ihn ebenfalls nicht. Meine Angabe an Chris vom 21.11. („Bild und Bearbeiten wie heute“) war beim Bearbeiten-Link falsch; kein Rückschritt durch `9ada257d`. Die Fassung des Bausteins im Repo enthält den Link noch – nicht als Ganzes veröffentlichen.
+- **Stufe A, Teil 2 beauftragt:** `2f43b0fa` (nur Server: `repository.mjs`, `bound-test-cart.mjs`); Gesamtlauf 2837 Tests, 2829 bestanden, 4 übersprungen, die vier bekannten Fehlschläge. Beide Editor-Pakete für diesen Stand nachgebaut: unverändert `editor-6f2e52f6bb197537` und `editor-d6521828989e096a`; keine Änderung unter `app/workshop/ui` und `app/configurator` gegenüber `9ada257d`. Rückweg `9ada257d`.
+- **Nicht geprüft:** Kasse (normales Produktbild; ich öffne sie nicht ohne Auftrag von Chris), Danke-Seite, Bestell-E-Mail; was Kasse und Bestellung aus der sichtbaren Zeilenangabe „Bearbeitbarer Entwurf“ (115 Zeichen, technischer Verweis) anzeigen – Lesefrage an Astra.
+- **Nächster Schritt:** nach dem Aufspielen von Teil 2 am echten Shop messen; dann Rest der Stufe A (Abrufe nach dem Sichern zusammenlegen, Warenkorbbild des Editors nicht mehr erzeugen, Konfiguration je Klick nicht mehr kopieren), danach Stufe B.
+- Übergabe: `docs/handoffs/2026-11-20-prio-c-technik-claude.md`, Abschnitt „Nach der Theme-Korrektur“. Der [Design-Master](https://github.com/Chris83638w/gravuru-katalog./blob/main/designs/DESIGN-MASTER.md) gilt unverändert; an Designs wurde nichts geändert.
+
 ## 21.11.2026 · Claude (Operator, technische Gesamtverantwortung) · #265/#267: `9ada257d` live – Messung am echten Shop; Befund: Warenkorb zeigt das Produktfoto statt der Gestaltung
 
 - **Aufgespielt:** Astra, 08:11:42 Uhr, Stand `9ada257d` (Stufe A, Teil 1 und kleines Paket); 41 Anfragen beim Umschalten, alle HTTP 200 (#267, Kommentar 7058446052).

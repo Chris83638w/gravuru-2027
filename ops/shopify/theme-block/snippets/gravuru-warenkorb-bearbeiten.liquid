@@ -28,10 +28,25 @@
   endif
   assign gv_preview_prefix = gv_preview | slice: 0, 24
   assign gv_relative_prefix = gv_preview | slice: 0, 9
+  assign gv_preview_allowed = false
+  if gv_preview_prefix == 'https://cdn.shopify.com/' or gv_relative_prefix == '/uploads/'
+    assign gv_preview_allowed = true
+  elsif gv_native
+    assign gv_saved = item.properties['_gravuru_bild']
+    assign gv_saved_root = 'https://app-2027.gravuru-designwerkstatt.de/gestaltung/'
+    assign gv_saved_prefix = gv_saved | slice: 0, gv_saved_root.size
+    assign gv_saved_ext = gv_saved | slice: -4, 4
+    if gv_saved_prefix == gv_saved_root and gv_saved_ext == '.png'
+      unless gv_saved contains '?' or gv_saved contains '#' or gv_saved contains '..' or gv_saved contains '%'
+        assign gv_preview = gv_saved
+        assign gv_preview_allowed = true
+      endunless
+    endif
+  endif
 -%}
 {%- if gv_native or gv_legacy -%}
   <div class="gravuru-cart-personalization">
-    {%- if gv_preview_prefix == 'https://cdn.shopify.com/' or gv_relative_prefix == '/uploads/' -%}
+    {%- if gv_preview_allowed -%}
       <a class="gravuru-cart-preview-link" data-gravuru-preview data-close-label="{{ 'accessibility.close' | t | escape }}" href="{{ gv_preview | escape }}" target="_blank" rel="noopener">
         <img class="gravuru-cart-preview" src="{{ gv_preview | escape }}" alt="{{ item.product.title | escape }}"
              {% if gv_thumb_query != blank %}srcset="{{ gv_preview | escape }}{{ gv_thumb_query }}160 1x, {{ gv_preview | escape }}{{ gv_thumb_query }}320 2x, {{ gv_preview | escape }}{{ gv_thumb_query }}480 3x"{% endif %}

@@ -35,6 +35,15 @@ export function orderFilesNote(outputState,downloads){
  return orderFileButtons(outputState,downloads).some(s=>s.buttons.some(b=>!b.enabled))?'Nicht jede der vier Dateien liegt vor. Bitte die Ausgabe für diese Position neu erstellen.':'';
 }
 
+// #265, ENTSCHEIDUNGEN 3.53 (6) und 3.57: Der Link „Fertigungsdatei“ an der Shopify-Zeile nennt die Gestaltung (Konfigurations-
+// Kennung und Revision, wie `_gravuru_config`/`_gravuru_rev` der Zeile). Der Bestelleingang hält genau diese Zuordnung je Position
+// fest (`configuration`); vor der Zahlung gibt es die Position noch nicht – dann ein Hinweis statt eines Fehlers.
+export const ORDER_NOT_PAID_NOTE='Zu dieser Gestaltung gibt es noch keine bezahlte Bestellposition. Die Fertigungsdatei entsteht mit der Zahlung; danach erscheint die Position hier.';
+export function orderForConfiguration(rows,config,rev){
+ if(typeof config!=='string'||!/^konfig_[a-f0-9-]{36}$/.test(config)||!/^[1-9][0-9]{0,8}$/.test(String(rev??'')))return null;
+ const matches=rows.filter(row=>row.configuration?.id===config&&row.configuration.rev===Number(rev));
+ return matches.length===1?matches[0]:null;
+}
 export function selectedOrder(rows,key){
  const matches=rows.filter(row=>orderKey(row)===key||!key?.includes(':')&&row.id===key);
  return matches.length===1?matches[0]:null;

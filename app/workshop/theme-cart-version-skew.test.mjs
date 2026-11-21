@@ -268,6 +268,22 @@ test('3.52 neuer Client: ohne Bild bei Shopify geht nur Text an den Warenkorb, u
  }
 });
 
+// #265 Stufe B, Lieferung 3 (ENTSCHEIDUNGEN 3.53/3.57): Die Übergabe trägt zusätzlich `_gravuru_fertigung` (Bestellansicht der
+// Werkstatt im Shopify-Admin). Jeder Client-Stand, der in offenen Tabs noch laufen kann, prüft Eigenschaften allgemein (Name,
+// Länge, Text) und legt sie unverändert an die Zeile; die Rücklese-Prüfung vergleicht sie wie jede andere Eigenschaft.
+test('#265 Lieferung 3: jeder Client-Stand nimmt die zusätzliche Eigenschaft an und legt sie unverändert an die Warenkorbzeile',async()=>{
+ const link='https://'+shopDomain+'/admin/apps/synthetic-client/werkstatt/bestellungen/?config=konfig_11111111-1111-4111-8111-111111111111&rev=1';
+ for(const [url,hosted] of [[OLD_CLIENT,false],[LIVE_CLIENT,false],[LIVE_CLIENT,true],[PRE_TAKE_CLIENT,false],[PRE_TAKE_CLIENT,true],[NEW_CLIENT,false],[NEW_CLIENT,true]]){
+  const client=await import(url.href+'?fertigung'),p=serverPayload({hosted});p.properties._gravuru_fertigung=link;
+  client.validateThemeCartPayload(p);
+  const s=shop(),c=client.createThemeCartClient({fetchImpl:s.fetchImpl,root:'/',claim:async()=>{s.log.claims++;}});
+  await c.submit(p);assert.equal(s.cart.items.length,1,url.pathname);assert.equal(s.cart.items[0].properties._gravuru_fertigung,link,url.pathname);assert.equal(s.log.claims,1);
+  // Eine an der Zeile veränderte Adresse gilt nicht als bestätigt.
+  const changed={currency:'EUR',items:[{...s.cart.items[0],properties:{...s.cart.items[0].properties,_gravuru_fertigung:link+'0'}}]};
+  assert.throws(()=>client.verifyThemeCartLine(changed,p),/stimmen nicht überein/,url.pathname);
+ }
+});
+
 test('3.52 Tab mit dem Client des Stands 9bfc281b: er bekommt weiter das Vorschaubild und legt wie bisher ein',async()=>{
  const live=await import(LIVE_CLIENT.href+'?direct');
  assert.equal(typeof live.hostedPreview,'function');assert.equal(live.serverPreview,undefined,'Fixture ist der Client vor 3.52');

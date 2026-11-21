@@ -23,6 +23,8 @@ import {createOrderWebhookHandler,ORDER_WEBHOOK_PATH} from './shopify-order-webh
 import {cartTransformRun} from '../../ops/shopify/einzelsperre-release/preis/src/master-release/cart_transform_run.mjs';
 import {cartValidationsGenerateRun} from '../../ops/shopify/einzelsperre-release/pruefung/src/cart_validation_run.mjs';
 import {customerReadMemo} from './customer-read-scope.mjs';
+import {crossStoreOrders} from './cross-store-orders.mjs';
+import {orderForConfiguration,orderKey} from './ui/order-store-context.mjs';
 
 // Durchlauf des öffentlichen Einstiegs mit echter Werkstatt: Start über App-Proxy-Signatur → Modell →
 // Gestaltung als privater Prüfstand → normaler Theme-Warenkorb (synthetischer Ajax-Shop)
@@ -215,6 +217,11 @@ for(const {cache,images} of [{cache:false,images:true},{cache:true,images:true},
  assert.ok(!JSON.stringify(p).includes(draft.token));assert.ok(!JSON.stringify(p).includes(token));assert.equal(new URL(p.properties._gravuru_bearbeiten).searchParams.get('line'),'theme');
  assert.equal(p.properties.Bearbeiten,undefined);
  assert.match(p.properties._gravuru_bild,/\/offer_[a-f0-9-]{36}\/[a-f0-9]{64}\.png$/);assert.ok(p.properties._gravuru_bild.startsWith(origin+'/gestaltung/'));
+ // #265 Stufe B, Lieferung 3 (ENTSCHEIDUNGEN 3.53/3.57): „Fertigungsdatei“ an der Zeile = Bestellansicht der Werkstatt im Shopify-Admin
+ // für genau diese Gestaltung. Die Adresse trägt nur Kennung und Revision – kein Token, keine Datei, nicht den eigenen Server.
+ const production=configuration=>'https://'+shopDomain+'/admin/apps/synthetic-client/werkstatt/bestellungen/?config='+configuration.id+'&rev='+configuration.rev;
+ assert.equal(p.properties._gravuru_fertigung,production(p.configuration));assert.ok(!p.properties._gravuru_fertigung.includes(new URL(origin).host));
+ assert.equal(Object.values(p.properties).filter(v=>v===p.properties._gravuru_bild).length,1,'„Gestaltung ansehen“ bleibt die eine vorhandene Eigenschaft');
  if(images){assert.equal(sources.at(-1).source,firstSource);assert.equal(p.properties._gravuru_checkout_image,registeredImage);assert.equal(imageCalls,1);}
  else{assert.equal(p.properties._gravuru_checkout_image,undefined,'kein Kassenbild bei Shopify');assert.equal(sources.length,0);assert.equal(imageCalls,0);assert.equal(warmAccess,0);assert.ok(!JSON.stringify(p).includes('cdn.shopify.com'));}
  // #252 Versionswechsel: Tabs mit älterem, zwischengespeichertem Client fragen ohne Kennzeichen und erhalten weiter das PNG.
@@ -401,8 +408,17 @@ for(const {cache,images} of [{cache:false,images:true},{cache:true,images:true},
  assert.equal(adds,2);assert.equal(removes,1);assert.equal(themeCart.items.length,2);assert.deepEqual(themeCart.items[0],other);
  // Signed order intake still binds precisely to the immutable edited design.
  const item=themeCart.items[1],paid={id:123456,test:true,financial_status:'paid',currency:'EUR',customer:{id:42},line_items:[{id:9001,product_id:Number(p.productId),variant_id:item.variant_id,quantity:3,price:euro(item.original_price),properties:Object.entries(item.properties).map(([name,value])=>({name,value}))}]};
+ // #265 Stufe B, Lieferung 3: Die Zeile trägt den Link ihres letzten Stands. Vor der Zahlung findet die Bestellansicht dazu keine
+ // Position (Hinweis statt Fehler); nach dem Bestelleingang genau die eine dieser Gestaltung und Revision.
+ const officeRows=()=>crossStoreOrders([{storeId:'acryl',apiPrefix:'/api/workshop/',workshop:w}],{shopDomain,enabled:true}).orders;
+ assert.equal(item.properties._gravuru_fertigung,production({id:p.configuration.id,rev:3}));
+ const linked=new URL(item.properties._gravuru_fertigung).searchParams;assert.deepEqual([...linked.keys()],['config','rev']);
+ assert.equal(orderForConfiguration(officeRows(),linked.get('config'),linked.get('rev')),null,'vor der Zahlung gibt es die Position nicht');
  const raw=Buffer.from(JSON.stringify(paid)),received=w.orderIntake.receive(raw,{'x-shopify-hmac-sha256':createHmac('sha256',secret).update(raw).digest('base64'),'x-shopify-shop-domain':shopDomain,'x-shopify-api-version':'2026-07','x-shopify-topic':'orders/paid','x-shopify-webhook-id':'evt-theme-cart-0001'},{shopDomain,secret,apiVersion:'2026-07'});
  assert.equal(received.errors.length,0,JSON.stringify(received.errors));assert.equal(received.lines.length,1);assert.equal(received.lines[0].snapshotId,edited.data.snapshotId);assert.deepEqual(received.lines[0].configuration,{id:p.configuration.id,rev:3});assert.equal(received.lines[0].productionReady,false);
+ const position=orderForConfiguration(officeRows(),linked.get('config'),linked.get('rev'));assert.equal(position?.id,received.lines[0].id);assert.equal(orderKey(position),'acryl:'+received.lines[0].id);
+ for(const rev of ['1','2','4'])assert.equal(orderForConfiguration(officeRows(),linked.get('config'),rev),null,'ein nicht gekaufter Stand wählt keine Position');
+ assert.ok(!JSON.stringify(received.lines[0]).includes('/admin/apps/'),'die Adresse ist kein Teil des gesicherten Bestellstands');
 
  await t.test('F01 changes quantity in the theme and accepts only the exact checkout tier at orders/paid',async()=>{
   themeCart.items.splice(1);
@@ -424,8 +440,12 @@ for(const {cache,images} of [{cache:false,images:true},{cache:true,images:true},
   assert.equal(checkout.quantity,4);
   assert.equal(checkout.original_price,1899);
   assert.deepEqual(checkout.properties,before.properties,'the theme keeps the original offer and design');
+  // #265 Stufe B, Lieferung 3: Diese Zeile steht für einen Warenkorb von vor dem Aufspielen – ohne `_gravuru_fertigung`. Der
+  // Bestelleingang nimmt sie genauso an wie die Zeile oben, die die Eigenschaft trägt.
+  assert.match(checkout.properties._gravuru_fertigung,/\/admin\/apps\/synthetic-client\/werkstatt\/bestellungen\/\?config=konfig_[a-f0-9-]{36}&rev=1$/);
   const line={id:9002,product_id:checkout.product_id,variant_id:checkout.variant_id,quantity:checkout.quantity,price:euro(checkout.original_price),
-   properties:Object.entries(checkout.properties).map(([name,value])=>({name,value}))};
+   properties:Object.entries(checkout.properties).filter(([name])=>name!=='_gravuru_fertigung').map(([name,value])=>({name,value}))};
+  assert.equal(line.properties.length,Object.keys(checkout.properties).length-1);
   const payment={id:123457,test:true,financial_status:'paid',currency:'EUR',line_items:[line]};
   const deliver=(event,payload=payment)=>request(ORDER_WEBHOOK_PATH,'POST',payload,{
    'x-shopify-hmac-sha256':createHmac('sha256',secret).update(JSON.stringify(payload)).digest('base64'),

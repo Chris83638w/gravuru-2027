@@ -1,4 +1,4 @@
-import {orderKey,orderApi,orderPage,selectedOrder,orderRequest,orderFileButtons,orderFilesNote} from './order-store-context.mjs';
+import {orderKey,orderApi,orderPage,selectedOrder,orderRequest,orderFileButtons,orderFilesNote,orderForConfiguration,ORDER_NOT_PAID_NOTE} from './order-store-context.mjs';
 import {createOrderFileGrantsUI} from './order-file-grants-ui.mjs';
 import {merchantRequest as fetch} from './merchant-request.mjs';
 import {outputLabel,outputDate} from './output-summary.mjs';
@@ -7,14 +7,19 @@ import {createProductionReleaseUI} from './production-release-ui.mjs';
 const $=s=>document.querySelector(s),esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])),money=n=>new Intl.NumberFormat('de-DE',{style:'currency',currency:'EUR'}).format(n/100);
 const productDraftUI=createOrderProductDraftUI(),fileGrantsUI=createOrderFileGrantsUI(),productionUI=createProductionReleaseUI();
 let outputSerial=0,fileBusy=false,fileView=null;
-let rows=[],statuses={},outputStates={},selected=new URLSearchParams(location.search).get('position');
+const query=new URLSearchParams(location.search);
+let rows=[],statuses={},outputStates={},selected=query.get('position');
+// #265, ENTSCHEIDUNGEN 3.53 (6) und 3.57: Aufruf über „Fertigungsdatei“ an der Shopify-Zeile (?config=…&rev=…) wählt die Position
+// dieser Gestaltung; solange sie noch nicht bezahlt ist, steht ein Hinweis da. Eine ausdrücklich genannte Position geht vor.
+let wanted=!selected&&query.has('config')?{config:query.get('config'),rev:query.get('rev')}:null;
 // #265, ENTSCHEIDUNGEN 3.48/3.51/3.53: Kennzeichen der Fertigungsdatei je Position. Der Server leitet es aus den Ausgabeaufträgen ab;
 // „Bitte prüfen“ steht immer mit Grund da. Positionen der älteren Laufzeit haben keines.
 const OUTPUT_LABELS={'fertig':'Fertig','wird erstellt':'Wird erstellt','bitte prüfen':'Bitte prüfen'};
 const outputNote=state=>state?'Fertigungsdatei: '+(OUTPUT_LABELS[state.state]||state.state)+(state.state==='bitte prüfen'&&state.reason?' – '+state.reason:''):'';
 function renderOrders(){$('#orders').innerHTML=rows.map(o=>{const output=outputStates[orderKey(o)];return '<button data-order="'+esc(orderKey(o))+'">'+esc(o.product.name)+'<small>'+(o.test===false?'Bestellung ':'Testbestellung ')+esc(o.orderId)+' · '+esc(statuses[orderKey(o)]?.label||'Bezahlt')+' · '+esc(statuses[orderKey(o)]?.production?.label||'Eingegangen')+' · '+money(o.totalCents)+'</small>'+(output?'<small data-output-state="'+esc(output.state)+'">'+esc(outputNote(output))+'</small>':'')+'</button>';}).join('')||'<p>Noch keine bestätigten Testpositionen.</p>';}
 function detail(){const row=selectedOrder(rows,selected);productDraftUI.select(row||null);fileGrantsUI.select(row||null);productionUI.select(row||null);$('#empty').hidden=Boolean(row);$('#detail').hidden=!row;if(!row)return;void loadOutputs(row);const status=statuses[orderKey(row)];renderLineRefunds(status?.refunds);$('#order-state').textContent=(status?.label||'Bezahlt')+(row.test===false?' · Bestellung':' · Testbestellung');$('#status-detail').textContent=(status?.requiresReview?'Vor weiterer Bearbeitung prüfen. ':'')+(status?.cancelled?'Zahlungsstand: '+status.financialLabel+'. ':'')+(status?.updatedAt?'Shop-Stand: '+new Intl.DateTimeFormat('de-DE',{dateStyle:'short',timeStyle:'short',timeZone:'Europe/Berlin'}).format(new Date(status.updatedAt))+'. ':'Noch keine spätere Statusmeldung. ')+(status?.conflict?'Widersprüchliche Meldungen mit gleicher Änderungszeit. ':'')+'Fertigung: '+(status?.production?.label||'Eingegangen')+(status?.productionReady?' · fertigungsbereit':' · nicht fertigungsbereit')+'. Keine Kunden-Downloadfreigabe ohne eigene Testfreigabe.';$('#title').textContent=row.product.name;$('#summary').textContent='Produktstand '+row.product.revision+' · Menge '+row.quantity+(row.selection?' · '+row.selection.labels.map(v=>v.label+': '+v.value).join(' · '):'');$('#price').textContent=(status?.requiresReview?'Ursprünglicher Positionswert: ':'')+money(row.totalCents)+' · '+money(row.unitCents)+' je Stück';$('#received').textContent='Bestellstand gesichert: '+new Intl.DateTimeFormat('de-DE',{dateStyle:'short',timeStyle:'short',timeZone:'Europe/Berlin'}).format(new Date(row.receivedAt));$('#snapshot').href=orderPage(row,'pruefstaende/?snapshot='+row.snapshotId+'&position='+row.id);$('#references').innerHTML=[['Position',row.id],['Shop',row.shopDomain],['Bestellung',row.orderId],['Shop-Position',row.lineId],['Prüfstand',row.snapshotId],['Paket SHA-256',row.sourcePackageSha256],['Profil',row.productionProfile?row.productionProfile.id+' · Stand '+row.productionProfile.revision:'Nicht zugeordnet']].map(([k,v])=>'<dt>'+esc(k)+'</dt><dd>'+esc(v)+'</dd>').join('');selected=orderKey(row);history.replaceState(null,'','?position='+encodeURIComponent(selected));}
-async function load(){try{const r=await fetch('/api/workshop/all-orders'),v=await r.json();if(!r.ok)throw Error(v.error?.message||'Bestellungen nicht erreichbar.');rows=v.orders;statuses=v.statuses||{};outputStates=v.outputStates||{};renderErrors(v.errors||[]);$('#connection').textContent=v.integration.enabled?'Shopify-Bestelleingang aktiv. '+rows.length+' bestätigte Position'+(rows.length===1?'':'en')+' aus allen angebundenen Speichern. Fertigung bleibt gesondert freizugeben.':'Testempfang noch nicht eingerichtet. Hier werden keine Käufe simuliert oder als bezahlt markiert.';renderOrders();detail();}catch(e){$('#notice').textContent=e.message;}}
+async function load(){try{const r=await fetch('/api/workshop/all-orders'),v=await r.json();if(!r.ok)throw Error(v.error?.message||'Bestellungen nicht erreichbar.');rows=v.orders;statuses=v.statuses||{};outputStates=v.outputStates||{};renderErrors(v.errors||[]);
+  if(wanted){const row=orderForConfiguration(rows,wanted.config,wanted.rev);if(row){selected=orderKey(row);wanted=null;}else $('#empty').textContent=ORDER_NOT_PAID_NOTE;}$('#connection').textContent=v.integration.enabled?'Shopify-Bestelleingang aktiv. '+rows.length+' bestätigte Position'+(rows.length===1?'':'en')+' aus allen angebundenen Speichern. Fertigung bleibt gesondert freizugeben.':'Testempfang noch nicht eingerichtet. Hier werden keine Käufe simuliert oder als bezahlt markiert.';renderOrders();detail();}catch(e){$('#notice').textContent=e.message;}}
 // E3: rejected single positions (status „fehler“) are listed with their reason; the valid positions of the same order stay admitted.
 function renderErrors(errors){
  const node=$('#order-errors');if(!node)return;
@@ -29,7 +34,7 @@ function renderErrors(errors){
    (e.quantity?'Menge '+esc(e.quantity)+' · ':'')+status+'</small>'+design+'</p>';
  }).join(''):'';
 }
-$('#orders').onclick=e=>{const id=e.target.closest('[data-order]')?.dataset.order;if(id){selected=id;detail();}};$('#reload').onclick=load;await load();
+$('#orders').onclick=e=>{const id=e.target.closest('[data-order]')?.dataset.order;if(id){selected=id;wanted=null;detail();}};$('#reload').onclick=load;await load();
 
 // `quiet`: stilles Nachladen, solange die Datei der gewählten Position noch erstellt wird (#265).
 async function loadOutputs(row,quiet=false){

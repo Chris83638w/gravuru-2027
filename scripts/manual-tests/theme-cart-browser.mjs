@@ -25,7 +25,15 @@ const server=http.createServer(async(req,res)=>{
   if(u.pathname===proxy+'/theme-cart-ui.mjs')return send(200,read('app/workshop/ui/theme-cart-ui.mjs').toString().replace('location.hostname!==payload.shopDomain',"location.hostname!=='127.0.0.1'"),'text/javascript');
   if(u.pathname===proxy+'/theme-cart-client.mjs')return send(200,read('app/workshop/ui/theme-cart-client.mjs'),'text/javascript');
   if(u.pathname===proxy+'/cart/data')return json(200,payload());
-  if(u.pathname===proxy+'/cart/claim'){if(claimed)return json(409,{error:{message:'Übertragung bereits begonnen.'}});claimed=true;return json(200,{claimed:true});}
+  if(u.pathname===proxy+'/cart/claim'){
+   // #265 Stufe A, Teil 4 („take“): wie der Server – claim mit Kennzeichen und Zeilenliste liefert Daten und Bestätigung in
+   // einem Abruf; eine schon gemeldete Zeile oder ein Bearbeiten ohne genau eine alte Zeile wird nicht bestätigt.
+   let lines=null;if(req.headers['x-gravuru-cart-take']==='1'){const chunks=[];for await(const chunk of req)chunks.push(chunk);lines=JSON.parse(Buffer.concat(chunks)).lines;}
+   const p=payload(),own=lines?lines.filter(l=>l.config===config):[];
+   if(lines&&own.some(l=>l.offer===p.properties._gravuru_offer))return json(200,{payload:p,claimed:false,present:true});
+   if(lines&&p.mode==='update'&&own.filter(l=>l.rev===String(p.previousRevision)).length!==1)return json(200,{payload:p,claimed:false});
+   if(claimed)return json(409,{error:{message:'Übertragung bereits begonnen.'}});claimed=true;return json(200,lines?{payload:p,claimed:true}:{claimed:true});
+  }
   if(u.pathname==='/cart.js')return json(200,cart);
   if(u.pathname==='/cart/add.js'){
    const chunks=[];for await(const chunk of req)chunks.push(chunk);

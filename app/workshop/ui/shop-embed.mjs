@@ -10,7 +10,11 @@ import * as themeCart from './theme-cart-client.mjs';
 const {createThemeCartClient,cartImage}=themeCart,HOSTED_CART_PREVIEW=typeof themeCart.hostedPreview==='function';
 // ENTSCHEIDUNGEN 3.52/3.53: Der geladene Client kann ohne Bilddatei einlegen (Bild am eigenen Server).
 const SERVER_CART_IMAGE=typeof themeCart.serverPreview==='function';
-export function cartRequestHeaders(token,path){return {'X-Gravuru-Cart-Handoff':token,...(path==='data'&&HOSTED_CART_PREVIEW?{'X-Gravuru-Cart-Preview':'hosted'}:{}),...(path==='data'&&SERVER_CART_IMAGE?{'X-Gravuru-Cart-Image':'server'}:{})};}
+// #265 Stufe A, Teil 4: Der geladene Client holt Warenkorbdaten und Bestätigung in EINEM Proxy-Abruf („take“ = claim mit
+// Zeilenliste; jeder Proxy-Abruf kostet 0,3–0,5 s). Ein älterer zwischengespeicherter Client bleibt bei data, dann claim.
+export const CART_TAKE=typeof themeCart.themeCartLines==='function';
+// path 'take': claim-Abruf des neuen Wegs. Er trägt die Kennzeichen des data-Abrufs, weil seine Antwort die Daten enthält.
+export function cartRequestHeaders(token,path){const data=path==='data'||path==='take';return {'X-Gravuru-Cart-Handoff':token,...(data&&HOSTED_CART_PREVIEW?{'X-Gravuru-Cart-Preview':'hosted'}:{}),...(data&&SERVER_CART_IMAGE?{'X-Gravuru-Cart-Image':'server'}:{}),...(path==='take'?{'X-Gravuru-Cart-Take':'1','Content-Type':'application/json'}:{})};}
 
 const EDITOR_ORIGIN='__EDITOR_ORIGIN__',PROXY='__PROXY_PATH__';
 const TOKEN=/^[a-f0-9]{64}$/;
@@ -291,17 +295,29 @@ export function install({root=window.Shopify?.routes?.root||'/'}={}){
  function hide(){if(busy||shell.classList.contains('gv-embed--preload'))return;if(cartEdit){location.assign(root+'cart');return;}shell.hidden=true;status.hidden=true;document.documentElement.classList.remove('gv-embed-open');lastFocus?.focus?.();}
  close.addEventListener('click',hide);
  document.addEventListener('keydown',event=>{if(event.key==='Escape'&&!shell.hidden)hide();});
- async function request(token,path,method='GET'){
-  const r=await fetch(PROXY+'/cart/'+path,{method,credentials:'same-origin',cache:'no-store',headers:cartRequestHeaders(token,path)});
+ // lines: Gravuru-Zeilen des Warenkorbs für „take“ (#265); nur dann gehen Take-Kennzeichen und JSON-Body mit.
+ async function request(token,path,method='GET',lines){
+  const take=lines!==undefined;
+  const r=await fetch(PROXY+'/cart/'+path,{method,credentials:'same-origin',cache:'no-store',headers:cartRequestHeaders(token,take?'take':path),...(take?{body:JSON.stringify({lines})}:{})});
   const data=await r.json().catch(()=>({}));if(!r.ok)throw Error(data.error?.message||'Die Warenkorbübergabe konnte nicht geladen werden.');return data;
  }
  async function handoff(token,source,image){
   if(busy)return;busy=true;say('4 von 4 · Deine Gestaltung wird in den Warenkorb gelegt …',{busy:true});
   try{
-   const payload=await request(token,'data');
-   if(location.hostname!==payload.shopDomain)throw Error('Diese Übergabe gehört zu einem anderen Shop.');
-   const client=createThemeCartClient({root,claim:()=>request(token,'claim','POST'),onProgress:text=>say('4 von 4 · '+text,{busy:true})});
-   const submit=()=>client.submit(payload,{image}),result=navigator.locks?await navigator.locks.request('gravuru-theme-cart',submit):await submit();
+   const sameShop=payload=>{if(location.hostname!==payload.shopDomain)throw Error('Diese Übergabe gehört zu einem anderen Shop.');};
+   const options={root,claim:()=>request(token,'claim','POST'),onProgress:text=>say('4 von 4 · '+text,{busy:true})};
+   let submit;
+   if(CART_TAKE){
+    // #265: ein Proxy-Abruf. Der Client liest erst den Warenkorb und holt die Daten mit der Bestätigung; die Shop-Prüfung
+    // läuft, sobald die Daten da sind (vor dem Einlegen). data bleibt nur für den bisherigen Weg (take:false, älterer Server).
+    const client=createThemeCartClient({...options,take:lines=>request(token,'claim','POST',lines),load:()=>request(token,'data'),onPayload:sameShop});
+    submit=()=>client.transfer({image});
+   }else{
+    const payload=await request(token,'data');sameShop(payload);
+    const client=createThemeCartClient(options);
+    submit=()=>client.submit(payload,{image});
+   }
+   const result=navigator.locks?await navigator.locks.request('gravuru-theme-cart',submit):await submit();
    say('Im Warenkorb – einen Moment …',{busy:true});location.assign(result.cartUrl);
   }catch(error){
    const message=error?.message||'Die Übertragung konnte nicht bestätigt werden. Bitte den Warenkorb prüfen.';

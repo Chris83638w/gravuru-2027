@@ -22,6 +22,18 @@ import {objectSurface,surfaceGeometry,producedSurfaces,surfaceMirror,hasBack} fr
 const fail=message=>{throw Object.assign(Error(message),{status:422,code:'acrylic_artwork'});};
 const dataSvg=bytes=>'data:image/svg+xml;base64,'+bytes.toString('base64');
 const number=v=>Number(v.toFixed(8));
+// Schwarze Vektor-Dekoration einer Vorlage steht als Vektor in der Gestaltung (ENTSCHEIDUNGEN 3.65). Ein eingebettetes
+// SVG-Bild trägt den Bildausschnitt seiner Quelle; der PDF-Schreiber wendet dessen Ursprung nicht an und zeichnet die
+// Linie dann gar nicht. Deshalb kommt der geprüfte Inhalt der Quelle mit ihrem eigenen Ausschnitt in die Gestaltung.
+function sourceVectorFragment(raw,widthMm,heightMm){
+ const m=/^\s*(?:<\?xml[^>]*\?>\s*)?<svg\b([^>]*)>([\s\S]*)<\/svg>\s*$/.exec(raw),box=m&&/\bviewBox\s*=\s*"([^"]*)"/.exec(m[1])?.[1].trim().split(/[\s,]+/).map(Number);
+ if(!m||box?.length!==4||!box.every(Number.isFinite)||!(box[2]>0&&box[3]>0)||/<svg\b|\bid\s*=/.test(m[2]))fail('Die gesicherte Dekoration der Vorlage ist nicht als Vektor lesbar.');
+ return `<svg width="${widthMm}" height="${heightMm}" viewBox="${box.join(' ')}" preserveAspectRatio="none" data-source-vector="true">${m[2]}</svg>`;
+}
+// Grundmotive sind als reine Formen ohne Farbangabe abgelegt: Strichzeichnungen ohne Füllung (ENTSCHEIDUNGEN 3.66).
+// Sie stehen in der Fertigung als Linie mit ihrer Strichstärke von 2,2 Einheiten – dieselbe Regel wie bei den Formprodukten.
+export const isLineMotif=fragment=>!/\b(?:fill|stroke)\s*[=:]/.test(fragment)&&!/^\s*<svg\b/.test(fragment);
+export const lineMotifFragment=(fragment,color)=>`<g fill="none" stroke="${esc(color)}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">${fragment}</g>`;
 export function nativeContour(g){
  const w=g.width,h=g.height,r=g.cornerRadiusMm||0;
  const ellipse=(x,y,rx,ry,sweep=0)=>`M${x-rx} ${y}a${rx} ${ry} 0 1 ${sweep} ${2*rx} 0a${rx} ${ry} 0 1 ${sweep} ${-2*rx} 0Z`;
@@ -103,8 +115,9 @@ export async function acrylicArtwork(archive,archiveHash,{engraving=false,surfac
     const raw=bytes.toString('utf8'),paints=[...raw.matchAll(/\b(?:fill|stroke)\s*=\s*"([^"]*)"/g)].map(m=>m[1]);
     const sourceVector=engraving&&layered&&original?.uxDecoration===true&&original.customerEditable===false&&original.templateOrigin===true&&original.motif===o.motif&&o.uxDecoration===true&&motif.vectorOnly===true&&motif.embeddedOnly===true&&digest(bytes)===motif.artwork.previewSha256&&paints.some(p=>p==='#000000')&&paints.every(p=>p==='#000000'||p==='none')&&!/<(?:image|text|style|script|filter|use|foreignObject)\b/.test(raw);
     const tint=(engraving||o.preserveColors===false)&&!sourceVector?` data-native-tint="${esc(color)}" data-native-tonal="${tonal}" data-raster-width-mm="${number(motif.artwork.widthMm*fit)}" data-raster-height-mm="${number(motif.artwork.heightMm*fit)}"`:'';
-    fragment=`<image href="${dataSvg(bytes)}" width="${motif.artwork.widthMm}" height="${motif.artwork.heightMm}" preserveAspectRatio="none"${tint}/>`;
-   }else if(engraving||o.preserveColors===false){fragment=fragment.replace(/(fill|stroke)="(?!none\b)[^"]*"/g,`$1="${color}"`);}
+    fragment=sourceVector?sourceVectorFragment(raw,motif.artwork.widthMm,motif.artwork.heightMm):`<image href="${dataSvg(bytes)}" width="${motif.artwork.widthMm}" height="${motif.artwork.heightMm}" preserveAspectRatio="none"${tint}/>`;
+   }else if(isLineMotif(fragment))fragment=lineMotifFragment(fragment,color);
+   else if(engraving||o.preserveColors===false){fragment=fragment.replace(/(fill|stroke)="(?!none\b)[^"]*"/g,`$1="${color}"`);}
    body=`<svg x="${-o.w/2}" y="${-o.h/2}" width="${o.w}" height="${o.h}" viewBox="${motif.bounds.join(' ')}" preserveAspectRatio="xMidYMid meet" color="${color}">${fragment}</svg>`;
   }else fail('Dieser gespeicherte Elementtyp ist für die Acryl-Ausgabe noch nicht unterstützt: '+o.type);
   parts.push(`<g data-field="${field}" transform="${transform(o)}" fill="${esc(color)}">${body}</g>`);

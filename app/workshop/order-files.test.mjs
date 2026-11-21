@@ -21,7 +21,9 @@ import {createWorkshop} from './http.mjs';
 import {makeProductDocument} from './product-model.mjs';
 import {familyProductConfig} from './product-families.mjs';
 import {prepareAcrylicReview} from './acrylic-review.mjs';
-import {acrylicArtwork} from './acrylic-artwork.mjs';
+import {acrylicArtwork,isLineMotif,lineMotifFragment} from './acrylic-artwork.mjs';
+import {decorationSvg,loadDoorbellCatalog,resourceCrosswalk,importDecorations,buildDoorbellConfig} from '../../scripts/import-doorbell-catalog.mjs';
+import {workshopResources} from './catalog.mjs';
 import {importEnvironment} from './design-assets.mjs';
 import {readReviewPackage,digest} from './review-package.mjs';
 import {NATIVE_REVIEW_SCHEMAS} from './native-review-schema.mjs';
@@ -234,7 +236,7 @@ test('Musterdatei von Chris (21.11.2026): eine Ebene „03 Gravur“ in Schwarz,
 });
 
 test('Rezeptstände: neuer Stand und eigener Schlüssel bei allen vier Ausgaben (3.62); `auto` nur ohne Profil und ohne Wahl, das Profil und eine ausdrückliche Wahl gelten unverändert',()=>{
- assert.equal(ACRYLIC_ENGRAVING_RECIPE,'gravuru-acrylic-engraving-proof/v9');
+ assert.equal(ACRYLIC_ENGRAVING_RECIPE,'gravuru-acrylic-engraving-proof/v11');
  assert.deepEqual(acrylicEngravingSettings(undefined,{mirror:true}),{mode:'auto',dpi:300,mirror:true});
  assert.deepEqual(acrylicEngravingSettings(null),{mode:'auto',dpi:300,mirror:false});
  for(const mode of ['raster','vector'])assert.deepEqual(acrylicEngravingSettings(undefined,{mode,mirror:true}),formEngravingSettings({mode,mirror:true}));
@@ -247,11 +249,11 @@ test('Rezeptstände: neuer Stand und eigener Schlüssel bei allen vier Ausgaben 
  const keys=['auto','raster','vector'].map(mode=>acrylicEngravingKey({mode,mirror:true}));assert.equal(new Set(keys).size,3);
  assert.equal(acrylicEngravingKey(acrylicEngravingSettings(undefined,{mirror:true})),keys[0]);
  const key=(recipe,settings)=>digest(JSON.stringify({recipe,settings}));
- assert.equal(keys[1],key('gravuru-acrylic-engraving-proof/v9',formEngravingSettings({mode:'raster',mirror:true})));
- for(const old of ['v6','v7','v8'])assert.notEqual(keys[1],key('gravuru-acrylic-engraving-proof/'+old,formEngravingSettings({mode:'raster',mirror:true})));
+ assert.equal(keys[1],key('gravuru-acrylic-engraving-proof/v11',formEngravingSettings({mode:'raster',mirror:true})));
+ for(const old of ['v6','v7','v8','v9','v10'])assert.notEqual(keys[1],key('gravuru-acrylic-engraving-proof/'+old,formEngravingSettings({mode:'raster',mirror:true})));
  // ENTSCHEIDUNGEN 3.62: neuer Rezeptstand bei allen vier Ausgaben – auch den Formprodukten alter Art –, jeweils mit eigenem Schlüssel.
- assert.equal(ACRYLIC_PRINT_RECIPE,'gravuru-acrylic-print-proof/v10');assert.equal(FORM_ENGRAVING_RECIPE,'gravuru-form-engraving-proof/v3');assert.equal(FORM_PRINT_RECIPE,'gravuru-form-print-proof/v7');
- assert.equal(acrylicPrintKey({}),key('gravuru-acrylic-print-proof/v10',formPrintSettings({})));for(const old of ['v8','v9'])assert.notEqual(acrylicPrintKey({}),key('gravuru-acrylic-print-proof/'+old,formPrintSettings({})));
+ assert.equal(ACRYLIC_PRINT_RECIPE,'gravuru-acrylic-print-proof/v11');assert.equal(FORM_ENGRAVING_RECIPE,'gravuru-form-engraving-proof/v3');assert.equal(FORM_PRINT_RECIPE,'gravuru-form-print-proof/v7');
+ assert.equal(acrylicPrintKey({}),key('gravuru-acrylic-print-proof/v11',formPrintSettings({})));for(const old of ['v8','v9','v10'])assert.notEqual(acrylicPrintKey({}),key('gravuru-acrylic-print-proof/'+old,formPrintSettings({})));
  assert.equal(formEngravingKey({}),key('gravuru-form-engraving-proof/v3',formEngravingSettings({})));for(const old of ['v1','v2'])assert.notEqual(formEngravingKey({}),key('gravuru-form-engraving-proof/'+old,formEngravingSettings({})));
  assert.equal(formPrintKey({}),key('gravuru-form-print-proof/v7',formPrintSettings({})));for(const old of ['v5','v6'])assert.notEqual(formPrintKey({}),key('gravuru-form-print-proof/'+old,formPrintSettings({})));
 });
@@ -528,7 +530,7 @@ test('Druck, natives Produkt: zwei Dateien 1:1 für Roland und Mimaki – nie ge
  const made={};
  for(const settings of [{},{mirror:true},{profile:'mimaki'},{profile:'mimaki',mirror:true}]){
   const result=await createAcrylicPrintProof(bundle.package,bundle.manifest.packageSha256,settings),two=twoFiles(result),mimaki=settings.profile==='mimaki',mirror=settings.mirror===true,label=JSON.stringify(settings);made[label]=two;
-  assert.equal(result.metadata.schema,'gravuru-acrylic-print-proof/v10');assert.equal(result.metadata.settings.mirror,mirror);
+  assert.equal(result.metadata.schema,'gravuru-acrylic-print-proof/v11');assert.equal(result.metadata.settings.mirror,mirror);
   assert.deepEqual(Object.fromEntries(ORDER_FORMATS.map(f=>[f,two[f].name])),{pdf:'druck-1zu1-mit-kontur.pdf',svg:'druck-1zu1-mit-kontur.svg'});
   assert.ok(![...two.files.keys()].some(name=>/ohne-schnittlinie/.test(name)),'keine Druckdatei ohne Schnittlinie im Paket');
   // Die Druckdatei der „Ausgaben“ bleibt die bisherige Datei mit ihrem Dateinachweis (nach Profil gespiegelt, Schnittlinie 0,05 mm).
@@ -586,6 +588,114 @@ test('Funkklingel zweischichtig: PDF und SVG zeigen die Acrylauflage (sie trägt
   }
   assert.equal(made[1].svg.bytes.toString(),made[0].svg.bytes.toString(),name);assert.deepEqual(inspect(made[1].pdf.bytes).drawings,inspect(made[0].pdf.bytes).drawings,name);
  }
+});
+
+// Klingelschild 16 × 28 cm mit Rahmen oben und unten – die Acrylauflage von 160 × 260 mm der Musterdatei. `prepare` richtet die
+// Vorlage ein; `addSource` legt eine importierte Designquelle so an, wie der Katalogimport sie führt (Quelle = Vorschau).
+const MUSTER_AUFLAGE={format:'16x28',frame:'FK-OBENUNTEN',color:'schwarz',mounting:'K00',position:'standard'};
+async function doorbellOrder(prepare){
+ const fixture=doorbellFixture(),sources=new Map(),png=Buffer.from('iVBORw0KGgoAAAANSUhEUgAAACgAAAA8CAIAAACb22+3AAAAOklEQVR4nO3NIQEAMAgAsPOEaDT9M9ABg9kKLLL6Xfgnq1gsFovFYrFYLBaLxWKxWCwWi8VisVgsXhqq4AGG9djEFQAAAABJRU5ErkJggg==','base64');
+ const addSource=(svg,widthMm,heightMm)=>{const bytes=Buffer.from(svg),hash=digest(bytes);sources.set(hash,bytes);fixture.localResources.motifs.push({key:'artwork-'+hash,bounds:[0,0,widthMm,heightMm],svgFragment:artworkFragment(hash,widthMm,heightMm),embeddedOnly:true,vectorOnly:true,artwork:{schema:'gravuru-imported-artwork/v1',assetId:hash,sourceSha256:hash,previewSha256:hash,format:'svg',page:1,pageCount:1,widthMm,heightMm}});return 'artwork-'+hash;};
+ const extra=prepare({fixture,addSource,each:change=>{for(const p of [fixture.profile,...fixture.doorbell.formats.map(f=>f.profile)])change(p.designs[0].objects);}})||[];
+ const document=makeProductDocument(fixture),config=document.config,record={id:config.profile.id,revision:1,document},source=selectedProfile(config,MUSTER_AUFLAGE).designs[0];
+ const bundle=await prepareAcrylicReview({record,config,input:{productId:record.id,productRevision:1,designId:source.id,objects:[...structuredClone(source.objects),...extra],options:MUSTER_AUFLAGE,quantity:1,media:[],preview:png.toString('base64')},assets:{get:()=>({format:'svg'}),read:id=>sources.get(id)},preparePhoto:async()=>({original:png,preview:png,width:40,height:60})});
+ const frozen=JSON.parse(readReviewPackage(bundle.package,bundle.manifest.packageSha256,NATIVE_REVIEW_SCHEMAS).files.get('funkklingel-fertigung.json'));
+ const result=await createAcrylicEngravingProof(bundle.package,bundle.manifest.packageSha256,{mirror:false}),two=twoFiles(result),order=inspect(two.pdf.bytes);
+ const {content}=checkEngravingPdf(order,{widthMm:160,heightMm:260,holes:'cut'},'Klingelschild');
+ const svg=checkEngravingSvg(two.svg.bytes,{widthMm:160,heightMm:280,geometry:frozen.geometry,holes:'cut',plate:{x:0,y:10,width:160,height:260}},'Klingelschild');
+ return {result,two,order,content,svg,plain:inspect(result.pdf)};
+}
+const referenceLines=()=>inspect(REFERENCE).drawings.filter(d=>d.layer===LAYER&&d.type==='s');
+
+test('Zierlinie der Vorlage (3.65): Die Dekoration des Klingelkatalogs steht als schwarze Linie in der Ebene „03 Gravur“ der PDF und als Pfad in der SVG – deckungsgleich mit der Musterdatei (FK-D05: 29 → 131 mm, 0,5 mm)',async()=>{
+ // Die Quelle entsteht wie im Katalogimport: Ihr Ausschnitt beginnt an der Stelle der Dekoration im Format (hier 28,75 / 78,75),
+ // nicht bei 0 0. Als eingebettetes SVG-Bild zeichnete der PDF-Schreiber solche Quellen nicht – die Linie fehlte in der Datei.
+ const line={bounds:[28.75,78.75,102.5,.5],svgFragment:'<path d="M29 79H131" fill="none" stroke="#000000" stroke-width="0.5" stroke-linecap="round" stroke-linejoin="round"/>'};
+ const source=decorationSvg(line);assert.match(source,/viewBox="28\.75 78\.75 102\.5 0\.5"/);
+ const {order,content,svg,plain,result}=await doorbellOrder(({addSource,each})=>{const key=addSource(source,102.5,.5);each(objects=>Object.assign(objects.find(o=>o.id==='mark-0'),{motif:key,x:80,y:79,w:102.5,h:.5}));});
+ assert.equal(result.metadata.settings.mode,'vector');assert.equal(order.images.length,0,'kein Bild in der Datei');
+ const lines=content.filter(d=>d.type==='s'),[muster]=referenceLines().filter(d=>Math.abs(d.width/MM-.5)<.001);
+ assert.equal(lines.length,1,'genau eine Linie in der Ebene „03 Gravur“');assert.ok(muster,'die Musterdatei führt die Zierlinie als Linie von 0,5 mm');
+ const [ours]=lines;assert.deepEqual(ours.color,BLACK);assert.equal(ours.fill,null);assert.ok(Math.abs(ours.width/MM-.5)<.001,'0,5 mm, ist '+ours.width/MM);
+ assert.ok(near(ours.rect,[29,69,131,69]),'29 → 131 mm auf 69 mm Höhe der Auflage: '+ours.rect);
+ assert.ok(near(ours.rect,muster.rect),'gleiche Stelle wie in der Musterdatei: '+ours.rect+' / '+muster.rect);assert.ok(Math.abs(ours.width-muster.width)<.003,'gleiche Strichstärke wie in der Musterdatei');
+ // SVG: derselbe Inhalt – der Pfad der Quelle mit ihrem eigenen Ausschnitt, kein eingebettetes Bild.
+ assert.ok(!svg.includes('<image'),'kein eingebettetes Bild in der SVG');assert.equal(svg.split('data-source-vector="true"').length-1,1);
+ assert.match(svg,/<svg width="102\.5" height="0\.5" viewBox="28\.75 78\.75 102\.5 0\.5" preserveAspectRatio="none" data-source-vector="true"><path d="M29 79H131" fill="none" stroke="#000000" stroke-width="0\.5" stroke-linecap="round" stroke-linejoin="round" ?\/><\/svg>/);
+ // Die Gravur-PDF der „Ausgaben“ (Format von Träger und Auflage, 160 × 280 mm) trägt dieselbe Linie an ihrer Stelle im Format.
+ const old=plain.drawings.filter(d=>d.type==='s'&&d.color&&same(d.color,BLACK)&&Math.abs(d.width/MM-.5)<.001);assert.equal(old.length,1,'auch in der Gravur-PDF der „Ausgaben“');assert.ok(near(old[0].rect,[29,79,131,79]),String(old[0].rect));
+});
+
+test('Zierlinie: Eine Dekoration, die nicht als geprüfter Vektor lesbar ist, wird abgelehnt statt still zu fehlen; Rezeptstand der Gravur ist neu',async()=>{
+ const key=(recipe,settings)=>digest(JSON.stringify({recipe,settings}));
+ assert.notEqual(acrylicEngravingKey({mode:'vector',mirror:true}),key('gravuru-acrylic-engraving-proof/v9',formEngravingSettings({mode:'vector',mirror:true})),'eigener Schlüssel gegenüber dem Stand ohne Zierlinie');
+ // Ohne Ausschnitt ist die Lage der Dekoration nicht bestimmt: Ablehnung mit klarer Meldung.
+ const broken='<svg xmlns="http://www.w3.org/2000/svg" width="30mm" height="1mm"><path d="M.5 .5L29.5 .5" fill="none" stroke="#000000" stroke-width="1"/></svg>';
+ await assert.rejects(doorbellOrder(({addSource,each})=>{const k=addSource(broken,30,1);each(objects=>Object.assign(objects.find(o=>o.id==='mark-0'),{motif:k}));}),/nicht als Vektor lesbar/);
+});
+
+test('Strichmotive (3.66): Ein Motiv ohne Füllung steht als Linie mit seiner Strichstärke in PDF und SVG – ohne hinzugefügte Füllung, der Zweig wie in der Musterdatei; ein gefülltes Motiv bleibt gefüllt, das Haus behält den Punkt an der Tür',async()=>{
+ // Regel an der Motivquelle: Die 18 Grundmotive sind reine Formen ohne Farbangabe (Strichzeichnungen); jedes andere Motiv der
+ // Bibliothek trägt seine Füllung selbst und bleibt, wie es ist.
+ const library=workshopResources().motifs,lineKeys=library.filter(m=>isLineMotif(m.svgFragment)).map(m=>m.key);
+ assert.deepEqual(lineKeys,['paw','dog','heart','rainbow','star','branch','wreath','mountain','sun','infinity','frame','line','circle','flower','moon','wings','tree','compass']);
+ for(const m of library.filter(m=>!lineKeys.includes(m.key)))assert.match(m.svgFragment,/\bfill="(?:currentColor|#000000)"/,m.key+' trägt seine Füllung selbst');
+ assert.equal(isLineMotif('<path d="M0 0H9" stroke="#000000"/>'),false,'eine eigene Strichangabe gilt');
+ // Dieselbe Regel im Druck: Linie in der Farbe des Elements, keine Füllung.
+ assert.equal(lineMotifFragment('<path d="M0 0H9"/>','#b56943'),'<g fill="none" stroke="#b56943" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M0 0H9"/></g>');assert.equal(isLineMotif('<path d="M0 0H9" style="fill:#000"/>'),false);
+ const pick=key=>{const m=library.find(x=>x.key===key);assert.ok(m,key);return {key:m.key,bounds:m.bounds,svgFragment:m.svgFragment};},branch=pick('branch'),house=pick('import-b56d5711a75f34c1fa8d9c30');
+ // Zweig und Haus an der Stelle und in der Größe der Musterdatei (Formatkoordinaten 160 × 280 mm); der Prüfstand sichert beide
+ // Motive aus der Bibliothek, wie bei einer Bestellung.
+ const {two,content,svg}=await doorbellOrder(()=>[
+  {id:'haus',type:'motif',motif:house.key,x:31.55555534,y:136.55555725,w:28,h:28,rotation:0,color:'#ffffff',customerEditable:true},
+  {id:'zweig',type:'motif',motif:'branch',x:137.43919787,y:227.66667175,w:26.43394917,h:28,rotation:0,color:'#ffffff',customerEditable:true}]);
+ // Zweig: genau eine Linie, Strichstärke 2,2 Einheiten im Maßstab des Motivs, keine Fläche an seiner Stelle.
+ const lines=content.filter(d=>d.type==='s'),[muster]=referenceLines().filter(d=>d.width/MM>.6),expected=2.2*26.43394917/branch.bounds[2];
+ assert.equal(lines.length,1,'genau eine Linie: der Zweig');assert.ok(muster,'die Musterdatei führt den Zweig als Linie');
+ const [ours]=lines;assert.deepEqual(ours.color,BLACK);assert.equal(ours.fill,null,'keine Füllung');
+ assert.ok(Math.abs(ours.width/MM-expected)<.001,'Strichstärke '+expected.toFixed(4)+' mm, ist '+ours.width/MM);assert.ok(Math.abs(expected-.723)<.001);
+ assert.ok(near(ours.rect,muster.rect),'gleiche Stelle wie in der Musterdatei: '+ours.rect+' / '+muster.rect);assert.ok(Math.abs(ours.width-muster.width)<.003,'gleiche Strichstärke wie in der Musterdatei: '+ours.width/MM+' / '+muster.width/MM);
+ assert.equal(content.filter(d=>d.type!=='s'&&near(d.rect,ours.rect)).length,0,'keine hinzugefügte Füllung an der Stelle des Zweigs');
+ // Haus: eine schwarze Fläche wie bisher; der Punkt an der Tür bleibt frei (weiß), die Tür daneben ist schwarz.
+ const fills=content.filter(d=>d.type==='f'&&near(d.rect,[17.56,114.37,45.56,138.75]));assert.equal(fills.length,1,'das Haus als eine Fläche');assert.deepEqual(fills[0].fill,BLACK);assert.equal(fills[0].color,null,'kein Strich am Haus');
+ const [dot,door]=look(two.pdf.bytes,[[26.64,134.71],[28.6,134.71]]).points;
+ assert.ok(dot.every(v=>v>200),'Punkt an der Tür bleibt frei: '+dot);assert.ok(door.every(v=>v<60),'Tür ist Fläche: '+door);
+ // SVG: derselbe Inhalt – der Zweig in einer Strichgruppe ohne Füllung, das Haus mit seiner eigenen Füllung und ohne Strichgruppe.
+ assert.equal(svg.split('stroke-width="2.2"').length-1,1);
+ assert.ok(svg.includes('<g fill="none" stroke="#000000" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 91 C28 58 51 30 87 8 '),'Zweig als Linie in der SVG');
+ const housePath=house.svgFragment.match(/<path d="([^"]{40})/)[1],at=svg.indexOf('<path d="'+housePath);assert.ok(at>0,'Haus mit seinem Pfad in der SVG');
+ assert.match(svg.slice(at,svg.indexOf('>',at)+1),/ fill="#000000" stroke="none"/,'Haus mit eigener Füllung, ohne Strich');
+});
+
+// Privater Klingelkatalog (wie scripts/import-doorbell-catalog.test.mjs nur mit GRAVURU_DOORBELL_CATALOG): das Modell der
+// Musterdatei über den echten Importweg, jede der 16 Vorlagen über den echten Ausgabeweg der Bestellansicht.
+test('Zierlinie, Klingelkatalog: Ring Wired Pro 16 × 28 cm – jede Dekoration jeder Vorlage steht als Linie in der Bestell-PDF und als Pfad in der SVG (16 Dekorationen in 14 von 16 Vorlagen)',{skip:!process.env.GRAVURU_DOORBELL_CATALOG,timeout:600000},async()=>{
+ const {w}=seedWorkshop(),catalog=loadDoorbellCatalog(process.env.GRAVURU_DOORBELL_CATALOG),entry=catalog.entries.find(e=>e.key==='ring-wired-pro-3-gen-5dfya2-16x28--16x28');assert.ok(entry,'Modell der Musterdatei');
+ const bundle=catalog.bundles.get(entry.modelKey),crosswalk=resourceCrosswalk(catalog,workshopResources()),imported=await importDecorations(bundle,w.assets);
+ // Jede Dekorationsquelle des Modells trägt ihren Ausschnitt an ihrer Stelle im Format – keine beginnt bei 0 0.
+ assert.ok(bundle.localResources.motifs.length>0);for(const m of bundle.localResources.motifs)assert.ok(m.bounds[0]!==0||m.bounds[1]!==0,m.key);
+ const base=buildDoorbellConfig(imported.native,entry,{fontIds:crosswalk.fonts,motifIds:crosswalk.motifs});
+ const record=w.repository.create(w.assets.validateDocument(makeProductDocument(base,{name:base.profile.name,kind:'product'}))),config=w.model(record.id,1).universal;
+ const png=Buffer.from('iVBORw0KGgoAAAANSUhEUgAAACgAAAA8CAIAAACb22+3AAAAOklEQVR4nO3NIQEAMAgAsPOEaDT9M9ABg9kKLLL6Xfgnq1gsFovFYrFYLBaLxWKxWCwWi8VisVgsXhqq4AGG9djEFQAAAABJRU5ErkJggg==','base64');
+ const designs=selectedProfile(config,MUSTER_AUFLAGE).designs,count={};assert.equal(designs.length,16);
+ for(const design of designs){
+  const objects=structuredClone(design.objects),decorations=objects.filter(o=>o.uxDecoration);count[design.id]=decorations.length;
+  const review=await prepareAcrylicReview({record,config,input:{productId:record.id,productRevision:1,designId:design.id,objects,options:MUSTER_AUFLAGE,quantity:1,media:[],preview:png.toString('base64')},assets:w.assets,preparePhoto:async()=>({original:png,preview:png,width:40,height:60})});
+  const frozen=JSON.parse(readReviewPackage(review.package,review.manifest.packageSha256,NATIVE_REVIEW_SCHEMAS).files.get('funkklingel-fertigung.json')),a=frozen.acrylicBoundsMm;
+  const result=await createAcrylicEngravingProof(review.package,review.manifest.packageSha256,{mirror:true}),two=twoFiles(result),order=inspect(two.pdf.bytes);
+  const {content}=checkEngravingPdf(order,{widthMm:a.width,heightMm:a.height,holes:'cut'},design.id),lines=content.filter(d=>d.type==='s'),svg=two.svg.bytes.toString();
+  assert.equal(lines.length,decorations.length,design.id+': je Dekoration eine Linie in der Ebene „03 Gravur“');
+  assert.equal(svg.split('data-source-vector="true"').length-1,decorations.length,design.id+': je Dekoration ein Pfad in der SVG');assert.ok(!svg.includes('<image'),design.id+': kein eingebettetes Bild');
+  // Lage: Die Linie füllt mit ihrer Strichstärke genau das Feld der Dekoration (Formatkoordinaten, um die Lage der Auflage verschoben).
+  const free=[...lines];
+  for(const o of decorations){
+   const box=[o.x-o.w/2-a.x,o.y-o.h/2-a.y,o.x+o.w/2-a.x,o.y+o.h/2-a.y];
+   const index=free.findIndex(d=>{const pts=d.outline.flat(),half=d.width/MM/2,xs=pts.map(p=>p[0]),ys=pts.map(p=>p[1]),ext=[Math.min(...xs)-half,Math.min(...ys)-half,Math.max(...xs)+half,Math.max(...ys)+half];return same(d.color,BLACK)&&d.fill===null&&ext.every((v,i)=>Math.abs(v-box[i])<=.15);});
+   assert.ok(index>=0,design.id+' '+o.id+': Linie im Feld '+box.map(v=>v.toFixed(2))+' fehlt');free.splice(index,1);
+  }
+ }
+ assert.deepEqual(Object.entries(count).filter(([,n])=>n===0).map(([id])=>id),['FK-SEITLICH','FK-VERDECKT'],'zwei Vorlagen ohne Dekoration');
+ assert.equal(Object.values(count).reduce((sum,n)=>sum+n,0),16,'16 Dekorationen');
 });
 
 // Formprodukt alter Art wie in form-engraving-proof.test.mjs / form-print-proof.test.mjs: Freiform 60 × 40 mm mit Ausschnitt und

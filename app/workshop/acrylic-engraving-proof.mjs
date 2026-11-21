@@ -12,7 +12,13 @@ import {ORDER_FILES_SCHEMA,orderFileSet,orderEngravingFiles} from './print-deliv
 // (form-engraving-worker.py, Regeln in print-delivery.mjs `orderHoleLines` und `orderPlate`). Die übrigen Dateien des Pakets bleiben wie bisher. Ausgaben der
 // Vorversion bleiben unter ihrem Schlüssel gültig und abrufbar; für eine Bestellposition entsteht der Auftrag mit dem neuen
 // Schlüssel beim Öffnen ihrer Ausgaben von selbst (http.mjs `ensureOrderOutput`).
-export const ACRYLIC_ENGRAVING_RECIPE='gravuru-acrylic-engraving-proof/v9';
+// v10 (#265, ENTSCHEIDUNGEN 3.65/3.66): Die schwarze Vektor-Dekoration einer Vorlage (Zierlinie, Rahmen) steht als Pfad in
+// der Gestaltung statt als eingebettetes SVG-Bild – der PDF-Schreiber zeichnete sie sonst nicht, sobald der Ausschnitt der Quelle
+// nicht bei 0 0 beginnt (alle Dekorationen des Klingelkatalogs; `acrylic-artwork.mjs` `sourceVectorFragment`). Betrifft alle
+// Dateien dieses Pakets, die aus der Gestaltung entstehen; Ausgaben der Vorversion bleiben unter ihrem Schlüssel gültig und abrufbar.
+// v11 (#265, ENTSCHEIDUNGEN 3.66): Grundmotive ohne Farbangabe (Strichzeichnungen wie der Zweig) stehen als Linie von
+// 2,2 Einheiten ohne Füllung in der Gestaltung (`acrylic-artwork.mjs` `isLineMotif`); gefüllte Motive bleiben unverändert.
+export const ACRYLIC_ENGRAVING_RECIPE='gravuru-acrylic-engraving-proof/v11';
 // #265, ENTSCHEIDUNGEN 3.57 (5): Ohne Fertigungsprofil und ohne ausdrückliche Wahl gilt `auto` – Vektor, wenn die Gestaltung kein
 // Foto enthält, sonst Raster. Entschieden wird beim Bau (form-engraving-worker.py), weil erst dort feststeht, ob die Gestaltung
 // Rasterbilder enthält; `metadata.settings.mode` nennt das Ergebnis. Mit Fertigungsprofil gilt das Profil unverändert, eine

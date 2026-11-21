@@ -874,7 +874,7 @@ Keine.
 
 Kasse, Danke-Seite, Bestell-E-Mail, Kundenkonto. An Astra als Lesefrage: was Kasse und Bestellansicht aus der sichtbaren Zeilenangabe „Bearbeitbarer Entwurf“ anzeigen (im Warenkorb blenden die beiden Sections sie aus).
 
-## Stufe A, Teil 3 (21.11.2026, 09:10 bis 09:50 Uhr) – gebaut (`16e21ddd`), mit Teil 2 bei Astra beauftragt
+## Stufe A, Teil 3 (21.11.2026, 09:00 bis 09:40 Uhr) – gebaut (`16e21ddd`), mit Teil 2 bei Astra beauftragt
 
 **Was der Klick am Server bisher tat** (Acrylglas, echter Shop): Sichern 2,26 s – zwei volle Prüfungen des Produktdokuments (1,23 s), zwei Lesungen (0,19 s und rund 0,16 s), eine volle Kopie der Konfiguration (0,22 s), Vorschaupaar (0,39 s).
 

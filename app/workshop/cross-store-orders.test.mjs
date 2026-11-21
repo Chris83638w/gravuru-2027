@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {crossStoreOrders,createCrossStoreOrders} from './cross-store-orders.mjs';
+import {crossStoreOrders,createCrossStoreOrders,outputStateFromJobs,rejectedOutputState} from './cross-store-orders.mjs';
 import {orderKey,orderApi,orderPage,orderRequest,selectedOrder} from './ui/order-store-context.mjs';
 import {acrylAssetText,acrylRoute} from './acryl-employee-host.mjs';
 import {once} from 'node:events';
@@ -28,6 +28,37 @@ test('combined orders keep both stores, rejected lines, immutable IDs and indepe
  assert.equal(r.errors[0].storeId,'acryl');assert.equal(r.errors[0].intakeError,'Preis weicht ab');assert.equal(JSON.stringify(input),before);
  assert.equal(selectedOrder(r.orders,'same'),null);assert.equal(selectedOrder(r.orders,'acryl:same').orderId,'new');
  assert.equal(selectedOrder(r.orders.slice(0,1),'same'),r.orders[0]);
+});
+// #265 Stufe B, Lieferung 1 (ENTSCHEIDUNGEN 3.48/3.51/3.53): Kennzeichen der Fertigungsdatei je Position.
+test('the output mark is derived from the export jobs alone: fertig before wird erstellt before bitte prüfen, always with a reason',()=>{
+ const job=(id,status,error=null)=>({id,status,error});
+ assert.deepEqual(outputStateFromJobs([job('a','failed','alt'),job('b','running'),job('c','completed')]),{state:'fertig',reason:null,jobId:'c'});
+ assert.deepEqual(outputStateFromJobs([job('a','failed','alt'),job('b','queued')]),{state:'wird erstellt',reason:null,jobId:'b'});
+ assert.deepEqual(outputStateFromJobs([job('b','running')]),{state:'wird erstellt',reason:null,jobId:'b'});
+ assert.deepEqual(outputStateFromJobs([job('a','failed','Die Schrift fehlt.'),job('z','failed','älter')]),{state:'bitte prüfen',reason:'Die Schrift fehlt.',jobId:'a'});
+ assert.deepEqual(outputStateFromJobs([],'Die getrennte Fertigungsausgabe ist noch nicht angebunden.'),{state:'bitte prüfen',reason:'Die getrennte Fertigungsausgabe ist noch nicht angebunden.',jobId:null});
+ for(const empty of [outputStateFromJobs([]),outputStateFromJobs([job('a','failed')]),rejectedOutputState({})]){assert.equal(empty.state,'bitte prüfen');assert.ok(empty.reason);}
+ assert.deepEqual(rejectedOutputState({intakeError:'Preis weicht ab'}),{state:'bitte prüfen',reason:'Preis weicht ab',jobId:null});
+});
+test('combined orders carry the output mark per position; rejected lines are „bitte prüfen“ with the intake reason and their saved design',()=>{
+ const job=(id,status,error=null)=>({id,status,error}),jobs={same:[job('job_1','queued')]},asked=[];
+ const input=stores();input[1].workshop.orderIntake.errors=()=>[{...row('error','rejected'),lineId:'9',intakeError:'Preis weicht ab',snapshotId:'proof_saved'}];
+ // Nur die neue Laufzeit kennt das Kennzeichen; es wird bei jedem Lesen neu aus den Aufträgen des Prüfstands gebildet.
+ input[1].workshop.orderOutputState=line=>{asked.push(line.id);return outputStateFromJobs(jobs[line.id]||[],'Noch kein Ausgabeauftrag.');};
+ const read=()=>crossStoreOrders(input,{shopDomain:shop,enabled:true});
+ let r=read();assert.deepEqual(r.outputStates,{'acryl:same':{state:'wird erstellt',reason:null,jobId:'job_1'}},'the older runtime has no mark');
+ assert.deepEqual(asked,['same'],'foreign shops are never asked');
+ assert.deepEqual(r.errors[0].outputState,{state:'bitte prüfen',reason:'Preis weicht ab',jobId:null});
+ assert.equal(r.errors[0].snapshotId,'proof_saved');assert.equal(orderPage(r.errors[0],'pruefstaende/?snapshot='+r.errors[0].snapshotId),'/werkstatt/acryl/pruefstaende/?snapshot=proof_saved');
+ jobs.same=[job('job_1','completed')];assert.deepEqual(read().outputStates['acryl:same'],{state:'fertig',reason:null,jobId:'job_1'});
+ jobs.same=[job('job_1','failed','Die Python-Druckprüfung ist nicht verfügbar.')];assert.deepEqual(read().outputStates['acryl:same'],{state:'bitte prüfen',reason:'Die Python-Druckprüfung ist nicht verfügbar.',jobId:'job_1'});
+ delete jobs.same;assert.deepEqual(read().outputStates['acryl:same'],{state:'bitte prüfen',reason:'Noch kein Ausgabeauftrag.',jobId:null});
+ // Ein Lesefehler bleibt auf das Kennzeichen dieser Position begrenzt und verrät nichts Internes.
+ input[1].workshop.orderOutputState=()=>{throw Error('private database path');};r=read();
+ assert.equal(r.orders.length,2);assert.equal(r.outputStates['acryl:same'].state,'bitte prüfen');assert.ok(r.outputStates['acryl:same'].reason);assert.ok(!JSON.stringify(r).includes('private database path'));
+ // Auch nicht lesbare Positionen stehen als „bitte prüfen“ in der Fehlerliste.
+ const unreadable=crossStoreOrders([store('acryl',[{...row('bad','position-1'),lineId:'1',receivedAt:null}])],{shopDomain:shop,enabled:true});
+ assert.equal(unreadable.errors[0].outputState.state,'bitte prüfen');assert.equal(unreadable.errors[0].outputState.reason,unreadable.errors[0].intakeError);
 });
 test('an older Merchant runtime without E3 still contributes orders alongside recent Acryl positions',()=>{
  const input=stores();

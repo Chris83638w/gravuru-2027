@@ -5,13 +5,14 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import {once} from 'node:events';
-import {createHmac} from 'node:crypto';
+import {createHmac,randomUUID} from 'node:crypto';
 import {build} from '../configurator/variant-m/build.mjs';
 import {createWorkshop} from './http.mjs';
 import {createBoundTestCart} from './bound-test-cart.mjs';
 import {createShopEntry} from './shop-entry.mjs';
 import {appProxySignature} from './shopify-app-proxy.mjs';
 import {prepareShopProduct} from './shop-preparation.mjs';
+import {crossStoreOrders} from './cross-store-orders.mjs';
 
 // Durchlauf des öffentlichen Einstiegs mit echter Werkstatt: Start über App-Proxy-Signatur → Modell →
 // Gestaltung als privater Prüfstand → Warenkorb über den bestehenden bound-test-cart (synthetischer Storefront)
@@ -117,6 +118,66 @@ for(const cache of [false,true])test('customer entry: start, model, saved design
  const wrong={...payload,id:13745774461309,line_items:[{...payload.line_items[0],id:9002,price:euro(chosen.priceCents-100)}]},wrongRaw=Buffer.from(JSON.stringify(wrong));
  const rejected=w.orderIntake.receive(wrongRaw,{'x-shopify-hmac-sha256':createHmac('sha256',secret).update(wrongRaw).digest('base64'),'x-shopify-shop-domain':shopDomain,'x-shopify-api-version':'2026-07','x-shopify-topic':'orders/paid','x-shopify-webhook-id':'evt-7x2-0002'},webhook);
  assert.equal(rejected.lines.length,0);assert.equal(rejected.errors.length,1);assert.match(rejected.errors[0].intakeError,/Preis/);
+ // 6b. #265 Stufe B, Lieferung 1 (ENTSCHEIDUNGEN 3.48/3.51/3.53): Mit dem Bestelleingang steht genau ein Ausgabeauftrag in der
+ // Warteschlange. Er startet nicht im Bestelleingang selbst; der Arbeiter der Werkstatt übernimmt ihn danach.
+ const deliver=(data,eventId)=>{const bytes=Buffer.from(JSON.stringify(data));return w.orderIntake.receive(bytes,{'x-shopify-hmac-sha256':createHmac('sha256',secret).update(bytes).digest('base64'),'x-shopify-shop-domain':shopDomain,'x-shopify-api-version':'2026-07','x-shopify-topic':'orders/paid','x-shopify-webhook-id':eventId},webhook);};
+ const outputs=id=>w.exportJobs.forSnapshot(id);
+ assert.equal(outputs(order.snapshotId).total,1);const queued=outputs(order.snapshotId).jobs[0];assert.equal(queued.status,'queued','kein Start innerhalb des Bestelleingangs');
+ assert.deepEqual(w.orderOutputState(order),{state:'wird erstellt',reason:null,jobId:queued.id});
+ // Erneute Zustellung desselben Ereignisses und eine zweite Zustellung: kein zweiter Auftrag.
+ assert.equal(deliver(payload,'evt-7x2-0001').duplicate,true);assert.equal(deliver(payload,'evt-7x2-0003').lines[0].id,order.id);
+ assert.equal(outputs(order.snapshotId).total,1);assert.equal(w.exportJobs.list().length,1);
+ // Preisabweichung (oben abgelehnt): kein Auftrag, „bitte prüfen“ mit Grund; der Prüfstand des Angebots ist gemerkt.
+ assert.equal(rejected.errors[0].snapshotId,order.snapshotId);
+ const overview=()=>crossStoreOrders([store],{shopDomain,enabled:true});
+ assert.deepEqual(overview().errors.map(e=>[e.lineId,e.outputState,e.snapshotId]),[['9002',{state:'bitte prüfen',reason:rejected.errors[0].intakeError,jobId:null},order.snapshotId]]);
+ assert.deepEqual(overview().outputStates,{['acryl:'+order.id]:{state:'wird erstellt',reason:null,jobId:queued.id}});
+ if(!cache){
+  // Werkstatt-API wie im Büro (Händlersitzung + CSRF), um den Weg von Hand wirklich zu gehen.
+  const api=http.createServer((req,res)=>w.handle(req,res,new URL(req.url,origin)));api.listen(0,'127.0.0.1');await once(api,'listening');
+  t.after(async()=>{api.closeAllConnections();await new Promise(r=>api.close(r));});
+  const bearer=()=>{const at=Math.floor(Date.now()/1000),input=[{alg:'HS256',typ:'JWT'},{aud:'synthetic-client',dest:'https://'+shopDomain,sub:'123',iss:'https://'+shopDomain+'/admin',exp:at+60,nbf:at,iat:at,jti:randomUUID()}].map(v=>Buffer.from(JSON.stringify(v)).toString('base64url')).join('.');return 'Bearer '+input+'.'+createHmac('sha256',secret).update(input).digest('base64url');};
+  const office=async(pathname,data,raw=false)=>{const r=await fetch('http://127.0.0.1:'+api.address().port+pathname,{method:data?'POST':'GET',headers:{authorization:bearer(),...(data?{'Content-Type':'application/json','X-Gravuru-CSRF':csrf}:{})},...(data?{body:JSON.stringify(data)}:{})});return {status:r.status,data:raw?Buffer.from(await r.arrayBuffer()):await r.json()};};
+  let csrf='';csrf=(await office('/api/workshop/session')).data.csrfToken;assert.match(csrf,/^[a-f0-9]{64}$/);
+  // Der vorhandene Arbeiter (1-s-Takt) baut die Datei; gemessen wird auch, wie lange der Prozess dabei am Stück blockiert.
+  let longestBlockMs=0,tick=performance.now();const watch=setInterval(()=>{const at=performance.now();longestBlockMs=Math.max(longestBlockMs,at-tick-20);tick=at;},20);
+  const started=performance.now(),built=await w.exportWorker.wait(queued.id);clearInterval(watch);
+  t.diagnostic('#265 Bau lokal: '+Math.round(performance.now()-started)+' ms ab Bestelleingang (inkl. bis zu 1 s Takt), längste Blockade des Prozesses '+Math.round(longestBlockMs)+' ms');
+  assert.equal(built.status,'completed');assert.equal(built.attempts,1);assert.deepEqual(w.orderOutputState(order),{state:'fertig',reason:null,jobId:queued.id});
+  // Der Weg von Hand: Knopf „Ausgabe“ mit unverändertem Formular. Die Vorgaben stehen im Formular der Prüfstandsseite; ein
+  // Fertigungsprofil des Prüfstands belegt sie vor (ui/review-snapshots-ui.mjs). Gesendet wird genau das, was der Knopf sendet.
+  const saved=w.customerDrafts.review(order.snapshotId).manifest,engraving=saved.product.method==='engraving',page=fs.readFileSync(new URL('./ui/review-snapshots.html',import.meta.url),'utf8');
+  const form=Object.fromEntries([...page.match(new RegExp('<form id="'+(engraving?'engraving':'print')+'-form">.*?</form>','s'))[0].matchAll(/<select name="([^"]+)"[^>]*><option value="([^"]*)"/g)].map(m=>[m[1],m[2]]));
+  for(const [key,value] of Object.entries(saved.productionProfile?.document.method===saved.product.method?saved.productionProfile.document.output:{}))if(key in form)form[key]=String(value);
+  if(!engraving&&(form.bleedMm==='0'||form.white==='none'))form.whiteBleedMm='0';
+  const settings=engraving?{mode:form.mode,dpi:Number(form.dpi)}:{profile:form.profile,dpi:Number(form.dpi),white:form.white,bleedMm:Number(form.bleedMm),whiteBleedMm:Number(form.whiteBleedMm)};
+  const manual=await office('/api/workshop/export-jobs',{snapshotId:order.snapshotId,settings});
+  assert.equal(manual.status,200,JSON.stringify(manual.data));assert.equal(manual.data.id,queued.id,'der Knopf trifft denselben Auftrag');assert.equal(manual.data.status,'completed');
+  assert.equal(manual.data.recipe,queued.recipe);assert.equal(manual.data.recipeKey,queued.recipeKey);assert.deepEqual(manual.data.settings,queued.settings);assert.deepEqual(manual.data.clientSettingsIgnored,[]);
+  assert.equal(outputs(order.snapshotId).total,1);
+  // Dieselbe Datei: der Download des Wegs von Hand ist die gesicherte Ausgabe des automatischen Auftrags.
+  const pdf=await office('/api/workshop/export-jobs/'+queued.id+'/download',{format:'pdf'},true);assert.equal(pdf.status,200);
+  assert.equal(pdf.data.subarray(0,5).toString(),'%PDF-');assert.deepEqual(pdf.data,w.customerDrafts.printProof(order.snapshotId,queued.recipeKey).pdf);
+  // Das Öffnen der Ausgaben zeigt das Kennzeichen und legt nichts doppelt an.
+  const opened=await office('/api/workshop/orders/'+order.id+'/outputs');assert.equal(opened.status,200);assert.equal(opened.data.total,1);assert.deepEqual(opened.data.outputState,{state:'fertig',reason:null,jobId:queued.id});
+  // Position ohne Auftrag (Bestellung vor dem Aufspielen, Absturz zwischen Commit und Einreihen): hier kommt der Eingang in einer
+  // fremden, noch offenen Transaktion an, also wird nichts eingereiht. Das Öffnen der Ausgaben holt den Auftrag nach.
+  const variantId=expectedVariant.split('/').at(-1),other=w.orderIntake.offer({bindingId:bound.bindings.find(b=>b.variantId===variantId).id,snapshotId:draft.snapshotId,quantity:2});
+  const lateOrder={...payload,id:13745774461310,line_items:[{...payload.line_items[0],id:9003,quantity:2,properties:[other.property]}]};
+  const late=w.orderIntake.withBindingTransaction(()=>deliver(lateOrder,'evt-7x2-0004')).lines[0];
+  assert.equal(late.snapshotId,draft.snapshotId);assert.equal(outputs(late.snapshotId).total,0);
+  assert.equal(w.orderOutputState(late).state,'bitte prüfen');assert.match(w.orderOutputState(late).reason,/noch keinen Ausgabeauftrag/);
+  // Nicht baubare Datei: Der Auftrag wird nachgeholt, lässt sich aber nicht bauen (hier: Python-Arbeiter fehlt) → „bitte prüfen“ mit Grund.
+  const python=process.env.GRAVURU_PYTHON,restorePython=()=>{if(python===undefined)delete process.env.GRAVURU_PYTHON;else process.env.GRAVURU_PYTHON=python;};
+  t.after(restorePython);process.env.GRAVURU_PYTHON=path.join(dir,'kein-python');
+  const reopened=await office('/api/workshop/orders/'+late.id+'/outputs');assert.equal(reopened.data.total,1);assert.equal(reopened.data.outputState.state,'wird erstellt');
+  assert.equal((await office('/api/workshop/orders/'+late.id+'/outputs')).data.total,1,'wiederholtes Öffnen legt keinen zweiten Auftrag an');
+  const failed=reopened.data.jobs[0];await assert.rejects(w.exportWorker.wait(failed.id),{status:422});restorePython();
+  const mark=w.orderOutputState(late);assert.equal(mark.state,'bitte prüfen');assert.equal(mark.jobId,failed.id);assert.equal(mark.reason,w.exportJobs.get(failed.id).error);assert.match(mark.reason,/nicht verfügbar/);
+  assert.deepEqual(overview().outputStates,{['acryl:'+order.id]:{state:'fertig',reason:null,jobId:queued.id},['acryl:'+late.id]:mark});
+  // Ohne lesbaren Prüfstand lässt sich kein Auftrag anlegen: „bitte prüfen“ mit dem Grund, kein Absturz der Übersicht.
+  assert.deepEqual(w.orderOutputState({snapshotId:'proof_unbekannt'}),{state:'bitte prüfen',reason:'Prüfstand nicht gefunden.',jobId:null});
+ }
  // 7. Nach Ablauf der Sitzung endet der Zugriff; der gesicherte Prüfstand bleibt unverändert erhalten.
  now+=4*60*60*1000+1;
  assert.equal((await request('/api/shop-entry/model',undefined,undefined,session)).status,403);

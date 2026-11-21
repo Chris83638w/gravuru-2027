@@ -56,6 +56,7 @@ import {initialFormCustomerState,resolveFormCustomer,customerPhotoMarkup} from '
 import {prepareCustomerPhoto,MAX_CUSTOMER_PHOTO} from './customer-photo.mjs';
 import {photoResolutionNote,resolutionTargetDpi} from './acrylic-photo-resolution.mjs';
 import {clientOutputSettings,productionMirror} from './output-orientation.mjs';
+import {outputStateFromJobs,rejectedOutputState} from './cross-store-orders.mjs';
 import {createMotifSearchStats} from './motif-search-stats.mjs';
 import {motifSearchPreviewGroup} from './motif-search-preview-products.mjs';
 import {photoPlacement} from '../configurator/variant-m/photo-position-model.mjs';
@@ -205,7 +206,10 @@ function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConvert
   const autoRelease=line=>Boolean(line.productionProfile)&&productionProfiles.get(line.productionProfile.id,line.productionProfile.revision).document.autoRelease===true;
   const corrections=createDesignCorrections({filename,tenantId});
   const acrylShop=createAcrylShopService({filename,tenantId,repository,variants,corrections,config:shopDrafts?.config});
-  const customerDrafts=createFormCustomerStore({filename,autoRelease,tenantId}),photoJobs=new Set(),reviewJobs=new Set(),printPreviewJobs=new Set();
+  // #265, ENTSCHEIDUNGEN 3.48/3.51/3.53: Mit der bezahlten Bestellung reiht der Bestelleingang je angenommener Position den Ausgabeauftrag ein.
+  // Lässt er sich nicht anlegen, bleibt die Position ohne Auftrag; die Bestellansicht zeigt dann „bitte prüfen“ mit dem Grund.
+  const onPaid=lines=>{for(const line of lines){try{ensureOrderOutput(line);}catch{/* Grund steht im Kennzeichen (orderOutputState). */}}};
+  const customerDrafts=createFormCustomerStore({filename,autoRelease,tenantId,onPaid}),photoJobs=new Set(),reviewJobs=new Set(),printPreviewJobs=new Set();
   const exportJobs=customerDrafts.exportJobs,orderIntake=customerDrafts.orderIntake;
   // Explicit server configuration only; constructing the default preview never enables Shopify writes.
   let cartGate=null;
@@ -226,8 +230,29 @@ function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConvert
   // Prüfpakete mit Verweis (review-product.mjs, ENTSCHEIDUNGEN 3.47): Produktstand der genannten unveränderlichen Revision.
   const reviewProductDocument=({id,revision})=>repository.get(id,{revision}).document;
   const exportWorker=createExportWorker({jobs:exportJobs,recipe:outputRecipes,render:job=>{const review=customerDrafts.review(job.snapshotId);const render=job.recipe===ACRYLIC_ENGRAVING_RECIPE?createAcrylicEngravingProof:job.recipe===ACRYLIC_PRINT_RECIPE?createAcrylicPrintProof:job.recipe===FORM_ENGRAVING_RECIPE?createFormEngravingProof:createFormPrintProof;return render(customerDrafts.downloadSnapshot(job.snapshotId,'package'),review.manifest.packageSha256,job.settings,{orderLines:orderIntake.forSnapshot(job.snapshotId),productDocument:reviewProductDocument});}});
-  function enqueueOutput(id,overrides){const m=customerDrafts.review(id).manifest;if(m.capabilities?.engraving===false&&m.product.method==='engraving')fail(422,'assembly_output_pending','Die getrennte Fertigungsausgabe für Edelstahlträger und Acrylglasauflage ist noch nicht angebunden.');if(m.product.method!=='engraving')return enqueuePrint(id,overrides);const native=isNativeReviewSchema(m.schema),settings=formEngravingSettings({...m.productionProfile?.document.output,...overrides}),job=exportJobs.enqueue({snapshotId:id,recipe:native?ACRYLIC_ENGRAVING_RECIPE:FORM_ENGRAVING_RECIPE,recipeKey:native?acrylicEngravingKey(settings):formEngravingKey(settings),settings});exportWorker.kick();return job;}
-  function enqueuePrint(id,overrides){const m=customerDrafts.review(id).manifest;if(m.product.method!=='print')fail(422,'print_required','Dieser Ausgabeauftrag benötigt ein Druckprodukt.');const settings=formPrintSettings({...m.productionProfile?.document.output,...overrides}),native=isNativeReviewSchema(m.schema),job=exportJobs.enqueue({snapshotId:id,recipe:native?ACRYLIC_PRINT_RECIPE:FORM_PRINT_RECIPE,recipeKey:native?acrylicPrintKey(settings):formPrintKey(settings),settings});exportWorker.kick();return job;}
+  // #265, ENTSCHEIDUNGEN 3.48/3.51/3.53: Der Auftrag (Rezept, Schlüssel, Einstellungen) entsteht getrennt vom Einreihen, damit der Bestelleingang
+  // genau den Auftrag des Knopfs „Ausgabe“ anlegt. Prüfungen, Reihenfolge und Fehlertexte des Wegs von Hand sind unverändert.
+  function outputRequest(id,overrides,m=customerDrafts.review(id).manifest){if(m.capabilities?.engraving===false&&m.product.method==='engraving')fail(422,'assembly_output_pending','Die getrennte Fertigungsausgabe für Edelstahlträger und Acrylglasauflage ist noch nicht angebunden.');if(m.product.method!=='engraving')return printRequest(id,overrides,m);const native=isNativeReviewSchema(m.schema),settings=formEngravingSettings({...m.productionProfile?.document.output,...overrides});return {snapshotId:id,recipe:native?ACRYLIC_ENGRAVING_RECIPE:FORM_ENGRAVING_RECIPE,recipeKey:native?acrylicEngravingKey(settings):formEngravingKey(settings),settings};}
+  function printRequest(id,overrides,m=customerDrafts.review(id).manifest){if(m.product.method!=='print')fail(422,'print_required','Dieser Ausgabeauftrag benötigt ein Druckprodukt.');const settings=formPrintSettings({...m.productionProfile?.document.output,...overrides}),native=isNativeReviewSchema(m.schema);return {snapshotId:id,recipe:native?ACRYLIC_PRINT_RECIPE:FORM_PRINT_RECIPE,recipeKey:native?acrylicPrintKey(settings):formPrintKey(settings),settings};}
+  function enqueueOutput(id,overrides){const job=exportJobs.enqueue(outputRequest(id,overrides));exportWorker.kick();return job;}
+  function enqueuePrint(id,overrides){const job=exportJobs.enqueue(printRequest(id,overrides));exportWorker.kick();return job;}
+  // #265, ENTSCHEIDUNGEN 3.48/3.51/3.53: Der Bestelleingang drückt für die Position „Ausgabe“ mit unverändertem Formular. Der Knopf
+  // (ui/review-snapshots-ui.mjs → POST /api/workshop/export-jobs) sendet nur seine Formularwerte: ohne Fertigungsprofil die Vorgaben, die
+  // formEngravingSettings/formPrintSettings ohnehin setzen, sonst die Werte aus dem Profil des Prüfstands, das hier genauso zugrunde liegt.
+  // Die Spiegelung leitet clientOutputSettings wie beim Knopf ab. Ergebnis: derselbe Auftrag mit demselben Schlüssel.
+  // Einzige gefundene Abweichung: Bei einem Druckprofil „Ohne Weiß“ mit Weißüberdruck 1 mm sendet das Formular Weißüberdruck 0
+  // (printOptions); hier gilt das Profil unverändert. Der Wert wirkt nur auf die Weißfläche, die es ohne Weiß nicht gibt.
+  function orderOutputRequest(line){const m=customerDrafts.manifest(line.snapshotId);return outputRequest(line.snapshotId,clientOutputSettings(m).settings,m);}
+  // Kein exportWorker.kick(): innerhalb der Webhook-Antwort wird nichts gebaut, der Arbeiter übernimmt im 1-s-Takt (ein Auftrag zur Zeit).
+  // Höchstens ein Auftrag je Prüfstand und Rezept (UNIQUE in form_export_jobs); eine zweite Zustellung findet den vorhandenen.
+  function ensureOrderOutput(line){const request=orderOutputRequest(line);return exportJobs.forSnapshot(line.snapshotId).jobs.find(job=>job.recipeKey===request.recipeKey)||exportJobs.enqueue(request);}
+  // Kennzeichen der Position, bei jedem Lesen aus den Ausgabeaufträgen ihres Prüfstands abgeleitet (kein gespeicherter Zustand).
+  // Ohne Auftrag nennt es den Grund: warum keiner angelegt werden kann, oder dass er beim Öffnen der Ausgaben nachgeholt wird.
+  function orderOutputState(line,jobs=exportJobs.forSnapshot(line.snapshotId).jobs){
+    if(jobs.length)return outputStateFromJobs(jobs);
+    try{orderOutputRequest(line);}catch(error){return outputStateFromJobs([],Number.isInteger(error.status)&&error.status<500?error.message:'Die Fertigungsdatei lässt sich derzeit nicht vorbereiten.');}
+    return outputStateFromJobs([],'Für diese Position gibt es noch keinen Ausgabeauftrag. Er wird beim Öffnen der Ausgaben angelegt.');
+  }
   function customerRecord(id,version){assertKonfiAvailable(id);const record=repository.get(id,{revision:revision(version)});if(!isFormProduct(record.document)||!record.document.designs?.length)fail(422,'customer_design_missing','Bitte zuerst ein Formprodukt mit Design speichern.');verifyForm(record.document);return record;}
   function customerResult(draft,token,state=draft.state,fitText=false){
     const record=customerRecord(draft.productId,draft.productRevision),source=record.document.designs.find(d=>d.id===draft.designId);
@@ -622,7 +647,7 @@ function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConvert
         try{return json(res,200,await configuredMerchantCart()(data,{draftToken:req.headers['x-gravuru-draft'],signal:controller.signal}));}
         finally{req.removeListener('aborted',abort);res.removeListener('close',abort);}
       }
-      if(['/api/workshop/orders','/api/workshop/all-orders'].includes(pathname)&&method==='GET'){const orders=orderIntake.list();return json(res,200,{orders,errors:orderIntake.errors(),statuses:Object.fromEntries(orders.map(o=>[o.id,orderIntake.status(o.id)])),integration:{enabled:Boolean(orderWebhook),mode:'test-only'}});}
+      if(['/api/workshop/orders','/api/workshop/all-orders'].includes(pathname)&&method==='GET'){const orders=orderIntake.list();return json(res,200,{orders,errors:orderIntake.errors().map(e=>({...e,outputState:rejectedOutputState(e)})),statuses:Object.fromEntries(orders.map(o=>[o.id,orderIntake.status(o.id)])),outputStates:Object.fromEntries(orders.map(o=>[o.id,orderOutputState(o)])),integration:{enabled:Boolean(orderWebhook),mode:'test-only'}});}
       const orderProductMatch=pathname.match(/^\/api\/workshop\/orders\/(orderline_[a-f0-9-]+)\/product-draft(?:\/(preview|apply))?$/);
       if(orderProductMatch){
         const line=orderIntake.get(orderProductMatch[1]),action=orderProductMatch[2];
@@ -636,7 +661,11 @@ function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConvert
       const orderOutputsMatch=pathname.match(/^\/api\/workshop\/orders\/(orderline_[a-f0-9-]+)\/outputs$/);
       if(orderOutputsMatch&&method==='GET'){
         const line=orderIntake.get(orderOutputsMatch[1]);
-        return json(res,200,{positionId:line.id,orderId:line.orderId,snapshotId:line.snapshotId,product:line.product,quantity:line.quantity,status:orderIntake.status(line.id),...exportJobs.forSnapshot(line.snapshotId),scope:'local-operator'});
+        // #265, ENTSCHEIDUNGEN 3.48/3.53: Fehlt der Auftrag der Position (Bestellung vor dem Aufspielen, Absturz zwischen Commit und
+        // Einreihen), wird er beim Öffnen der Ausgaben nachgeholt. Ist er nicht anlegbar, nennt das Kennzeichen den Grund.
+        try{ensureOrderOutput(line);}catch{/* Grund steht im Kennzeichen. */}
+        const outputs=exportJobs.forSnapshot(line.snapshotId);
+        return json(res,200,{positionId:line.id,orderId:line.orderId,snapshotId:line.snapshotId,product:line.product,quantity:line.quantity,status:orderIntake.status(line.id),...outputs,outputState:orderOutputState(line,outputs.jobs),scope:'local-operator'});
       }
       const orderStatusMatch=pathname.match(/^\/api\/workshop\/orders\/(orderline_[a-f0-9-]+)\/status$/);if(orderStatusMatch&&method==='GET')return json(res,200,orderIntake.status(orderStatusMatch[1]));
       const productionMatch=pathname.match(/^\/api\/workshop\/orders\/(orderline_[a-f0-9-]+)\/production(?:\/(transition))?$/);
@@ -1202,7 +1231,7 @@ function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConvert
       if(!res.headersSent)json(res,status,{error:{code:error.code||'invalid_product',message:status===500?'Speichern ist momentan nicht möglich.':error.message,actualRevision:error.actualRevision}});
     }
   }
-  return {tenantId,katalogWorker,configureModuleManagement,catalogStructure,acrylShop,corrections,families,sessionContext:shopifySessions?Object.freeze({mode:shopifySessions.mode,shopDomain:shopifySessions.shopDomain,clientId:shopifySessions.clientId}):null,repository,aiJobs,aiBatches,variants,batchJobs,variantBatchJobs,profiles,productionProfiles,assets,fonts,contours,customerDrafts,exportJobs,exportWorker,orderIntake,handle,model:customerModelFor,publicPreviewModel,galleryModel:(id,version)=>shopGalleryModel(repository.get(id,{revision:revision(version)})),internalModel:model,editorPreview,pausedPage,labelCategories,konfis,defaultId,close:()=>{if(katalogWarmTimer)clearTimeout(katalogWarmTimer);katalogWorker?.close();moduleManagement?.close();motifSearchStats.close();catalogStructure.close();acrylShop.close();corrections.close();konfis.close();families.close();aiBatches.close();aiJobs.close();variantBatchJobs.close();batchJobs.close();exportWorker.close();exportJobs.close();variants.close();repository.close();profiles.close();productionProfiles.close();assets.close();fonts.close();contours.close();customerDrafts.close();}};
+  return {tenantId,katalogWorker,configureModuleManagement,catalogStructure,acrylShop,corrections,families,sessionContext:shopifySessions?Object.freeze({mode:shopifySessions.mode,shopDomain:shopifySessions.shopDomain,clientId:shopifySessions.clientId}):null,repository,aiJobs,aiBatches,variants,batchJobs,variantBatchJobs,profiles,productionProfiles,assets,fonts,contours,customerDrafts,exportJobs,exportWorker,orderIntake,orderOutputState,handle,model:customerModelFor,publicPreviewModel,galleryModel:(id,version)=>shopGalleryModel(repository.get(id,{revision:revision(version)})),internalModel:model,editorPreview,pausedPage,labelCategories,konfis,defaultId,close:()=>{if(katalogWarmTimer)clearTimeout(katalogWarmTimer);katalogWorker?.close();moduleManagement?.close();motifSearchStats.close();catalogStructure.close();acrylShop.close();corrections.close();konfis.close();families.close();aiBatches.close();aiJobs.close();variantBatchJobs.close();batchJobs.close();exportWorker.close();exportJobs.close();variants.close();repository.close();profiles.close();productionProfiles.close();assets.close();fonts.close();contours.close();customerDrafts.close();}};
 }
 
 /** Loopback preview; optional test session gate is not a public deployment.

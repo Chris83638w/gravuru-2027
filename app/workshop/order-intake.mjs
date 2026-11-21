@@ -69,7 +69,9 @@ export function verifyDoorbellStatusWebhook(raw,headers,config){
 }
 // `autoRelease(line)` meldet, ob das Fertigungsprofil der Position automatische Freigabe erlaubt (http.mjs liefert es aus production-profiles.mjs).
 // `configurations` (K8): Register der Konfigurations-IDs/Revisionen; eine Position mit unbekannter Revision wird als Positionsfehler abgelehnt.
-export function createOrderIntake({database:db,snapshot,clock=Date.now,autoRelease=null,configurations=null,tenantId}){
+// `onPaid(lines)` (#265, ENTSCHEIDUNGEN 3.48/3.51/3.53): Mit dem Bestelleingang entsteht die Fertigungsdatei von selbst; die Werkstatt
+// reiht hier den Ausgabeauftrag je angenommener Position ein. Abgelehnte Positionen (z. B. Preisabweichung) werden nie gemeldet.
+export function createOrderIntake({database:db,snapshot,clock=Date.now,autoRelease=null,configurations=null,onPaid=null,tenantId}){
  // K13: Bindungen, Angebote, Bestellpositionen und Ereignisse gehören genau einem Mandanten (dem Shop des Händlers).
  const tenant=tenantOption({tenantId});
  const catalogLive=createCatalogLiveOrders({database:db,tenantId:tenant,clock});
@@ -101,6 +103,14 @@ export function createOrderIntake({database:db,snapshot,clock=Date.now,autoRelea
  CREATE TRIGGER IF NOT EXISTS form_order_line_error_fixed BEFORE UPDATE ON form_order_line_errors BEGIN SELECT RAISE(ABORT,'Order line errors are immutable');END;`);
  ensureTenantColumns(db,['form_shop_bindings','form_shop_binding_personalization','form_offer_personalization','form_shop_binding_selections','form_order_offers','form_order_events','form_order_event_selections','form_order_customers','form_order_lines','form_order_line_errors']);
  const tx=fn=>{if(db.isTransaction)return fn();db.exec('BEGIN IMMEDIATE');try{const v=fn();db.exec('COMMIT');return v;}catch(e){db.exec('ROLLBACK');throw e;}},at=()=>new Date(clock()).toISOString();
+ // #265, ENTSCHEIDUNGEN 3.48/3.51/3.53: Aufruf erst NACH dem Commit, auch bei erneuter Zustellung, und nur mit Kopien der Positionen.
+ // Ein Fehler in `onPaid` (auch ein abgelehntes Promise) ändert weder die Antwort an Shopify noch den gespeicherten Eingang.
+ // Läuft noch eine fremde Transaktion, ist nichts festgeschrieben: dann unterbleibt der Aufruf, die Werkstatt holt den Auftrag
+ // beim Öffnen der Ausgaben nach.
+ const notifyPaid=lines=>{
+  if(typeof onPaid!=='function'||!lines.length||db.isTransaction)return;
+  try{const pending=onPaid(structuredClone(lines));if(typeof pending?.then==='function')pending.then(null,()=>{});}catch{/* Eingang und Antwort bleiben unverändert. */}
+ };
  const binding=id=>{const r=db.prepare('SELECT * FROM form_shop_bindings WHERE id=? AND tenant_id=?').get(id,tenant);if(!r)fail(404,'Shop-Zuordnung nicht gefunden.');return r;};
  const selection=id=>{const r=db.prepare('SELECT options FROM form_shop_binding_selections WHERE binding_id=? AND tenant_id=?').get(id,tenant);return r?JSON.parse(r.options):null;};
  const safeBinding=(r,selected=selection(r.id))=>({id:r.id,shopDomain:r.shop,variantId:r.variant_id,productId:r.product_id,productRevision:r.product_revision,unitCents:r.unit_cents,...(selected?{options:selected}:{})});
@@ -363,7 +373,7 @@ export function createOrderIntake({database:db,snapshot,clock=Date.now,autoRelea
     if([...accepted].some(id=>!ids.has(id)))fail(422,'Eine ausgewählte Bestellposition fehlt in der unveränderten Nachricht.');
    }
    const selectionJson=accepted?JSON.stringify([...accepted].sort()):null;
-   return tx(()=>{
+   const outcome=tx(()=>{
    if(db.prepare('SELECT 1 FROM form_order_status_events WHERE shop=? AND event_id=? AND topic!=\'orders/paid\' AND tenant_id=?').get(verified.shopDomain,verified.eventId,tenant))fail(409,'Ereignis-ID gehört bereits zu einer Statusnachricht.');
    const {shopDomain:shop,eventId,bodySha256,orderId,payload}=verified,existing=db.prepare('SELECT body_sha256 FROM form_order_events WHERE shop=? AND event_id=? AND tenant_id=?').get(shop,eventId,tenant);
    if(existing){if(existing.body_sha256!==bodySha256)fail(409,'Ereignis-ID wurde mit anderem Inhalt erneut geliefert.');
@@ -371,10 +381,13 @@ export function createOrderIntake({database:db,snapshot,clock=Date.now,autoRelea
     if(priorSelection!==selectionJson)fail(409,'Die gespeicherte Positionsauswahl dieses Ereignisses darf nicht wechseln.');
     return {duplicate:true,lines:db.prepare('SELECT document FROM form_order_lines WHERE shop=? AND order_id=? AND tenant_id=?').all(shop,orderId,tenant).map(r=>JSON.parse(r.document)),errors:errorRows(' AND e.shop=? AND e.order_id=?',shop,orderId)};}
    const result=[],errors=[],seen=new Set();
+   // #265, ENTSCHEIDUNGEN 3.51/3.53: Eine abgelehnte Position (z. B. Preisabweichung) merkt den Prüfstand ihres Angebots, sobald es
+   // in diesem Shop gefunden wurde. So kann das Büro bei „Bitte prüfen“ die Gestaltung öffnen; gefertigt wird nichts automatisch.
+   let offerSnapshot=null;
    // E3 (P2-9): one invalid position is rejected alone. Valid positions are still
    // admitted, the event is recorded and the webhook answers 200 (no Shopify retry storm).
    const reject=(line,lineId,reason)=>{
-    const document={id:'ordererror_'+randomUUID(),shopDomain:shop,orderId,lineId,eventId,variantId:line.variant_id==null?null:String(line.variant_id),quantity:Number.isSafeInteger(line.quantity)?line.quantity:null,status:'fehler',intakeError:reason,test:payload.test===true,receivedAt:at(),productionReady:false,customerDownloadAllowed:false};
+    const document={id:'ordererror_'+randomUUID(),shopDomain:shop,orderId,lineId,eventId,variantId:line.variant_id==null?null:String(line.variant_id),quantity:Number.isSafeInteger(line.quantity)?line.quantity:null,status:'fehler',intakeError:reason,...(offerSnapshot?{snapshotId:offerSnapshot}:{}),test:payload.test===true,receivedAt:at(),productionReady:false,customerDownloadAllowed:false};
     db.prepare('INSERT INTO form_order_line_errors(id,shop,order_id,line_id,event_id,document,created_at,tenant_id) VALUES(?,?,?,?,?,?,?,?)').run(document.id,shop,orderId,lineId,eventId,JSON.stringify(document),at(),tenant);
     release.rejectIntake(document.id,reason);errors.push(document);
    };
@@ -402,10 +415,12 @@ export function createOrderIntake({database:db,snapshot,clock=Date.now,autoRelea
     }catch{return false;}
    }
    function admit(line,lineId){
+    offerSnapshot=null;
     const properties=line.properties||[];if(!Array.isArray(properties))fail(422,'Ungültige Positionszuordnung.');const refs=properties.filter(p=>p?.name==='_gravuru_offer');
     if(!refs.length){if(line.variant_id&&db.prepare('SELECT 1 FROM form_shop_bindings WHERE shop=? AND variant_id=? AND tenant_id=?').get(shop,identifier(line.variant_id),tenant))fail(422,'Für diese konfigurierte Variante fehlt der gesicherte Entwurf.');return;}
     if(refs.length!==1||typeof refs[0].value!=='string'||!/^[a-f0-9]{64}$/.test(refs[0].value))fail(422,'Ungültige Entwurfszuordnung.');
     const o=db.prepare('SELECT * FROM form_order_offers WHERE token_hash=? AND tenant_id=?').get(sha(refs[0].value),tenant);if(!o)fail(422,'Entwurfszuordnung nicht gefunden.');const b=binding(o.binding_id),extra=offerPricing(o.id);
+    if(b.shop===shop)offerSnapshot=o.snapshot_id;
     const approved=payload.test===false?approvedLiveLine(shop,b,'gid://shopify/Product/'+identifier(line.product_id),config.mode):null;
     const quantity=line.quantity;
     if(b.shop!==shop||b.variant_id!==identifier(line.variant_id)||!Number.isSafeInteger(quantity)||quantity<1||quantity>99)fail(422,OFFER_MISMATCH);
@@ -464,7 +479,10 @@ export function createOrderIntake({database:db,snapshot,clock=Date.now,autoRelea
    // Eine frühere Storno-/Erstattungsmeldung sperrt die Position sofort.
    for(const l of result)release.syncShop(l.id);
    return {duplicate:false,lines:result,errors};
-  });}
+  });
+   notifyPaid(outcome.lines);
+   return outcome;
+  }
  };
 }
 

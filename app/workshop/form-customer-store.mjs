@@ -12,7 +12,9 @@ import {chmodSync} from 'node:fs';
 import {tenantOption,ensureTenantColumns,TENANT_COLUMN} from './tenant.mjs';
 const hash=v=>createHash('sha256').update(v).digest('hex');
 const fail=(status,message)=>{throw Object.assign(Error(message),{status,code:'customer_draft'});};
-export function createFormCustomerStore({filename,clock=Date.now,autoRelease=null,tenantId}){
+// `onPaid` (#265, ENTSCHEIDUNGEN 3.48/3.51/3.53): reicht die Werkstatt an den Bestelleingang durch; dort entsteht mit der bezahlten
+// Bestellung der Ausgabeauftrag je Position (order-intake.mjs, http.mjs `ensureOrderOutput`).
+export function createFormCustomerStore({filename,clock=Date.now,autoRelease=null,onPaid=null,tenantId}){
  // K13: ein Store je Mandant; alle Teilstores (Bestellungen, Ausgaben, Entwürfe, Journale) erben den Mandanten.
  const tenant=tenantOption({tenantId});
  const db=new DatabaseSync(filename);
@@ -39,7 +41,7 @@ export function createFormCustomerStore({filename,clock=Date.now,autoRelease=nul
  function transaction(fn){db.exec('BEGIN IMMEDIATE');try{const result=fn();db.exec('COMMIT');return result;}catch(e){db.exec('ROLLBACK');throw e;}}
  const snapshot=(id,columns='manifest')=>{const r=typeof id==='string'&&db.prepare(`SELECT ${columns} FROM form_review_snapshots WHERE id=? AND tenant_id=?`).get(id,tenant);if(!r)fail(404,'Prüfstand nicht gefunden.');return r;};
  const summary=r=>{const m=JSON.parse(r.manifest);return {id:m.id,createdAt:m.createdAt,product:m.product,source:m.source,blockers:m.blockers,warnings:m.warnings,photoCount:m.photos.length,photoHints:m.photoHints||[],photoResolution:(m.photoResolution||[]).map(p=>({objectId:p.objectId,grade:p.grade,effectiveDpi:p.effectiveDpi,targetDpi:p.targetDpi})),packageSha256:m.packageSha256};};
- const orderIntake=createOrderIntake({database:db,snapshot:id=>JSON.parse(snapshot(id).manifest),clock,autoRelease,configurations:cartConfigurations,tenantId:tenant});
+ const orderIntake=createOrderIntake({database:db,snapshot:id=>JSON.parse(snapshot(id).manifest),clock,autoRelease,configurations:cartConfigurations,onPaid,tenantId:tenant});
  const acrylicDrafts=createAcrylicDraftStore({database:db,tenantId:tenant,capture(bundle){const m=bundle.manifest;db.prepare('INSERT INTO form_review_snapshots(id,draft_id,draft_revision,manifest,preview,contour_pdf,package,photos,tenant_id) VALUES(?,?,?,?,?,?,?,?,?)').run(m.id,m.source.draftId,m.source.draftRevision,JSON.stringify(m),bundle.preview,bundle.contourPdf,bundle.package,bundle.photos,tenant);}});
  const printProof=(id,key)=>{snapshot(id);const r=db.prepare('SELECT * FROM form_print_proofs WHERE snapshot_id=? AND recipe_key=? AND tenant_id=?').get(id,key,tenant);return r?{metadata:JSON.parse(r.metadata),pdf:Buffer.from(r.pdf),archive:Buffer.from(r.archive)}:null;};
  const customerDownloads=createCustomerDownloads({database:db,orders:orderIntake,jobs:exportJobs,printProof,clock,tenantId:tenant});
@@ -55,6 +57,8 @@ export function createFormCustomerStore({filename,clock=Date.now,autoRelease=nul
   capture(id,token,expectedRevision,bundle){return transaction(()=>{const r=auth(id,token);if(r.revision!==expectedRevision||bundle.manifest.source.draftRevision!==r.revision||bundle.manifest.source.draftId!==r.id||bundle.manifest.product.id!==r.product_id||bundle.manifest.product.revision!==r.product_revision)fail(409,'Der Entwurf wurde inzwischen geändert. Bitte den neuen Stand prüfen und erneut sichern.');const old=db.prepare('SELECT manifest FROM form_review_snapshots WHERE draft_id=? AND draft_revision=? AND tenant_id=?').get(id,r.revision,tenant);if(old)return summary(old);db.prepare('INSERT INTO form_review_snapshots(id,draft_id,draft_revision,manifest,preview,contour_pdf,package,photos,tenant_id) VALUES(?,?,?,?,?,?,?,?,?)').run(bundle.manifest.id,id,r.revision,JSON.stringify(bundle.manifest),bundle.preview,bundle.contourPdf,bundle.package,bundle.photos,tenant);return summary(snapshot(bundle.manifest.id));});},
   listSnapshots:()=>db.prepare('SELECT manifest FROM form_review_snapshots WHERE tenant_id=? ORDER BY rowid DESC LIMIT 200').all(tenant).map(summary),
   review(id){const r=snapshot(id,'manifest,preview');return {manifest:JSON.parse(r.manifest),preview:Buffer.from(r.preview).toString()};},
+  // #265: nur das Manifest desselben Prüfstands, ohne das bis zu 3 MB große Vorschaubild; die Bestellansicht fragt es je Position ab.
+  manifest:id=>JSON.parse(snapshot(id).manifest),
   downloadSnapshot(id,kind){const columns=new Map([['package','package'],['contour','contour_pdf'],['photos','photos']]),column=columns.get(kind);if(!column)fail(422,'Dieser Prüfstand enthält noch keine freigegebene Produktions-PDF.');return Buffer.from(snapshot(id,column)[column]);},
   create(record,designId,state){return transaction(()=>{const id='draft_'+randomUUID(),token=randomBytes(32).toString('hex'),at=new Date().toISOString(),json=JSON.stringify(state);db.prepare('INSERT INTO form_customer_drafts(id,token_hash,product_id,product_revision,design_id,revision,state,created_at,tenant_id) VALUES(?,?,?,?,?,?,?,?,?)').run(id,hash(token),record.id,record.revision,designId,1,json,at,tenant);db.prepare('INSERT INTO form_customer_revisions(draft_id,revision,state,created_at,tenant_id) VALUES(?,?,?,?,?)').run(id,1,json,at,tenant);return {...publicRow(auth(id,token)),token};});},
   get:(id,token)=>publicRow(auth(id,token)),

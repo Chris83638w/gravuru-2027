@@ -4,7 +4,7 @@ import {crossStoreOrders} from './cross-store-orders.mjs';
 const config={shopDomain:'gravuru-synthetic.myshopify.com',apiVersion:'2026-07',secret:randomBytes(32).toString('hex')};
 const sign=(payload,eventId='test-event-1234',overrides={})=>{const raw=Buffer.from(typeof payload==='string'?payload:JSON.stringify(payload));return {raw,headers:{'x-shopify-hmac-sha256':createHmac('sha256',config.secret).update(raw).digest('base64'),'x-shopify-shop-domain':config.shopDomain,'x-shopify-api-version':config.apiVersion,'x-shopify-topic':'orders/paid','x-shopify-webhook-id':eventId,...overrides}};};
 const order=token=>({id:101,test:true,financial_status:'paid',currency:'EUR',cancelled_at:null,customer:{email:'private-fixture@example.invalid'},line_items:[{id:201,variant_id:301,quantity:2,price:'29.99',properties:[{name:'_gravuru_offer',value:token}]}]});
-function setup(t){const dir=fs.mkdtempSync(path.join(os.tmpdir(),'g27-order-')),filename=path.join(dir,'private.sqlite');let db=new DatabaseSync(filename),now=Date.now(),m={id:'proof_synthetic',packageSha256:'a'.repeat(64),product:{id:'cfg_synthetic',revision:2,name:'Synthetisches Schild',basePriceCents:2999,currency:'EUR'},productionProfile:{id:'mfg_synthetic',revision:3,sha256:'b'.repeat(64)}};const create=()=>createOrderIntake({database:db,snapshot:id=>{assert.equal(id,m.id);return structuredClone(m);},clock:()=>now});let intake=create();const record={id:m.product.id,revision:2,status:'draft',document:{schema:'gravuru-form-product/v1',kind:'product',basePriceCents:2999,designs:[{}]}};const binding=intake.bind({shopDomain:config.shopDomain,variantId:'301',record});const offer=()=>intake.offer({bindingId:binding.id,snapshotId:m.id,quantity:2});t.after(()=>{db.close();fs.rmSync(dir,{recursive:true,force:true});});return {get m(){return m;},get db(){return db;},get intake(){return intake;},offer,binding,record,changeTime:delta=>now+=delta,changeHash:()=>m.packageSha256='f'.repeat(64),reopen:()=>{db.close();db=new DatabaseSync(filename);intake=create();}};}
+function setup(t,extra={}){const dir=fs.mkdtempSync(path.join(os.tmpdir(),'g27-order-')),filename=path.join(dir,'private.sqlite');let db=new DatabaseSync(filename),now=Date.now(),m={id:'proof_synthetic',packageSha256:'a'.repeat(64),product:{id:'cfg_synthetic',revision:2,name:'Synthetisches Schild',basePriceCents:2999,currency:'EUR'},productionProfile:{id:'mfg_synthetic',revision:3,sha256:'b'.repeat(64)}};const create=()=>createOrderIntake({database:db,snapshot:id=>{assert.equal(id,m.id);return structuredClone(m);},clock:()=>now,...extra});let intake=create();const record={id:m.product.id,revision:2,status:'draft',document:{schema:'gravuru-form-product/v1',kind:'product',basePriceCents:2999,designs:[{}]}};const binding=intake.bind({shopDomain:config.shopDomain,variantId:'301',record});const offer=()=>intake.offer({bindingId:binding.id,snapshotId:m.id,quantity:2});t.after(()=>{db.close();fs.rmSync(dir,{recursive:true,force:true});});return {get m(){return m;},get db(){return db;},get intake(){return intake;},offer,binding,record,changeTime:delta=>now+=delta,changeHash:()=>m.packageSha256='f'.repeat(64),reopen:()=>{db.close();db=new DatabaseSync(filename);intake=create();}};}
 const receive=(intake,message)=>intake.receive(message.raw,message.headers,config);
 test('F16: an unreadable order document or E3 record is isolated in the cross-store overview',t=>{
  const f=setup(t),good=f.offer(),accepted=receive(f.intake,sign(order(good.property.value))).lines[0];
@@ -78,6 +78,48 @@ test('E3: two positions, one broken – the valid one is admitted, the broken on
  // The unbound shop variant without a saved draft is reported as a position error, not as an order refusal.
  const missing=order(f.offer().property.value);missing.id=104;missing.line_items[0].id=203;missing.line_items.push({id:204,variant_id:301,quantity:1,price:'29.99',properties:[]});
  const r=receive(f.intake,sign(missing,'test-event-missing'));assert.equal(r.lines.length,1);assert.match(r.errors[0].intakeError,/fehlt der gesicherte Entwurf/);assert.equal(f.intake.errors().length,2);
+});
+// #265 Stufe B, Lieferung 1 (ENTSCHEIDUNGEN 3.48/3.51/3.53): Mit dem Bestelleingang reiht die Werkstatt den Ausgabeauftrag ein.
+test('onPaid (#265): admitted lines are reported after the commit, again for a repeated delivery, never for a rejected position',t=>{
+ const calls=[];let f;
+ // Eine zweite Verbindung sieht nur festgeschriebene Zeilen: so ist „nach dem Commit“ belegt, nicht nur „außerhalb von tx“.
+ const committed=()=>{const other=new DatabaseSync(f.db.location());try{return ['form_order_lines','form_order_events','form_order_line_errors'].map(table=>other.prepare('SELECT count(*) AS n FROM '+table).get().n);}finally{other.close();}};
+ f=setup(t,{onPaid:lines=>{calls.push({lines:structuredClone(lines),open:f.db.isTransaction,committed:committed()});lines[0].quantity=99;lines.length=0;}});
+ const good=f.offer(),deviating=f.offer(),payload=order(good.property.value);
+ payload.line_items.push({id:202,variant_id:301,quantity:2,price:'19.99',properties:[deviating.property]});
+ const signed=sign(payload),first=receive(f.intake,signed);
+ assert.equal(first.lines.length,1);assert.equal(first.lines[0].lineId,'201');assert.equal(first.lines[0].quantity,2,'the callback only gets copies');
+ assert.equal(first.errors.length,1);assert.equal(first.errors[0].lineId,'202');assert.match(first.errors[0].intakeError,/Preis/);
+ // Preisabweichung: das Angebot wurde gefunden, also merkt die abgelehnte Position ihren Prüfstand (Büro öffnet die Gestaltung).
+ assert.equal(first.errors[0].snapshotId,f.m.id);assert.equal(f.intake.errors()[0].snapshotId,f.m.id);
+ assert.equal(calls.length,1);assert.deepEqual(calls[0].lines,first.lines,'only the admitted line, not the rejected one');
+ assert.equal(calls[0].open,false);assert.deepEqual(calls[0].committed,[1,1,1]);
+ assert.deepEqual(f.intake.list(),first.lines);
+ // Erneute Zustellung desselben Ereignisses (duplicate) und eine zweite Zustellung mit neuer Ereignis-ID melden dieselbe Position erneut.
+ const again=receive(f.intake,signed);assert.equal(again.duplicate,true);assert.equal(calls.length,2);assert.deepEqual(calls[1].lines,first.lines);assert.deepEqual(again.lines,first.lines);
+ const second=receive(f.intake,sign(payload,'test-event-second'));assert.equal(second.duplicate,false);assert.equal(calls.length,3);assert.deepEqual(calls[2].lines,first.lines);
+ // Nur abgelehnte Positionen: kein Aufruf. Ohne gefundenes Angebot gibt es auch keinen gemerkten Prüfstand.
+ const unknown=receive(f.intake,sign({...order('f'.repeat(64)),id:105},'test-event-unknown'));
+ assert.equal(unknown.lines.length,0);assert.equal(unknown.errors.length,1);assert.equal('snapshotId' in unknown.errors[0],false);assert.equal(calls.length,3);
+ const onlyDeviating=receive(f.intake,sign({...order(f.offer().property.value),id:106,line_items:[{id:206,variant_id:301,quantity:2,price:'0.01',properties:[f.offer().property]}]},'test-event-price'));
+ assert.equal(onlyDeviating.lines.length,0);assert.equal(onlyDeviating.errors[0].snapshotId,f.m.id);assert.equal(calls.length,3);
+ // Statusmeldungen sind kein Bestelleingang.
+ receive(f.intake,statusMessage(good.property.value,'refunded'));assert.equal(calls.length,3);
+});
+test('onPaid (#265): a throwing or rejecting callback changes neither the answer nor the stored intake; an open outer transaction postpones it',async t=>{
+ const plain=setup(t),expected=receive(plain.intake,sign(order(plain.offer().property.value)));
+ const strip=r=>({...r,lines:r.lines.map(l=>({...l,id:null,bindingId:null,receivedAt:null}))});
+ let mode='throw',calls=0;const unhandled=[],note=reason=>unhandled.push(reason);process.on('unhandledRejection',note);t.after(()=>process.off('unhandledRejection',note));
+ const f=setup(t,{onPaid(){calls++;if(mode==='throw')throw Error('synthetic enqueue failure');if(mode==='reject')return Promise.reject(Error('synthetic late failure'));}});
+ const payload=order(f.offer().property.value),signed=sign(payload),first=receive(f.intake,signed);
+ assert.equal(calls,1);assert.deepEqual(strip(first),strip(expected));assert.deepEqual(f.intake.list(),first.lines);
+ assert.equal(f.db.prepare('SELECT count(*) AS n FROM form_order_events').get().n,1);assert.equal(f.db.isTransaction,false);
+ const again=receive(f.intake,signed);assert.equal(calls,2);assert.equal(again.duplicate,true);assert.deepEqual(again.lines,first.lines);
+ mode='reject';assert.deepEqual(receive(f.intake,sign(payload,'test-event-reject')).lines,first.lines);assert.equal(calls,3);
+ await new Promise(resolve=>setImmediate(resolve));await new Promise(resolve=>setImmediate(resolve));assert.deepEqual(unhandled,[]);
+ // Fremde, noch offene Transaktion: nichts ist festgeschrieben, also kein Aufruf (die Werkstatt holt den Auftrag beim Öffnen nach).
+ mode='ok';const later=f.intake.withBindingTransaction(()=>receive(f.intake,sign({...order(f.offer().property.value),id:107},'test-event-outer')));
+ assert.equal(later.lines.length,1);assert.equal(calls,3);assert.equal(f.intake.list().length,2);
 });
 test('configured HTTP receiver requires HMAC instead of browser CSRF; default runtime keeps intake disabled',async t=>{
  const dir=fs.mkdtempSync(path.join(os.tmpdir(),'g27-order-http-'));build({outputDirectory:dir});const seed=JSON.parse(fs.readFileSync(path.join(dir,'models.json')))[0];const instances=[];t.after(async()=>{for(const {server,w} of instances){await new Promise(r=>server.close(r));w.close();}fs.rmSync(dir,{recursive:true,force:true});});

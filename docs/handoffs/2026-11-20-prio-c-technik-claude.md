@@ -954,7 +954,7 @@ Eine: Darf Astra die App-Version mit der geänderten Preisfunktion und Kassenpr�
 
 Der [Design-Master](https://github.com/Chris83638w/gravuru-katalog./blob/main/designs/DESIGN-MASTER.md) gilt unverändert; an Designs wurde nichts geändert.
 
-## 21.11.2026, 19:30 Uhr – Bestelldateien nach der Musterdatei von Chris; App-Version zu 3.59 freigegeben
+## 21.11.2026, 19:25 Uhr – Bestelldateien nach der Musterdatei von Chris; App-Version zu 3.59 freigegeben
 
 Chris hat um 17:07 Uhr eine Musterdatei geliefert („so müssen die dateien aussehen“) und bis 19:16 Uhr die Farben erklärt (ENTSCHEIDUNGEN 3.62). Der Stand von 16:35 Uhr oben ist beim Aufbau der Dateien damit überholt; aufgespielt war er nie (Astra hatte ich um 17:10 Uhr gebeten anzuhalten).
 

@@ -1,3 +1,18 @@
+## 21.11.2026 · Claude (Operator, technische Gesamtverantwortung) · #265/#267: Bilder bei Shopify nur zu echten Bestellungen (Entscheidung), Auskünfte von Astra
+
+- **Entscheidung von Chris, 06:57 Uhr (ENTSCHEIDUNGEN 3.52):** Bilder dürfen bei Shopify nur zu echten Bestellungen vorhanden sein; vor der Bestellung nur ein Link zur Gestaltung, wie bei Fancy. Mein Vorschlag, das Kassenbild vor dem Klick anzumelden, ist abgelehnt.
+- **Folgen für den Bau:** Die Anmeldung des Kassenbilds beim Klick entfällt (das waren 3,0 bis 3,6 s Warten). Beim Einlegen geht keine Bilddatei mehr an Shopify. Das Kundenfoto bleibt bis zur Bestellung auf dem eigenen Server (berichtigt die Umsetzung zu 3.50). Mit dem Bestelleingang legt der Server Vorschaubild, Foto und Fertigungsdateien an die Shopify-Bestellung. Die Shopify-Preisfunktion braucht dafür keine Änderung: Ohne `_gravuru_checkout_image` setzt sie nur den Preis (`ops/shopify/checkout-image/cart-image.mjs`).
+- **Auskünfte von Astra** (#267, Kommentar 7050660184, 20.11., 23:08 Uhr, alle sechs Lesepunkte):
+  1. Bestelleingang: beide `orders/paid`-Abos zeigen auf den laufenden Dienst; letzter Eingang 20.11., 08:21 Uhr, HTTP 200. Die jüngste bezahlte R15-Testbestellung steht als „Eingegangen“ in der Werkstatt. **0 Exportaufträge, 0 fertige Fertigungsdateien** – die Fertigung entsteht heute nicht von selbst.
+  2. Shopify-Funktionen: freigegeben ist `gravuru-2027-preis-einzelsperre-20261116-b1`; `gravuru-personalization-price` setzt Preis und Kassenbild, `gravuru-checkout-guard` sperrt bei Fehlern. Die Zubehörpreise aus `main:ops/shopify/master-release/` sind dort nicht enthalten.
+  3. Älterer Bestellweg: 0 bestellbare Produkte; `gravuru-legacy-cart.js` ist im veröffentlichten Theme eingebunden.
+  4. Speicher: Datenbank 6,29 GB, 391 Kundenentwürfe (375 native R15 mit 407 Revisionen), 312 GB frei.
+  5. HTTP 503 vom 20.11., 21:34 Uhr: Der Webserver erreichte den lokalen Socket nicht (52 HTTP 503), das Dienstprotokoll war leer; die Zeit bis zur ersten Antwort des ersten Prozesses bleibt offen. Der zweite Start antwortete spätestens 8,1 s nach Prozessstart.
+  6. Feste Rasterbilder in Druckdesigns: 0 in allen 129 freigegebenen Produktrevisionen. Für die Frage von Chris (kleinere WebP-Datei im Konfigurator) gibt es im heutigen Bestand nichts zu verkleinern.
+- Stand des Baus unverändert: `07516299` (Paket, Stufe 2), nicht aufgespielt. Live `9bfc281b`.
+- Offen bei Chris: ob die bisher ohne Bestellung bei Shopify angelegten Kassenbilder gelöscht werden. Gelöscht wurde nichts.
+- Übergabe: `docs/handoffs/2026-11-20-prio-c-technik-claude.md`, Abschnitt „21.11.2026“. Der [Design-Master](https://github.com/Chris83638w/gravuru-katalog./blob/main/designs/DESIGN-MASTER.md) gilt unverändert; an Designs wurde nichts geändert.
+
 ## 20.11.2026 · Claude (Operator, technische Gesamtverantwortung) · #265: Paket, Stufe 2 gebaut; das Kassenbild ist jetzt der größte Anteil
 
 - **`07516299` (Zweig `dev/claude-paket-20261120`, nicht aufgespielt, kein Auftrag an Astra):** Die gesicherte Konfiguration (`konfigurator-quellen.json`) eines Pakets mit Verweis behält in den Design-Listen nur das gewählte Design. Gekürzt wird nur, was beim Sichern Zeichen für Zeichen im unveränderlichen Produktstand steht; Anzahl und Prüfsumme je Liste stehen im Paket. `acrylicArtwork` stellt die Datei aus dem geprüften Produktstand wieder her, bevor Fertigung, Zusammenfassung und Fertigungspaket sie lesen (`app/workshop/review-product.mjs`).

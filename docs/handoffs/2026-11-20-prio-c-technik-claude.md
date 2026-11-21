@@ -759,6 +759,34 @@ Die Shopify-Funktion prüft nur die Form der Bildadresse (`cart-image.mjs`); ein
 
 ### Offene Fragen an Chris
 
-1. Kassenbild schon beim Öffnen des Überblicks bei Shopify anmelden, nicht bestellte Bilder nach 30 Tagen automatisch löschen. Empfehlung: Ja. (Gestellt 23:10 Uhr.)
+1. Erledigt, 21.11., 06:57 Uhr (ENTSCHEIDUNGEN 3.52): **abgelehnt.** Bilder bei Shopify nur zu echten Bestellungen; siehe Abschnitt „21.11.2026“.
+
+## 21.11.2026 – Bilder bei Shopify nur zu echten Bestellungen (ENTSCHEIDUNGEN 3.52); Auskünfte von Astra
+
+**Entscheidung.** Chris, 06:57 Uhr: Bilder dürfen bei Shopify nur zu echten Bestellungen vorhanden sein; vor der Bestellung trägt die Zeile nur einen Link zur Gestaltung, wie bei Fancy.
+
+**Was das am heutigen Stand ändert.**
+
+| Heute beim Klick | Künftig |
+| --- | --- |
+| Server meldet das Kassenbild bei Shopify an (`warmCheckoutImage`, `shopify-checkout-image.mjs`); der Klick wartet 3,0 bis 3,6 s darauf | entfällt; ohne `_gravuru_checkout_image` setzt die Shopify-Funktion nur den Preis (`cart-image.mjs` liefert dann kein Bild) |
+| `_Entwurf` zeigt auf dieses Shopify-Bild oder wird als Datei an die Zeile übertragen (`theme-cart-client.mjs`) | keine Bilddatei an Shopify; die Warenkorbseite zeigt das Bild über `_gravuru_bild` vom eigenen Server (`gravuru-warenkorb-bearbeiten.liquid` bevorzugt diese Adresse) |
+| Kundenfoto geht an den eigenen Server | bleibt so; zu Shopify erst mit der Bestellung (berichtigt die Umsetzung zu 3.50) |
+| Bestelleingang legt die Position in der Werkstatt an; Fertigungsdateien entstehen nicht von selbst (Astra: 0 Exportaufträge) | Bestelleingang baut Prüf- und Fertigungspaket, vergleicht den Preis (3.51) und legt Vorschaubild, Foto und Fertigungsdateien an die Shopify-Bestellung (3.48, 3.50) |
+
+**Reihenfolge des Baus (alles am Server und im Editor, Astra spielt auf):**
+1. Klick ohne Bild bei Shopify: Kassenbild und `_Entwurf` aus dem Klick nehmen, Link zur Gestaltung an die Zeile. Erwartung nach der Messung vom 20.11.: der größte einzelne Anteil der Wartezeit fällt weg.
+2. Paket klein (gebaut: `5ad10b05`, `07516299`).
+3. Die Abrufe nach dem Sichern zusammenlegen, Produktstand nicht je Abruf lesen.
+4. Bestelleingang: Paket, Preisvergleich, Fertigungsdateien, Vermerk „Bitte prüfen“, Dateien an die Shopify-Bestellung (Berechtigung der App prüfen; eine Erweiterung gibt Chris frei).
+5. Prüfung der Gestaltung vom Klick an den Bestelleingang.
+
+**Zu prüfen beim Bau von 1:** `theme-cart-client.mjs` verlangt heute ein Vorschaubild oder ein Shopify-Bild; die Danke-Seite und die Vorlage der Bestellbestätigung nutzen `_gravuru_bild` (eigener Server) und bleiben. Ob Chris das Bild im Warenkorb vom eigenen Server behalten will, ist ihm zum Widerspruch genannt.
+
+**Auskünfte von Astra** (#267, Kommentar 7050660184): siehe `STATUS.md`, Eintrag 21.11.2026. Für Schritt 4 wichtig: Der Webhook `orders/paid` kommt an (HTTP 200), die Position steht in der Werkstatt, aber es entsteht kein Exportauftrag. Die freigegebene Shopify-Funktion ist `gravuru-2027-preis-einzelsperre-20261116-b1`.
+
+### Offene Fragen an Chris
+
+1. Die bisher ohne Bestellung bei Shopify angelegten Kassenbilder löschen, sobald der neue Stand live ist. Empfehlung: Ja. (Gestellt 21.11., 07:10 Uhr; nichts gelöscht.)
 
 Der [Design-Master](https://github.com/Chris83638w/gravuru-katalog./blob/main/designs/DESIGN-MASTER.md) gilt unverändert; an Designs wurde nichts geändert.

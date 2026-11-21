@@ -5,8 +5,20 @@ import {SUPPORTED_FONT_IDS} from '../platform/sources/app/shared/models/design-c
 import {isLayeredDoorbell,selectedDoorbellProfile} from '../configurator/variant-m/doorbell-selection.mjs';
 import {isFamilyFormats,selectedFamilyProfile} from '../configurator/variant-m/family-formats.mjs';
 const fail=message=>{throw Object.assign(Error(message),{status:422,code:'native_review_resource'});};
+function privateCopy(config){
+ const shared=config?.localResources;
+ if(!shared||typeof shared!=='object'||Array.isArray(shared)||!shared.fonts||typeof shared.fonts!=='object'||Array.isArray(shared.fonts)||!Array.isArray(shared.motifs))return structuredClone(config);
+ // Platzhalter halten die Reihenfolge der Schlüssel; die großen Daten werden danach als dieselben Objekte eingesetzt.
+ const copy=structuredClone({...config,localResources:{...shared,fonts:null,motifs:null}});
+ copy.localResources.fonts={...shared.fonts};copy.localResources.motifs=[...shared.motifs];
+ return copy;
+}
 export function nativeReviewConfig(config,input){
- const copy=structuredClone(config),local=copy.localResources,profile=isFamilyFormats(copy)?selectedFamilyProfile(copy,input?.options):isLayeredDoorbell(copy)?selectedDoorbellProfile(copy,input?.options):copy.profile,source=profile.designs.find(d=>d.id===input?.designId);
+ // #265: Schrift- und Motivdaten sind nach dem Laden unveränderlich (dieselbe Grundlage wie checkedGlyphs und checkedMotifs
+ // in local-pilot.mjs). Sie werden nicht mehr bei jedem Klick mitkopiert (live rund 0,2 s), sondern als dieselben Objekte
+ // weitergereicht; die Listen selbst und alles Übrige bleiben eine eigene Kopie dieser Anfrage. Dieselben Schriftobjekte
+ // lassen product-model.mjs die geprüfte Fassung des gehaltenen Produktstands wiederfinden.
+ const copy=privateCopy(config),local=copy.localResources,profile=isFamilyFormats(copy)?selectedFamilyProfile(copy,input?.options):isLayeredDoorbell(copy)?selectedDoorbellProfile(copy,input?.options):copy.profile,source=profile.designs.find(d=>d.id===input?.designId);
  if(!source||!Array.isArray(input?.objects))return copy;
  const known=new Map(source.objects.map(o=>[o.id,o])),usedMotifs=new Set(input.objects.filter(o=>o.type==='motif').map(o=>o.motif));
  const usedFonts=new Set(input.objects.filter(o=>o.type==='text').map(o=>o.font));
@@ -28,7 +40,7 @@ export function nativeReviewConfig(config,input){
   const font=resources().fonts[key];if(!font)fail('Diese Schrift ist nicht in der Bibliothek.');
   // Ohne Schriftauswahl im Profil gilt wie bisher: nur Produktschriften und das feste Grundset.
   if(!Array.isArray(selections?.fonts)&&!SUPPORTED_FONT_IDS.includes(key))fail('Diese Schrift ist für das Produkt nicht freigegeben.');
-  local.fonts[key]=structuredClone(font);
+  local.fonts[key]=font;
  }
  return copy;
 }

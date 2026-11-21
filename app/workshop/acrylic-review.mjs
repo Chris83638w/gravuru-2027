@@ -9,7 +9,7 @@ import {artworkViewport} from '../configurator/variant-m/print-geometry.mjs';
 import {getProcessingProfile} from '../platform/sources/app/shared/models/processing-profiles.mjs';
 import {processProfile} from './process-profiles.mjs';
 import {randomUUID,createHash} from 'node:crypto';
-import {validateProductDesign,resolveProduct} from './product-model.mjs';
+import {validateProductDesign,resolveProduct,productDocumentWithFonts} from './product-model.mjs';
 import {cleanObject,isGuideObject,choiceOptions,optionFieldEntries} from '../configurator/variant-m/contract.mjs';
 // K14 / Ü12.1: Ausführung (Gruppen) und Zusatzfelder getrennt im Manifest; der Gestaltungsstand
 // (produkt-und-gestaltung.json, state.options) behält beide für Bearbeiten und Fertigung.
@@ -42,7 +42,8 @@ export function validateAcrylicReview(record,config,input){
  const source=selectedProfile(config,input.options).designs.find(d=>d.id===input.designId);if(!source)fail('Design gehört nicht zum Produkt.');
  // Schriften, die nativeReviewConfig für dieses Produkt freigegeben und mit Pfaden geladen hat (z. B. importierte
  // Profilschriften „Lato Regular · …“), gelten bei der Inhaltsprüfung als vorhanden – nur in diesem Prüfpfad.
- const document={...record.document,config:{...record.document.config,localResources:{...record.document.config.localResources,fonts:{...record.document.config.localResources?.fonts,...config.localResources.fonts}}}};
+ // Gehaltene Revision (revision-records.mjs): geprüft je Schriftfassung einmal je Prozess statt bei jedem Klick (product-model.mjs).
+ const document=productDocumentWithFonts(record.document,config.localResources.fonts);
  const design=validateProductDesign(document,{...structuredClone(source),...(input.textOnTop!==undefined?{textOnTop:input.textOnTop}:{}),objects:input.objects.map(cleanObject)},{options:input.options,fonts:config.localResources.fonts,motifs:config.localResources.motifs});
  const resolved=resolveProduct(record.document,{options:input.options,designId:source.id});
  const price=commercePrice(config,{objects:design.objects,designId:design.id,mOptions:resolved.resolvedOptions},input.quantity);

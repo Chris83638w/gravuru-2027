@@ -26,6 +26,7 @@ import {isLayeredDoorbell} from '../configurator/variant-m/doorbell-selection.mj
 import {moduleEnabled} from '../configurator/variant-m/module-profile.mjs';
 import {selectedProfile} from '../configurator/variant-m/contract.mjs';
 import {createProductShaMemo} from './review-product.mjs';
+import {heldRevisionRecord} from './revision-records.mjs';
 import {withCartTiming,cartTimingStep,cartTimingCount,cartTimingHeaders} from './shop-cart-timing.mjs';
 
 // Öffentlicher Kundeneinstieg „Jetzt personalisieren“ (SHOP-ENTRY.txt). Shopify ruft über den App-Proxy
@@ -434,7 +435,9 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
    if(!options||typeof options!=='object')fail(409,'shop_entry_variant','Die gesicherte Ausführung ist nicht bestätigt.');
    // Die im Editor gewählte Ausführung (z. B. Befestigung) bestimmt die Shopify-Variante – ausschließlich über
    // eine aktive Registry-Zuordnung {dieses Shopify-Produkt, Variante}. Ohne genau einen Treffer kein Warenkorb.
-   const candidates=cartTimingStep('variant_candidates',()=>store.workshop.orderIntake.bindings().filter(b=>b.shopDomain===shopDomain&&b.productId===session.productId&&b.productRevision===session.productRevision&&optionKey(b.options)===optionKey(options)));
+   // #265: nur die Zuordnungen dieses Produktstands lesen (bindingsFor), nicht bei jedem Klick alle; derselbe Filter gilt weiter.
+   const intake=store.workshop.orderIntake,scoped=typeof intake.bindingsFor==='function'&&typeof session.productId==='string'&&Number.isSafeInteger(session.productRevision);
+   const candidates=cartTimingStep('variant_candidates',()=>(scoped?intake.bindingsFor({shopDomain,productId:session.productId,productRevision:session.productRevision}):intake.bindings()).filter(b=>b.shopDomain===shopDomain&&b.productId===session.productId&&b.productRevision===session.productRevision&&optionKey(b.options)===optionKey(options)));
    const bindings=[];
    for(const variantId of new Set(candidates.map(b=>b.variantId))){
     let found;try{found=cartTimingStep('variant_binding',()=>cartRegistry(store).resolve({shopifyProductId:session.shopifyProductId,shopifyVariantId:'gid://shopify/ProductVariant/'+variantId}));}catch(error){if(error.code==='shop_binding_active_not_found'&&error.status===404)continue;throw error;}
@@ -492,8 +495,13 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
    const input=data.input;
    if(input.productId!==session.productId||input.productRevision!==session.productRevision)fail(409,'shop_entry_product','Die Gestaltung gehört nicht zu diesem Produkt.');
    if(draft&&(input.productId!==draft.productId||input.productRevision!==draft.productRevision||input.designId!==draft.designId))fail(409,'acrylic_draft_identity','Produktstand und Design gehören zu diesem festen Entwurf.');
-   const repository=store.workshop.repository,record=cartTimingStep('product_read',()=>repository.get(session.productId,{revision:session.productRevision}));
-   if(record.status==='archived'||repository.get(record.id).status==='archived')fail(422,'acrylic_required','Dieses Produkt ist nicht mehr verfügbar.');
+   // #265: Die unveränderliche Revision wird je Prozess gehalten (revision-records.mjs) statt bei jedem Klick zweimal ganz
+   // gelesen; Archivierung (gewählte Revision und aktueller Stand) wird weiter bei jeder Anfrage frisch aus der Datenbank
+   // gelesen, nur ohne das Dokument. Ablagen ohne `revisionStatus` (ältere Attrappen) lesen wie bisher.
+   const repository=store.workshop.repository,quick=typeof repository.revisionStatus==='function'&&typeof repository.revisionState==='function';
+   const status=quick?cartTimingStep('product_status',()=>repository.revisionStatus(session.productId,{revision:session.productRevision})):null;
+   const record=cartTimingStep('product_read',()=>quick?heldRevisionRecord(repository,session.productId,session.productRevision):repository.get(session.productId,{revision:session.productRevision}));
+   if(status?status.status==='archived'||status.headStatus==='archived':record.status==='archived'||repository.get(record.id).status==='archived')fail(422,'acrylic_required','Dieses Produkt ist nicht mehr verfügbar.');
    const config=cartTimingStep('model_build',()=>sharedModelFor(store,context.binding)).universal;
    if(warmCheckoutAccess&&checkoutImage&&hasSavedCartImage(store))void Promise.resolve().then(warmCheckoutAccess).catch(()=>{});
    const productSha256=reviewProductReference===true?cartTimingStep('product_sha',()=>productSha(repository,record)):undefined;

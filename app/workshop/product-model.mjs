@@ -31,6 +31,41 @@ export function withProductResolutionSnapshot(document,read){
   try{const result=read(validated);if(result?.then instanceof Function)throw Error('Die Produktprüfung darf nicht asynchron sein.');return result;}
   finally{resolutionSnapshots.delete(validated);}
 }
+// #265 (Chris: schneller Warenkorb, sämtliche Prüfungen bleiben): Eine Produktrevision ist unveränderlich (repository.mjs,
+// Trigger immutable_revision_update und -delete). Bisher prüfte jedes Sichern einer Kundengestaltung das ganze, über 10 MB
+// große Dokument zweimal neu (live über 1 s je Klick). Wer eine Revision je Prozess hält (revision-records.mjs), übergibt ihr
+// Dokument hier; es wird tief eingefroren und danach je Fassung nur einmal geprüft. Das Ergebnis ist dieselbe Funktion
+// desselben unveränderlichen Werts. Es gibt weiterhin kein vom Aufrufer gesetztes „bereits geprüft“: Nur Ergebnisse, die
+// dieses Modul selbst erzeugt und eingefroren hat, gelten als geprüft; jedes andere Objekt durchläuft die Prüfung vollständig.
+const heldDocuments=new WeakMap(),validatedSnapshots=new WeakSet(),HELD_FONT_VARIANTS=2;
+function deepFreeze(value,seen=new WeakSet()){if(value&&typeof value==='object'&&!seen.has(value)){seen.add(value);for(const child of Object.values(value))deepFreeze(child,seen);Object.freeze(value);}return value;}
+export function holdProductDocument(document){
+  if(document===null||typeof document!=='object'||Array.isArray(document))throw Error('Ein Produktdokument ist erforderlich.');
+  if(!heldDocuments.has(document)){deepFreeze(document);heldDocuments.set(document,{base:null,variants:[]});}
+  return document;
+}
+export const isHeldProductDocument=document=>heldDocuments.has(document);
+function heldValidated(document){
+  const held=heldDocuments.get(document);if(!held)return null;
+  if(!held.base){held.base=deepFreeze(validateProductDocument(document));validatedSnapshots.add(held.base);}
+  return held.base;
+}
+// Dokument mit den Schriften, die der Prüfpfad einer Kundengestaltung zusätzlich als vorhanden wertet (acrylic-review.mjs).
+// Für ein gehaltenes Dokument: das geprüfte, eingefrorene Ergebnis genau dieser Fassung; gemerkt je Dokument für höchstens
+// zwei Schriftfassungen. Eine Fassung ist dieselbe, wenn Namen, Reihenfolge und Schriftobjekte dieselben sind – Schriftdaten
+// sind nach dem Laden unveränderlich (dieselbe Grundlage wie checkedGlyphs in local-pilot.mjs). Sonst: wie bisher das
+// zusammengesetzte, ungeprüfte Dokument, das validateProductDesign vollständig prüft.
+export function productDocumentWithFonts(document,fonts){
+  const merged=()=>({...document,config:{...document.config,localResources:{...document.config.localResources,fonts:{...document.config.localResources?.fonts,...fonts}}}});
+  const held=heldDocuments.get(document);
+  if(!held)return merged();
+  const entries=Object.entries(fonts??{});
+  const at=held.variants.findIndex(v=>v.entries.length===entries.length&&entries.every(([name,font],i)=>v.entries[i][0]===name&&v.entries[i][1]===font));
+  if(at>=0){const hit=held.variants.splice(at,1)[0];held.variants.push(hit);return hit.validated;}
+  const validated=deepFreeze(validateProductDocument(merged()));validatedSnapshots.add(validated);
+  held.variants.push({entries,validated});while(held.variants.length>HELD_FONT_VARIANTS)held.variants.shift();
+  return validated;
+}
 const fail=message=>{throw Error(message);};
 const record=value=>value!==null&&typeof value==='object'&&!Array.isArray(value)&&[Object.prototype,null].includes(Object.getPrototypeOf(value));
 const id=value=>typeof value==='string'&&/^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$/.test(value);
@@ -151,7 +186,7 @@ export function validateProductDocument(document){
 }
 
 export function resolveProduct(document,{options={},designId}={}){
-  const product=resolutionSnapshots.has(document)?document:validateProductDocument(document),config=product.config;
+  const product=resolutionSnapshots.has(document)?document:heldValidated(document)??validateProductDocument(document),config=product.config;
   const resolved=resolvedOptions(config,options),selected=selectedProfile(config,resolved);
   const chosenId=designId===undefined?selected.defaultDesignId:designId;
   const design=selected.designs.find(item=>item.id===chosenId);
@@ -171,7 +206,8 @@ export function resolveProduct(document,{options={},designId}={}){
 // are enforced inside `validateDesign` (contract.mjs) from the saved
 // `elementRights`, followed by the content/geometry/media validation.
 export function validateProductDesign(document,design,{options={},fonts,motifs,template=false,draft=false}={}){
-  const product=validateProductDocument(document),config=product.config;
+  // Ein Ergebnis aus productDocumentWithFonts ist bereits geprüft und eingefroren (nur dieses Modul erzeugt es).
+  const product=validatedSnapshots.has(document)?document:validateProductDocument(document),config=product.config;
   const source=selectedProfile(config,options).designs.find(item=>item.id===design?.id);
   if(!source||!Array.isArray(design.objects))fail('Kundendesign gehört zu keiner Produktvorlage.');
   const fontLibrary=fonts??(isLayeredDoorbell(config)&&design.objects.some(o=>o.type==='text')?workshopResources(config.localResources).fonts:config.localResources?.fonts??{});

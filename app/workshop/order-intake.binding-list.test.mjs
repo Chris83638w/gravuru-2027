@@ -72,3 +72,26 @@ test('full binding list retains cross-product variant conflicts for the existing
  assert.ok(result.entries[0].readiness.bindingBlockers.some(v=>v.code==='variant_config_conflict'));
  assert.equal(f.intake.bindings().length,2);
 });
+
+// #265: Der Warenkorb liest nur die Zuordnungen seines Produktstands. Maßstab ist die bisherige Liste mit dem bisherigen Filter.
+test('bindingsFor liefert genau die gefilterte Liste von bindings(): gleiche Einträge, gleiche Reihenfolge, gleiche Mandantentrennung',t=>{
+ const f=fixture(t),other='zweiter-synthetic.myshopify.com';
+ for(let n=0;n<600;n++)f.add({n,...(n%3?{options:{mounting:n%2?'B02':'K00',size:'s'+(n%5)}}:{}),...(n%7===0?{shop:other}:{})});
+ f.add({n:9000,tenant:'fremd',product:cfg(1),options:{mounting:'K00'}});
+ f.add({n:9001,product:cfg(1),options:{mounting:'K00'},selectionTenant:'fremd'});
+ // Eine zweite Revision desselben Produkts.
+ f.db.prepare('INSERT INTO form_shop_bindings(id,shop,variant_id,product_id,product_revision,unit_cents,created_at,tenant_id) VALUES(?,?,?,?,?,?,?,?)').run(bindingId(9002),SHOP,'57000000009002',cfg(1),2,5999,'2026-10-27T00:00:00.000Z','gravuru');
+ const all=f.intake.bindings();
+ let total=0;
+ for(const shopDomain of [SHOP,other,'unbekannt.myshopify.com'])for(const productId of [cfg(0),cfg(1),cfg(4),cfg(99)])for(const productRevision of [1,2,3]){
+  const expected=all.filter(b=>b.shopDomain===shopDomain&&b.productId===productId&&b.productRevision===productRevision);
+  f.start();const made=f.intake.bindingsFor({shopDomain,productId,productRevision});f.stop();
+  assert.deepEqual(made,expected);assert.equal(f.reads.length,1,'eine Abfrage');total+=made.length;
+ }
+ assert.ok(total>300,'die Stichprobe trifft Zuordnungen: '+total);
+ assert.ok(f.intake.bindingsFor({shopDomain:SHOP,productId:cfg(1),productRevision:1}).every(b=>b.id!==bindingId(9000)),'fremder Mandant bleibt außen vor');
+ assert.equal(f.intake.bindingsFor({shopDomain:SHOP,productId:cfg(1),productRevision:2}).length,1);
+ // Unklare Angaben werden nicht geraten (SQLite würde die Textzahl '1' der Revision 1 gleichsetzen).
+ for(const scope of [undefined,{},{shopDomain:SHOP,productId:cfg(1),productRevision:'1'},{shopDomain:SHOP,productId:7,productRevision:1},{shopDomain:null,productId:cfg(1),productRevision:1},{shopDomain:SHOP,productId:cfg(1),productRevision:1.5}])
+  assert.throws(()=>f.intake.bindingsFor(scope),/feste Revision/);
+});

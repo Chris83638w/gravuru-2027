@@ -312,9 +312,13 @@ for(const {cache,images} of [{cache:false,images:true},{cache:true,images:true},
  assert.equal(opened.status,200);assert.equal(opened.data.draft.id,draft.id);assert.equal(opened.data.quantity,2);
  const photo=await request('/api/shop-entry/cart-configurations/'+p.configuration.id+'/1/photos/kundenfoto',undefined,undefined,headers);assert.deepEqual(photo.body,Buffer.from(png,'base64'));
  // Edit the same draft; only its own prior cart line is replaced.
+ // #265: Ein erneutes Sichern liest das Produktdokument nicht noch einmal (gehaltene Revision, revision-records.mjs).
+ const readsBeforeSave=documentReads;
  const abandoned=await request('/api/shop-entry/acrylic-drafts/'+draft.id,'POST',{input:{...input,quantity:3},expectedRevision:1},headers);assert.equal(abandoned.status,200);
+ if(cache)assert.equal(documentReads,readsBeforeSave,'das erneute Sichern liest kein Produktdokument');
  const abandonedTransfer=await request('/api/shop-entry/theme-cart','POST',{draftId:draft.id,expectedRevision:2,quantity:3,configId:p.configuration.id,cartLineId:'theme',cartRevision:1},headers);assert.equal(abandonedTransfer.status,200);
  const edited=await request('/api/shop-entry/acrylic-drafts/'+draft.id,'POST',{input:{...input,quantity:3},expectedRevision:2},headers);assert.equal(edited.status,200,JSON.stringify(edited.data));
+ if(cache)assert.equal(documentReads,readsBeforeSave,'auch das zweite erneute Sichern und die Übergabe dazwischen lesen kein Produktdokument');
  const edit=await request('/api/shop-entry/theme-cart','POST',{draftId:draft.id,expectedRevision:3,quantity:3,configId:p.configuration.id,cartLineId:'theme',cartRevision:1,presentation:'prio-r15'},headers);assert.equal(edit.status,200,JSON.stringify(edit.data));
  const editToken=new URLSearchParams(new URL(edit.data.handoffUrl).hash.slice(1)).get('handoff'),editData=await proxyRequest('/cart/data','GET',editToken,hosted);assert.equal(editData.status,200);
  assert.equal(editData.data.previousRevision,1);assert.equal(editData.data.configuration.rev,3);

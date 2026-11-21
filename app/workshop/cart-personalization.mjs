@@ -144,7 +144,17 @@ export function tierDiscount(listCents, price) {
 export const tierUnitCents = (listCents, manifest) => listCents - tierDiscount(listCents, manifest?.selection?.price);
 
 
-export function personalizationAttributes(value) {
+// Entwurfsnachweis an der Zeile (Chris 21.11.2026, 15:22 Uhr: für Kunden nicht mehr sichtbar). Der Wert bleibt derselbe
+// undurchsichtige Verweis; nur der Schlüssel wechselt. Shopify blendet Schlüssel mit führendem Unterstrich an der Kasse aus.
+// Der sichtbare Schlüssel bleibt gültig: für ältere Warenkörbe und Bestellungen und für jeden Weg, der den privaten noch nicht
+// schreibt. Preisfunktion, Kassenprüfung und Bestelleingang lesen beide (ops/shopify/entwurf-privat-release/).
+export const DESIGN_REFERENCE_KEY = 'Bearbeitbarer Entwurf';
+export const PRIVATE_DESIGN_REFERENCE_KEY = '_gravuru_entwurf';
+
+// `privateDesignReference: true` nur, wenn die aktive Preisfunktion und Kassenprüfung den privaten Schlüssel lesen und der
+// Bestelleingang des Speichers ihn annimmt – sonst bliebe die neue Position ohne Preis bzw. würde beim Eingang abgelehnt.
+export function personalizationAttributes(value, {privateDesignReference = false} = {}) {
+  if (privateDesignReference !== false && privateDesignReference !== true) fail();
   if (value === undefined) return [];
   const logos=has(value,'logos'),options=has(value,'options');
   if (!value || typeof value !== 'object' || Array.isArray(value) ||
@@ -157,6 +167,24 @@ export function personalizationAttributes(value) {
   return [{key:'_gravuru_motifs',value:String(value.motifs)}, {key:'_gravuru_uploads',value:String(value.uploads)},
     ...(logos?[{key:'_gravuru_logos',value:String(value.logos)}]:[]),
     ...(options?[{key:'_gravuru_options',value:value.options}]:[]),
-    {key:'_gravuru_revision',value:value.revision}, {key:'Bearbeitbarer Entwurf',value:value.designReference}];
+    {key:'_gravuru_revision',value:value.revision},
+    {key:privateDesignReference ? PRIVATE_DESIGN_REFERENCE_KEY : DESIGN_REFERENCE_KEY,value:value.designReference}];
+}
+
+// Rücklesen an einer Bestell- oder Warenkorbzeile: `valuesOf(key)` liefert alle Werte dieses Schlüssels an der Zeile.
+// Jede erwartete Angabe steht genau einmal mit genau ihrem Wert da. Der Entwurfsnachweis darf unter dem privaten oder dem
+// sichtbaren Schlüssel stehen (oder unter beiden); jeder vorhandene Wert muss der erwartete sein, je Schlüssel höchstens einer.
+export function personalizationAttributesMatch(value, valuesOf) {
+  for (const expected of personalizationAttributes(value)) {
+    if (expected.key !== DESIGN_REFERENCE_KEY) {
+      const actual = valuesOf(expected.key);
+      if (actual.length !== 1 || actual[0] !== expected.value) return false;
+      continue;
+    }
+    const visible = valuesOf(DESIGN_REFERENCE_KEY), hidden = valuesOf(PRIVATE_DESIGN_REFERENCE_KEY);
+    if (visible.length > 1 || hidden.length > 1 || visible.length + hidden.length < 1 ||
+        [...visible, ...hidden].some(actual => actual !== expected.value)) return false;
+  }
+  return true;
 }
 

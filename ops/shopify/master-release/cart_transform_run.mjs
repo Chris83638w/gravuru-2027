@@ -24,7 +24,7 @@ function runPricing(input,{isolate}){
  const reject=(index,error)=>rejected.push({index,lineId:input.cart.lines[index].id,reason:String(error?.message||error)});
  input.cart.lines.forEach((line,index)=>{
   try{
-   const own=priceOne(line,pricingForLine,input);
+   const own=priceOne(withDesignReference(line),pricingForLine,input);
    if(own.legacy)legacy.push(own.legacy);else if(own.line)prepared.push({index,line:own.line});
   }catch(error){if(!isolate)throw error;reject(index,error);}
  });
@@ -39,6 +39,18 @@ function runPricing(input,{isolate}){
  }
  rejected.sort((a,b)=>a.index-b.index);
  return {result:withCheckoutDesignImages(input,{operations:[...priced,...legacy]}),rejected};
+}
+// Entwurfsnachweis (Chris 21.11.2026: „Bearbeitbarer Entwurf“ soll für Kunden nicht mehr sichtbar sein). Neue Positionen
+// tragen ihn unter dem privaten Schlüssel `_gravuru_entwurf` (Eingabe `designPrivate`), ältere unter dem sichtbaren
+// (Eingabe `designFile`). Beide Lesarten gelten gleich und werden danach exakt wie bisher geprüft. Tragen beide Schlüssel
+// einen Wert und sind die Werte verschieden, ist die Angabe ungültig: Die Position bekommt keinen Preis und wird am Checkout
+// gesperrt (Einzelsperre), wie jede andere abgewiesene Position.
+function withDesignReference(line){
+ const hidden=line.designPrivate?.value;
+ if(hidden==null)return line;
+ const visible=line.designFile?.value;
+ if(visible!=null&&visible!==hidden)throw Error('Conflicting design reference');
+ return {...line,designFile:{value:hidden}};
 }
 function priceOne(line,pricingForLine,input){
  {

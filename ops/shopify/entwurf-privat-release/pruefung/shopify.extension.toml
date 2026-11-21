@@ -1,0 +1,16 @@
+api_version = "2026-07"
+
+[[extensions]]
+name = "gravuru-checkout-guard"
+handle = "gravuru-checkout-guard"
+type = "function"
+description = "Sperrt am Checkout nur Positionen ohne gültigen Konfigurator-Preis"
+
+  [[extensions.targeting]]
+  target = "cart.validations.generate.run"
+  input_query = "src/cart_validation_run.graphql"
+  export = "cart-validations-generate-run"
+
+  [extensions.build]
+  command = ""
+  path = "dist/function.wasm"

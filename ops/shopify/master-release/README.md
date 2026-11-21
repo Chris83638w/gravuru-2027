@@ -19,3 +19,7 @@ V3 ergänzt bestätigte Checkbox-Zusätze über die app-eigene Tabelle `optionPr
 Der neue Beleg `dog-options-compiled-proof.json` prüft V3 als kompilierte WASM-Datei: 18 gemischte Positionen mit V1/V2/V3 sowie drei abgewiesene Manipulationsfälle. Kein Live-Warenkorb-/Veröffentlichungsnachweis. Wegen alter glibc-Bibliotheken ist auf dem Plesk-Host kein Compilerlauf möglich; das geprüfte Artefakt wurde mit offizieller CLI 4.9.0 in einem getrennten lokalen Arbeitsordner gebaut.
 
 `dog-options-candidate-proof.json` bestätigt den inaktiven Shopify-Kandidaten `gravuru-2027-slate-options-20261105-v1` (1195873796097). Der aktive Stand bleibt 1191284113409. Theme-/Konfigurationsdateien stimmen mit dem kopierten aktiven Projekt überein; vollständiger Versionsmanifestvergleich und echter Warenkorb bleiben offen. Noch kein V3-Release.
+
+## Entwurfsnachweis unter privatem Schlüssel (21.11.2026, vorbereitet)
+
+Chris, 21.11.2026: „Bearbeitbarer Entwurf“ soll für Kunden nicht mehr sichtbar sein. `cart_transform_run.mjs` liest den Nachweis deshalb auch aus `designPrivate` (Schlüssel `_gravuru_entwurf`) und behandelt ihn exakt wie den sichtbaren; `cart_validation_run.graphql` fragt den Schlüssel mit ab. Jede künftige Fassung aus diesem Ordner muss beides behalten und die Zeile `designPrivate: attribute(key: "_gravuru_entwurf") { value }` auch in die Abfrage der Preisfunktion übernehmen – sonst bekämen neue Positionen keinen Preis. Freigabe-Quelle der Folgefassung und Tests: `../entwurf-privat-release/`.

@@ -19,8 +19,8 @@ Werkstatt → Bestellungen → Testbestellung „Claudetest“ (z. B. #1042, Fam
 
 1. Größe 1:1; die Seite ist die Platte (an einer Kante nachmessen). Funkklingel: die Seite ist die Acrylauflage.
 2. Nicht gespiegelt, auch bei Gravur von hinten – in Corel umdrehen. Passt das für alle Gravurprodukte?
-3. Eine Ebene „03 Gravur“ mit der ganzen Gravur in Schwarz – kommt sie so an?
-4. Außerhalb der Ebene: blaue Linie = Außenkontur zum Anlegen in der Schablone. Bei Acrylglas rote Linien = Löcher und Ausschnitte, die nach der Gravur geschnitten werden. Alle Linien 0,001 mm – als Haarlinie erkannt? Blau wird weder graviert noch geschnitten, Rot geschnitten?
+3. Eine Ebene „03 Gravur“ mit der ganzen Gravur in Schwarz – kommt sie so an? Die Gravur ist auf die Plattenkontur beschnitten (wie in der Musterdatei); in Corel kommt das ggf. als PowerClip an – stört das?
+4. Außerhalb der Ebene, direkt auf der Seite (keine Gruppe, kein Rahmen): blaue Linie = Außenkontur zum Anlegen in der Schablone. Bei Acrylglas rote Linien = Löcher und Ausschnitte, die nach der Gravur geschnitten werden. Alle Linien 0,001 mm – als Haarlinie erkannt? Blau wird weder graviert noch geschnitten, Rot geschnitten?
 5. Edelstahl, Schiefer und andere Materialien: Löcher stehen als **blaue** Linie in der Datei (Annahme, von Chris nicht gesagt). Richtig so, oder sollen sie dort fehlen?
 6. Mit Foto: Graustufenbild in der Ebene „03 Gravur“, Konturen als Linien darüber – brauchbar?
 7. Probegravur auf einem Reststück: Gravurbild sauber, blaue Linie nicht mitgraviert, rote Linie als Schnitt?

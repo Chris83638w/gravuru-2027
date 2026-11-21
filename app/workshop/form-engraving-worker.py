@@ -86,28 +86,65 @@ def order_plate(order,w,h):
  return None if (plate['x'],plate['y'],plate['width'],plate['height'])==(0,0,w,h) else (plate['x'],plate['y'],plate['width'],plate['height'])
 
 MM=72/25.4
-def order_page(g,w,h,holes,plate,vector=None,image=None):
- x,y,pw,ph=plate or (0,0,w,h)
- doc=fitz.open();page=doc.new_page(width=pw*MM,height=ph*MM);layer=doc.add_ocg(ORDER_LAYER)
- # Ausschnitt der Formatseite, der 1:1 auf die Seite der Platte kommt.
- clip=fitz.Rect(x*MM,y*MM,(x+pw)*MM,(y+ph)*MM) if plate else None
- def place(source,oc=0):
-  p.c.require(len(source)==1 and abs(w*MM-source[0].rect.width)<.01 and abs(h*MM-source[0].rect.height)<.01,'Gravurseite und Plattenmaß sind nicht deckungsgleich.')
-  page.show_pdf_page(page.rect,source,0,clip=clip,oc=oc)
- if vector is not None:place(fitz.open(stream=vector,filetype='pdf'),layer)
+num=lambda v:format(v,'.6f').rstrip('0').rstrip('.') or '0'
+# Konturlinien direkt als Pfadoperatoren, wie in der Musterdatei: Millimeter (y nach unten) unter einer `cm`-Matrix, reine Farbe,
+# 0,001 mm, `S`. `paths` führt je Ring der Kontur einen PDF-Pfad (m/l/c/h in mm) – umgesetzt vom geprüften Umsetzer der
+# Druckkontur (contour-pdf-path.mjs: Kurven bleiben Kurven, Bögen werden Kurvenstücke); der Worker deutet die `d`-Pfade nicht selbst.
+ORDER_OPERANDS={'m':2,'l':2,'c':6,'h':0}
+def order_path(text):
+ bad='Ungültige Konturpfade der Bestelldatei.';out=[];operands=[]
+ p.c.require(isinstance(text,str) and len(text)<=2_000_000,bad)
+ for token in text.split():
+  if token in ORDER_OPERANDS:
+   p.c.require(len(operands)==ORDER_OPERANDS[token],bad);out.append(' '.join([*operands,token]));operands=[]
+  else:
+   try:value=float(token)
+   except ValueError:value=math.nan
+   # PDF kennt keine Exponentenschreibweise: jede Zahl als Dezimalzahl mit höchstens sechs Stellen (Nanometer).
+   p.c.require(math.isfinite(value) and abs(value)<=100000 and re.fullmatch(r'-?\d+(?:\.\d+)?(?:e-?\d+)?',token) is not None,bad);operands.append(num(value))
+ p.c.require(len(out)>=2 and out[0].endswith(' m') and out[-1]=='h' and not operands,bad)
+ return '\n'.join(out)
+def order_lines(g,holes,paths,plate,ph):
+ p.c.require(isinstance(paths,list) and len(paths)==len(g['contours']),'Ungültige Konturpfade der Bestelldatei.')
+ out=['q',f'{MM:.12f} 0 0 {-MM:.12f} 0 {num(ph*MM)} cm']
+ if plate:out.append(f'1 0 0 1 {num(-plate[0])} {num(-plate[1])} cm')
+ for key,label,stroke,rings in order_rings(g,holes):
+  if not rings:continue
+  first=0 if key=='aussenkontur' else 1
+  out+=[' '.join(num(int(stroke[i:i+2],16)/255) for i in (1,3,5))+f' RG {ORDER_LINE_MM} w 1 J 1 j',*[order_path(v) for v in paths[first:first+len(rings)]],'S']
+ return '\n'.join([*out,'Q',''])
+
+# Aufbau wie die Musterdatei: alles direkt im Inhaltsstrom der Seite – der Gravurinhalt zwischen `/OC /gravur BDC` und `EMC`
+# (Ebene „03 Gravur“ über die Eigenschaften der Seitenressourcen), danach die Konturlinien. Keine eingebetteten Formobjekte
+# (Corel bringt sie gern als Gruppe mit Begrenzungsrahmen): Bei Vektor ist die Seite die von cairo erzeugte Seite selbst, ihr
+# Inhalt wird nur umschlossen; mit Foto steht das Graustufenbild als Bildobjekt im selben Block. Ist die Platte kleiner als das
+# Format, wird die Seite auf das Plattenmaß gesetzt und der Inhalt per `cm` verschoben (in der Musterdatei: `1 0 0 1 0 -10 cm`).
+def order_page(g,w,h,holes,plate,paths,vector=None,image=None):
+ x,y,pw,ph=plate or (0,0,w,h);shift=''
+ if vector is not None:
+  doc=fitz.open(stream=vector,filetype='pdf')
+  p.c.require(len(doc)==1 and abs(w*MM-doc[0].rect.width)<.01 and abs(h*MM-doc[0].rect.height)<.01,'Gravurseite und Plattenmaß sind nicht deckungsgleich.')
+  page=doc[0];body=b'q\n'+page.read_contents()+b'\nQ\n'
+  # PDF-Koordinaten (y nach oben): die Platte an den Ursprung der Seite.
+  if plate:shift=f'1 0 0 1 {num(-x*MM)} {num(-(h-ph-y)*MM)} cm\n';page.set_mediabox(fitz.Rect(0,0,pw*MM,ph*MM))
  else:
-  rect=page.rect
+  doc=fitz.open();page=doc.new_page(width=pw*MM,height=ph*MM);rect=page.rect
   if plate:
    # Auf ganze Pixel um die Platte beschneiden und an der wahren Lage dieser Pixel einsetzen – kein Umrechnen der Pixel.
    with Image.open(io.BytesIO(image)) as full:
     W,H=full.size;x0,y0,x1,y1=math.floor(x*W/w+1e-9),math.floor(y*H/h+1e-9),math.ceil((x+pw)*W/w-1e-9),math.ceil((y+ph)*H/h-1e-9)
     out=io.BytesIO();full.crop((x0,y0,x1,y1)).save(out,format='PNG');image=out.getvalue()
    rect=fitz.Rect((x0*w/W-x)*MM,(y0*h/H-y)*MM,(x1*w/W-x)*MM,(y1*h/H-y)*MM)
-  xref=page.insert_image(rect,stream=image,oc=layer);doc.xref_set_key(xref,'ColorSpace','/DeviceGray')
- lines=ET.Element(p.S+'svg',{'width':str(w)+'mm','height':str(h)+'mm','viewBox':f'0 0 {w} {h}'})
- for group in order_contour_groups(g,holes):lines.append(group)
- place(fitz.open(stream=cairo_pdf(lines,None),filetype='pdf'));page.set_trimbox(page.rect)
- return doc.tobytes(deflate=True)
+  xref=page.insert_image(rect,stream=image);doc.xref_set_key(xref,'ColorSpace','/DeviceGray');body=page.read_contents()+b'\n'
+ layer=doc.add_ocg(ORDER_LAYER)
+ content=b'q\n'+shift.encode()+b'/OC /gravur BDC\n'+body+b'EMC\nQ\n'+order_lines(g,holes,paths,plate,ph).encode()
+ streams=page.get_contents();p.c.require(len(streams)>=1,'Die Gravurseite hat keinen Inhalt.')
+ doc.update_stream(streams[0],content);doc.xref_set_key(page.xref,'Contents',f'{streams[0]} 0 R')
+ kind,value=doc.xref_get_key(page.xref,'Resources');properties=f'<</gravur {layer} 0 R>>'
+ if kind=='xref':doc.xref_set_key(int(value.split()[0]),'Properties',properties)
+ else:doc.xref_set_key(page.xref,'Resources/Properties',properties)
+ doc.xref_set_key(page.xref,'TrimBox',f'[0 0 {num(pw*MM)} {num(ph*MM)}]');doc.set_metadata({})
+ return doc.tobytes(deflate=True,garbage=1)
 
 def order_svg(plain,g,w,h,holes,plate):
  root=copy.deepcopy(plain);box=[float(v) for v in re.split(r'[ ,]+',(root.get('viewBox') or '').strip()) if v]
@@ -129,7 +166,7 @@ def run(data):
  limit=600 if data.get('materialKind')=='slate' else 500
  p.c.require(g['schema']=='gravuru-contour/v1' and 0<w<=limit and 0<h<=limit and s['dpi'] in [300,600] and s['mode'] in ['raster','vector','auto'],'Ungültiges Gravurformat.')
  root=p.prepare_svg(data);root.set('width',str(w)+'mm');root.set('height',str(h)+'mm')
- order=data.get('orderFiles');p.c.require(order is None or isinstance(order,dict) and 'holes' in order and set(order)<={'holes','plate'},'Ungültige Angabe zur Bestelldatei.')
+ order=data.get('orderFiles');p.c.require(order is None or isinstance(order,dict) and 'holes' in order and set(order)<={'holes','plate','paths'},'Ungültige Angabe zur Bestelldatei.')
  plate=order_plate(order,w,h) if order else None
  plain=copy.deepcopy(root) if order and s['mirror'] else root
  if s['mirror']:
@@ -164,7 +201,7 @@ def run(data):
  slate=data.get('materialKind')=='slate'
  ET.SubElement(group,p.S+'path',{'d':' '.join(r['d']+' Z' for r in g['contours']),'fill':'none','stroke':'#0000ff' if slate else 'black','stroke-width':'.05'})
  result={'pdf':base64.b64encode(pdf).decode(),'contour':base64.b64encode(vector_pdf(contour,slate)).decode(),'svg':ET.tostring(root,encoding='unicode'),'pixelWidth':width,'pixelHeight':height,'mode':mode}
- if order:result['orderPdf']=base64.b64encode(order_page(g,w,h,order['holes'],plate,**order_content)).decode();result['orderSvg']=order_svg(plain,g,w,h,order['holes'],plate)
+ if order:result['orderPdf']=base64.b64encode(order_page(g,w,h,order['holes'],plate,order.get('paths'),**order_content)).decode();result['orderSvg']=order_svg(plain,g,w,h,order['holes'],plate)
  return result
 try:print(json.dumps(run(json.load(sys.stdin))))
 except Exception as e:

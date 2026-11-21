@@ -40,7 +40,8 @@ import {prepareCustomerPhoto} from './customer-photo.mjs';
 import {prepareFormReview} from './form-review-snapshot.mjs';
 
 const python=process.env.GRAVURU_PYTHON||'python3';
-// Liest eine PDF maßlich: Seitenmaß in mm, Bilder (Farbraum, Prüfsumme der Pixel und ihres Spiegelbilds, Bindung an eine Ebene), Ebenen,
+// Liest eine PDF maßlich: Seitenmaß in mm, Bilder (Farbraum, Prüfsumme der Pixel und ihres Spiegelbilds, ob sie im Seiteninhalt
+// innerhalb eines Ebenenblocks `/OC … BDC … EMC` gezeichnet werden), Formobjekte der Seite, Ebenenblöcke des Seiteninhalts, Ebenen,
 // ob das Endformat (TrimBox) ausdrücklich gesetzt und gleich der Seite ist, jede Zeichnung in Zeichenreihenfolge mit Linienbreite,
 // Farbe, Ebene, Rahmen und der Menge ihrer Stützpunkte in mm, dazu jede
 // Angabe einer Linienfarbe im Seiteninhalt (`strokes`) – daran ist zu sehen, ob eine Linie in einer druckenden Farbe steht.
@@ -54,15 +55,29 @@ def pts(d):
    elif isinstance(v,f.Rect):out.update([(r(v.x0),r(v.y0)),(r(v.x1),r(v.y0)),(r(v.x1),r(v.y1)),(r(v.x0),r(v.y1))])
    elif isinstance(v,f.Quad):out.update([(r(q.x),r(q.y)) for q in v])
  return sorted(out)
+own=b'\\n'.join(p.xref_stream(x) for x in page.get_contents());blocks=[(m.end(),own.find(b'EMC',m.end())) for m in re.finditer(rb'/OC\\s*/\\w+\\s+BDC',own)]
+def in_block(name):
+ hits=[m.start() for m in re.finditer(rb'/'+re.escape(name.encode())+rb'\\s+Do\\b',own)]
+ return bool(hits) and all(any(a<=h<b for a,b in blocks) for h in hits)
+def outline(d):
+ out=[]
+ for item in d['items']:
+  if item[0]=='l':out.append([item[1],item[2]])
+  elif item[0]=='c':
+   a,b,c,e=item[1:5];n=max(8,min(400,int((abs(b-a)+abs(c-b)+abs(e-c))/k/.5)+1))
+   out.append([f.Point((1-t)**3*a.x+3*(1-t)**2*t*b.x+3*(1-t)*t*t*c.x+t**3*e.x,(1-t)**3*a.y+3*(1-t)**2*t*b.y+3*(1-t)*t*t*c.y+t**3*e.y) for t in [j/n for j in range(n+1)]])
+  elif item[0]=='re':v=item[1];out.append([f.Point(v.x0,v.y0),f.Point(v.x1,v.y0),f.Point(v.x1,v.y1),f.Point(v.x0,v.y1),f.Point(v.x0,v.y0)])
+  elif item[0]=='qu':q=item[1];out.append([q.ul,q.ur,q.lr,q.ll,q.ul])
+ return [[[round(pt.x/k,3),round(pt.y/k,3)] for pt in line] for line in out]
 images=[]
 for i in page.get_images(full=True):
  pix=f.Pixmap(p,i[0]);a=np.frombuffer(pix.samples,dtype=np.uint8).reshape(pix.height,pix.stride)[:,:pix.width*pix.n].reshape(pix.height,pix.width,pix.n)
- images.append({'colorSpace':i[5],'width':pix.width,'height':pix.height,'sha256':hashlib.sha256(a.tobytes()).hexdigest(),'mirroredSha256':hashlib.sha256(a[:,::-1].tobytes()).hexdigest(),'layered':'/OC' in p.xref_object(i[0])})
+ images.append({'colorSpace':i[5],'width':pix.width,'height':pix.height,'sha256':hashlib.sha256(a.tobytes()).hexdigest(),'mirroredSha256':hashlib.sha256(a[:,::-1].tobytes()).hexdigest(),'layered':in_block(i[7])})
 objects='\\n'.join(p.xref_object(i) for i in range(1,p.xref_length()))
 content=b'\\n'.join(p.xref_stream(i) for i in range(1,p.xref_length()) if p.xref_is_stream(i) and '/Image' not in p.xref_object(i) and ('/Form' in p.xref_object(i) or i in page.get_contents()))
 strokes=sorted(set(' '.join(m.decode().split()) for m in re.findall(rb'(?:(?:\\d*\\.?\\d+)\\s+){1,4}(?:RG|K|G)\\b|/\\w+\\s+CS\\s+(?:\\d*\\.?\\d+\\s+)+SCN',content)))
-print(json.dumps({'pages':len(p),'repaired':p.is_repaired,'widthMm':round(page.rect.width/k,3),'heightMm':round(page.rect.height/k,3),'trimIsMedia':'/TrimBox' in p.xref_object(page.xref) and [round(v,2) for v in page.trimbox]==[round(v,2) for v in page.mediabox],'images':images,'fonts':len(page.get_fonts()),'layers':[o['name'] for o in (p.get_ocgs() or {}).values()],'cutSpot':'/CutContour' in objects,'whiteSpot':'/RDG_WHITE' in objects,'strokes':strokes,
- 'drawings':[{'type':d['type'],'width':d.get('width'),'color':d.get('color'),'fill':d.get('fill'),'layer':d.get('layer') or '','rect':[r(v) for v in d['rect']],'points':pts(d)} for d in page.get_drawings()]}))`;
+print(json.dumps({'pages':len(p),'repaired':p.is_repaired,'widthMm':round(page.rect.width/k,3),'heightMm':round(page.rect.height/k,3),'trimIsMedia':'/TrimBox' in p.xref_object(page.xref) and [round(v,2) for v in page.trimbox]==[round(v,2) for v in page.mediabox],'images':images,'fonts':len(page.get_fonts()),'layers':[o['name'] for o in (p.get_ocgs() or {}).values()],'forms':len(page.get_xobjects()),'marked':[m.decode() for m in re.findall(rb'/OC\\s*/(\\w+)\\s+BDC',own)],'closed':len(re.findall(rb'\\bEMC\\b',own)),'cutSpot':'/CutContour' in objects,'whiteSpot':'/RDG_WHITE' in objects,'strokes':strokes,
+ 'drawings':[{'type':d['type'],'width':d.get('width'),'color':d.get('color'),'fill':d.get('fill'),'layer':d.get('layer') or '','rect':[r(v) for v in d['rect']],'points':pts(d),**({'outline':outline(d)} if d['type']=='s' else {})} for d in page.get_drawings()]}))`;
 const inspect=bytes=>{assert.equal(bytes.subarray(0,5).toString(),'%PDF-');return JSON.parse(execFileSync(python,['-c',INSPECT],{input:bytes,env:importEnvironment(),maxBuffer:64*1024*1024}).toString());};
 const unpack=result=>readReviewPackage(result.archive,digest(result.archive),[...NATIVE_REVIEW_SCHEMAS,'gravuru-form-review/v1']).files;
 const points=drawings=>[...new Set(drawings.flatMap(d=>d.points.map(p=>p.join(' '))))].sort();
@@ -79,9 +94,11 @@ const REFERENCE=fs.readFileSync(new URL('./test-fixtures/musterdatei-gravur-chri
 function checkEngravingPdf(info,{widthMm,heightMm,holes,raster=false,outer=[0,0,widthMm,heightMm]},label=''){
  assert.equal(info.pages,1,label);assert.equal(info.repaired,false,label);assert.deepEqual([info.widthMm,info.heightMm],[widthMm,heightMm],label+' Seite = Plattenmaß');assert.equal(info.trimIsMedia,true,label+' Endformat ausdrücklich = Seite');assert.equal(info.fonts,0,label+' keine Schriften');
  assert.deepEqual(info.layers,[LAYER],label+' genau eine Ebene');
+ // Wie die Musterdatei: alles direkt im Inhaltsstrom der Seite – ein Block `/OC /gravur BDC … EMC`, keine eingebetteten Formobjekte.
+ assert.equal(info.forms,0,label+' keine Formobjekte auf der Seite');assert.deepEqual(info.marked,['gravur'],label+' ein Ebenenblock im Seiteninhalt');assert.equal(info.closed,1,label+' BDC und EMC paarweise');
  const content=info.drawings.filter(d=>d.layer===LAYER),lines=info.drawings.filter(d=>d.layer!==LAYER);
  assert.deepEqual(info.drawings.map(d=>d.layer),[...content.map(()=>LAYER),...lines.map(()=>'')],label+' erst die Ebene, danach die Konturen außerhalb jeder Ebene');
- if(raster){assert.equal(content.length,0,label);assert.deepEqual(info.images.map(i=>[i.colorSpace,i.layered]),[['DeviceGray',true]],label+' Graustufenbild in der Ebene');}
+ if(raster){assert.equal(content.length,0,label);assert.deepEqual(info.images.map(i=>[i.colorSpace,i.layered]),[['DeviceGray',true]],label+' Graustufenbild als Bildobjekt im Ebenenblock');}
  else{
   assert.equal(info.images.length,0,label+' keine Bilder');assert.ok(content.length>0,label);
   for(const d of content){if(d.fill)assert.ok(same(d.fill,BLACK)||same(d.fill,WHITE),label+' Fläche reines Schwarz: '+d.fill);if(d.color)assert.ok(same(d.color,BLACK)||same(d.color,WHITE),label+' Linie reines Schwarz: '+d.color);}
@@ -186,6 +203,16 @@ function sameShape(a,b,message){
  for(const [from,to,side] of [[A,B,'→'],[B,A,'←']])for(const p of from)assert.ok(to.some(q=>Math.abs(p[0]-q[0])<=.02&&Math.abs(p[1]-q[1])<=.02),message+' '+side+' '+p.join(' '));
 }
 const near=(rect,expected)=>rect.every((v,i)=>Math.abs(v-expected[i])<=.02);
+// Deckungsgleiche Linien, unabhängig davon, wie ein Zeichner Bögen in Kurvenstücke teilt: Jeder Punkt des einen Linienzugs liegt
+// höchstens 0,02 mm neben dem anderen – in beiden Richtungen. `map` bildet die Punkte von `b` vorher ab (Spiegelung, Verschiebung).
+function sameOutline(a,b,message,map=null){
+ const lines=(list,f)=>list.flatMap(d=>d.outline).map(line=>f?line.map(f):line),A=lines(a),B=lines(b,map);assert.ok(A.length>0&&B.length>0,message+' (leer)');
+ const far=(from,to)=>{const segments=to.flatMap(line=>line.slice(1).map((q,i)=>[line[i],q]));
+  for(const point of from.flat()){let best=Infinity;for(const [[x1,y1],[x2,y2]] of segments){const dx=x2-x1,dy=y2-y1,s=dx*dx+dy*dy,t=s?Math.max(0,Math.min(1,((point[0]-x1)*dx+(point[1]-y1)*dy)/s)):0,d=Math.hypot(point[0]-x1-t*dx,point[1]-y1-t*dy);if(d<best){best=d;if(d<=.02)break;}}if(best>.02)return point.join(' ')+' ('+best.toFixed(3)+' mm)';}
+  return null;};
+ assert.equal(far(A,B),null,message+' →');assert.equal(far(B,A),null,message+' ←');
+}
+const mirrorAt=width=>([x,y])=>[width-x,y];
 // Was beim Öffnen der Datei zu sehen ist: Fläche der roten Bildpunkte (Anzahl, Schwerpunkt in mm) und die Farbe an einzelnen Stellen.
 const LOOK=`import sys,json,numpy as np,pymupdf as f
 p=f.open(stream=sys.stdin.buffer.read(),filetype='pdf');pix=p[0].get_pixmap(dpi=127,colorspace=f.csRGB,alpha=False);k=5
@@ -376,6 +403,14 @@ test('Gravur-Worker: Bestelldateien im Aufbau der Musterdatei – Ebene „03 Gr
   // Die Angabe ändert nur die Bestelldateien.
   assert.equal(r.svg,a.svg);assert.deepEqual(inspect(Buffer.from(r.pdf,'base64')).drawings,plain.drawings);assert.deepEqual(inspect(Buffer.from(r.contour,'base64')).drawings,separate.drawings);
  }
+ // Die Konturlinien stehen wie in der Musterdatei als Pfadoperatoren direkt im Seiteninhalt (contour-pdf-path.mjs setzt die Befehle
+ // des Konturformats um). Bögen, relative Befehle, H/V, Q/T, C/S und ein nicht geschlossener Ring ergeben dieselbe Linie wie die
+ // getrennte Konturdatei, die cairo unabhängig davon aus demselben `d` zeichnet – als Kurven, nicht als Vieleck.
+ const curved={...geometry,holeCount:2,contours:[{role:'outer',d:'M2 0H38A2 2 0 0 1 40 2V28A2 2 0 0 1 38 30H2A2 2 0 0 1 0 28V2A2 2 0 0 1 2 0Z'},{role:'hole',d:'M10 10q2 -2 4 0t4 0v4h-8z'},{role:'hole',d:'M24 18c1 -2 3 -2 4 0s3 2 4 0l0 4h-8'}]};
+ const curvedRun=await run(vector,'auto',{geometry:curved}),curvedLines=checkEngravingPdf(inspect(Buffer.from(curvedRun.orderPdf,'base64')),{widthMm:40,heightMm:30,holes:'cut'},'Kurven').lines;
+ sameOutline(curvedLines,inspect(Buffer.from(curvedRun.contour,'base64')).drawings,'Konturlinien deckungsgleich mit der getrennten Konturdatei');
+ assert.ok(curvedLines.every(d=>d.outline.some(line=>line.length>2)),'Kurven bleiben Kurven');assert.equal(curvedLines.length,2);assert.ok(near(curvedLines[0].rect,[0,0,40,30]));assert.ok(Math.abs(curvedLines[1].rect[0]-10)<=.02&&Math.abs(curvedLines[1].rect[2]-32)<=.02,'beide Innenkonturen in einer Linie: '+curvedLines[1].rect);
+ await assert.rejects(()=>run(vector,'auto',{geometry:{...geometry,contours:[{role:'outer',d:'M0 0K5 5Z'}]}}),/Kontur lässt sich nicht in die Bestelldatei übernehmen/);
  // Die SVG trägt die Farben der Gestaltung unverändert (dort ist Schwarz die Angabe der Gestaltung selbst); Inhalt = Fertigungs-SVG.
  assert.equal(checkEngravingSvg(a.orderSvg,{widthMm:40,heightMm:30,geometry,holes:'cut'}),svgInner(a.svg));
  // Ohne die Angabe entsteht nichts Neues; eine fremde Angabe und eine Kontur ohne eindeutige Außenform werden abgelehnt.
@@ -437,8 +472,8 @@ test('Gravur, natives Produkt: zwei Dateien 1:1 im Aufbau der Musterdatei – ni
   assert.ok(plain.drawings.length>1);assert.equal(separate.drawings.length,1);assert.ok(Math.abs(separate.drawings[0].width-.05*MM)<1e-4);
   // „PDF“: Aufbau der Musterdatei; die Platte hat keine Innenkontur → genau eine blaue Linie auf dem Plattenrand.
   const {content,lines}=checkEngravingPdf(inspect(two.pdf.bytes),{widthMm:150,heightMm:200,holes:'none'},label);assert.equal(lines.length,1);
-  // Deckungsgleich mit der getrennten Konturdatei des ungespiegelten Stands (gespiegelte Bögen nähert cairo mit anderen Stützpunkten an).
-  if(!mirror)made.contour=points(separate.drawings);sameShape(points(lines),made.contour,label+' Außenkontur deckungsgleich mit gravur-kontur-1zu1.pdf');assert.deepEqual(lines[0].rect,separate.drawings[0].rect);
+  // Deckungsgleich mit der getrennten Konturdatei (dort zeichnet cairo den Pfad, hier stehen die Pfadoperatoren direkt im Seiteninhalt).
+  sameOutline(lines,separate.drawings,label+' Außenkontur deckungsgleich mit gravur-kontur-1zu1.pdf',mirror?mirrorAt(150):null);assert.deepEqual(lines[0].rect,separate.drawings[0].rect);
   // Inhalt seitenrichtig: ungespiegelt derselbe wie die Gravur-PDF, gespiegelt deren Spiegelbild.
   assert.equal(content.length,plain.drawings.length,label);sameShape(points(content),mirror?mirrored(points(plain.drawings),150):points(plain.drawings),label+' Inhalt');
   if(mirror)assert.throws(()=>sameShape(points(content),points(plain.drawings),''),undefined,'das Prüfmotiv ist nicht symmetrisch');
@@ -457,7 +492,7 @@ test('Gravur, natives Produkt: zwei Dateien 1:1 im Aufbau der Musterdatei – ni
   assert.deepEqual(r.metadata.settings,{mode:'raster',dpi:300,mirror});assert.equal(r.metadata.modeRule.applied,'raster');assert.equal(r.metadata.pixelWidth,Math.ceil(150*300/25.4));assert.equal(r.metadata.pixelHeight,Math.ceil(200*300/25.4));
   const rp=inspect(photo.files.get('technische-gravurpruefung.pdf')),rc=inspect(photo.pdf.bytes);assert.deepEqual(photo.files.get('technische-gravurpruefung.pdf'),r.pdf);
   assert.deepEqual(rp.images.map(i=>[i.colorSpace,i.width,i.height,i.layered]),[['DeviceGray',1772,2363,false]]);assert.equal(rp.drawings.length,0);
-  const {lines}=checkEngravingPdf(rc,{widthMm:150,heightMm:200,holes:'none',raster:true},label);assert.equal(lines.length,1);sameShape(points(lines),made.contour,label);assert.deepEqual(lines[0].rect,inspect(photo.files.get('gravur-kontur-1zu1.pdf')).drawings[0].rect);
+  const {lines}=checkEngravingPdf(rc,{widthMm:150,heightMm:200,holes:'none',raster:true},label);assert.equal(lines.length,1);sameOutline(lines,inspect(photo.files.get('gravur-kontur-1zu1.pdf')).drawings,label,mirror?mirrorAt(150):null);
   assert.deepEqual([rc.images[0].width,rc.images[0].height],[1772,2363]);assert.notEqual(rp.images[0].sha256,rp.images[0].mirroredSha256);assert.equal(rc.images[0].sha256,mirror?rp.images[0].mirroredSha256:rp.images[0].sha256,label+' dieselben Pixel, seitenrichtig');
   checkEngravingSvg(photo.svg.bytes,{widthMm:150,heightMm:200,geometry,holes:'none'},label);
  }
@@ -480,7 +515,7 @@ test('Gravur, echtes Türschild 120 × 80 mm mit zwei Bohrlöchern: Edelstahl �
    const {content,lines}=checkEngravingPdf(inspect(two.pdf.bytes),{widthMm:120,heightMm:80,holes},label),plain=inspect(result.pdf),separate=inspect(two.files.get('gravur-kontur-1zu1.pdf'));
    // Außenkontur und beide Bohrlöcher, deckungsgleich mit der getrennten Konturdatei (Bohrbild symmetrisch).
    assert.deepEqual(lines.map(d=>d.color),[BLUE,holes==='cut'?RED:BLUE],label);assert.ok(lines[1].rect[2]-lines[1].rect[0]>60,label+' beide Bohrlöcher in einer Linie');
-   sameShape(points(lines),mirror?mirrored(points(separate.drawings),120):points(separate.drawings),label);
+   sameOutline(lines,separate.drawings,label+' Konturen',mirror?mirrorAt(120):null);
    assert.ok(content.length>0);sameShape(points(content),mirror?mirrored(points(plain.drawings),120):points(plain.drawings),label+' Inhalt');
    checkEngravingSvg(two.svg.bytes,{widthMm:120,heightMm:80,geometry,holes},label);
   }
@@ -540,7 +575,7 @@ test('Funkklingel zweischichtig: PDF und SVG zeigen die Acrylauflage (sie trägt
    // Ausschnitte – zusammen deckungsgleich mit der Schnittdatei der Acrylauflage, um die Lage der Auflage verschoben.
    const order=inspect(two.pdf.bytes),{content,lines}=checkEngravingPdf(order,{widthMm:a.width,heightMm:a.height,holes:'cut'},label);
    assert.deepEqual(lines.map(d=>d.color),[BLUE,RED],label);
-   const cut=points(acrylic.drawings),carrier=points(steel.drawings);sameShape(points(lines),shifted(cut),label+' Schnittdatei der Acrylauflage');
+   const cut=points(acrylic.drawings),carrier=points(steel.drawings);sameOutline(lines,acrylic.drawings,label+' Schnittdatei der Acrylauflage',([x,y])=>[x-a.x,y-a.y]);
    assert.notDeepEqual(cut,carrier,'der Edelstahlträger ist ein anderes Teil und bleibt getrennt');
    sameShape(points(content),shifted(mirror?mirrored(points(plain.drawings),format[0]):points(plain.drawings)),label+' Inhalt seitenrichtig');
    for(const file of ['edelstahltraeger-schnitt-1zu1.pdf','acrylauflage-schnitt-1zu1.pdf','edelstahltraeger-schnitt.svg','acrylauflage-schnitt.svg','gravur-kontur-1zu1.pdf'])assert.ok(two.files.has(file),file);
@@ -596,7 +631,7 @@ test('Formprodukt alter Art, Gravur: dieselben zwei Dateien im Aufbau der Muster
    // Konturdatei – seitenrichtig, also bei gespiegeltem Profil mit deren Spiegelbild.
    const {content,lines}=checkEngravingPdf(inspect(two.pdf.bytes),{widthMm:60,heightMm:40,holes,raster:!vector},label);
    assert.deepEqual(lines.map(d=>d.color),[BLUE,holes==='cut'?RED:BLUE],label);assert.ok(near(lines[1].rect,[6,18,10,22]),label+' Bohrloch links: '+lines[1].rect);
-   sameShape(points(lines),mirror?mirrored(points(separate.drawings),60):points(separate.drawings),label+' Konturen');
+   sameOutline(lines,separate.drawings,label+' Konturen',mirror?mirrorAt(60):null);
    if(vector){
     // Die rote Fläche der Designquelle (3…17 × 3…23 mm): in der Bestelldatei an ihrem Platz und reines Schwarz; in der Gravur-PDF der
     // „Ausgaben“ bei gespiegeltem Profil bei 43…57 mm und als Grauwert der Gestaltungsfarbe (kein Maschinenwert).

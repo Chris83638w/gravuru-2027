@@ -4,6 +4,7 @@ import {readReviewPackage,digest} from './review-package.mjs';
 import {importEnvironment} from './design-assets.mjs';
 import {productionPackage} from './production-summary.mjs';
 import {ORDER_FILES_SCHEMA,orderFileSet,orderEngravingFiles} from './print-delivery.mjs';
+import {contourPdfPath} from '../configurator/variant-m/contour-pdf-path.mjs';
 const fail=message=>{throw Object.assign(Error(message),{status:422,code:'form_engraving'});};
 // v3 (#265, ENTSCHEIDUNGEN 3.61/3.62): Auch Formprodukte alter Art führen die zwei Dateien der Bestellansicht – „PDF“ und „SVG“
 // im Aufbau der Musterdatei von Chris (seitenrichtig, Ebene „03 Gravur“ in reinem Schwarz, Außenkontur blau, Löcher bei
@@ -15,7 +16,15 @@ export function formEngravingSettings(input={}){
  const s={mode:'raster',dpi:300,mirror:false,...input};if(!['raster','vector'].includes(s.mode)||![300,600].includes(s.dpi)||typeof s.mirror!=='boolean')fail('Ungültige Gravureinstellungen.');return s;
 }
 export const formEngravingKey=settings=>digest(JSON.stringify({recipe:FORM_ENGRAVING_RECIPE,settings:formEngravingSettings(settings)}));
-export function renderEngraving(data){return new Promise((resolve,reject)=>{
+// #265, ENTSCHEIDUNGEN 3.62: Die Konturlinien der Gravur-Bestelldatei stehen wie in der Musterdatei direkt als Pfadoperatoren im
+// Seiteninhalt. Dafür bekommt der Worker je Ring der Kontur den PDF-Pfad in Millimetern – vom selben geprüften Umsetzer wie die
+// Schnittkontur des Drucks (contour-pdf-path.mjs: alle Befehle des Konturformats, Kurven bleiben Kurven, Bögen werden Kurvenstücke).
+function withOrderPaths(data){
+ const order=data.orderFiles;if(!order||typeof order!=='object'||Array.isArray(order)||!Array.isArray(data.geometry?.contours))return data;
+ return {...data,orderFiles:{...order,paths:data.geometry.contours.map(c=>contourPdfPath(/[Zz]\s*$/.test(c.d)?c.d:c.d+' Z'))}};
+}
+export function renderEngraving(input){return new Promise((resolve,reject)=>{
+ let data;try{data=withOrderPaths(input);}catch{reject(Object.assign(Error('Die Kontur lässt sich nicht in die Bestelldatei übernehmen.'),{status:422}));return;}
  const child=spawn(process.env.GRAVURU_PYTHON||'python3',[fileURLToPath(new URL('./form-engraving-worker.py',import.meta.url))],{env:importEnvironment(),stdio:['pipe','pipe','pipe']});let done=false,size=0;const chunks=[];
  const end=(error,result)=>{if(done)return;done=true;clearTimeout(timer);error?reject(Object.assign(Error(error),{status:422})):resolve(result);};
  const timer=setTimeout(()=>{child.kill();end('Die Gravurprüfung hat das Zeitlimit überschritten. Bitte Format und Auflösung prüfen.');},120000);

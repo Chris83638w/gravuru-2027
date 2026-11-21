@@ -933,3 +933,23 @@ Beides ist korrigiert und mit dem echten Paket geprüft; Einzelheiten, Prüfunge
 Keine.
 
 Der [Design-Master](https://github.com/Chris83638w/gravuru-katalog./blob/main/designs/DESIGN-MASTER.md) gilt unverändert; an Designs wurde nichts geändert.
+
+## 21.11.2026, 16:35 Uhr – Stufe C live; zwei neue Bausteine nach Chris’ Antworten (`dev/claude-nachmittag-20261121`)
+
+**Live seit 15:17 Uhr (Astra, #267, Testbestellung #1042):** Bild der Gestaltung auf der Danke-Seite und im Kundenkonto, Block „Gravuru Gestaltung“ in der Bestellseite. Belege: `docs/handoffs/2026-11-21-stufe-c-folgeversion/`.
+
+**Neu gebaut, nicht aufgespielt:**
+
+1. **Immer mit Kontur (ENTSCHEIDUNGEN 3.61):** je Position nur noch PDF und SVG, beide mit Kontur als Haarlinie, für alle Produktarten einschließlich der Formprodukte alter Art. Einzelheiten: `docs/handoffs/2026-11-21-immer-kontur.md`. Bilder 32 bis 34 in `bilder/`.
+2. **„Bearbeitbarer Entwurf“ unsichtbar (3.59):** privater Schlüssel `_gravuru_entwurf`, beide Shopify-Funktionen lesen beide Schlüssel, Schalter am Server. Einzelheiten und die sicherheitskritische Reihenfolge: `docs/handoffs/2026-11-21-entwurf-privat.md`.
+3. **Maschinentest (3.60):** `docs/handoffs/2026-11-21-maschinentest.md`.
+
+**Bei Astra beauftragt:** Server aufspielen (Teil A). Die App-Version mit den zwei geänderten Funktionen und der Schalter (Teil B) warten auf das Ja von Chris.
+
+**Weiter offen:** (1) Antwort von Astra, welche Produkte über den älteren Händler-Speicher laufen (sie behielten die sichtbare Angabe); (2) Ergebnis des Maschinentests, danach gegebenenfalls Konturfarben je Maschine; (3) kleines Warenkorbbild statt 1600 Pixel; (4) Löschregel für nie eingelegte Entwürfe; (5) ein echter Tag „Gravuru: bitte prüfen“ an einem Fehlerfall ist noch nicht beobachtet; (6) die Seite „Ausgaben“ führt weiter getrennte Dateien ohne Kontur – nicht entschieden.
+
+### Offene Fragen an Chris
+
+Eine: Darf Astra die App-Version mit der geänderten Preisfunktion und Kassenprüfung veröffentlichen und danach den Schalter setzen?
+
+Der [Design-Master](https://github.com/Chris83638w/gravuru-katalog./blob/main/designs/DESIGN-MASTER.md) gilt unverändert; an Designs wurde nichts geändert.

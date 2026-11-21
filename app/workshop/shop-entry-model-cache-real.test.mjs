@@ -112,6 +112,9 @@ test('real changes of THIS product (new revision, publish, archive) and of the s
  });
 });
 
+// Zufälliger Suchtext nur aus Buchstaben: Die Auswertung verwirft Suchtexte mit längeren Ziffernfolgen (normalizedMotifQuery),
+// und `toString(36)` lieferte in rund 0,8 % der Läufe eine solche Folge – dann schlug die Prüfung unten grundlos fehl.
+const letters=()=>Math.random().toString(36).replace(/[^a-z]/g,'')||'x';
 test('real customer-side and other-product writes into the same database file leave a warm entry alone',()=>harness(async({workshop,records,variants,open,both,calls,model,file})=>{
  const stats=createMotifSearchStats({filename:file,tenantId:workshop.tenantId}),side=new DatabaseSync(file);
  side.exec('CREATE TABLE IF NOT EXISTS zz_fremd(x)');// Schemaänderungen verwerfen alles (eigener Test); hier nur Zeilen.
@@ -119,8 +122,8 @@ test('real customer-side and other-product writes into the same database file le
  const first=await both(headers);await both(otherHeaders);
  try{
   const writes=[
-   ['Motivsuche protokolliert (echte Tabelle motif_search_daily)',()=>{assert.equal(stats.record({query:'Eiche '+Math.random().toString(36).slice(2),resultCount:3,group:'Prüfgruppe'}),true);}],
-   ['Motivsuche, viele Eingaben hintereinander',()=>{for(let i=0;i<20;i++)stats.record({query:'Tanne '+i+' '+Math.random().toString(36).slice(2),resultCount:0,group:'Prüfgruppe'});}],
+   ['Motivsuche protokolliert (echte Tabelle motif_search_daily)',()=>{assert.equal(stats.record({query:'Eiche '+letters(),resultCount:3,group:'Prüfgruppe'}),true);}],
+   ['Motivsuche, viele Eingaben hintereinander',()=>{for(let i=0;i<20;i++)stats.record({query:'Tanne '+i+' '+letters(),resultCount:0,group:'Prüfgruppe'});}],
    ['Konfi-Status eines ANDEREN Produkts',()=>{workshop.konfis.set(records[1].id,{to:'paused',expectedStatus:'draft',productRevision:1,actor:'test'});}],
    ['anderes Produkt: neue Revision',()=>{const r=workshop.repository.get(records[1].id);workshop.repository.save(r.id,structuredClone(r.document),r.revision);}],
    ['anderes Produkt: Veröffentlichung',()=>{workshop.repository.publish(records[2].id,{expectedRevision:workshop.repository.get(records[2].id).revision});}],

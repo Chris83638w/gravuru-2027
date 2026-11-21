@@ -874,4 +874,18 @@ Keine.
 
 Kasse, Danke-Seite, Bestell-E-Mail, Kundenkonto. An Astra als Lesefrage: was Kasse und Bestellansicht aus der sichtbaren Zeilenangabe „Bearbeitbarer Entwurf“ anzeigen (im Warenkorb blenden die beiden Sections sie aus).
 
+## Stufe A, Teil 3 (21.11.2026, 09:10 bis 09:50 Uhr) – gebaut (`16e21ddd`), mit Teil 2 bei Astra beauftragt
+
+**Was der Klick am Server bisher tat** (Acrylglas, echter Shop): Sichern 2,26 s – zwei volle Prüfungen des Produktdokuments (1,23 s), zwei Lesungen (0,19 s und rund 0,16 s), eine volle Kopie der Konfiguration (0,22 s), Vorschaupaar (0,39 s).
+
+**Was jetzt gilt.** Die Revision ist unveränderlich; sie wird je Prozess gehalten und je Schriftfassung einmal geprüft. Dateien: `app/workshop/revision-records.mjs` (neu), `product-model.mjs` (`holdProductDocument`, `productDocumentWithFonts`), `acrylic-review.mjs`, `native-review-resources.mjs`, `shop-entry.mjs` (`saveDraft`, `cart`), `order-intake.mjs` (`bindingsFor`). Keine Prüfung entfällt, nichts wandert in den Bestelleingang.
+
+**Grenzen.** Höchstens 2 gehaltene Revisionen und 2 Schriftfassungen je Revision; bei mehr gleichzeitig genutzten Produkten kostet ein Klick so viel wie bisher, nie mehr. Ohne gehaltenes Modell (Antwortspeicher verdrängt) wird die Fassung mit Schriften wie bisher je Klick geprüft.
+
+**Als Nächstes, in dieser Reihenfolge:** (1) nach dem Aufspielen messen; (2) Daten und Bestätigen der Shop-Seite in einem Abruf (Entwurf: die Shop-Seite meldet ihre Gravuru-Zeilen mit, der Server entscheidet und bestätigt in einem Zug; spart einen Abruf über Shopify); (3) Bildprüfer vorstarten; (4) Stufe B.
+
+### Offene Fragen an Chris
+
+Keine.
+
 Der [Design-Master](https://github.com/Chris83638w/gravuru-katalog./blob/main/designs/DESIGN-MASTER.md) gilt unverändert; an Designs wurde nichts geändert.

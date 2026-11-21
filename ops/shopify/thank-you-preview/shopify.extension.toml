@@ -8,3 +8,9 @@ type = "ui_extension"
 [[extensions.targeting]]
 target = "purchase.thank-you.cart-line-item.render-after"
 module = "./src/ThankYou.js"
+
+# #265 Stufe C, ENTSCHEIDUNGEN 3.53 (4): dasselbe Bild in der Bestellübersicht des Kundenkontos (eigener Server, nur Lesen).
+# Zielname am echten Shop zu bestätigen; nimmt die CLI beide Ziele nicht in einer Extension an, siehe README (eigene Extension).
+[[extensions.targeting]]
+target = "customer-account.order-status.cart-line-item.render-after"
+module = "./src/OrderStatus.js"

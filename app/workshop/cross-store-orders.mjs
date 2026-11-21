@@ -15,14 +15,14 @@ export function outputStateFromJobs(jobs,missing){
  if(failed)return {state:'bitte prüfen',reason:failed.error||'Die Ausgabe ist fehlgeschlagen.',jobId:failed.id};
  return {state:'bitte prüfen',reason:missing||'Für diese Position gibt es keinen Ausgabeauftrag.',jobId:null};
 }
-// #265, ENTSCHEIDUNGEN 3.61: Hinweis, solange die zwei Downloads einer Position (PDF und SVG, beide mit Kontur) nicht vorliegen.
+// #265, ENTSCHEIDUNGEN 3.61/3.62: Hinweis, solange die zwei Downloads einer Position (PDF und SVG im Aufbau der Musterdatei) nicht vorliegen.
 // `own` ist der Auftrag der Position mit dem heutigen Rezeptstand, `completed` zählt fertige Ausgaben des Prüfstands. Eine fertige
 // Ausgabe ohne Dateinachweis (vor 3.57, oder ein Formprodukt vor 3.61) führt die Dateien nicht; der neue Auftrag entsteht beim
 // Öffnen der Ausgaben von selbst – seit 3.61 für jede Produktart, auch für Formprodukte alter Art.
 export function missingOrderFilesNote({own=null,completed=0}={}){
  if(['queued','running'].includes(own?.status))return 'PDF und SVG werden für diese Position '+(completed?'neu':'gerade')+' erstellt.';
  if(own?.status==='failed')return 'PDF und SVG ließen sich für diese Position nicht erstellen: '+(own.error||'Die Ausgabe ist fehlgeschlagen.');
- return completed?'Die gespeicherte Ausgabe dieser Position enthält PDF und SVG mit Kontur nicht. Bitte die Ausgabe für diese Position neu erstellen.':null;
+ return completed?'Die gespeicherte Ausgabe dieser Position enthält PDF und SVG im heutigen Aufbau nicht. Bitte die Ausgabe für diese Position neu erstellen.':null;
 }
 // Abgelehnte Position (z. B. Preisabweichung): nichts wird automatisch gefertigt; der Grund ist der des Bestelleingangs.
 export const rejectedOutputState=row=>({state:'bitte prüfen',reason:row.intakeError||'Die Position wurde nicht übernommen.',jobId:null});

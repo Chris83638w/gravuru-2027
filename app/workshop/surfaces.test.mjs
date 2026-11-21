@@ -106,12 +106,17 @@ test('Fertigung: Rückseite erzeugt eigene Produktionsdatei mit -vorderseite/-ru
  assert.deepEqual(summary.product.surfaces.map(s=>s.id),['front','back']);assert.deepEqual(summary.textFields.map(f=>[f.text,f.surfaceId]),[['Vorne','front'],['Hinten','back']]);
  assert.ok(summary.output.files.includes('technische-gravurpruefung-rueckseite.pdf'));
  assert.equal(surfaceFileName('Mimaki-NUR-RDG_WHITE.pdf','back'),'Mimaki-NUR-RDG_WHITE-rueckseite.pdf');
- // #265, ENTSCHEIDUNGEN 3.61: die zwei Downloads der Bestellansicht (PDF und SVG, immer mit Kontur) gibt es je Fläche; die
- // Kontur folgt der Spiegelung ihrer Seite. Die Gravur-PDF ohne Kontur bleibt die Datei der „Ausgaben“, nicht der Bestellansicht.
+ // #265, ENTSCHEIDUNGEN 3.61/3.62: die zwei Downloads der Bestellansicht (PDF und SVG, immer mit Kontur) gibt es je Fläche – im
+ // Aufbau der Musterdatei von Chris und nie gespiegelt, auch wenn die Gravur der Rückseite nach Profil gespiegelt ist. Die
+ // Gravur-PDF ohne Kontur und die Fertigungs-SVG bleiben die Dateien der „Ausgaben“ (dort gilt die Spiegelung weiter).
  assert.deepEqual(orderFileSets(result.metadata).map(s=>[s.id,s.formats]),[['front',['pdf','svg']],['back',['pdf','svg']]]);
  assert.equal(orderDownload(result,'pdf','back').suffix,'gravur-1zu1-mit-kontur-rueckseite.pdf');assert.deepEqual(orderDownload(result,'pdf','back').bytes,files.get('gravur-1zu1-mit-kontur-rueckseite.pdf'));assert.notDeepEqual(orderDownload(result,'pdf','back').bytes,files.get('technische-gravurpruefung-rueckseite.pdf'));
  assert.equal(orderDownload(result,'svg','front').suffix,'gravur-1zu1-mit-kontur-vorderseite.svg');
- assert.match(orderDownload(result,'svg','back').bytes.toString(),/<g id="kontur"[^>]* transform="translate\(\d+ 0\) scale\(-1 1\)">/);assert.doesNotMatch(orderDownload(result,'svg','front').bytes.toString(),/<g id="kontur"[^>]* transform=/);
+ for(const side of ['front','back']){
+  const svg=orderDownload(result,'svg',side).bytes.toString();assert.match(svg,/^<svg [^>]*><g id="gravur" data-layer="03 Gravur" inkscape:groupmode="layer" inkscape:label="03 Gravur">/,side);
+  assert.match(svg,/<\/g><g id="aussenkontur" data-layer="Außenkontur \(Anlegen\)" fill="none" stroke="#0000ff" stroke-width="0\.001"><path d="[^"]+" \/><\/g><\/svg>$/,side);assert.ok(!svg.includes('scale(-1 1)'),side+': nicht gespiegelt');
+ }
+ assert.ok(files.get('gravur-fertigung-rueckseite.svg').toString().includes('<g transform="translate(150 0) scale(-1 1)">'),'die Fertigungs-SVG der Rückseite bleibt gespiegelt');assert.ok(!files.get('gravur-fertigung-vorderseite.svg').toString().includes('scale(-1 1)'));
  for(const format of ['pdf-contour','svg-contour'])assert.throws(()=>orderDownload(result,format,'back'),/Bitte PDF oder SVG auswählen/);
 });
 test('Fertigung: zweiseitiges Produkt ohne gestaltete Rückseite behält die bisherigen Dateinamen',async t=>{
@@ -124,9 +129,11 @@ test('Fertigung Druck: je Seite Druck-, Weiß- und SVG-Datei; Weiß-Download der
  for(const name of ['Mimaki-FARBE-ohne-RDG_WHITE-vorderseite.pdf','Mimaki-FARBE-ohne-RDG_WHITE-rueckseite.pdf','Mimaki-NUR-RDG_WHITE-vorderseite.pdf','Mimaki-NUR-RDG_WHITE-rueckseite.pdf','gesicherte-gestaltung-vorderseite.svg','gesicherte-gestaltung-rueckseite.svg','druckpruefung.json'])assert.ok(files.has(name),name);
  assert.deepEqual(result.metadata.surfaces.map(s=>[s.id,s.pdf,s.white]),[['front','Mimaki-FARBE-ohne-RDG_WHITE-vorderseite.pdf','Mimaki-NUR-RDG_WHITE-vorderseite.pdf'],['back','Mimaki-FARBE-ohne-RDG_WHITE-rueckseite.pdf','Mimaki-NUR-RDG_WHITE-rueckseite.pdf']]);
  assert.equal(outputDownload(result,'white-pdf').suffix,'Mimaki-NUR-RDG_WHITE-vorderseite.pdf');
- // #265, ENTSCHEIDUNGEN 3.61: auch im Druck zwei Downloads je Fläche, beide mit Kontur; eine Druckdatei ohne Schnittlinie gibt es nicht.
+ // #265, ENTSCHEIDUNGEN 3.61/3.62: auch im Druck zwei Downloads je Fläche, beide mit Kontur – in der Farbe der Schmuckfarbe
+ // CutContour, Linie 0,001; eine Druckdatei ohne Schnittlinie gibt es nicht.
  assert.deepEqual(orderFileSets(result.metadata).map(s=>[s.id,s.formats]),[['front',['pdf','svg']],['back',['pdf','svg']]]);
  assert.equal(orderDownload(result,'pdf','back').suffix,'druck-1zu1-mit-kontur-rueckseite.pdf');assert.ok(![...files.keys()].some(name=>/ohne-schnittlinie/.test(name)));
- assert.equal(orderDownload(result,'svg','front').suffix,'druck-1zu1-mit-kontur-vorderseite.svg');assert.match(orderDownload(result,'svg','front').bytes.toString(),/<g id="kontur" fill="none" stroke="#000000" stroke-width="0\.05"><path d="[^"]+"\/><\/g><\/svg>$/);
- assert.equal(orderDownload(result,'svg','front').bytes.toString().replace(/<g id="kontur"[^>]*>.*?<\/g>(?=<\/svg>$)/s,''),files.get('gesicherte-gestaltung-vorderseite.svg').toString(),'die gesicherte Gestaltung plus Konturebene');
+ assert.equal(orderDownload(result,'svg','front').suffix,'druck-1zu1-mit-kontur-vorderseite.svg');assert.match(orderDownload(result,'svg','front').bytes.toString(),/<g id="CutContour" data-layer="CutContour" fill="none" stroke="#ff00ff" stroke-width="0\.001"><path d="[^"]+"\/><\/g><\/svg>$/);
+ assert.equal(orderDownload(result,'svg','front').bytes.toString().replace(/<g id="CutContour"[^>]*>.*?<\/g>(?=<\/svg>$)/s,''),files.get('gesicherte-gestaltung-vorderseite.svg').toString(),'die gesicherte Gestaltung plus Schnittkontur');
+ for(const side of ['front','back'])assert.doesNotMatch(orderDownload(result,'svg',side).bytes.toString(),/id="(?:aussenkontur|ausschnitte|innenkonturen|gravur)"|stroke="#0000ff"|stroke="#ff0000"/,'Druck: kein Blau, kein Rot als Kontur');
 });

@@ -34,9 +34,11 @@ test('already applied pixels, acrylic print and engraving production are never t
 import {ACRYLIC_PRINT_RECIPE,acrylicPrintKey} from './acrylic-print-proof.mjs';
 import {digest} from './review-package.mjs';
 test('native photo colour output uses a new recipe cache key',()=>{
- // v9 (#265, ENTSCHEIDUNGEN 3.61): Die Bestellansicht führt nur noch PDF und SVG, beide mit Kontur; die Druckdatei ohne
- // Schnittlinie (v8) entsteht nicht mehr. Ältere Ausgaben behalten ihren Schlüssel.
- assert.equal(ACRYLIC_PRINT_RECIPE,'gravuru-acrylic-print-proof/v9');
+ // v10 (#265, ENTSCHEIDUNGEN 3.62): PDF und SVG der Bestellansicht nach der Musterdatei von Chris – nie gespiegelt, Konturen als
+ // Linie von 0,001 mm in CutContour. Ältere Ausgaben behalten ihren Schlüssel.
+ assert.equal(ACRYLIC_PRINT_RECIPE,'gravuru-acrylic-print-proof/v10');
+ assert.equal(acrylicPrintKey({}),digest(JSON.stringify({recipe:'gravuru-acrylic-print-proof/v10',settings:formPrintSettings({})})));
+ assert.notEqual(acrylicPrintKey({}),digest(JSON.stringify({recipe:'gravuru-acrylic-print-proof/v9',settings:formPrintSettings({})})));
  assert.notEqual(acrylicPrintKey({}),digest(JSON.stringify({recipe:'gravuru-acrylic-print-proof/v8',settings:formPrintSettings({})})));
  assert.notEqual(acrylicPrintKey({}),digest(JSON.stringify({recipe:'gravuru-acrylic-print-proof/v7',settings:formPrintSettings({})})));
  assert.notEqual(acrylicPrintKey({}),digest(JSON.stringify({recipe:'gravuru-acrylic-print-proof/v6',settings:formPrintSettings({})})));

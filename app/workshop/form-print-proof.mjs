@@ -1,4 +1,4 @@
-import {printDelivery,ORDER_FILES_SCHEMA,contourStroke,svgWithContour,orderFileSet} from './print-delivery.mjs';
+import {printDelivery,ORDER_FILES_SCHEMA,printSvgWithContour,orderFileSet} from './print-delivery.mjs';
 import {spawn} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
 import {readReviewPackage,digest} from './review-package.mjs';
@@ -6,10 +6,11 @@ import {importEnvironment} from './design-assets.mjs';
 import {exportSettings} from '../configurator/variant-m/print-export-model.mjs';
 import {productionPackage} from './production-summary.mjs';
 const fail=message=>{throw Object.assign(Error(message),{status:422,code:'form_print_proof'});};
-// v6 (#265, ENTSCHEIDUNGEN 3.61): Auch Formprodukte alter Art führen die zwei Dateien der Bestellansicht – „PDF“ (Druckdatei mit
-// der Schnittlinie als Haarlinie) und „SVG“ (gesicherte Gestaltung mit Kontur), wie beim nativen Produkt (acrylic-print-proof.mjs).
-// Die bisherigen Dateien des Pakets bleiben Byte für Byte gleich; Ausgaben der Vorversion bleiben unter ihrem Schlüssel gültig.
-export const FORM_PRINT_RECIPE='gravuru-form-print-proof/v6';
+// v7 (#265, ENTSCHEIDUNGEN 3.61/3.62): Auch Formprodukte alter Art führen die zwei Dateien der Bestellansicht – „PDF“ (Aufbau der
+// Druckdatei, seitenrichtig, Schnittkontur als Linie von 0,001 mm in `CutContour`) und „SVG“ (gesicherte Gestaltung mit Kontur),
+// wie beim nativen Produkt (acrylic-print-proof.mjs). Die bisherigen Dateien des Pakets bleiben Byte für Byte gleich; Ausgaben
+// der Vorversion bleiben unter ihrem Schlüssel gültig.
+export const FORM_PRINT_RECIPE='gravuru-form-print-proof/v7';
 export function formPrintSettings(input={}){
  if(!input||typeof input!=='object'||Array.isArray(input)||Object.keys(input).some(k=>!['profile','dpi','white','bleedMm','whiteBleedMm','mirror'].includes(k)))fail('Ungültige Druckeinstellungen.');
  const s=exportSettings({width:1,height:1},input);
@@ -40,9 +41,9 @@ export async function createFormPrintProof(archive,archiveHash,input={},context=
  const warnings=[...manifest.warnings];
  if(requested.bleedMm&&!raw.bleedMm)warnings.push('Kein Druck am Außenrand: Der angeforderte Überdruck wurde nicht hinzugefügt.');
  const metadata={schema:FORM_PRINT_RECIPE,sourceReviewSchema:manifest.schema,downloads:delivery.downloads,productionProfile:manifest.productionProfile||null,profileSettingsOverridden:manifest.productionProfile?JSON.stringify(requested)!==JSON.stringify(formPrintSettings(manifest.productionProfile.document.output)):false,snapshotId:manifest.id,sourcePackageSha256:archiveHash,requested,settings,geometrySha256:saved.product.form.geometrySha256,vectorGlyphs:raw.textVectors.length,pixelWidth:raw.width,pixelHeight:raw.height,edgeInk:raw.edgeInk,pdfSha256:digest(pdf),warnings,productionReady:false,colorConversion:'Generische DeviceCMYK-Separation, kein gemessenes ICC-Profil.',colorArtwork:'Explizite Textfelder als CMYK-Vektorpfade in ursprünglicher Reihenfolge; zugehöriges Weiß ebenfalls als Schriftpfade. Importierte Designquelle und Fotos gerastert; Schnittkontur als Vektor.'};
- // „SVG“: die gesicherte Gestaltung (seitenrichtig, in Millimetern – form-review-snapshot.mjs) plus Kontur; „PDF“ folgt der
- // Druckdatei (gespiegelt nach Profil) und trägt die Schnittlinie als Haarlinie.
- const order={pdf:['druck-1zu1-mit-kontur.pdf',delivery.order.pdf],svg:['druck-1zu1-mit-kontur.svg',Buffer.from(svgWithContour(files.get('gestaltung-vorschau.svg').toString(),g,{stroke:contourStroke({manifest})}))]};
+ // „SVG“: die gesicherte Gestaltung (seitenrichtig, in Millimetern – form-review-snapshot.mjs) plus Schnittkontur; „PDF“ hat
+ // den Aufbau der Druckdatei, ist aber nie gespiegelt und trägt die Schnittkontur als Linie von 0,001 mm (3.62).
+ const order={pdf:['druck-1zu1-mit-kontur.pdf',delivery.order.pdf],svg:['druck-1zu1-mit-kontur.svg',Buffer.from(printSvgWithContour(files.get('gestaltung-vorschau.svg').toString(),g))]};
  metadata.orderFiles={schema:ORDER_FILES_SCHEMA,surfaces:[orderFileSet('front',order)]};
  const extras=[{name:settings.profile==='mimaki'?delivery.downloads.pdf.name:'technische-druckpruefung.pdf',blob:new Blob([pdf])},{name:'druckpruefung.json',blob:new Blob([JSON.stringify(metadata,null,2)])}];
  extras.push(...delivery.extras);

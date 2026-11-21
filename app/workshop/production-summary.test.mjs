@@ -57,8 +57,10 @@ test('Form-Druckpaket enthält summary.pdf, summary.json und Originalfotos mit M
  assert.equal(summary.product.material.label,'Edelstahl · gebürstet');assert.equal(summary.product.material.thicknessMm,1.5);assert.equal(summary.product.widthMm,60);assert.equal(summary.product.heightMm,40);assert.equal(summary.product.mounting.holeCount,1);assert.equal(summary.product.price.unitCents,2999);
  assert.deepEqual(summary.textFields,[{id:'text',label:'Name',text:'Hallo Wörld',font:f.font,bold:false,italic:false,colorHex:'#222222',sizeMm:3,xMm:19,yMm:33.5,widthMm:34,heightMm:7,rotationDeg:0,anchor:'center'}]);
  const [photo]=summary.photos;assert.equal(photo.path,'fotos/photo-original.png');assert.equal(photo.fileName,'photo-original.png');assert.equal(photo.sha256,digest(f.raw));assert.equal(photo.effectiveDpi,f.bundle.manifest.photos[0].effectiveDpi);assert.equal(photo.targetDpi,300);assert.equal(photo.status,'rot');assert.equal(photo.note,'Auflösung niedrig');
- assert.equal(summary.profile.mirror,false);assert.equal(summary.profile.name,null);assert.equal(summary.output.recipe,'gravuru-form-print-proof/v6');
- // #265, ENTSCHEIDUNGEN 3.61: Auch das Formprodukt führt die zwei Dateien der Bestellansicht (PDF und SVG mit Kontur).
+ assert.equal(summary.profile.mirror,false);assert.equal(summary.profile.name,null);assert.equal(summary.output.recipe,'gravuru-form-print-proof/v7');
+ // #265, ENTSCHEIDUNGEN 3.61/3.62: Auch das Formprodukt führt die zwei Dateien der Bestellansicht (PDF und SVG mit Kontur).
+ // Ihr Zweck im Manifest nennt, was die Fertigung wissen muss: nicht gespiegelt, Konturen in CutContour, Linie 0,001 mm.
+ for(const name of ['druck-1zu1-mit-kontur.pdf','druck-1zu1-mit-kontur.svg']){const {purpose}=manifest.production.files.find(x=>x.path===name);assert.match(purpose,/nicht gespiegelt/,name);assert.match(purpose,/0,001 mm/);assert.match(purpose,/CutContour/);assert.doesNotMatch(purpose,/blau|rot|Haarlinie \(Schablone/);}
  assert.deepEqual(summary.output.files,['technische-druckpruefung.pdf','druckpruefung.json','druck-1zu1-mit-kontur.pdf','druck-1zu1-mit-kontur.svg']);assert.equal(summary.output.productionReady,false);
  assert.deepEqual(JSON.parse(files.get('druckpruefung.json')),result.metadata);
 });
@@ -73,7 +75,9 @@ test('Natives Gravurpaket: Bestellbezug, Optionen mit Preis, skalierte Textposit
  assert.deepEqual(summary.product.options.map(o=>[o.group,o.value,o.priceCents,o.priceKind]),[['Größe','15 × 20 cm',f.config.acrylic.pricing.sizes.small,'base'],['Sockel','Massiver Holzsockel · Buche',f.config.acrylic.pricing.bases.buche,'surcharge'],['Unsichtbare Wandhalterung','Ohne Wandhalterung',0,'surcharge']]);
  const [text]=summary.textFields;assert.equal(text.label,'names');assert.equal(text.text,'Anna & Lukas');assert.equal(text.sizeMm,5);assert.equal(text.xMm,100);assert.equal(text.yMm,40);assert.equal(text.rotationDeg,15);assert.equal(text.anchor,'center');
  const [photo]=summary.photos;assert.equal(photo.label,'photo-test');assert.equal(photo.effectiveDpi,f.bundle.manifest.photoResolution[0].effectiveDpi);assert.equal(photo.status,resolutionStatus(photo.effectiveDpi,300));assert.equal(photo.sha256,digest(f.raw));
- assert.equal(summary.profile.mirror,true);assert.equal(summary.profile.methodLabel,'Gravur auf Acrylglas');assert.equal(summary.output.recipe,'gravuru-acrylic-engraving-proof/v8');
+ assert.equal(summary.profile.mirror,true);assert.equal(summary.profile.methodLabel,'Gravur auf Acrylglas');assert.equal(summary.output.recipe,'gravuru-acrylic-engraving-proof/v9');
+ // #265, ENTSCHEIDUNGEN 3.62: Zweck der Bestelldateien der Gravur im Manifest – nicht gespiegelt (auch hier, bei gespiegeltem Profil), Ebene „03 Gravur“, Anlegen blau, Schnitte rot, Linie 0,001 mm.
+ for(const name of ['gravur-1zu1-mit-kontur.pdf','gravur-1zu1-mit-kontur.svg']){const {purpose}=manifest.production.files.find(x=>x.path===name);for(const needle of ['nicht gespiegelt','03 Gravur','blau','rot','0,001 mm'])assert.ok(purpose.includes(needle),name+': '+needle);assert.doesNotMatch(purpose,/CutContour/);}
  const info=pdfInfo(files.get(SUMMARY_FILES.pdf));assert.equal(info.pages,1);assert.equal(info.images,1);for(const needle of ['1001','orderline_fixture','Anna & Lukas','15°','Massiver Holzsockel','Spiegelung','ja'])assert.ok(info.text.includes(needle),needle);
 });
 

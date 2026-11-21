@@ -72,7 +72,7 @@ function showOutputState(state){
  node.hidden=!state;node.textContent=outputNote(state);node.classList.toggle('order-error',state?.state==='bitte prüfen');
 }
 
-// #265, ENTSCHEIDUNGEN 3.61: PDF und SVG je Position, beide immer mit Kontur – ohne Exportauftrag von Hand. Der Abruf läuft wie
+// #265, ENTSCHEIDUNGEN 3.61/3.62: PDF und SVG je Position, beide immer mit Kontur und nie gespiegelt – ohne Exportauftrag von Hand. Der Abruf läuft wie
 // jeder Ausgabe-Download über die angemeldete Sitzung mit CSRF (order-store-context.mjs `orderRequest`), nie über eine offene Adresse.
 function showOrderFiles(row,state,downloads,message){
  const root=$('#order-files');if(!root)return;

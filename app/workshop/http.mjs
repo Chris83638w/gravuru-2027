@@ -14,8 +14,8 @@ import {compareProductRevisions} from './product-revision-compare.mjs';
 import {profileChangeImpact,saveReviewedProfile,assignmentChangeImpact,saveReviewedAssignment} from './profile-impact.mjs';
 import {outputSpecification} from './output-specification.mjs';
 import {printPreview} from './print-preview.mjs';
-import {outputDownload,outputFormats} from './print-delivery.mjs';
-import {ACRYLIC_ENGRAVING_RECIPE,acrylicEngravingKey,createAcrylicEngravingProof} from './acrylic-engraving-proof.mjs';
+import {outputDownload,outputFormats,orderDownload,orderFileSets,ORDER_FORMATS} from './print-delivery.mjs';
+import {ACRYLIC_ENGRAVING_RECIPE,acrylicEngravingKey,acrylicEngravingSettings,createAcrylicEngravingProof} from './acrylic-engraving-proof.mjs';
 import {ACRYLIC_PRINT_RECIPE,acrylicPrintKey,createAcrylicPrintProof,acrylicContourProof} from './acrylic-print-proof.mjs';
 import {prepareAcrylicReview} from './acrylic-review.mjs';
 import {customerVectorLogoPreview,VECTOR_LOGO_REQUEST_BYTES,verifyCustomerVectorLogoMedia,verifiedAccountVectorLogo} from './customer-vector-logo-media.mjs';
@@ -56,7 +56,7 @@ import {initialFormCustomerState,resolveFormCustomer,customerPhotoMarkup} from '
 import {prepareCustomerPhoto,MAX_CUSTOMER_PHOTO} from './customer-photo.mjs';
 import {photoResolutionNote,resolutionTargetDpi} from './acrylic-photo-resolution.mjs';
 import {clientOutputSettings,productionMirror} from './output-orientation.mjs';
-import {outputStateFromJobs,rejectedOutputState} from './cross-store-orders.mjs';
+import {outputStateFromJobs,missingOrderFilesNote,rejectedOutputState} from './cross-store-orders.mjs';
 import {createMotifSearchStats} from './motif-search-stats.mjs';
 import {motifSearchPreviewGroup} from './motif-search-preview-products.mjs';
 import {photoPlacement} from '../configurator/variant-m/photo-position-model.mjs';
@@ -232,7 +232,7 @@ function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConvert
   const exportWorker=createExportWorker({jobs:exportJobs,recipe:outputRecipes,render:job=>{const review=customerDrafts.review(job.snapshotId);const render=job.recipe===ACRYLIC_ENGRAVING_RECIPE?createAcrylicEngravingProof:job.recipe===ACRYLIC_PRINT_RECIPE?createAcrylicPrintProof:job.recipe===FORM_ENGRAVING_RECIPE?createFormEngravingProof:createFormPrintProof;return render(customerDrafts.downloadSnapshot(job.snapshotId,'package'),review.manifest.packageSha256,job.settings,{orderLines:orderIntake.forSnapshot(job.snapshotId),productDocument:reviewProductDocument});}});
   // #265, ENTSCHEIDUNGEN 3.48/3.51/3.53: Der Auftrag (Rezept, Schlüssel, Einstellungen) entsteht getrennt vom Einreihen, damit der Bestelleingang
   // genau den Auftrag des Knopfs „Ausgabe“ anlegt. Prüfungen, Reihenfolge und Fehlertexte des Wegs von Hand sind unverändert.
-  function outputRequest(id,overrides,m=customerDrafts.review(id).manifest){if(m.capabilities?.engraving===false&&m.product.method==='engraving')fail(422,'assembly_output_pending','Die getrennte Fertigungsausgabe für Edelstahlträger und Acrylglasauflage ist noch nicht angebunden.');if(m.product.method!=='engraving')return printRequest(id,overrides,m);const native=isNativeReviewSchema(m.schema),settings=formEngravingSettings({...m.productionProfile?.document.output,...overrides});return {snapshotId:id,recipe:native?ACRYLIC_ENGRAVING_RECIPE:FORM_ENGRAVING_RECIPE,recipeKey:native?acrylicEngravingKey(settings):formEngravingKey(settings),settings};}
+  function outputRequest(id,overrides,m=customerDrafts.review(id).manifest){if(m.capabilities?.engraving===false&&m.product.method==='engraving')fail(422,'assembly_output_pending','Die getrennte Fertigungsausgabe für Edelstahlträger und Acrylglasauflage ist noch nicht angebunden.');if(m.product.method!=='engraving')return printRequest(id,overrides,m);const native=isNativeReviewSchema(m.schema),settings=native?acrylicEngravingSettings(m.productionProfile?.document.output,overrides):formEngravingSettings({...m.productionProfile?.document.output,...overrides});return {snapshotId:id,recipe:native?ACRYLIC_ENGRAVING_RECIPE:FORM_ENGRAVING_RECIPE,recipeKey:native?acrylicEngravingKey(settings):formEngravingKey(settings),settings};}
   function printRequest(id,overrides,m=customerDrafts.review(id).manifest){if(m.product.method!=='print')fail(422,'print_required','Dieser Ausgabeauftrag benötigt ein Druckprodukt.');const settings=formPrintSettings({...m.productionProfile?.document.output,...overrides}),native=isNativeReviewSchema(m.schema);return {snapshotId:id,recipe:native?ACRYLIC_PRINT_RECIPE:FORM_PRINT_RECIPE,recipeKey:native?acrylicPrintKey(settings):formPrintKey(settings),settings};}
   function enqueueOutput(id,overrides){const job=exportJobs.enqueue(outputRequest(id,overrides));exportWorker.kick();return job;}
   function enqueuePrint(id,overrides){const job=exportJobs.enqueue(printRequest(id,overrides));exportWorker.kick();return job;}
@@ -242,6 +242,9 @@ function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConvert
   // Die Spiegelung leitet clientOutputSettings wie beim Knopf ab. Ergebnis: derselbe Auftrag mit demselben Schlüssel.
   // Einzige gefundene Abweichung: Bei einem Druckprofil „Ohne Weiß“ mit Weißüberdruck 1 mm sendet das Formular Weißüberdruck 0
   // (printOptions); hier gilt das Profil unverändert. Der Wert wirkt nur auf die Weißfläche, die es ohne Weiß nicht gibt.
+  // #265, ENTSCHEIDUNGEN 3.57 (5): Zweite Abweichung, von Chris entschieden – Gravur ohne Fertigungsprofil. Der Bestelleingang
+  // nennt kein Verfahren, also gilt `auto` (Vektor ohne Foto, sonst Raster; acrylic-engraving-proof.mjs). Das Formular sendet
+  // weiter ausdrücklich Raster oder Vektor; der Knopf legt dann einen eigenen Auftrag mit genau dieser Wahl an.
   function orderOutputRequest(line){const m=customerDrafts.manifest(line.snapshotId);return outputRequest(line.snapshotId,clientOutputSettings(m).settings,m);}
   // Kein exportWorker.kick(): innerhalb der Webhook-Antwort wird nichts gebaut, der Arbeiter übernimmt im 1-s-Takt (ein Auftrag zur Zeit).
   // Höchstens ein Auftrag je Prüfstand und Rezept (UNIQUE in form_export_jobs); eine zweite Zustellung findet den vorhandenen.
@@ -252,6 +255,20 @@ function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConvert
     if(jobs.length)return outputStateFromJobs(jobs);
     try{orderOutputRequest(line);}catch(error){return outputStateFromJobs([],Number.isInteger(error.status)&&error.status<500?error.message:'Die Fertigungsdatei lässt sich derzeit nicht vorbereiten.');}
     return outputStateFromJobs([],'Für diese Position gibt es noch keinen Ausgabeauftrag. Er wird beim Öffnen der Ausgaben angelegt.');
+  }
+  // #265, ENTSCHEIDUNGEN 3.57: Die vier Downloads einer Position (PDF, PDF mit Kontur, SVG, SVG mit Kontur) stammen aus dem Auftrag
+  // der Position (Schlüssel wie `ensureOrderOutput`); ist der nicht fertig, aus der neuesten fertigen Ausgabe des Prüfstands, die
+  // die vier Dateien führt. Ausgaben alter Art führen sie nicht: Der Auftrag mit dem neuen Rezeptstand entsteht beim Öffnen der
+  // Ausgaben von selbst, bis dahin nennt `note` den Stand („wird neu erstellt“) statt eines Fehlers.
+  function orderDownloadSource(line,jobs=exportJobs.forSnapshot(line.snapshotId).jobs){
+    let own=null;try{const key=orderOutputRequest(line).recipeKey;own=jobs.find(job=>job.recipeKey===key)||null;}catch{/* Grund steht im Kennzeichen. */}
+    const completed=[own,...jobs.filter(job=>job!==own)].filter(job=>job?.status==='completed');
+    for(const job of completed){const surfaces=orderFileSets(customerDrafts.printProofMetadata(job.snapshotId,job.recipeKey));if(surfaces.length)return {job,surfaces,own,completed};}
+    return {job:null,surfaces:[],own,completed};
+  }
+  function orderDownloads(line,jobs){
+    const {job,surfaces,own,completed}=orderDownloadSource(line,jobs);
+    return {jobId:job?.id??null,formats:ORDER_FORMATS,surfaces,pending:!job&&['queued','running'].includes(own?.status),note:job?null:missingOrderFilesNote({own,completed:completed.length})};
   }
   function customerRecord(id,version){assertKonfiAvailable(id);const record=repository.get(id,{revision:revision(version)});if(!isFormProduct(record.document)||!record.document.designs?.length)fail(422,'customer_design_missing','Bitte zuerst ein Formprodukt mit Design speichern.');verifyForm(record.document);return record;}
   function customerResult(draft,token,state=draft.state,fitText=false){
@@ -665,7 +682,21 @@ function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConvert
         // Einreihen), wird er beim Öffnen der Ausgaben nachgeholt. Ist er nicht anlegbar, nennt das Kennzeichen den Grund.
         try{ensureOrderOutput(line);}catch{/* Grund steht im Kennzeichen. */}
         const outputs=exportJobs.forSnapshot(line.snapshotId);
-        return json(res,200,{positionId:line.id,orderId:line.orderId,snapshotId:line.snapshotId,product:line.product,quantity:line.quantity,status:orderIntake.status(line.id),...outputs,outputState:orderOutputState(line,outputs.jobs),scope:'local-operator'});
+        return json(res,200,{positionId:line.id,orderId:line.orderId,snapshotId:line.snapshotId,product:line.product,quantity:line.quantity,status:orderIntake.status(line.id),...outputs,outputState:orderOutputState(line,outputs.jobs),downloads:orderDownloads(line,outputs.jobs),scope:'local-operator'});
+      }
+      // #265, ENTSCHEIDUNGEN 3.57: Download einer der vier Dateien der Position. Anmeldung und CSRF wie bei jedem Ausgabe-Download
+      // (Prüfung oben, vor allen Werkstatt-Routen); ausgeliefert wird nur, wenn die Prüfsumme der Bytes zum Dateinachweis des
+      // Auftrags passt (print-delivery.mjs `orderDownload`, wie bei der Weißdatei).
+      const orderDownloadMatch=pathname.match(/^\/api\/workshop\/orders\/(orderline_[a-f0-9-]+)\/download$/);
+      if(orderDownloadMatch){
+        if(method!=='POST')fail(405,'method_not_allowed','Dateien einer Position per POST abrufen.');
+        const line=orderIntake.get(orderDownloadMatch[1]),data=await body(req,1024);
+        if(Object.keys(data).some(k=>!['format','surface'].includes(k))||!ORDER_FORMATS.includes(data.format)||!['front','back'].includes(data.surface??'front'))fail(422,'invalid_format','Bitte PDF, PDF mit Kontur, SVG oder SVG mit Kontur auswählen.');
+        const source=orderDownloadSource(line);
+        if(!source.job)fail(409,'order_file_missing',orderDownloads(line).note||'Für diese Position gibt es noch keine fertige Ausgabe.');
+        const result=customerDrafts.printProof(source.job.snapshotId,source.job.recipeKey);if(!result)fail(409,'export_missing','Die gespeicherte Ausgabedatei fehlt.');
+        const download=orderDownload(result,data.format,data.surface??'front'),bytes=download.bytes;
+        res.writeHead(200,{'Content-Type':download.mime,'Content-Length':bytes.length,'Content-Disposition':'attachment; filename="'+source.job.id+'-'+download.suffix+'"','Cache-Control':'no-store','X-Content-Type-Options':'nosniff','X-Gravuru-File-SHA256':download.sha256}).end(bytes);return;
       }
       const orderStatusMatch=pathname.match(/^\/api\/workshop\/orders\/(orderline_[a-f0-9-]+)\/status$/);if(orderStatusMatch&&method==='GET')return json(res,200,orderIntake.status(orderStatusMatch[1]));
       const productionMatch=pathname.match(/^\/api\/workshop\/orders\/(orderline_[a-f0-9-]+)\/production(?:\/(transition))?$/);

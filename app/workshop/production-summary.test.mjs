@@ -71,7 +71,7 @@ test('Natives Gravurpaket: Bestellbezug, Optionen mit Preis, skalierte Textposit
  assert.deepEqual(summary.product.options.map(o=>[o.group,o.value,o.priceCents,o.priceKind]),[['Größe','15 × 20 cm',f.config.acrylic.pricing.sizes.small,'base'],['Sockel','Massiver Holzsockel · Buche',f.config.acrylic.pricing.bases.buche,'surcharge'],['Unsichtbare Wandhalterung','Ohne Wandhalterung',0,'surcharge']]);
  const [text]=summary.textFields;assert.equal(text.label,'names');assert.equal(text.text,'Anna & Lukas');assert.equal(text.sizeMm,5);assert.equal(text.xMm,100);assert.equal(text.yMm,40);assert.equal(text.rotationDeg,15);assert.equal(text.anchor,'center');
  const [photo]=summary.photos;assert.equal(photo.label,'photo-test');assert.equal(photo.effectiveDpi,f.bundle.manifest.photoResolution[0].effectiveDpi);assert.equal(photo.status,resolutionStatus(photo.effectiveDpi,300));assert.equal(photo.sha256,digest(f.raw));
- assert.equal(summary.profile.mirror,true);assert.equal(summary.profile.methodLabel,'Gravur auf Acrylglas');assert.equal(summary.output.recipe,'gravuru-acrylic-engraving-proof/v6');
+ assert.equal(summary.profile.mirror,true);assert.equal(summary.profile.methodLabel,'Gravur auf Acrylglas');assert.equal(summary.output.recipe,'gravuru-acrylic-engraving-proof/v7');
  const info=pdfInfo(files.get(SUMMARY_FILES.pdf));assert.equal(info.pages,1);assert.equal(info.images,1);for(const needle of ['1001','orderline_fixture','Anna & Lukas','15°','Massiver Holzsockel','Spiegelung','ja'])assert.ok(info.text.includes(needle),needle);
 });
 

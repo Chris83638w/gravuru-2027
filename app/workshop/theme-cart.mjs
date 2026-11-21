@@ -6,7 +6,18 @@ import {readReviewPackage} from './review-package.mjs';
 import {NATIVE_REVIEW_SCHEMAS} from './native-review-schema.mjs';
 import {cartLineInput} from './storefront-cart.mjs';
 import {cartTimingStep} from './shop-cart-timing.mjs';
+import {merchantNavigation} from './ui/merchant-navigation.mjs';
 const fail=(status,code,message)=>{throw Object.assign(Error(message),{status,code});};
+// #265, ENTSCHEIDUNGEN 3.53 (6) und 3.57 (1): „Fertigungsdatei“ an der Shopify-Zeile. Die Adresse nennt nur die Gestaltung
+// (Konfigurations-Kennung und Revision) und führt auf die Bestellansicht der Werkstatt im Shopify-Admin – dieselbe Form, mit der die
+// Werkstatt eigene Seiten in einem neuen Tab öffnet (ui/merchant-navigation.mjs). Dort ist die Anmeldung als Mitarbeiter nötig;
+// eine Datei liefert erst der Download der angemeldeten Sitzung aus, nie diese Adresse. Ohne Händleranmeldung der Werkstatt für
+// diesen Shop (`sessionContext`) gibt es keine solche Seite – dann auch keine Eigenschaft.
+export function productionOrderLink(office,shopDomain,configuration){
+ if(!office||office.shopDomain!==shopDomain||typeof office.clientId!=='string')return null;
+ const link=merchantNavigation('/werkstatt/bestellungen/?'+new URLSearchParams({config:configuration.id,rev:String(configuration.rev)}),'https://'+shopDomain+'/',{newTab:true,apiKey:office.clientId,shop:shopDomain});
+ return link.startsWith('https://'+shopDomain+'/admin/apps/'+office.clientId+'/werkstatt/bestellungen/?')?link:null;
+}
 export function prepareThemeCart({workshop,registry,shopDomain,proxyPath,customerImageUrl,checkoutImageSource,presentation},binding,input,{draftToken}={}){
  const {cartRevision,...offerInput}=input;
  const prepared=cartTimingStep('bound_offer',()=>prepareBoundCartOffer({workshop,registry,shopDomain},binding,offerInput,{draftToken}));
@@ -35,6 +46,9 @@ export function prepareThemeCart({workshop,registry,shopDomain,proxyPath,custome
  if(presentation==='prio-r15')edit.searchParams.set('ui','prio-r15');
  properties._gravuru_bearbeiten=edit.href;
  if(customerImageUrl)properties._gravuru_bild=cartTimingStep('customer_image_url',()=>customerImageUrl(offer.id));
+ // #265, ENTSCHEIDUNGEN 3.53 (6): „Fertigungsdatei“ für das Büro; „Gestaltung ansehen“ ist die vorhandene Eigenschaft `_gravuru_bild`.
+ const production=productionOrderLink(workshop.sessionContext,shopDomain,configuration);
+ if(production)properties._gravuru_fertigung=production;
  // The edit link identifies the actual cart revision, not the last prepared offer.
  const previousRevision=input.configId?cartRevision:null;
  // Only the Shopify media job uses this immutable source. Old offers keep their existing image URL.

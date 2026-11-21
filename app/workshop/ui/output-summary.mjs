@@ -1,7 +1,9 @@
 const states={queued:'Wartet',running:'Wird erstellt',completed:'Fertig',failed:'Fehlgeschlagen'};
 export const outputDate=value=>new Intl.DateTimeFormat('de-DE',{dateStyle:'short',timeStyle:'short',timeZone:'Europe/Berlin'}).format(new Date(value));
+// #265, ENTSCHEIDUNGEN 3.57 (5): `auto` ist der Auftrag ohne Fertigungsprofil und ohne ausdrückliche Wahl; das Ergebnis steht in der Ausgabe.
+export const engravingLabel=mode=>mode==='vector'?'Vektorgravur':mode==='auto'?'Gravur nach Regel (Vektor ohne Foto, sonst Raster)':'Rastergravur';
 export function outputLabel(job){
- const s=job.settings,type=s.mode?(s.mode==='vector'?'Vektorgravur':'Rastergravur'):(s.profile==='mimaki'?'Mimaki':'Roland');
+ const s=job.settings,type=s.mode?engravingLabel(s.mode):(s.profile==='mimaki'?'Mimaki':'Roland');
  const white=s.mode?'':s.white==='none'?' · ohne Weiß':s.white==='full'?' · vollflächiges Weiß':' · Weiß unter Druck';
  return `${states[job.status]||job.status} · ${type} · ${s.dpi} dpi${white}`;
 }

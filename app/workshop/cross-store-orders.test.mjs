@@ -1,10 +1,11 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {crossStoreOrders,createCrossStoreOrders,outputStateFromJobs,rejectedOutputState} from './cross-store-orders.mjs';
-import {orderKey,orderApi,orderPage,orderRequest,selectedOrder} from './ui/order-store-context.mjs';
+import {orderKey,orderApi,orderPage,orderRequest,selectedOrder,orderForConfiguration,ORDER_NOT_PAID_NOTE} from './ui/order-store-context.mjs';
 import {acrylAssetText,acrylRoute} from './acryl-employee-host.mjs';
 import {once} from 'node:events';
 import {createPreviewServer} from '../configurator/variant-m/server.mjs';
+import {productionOrderLink} from './theme-cart.mjs';
 const shop='test.myshopify.com',origin='https://work.example';
 const row=(id,orderId)=>({id,orderId,shopDomain:shop,receivedAt:'2026-10-29T11:00:00Z',product:{name:'Test'},test:true});
 const store=(storeId,rows,errors=[])=>({storeId,apiPrefix:storeId==='acryl'?'/api/workshop/acryl/':'/api/workshop/',workshop:{sessionContext:{shopDomain:shop},orderIntake:{list:()=>rows,errors:()=>errors,status:id=>({label:storeId+' '+id})}}});
@@ -28,6 +29,28 @@ test('combined orders keep both stores, rejected lines, immutable IDs and indepe
  assert.equal(r.errors[0].storeId,'acryl');assert.equal(r.errors[0].intakeError,'Preis weicht ab');assert.equal(JSON.stringify(input),before);
  assert.equal(selectedOrder(r.orders,'same'),null);assert.equal(selectedOrder(r.orders,'acryl:same').orderId,'new');
  assert.equal(selectedOrder(r.orders.slice(0,1),'same'),r.orders[0]);
+});
+// #265 Stufe B, Lieferung 3 (ENTSCHEIDUNGEN 3.53/3.57): Aufruf der Bestellansicht über „Fertigungsdatei“ an der Shopify-Zeile.
+test('#265: the order view selects the position of a design by configuration and revision; before payment there is a note, not an error',()=>{
+ const config='konfig_11111111-1111-4111-8111-111111111111',other='konfig_22222222-2222-4222-8222-222222222222';
+ const input=[store('legacy',[row('old','1001')]),store('acryl',[{...row('a','1002'),configuration:{id:config,rev:2}},{...row('b','1003'),configuration:{id:other,rev:2}},{...row('c','1004'),configuration:{id:other,rev:1}}])];
+ const rows=crossStoreOrders(input,{shopDomain:shop,enabled:true}).orders;assert.equal(rows.length,4);
+ const found=orderForConfiguration(rows,config,'2');assert.equal(found.orderId,'1002');assert.equal(orderKey(found),'acryl:a');assert.equal(selectedOrder(rows,orderKey(found)),found);
+ assert.equal(orderForConfiguration(rows,other,'1').orderId,'1004');assert.equal(orderForConfiguration(rows,other,2).orderId,'1003');
+ // Noch nicht bezahlt, anderer Stand, unlesbare oder fehlende Angaben: keine Position – die Seite zeigt den Hinweis.
+ for(const [id,rev] of [[config,'1'],[config,'3'],['konfig_33333333-3333-4333-8333-333333333333','1'],[config,null],[config,''],[config,'02'],[config,'2x'],[null,'2'],['a','2'],[config+'x','2']])assert.equal(orderForConfiguration(rows,id,rev),null,JSON.stringify([id,rev]));
+ assert.equal(orderForConfiguration([],config,'2'),null);assert.match(ORDER_NOT_PAID_NOTE,/noch keine bezahlte Bestellposition.*mit der Zahlung/);
+ // Nie raten: Dieselbe Angabe an zwei Positionen wählt keine.
+ assert.equal(orderForConfiguration([...rows,{...rows.find(r=>r.id==='a'),viewKey:'legacy:a'}],config,'2'),null);
+ // Die Adresse an der Zeile: Bestellansicht im Shopify-Admin (Anmeldung als Mitarbeiter), nur Kennung und Revision als Parameter;
+ // die Bestellansicht liest daraus genau das, was sie zur Auswahl braucht.
+ const office={mode:'test-only',shopDomain:shop,clientId:'synthetic-client'},link=productionOrderLink(office,shop,{id:config,rev:2});
+ assert.equal(link,'https://'+shop+'/admin/apps/synthetic-client/werkstatt/bestellungen/?config='+config+'&rev=2');
+ const query=new URL(link).searchParams;assert.equal(orderForConfiguration(rows,query.get('config'),query.get('rev')),found);
+ assert.doesNotMatch(link,/\.(?:pdf|svg|zip|png)(?:$|\?)|token|download|\/api\//,'die Adresse führt auf die Seite, nie auf eine Datei');
+ // Ohne Händleranmeldung für genau diesen Shop gibt es keine anmeldepflichtige Seite – dann auch keine Adresse.
+ for(const context of [null,undefined,{shopDomain:shop},{shopDomain:'other.myshopify.com',clientId:'synthetic-client'},{shopDomain:shop,clientId:'a/b'},{shopDomain:shop,clientId:''},{shopDomain:shop,clientId:7}])assert.equal(productionOrderLink(context,shop,{id:config,rev:2}),null,JSON.stringify(context));
+ assert.equal(productionOrderLink({shopDomain:'shop.example',clientId:'synthetic-client'},'shop.example',{id:config,rev:2}),null,'nur der Shopify-Admin des Shops');
 });
 // #265 Stufe B, Lieferung 1 (ENTSCHEIDUNGEN 3.48/3.51/3.53): Kennzeichen der Fertigungsdatei je Position.
 test('the output mark is derived from the export jobs alone: fertig before wird erstellt before bitte prüfen, always with a reason',()=>{

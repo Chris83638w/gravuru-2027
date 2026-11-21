@@ -1,6 +1,6 @@
 import {PRODUCT_DOCUMENT_FILE,productDocumentJson} from './review-product.mjs';
 import {renderDoorbellCutPdfs} from './doorbell-artwork.mjs';
-import {printDelivery} from './print-delivery.mjs';
+import {printDelivery,ORDER_FILES_SCHEMA,contourStroke,svgWithContour,orderFileSet} from './print-delivery.mjs';
 import {acrylicArtwork} from './acrylic-artwork.mjs';
 import {rasterizePrint,formPrintSettings} from './form-print-proof.mjs';
 import {digest} from './review-package.mjs';
@@ -8,7 +8,10 @@ import {geometryContourPdf} from './form-contour-pdf.mjs';
 import {exportSettings} from '../configurator/variant-m/print-export-model.mjs';
 import {productionPackage} from './production-summary.mjs';
 import {surfaceFileName} from '../configurator/variant-m/surfaces.mjs';
-export const ACRYLIC_PRINT_RECIPE='gravuru-acrylic-print-proof/v7';
+// v8 (#265, ENTSCHEIDUNGEN 3.57): Das Paket führt je Fläche zusätzlich die Druckdatei ohne Schnittlinie („PDF“), mit der
+// Schnittlinie als Haarlinie („PDF mit Kontur“) und die gesicherte Gestaltung mit Kontur („SVG mit Kontur“). Die bisherigen
+// Dateien bleiben Byte für Byte gleich; Ausgaben der Vorversion bleiben unter ihrem Schlüssel gültig und abrufbar.
+export const ACRYLIC_PRINT_RECIPE='gravuru-acrylic-print-proof/v8';
 export const acrylicPrintKey=settings=>digest(JSON.stringify({recipe:ACRYLIC_PRINT_RECIPE,settings:formPrintSettings(settings)}));
 // `context.productDocument`: Zugriff auf den Produktstand der Werkstatt für Pakete mit Verweis (review-product.mjs).
 export async function acrylicContourProof(archive,archiveHash,context={}){
@@ -25,7 +28,7 @@ async function printSide(a,requested){
  if(pixels.rgb.length!==count*3||['alpha','whiteAllowed','whiteAlpha'].some(k=>pixels[k].length!==count))throw Error('Unvollständige Rasterdaten.');
  const settings=exportSettings({width:g.widthMm,height:g.heightMm},{...requested,bleedMm:raw.bleedMm,whiteBleedMm:raw.whiteBleedMm});
  const artwork=raw.artworkLayers.map(l=>l.type==='text'?l:{...l,rgb:new Uint8Array(Buffer.from(l.rgb,'base64')),alpha:new Uint8Array(Buffer.from(l.alpha,'base64'))});
- const delivery=await printDelivery({settings,pixels,paths:raw.paths,artwork});
+ const delivery=await printDelivery({settings,pixels,paths:raw.paths,artwork},{orderFiles:true});
  return {raw,settings,delivery,pdf:delivery.pdf};
 }
 export async function createAcrylicPrintProof(archive,archiveHash,input={},context={}){
@@ -45,6 +48,12 @@ export async function createAcrylicPrintProof(archive,archiveHash,input={},conte
   metadata.surfaces=sides.map(s=>({id:s.id,pdf:s.side.settings.profile==='mimaki'?s.side.delivery.downloads.pdf.name:name('technische-druckpruefung.pdf',s.id),pdfSha256:digest(s.side.pdf),mirror:s.side.settings.mirror,geometrySha256:s.a.geometrySha256,...(s.side.delivery.downloads.white?{white:s.side.delivery.downloads.white.name}:{})}));
   metadata.photoSources.push(...sides[1].a.photos.map(p=>({fieldId:'back-'+p.fieldId,path:p.sourcePath,width:p.width,height:p.height})));
  }
+ // #265, ENTSCHEIDUNGEN 3.57: die vier Downloads je Fläche. „SVG“ ist die gesicherte Gestaltung wie bisher (seitenrichtig, nicht
+ // gespiegelt), „SVG mit Kontur“ dieselbe Datei plus Kontur in derselben Ausrichtung; die beiden PDF folgen der Druckdatei
+ // (gespiegelt nach Profil). Die Druckdatei selbst (Schnittlinie 0,05 mm) bleibt unverändert die Datei der „Ausgaben“.
+ const stroke=contourStroke(a);
+ for(const s of sides)s.order={pdf:[name('druck-1zu1-ohne-schnittlinie.pdf',s.id),s.side.delivery.order.pdf],'pdf-contour':[name('druck-1zu1-mit-kontur.pdf',s.id),s.side.delivery.order.contour],svg:[name('gesicherte-gestaltung.svg',s.id),Buffer.from(s.a.svg)],'svg-contour':[name('druck-1zu1-mit-kontur.svg',s.id),Buffer.from(svgWithContour(s.a.svg,s.a.geometry,{stroke}))]};
+ metadata.orderFiles={schema:ORDER_FILES_SCHEMA,surfaces:sides.map(s=>orderFileSet(s.id,s.order))};
  const extras=[];
  for(const s of sides){
   const {settings:st,delivery:dl,pdf:sp}=s.side;
@@ -52,6 +61,7 @@ export async function createAcrylicPrintProof(archive,archiveHash,input={},conte
   if(s.id==='front')extras.push({name:'druckpruefung.json',blob:new Blob([JSON.stringify(metadata,null,2)])});
   extras.push({name:name('gesicherte-gestaltung.svg',s.id),blob:new Blob([s.a.svg])});
   extras.push(...dl.extras.map(e=>({...e,name:name(e.name,s.id)})));
+  extras.push(...['pdf','pdf-contour','svg-contour'].map(format=>({name:s.order[format][0],blob:new Blob([s.order[format][1]])})));
  }
  // Paket mit Verweis: Der geholte und geprüfte Produktstand kommt ins Fertigungspaket; es bleibt für sich vollständig.
  if(a.productDocument)extras.push({name:PRODUCT_DOCUMENT_FILE,blob:new Blob([productDocumentJson(a.productDocument)])});

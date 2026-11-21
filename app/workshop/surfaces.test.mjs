@@ -2,7 +2,7 @@
 import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs';import os from 'node:os';import path from 'node:path';import {execFileSync} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
 import {build} from '../configurator/variant-m/build.mjs';import {createWorkshop} from './http.mjs';import {makeProductDocument} from './product-model.mjs';
-import {prepareAcrylicReview} from './acrylic-review.mjs';import {createAcrylicEngravingProof} from './acrylic-engraving-proof.mjs';import {createAcrylicPrintProof} from './acrylic-print-proof.mjs';import {outputDownload} from './print-delivery.mjs';import {readReviewPackage,digest} from './review-package.mjs';
+import {prepareAcrylicReview} from './acrylic-review.mjs';import {createAcrylicEngravingProof} from './acrylic-engraving-proof.mjs';import {createAcrylicPrintProof} from './acrylic-print-proof.mjs';import {outputDownload,orderDownload,orderFileSets} from './print-delivery.mjs';import {readReviewPackage,digest} from './review-package.mjs';
 import {SUMMARY_FILES} from './production-summary.mjs';import {importEnvironment} from './design-assets.mjs';
 import {openKatalog} from './katalog-source.mjs';
 import {validateFamily,familyProductConfig,familyBriefing} from './product-families.mjs';
@@ -106,6 +106,10 @@ test('Fertigung: Rückseite erzeugt eigene Produktionsdatei mit -vorderseite/-ru
  assert.deepEqual(summary.product.surfaces.map(s=>s.id),['front','back']);assert.deepEqual(summary.textFields.map(f=>[f.text,f.surfaceId]),[['Vorne','front'],['Hinten','back']]);
  assert.ok(summary.output.files.includes('technische-gravurpruefung-rueckseite.pdf'));
  assert.equal(surfaceFileName('Mimaki-NUR-RDG_WHITE.pdf','back'),'Mimaki-NUR-RDG_WHITE-rueckseite.pdf');
+ // #265, ENTSCHEIDUNGEN 3.57: die vier Downloads der Bestellansicht gibt es je Fläche; die Kontur folgt der Spiegelung ihrer Seite.
+ assert.deepEqual(orderFileSets(result.metadata).map(s=>[s.id,s.formats]),[['front',['pdf','pdf-contour','svg','svg-contour']],['back',['pdf','pdf-contour','svg','svg-contour']]]);
+ assert.deepEqual(orderDownload(result,'pdf','back').bytes,files.get('technische-gravurpruefung-rueckseite.pdf'));assert.equal(orderDownload(result,'pdf-contour','back').suffix,'gravur-1zu1-mit-kontur-rueckseite.pdf');
+ assert.match(orderDownload(result,'svg-contour','back').bytes.toString(),/<g id="kontur"[^>]* transform="translate\(\d+ 0\) scale\(-1 1\)">/);assert.doesNotMatch(orderDownload(result,'svg-contour','front').bytes.toString(),/<g id="kontur"[^>]* transform=/);
 });
 test('Fertigung: zweiseitiges Produkt ohne gestaltete Rückseite behält die bisherigen Dateinamen',async t=>{
  const {result,files}=await engraving(t,{back:false});
@@ -117,4 +121,7 @@ test('Fertigung Druck: je Seite Druck-, Weiß- und SVG-Datei; Weiß-Download der
  for(const name of ['Mimaki-FARBE-ohne-RDG_WHITE-vorderseite.pdf','Mimaki-FARBE-ohne-RDG_WHITE-rueckseite.pdf','Mimaki-NUR-RDG_WHITE-vorderseite.pdf','Mimaki-NUR-RDG_WHITE-rueckseite.pdf','gesicherte-gestaltung-vorderseite.svg','gesicherte-gestaltung-rueckseite.svg','druckpruefung.json'])assert.ok(files.has(name),name);
  assert.deepEqual(result.metadata.surfaces.map(s=>[s.id,s.pdf,s.white]),[['front','Mimaki-FARBE-ohne-RDG_WHITE-vorderseite.pdf','Mimaki-NUR-RDG_WHITE-vorderseite.pdf'],['back','Mimaki-FARBE-ohne-RDG_WHITE-rueckseite.pdf','Mimaki-NUR-RDG_WHITE-rueckseite.pdf']]);
  assert.equal(outputDownload(result,'white-pdf').suffix,'Mimaki-NUR-RDG_WHITE-vorderseite.pdf');
+ // #265, ENTSCHEIDUNGEN 3.57: auch im Druck vier Downloads je Fläche.
+ assert.deepEqual(orderFileSets(result.metadata).map(s=>[s.id,s.formats.length]),[['front',4],['back',4]]);
+ assert.equal(orderDownload(result,'pdf','back').suffix,'druck-1zu1-ohne-schnittlinie-rueckseite.pdf');assert.deepEqual(orderDownload(result,'svg','front').bytes,files.get('gesicherte-gestaltung-vorderseite.svg'));
 });

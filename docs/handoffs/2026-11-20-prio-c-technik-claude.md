@@ -785,8 +785,35 @@ Die Shopify-Funktion prüft nur die Form der Bildadresse (`cart-image.mjs`); ein
 
 **Auskünfte von Astra** (#267, Kommentar 7050660184): siehe `STATUS.md`, Eintrag 21.11.2026. Für Schritt 4 wichtig: Der Webhook `orders/paid` kommt an (HTTP 200), die Position steht in der Werkstatt, aber es entsteht kein Exportauftrag. Die freigegebene Shopify-Funktion ist `gravuru-2027-preis-einzelsperre-20261116-b1`.
 
+## 21.11.2026, 07:28 Uhr – Gesamtweg freigegeben (ENTSCHEIDUNGEN 3.53)
+
+**Grundsatz.** Bei Shopify liegen nur Text, Preis und Links. Gestaltung, Kundenfoto und druckfertige Dateien liegen auf dem eigenen Server. Vorbild: Fancy (Bildschirmfotos von Chris; Kundendaten daraus stehen nirgends im Repo).
+
+| Wer | Was | Woher |
+| --- | --- | --- |
+| Kunde, Klick | ein kurzer Abruf sichert die Gestaltung; an Shopify nur Text | eigener Server |
+| Kunde, Warenkorb | Bild und „Bearbeiten“ wie heute | `_gravuru_bild`, `_gravuru_bearbeiten` |
+| Kunde, Kasse | normales Produktbild (einzige Änderung) | Shopify |
+| Kunde, nach dem Kauf | Bild auf Danke-Seite, in der Bestell-E-Mail, im Kundenkonto | eigener Server; Erweiterung und E-Mail-Baustein |
+| Server, bei Zahlung | druckfertige Dateien, Preisvergleich, bei Abweichung „Bitte prüfen“ | Bestelleingang |
+| Büro | Links „Gestaltung ansehen“ und „Fertigungsdatei“ an der Zeile; danach Block mit Bild und Knöpfen in der Shopify-Bestellseite; vier Downloads PDF, PDF mit Kontur, SVG, SVG mit Kontur | eigene Bestellansicht |
+
+**Stufen** (Zeiten gerechnet aus der Messung vom 20.11., 21:46 Uhr, Acrylglas 11,1 s; nicht gemessen):
+
+| Stufe | Inhalt | Klick bis Warenkorb | Freigabe |
+| --- | --- | --- | --- |
+| A | kein Bild an Shopify (Kassenbild und `_Entwurf` entfallen), kleines Paket (gebaut: `5ad10b05`, `07516299`), Abrufe nach dem Sichern zusammenlegen | rund 7 s | erteilt |
+| B | Bestelleingang: druckfertige Dateien automatisch, Preisvergleich, Vermerk; Links an der Zeile; vier Downloads | unverändert | erteilt |
+| C | neue App-Version: Block in der Bestellseite, Bild auf Danke-Seite und im Kundenkonto; E-Mail-Baustein einsetzen | unverändert | App-Version und E-Mail-Baustein gibt Chris eigens frei |
+| D | Prüfung der Gestaltung vom Klick an den Bestelleingang | rund 5 s | erteilt |
+| E | Einlegen bei Shopify und Sichern gleichzeitig (Kennungen und Bildadresse aus dem Inhalt abgeleitet) | Ziel 3 s oder weniger | erteilt |
+
+**Für B zu klären, bevor gebaut wird:** je Produktart (Edelstahl, Acrylglas, Schiefer, Funkklingel), welche der vier Fassungen heute entstehen; der Link „Fertigungsdatei“ liefert erst nach Zahlung; die Ansicht zeigt die beim Kauf gesicherte Gestaltung, nicht den aktuellen Konfigurator (Anlass: leere Seite bei „Bearbeiten“ aus #1027).
+
+**Für E zu beachten:** `_gravuru_bild` trägt heute eine vom Server gerechnete Marke (`customer-design-image.mjs`); Danke-Seite und E-Mail-Baustein prüfen die Form der Adresse. Eine aus dem Inhalt abgeleitete Adresse braucht dort eine Änderung, die mit Stufe C mitgehen kann.
+
 ### Offene Fragen an Chris
 
-1. Die bisher ohne Bestellung bei Shopify angelegten Kassenbilder löschen, sobald der neue Stand live ist. Empfehlung: Ja. (Gestellt 21.11., 07:10 Uhr; nichts gelöscht.)
+Keine. Gelöscht wird nichts (die Testbilder bei Shopify bleiben).
 
 Der [Design-Master](https://github.com/Chris83638w/gravuru-katalog./blob/main/designs/DESIGN-MASTER.md) gilt unverändert; an Designs wurde nichts geändert.

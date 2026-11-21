@@ -8,6 +8,7 @@ import {printArtwork} from './print-export.mjs';
 import {createAcrylicDraftClient} from './acrylic-draft-client.mjs';
 import {editorUi} from './toolbar-placement-model.mjs';
 import {logoMediaPayload} from './logo-upload.mjs';
+import {createCartPresave,presaveKey} from './shop-cart-presave.mjs';
 
 // Customer preview for the cart: WebP keeps the upload small (PNG with material texture ≈3 MB);
 // browsers without WebP encoding return PNG, which the server accepts unchanged.
@@ -48,13 +49,53 @@ export function installShopCart(api,footer,gate){
  button.type='button';button.className='completion-cart';button.dataset.shopCart='';
  status.setAttribute('role','status');status.setAttribute('aria-live','polite');status.dataset.shopCartStatus='';status.hidden=true;
  footer.append(button,status);
- let busy=false,save=null;
+ let busy=false,save=null,handed=false;
  const quantity=()=>Number(api.r.querySelector('[data-fk-quantity]')?.value||1);
  // V4: laufende Schritte zeigen ein Ladesymbol; dauert ein Schritt länger, erscheint ein Hinweis statt Stillstand.
  let slow=null;
  const say=(text,{busy:running=false}={})=>{clearTimeout(slow);status.textContent=text;status.hidden=!text;if(running)status.dataset.busy='';else delete status.dataset.busy;
   if(running)slow=setTimeout(()=>{if('busy' in status.dataset)status.textContent=text+' Bei langsamer Verbindung dauert das etwas länger – bitte das Fenster geöffnet lassen.';},12000);};
  const label=()=>{button.textContent=busy?'Bitte warten …':api.el.cartEdit?.cartLineId?'Warenkorb aktualisieren':'Jetzt in den Warenkorb';button.disabled=busy;};
+ // Die Arbeit zwischen „1 von 4“ und dem Ende von „2 von 4“ – für den Klick und für das Vorab-Sichern dieselbe.
+ const buildPayload=async count=>{
+  await api.el.uxEnsureDraftResources?.({design:{objects:api.el.state.objects}});
+  const used=[...new Set(api.el.state.objects.filter(o=>o.uxUploadId).map(o=>o.uxUploadId))];
+  const prepared=await prepareCartImages({
+   artwork:()=>printArtwork(api),
+   media:()=>Promise.all(used.map(id=>logoMediaPayload(api.files.get(id),id))),
+   reference:art=>referencePng(art.svg,art.geometry),customer:async()=>base64(await customerPreviewBlob(api.el))
+  });
+  const ui=editorUi(api.el.state.ui);
+  return {...binding,textOnTop:true,designId:api.el.state.designId,objects:api.el.state.objects.map(cleanObject),options:api.el.state.mOptions,quantity:count,media:prepared.media,preview:prepared.preview,customerPreview:prepared.customerPreview,...(ui?{ui}:{})};
+ };
+ const saveDraft=async(payload,cartEdit)=>{
+  save??=createAcrylicDraftClient({storage:cartEdit?null:sessionStorage,fetchImpl:gate.request});
+  return {saved:await save(payload,gate.csrfToken||'shop-entry',cartEdit),cartEdit};
+ };
+ // #265, ENTSCHEIDUNGEN 3.56 („Vorab sichern“): Vorschau erzeugen und Sichern kosten zusammen rund 1,7 s. Beides beginnt
+ // deshalb schon, wenn „Deine Gestaltung im Überblick“ geöffnet ist – nur auf dem eigenen Server, bei Shopify entsteht
+ // nichts; der Klick legt dann nur noch ein. Ohne Statustext, ohne Knopfsperre; ein Fehler bleibt still, dann sichert der
+ // Klick wie bisher selbst. Schlüssel, Reihenfolge und Wiederverwendung: shop-cart-presave.mjs.
+ const presave=createCartPresave();
+ const currentKey=()=>presaveKey(JSON.stringify(api.el.state),quantity(),api.el.cartEdit);
+ // Nur stille Prüfungen (kein uxAttemptTextValidation, kein uxCheckLayout, kein Fokuswechsel): completion.mjs öffnet die
+ // Übersicht erst nach Textprüfung und Layoutprüfung. Während ein Klick läuft und nach der Übergabe (die Weiterleitung
+ // läuft noch), beginnt kein Vorab-Sichern – sonst änderte eine weitere Sicherung die Entwurfsrevision, die gerade an den
+ // Warenkorb übergeben wird (der Server nimmt dort nur die aktuelle an).
+ const overview=footer.closest?.('dialog');
+ const presaveNow=()=>{
+  try{
+   if(busy||handed||!overview.open||api.el.uxTextIssues?.()[0]||api.pending?.())return;
+   const count=quantity();
+   if(!Number.isSafeInteger(count)||count<1||count>99)return;
+   presave.start(currentKey(),{current:currentKey,prepare:()=>buildPayload(count),save:payload=>saveDraft(payload,api.el.cartEdit)});
+  }catch{}
+ };
+ // Erkannt am open-Attribut des Dialogs, in dem der Knopf sitzt (completion.mjs bleibt unverändert). Erst nach dem
+ // nächsten gezeichneten Bild beginnen, damit das Öffnen nicht ruckelt.
+ if(overview&&typeof MutationObserver==='function')new MutationObserver(()=>{if(overview.open)requestAnimationFrame(()=>setTimeout(presaveNow,0));}).observe(overview,{attributes:true,attributeFilter:['open']});
+ // Zurück aus dem Warenkorb in die vom Browser aufbewahrte Seite: Die frühere Übergabe ist beendet.
+ window.addEventListener?.('pageshow',event=>{if(event.persisted)handed=false;});
  button.addEventListener('click',async()=>{
   if(busy)return;busy=true;label();
   try{
@@ -65,21 +106,24 @@ export function installShopCart(api,footer,gate){
    if(api.pending?.())throw Error('Bitte warten, bis das Foto vollständig geladen ist.');
    const fingerprint=JSON.stringify(api.el.state),count=quantity();
    if(!Number.isSafeInteger(count)||count<1||count>99)throw Error('Bitte eine Menge zwischen 1 und 99 wählen.');
-   say('1 von 4 · Vorschau wird erstellt …',{busy:true});
-   await api.el.uxEnsureDraftResources?.({design:{objects:api.el.state.objects}});
-   const used=[...new Set(api.el.state.objects.filter(o=>o.uxUploadId).map(o=>o.uxUploadId))];
-   const prepared=await prepareCartImages({
-    artwork:()=>printArtwork(api),
-    media:()=>Promise.all(used.map(id=>logoMediaPayload(api.files.get(id),id))),
-    reference:art=>referencePng(art.svg,art.geometry),customer:async()=>base64(await customerPreviewBlob(api.el))
-   });
-   const ui=editorUi(api.el.state.ui);
-   const payload={...binding,textOnTop:true,designId:api.el.state.designId,objects:api.el.state.objects.map(cleanObject),options:api.el.state.mOptions,quantity:count,media:prepared.media,preview:prepared.preview,customerPreview:prepared.customerPreview,...(ui?{ui}:{})};
-   if(fingerprint!==JSON.stringify(api.el.state))throw Error('Die Gestaltung wurde während der Sicherung geändert. Bitte erneut in den Warenkorb legen.');
-   const cartEdit=api.el.cartEdit;
-   save??=createAcrylicDraftClient({storage:cartEdit?null:sessionStorage,fetchImpl:gate.request});
-   say('2 von 4 · Gestaltung wird gesichert …',{busy:true});
-   const saved=await save(payload,gate.csrfToken||'shop-entry',cartEdit);
+   // #265, ENTSCHEIDUNGEN 3.56: Ein Vorab-Stand mit genau diesem Schlüssel wird verwendet (läuft er noch, wird gewartet).
+   // Sonst – keiner, anderer Stand, fehlgeschlagen oder schon einmal eingelegt – der bisherige Weg mit seinen Meldungen.
+   const key=presaveKey(fingerprint,count,api.el.cartEdit),early=presave.take(key);
+   let secured=null;
+   if(early){
+    if(early.pending)say('2 von 4 · Gestaltung wird gesichert …',{busy:true});
+    secured=await early.saved.catch(()=>null);
+    if(secured&&fingerprint!==JSON.stringify(api.el.state))throw Error('Die Gestaltung wurde während der Sicherung geändert. Bitte erneut in den Warenkorb legen.');
+   }
+   if(!secured){
+    say('1 von 4 · Vorschau wird erstellt …',{busy:true});
+    const payload=await buildPayload(count);
+    if(fingerprint!==JSON.stringify(api.el.state))throw Error('Die Gestaltung wurde während der Sicherung geändert. Bitte erneut in den Warenkorb legen.');
+    const edit=api.el.cartEdit;
+    say('2 von 4 · Gestaltung wird gesichert …',{busy:true});
+    secured=await presave.save(key,()=>saveDraft(payload,edit));
+   }
+   const {saved,cartEdit}=secured;
    const body=shopCartRequest({saved,cartEdit,quantity:count,cartMode:gate.cartMode,presentation:gate.presentation});
    say('3 von 4 · Warenkorb wird vorbereitet …',{busy:true});
    const result=await gate.submitCart(body,{draftToken:saved.draftToken});
@@ -87,7 +131,7 @@ export function installShopCart(api,footer,gate){
    const target=gate.cartMode==='theme'?themeCartTarget(result,gate.shopDomain,gate.themeCartPath):checkoutTarget(result,gate.shopDomain);
    if(result.configuration?.id&&result.lineId)api.el.cartEdit={configId:result.configuration.id,rev:result.configuration.rev,cartLineId:result.lineId,draftId:saved.draftId,draftToken:saved.draftToken,draftRevision:saved.revision};
    say(gate.cartMode==='theme'?'4 von 4 · Deine Gestaltung ist gesichert und wird in den Warenkorb gelegt …':(result.mode==='update'?'Warenkorbposition aktualisiert: ':'Im Warenkorb: ')+euro(result.totalCents)+'. Weiter zu Shopify …',{busy:true});
-   window.top.location.assign(target);
+   window.top.location.assign(target);handed=true;
   }catch(error){say(error.message||'Der Warenkorb konnte nicht vorbereitet werden.');}
   finally{busy=false;label();}
  });

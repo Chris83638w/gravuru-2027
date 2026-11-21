@@ -1,0 +1,61 @@
+{
+  "commit": "4fbf2e616827c5d7b9a3494b9f76cfe4036d4b0e",
+  "published_utc": "2026-11-21T12:56:45.246Z",
+  "active_modules_rechecked_utc": "2026-11-21T12:56:46.363Z",
+  "status_rechecked_utc": "2026-11-21T12:57:23.641Z",
+  "version": "gravuru-2027-stufe-c-4fbf2e61-beide",
+  "version_id": "1260601606145",
+  "status": "active",
+  "module_count": 11,
+  "unchanged_modules": 9,
+  "added_scopes": [],
+  "removed_scopes": [],
+  "write_orders": true,
+  "unchanged_theme_files": 21,
+  "app_toml_sha256": "4222e19ba93537638358ad918904a5a07f4452bec646a6373c463cc49d1dfb63",
+  "active_modules_sha256": "2811470d8e9f8bc03dc649e214dbbb618119ae5b75c3b0d0d77318a7ba3eab13",
+  "extensions": [
+    {
+      "handle": "gravuru-order-block",
+      "api_version": "2026-10",
+      "targets": [
+        "admin.order-details.block.render"
+      ],
+      "bundle_sha256": "8494e6f9a6b5d72c8d6e9e37eb2edfe140cce3db1197fbcfc76d74efb726e3b3"
+    },
+    {
+      "handle": "gravuru-thank-you-preview",
+      "api_version": "2026-10",
+      "targets": [
+        "customer-account.order-status.cart-line-item.render-after",
+        "purchase.thank-you.cart-line-item.render-after"
+      ],
+      "bundle_sha256": "397f4dd57cbca19ab1874ffeb12cdea07167ebf77ef81b9a0e69eb6e2dd2be3a"
+    }
+  ],
+  "unchanged_function_files": [
+    {
+      "handle": "gravuru-personalization-price",
+      "bytes": 22036,
+      "sha256": "8b33937d43aba7c8e86b1c4c3341e3e9224f1ab43d043608f7cbdee4d8f8bf4e"
+    },
+    {
+      "handle": "gravuru-checkout-guard",
+      "bytes": 23127,
+      "sha256": "93b5f15cee38d7f87a5d50dacc7b7324a302d754fbece1fb81e820f22f563a6a"
+    }
+  ],
+  "source_tests": {
+    "passed": 30,
+    "failed": 0
+  },
+  "rollback": {
+    "tag": "gravuru-2027-stufe-c-20261121-scope",
+    "id": "1260442845185",
+    "status": "inactive",
+    "modules": 9,
+    "modules_sha256": "1830795be4ed987ef58284032c70b8dc3978b85cd5e6f83b7b9799f071f32412"
+  },
+  "shop_surface_placement": "separate",
+  "visual_order_test": "separate"
+}

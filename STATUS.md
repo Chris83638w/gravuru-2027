@@ -1,3 +1,7 @@
+## 21.11.2026 · Astra · Stufe C im Shopify-Shop
+
+Claudes Stand `4fbf2e61` ist auf Grundlage von Entscheidung 3.58 als Shopify-Version `1260601606145` aktiv. Die zwei Erweiterungen sind auf der Danke-Seite, im Bestellstatus und auf der Bestellseite der Mitarbeiter platziert. Die drei Ansichten wurden mit derselben Testgravur im Shop geprüft. Der Rückweg ist die App-Version `1260442845185`. [Live-Prüfung und drei Bilder](docs/handoffs/2026-11-21-stufe-c-folgeversion/README.md)
+
 ## 21.11.2026 · Claude (Operator, technische Gesamtverantwortung) · #265/#267: Stufe C – die zwei ausgelassenen Bausteine korrigiert (Danke-Seite/Kundenkonto, Block in der Bestellseite)
 
 Zweig `dev/claude-stufe-c-bausteine-20261121`, aufgesetzt auf Astras `dev/astra-267-bestellmail-bild-mobil-20261121`. Nichts davon ist veröffentlicht.

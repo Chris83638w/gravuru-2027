@@ -131,6 +131,58 @@ function checkEngravingSvg(svg,{widthMm,heightMm,geometry,holes,plate=null},labe
  // Inhalt der Gruppe = alles zwischen ihrem Anfang und der Außenkontur.
  return text.slice((root+open).length,text.length-('</g>'+outer+innerGroup+'</svg>').length);
 }
+// ENTSCHEIDUNGEN 3.67 (Chris, 21.11.2026, 19:49 Uhr: „eine gravur ist immer schwarz für die maschine“) und 3.64 („svg und pdf sind
+// praktisch gleich“): Die Gravur-SVG trägt dieselbe Farbregel
+// wie die Gravur-PDF. `PAINTS` liest jede gemalte Farbe der SVG – Attribut, `style`, `<style>`, auch in eingebetteten SVG-Quellen –
+// getrennt nach Gestaltung und Konturgruppen, dazu je eingebettetem Rasterbild, ob es farbig ist; mit einer PDF auf stdin zusätzlich
+// beide Dateien gerendert (gleiches Raster, Graustufen): geschwärzte Fläche als mittlere Deckung und Anteil der Bildpunkte, die sich
+// deutlich unterscheiden. Bewusst die Deckung und keine Schwelle: Eine Kante auf halbem Bildpunkt (1-mm-Linie bei 5 Punkten je mm)
+// zeichnen die beiden Renderer mit 127 bzw. 136 von 255 – eine Schwelle bei 128 zählte dieselbe Linie dann einmal mit und einmal nicht.
+const PAINTS=`import sys,json,io,re,base64,numpy as np,pymupdf as f,cairosvg
+import xml.etree.ElementTree as ET
+from urllib.parse import unquote_to_bytes
+from PIL import Image
+from cairosvg.colors import color
+data=json.load(sys.stdin);svg=data['svg'];S='{http://www.w3.org/2000/svg}';X='{http://www.w3.org/1999/xlink}'
+KEYS=('fill','stroke','stop-color','flood-color','lighting-color','color');paints={'design':set(),'lines':set()};images=[]
+def note(where,value):
+ v=value.strip().lower()
+ if v in ('none','transparent','inherit','currentcolor') or v.startswith('url('):return
+ r,g,b,a=color(v);paints[where].add('white' if min(r,g,b)>=1 else 'black' if max(r,g,b)<=0 else v)
+def walk(node,where):
+ if node.get('id') in ('aussenkontur','ausschnitte','innenkonturen') and where=='design-top':where='lines'
+ elif where=='design-top':where='design'
+ for k in KEYS:
+  if k in node.attrib:note(where,node.get(k))
+ for text in ([node.get('style')] if node.get('style') else [])+([node.text] if node.tag==S+'style' and node.text else []):
+  for m in re.finditer(r'(?<![\\w-])(' + '|'.join(KEYS) + r')\\s*:\\s*([^;}]+)',text):note(where,m.group(2))
+ if node.tag==S+'image':
+  href=node.get('href') or node.get(X+'href');head,body=href.split(',',1);raw=base64.b64decode(body) if ';base64' in head else unquote_to_bytes(body)
+  if 'svg' in head:walk(ET.fromstring(raw),where)
+  else:
+   a=np.asarray(Image.open(io.BytesIO(raw)).convert('RGBA')).astype(int);images.append(bool((a[:,:,0]!=a[:,:,1]).any() or (a[:,:,1]!=a[:,:,2]).any()))
+ for child in node:walk(child,where)
+root=ET.fromstring(svg)
+for child in root:walk(child,'design-top')
+out={'design':sorted(paints['design']),'lines':sorted(paints['lines']),'colorImages':sum(images),'images':len(images)}
+if data.get('pdf'):
+ p=f.open(stream=base64.b64decode(data['pdf']),filetype='pdf');pix=p[0].get_pixmap(dpi=127,colorspace=f.csGRAY,alpha=False)
+ b=np.frombuffer(pix.samples,dtype=np.uint8).reshape(pix.height,pix.stride)[:,:pix.width].astype(int)
+ png=cairosvg.svg2png(bytestring=svg.encode(),output_width=pix.width,output_height=pix.height,background_color='white')
+ a=np.asarray(Image.open(io.BytesIO(png)).convert('L')).astype(int)
+ out.update({'darkSvg':round(float((255-a).mean()/255),4),'darkPdf':round(float((255-b).mean()/255),4),'different':round(float((abs(a-b)>96).mean()),4)})
+print(json.dumps(out))`;
+// Grauwert einer PDF-Seite an Punkten in mm (0 = schwarz, 255 = weiß).
+const grayAt=(pdf,points)=>JSON.parse(execFileSync(python,['-c',"import sys,json,base64,pymupdf as f\nd=json.load(sys.stdin);p=f.open(stream=base64.b64decode(d['pdf']),filetype='pdf')[0];pix=p.get_pixmap(dpi=254,colorspace=f.csGRAY,alpha=False)\nprint(json.dumps([pix.pixel(round(x*10),round(y*10))[0] for x,y in d['points']]))"],{input:JSON.stringify({pdf:Buffer.from(pdf).toString('base64'),points}),env:importEnvironment(),maxBuffer:64*1024*1024}).toString());
+const paintsOf=(svg,pdf=null)=>JSON.parse(execFileSync(python,['-c',PAINTS],{input:JSON.stringify({svg:svg.toString(),pdf:pdf?Buffer.from(pdf).toString('base64'):null}),env:importEnvironment(),maxBuffer:64*1024*1024}).toString());
+// Nur Schwarz und Weiß in der Gestaltung, kein farbiges Rasterbild; Blau und Rot ausschließlich in den Konturgruppen.
+function checkEngravingPaints(svg,pdf,label=''){
+ const seen=paintsOf(svg,pdf);
+ assert.ok(seen.design.every(c=>c==='black'||c==='white'),label+' gemalte Farben der Gestaltung: '+seen.design);assert.equal(seen.colorImages,0,label+' kein farbiges Rasterbild in der Gravur-SVG');
+ assert.ok(seen.lines.length>=1&&seen.lines.every(c=>c==='#0000ff'||c==='#ff0000'),label+' Konturgruppen: '+seen.lines);
+ if(pdf){assert.ok(Math.abs(seen.darkSvg-seen.darkPdf)<=.004,label+' gleiche schwarze Fläche in SVG und PDF: '+seen.darkSvg+' / '+seen.darkPdf);assert.ok(seen.different<=.004,label+' SVG und PDF zeigen dieselben Flächen: '+seen.different);}
+ return seen;
+}
 const svgInner=svg=>{const text=svg.toString(),root=text.match(/^<svg [^>]*>/)[0];assert.ok(text.endsWith('</svg>'));return text.slice(root.length,-6);};
 // Druck-PDF der Bestellansicht: jede Linie steht in der Schmuckfarbe `CutContour` (eine normale Farbe würde mitgedruckt –
 // Chris, 21.11.2026, 17:18 Uhr), Breite 0,001 mm; kein Blau, kein Rot, keine Ebene der Gravur.
@@ -235,8 +287,8 @@ test('Musterdatei von Chris (21.11.2026): eine Ebene „03 Gravur“ in Schwarz,
  assert.deepEqual(aufbau(reference).order,['Ebene 03 Gravur','Linie 0 0 1 · 0.0010 mm','Linie 1 0 0 · 0.0010 mm']);
 });
 
-test('Rezeptstände: neuer Stand und eigener Schlüssel bei allen vier Ausgaben (3.62); `auto` nur ohne Profil und ohne Wahl, das Profil und eine ausdrückliche Wahl gelten unverändert',()=>{
- assert.equal(ACRYLIC_ENGRAVING_RECIPE,'gravuru-acrylic-engraving-proof/v11');
+test('Rezeptstände: neuer Stand und eigener Schlüssel bei allen vier Ausgaben (3.62), die beiden Gravurausgaben erneut mit 3.67; `auto` nur ohne Profil und ohne Wahl, das Profil und eine ausdrückliche Wahl gelten unverändert',()=>{
+ assert.equal(ACRYLIC_ENGRAVING_RECIPE,'gravuru-acrylic-engraving-proof/v12');
  assert.deepEqual(acrylicEngravingSettings(undefined,{mirror:true}),{mode:'auto',dpi:300,mirror:true});
  assert.deepEqual(acrylicEngravingSettings(null),{mode:'auto',dpi:300,mirror:false});
  for(const mode of ['raster','vector'])assert.deepEqual(acrylicEngravingSettings(undefined,{mode,mirror:true}),formEngravingSettings({mode,mirror:true}));
@@ -249,12 +301,12 @@ test('Rezeptstände: neuer Stand und eigener Schlüssel bei allen vier Ausgaben 
  const keys=['auto','raster','vector'].map(mode=>acrylicEngravingKey({mode,mirror:true}));assert.equal(new Set(keys).size,3);
  assert.equal(acrylicEngravingKey(acrylicEngravingSettings(undefined,{mirror:true})),keys[0]);
  const key=(recipe,settings)=>digest(JSON.stringify({recipe,settings}));
- assert.equal(keys[1],key('gravuru-acrylic-engraving-proof/v11',formEngravingSettings({mode:'raster',mirror:true})));
- for(const old of ['v6','v7','v8','v9','v10'])assert.notEqual(keys[1],key('gravuru-acrylic-engraving-proof/'+old,formEngravingSettings({mode:'raster',mirror:true})));
+ assert.equal(keys[1],key('gravuru-acrylic-engraving-proof/v12',formEngravingSettings({mode:'raster',mirror:true})));
+ for(const old of ['v6','v7','v8','v9','v10','v11'])assert.notEqual(keys[1],key('gravuru-acrylic-engraving-proof/'+old,formEngravingSettings({mode:'raster',mirror:true})));
  // ENTSCHEIDUNGEN 3.62: neuer Rezeptstand bei allen vier Ausgaben – auch den Formprodukten alter Art –, jeweils mit eigenem Schlüssel.
- assert.equal(ACRYLIC_PRINT_RECIPE,'gravuru-acrylic-print-proof/v11');assert.equal(FORM_ENGRAVING_RECIPE,'gravuru-form-engraving-proof/v3');assert.equal(FORM_PRINT_RECIPE,'gravuru-form-print-proof/v7');
+ assert.equal(ACRYLIC_PRINT_RECIPE,'gravuru-acrylic-print-proof/v11');assert.equal(FORM_ENGRAVING_RECIPE,'gravuru-form-engraving-proof/v4');assert.equal(FORM_PRINT_RECIPE,'gravuru-form-print-proof/v7');
  assert.equal(acrylicPrintKey({}),key('gravuru-acrylic-print-proof/v11',formPrintSettings({})));for(const old of ['v8','v9','v10'])assert.notEqual(acrylicPrintKey({}),key('gravuru-acrylic-print-proof/'+old,formPrintSettings({})));
- assert.equal(formEngravingKey({}),key('gravuru-form-engraving-proof/v3',formEngravingSettings({})));for(const old of ['v1','v2'])assert.notEqual(formEngravingKey({}),key('gravuru-form-engraving-proof/'+old,formEngravingSettings({})));
+ assert.equal(formEngravingKey({}),key('gravuru-form-engraving-proof/v4',formEngravingSettings({})));for(const old of ['v1','v2','v3'])assert.notEqual(formEngravingKey({}),key('gravuru-form-engraving-proof/'+old,formEngravingSettings({})));
  assert.equal(formPrintKey({}),key('gravuru-form-print-proof/v7',formPrintSettings({})));for(const old of ['v5','v6'])assert.notEqual(formPrintKey({}),key('gravuru-form-print-proof/'+old,formPrintSettings({})));
 });
 
@@ -401,7 +453,7 @@ test('Gravur-Worker: Bestelldateien im Aufbau der Musterdatei – Ebene „03 Gr
   // Inhalt: dieselbe Lage und dieselbe Strichstärke wie die Gestaltung (1 mm bleibt 1 mm), jede Farbe reines Schwarz, Weiß bleibt Weiß.
   sameShape(points(content),points(plain.drawings),holes);assert.equal(content.length,3);assert.ok(Math.abs(content[0].width-MM)<1e-3,'Strichstärke der Gestaltung');
   assert.deepEqual(content.map(d=>d.color||d.fill),[BLACK,BLACK,WHITE],holes);
-  checkEngravingSvg(r.orderSvg,{widthMm:40,heightMm:30,geometry,holes},holes);
+  checkEngravingSvg(r.orderSvg,{widthMm:40,heightMm:30,geometry,holes},holes);checkEngravingPaints(r.orderSvg,Buffer.from(r.orderPdf,'base64'),holes);
   // Die Angabe ändert nur die Bestelldateien.
   assert.equal(r.svg,a.svg);assert.deepEqual(inspect(Buffer.from(r.pdf,'base64')).drawings,plain.drawings);assert.deepEqual(inspect(Buffer.from(r.contour,'base64')).drawings,separate.drawings);
  }
@@ -414,7 +466,21 @@ test('Gravur-Worker: Bestelldateien im Aufbau der Musterdatei – Ebene „03 Gr
  assert.ok(curvedLines.every(d=>d.outline.some(line=>line.length>2)),'Kurven bleiben Kurven');assert.equal(curvedLines.length,2);assert.ok(near(curvedLines[0].rect,[0,0,40,30]));assert.ok(Math.abs(curvedLines[1].rect[0]-10)<=.02&&Math.abs(curvedLines[1].rect[2]-32)<=.02,'beide Innenkonturen in einer Linie: '+curvedLines[1].rect);
  await assert.rejects(()=>run(vector,'auto',{geometry:{...geometry,contours:[{role:'outer',d:'M0 0K5 5Z'}]}}),/Kontur lässt sich nicht in die Bestelldatei übernehmen/);
  // Die SVG trägt die Farben der Gestaltung unverändert (dort ist Schwarz die Angabe der Gestaltung selbst); Inhalt = Fertigungs-SVG.
- assert.equal(checkEngravingSvg(a.orderSvg,{widthMm:40,heightMm:30,geometry,holes:'cut'}),svgInner(a.svg));
+ // Inhalt der Gruppe = die Gestaltung, mit derselben Farbregel wie die PDF (3.67): die Vorschaufarbe wird reines Schwarz, Schwarz,
+ // Weiß und „keine Füllung“ bleiben. Die Fertigungs-SVG der „Ausgaben“ führt die Vorschaufarbe weiter.
+ assert.ok(svgInner(a.svg).includes('fill="#b56943"'));assert.equal(checkEngravingSvg(a.orderSvg,{widthMm:40,heightMm:30,geometry,holes:'cut'}),svgInner(a.svg).replace('fill="#b56943"','fill="#000000"'));
+ // Dieselbe Regel für jede Schreibweise einer Farbe und für eingebettete Quellen: Attribut, `style`, `<style>`, geerbte Farbe,
+ // Verlauf, eingebettete SVG (Designquelle eines Formprodukts) und eingebettetes Rasterbild. Nichts davon darf in der Bestelldatei
+ // farbig bleiben – Blau und Rot haben dort eine Bedeutung.
+ const embedded='<svg xmlns="http://www.w3.org/2000/svg" width="6mm" height="5mm" viewBox="0 0 6 5"><rect width="3" height="5" fill="red"/><rect x="3" width="3" height="5" style="fill: rgb(0, 0, 255)"/></svg>';
+ const colourful=svg('<defs><linearGradient id="g"><stop offset="0" stop-color="#ff0000"/><stop offset="1" stop-color="white"/></linearGradient></defs><style>.k{fill:blue;stroke:#f00}</style><g data-field="native-0" fill="green" color="#00f"><path d="M3 3H9V8H3Z"/><path d="M11 3H17V8H11Z" style="fill:#ff0000;stroke:blue;stroke-width:.4"/><path class="k" d="M19 3H25V8H19Z"/><path d="M27 3H33V8H27Z" fill="currentColor"/><path d="M3 12H9V17H3Z" fill="url(#g)"/><path d="M11 12H17V17H11Z" fill="rgba(255,0,0,.5)"/><path d="M19 12H25V17H19Z" fill="#fff" stroke="white"/><image href="data:image/svg+xml;base64,'+Buffer.from(embedded).toString('base64')+'" x="27" y="12" width="6" height="5"/><image href="data:image/svg+xml,'+encodeURIComponent(embedded)+'" x="27" y="20" width="6" height="5"/></g>');
+ const painted=await run(colourful,'vector'),paints=checkEngravingPaints(painted.orderSvg,Buffer.from(painted.orderPdf,'base64'),'jede Schreibweise');
+ assert.deepEqual(paints.design,['black','white']);assert.deepEqual(paintsOf(painted.svg).design.filter(c=>c!=='black'&&c!=='white').length>5,true,'die Fertigungs-SVG der „Ausgaben“ bleibt farbig');
+ for(const kept of ['fill="url(#g)"','fill="currentColor"','fill="#fff" stroke="white"','rgba(0,0,0,0.5)','stop-color="white"'])assert.ok(painted.orderSvg.includes(kept),kept);
+ const withPhoto=await run(raster,'raster'),photoPaints=checkEngravingPaints(withPhoto.orderSvg,Buffer.from(withPhoto.orderPdf,'base64'),'Rasterbild');assert.equal(photoPaints.images,1);assert.equal(paintsOf(withPhoto.svg).colorImages,1,'Prüfbild ist farbig; die Fertigungs-SVG der „Ausgaben“ behält es');
+ // Eine unveränderte eingebettete Quelle bleibt Byte für Byte; eine fremde Adresse wird abgelehnt.
+ const blackOnly='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 6 5"><rect width="6" height="5" fill="#000000"/></svg>',href='data:image/svg+xml;base64,'+Buffer.from(blackOnly).toString('base64');
+ assert.ok((await run(svg('<g data-field="native-0"><image href="'+href+'" x="3" y="3" width="6" height="5"/></g>'),'vector')).orderSvg.includes('href="'+href+'"'));
  // Ohne die Angabe entsteht nichts Neues; eine fremde Angabe und eine Kontur ohne eindeutige Außenform werden abgelehnt.
  const none=await run(vector,'auto',{orderFiles:undefined});assert.equal(none.orderPdf,undefined);assert.equal(none.orderSvg,undefined);assert.equal(none.svg,a.svg);assert.deepEqual(inspect(Buffer.from(none.pdf,'base64')).drawings,plain.drawings);
  await assert.rejects(()=>run(vector,'auto',{orderFiles:{holes:'red'}}),/Innenkonturen der Bestelldatei/);await assert.rejects(()=>run(vector,'auto',{orderFiles:{holes:'cut',mirror:true}}),/Angabe zur Bestelldatei/);await assert.rejects(()=>run(vector,'auto',{orderFiles:'cut'}),/Angabe zur Bestelldatei/);
@@ -480,7 +546,7 @@ test('Gravur, natives Produkt: zwei Dateien 1:1 im Aufbau der Musterdatei – ni
   assert.equal(content.length,plain.drawings.length,label);sameShape(points(content),mirror?mirrored(points(plain.drawings),150):points(plain.drawings),label+' Inhalt');
   if(mirror)assert.throws(()=>sameShape(points(content),points(plain.drawings),''),undefined,'das Prüfmotiv ist nicht symmetrisch');
   // „SVG“: Gruppe „03 Gravur“ mit dem Inhalt der Fertigungs-SVG (seitenrichtig), danach die blaue Außenkontur der gesicherten Geometrie.
-  const inner=checkEngravingSvg(two.svg.bytes,{widthMm:150,heightMm:200,geometry,holes:'none'},label);
+  const inner=checkEngravingSvg(two.svg.bytes,{widthMm:150,heightMm:200,geometry,holes:'none'},label);checkEngravingPaints(two.svg.bytes,two.pdf.bytes,label);
   if(mirror){assert.ok(baseSvg.toString().includes('<g transform="translate(150 0) scale(-1 1)">'),'die Fertigungs-SVG der „Ausgaben“ bleibt gespiegelt');assert.ok(!two.svg.bytes.toString().includes('scale(-1 1)'));}
   else assert.equal(inner,svgInner(baseSvg),'Inhalt der Gruppe = Fertigungs-SVG');
   assert.deepEqual(JSON.parse(two.files.get('gravurpruefung.json')).orderFiles,v.metadata.orderFiles);
@@ -496,7 +562,7 @@ test('Gravur, natives Produkt: zwei Dateien 1:1 im Aufbau der Musterdatei – ni
   assert.deepEqual(rp.images.map(i=>[i.colorSpace,i.width,i.height,i.layered]),[['DeviceGray',1772,2363,false]]);assert.equal(rp.drawings.length,0);
   const {lines}=checkEngravingPdf(rc,{widthMm:150,heightMm:200,holes:'none',raster:true},label);assert.equal(lines.length,1);sameOutline(lines,inspect(photo.files.get('gravur-kontur-1zu1.pdf')).drawings,label,mirror?mirrorAt(150):null);
   assert.deepEqual([rc.images[0].width,rc.images[0].height],[1772,2363]);assert.notEqual(rp.images[0].sha256,rp.images[0].mirroredSha256);assert.equal(rc.images[0].sha256,mirror?rp.images[0].mirroredSha256:rp.images[0].sha256,label+' dieselben Pixel, seitenrichtig');
-  checkEngravingSvg(photo.svg.bytes,{widthMm:150,heightMm:200,geometry,holes:'none'},label);
+  checkEngravingSvg(photo.svg.bytes,{widthMm:150,heightMm:200,geometry,holes:'none'},label);assert.equal(checkEngravingPaints(photo.svg.bytes,photo.pdf.bytes,label+' Foto').images,1);
  }
  assert.equal(made.phototrue.svg.bytes.toString(),made.photofalse.svg.bytes.toString());
  // Eine ausdrückliche Wahl gilt unverändert: Raster ohne Foto bleibt Raster, Vektor mit Foto wird weiter abgelehnt.
@@ -519,7 +585,7 @@ test('Gravur, echtes Türschild 120 × 80 mm mit zwei Bohrlöchern: Edelstahl �
    assert.deepEqual(lines.map(d=>d.color),[BLUE,holes==='cut'?RED:BLUE],label);assert.ok(lines[1].rect[2]-lines[1].rect[0]>60,label+' beide Bohrlöcher in einer Linie');
    sameOutline(lines,separate.drawings,label+' Konturen',mirror?mirrorAt(120):null);
    assert.ok(content.length>0);sameShape(points(content),mirror?mirrored(points(plain.drawings),120):points(plain.drawings),label+' Inhalt');
-   checkEngravingSvg(two.svg.bytes,{widthMm:120,heightMm:80,geometry,holes},label);
+   checkEngravingSvg(two.svg.bytes,{widthMm:120,heightMm:80,geometry,holes},label);checkEngravingPaints(two.svg.bytes,two.pdf.bytes,label);
   }
   assert.equal(made[1].svg.bytes.toString(),made[0].svg.bytes.toString(),file);assert.deepEqual(inspect(made[1].pdf.bytes).drawings,inspect(made[0].pdf.bytes).drawings,file);
  }
@@ -582,7 +648,7 @@ test('Funkklingel zweischichtig: PDF und SVG zeigen die Acrylauflage (sie trägt
    sameShape(points(content),shifted(mirror?mirrored(points(plain.drawings),format[0]):points(plain.drawings)),label+' Inhalt seitenrichtig');
    for(const file of ['edelstahltraeger-schnitt-1zu1.pdf','acrylauflage-schnitt-1zu1.pdf','edelstahltraeger-schnitt.svg','acrylauflage-schnitt.svg','gravur-kontur-1zu1.pdf'])assert.ok(two.files.has(file),file);
    assert.equal(two.files.get('acrylauflage-schnitt.svg').toString(),frozen.acrylic.svg);assert.equal(two.files.get('edelstahltraeger-schnitt.svg').toString(),frozen.steel.svg);
-   checkEngravingSvg(two.svg.bytes,{widthMm:format[0],heightMm:format[1],geometry:frozen.geometry,holes:'cut',plate},label);
+   checkEngravingSvg(two.svg.bytes,{widthMm:format[0],heightMm:format[1],geometry:frozen.geometry,holes:'cut',plate},label);checkEngravingPaints(two.svg.bytes,two.pdf.bytes,label);
    // Dieselbe Seite wie die Musterdatei, wenn es dieselbe Auflage ist.
    if(selection.format==='16x28'){const reference=inspect(REFERENCE);assert.deepEqual([order.widthMm,order.heightMm],[reference.widthMm,reference.heightMm],'160 × 260 mm wie die Musterdatei');}
   }
@@ -729,7 +795,7 @@ test('Formprodukt alter Art, Gravur: dieselben zwei Dateien im Aufbau der Muster
   assert.equal(bundle.manifest.product.material.id,material);assert.equal(orderHoleLines({manifest:bundle.manifest}),holes,material);
   for(const settings of [{mode:'vector'},{mode:'vector',mirror:true},{},{mirror:true}]){
    const result=await createFormEngravingProof(bundle.package,bundle.manifest.packageSha256,settings),two=twoFiles(result),mirror=settings.mirror===true,vector=settings.mode==='vector',label=material+' '+JSON.stringify(settings);(made[vector]??=[]).push(two);
-   assert.equal(result.metadata.schema,'gravuru-form-engraving-proof/v3');assert.equal(result.metadata.settings.mode,vector?'vector':'raster');assert.equal(result.metadata.settings.mirror,mirror);
+   assert.equal(result.metadata.schema,'gravuru-form-engraving-proof/v4');assert.equal(result.metadata.settings.mode,vector?'vector':'raster');assert.equal(result.metadata.settings.mirror,mirror);
    assert.deepEqual(Object.fromEntries(ORDER_FORMATS.map(f=>[f,two[f].name])),{pdf:'gravur-1zu1-mit-kontur.pdf',svg:'gravur-1zu1-mit-kontur.svg'});
    // Die bisherigen Dateien des Pakets bleiben: Gravur-PDF (die Datei der „Ausgaben“, nach Profil gespiegelt, ohne Ebene) und die
    // getrennte Konturdatei (schwarz, 0,05 mm).
@@ -750,11 +816,17 @@ test('Formprodukt alter Art, Gravur: dieselben zwei Dateien im Aufbau der Muster
     assert.equal(plain.images.length,0);sameShape(points(content),mirror?mirrored(points(plain.drawings),60):points(plain.drawings),label+' Inhalt');
    }else{
     const image=inspect(two.pdf.bytes).images[0];assert.deepEqual(plain.images.map(i=>[i.colorSpace,i.layered]),[['DeviceGray',false]]);
-    assert.notEqual(plain.images[0].sha256,plain.images[0].mirroredSha256);assert.equal(image.sha256,mirror?plain.images[0].mirroredSha256:plain.images[0].sha256,label+' dieselben Pixel, seitenrichtig');
+    // 3.67: Die Designquelle ist farbig. Auf der Rasterseite der „Ausgaben“ bleibt ihr Grauwert (rot 54, blau 18 von 255, nach
+    // Profil gespiegelt); in der Bestelldatei ist dieselbe Fläche reines Schwarz und seitenrichtig – also nicht dieselben Pixel.
+    assert.notEqual(plain.images[0].sha256,plain.images[0].mirroredSha256);assert.notEqual(image.sha256,mirror?plain.images[0].mirroredSha256:plain.images[0].sha256,label+' farbige Designquelle: nicht die Grauwerte der Gravurseite');
+    assert.deepEqual(grayAt(two.pdf.bytes,[[10,13],[40,10],[25,35]]),[0,0,255],label+' Bestell-PDF: Designflächen schwarz, Leerfläche weiß');
+    assert.deepEqual(grayAt(result.pdf,[[mirror?50:10,13],[mirror?20:40,10],[mirror?35:25,35]]),[54,18,255],label+' Gravurseite der „Ausgaben“: Grauwerte der Gestaltungsfarbe');
    }
    // „SVG“: die Gestaltung in mm in der Gruppe „03 Gravur“, danach Außenform und Bohrloch – zusammen der Pfad, auf den die
    // Gestaltung selbst beschnitten ist. Nichts ist gespiegelt.
    checkEngravingSvg(two.svg.bytes,{widthMm:60,heightMm:40,geometry,holes},label);
+   // 3.67: Die Designquelle des Formprodukts ist farbig (rote und blaue Fläche, Schrift #222222) – in der SVG wie in der PDF reines Schwarz.
+   assert.deepEqual(checkEngravingPaints(two.svg.bytes,two.pdf.bytes,label).design,['black']);assert.ok(paintsOf(source).design.some(c=>c!=='black'&&c!=='white'),'die gesicherte Gestaltung bleibt farbig');
    const svg=two.svg.bytes.toString();assert.equal(clipPathOf(svg),ringsOf(geometry),'Außenform und Bohrloch = Beschnitt der Gestaltung');assert.equal(clipPathOf(svg),clipPathOf(source));
    assert.ok(!svg.includes('scale(-1 1)'),label);assert.match(svg,/data-design="design-engraving"/);
    assert.deepEqual(JSON.parse(two.files.get('gravurpruefung.json')).orderFiles,result.metadata.orderFiles);
@@ -762,9 +834,14 @@ test('Formprodukt alter Art, Gravur: dieselben zwei Dateien im Aufbau der Muster
   for(const pair of Object.values(made)){assert.equal(pair[1].svg.bytes.toString(),pair[0].svg.bytes.toString(),material);assert.deepEqual(inspect(pair[1].pdf.bytes).drawings,inspect(pair[0].pdf.bytes).drawings,material);}
   assert.equal(made.true[0].svg.bytes.toString(),made.false[0].svg.bytes.toString(),'die SVG hängt nicht von Vektor oder Raster ab');
  }
- // Mit Kundenfoto: Raster; die „PDF“ trägt dasselbe Graustufenbild in der Ebene und darüber die Konturen als Vektor.
+ // Mit Kundenfoto: Raster; die „PDF“ trägt ein Graustufenbild in der Ebene und darüber die Konturen als Vektor.
  const {bundle}=await formBundle({method:'engraving',photo:true}),result=await createFormEngravingProof(bundle.package,bundle.manifest.packageSha256),two=twoFiles(result);
- const plain=inspect(result.pdf),order=inspect(two.pdf.bytes);assert.equal(plain.drawings.length,0);assert.equal(checkEngravingPdf(order,{widthMm:60,heightMm:40,holes:'contour',raster:true},'Foto').lines.length,2);assert.equal(order.images[0].sha256,plain.images[0].sha256);
+ const plain=inspect(result.pdf),order=inspect(two.pdf.bytes);assert.equal(plain.drawings.length,0);assert.equal(checkEngravingPdf(order,{widthMm:60,heightMm:40,holes:'contour',raster:true},'Foto').lines.length,2);
+ // 3.67: Auch mit Foto wird die farbige Designquelle in der Bestelldatei reines Schwarz (auf der Gravurseite der „Ausgaben“ bleibt
+ // ihr Grauwert); das Foto selbst (links schwarz, rechts weiß, Feld 22…32 × 10…20 mm) steht in beiden gleich.
+ assert.notEqual(order.images[0].sha256,plain.images[0].sha256);assert.deepEqual([order.images[0].width,order.images[0].height],[plain.images[0].width,plain.images[0].height]);
+ assert.deepEqual(grayAt(two.pdf.bytes,[[10,13],[40,10],[24,15],[30,15]]),[0,0,0,255]);assert.deepEqual(grayAt(result.pdf,[[10,13],[40,10],[24,15],[30,15]]),[54,18,0,255]);
+ assert.equal(checkEngravingPaints(two.svg.bytes,two.pdf.bytes,'Formprodukt mit Foto').images,1);
  await assert.rejects(()=>createFormEngravingProof(bundle.package,bundle.manifest.packageSha256,{mode:'vector'}),/Fotos benötigen Rastergravur/);
 });
 

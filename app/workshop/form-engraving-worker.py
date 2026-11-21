@@ -1,11 +1,13 @@
 """Technical engraving proof: grayscale raster or verified vector, no print white."""
 import sys,json,io,math,base64,importlib.util,re,copy
+from urllib.parse import unquote_to_bytes
 from pathlib import Path
 import xml.etree.ElementTree as ET
 import pymupdf as fitz
 from PIL import Image,ImageOps
 from cairosvg.parser import Tree
 from cairosvg.surface import PDFSurface
+from cairosvg.colors import color as svg_color
 spec=importlib.util.spec_from_file_location('form_print',Path(__file__).with_name('form-print-worker.py'))
 p=importlib.util.module_from_spec(spec);spec.loader.exec_module(p)
 
@@ -146,8 +148,58 @@ def order_page(g,w,h,holes,plate,paths,vector=None,image=None):
  doc.xref_set_key(page.xref,'TrimBox',f'[0 0 {num(pw*MM)} {num(ph*MM)}]');doc.set_metadata({})
  return doc.tobytes(deflate=True,garbage=1)
 
+# #265, ENTSCHEIDUNGEN 3.67 (Chris, 21.11.2026, 19:49 Uhr: „eine gravur ist immer schwarz für die maschine . das ist die default
+# Farbe. Nur beim Druck nicht“) und 3.64 („svg und pdf sind praktisch gleich“): Die Gravur-SVG trägt dieselbe
+# Farbregel wie die Gravur-PDF (`engraving_black`). Jede gemalte Farbe der Gestaltung außer reinem Weiß wird reines Schwarz –
+# als Attribut, in `style`, in einem `<style>`-Block und in eingebetteten SVG-Quellen (Designquelle des Formprodukts,
+# eingefärbte Motive). Eingebettete Rasterbilder (Foto) werden Graustufen mit denselben Gewichten wie die Rasterseite der PDF;
+# ihre Deckkraft bleibt. Blau und Rot stehen danach nur noch in den Konturgruppen, wo sie eine Bedeutung haben (Anlegen/Schnitt).
+ORDER_PAINTS=('fill','stroke','stop-color','flood-color','lighting-color','color')
+ORDER_PAINT_KEEP=re.compile(r'none|transparent|inherit|currentcolor|context-(?:fill|stroke)|url\(.*',re.I|re.S)
+ORDER_DECLARATION=re.compile(r'(?<![\w-])('+'|'.join(ORDER_PAINTS)+r')(\s*:\s*)([^;}]+)')
+XLINK='{http://www.w3.org/1999/xlink}'
+def order_paint(value):
+ text=value.strip()
+ if not text or ORDER_PAINT_KEEP.fullmatch(text):return value
+ r,g,b,a=engraving_black(svg_color(text.removesuffix('!important').strip()))
+ if min(r,g,b)>=1:return value
+ return '#000000' if a>=1 else f'rgba(0,0,0,{a:.4g})'
+def order_css(text):return ORDER_DECLARATION.sub(lambda m:m.group(1)+m.group(2)+order_paint(m.group(3)),text)
+def order_gray_image(raw):
+ with Image.open(io.BytesIO(raw)) as source:
+  im=ImageOps.exif_transpose(source).convert('RGBA');alpha=im.getchannel('A')
+  out=im.convert('RGB').convert('L',(.2126,.7152,.0722,0)).convert('LA');out.putalpha(alpha)
+  data=io.BytesIO();out.save(data,format='PNG');return data.getvalue()
+def order_embedded(href,depth,images=True):
+ match=re.fullmatch(r'data:([^;,]*)((?:;[^;,]*)*),(.*)',href,re.S)
+ p.c.require(bool(match),'Externe Quellen sind in der Bestelldatei nicht erlaubt.')
+ kind,flags,body=match.group(1).strip().lower(),match.group(2).lower(),match.group(3)
+ raw=base64.b64decode(body,validate=True) if ';base64' in flags else unquote_to_bytes(body)
+ if kind=='image/svg+xml':
+  # Eine eingebettete Quelle ohne umzufärbende Farbe bleibt Byte für Byte, wie sie ist.
+  inner=ET.fromstring(raw)
+  return 'data:image/svg+xml;base64,'+base64.b64encode(ET.tostring(inner)).decode() if order_black(inner,depth+1,images) else href
+ return 'data:image/png;base64,'+base64.b64encode(order_gray_image(raw)).decode() if images else href
+def order_black(root,depth=0,images=True):
+ p.c.require(depth<=4,'Die Gestaltung ist zu tief verschachtelt.')
+ changed=False
+ def put(node,key,value):
+  nonlocal changed
+  if value!=node.get(key):node.set(key,value);changed=True
+ for node in root.iter():
+  for key in ORDER_PAINTS:
+   if key in node.attrib:put(node,key,order_paint(node.get(key)))
+  if 'style' in node.attrib:put(node,'style',order_css(node.get('style')))
+  if node.tag==p.S+'style' and node.text:
+   text=order_css(node.text)
+   if text!=node.text:node.text=text;changed=True
+  if node.tag==p.S+'image':
+   for key in ('href',XLINK+'href'):
+    if key in node.attrib:put(node,key,order_embedded(node.get(key),depth,images))
+ return changed
+
 def order_svg(plain,g,w,h,holes,plate):
- root=copy.deepcopy(plain);box=[float(v) for v in re.split(r'[ ,]+',(root.get('viewBox') or '').strip()) if v]
+ root=copy.deepcopy(plain);order_black(root);box=[float(v) for v in re.split(r'[ ,]+',(root.get('viewBox') or '').strip()) if v]
  p.c.require(len(box)==4 and all(abs(a-b)<1e-6 for a,b in zip(box,[0,0,w,h])),'Gestaltung und Plattenmaß sind nicht deckungsgleich.')
  taken={n.get('id') for n in root.iter() if n.get('id')}
  layer=ET.Element(p.S+'g',{'id':order_id('gravur',taken),'data-layer':ORDER_LAYER,INK+'groupmode':'layer',INK+'label':ORDER_LAYER})
@@ -193,8 +245,15 @@ def run(data):
   im=p.raster(ET.tostring(root),width,height);background=Image.new('RGBA',im.size,'white');background.alpha_composite(im);l=background.convert('RGB').convert('L',(.2126,.7152,.0722,0));out=io.BytesIO();l.save(out,format='PNG')
   doc=fitz.open();page=doc.new_page(width=w*72/25.4,height=h*72/25.4);image=page.insert_image(page.rect,stream=out.getvalue());doc.xref_set_key(image,'ColorSpace','/DeviceGray');pdf=doc.tobytes(deflate=True,garbage=4)
   if order:
-   # Dieselben Pixel wie die Gravurseite, nur seitenrichtig.
-   seen=io.BytesIO();(ImageOps.mirror(l) if s['mirror'] else l).save(seen,format='PNG');order_content={'image':seen.getvalue()}
+   # Dieselben Pixel wie die Gravurseite, nur seitenrichtig – solange die Gestaltung keine Vektorfarbe außer Schwarz und Weiß führt
+   # (natives Produkt). Führt sie eine (farbige Designquelle eines Formprodukts), wäre deren Grauwert in der Bestelldatei ein
+   # Maschinenwert, der keiner ist: ENTSCHEIDUNGEN 3.67 – „eine gravur ist immer schwarz für die maschine“. Dann wird die Seite
+   # der Bestelldatei aus der Gestaltung mit derselben Farbregel wie SVG und Vektor-PDF gerastert; Fotos bleiben dabei, was sie
+   # sind, und werden wie auf der Gravurseite erst als Raster zu Graustufen.
+   seen_l=ImageOps.mirror(l) if s['mirror'] else l;black=copy.deepcopy(plain)
+   if order_black(black,images=False):
+    im=p.raster(ET.tostring(black),width,height);background=Image.new('RGBA',im.size,'white');background.alpha_composite(im);seen_l=background.convert('RGB').convert('L',(.2126,.7152,.0722,0))
+   seen=io.BytesIO();seen_l.save(seen,format='PNG');order_content={'image':seen.getvalue()}
  # A separate, identically oriented contour file prevents cutting from being engraved.
  contour=ET.Element(p.S+'svg',{'width':str(w)+'mm','height':str(h)+'mm','viewBox':f'0 0 {w} {h}'})
  group=ET.SubElement(contour,p.S+'g',{'transform':f'translate({w} 0) scale(-1 1)' if s['mirror'] else 'translate(0 0)'})

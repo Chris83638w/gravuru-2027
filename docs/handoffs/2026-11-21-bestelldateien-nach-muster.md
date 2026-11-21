@@ -52,9 +52,23 @@ Die Datei liegt als Prüfvorlage im Repo: `app/workshop/test-fixtures/musterdate
 2. In der Gravur-PDF wird jede Vektorfarbe außer reinem Weiß zu reinem Schwarz (bei Formprodukten alter Art trägt die Gestaltung Vorschaufarben). Weiß bleibt Weiß.
 3. Die Linienbreite 0,001 mm gilt auch für die Druckkontur (Chris sagt dort „haarlinien“; die Musterdatei zeigt nur die Gravur).
 4. Ebenennamen der SVG: lesbarer Name als `data-layer` und `inkscape:label`; Kennungen `gravur`, `aussenkontur`, `ausschnitte`, `innenkonturen`, `CutContour`.
-5. Mit Foto ist das Bild der Bestell-PDF dasselbe Raster wie die Gravurseite, bei gespiegeltem Profil zurückgedreht – nicht neu gerechnet.
+5. Mit Foto ist das Bild der Bestell-PDF dasselbe Raster wie die Gravurseite, bei gespiegeltem Profil zurückgedreht – nicht neu gerechnet. Ausnahme seit 3.67: Formprodukte mit farbiger Designquelle, siehe Nachtrag unten.
 
 **Abweichung vom Auftrag, mit Grund:** Der Dateinachweis heißt jetzt `gravuru-order-files/v3` (Auftrag: v2 bleibt). Mit v2 hätte die Bestellansicht fertige Ausgaben des Stands 3.61 weiter abgegeben – gespiegelt, Kontur schwarz, Breite 0. Nachweise v1 und v2 werden nicht mehr abgegeben; die Position baut beim Öffnen neu.
+
+## Nachtrag 21.11.2026, 19:49 Uhr: Gravur immer schwarz – auch in der SVG (ENTSCHEIDUNGEN 3.67)
+
+Chris, wörtlich: „ja eine gravur ist immer schwarz für die maschine . das ist die default Farbe. Nur beim Druck nicht“. Mit 3.64 („svg und pdf sind praktisch gleich“) heißt das: Die Gravur-SVG der Bestellansicht trägt dieselbe Farbregel wie die Gravur-PDF, bei allen Produktarten. Druck ist nicht berührt.
+
+- **Gravur-SVG:** In der Gruppe „03 Gravur“ wird jede gemalte Farbe außer reinem Weiß zu reinem Schwarz (`order_black` in `form-engraving-worker.py`): Attribute, `style`, `<style>`, eingebettete SVG-Designquellen; ein eingebettetes Foto steht in Graustufen (dieselben Gewichte wie die PDF). Blau und Rot kommen nur noch in den Konturgruppen vor. An Dekorationen, Motiven und Konturen ist nichts umgebaut.
+- **Zusätzlicher Fund, mitbehoben – bitte zur Kenntnis:** Bei Formprodukten mit farbiger Designquelle im **Rastermodus** (auch mit Foto) stand die Bestell-PDF bisher in den Grauwerten der Vorschaufarben (Rot als Grau 54, Blau als Grau 18 von 255) statt in Schwarz. Die Bildseite der Bestelldatei wird in diesem Fall jetzt aus der geschwärzten Gestaltung gerechnet. Führt die Gestaltung keine Vektorfarbe außer Schwarz und Weiß (native Produkte), bleiben es dieselben Bildpunkte wie bisher.
+- **Rezeptstände:** `acrylic-engraving-proof` v10, `form-engraving-proof` v4 (fertige Ausgaben bauen beim Öffnen neu). Die Nummern überschneiden sich mit der parallelen Arbeit an Zierlinie und Strichmotiven (3.65, 3.66) und werden beim Zusammenführen abgeglichen.
+- **Ursache des Testfehlschlags beim ersten Anlauf** („gleiche schwarze Fläche in SVG und PDF: 0,0615 gegen 0,055“): Der Test zählte dunkle Bildpunkte mit der Schwelle 128. Eine 1 mm breite Linie endet bei 127 dpi auf halben Bildpunkten; der SVG-Zeichner malt diese Kante mit 127, der PDF-Zeichner mit 136 – dieselbe Linie wurde einmal mitgezählt, einmal nicht. Weder SVG noch PDF waren an dieser Stelle falsch. Der Test vergleicht jetzt die mittlere Deckung (0,0550 gegen 0,0566; rechnerisch 0,055). Erst mit diesem Maß wurde der Fund im Rastermodus sichtbar (0,175 gegen 0,148).
+- **Prüfungen:** `order-files.test.mjs` 16 von 16; in jeder Gravur-SVG (nativ, Formprodukt, Schiefer, Funkklingel, mit Foto) nur Schwarz und Weiß als gemalte Farben, kein farbiges Rasterbild, Blau/Rot nur in `aussenkontur`, `ausschnitte`, `innenkonturen`; Grauwertproben an festen Punkten der PDF. Gezielte Tests: 111 in 17 Dateien, alle bestanden; kein Gesamtlauf. Vier Gegenproben (Schwärzen der SVG, Neurechnen der Rasterseite, Graustufen des Fotos, `style`-Farben je einzeln zurückgenommen) – jede erkannt.
+- **Dateien der „Ausgaben“ unverändert:** 13 Prüfpakete mit `d2875e79` und mit diesem Stand gerechnet, 203 Dateien. 119 Byte für Byte gleich, 29 PDF gleich bis auf Erstelldatum und Dokument-ID (darunter alle `technische-gravurpruefung.pdf`, `gravur-kontur-1zu1.pdf` und die Schnittdateien der Funkklingel), 13 `summary.pdf`. Im Inhalt verschieden sind nur fünf Gravur-SVG der Bestellansicht (Formprodukt Vektor gespiegelt, Schiefer, Raster, mit Foto; natives Produkt mit Foto), zwei Bestell-PDF (Formprodukt Raster und mit Foto) und in 27 JSON-Dateien allein der Rezeptstand. Die vier Druckpakete sind vollständig gleich.
+- **Bild:** `docs/handoffs/2026-11-20-prio-c-technik-claude/bilder/39-formprodukt-svg-schwarz.png` – vorher/nachher für die vier geänderten Arten (Testvorlagen, keine Kundendaten; die 0,001-mm-Konturen sind im Bild nicht zu sehen).
+
+Nicht geprüft: CorelDRAW, Maschinen, echter Shop.
 
 ## Was unverändert bleibt
 
@@ -107,7 +121,7 @@ Die Konturlinien sind in den Bildern verstärkt gezeichnet und so beschriftet; i
 
 1. **CorelDRAW nicht geprüft.** Der Aufbau der Gravur-PDF entspricht jetzt dem Inhaltsstrom der Musterdatei (alles direkt auf der Seite, keine Formobjekte). **Prüfpunkt:** Die Gestaltung ist auf die Plattenkontur beschnitten (Beschnittpfad im Ebenenblock; die Musterdatei führt denselben Beschnitt). Das kommt in Corel ggf. als PowerClip an – bitte im Maschinentest ansehen.
 1a. Enthält eine Gestaltung Transparenz oder Masken, legt der Zeichner (cairo) dafür selbst Gruppenobjekte an. In den geprüften Fällen (native Produkte, Türschilder, Formprodukte mit Designquelle, Funkklingel, mit Foto) kommt das nicht vor; die Tests verlangen dort null Formobjekte.
-2. **Gravur-SVG bei Formprodukten alter Art:** Der Inhalt behält die Farben der Vorschau; nur die PDF führt reines Schwarz. Bei nativen Produkten ist auch die SVG schwarz. Ein Umfärben fremder Designquellen in der SVG ist nicht gebaut.
+2. **Gravur-SVG bei Formprodukten alter Art:** erledigt mit ENTSCHEIDUNGEN 3.67 – SVG und PDF führen reines Schwarz, siehe Nachtrag oben. Nicht geprüft sind Farben, die erst ein SVG-Filter errechnet; die Prüfvorlagen enthalten keine Filter. Verlinkte (nicht eingebettete) Quellen weist der Zeichner wie bisher ab.
 3. **Mimaki:** Die Weißdatei der „Ausgaben“ ist weiter nach Profil gespiegelt, die Bestelldatei nicht.
 4. **Druck-SVG:** SVG kennt keine Schmuckfarben; die Kontur steht dort in Rosa als normale Farbe.
 5. Mit Foto und kleinerer Platte (Funkklingel) ist das Bild auf ganze Bildpunkte um die Platte beschnitten; es kann bis zu einen Bildpunkt über den Seitenrand reichen.

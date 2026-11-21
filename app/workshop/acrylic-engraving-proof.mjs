@@ -18,7 +18,9 @@ import {ORDER_FILES_SCHEMA,orderFileSet,orderEngravingFiles} from './print-deliv
 // Dateien dieses Pakets, die aus der Gestaltung entstehen; Ausgaben der Vorversion bleiben unter ihrem Schlüssel gültig und abrufbar.
 // v11 (#265, ENTSCHEIDUNGEN 3.66): Grundmotive ohne Farbangabe (Strichzeichnungen wie der Zweig) stehen als Linie von
 // 2,2 Einheiten ohne Füllung in der Gestaltung (`acrylic-artwork.mjs` `isLineMotif`); gefüllte Motive bleiben unverändert.
-export const ACRYLIC_ENGRAVING_RECIPE='gravuru-acrylic-engraving-proof/v11';
+// v12 (ENTSCHEIDUNGEN 3.67 und 3.64): Die Gravur-SVG der Bestellansicht trägt dieselbe Farbregel wie die PDF (form-engraving-worker.py
+// `order_black`). Beim nativen Produkt war die Gestaltung schon schwarz; neu ist, dass ein eingebettetes Foto in der SVG Graustufen ist.
+export const ACRYLIC_ENGRAVING_RECIPE='gravuru-acrylic-engraving-proof/v12';
 // #265, ENTSCHEIDUNGEN 3.57 (5): Ohne Fertigungsprofil und ohne ausdrückliche Wahl gilt `auto` – Vektor, wenn die Gestaltung kein
 // Foto enthält, sonst Raster. Entschieden wird beim Bau (form-engraving-worker.py), weil erst dort feststeht, ob die Gestaltung
 // Rasterbilder enthält; `metadata.settings.mode` nennt das Ergebnis. Mit Fertigungsprofil gilt das Profil unverändert, eine

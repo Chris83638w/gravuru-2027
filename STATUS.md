@@ -1,3 +1,20 @@
+## 21.11.2026 · Claude (Operator, technische Gesamtverantwortung) · #265/#267: `fd57ef0d` live (Teil 2 und Teil 3) – Messung am echten Shop
+
+- **Aufgespielt:** Astra, 10:01:29 Uhr, von `9ada257d` auf `fd57ef0d`; 160 Anfragen ohne HTTP 503; Prozessspeicher vorher 1.060 MiB, neu 1.004 MiB, nach Bedienung 1.177 MiB (#267, Kommentar 7059657898).
+- **Messung, 10:10 bis 10:16 Uhr, Wegwerf-Browser, Testgestaltung „Claudetest“, keine Kasse (vier weitere kleine Testentwürfe).** Der erste Klick je Produktstand nach einem Neustart prüft und merkt einmal; gezählt wird der zweite.
+
+| Produkt | Klick bis Warenkorb 08:48/08:49 Uhr | jetzt, zweiter Klick | erster Klick nach Neustart |
+| --- | --- | --- | --- |
+| Acrylglas-Familienschild, PC | 6,6 s | **4,2 s** | 6,3 s |
+| Edelstahl-Türschild, Handyansicht | 4,6 s | 5,3 s | 6,9 s |
+
+- **Zeiten des Servers (genau, je Abruf):** Sichern Acrylglas 2,26 s → **0,56 s** (Prüfung 1,23 s → 0,06 s, Kopie 0,22 s → 0,02 s, Lesen 0,35 s → 0); Sichern Edelstahl 1,52 s → **0,78 s** (davon Vorschaupaar 0,67 s). Warenkorb vorbereiten 0,38 s → 0,07 s; Daten 0,22 s → 0,05 s; Bestätigen 0,22 s → 0,06 s. Zusammen bei Acrylglas 3,1 s → 0,74 s.
+- **Warum Edelstahl im Gesamtwert nicht schneller erscheint:** Nach dem Einlegen bei Shopify vergingen in diesem Lauf 1,5 s bis zur Warenkorbseite (um 08:48 Uhr 0,4 s, bei Acrylglas jetzt 1,05 s). Das ist die Antwortzeit von Shopify für die Warenkorbseite; Einzelläufe schwanken dadurch um rund 1 s.
+- **Geprüft:** Bild auf Warenkorbseite und im Seitenwarenkorb vom eigenen Server geladen (beide Produkte); die Bearbeiten-Adresse öffnet die gesicherte Gestaltung.
+- **Was vom Klick übrig ist (Acrylglas, 4,2 s):** Vorbereitung im Browser 0,5 s; Sichern 1,2 s (Server 0,56 s, Übertragung von 260 KB 0,6 s); Warenkorb vorbereiten 0,2 s; zwei Abrufe über Shopify 0,55 s; Shopify-Einlegen 0,5 s; Shopify-Warenkorbseite 0,4 bis 1,5 s.
+- **In Arbeit:** Teil 4 (ein Abruf über Shopify weniger) und Teil 5 (`4cb4f5ab`, Vorschau-PNGs mit Kompressionsstufe 3, gleiche Pixel). Erwartung danach rund 3,5 s. **Für unter 3 s:** Entwurf schon beim Öffnen der Übersicht auf dem eigenen Server sichern, dann bleibt für den Klick nur Warenkorb vorbereiten und Einlegen – Frage an Chris.
+- Übergabe: `docs/handoffs/2026-11-20-prio-c-technik-claude.md`. Der [Design-Master](https://github.com/Chris83638w/gravuru-katalog./blob/main/designs/DESIGN-MASTER.md) gilt unverändert; an Designs wurde nichts geändert.
+
 ## 21.11.2026 · Claude (Operator, technische Gesamtverantwortung) · #265/#267: Stufe A, Teil 3 gebaut (`16e21ddd`) – das Sichern liest und prüft den unveränderlichen Produktstand nicht mehr bei jedem Klick neu
 
 - **Befund am echten Shop** (Acrylglas, 08:48 Uhr, Zeiten des Servers): Sichern 2,26 s, davon Prüfung der Gestaltung 1,23 s, Vorschaupaar 0,39 s, Konfiguration kopieren 0,22 s, Produkt lesen 0,19 s und rund 0,16 s außerhalb der Messschritte (zweites Lesen für den aktuellen Stand). Warenkorb vorbereiten: 0,13 s für das Lesen sämtlicher Zuordnungen.

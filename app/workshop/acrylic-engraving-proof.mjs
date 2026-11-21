@@ -12,7 +12,9 @@ import {ORDER_FILES_SCHEMA,orderFileSet,orderEngravingFiles} from './print-deliv
 // (form-engraving-worker.py, Regeln in print-delivery.mjs `orderHoleLines` und `orderPlate`). Die übrigen Dateien des Pakets bleiben wie bisher. Ausgaben der
 // Vorversion bleiben unter ihrem Schlüssel gültig und abrufbar; für eine Bestellposition entsteht der Auftrag mit dem neuen
 // Schlüssel beim Öffnen ihrer Ausgaben von selbst (http.mjs `ensureOrderOutput`).
-export const ACRYLIC_ENGRAVING_RECIPE='gravuru-acrylic-engraving-proof/v9';
+// v10 (ENTSCHEIDUNGEN 3.67 und 3.64): Die Gravur-SVG der Bestellansicht trägt dieselbe Farbregel wie die PDF (form-engraving-worker.py
+// `order_black`). Beim nativen Produkt war die Gestaltung schon schwarz; neu ist, dass ein eingebettetes Foto in der SVG Graustufen ist.
+export const ACRYLIC_ENGRAVING_RECIPE='gravuru-acrylic-engraving-proof/v10';
 // #265, ENTSCHEIDUNGEN 3.57 (5): Ohne Fertigungsprofil und ohne ausdrückliche Wahl gilt `auto` – Vektor, wenn die Gestaltung kein
 // Foto enthält, sonst Raster. Entschieden wird beim Bau (form-engraving-worker.py), weil erst dort feststeht, ob die Gestaltung
 // Rasterbilder enthält; `metadata.settings.mode` nennt das Ergebnis. Mit Fertigungsprofil gilt das Profil unverändert, eine

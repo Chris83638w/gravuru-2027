@@ -10,7 +10,10 @@ const fail=message=>{throw Object.assign(Error(message),{status:422,code:'form_e
 // im Aufbau der Musterdatei von Chris (seitenrichtig, Ebene „03 Gravur“ in reinem Schwarz, Außenkontur blau, Löcher bei
 // Acrylglas rot, sonst blau, Linie 0,001 mm; dieselben Namen und derselbe Bau wie beim nativen Produkt, acrylic-engraving-proof.mjs).
 // Die bisherigen Dateien des Pakets bleiben wie sie sind; Ausgaben der Vorversion bleiben unter ihrem Schlüssel gültig.
-export const FORM_ENGRAVING_RECIPE='gravuru-form-engraving-proof/v3';
+// v4 (ENTSCHEIDUNGEN 3.67, Chris 21.11.2026: „eine gravur ist immer schwarz für die maschine“; 3.64: „svg und pdf sind praktisch gleich“): Die Gravur-SVG der Bestellansicht trägt dieselbe
+// Farbregel wie die PDF – die farbige Designquelle und die Schrift werden reines Schwarz, ein Foto Graustufen (form-engraving-worker.py
+// `order_black`). Vorher führte sie die Vorschaufarben, also auch Blau und Rot, die in Gravurdateien Kontur und Schnitt bedeuten.
+export const FORM_ENGRAVING_RECIPE='gravuru-form-engraving-proof/v4';
 export function formEngravingSettings(input={}){
  if(!input||typeof input!=='object'||Array.isArray(input)||Object.keys(input).some(k=>!['mode','dpi','mirror'].includes(k)))fail('Ungültige Gravureinstellungen.');
  const s={mode:'raster',dpi:300,mirror:false,...input};if(!['raster','vector'].includes(s.mode)||![300,600].includes(s.dpi)||typeof s.mirror!=='boolean')fail('Ungültige Gravureinstellungen.');return s;

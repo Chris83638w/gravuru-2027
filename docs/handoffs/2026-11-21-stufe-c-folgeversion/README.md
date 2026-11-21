@@ -7,7 +7,7 @@ Shopify hat Claudes Korrektur `4fbf2e61` um 14:56 Uhr (Bukarest) als Version `gr
 Die drei Bilder gehören zur Shopify-Testbestellung #1042 über das vorhandene Testgateway. Der Artikel ist ein Acryl-Familiennamensschild mit Baum und der Gravur „Claudetest Altmann“. Die Bildadresse ist der betreffenden Bestellposition zugeordnet.
 
 - Auf der Danke-Seite erscheint die persönliche Gestaltung direkt an der Bestellposition. Darunter steht „Bitte prüfe die Schreibweise.“ Ein Antippen öffnete das positionsrichtige Original mit 1600 × 1102 Pixeln. [Danke-Seite](danke.png)
-- Im angemeldeten Käuferkonto lässt sich dieselbe Gestaltung über die Bestellübersicht aufrufen. [Bestellstatus im Kundenkonto](bestellstatus.png)
+- Im angemeldeten Käuferkonto lässt sich dieselbe Gestaltung über die Bestellübersicht aufrufen. Die Scrollaufnahme verbindet zwei überlappende Originalausschnitte der Position. Interne Angaben sind grau abgedeckt. [Bestellstatus im Kundenkonto](bestellstatus.png)
 - Im angehefteten Block „Gravuru Gestaltung“ sehen Mitarbeiter das Bild. „Gestaltung ansehen“ führt zum Original. „Fertigungsdatei“ öffnet die Werkstatt mit PDF, PDF mit Kontur, SVG und SVG mit Kontur. Shopify bietet am Desktop „Mehr anzeigen“ an, um die Karte vollständig zu öffnen. [Bestellseite der Mitarbeiter](bestellverwaltung.png)
 
 ## Prüfungen und Rückweg

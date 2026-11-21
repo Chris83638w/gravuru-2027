@@ -15,7 +15,7 @@ const skip=Liquid?false:'LiquidJS lokal nicht vorhanden (GRAVURU_LIQUIDJS_MODULE
 const read=name=>fs.readFileSync(new URL('./notifications/'+name,import.meta.url),'utf8');
 const image=read('gravuru-bestellbestaetigung-bild.liquid'),properties=read('gravuru-bestellbestaetigung-eigenschaften.liquid');
 const src='https://app-2027.gravuru-designwerkstatt.de/gestaltung/acryl/offer_11111111-1111-4111-8111-111111111111/'+'a'.repeat(64)+'.png';
-const engine=()=>{const e=new Liquid({strictFilters:true});e.registerFilter('img_url',(line,size)=>'https://cdn.shopify.com/produktbild-'+size+'.jpg');return e;};
+const engine=()=>new Liquid({strictFilters:true});
 const line=(extra={},image={})=>({title:'Türschild "Familie"',image,properties:{_gravuru_config:'konfig_test',_gravuru_bild:src,...extra}});
 
 test('image cell reads today\'s property names and the fixed own image address',()=>{
@@ -27,14 +27,17 @@ test('image cell reads today\'s property names and the fixed own image address',
  for(const text of [image,properties])assert.doesNotMatch(text.replace(/\{% comment %\}[\s\S]*?\{% endcomment %\}/g,''),/_Entwurf|cdn\.shopify|fileCreate/);
 });
 
-test('image cell: the saved design from the own server, otherwise the product image, never a foreign address',{skip},async()=>{
+test('personal image uses its own full-width table and leaves other items to Shopify',{skip},async()=>{
  const render=value=>engine().parseAndRender(image,{line:value});
  const shown=await render(line());
  assert.match(shown,new RegExp('<a href="'+src+'" target="_blank"'));assert.match(shown,new RegExp('<img src="'+src+'" alt="Ihre Gestaltung: Türschild (?:&quot;|&#34;)Familie(?:&quot;|&#34;)"'));
  assert.match(shown,/Bitte prüfe die Schreibweise\./);assert.doesNotMatch(shown,/cdn\.shopify/);
+ assert.match(shown,/<table role="presentation" width="100%"/);
+ assert.match(shown,/<img\b[^>]*width="100%"[^>]*width:100%;max-width:100%;height:auto;/);
+ assert.doesNotMatch(shown,/order-list__image-cell|width:\s*\d+px/);
  for(const [name,value] of [['fehlt',line({_gravuru_bild:undefined})],['fremder Host',line({_gravuru_bild:src.replace('app-2027.gravuru-designwerkstatt.de','evil.example')})],['http',line({_gravuru_bild:src.replace('https:','http:')})],['JPG',line({_gravuru_bild:src.replace('.png','.jpg')})],['Marke angehängt',line({_gravuru_bild:src+'?token=secret'})],['ohne Konfiguration',line({_gravuru_config:''})],['Werkstatt-Adresse',line({_gravuru_bild:'https://app-2027.gravuru-designwerkstatt.de/werkstatt/x.png'})]]){
   const html=await render(value);
-  assert.match(html,/<img src="https:\/\/cdn\.shopify\.com\/produktbild-320x\.jpg"/,name);assert.doesNotMatch(html,/evil\.example|gravuru-designwerkstatt|Schreibweise/,name);
+  assert.equal(html.trim(),'',name);
  }
  // Ohne Gestaltung und ohne Produktbild bleibt die Zelle leer.
  assert.equal((await render({title:'x',image:null,properties:{}})).trim(),'');

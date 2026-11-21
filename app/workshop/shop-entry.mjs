@@ -28,6 +28,7 @@ import {moduleEnabled} from '../configurator/variant-m/module-profile.mjs';
 import {selectedProfile} from '../configurator/variant-m/contract.mjs';
 import {createProductShaMemo} from './review-product.mjs';
 import {heldRevisionRecord} from './revision-records.mjs';
+import {createReviewSlots} from './review-slots.mjs';
 import {withCartTiming,cartTimingStep,cartTimingCount,cartTimingHeaders} from './shop-cart-timing.mjs';
 
 // Öffentlicher Kundeneinstieg „Jetzt personalisieren“ (SHOP-ENTRY.txt). Shopify ruft über den App-Proxy
@@ -92,7 +93,7 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
    typeof proxyPath!=='string'||!/^\/[A-Za-z0-9_-]+(?:\/[A-Za-z0-9_-]+)*$/.test(proxyPath)||typeof pagePath!=='string'||!/^\/[A-Za-z0-9_-]+(?:\/[A-Za-z0-9_-]+)*\/$/.test(pagePath)||pagePath.startsWith('/api/')||proxyPath.startsWith('/api/')||proxyPath+'/'===pagePath)
   fail(503,'shop_entry_config','Der Konfigurator-Einstieg ist nicht eingerichtet.');
  // Starts zählen jetzt auch das Vorladen beim Ansehen einer Produktseite (Konfigurator-Fenster).
- const limit={startPerMinute:600,requestsPerMinute:240,draftBytes:100*1024*1024,cartBytes:16*1024,concurrentReviews:2,maxContexts:1024,contextTtlMs:30*60*1000,...limits};
+ const limit={startPerMinute:600,requestsPerMinute:240,draftBytes:100*1024*1024,cartBytes:16*1024,concurrentReviews:2,reviewWaitMs:4000,reviewQueue:8,maxContexts:1024,contextTtlMs:30*60*1000,...limits};
  for(const [key,value] of Object.entries(limit))if(!Number.isSafeInteger(value)||value<1)fail(503,'shop_entry_config','Der Konfigurator-Einstieg ist nicht eingerichtet.');
  // Antwortspeicher des Modells (Paket 1a): standardmäßig aus. `true` = Standardgrenzen, Objekt = eigene Grenzen (Tests).
  if(modelResponseCache!==null&&modelResponseCache!==undefined&&modelResponseCache!==false&&modelResponseCache!==true&&(typeof modelResponseCache!=='object'||Array.isArray(modelResponseCache)||Object.keys(modelResponseCache).some(k=>!['maxEntries','maxBytes','maxModels'].includes(k))))fail(503,'shop_entry_config','Der Konfigurator-Einstieg ist nicht eingerichtet.');
@@ -126,7 +127,8 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
  const warm=Object.fromEntries(fixed.map(s=>[s.storeId,WARM_RUNTIME[s.nativeEditorPath]||[]]));
  const pageHtml=Buffer.from(fs.readFileSync(ui('shop-entry.html'),'utf8').replaceAll('/konfigurator/shop/',pagePath).replace('<meta name="robots"','<meta name="gravuru-warm" content="'+esc(JSON.stringify(warm))+'">\n  <meta name="robots"')),pageFiles=new Map(PAGE_FILES.map(name=>[pagePath+name,fs.readFileSync(ui(name))]));
  const warmPath=pagePath+'warm/',warmHtml=Buffer.from('<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="robots" content="noindex,nofollow"><title>Konfigurator vorbereiten</title></head><body><script type="module" src="'+esc(pagePath)+'shop-warm.mjs"></script></body></html>');
- const cartContexts=new Map(),reviewJobs=new Set(),assetIndex=new Map();
+ // #265 (3.56): Sicherungsplätze mit kurzer Reihe statt sofortiger Ablehnung (review-slots.mjs); die Zahl gleichzeitiger Sicherungen bleibt.
+ const cartContexts=new Map(),reviewSlots=createReviewSlots({max:limit.concurrentReviews,waitMs:limit.reviewWaitMs,queue:limit.reviewQueue,busy:()=>Object.assign(Error('Eine Gestaltung wird gerade gesichert. Bitte kurz warten.'),{status:409,code:'review_busy'})}),assetIndex=new Map();
  const startPath=proxyPath+'/start';
  const PAGE_CSP=pageCsp(shopDomain);
  // Shop-seitige Module über den App-Proxy; shop-embed.mjs kennt Konfigurator-Host und Proxy-Pfad fest.
@@ -489,8 +491,7 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
  }
  async function saveDraft(req,res,context,draftId){
   const {session,store}=context,drafts=store.workshop.customerDrafts,token=req.headers['x-gravuru-draft'];
-  if(reviewJobs.size>=limit.concurrentReviews)fail(409,'review_busy','Eine Gestaltung wird gerade gesichert. Bitte kurz warten.');
-  const job=Symbol('review');reviewJobs.add(job);
+  const job=await cartTimingStep('review_wait',()=>reviewSlots.acquire());
   try{
    const data=await body(req,limit.draftBytes),draft=draftId?drafts.acrylicDrafts.get(draftId,token):null,allowed=draft?['input','expectedRevision']:['input'];
    if(Object.keys(data).some(k=>!allowed.includes(k))||!data.input||typeof data.input!=='object'||Array.isArray(data.input))fail(422,'acrylic_draft_fields','Bitte die vollständige Gestaltung übergeben.');
@@ -512,7 +513,7 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
    const saved=cartTimingStep('draft_persist',()=>draft?drafts.acrylicDrafts.save(draft.id,token,data.expectedRevision,bundle):drafts.acrylicDrafts.create(bundle));
    if(checkoutImage&&hasSavedCartImage(store))warmCheckoutImage(()=>customerImages.snapshotUrl(store.storeId,saved.snapshotId,bundle.manifest.packageSha256),{justSaved:true});
    return json(res,draft?200:201,{...saved,photoHints:bundle.manifest.photoHints||[],photoResolution:(bundle.manifest.photoResolution||[]).map(p=>({objectId:p.objectId,grade:p.grade,effectiveDpi:p.effectiveDpi,targetDpi:p.targetDpi}))});
-  }finally{reviewJobs.delete(job);}
+  }finally{reviewSlots.release(job);}
  }
 
  async function themeProxy(req,res,url){

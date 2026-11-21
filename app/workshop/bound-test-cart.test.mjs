@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {createBoundTestCart,assertBoundTestReview} from './bound-test-cart.mjs';
+import {createBoundTestCart,assertBoundTestReview,reviewRecord} from './bound-test-cart.mjs';
 const productId='cfg_'+ '1'.repeat(36),shopDomain='test.myshopify.com',draftToken='a'.repeat(64);
 function setup(form=false){
  const binding={tenantId:'gravuru',storeId:'acryl',shopDomain,shopifyProductId:'gid://shopify/Product/1',shopifyVariantId:'gid://shopify/ProductVariant/2',productId,productRevision:5,bindingId:'binding_1',assignmentRevision:1,options:{}};
@@ -45,4 +45,51 @@ test('form material/method/price incompleteness remains a blocker',()=>{
 test('retry has same deterministic offer key but quantity change does not',async()=>{
  const f=setup(true);await f.cart(f.binding,f.input,{draftToken});await f.cart(f.binding,f.input,{draftToken});await f.cart(f.binding,{...f.input,quantity:3},{draftToken});
  assert.equal(f.offers[0].options.stableToken,f.offers[1].options.stableToken);assert.notEqual(f.offers[0].options.stableToken,f.offers[2].options.stableToken);
+});
+
+// #265 (ENTSCHEIDUNGEN 3.47, 3.53): Der Warenkorb-Abruf liest das Produktdokument nicht mehr bei jedem Aufruf. Der Status
+// kommt ohne Dokument aus der Ablage, die wenigen festen Angaben der unveränderlichen Revision werden je Ablage gemerkt.
+function withStatus(f,{status='draft',headStatus=status}={}){
+ let reads=0;const state={status,headStatus},original=f.workshop.repository.get;
+ f.workshop.repository={get:(...a)=>{reads++;return original(...a);},revisionStatus:(id,{revision}={})=>{assert.equal(id,productId);assert.equal(revision,5);return {id,revision,status:state.status,headRevision:7,headStatus:state.headStatus};}};
+ f.cart=createBoundTestCart({workshop:f.workshop,registry:f.registry,shopDomain,handoffFactory:({reviewPolicy})=>async input=>{reviewPolicy(f.manifest);return {cartId:'synthetic',snapshotId:input.snapshotId};}});
+ return {reads:()=>reads,state};
+}
+for(const form of [false,true])test((form?'form':'native')+': das Produktdokument wird je Ablage und Revision einmal gelesen, danach nicht mehr',async()=>{
+ const f=setup(form),c=withStatus(f);
+ for(let i=0;i<3;i++){const result=await f.cart(structuredClone(f.binding),f.input,{draftToken});assert.equal(result.testOnly,true);}
+ assert.equal(c.reads(),1);
+ // Eine andere Ablage (anderer Mandant, anderer Test) hat ihren eigenen Merker.
+ const other=setup(form),d=withStatus(other);await other.cart(structuredClone(other.binding),other.input,{draftToken});assert.equal(d.reads(),1);
+});
+test('ein archiviertes Produkt wird erkannt – an der Revision, am aktuellen Stand und auf dem bisherigen Weg',async()=>{
+ const archived=e=>e.status===409&&e.code==='bound_test_archived';
+ const f=setup(),c=withStatus(f);await f.cart(structuredClone(f.binding),f.input,{draftToken});
+ // Auch nachdem die festen Angaben gemerkt sind: Der Status wird bei jedem Aufruf frisch gelesen.
+ c.state.headStatus='archived';await assert.rejects(f.cart(structuredClone(f.binding),f.input,{draftToken}),archived);
+ c.state.headStatus='draft';c.state.status='archived';await assert.rejects(f.cart(structuredClone(f.binding),f.input,{draftToken}),archived);
+ c.state.status='draft';await f.cart(structuredClone(f.binding),f.input,{draftToken});
+ // Ablage ohne revisionStatus (bisheriger Weg): Status aus dem gelesenen Dokument.
+ const old=setup();old.record.status='archived';old.workshop.repository={get:()=>structuredClone(old.record)};
+ const cart=createBoundTestCart({workshop:old.workshop,registry:old.registry,shopDomain,handoffFactory:()=>async()=>({})});
+ await assert.rejects(cart(structuredClone(old.binding),old.input,{draftToken}),archived);
+});
+test('die gemerkten Angaben entscheiden wie das ganze Dokument: Fertigungsprofil und nicht angebundene Funkklingel',async()=>{
+ // Fertigungsprofil der Revision gegen das des Prüfstands.
+ const p=setup();p.record.metadata.productionProfile={id:'profil',revision:2,blockers:[]};withStatus(p);
+ await assert.rejects(p.cart(structuredClone(p.binding),p.input,{draftToken}),e=>e.code==='bound_test_profile');
+ // Funkklingel ohne getrennte Fertigungsausgabe: Der zusätzliche Hinweis muss im Prüfstand stehen.
+ const blocker='Die getrennte Fertigungsausgabe für Edelstahlträger und Acrylglasauflage ist noch nicht angebunden.';
+ for(const memo of [false,true]){
+  const d=setup();d.record.document.config={doorbell:{schema:'andere-art'}};if(memo)withStatus(d);
+  await assert.rejects(d.cart(structuredClone(d.binding),d.input,{draftToken}),e=>e.code==='bound_test_blockers',memo?'gemerkt':'bisheriger Weg');
+  d.manifest.blockers.unshift(blocker);const result=await d.cart(structuredClone(d.binding),d.input,{draftToken});assert.equal(result.testOnly,true);
+ }
+});
+test('reviewRecord gibt nur unveränderliche, kleine Angaben heraus',()=>{
+ const f=setup();f.record.document.config={doorbell:{schema:'andere-art'},profile:{designs:[{id:'groß'}]}};const repository={get:()=>structuredClone(f.record)};
+ const view=reviewRecord(repository,productId,5);
+ assert.deepEqual(view,{id:productId,revision:5,metadata:{productionProfile:null},document:{schema:'gravuru-product/v1'},unsupportedDoorbell:true});
+ assert.ok(Object.isFrozen(view)&&Object.isFrozen(view.document)&&Object.isFrozen(view.metadata));
+ assert.equal(reviewRecord(repository,productId,5),view);assert.notEqual(reviewRecord({get:repository.get},productId,5),view);
 });

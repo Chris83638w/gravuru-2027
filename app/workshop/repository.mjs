@@ -254,6 +254,20 @@ export function createProductRepository({ filename, validateDocument = (value) =
     // gelesen: product_revisions ist unveränderlich (Trigger), und die Spalten hinter document liegen in der Zeile hinter dem
     // bis zu 12 MB großen Dokument (SQLite liest dafür die ganze Überlaufkette, gemessen ~2 ms statt 0,002 ms über den Index).
     // Das Dasein prüft deshalb nur der Index (product_id, revision); der Mandant wird an der Produktzeile gefiltert (Verbund über products.tenant_id).
+    // Status einer Revision und des aktuellen Stands, ohne das Dokument zu lesen (Warenkorb-Abrufe, #265).
+    // Dieselben Werte wie `get(id,{revision}).status` und `get(id).status`.
+    revisionStatus(id,{revision}={}){
+      return customerDatabaseRead(db,'status:'+tenant+':'+typeof id+':'+String(id)+':'+typeof revision+':'+String(revision),()=>{
+        const head=product(id);
+        if(revision!==undefined)positiveRevision(revision);
+        const at=revision??head.revision,read=db.prepare('SELECT status FROM product_revisions WHERE product_id = ? AND revision = ? AND tenant_id = ?');
+        const row=read.get(id,at,tenant);
+        if(!row)throw failure(404,'revision_not_found','Revision nicht gefunden.');
+        const headRow=at===head.revision?row:read.get(id,head.revision,tenant);
+        if(!headRow)throw failure(404,'revision_not_found','Revision nicht gefunden.');
+        return {id:head.id,revision:at,status:row.status,headRevision:head.revision,headStatus:headRow.status};
+      });
+    },
     revisionState(id,{revision}={}){
       return customerDatabaseRead(db,'state:'+tenant+':'+typeof id+':'+String(id)+':'+typeof revision+':'+String(revision),()=>{
         const head=product(id);

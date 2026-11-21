@@ -380,3 +380,25 @@ test('manufacturing usage separates current and activated product revisions, inc
  rows=r.productionProfileUsage(profileId);assert.equal(rows.length,2);assert.equal(rows.find(x=>x.id===b.id).archived,true);assert.equal(rows.find(x=>x.id===b.id).kind,'master');assert.ok(rows.every(x=>!Object.hasOwn(x,'document')&&!Object.hasOwn(x,'metadata')));
  const before=r.history(a.id);r.productionProfileUsage(profileId);assert.deepEqual(r.history(a.id),before);assert.deepEqual(r.productionProfileUsage('mfg_ffff'),[]);assert.throws(()=>r.productionProfileUsage("x' OR 1=1"));
 });
+
+// #265: Die Warenkorb-Abrufe prüfen „Produkt nicht mehr verfügbar“ ohne das Dokument zu lesen.
+test('revisionStatus liefert dieselben Status wie get für die Revision und den aktuellen Stand, ohne das Dokument', (t) => {
+  const { repository } = fixture(t);
+  const created = repository.create(document());
+  const same = (revision) => {
+    const status = repository.revisionStatus(created.id, revision === undefined ? {} : { revision });
+    const head = repository.get(created.id), at = repository.get(created.id, revision === undefined ? {} : { revision });
+    assert.deepEqual(status, { id: created.id, revision: at.revision, status: at.status, headRevision: head.revision, headStatus: head.status });
+    assert.equal(Object.hasOwn(status, 'document'), false);
+    return status;
+  };
+  assert.equal(same(1).status, 'draft');
+  repository.publish(created.id, { expectedRevision: 1 });
+  same(1); assert.equal(same(2).status, 'active'); same();
+  repository.setArchived(created.id, { expectedRevision: 2, archived: true });
+  // Die ältere Revision behält ihren Status; der aktuelle Stand ist archiviert.
+  const old = same(2); assert.equal(old.status, 'active'); assert.equal(old.headStatus, 'archived'); assert.equal(same(3).status, 'archived');
+  assert.throws(() => repository.revisionStatus(created.id, { revision: 9 }), errorIs(404, 'revision_not_found'));
+  assert.throws(() => repository.revisionStatus(created.id, { revision: 0 }), errorIs(422, 'invalid_revision'));
+  assert.throws(() => repository.revisionStatus('cfg_' + '0'.repeat(36)), (error) => error.status === 404);
+});

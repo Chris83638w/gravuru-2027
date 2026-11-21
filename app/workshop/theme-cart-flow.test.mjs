@@ -202,7 +202,9 @@ for(const {cache,images} of [{cache:false,images:true},{cache:true,images:true},
   const logged=JSON.stringify(timingEvents);
   for(const privateValue of [secret,token,draft.token,draft.id,transferToken,png,webp])assert.ok(!logged.includes(privateValue),'private value in timing log');
  });
- imagePending=false;const dataRead=await counted(()=>proxyRequest('/cart/data','GET',transferToken,hosted)),data=dataRead.result;assert.equal(data.status,200,JSON.stringify(data.data));const p=data.data;
+ imagePending=false;const readsBeforeData=documentReads;const dataRead=await counted(()=>proxyRequest('/cart/data','GET',transferToken,hosted)),data=dataRead.result;assert.equal(data.status,200,JSON.stringify(data.data));const p=data.data;
+ // #265: Mit Antwortspeicher liest die Übergabe kein Produktdokument mehr (Status ohne Dokument, feste Angaben gemerkt).
+ if(cache)assert.equal(documentReads,readsBeforeData,'die Übergabe liest kein Produktdokument');
  // Vor und nach dem Warten auf das Shopify-Bild je eine Lesephase mit Sitzungs- und Angebotsprüfung.
  if(images){assert.equal(dataRead.calls,4);assert.equal(dataRead.phases,2);}else assert.equal(dataRead.phases,1,'ohne Warten auf Shopify nur eine Lesephase');
  assert.equal(p.variantId,product.variants[3].shopifyVariantId.split('/').at(-1));assert.equal(p.quantity,2);assert.equal(p.totalCents,chosen.priceCents*2);

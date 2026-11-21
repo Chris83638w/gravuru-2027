@@ -13,6 +13,25 @@ const equal=(a,b)=>isDeepStrictEqual(a??null,b??null);
 // Test purchase permission is separate from manufacturing permission. These are
 // only the known manufacturing blockers emitted by the saved review builders.
 // No manifest, snapshot, profile or release flag is modified here.
+// #265 (ENTSCHEIDUNGEN 3.47, 3.53: beim Klick nur das Nötige): Jeder Warenkorb-Abruf las bisher das ganze Produktdokument
+// (bei einer Familie über 10 MB), obwohl die Prüfung des Prüfstands davon nur Schema, Fertigungsprofil und die Art der
+// Funkklingel braucht. Produktrevisionen sind unveränderlich (repository.mjs, Trigger immutable_revision_update); diese
+// wenigen Angaben werden je Ablage und Revision einmal gelesen und gemerkt. Formprodukte sind klein und bleiben vollständig.
+const reviewFacts=new WeakMap();
+const frozen=value=>{if(value&&typeof value==='object'&&!Object.isFrozen(value)){Object.freeze(value);for(const v of Object.values(value))frozen(v);}return value;};
+export function reviewRecord(repository,id,revision){
+ let map=reviewFacts.get(repository);if(!map){map=new Map();reviewFacts.set(repository,map);}
+ const key=JSON.stringify([id,revision]);let view=map.get(key);
+ if(!view){
+  const record=repository.get(id,{revision}),form=record.document.schema==='gravuru-form-product/v1',profile=record.metadata?.productionProfile;
+  view=frozen({id:record.id,revision:record.revision,metadata:profile===undefined?{}:{productionProfile:structuredClone(profile)},
+   document:form?structuredClone(record.document):{schema:record.document.schema},
+   unsupportedDoorbell:!form&&!!record.document.config?.doorbell&&!isLayeredDoorbell(record.document.config)});
+  if(map.size>=64)map.delete(map.keys().next().value);
+  map.set(key,view);
+ }
+ return view;
+}
 export function assertBoundTestReview(manifest,record,binding){
  const m=manifest,form=record.document.schema==='gravuru-form-product/v1';
  if((form?m?.schema!=='gravuru-form-review/v1':!isNativeReviewSchema(m?.schema))||m.product?.id!==binding.productId||m.product?.revision!==binding.productRevision||record.id!==binding.productId||record.revision!==binding.productRevision||m.status!=='review-only'||m.productionReady!==false||m.order!==null||m.payment!==null||m.product?.currency!=='EUR'||!['engraving','print'].includes(m.product?.method)||!positive(m.product?.basePriceCents)||!(m.product.widthMm>0&&m.product.heightMm>0)||!Array.isArray(m.blockers))fail(409,'bound_test_review','Dieser Prüfstand ist nicht für den geschützten Testkauf geeignet.');
@@ -24,7 +43,7 @@ export function assertBoundTestReview(manifest,record,binding){
   expected=m.productionProfile?[...m.productionProfile.blockers]:['Ein freigegebenes Fertigungsprofil ist diesem Formprodukt noch nicht zugeordnet.',...(m.product.method==='print'?['Gemessenes Druck-/Material-ICC-Profil und Maschinenabnahme fehlen.']:[])];
  }else{
   if(m.capabilities?.cart!==false||!equal(m.selection?.options,binding.options))fail(409,'bound_test_selection','Die Ausführung gehört nicht zur festen Shop-Zuordnung.');
-  expected=[...(record.document.config?.doorbell&&!isLayeredDoorbell(record.document.config)?['Die getrennte Fertigungsausgabe für Edelstahlträger und Acrylglasauflage ist noch nicht angebunden.']:[]),m.product.method==='print'?'Gemessenes ICC-Profil und Maschinenabnahme fehlen.':'Gravurparameter und Probegravur sind nicht freigegeben.','Shopify-Bestellbindung und echte Maschinenabnahme sind nicht bestätigt.'];
+  expected=[...((record.unsupportedDoorbell??(!!record.document.config?.doorbell&&!isLayeredDoorbell(record.document.config)))?['Die getrennte Fertigungsausgabe für Edelstahlträger und Acrylglasauflage ist noch nicht angebunden.']:[]),m.product.method==='print'?'Gemessenes ICC-Profil und Maschinenabnahme fehlen.':'Gravurparameter und Probegravur sind nicht freigegeben.','Shopify-Bestellbindung und echte Maschinenabnahme sind nicht bestätigt.'];
  }
  if(!equal(m.blockers,expected))fail(409,'bound_test_blockers','Dieser Prüfstand enthält weitere ungeklärte Sperrgründe.');
 }
@@ -40,8 +59,11 @@ export function prepareBoundCartOffer({workshop,registry,shopDomain},binding,inp
    if(!equal(active,binding)||active.shopDomain!==shopDomain||active.tenantId!==workshop.tenantId)fail(409,'bound_test_binding','Die Shop-Zuordnung wurde geändert. Bitte neu öffnen.');
    const draft=native?drafts.acrylicDrafts.get(fixed.draftId,draftToken):drafts.get(fixed.draftId,draftToken);
    if(draft.revision!==fixed.expectedRevision||draft.productId!==binding.productId||draft.productRevision!==binding.productRevision)fail(409,'bound_test_draft','Der Entwurf gehört nicht zu dieser Ausführung oder wurde geändert.');
-   const record=workshop.repository.get(draft.productId,{revision:draft.productRevision});
-   if(record.status==='archived'||workshop.repository.get(draft.productId).status==='archived')fail(409,'bound_test_archived','Dieses Produkt ist nicht mehr verfügbar.');
+   // Status ohne Dokument lesen, die festen Angaben der Revision aus dem Merker (siehe reviewRecord). Ablagen ohne
+   // `revisionStatus` (ältere Attrappen) lesen wie bisher das Dokument.
+   const status=typeof workshop.repository.revisionStatus==='function'?workshop.repository.revisionStatus(draft.productId,{revision:draft.productRevision}):null;
+   const record=status?reviewRecord(workshop.repository,draft.productId,draft.productRevision):workshop.repository.get(draft.productId,{revision:draft.productRevision});
+   if(status?status.status==='archived'||status.headStatus==='archived':record.status==='archived'||workshop.repository.get(draft.productId).status==='archived')fail(409,'bound_test_archived','Dieses Produkt ist nicht mehr verfügbar.');
    const proof=native?{id:draft.snapshotId}:drafts.findSnapshot(draft.id,draft.revision);
    if(!proof?.id)fail(409,'bound_test_snapshot','Bitte die Gestaltung zuerst als Prüfstand sichern.');
    const {manifest}=drafts.review(proof.id);assertBoundTestReview(manifest,record,binding);

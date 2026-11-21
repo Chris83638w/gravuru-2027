@@ -48,3 +48,17 @@ Vor jedem Bau eines Pakets die fachlichen Regeln, die der Code festlegt (Rechte,
 - Motive: **jedes Motiv ist löschbar und ersetzbar**; gesperrt sind nur ganze Druck-Designs, die als Einheit verkauft werden (z. B. Acrylglasbilder).
 - Preise und Lochabstände: **nur die Preis-Excel** zählt.
 - Bohrloch: Motive/Texte dürfen darüber; Export vollständig, nur die Vorschau zeigt Loch/Beschlag; Überlappungshinweis nur bei Gravur.
+
+## Effiziente Prüfstrategie für alle Coding-Agenten (Nutzerentscheidung 21.11.2026)
+
+Gilt für Claude, Astra, Codex und weitere KI-Agenten. Ziel: Tokenverbrauch und Laufzeit durch weniger redundante Prüfungen senken, ohne Qualität oder verbindliche Fach-, Sicherheits- und Freigaberegeln zu schwächen.
+
+1. **Einmal fokussiert orientieren:** Zu Beginn verbindliche Einstiegsdateien, aktiven Stand, betroffene Module und relevante Tests lesen. Weitere Dateien nur bei Bedarf; keine wiederholte Vollinventur.
+2. **Zusammenhängend entwickeln:** Änderungen in klar abgegrenzten Arbeitspaketen bündeln. Nicht nach jeder Zeile, jedem Tool-Aufruf oder jeder einzelnen Datei sämtliche Tests/Builds starten.
+3. **Zwischendurch gezielt prüfen:** Nur betroffene Unit-/Integrations-/Typ-/Lint-Checks ausführen, wenn Änderungen oder Fehlersignale dies begründen. Erfolgreiche Prüfungen bei unverändertem Stand nicht wiederholen.
+4. **Einmal umfassend zum Abschluss:** Nach dem fertigen Arbeitspaket und vor verbindlicher Freigabe, Merge oder Deployment die im jeweiligen Projekt vorgeschriebene gesamte Abschlussprüfung durchführen (z. B. Testsuite, Build, Lint, Schema-/Exportprüfung). Bestehende Anforderungen an die PR-Abnahme bleiben ausdrücklich gültig.
+5. **Fehler effizient beheben:** Zuerst Ursache und betroffene Tests prüfen. Nach Codekorrekturen betroffene Prüfungen wiederholen; wenn die Korrektur den zuletzt vollständig geprüften Stand verändert, die für die Freigabe erforderliche Abschlussprüfung auf dem finalen Stand erneut durchführen.
+6. **Risikobasierte Ausnahmen:** Bei Authentifizierung, Berechtigungen, Datenschutz, Zahlungen/Checkout, Preisberechnung, Datenmigration, Zeiterfassung/NFC und Produktionsdaten sofort geeignete gezielte Sicherheits- und Funktionstests durchführen. Vorgeschriebene Validierungen (z. B. für Katalogfamilien) nicht überspringen.
+7. **Kurz dokumentieren:** Tatsächlich durchgeführte Prüfungen, Ergebnis, nicht geprüfte Bereiche und offene Risiken knapp benennen; keine langen redundanten Logs oder unbelegten Aussagen wie „alles getestet“.
+
+Keine automatischen Merges, Live-Änderungen oder Deployments allein aufgrund dieser Regel.

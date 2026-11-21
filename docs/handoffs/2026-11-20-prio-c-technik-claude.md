@@ -845,6 +845,6 @@ Keine. Gelöscht wird nichts (die Testbilder bei Shopify bleiben).
 
 ### Offene Fragen an Chris
 
-1. Theme-Baustein im veröffentlichten Theme auf die Fassung bringen, die das Bild vom eigenen Server zeigt (Astra spielt auf, nach Vergleich beider Fassungen). Empfehlung: Ja. (Gestellt 21.11., 08:30 Uhr.)
+Keine. Die Freigabe für den Theme-Baustein ist erteilt (21.11., 08:24 Uhr, ENTSCHEIDUNGEN 3.54); Astra ist beauftragt (#267). Danach am echten Shop zu prüfen: Warenkorbseite, Seitenwarenkorb, Kasse, Danke-Seite, „Bearbeiten“ aus dem Warenkorb, Handy.
 
 Der [Design-Master](https://github.com/Chris83638w/gravuru-katalog./blob/main/designs/DESIGN-MASTER.md) gilt unverändert; an Designs wurde nichts geändert.

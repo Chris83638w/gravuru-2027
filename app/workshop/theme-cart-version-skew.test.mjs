@@ -12,6 +12,7 @@ import {pathToFileURL} from 'node:url';
 // - neuer Client: kleine JSON-Übergabe, nur wenn er das Kennzeichen sendet.
 const ui=new URL('./ui/',import.meta.url),fixtures=new URL('./test-fixtures/',import.meta.url);
 const OLD_CLIENT=new URL('theme-cart-client-72bf9bb2.mjs',fixtures),OLD_UI=new URL('theme-cart-ui-72bf9bb2.mjs',fixtures);
+const LIVE_CLIENT=new URL('theme-cart-client-9bfc281b.mjs',fixtures);
 const NEW_CLIENT=new URL('theme-cart-client.mjs',ui),NEW_UI=new URL('theme-cart-ui.mjs',ui),NEW_EMBED=new URL('shop-embed.mjs',ui);
 const png='iVBORw0KGgoAAAANSUhEUgAAACgAAAA8CAIAAACb22+3AAAAOklEQVR4nO3NIQEAMAgAsPOEaDT9M9ABg9kKLLL6Xfgnq1gsFovFYrFYLBaLxWKxWCwWi8VisVgsXhqq4AGG9djEFQAAAABJRU5ErkJggg==';
 const hostedUrl='https://cdn.shopify.com/s/files/1/0920/5550/3228/files/gravuru-gestaltung-'+'d'.repeat(64)+'.png?v=1700000000';
@@ -82,7 +83,10 @@ test('#252 shop-embed links with an old or new client and only asks for the host
  const withOld=await import(pair(t,NEW_EMBED,OLD_CLIENT,'shop-embed.mjs'));
  assert.deepEqual(withOld.cartRequestHeaders(token,'data'),{'X-Gravuru-Cart-Handoff':token},'old cached client → PNG path');
  const withNew=await import(pair(t,NEW_EMBED,NEW_CLIENT,'shop-embed.mjs'));
- assert.deepEqual(withNew.cartRequestHeaders(token,'data'),{'X-Gravuru-Cart-Handoff':token,'X-Gravuru-Cart-Preview':'hosted'});
+ assert.deepEqual(withNew.cartRequestHeaders(token,'data'),{'X-Gravuru-Cart-Handoff':token,'X-Gravuru-Cart-Preview':'hosted','X-Gravuru-Cart-Image':'server'});
+ // Tab mit dem Client des Stands 9bfc281b (kennt die gehostete Vorschau, aber nicht das Bild am eigenen Server).
+ const withLive=await import(pair(t,NEW_EMBED,LIVE_CLIENT,'shop-embed.mjs'));
+ assert.deepEqual(withLive.cartRequestHeaders(token,'data'),{'X-Gravuru-Cart-Handoff':token,'X-Gravuru-Cart-Preview':'hosted'},'älterer Client → kein Kennzeichen für das Bild am eigenen Server');
  assert.deepEqual(withNew.cartRequestHeaders(token,'claim'),{'X-Gravuru-Cart-Handoff':token},'the capability belongs to /cart/data only');
  assert.ok(fs.readFileSync(NEW_EMBED,'utf8').includes("import * as themeCart from './theme-cart-client.mjs'"),'namespace import: missing exports never break module linking');
 });
@@ -114,4 +118,60 @@ test('#252 standalone handoff page: new page with new client uses the small JSON
 test('#252 standalone handoff page: old cached page with new client still fills the cart via PNG',async t=>{
  const r=await runStandalonePage(t,OLD_UI,NEW_CLIENT);
  assert.equal(r.assigned,'/cart',r.status);assert.deepEqual(r.s.log.adds,['png']);assert.equal(r.s.log.dataHeaders[0]['X-Gravuru-Cart-Preview'],undefined);
+});
+
+// ENTSCHEIDUNGEN 3.52/3.53 (Chris 21.11.2026): Beim Einlegen geht nur Text an Shopify; die Zeile nennt das Bild am eigenen Server.
+const serverImage='https://app.example/gestaltung/acryl/offer_11111111-1111-4111-8111-111111111111/'+'e'.repeat(64)+'.png';
+function serverOnlyPayload({preview=false}={}){
+ const p=serverPayload({hosted:!preview});delete p.properties._gravuru_checkout_image;p.properties._gravuru_bild=serverImage;return p;
+}
+// Synthetischer Shop für den neuen Weg: /cart/add.js bekommt JSON ohne _Entwurf und ohne Shopify-Bild.
+function textOnlyShop(){
+ const cart={currency:'EUR',items:[]},log={adds:[],claims:0};
+ const fetchImpl=async(url,o={})=>{
+  url=String(url);
+  if(url.endsWith('/cart.js'))return Response.json(structuredClone(cart));
+  if(url.endsWith('/cart/add.js')){
+   let id,quantity,properties;
+   if(o.body instanceof FormData){
+    id=Number(o.body.get('items[0][id]'));quantity=Number(o.body.get('items[0][quantity]'));properties={};
+    for(const [k,v]of o.body.entries()){const m=k.match(/^items\[0\]\[properties\]\[(.+)\]$/);if(m)properties[m[1]]=typeof v==='string'?v:'https://cdn.shopify.com/s/files/1/uploads/design.png';}
+    log.adds.push('png');
+   }else{
+    assert.equal(o.headers['Content-Type'],'application/json');({id,quantity,properties}=JSON.parse(o.body).items[0]);
+    assert.ok(!Object.hasOwn(properties,'_Entwurf'));assert.ok(!Object.hasOwn(properties,'_gravuru_checkout_image'));assert.equal(properties._gravuru_bild,serverImage);
+    assert.ok(!o.body.includes('iVBORw0KGgo'));assert.ok(!o.body.includes('cdn.shopify.com'));log.adds.push('text');
+   }
+   const line={key:id+':k',variant_id:id,product_id:1,quantity,original_price:1999,original_line_price:1999*quantity,final_line_price:1999*quantity,properties};
+   cart.items.push(line);return Response.json({items:[line]});
+  }
+  assert.fail('unerwartete Anfrage '+url);
+ };
+ return {cart,log,fetchImpl};
+}
+
+test('3.52 neuer Client: ohne Bild bei Shopify geht nur Text an den Warenkorb, und die Rücklese-Prüfung besteht',async()=>{
+ const neu=await import(NEW_CLIENT.href+'?server');
+ assert.equal(neu.serverPreview(serverOnlyPayload()),serverImage);
+ const s=textOnlyShop(),client=neu.createThemeCartClient({fetchImpl:s.fetchImpl,root:'/',claim:async()=>{s.log.claims++;}});
+ // Auch ein mitgegebenes Warenkorbbild aus dem Editor wird nicht übertragen.
+ const result=await client.submit(serverOnlyPayload(),{image:new Blob([Buffer.from(png,'base64')],{type:'image/png'})});
+ assert.equal(result.cartUrl,'/cart');assert.deepEqual(s.log.adds,['text']);assert.equal(s.log.claims,1);assert.equal(s.cart.items.length,1);
+ assert.equal(s.cart.items[0].properties._Entwurf,undefined);
+ // Eine Zeile, die doch ein Bild bei Shopify trägt, gilt nicht als bestätigt.
+ const cart={currency:'EUR',items:[{...s.cart.items[0],properties:{...s.cart.items[0].properties,_Entwurf:'https://cdn.shopify.com/s/files/1/uploads/x.png'}}]};
+ assert.throws(()=>neu.verifyThemeCartLine(cart,serverOnlyPayload()),/stimmen nicht überein/);
+ // Nur die Bildadresse des eigenen Servers in der festen Form zählt.
+ for(const bad of ['https://app.example/gestaltung/x.png','http://app.example/gestaltung/acryl/offer_11111111-1111-4111-8111-111111111111/'+'e'.repeat(64)+'.png',serverImage+'?x=1',serverImage.replace('offer_','proof_')]){
+  const p=serverOnlyPayload();p.properties._gravuru_bild=bad;assert.throws(()=>neu.validateThemeCartPayload(p),/Gestaltungsvorschau fehlt/);
+ }
+});
+
+test('3.52 Tab mit dem Client des Stands 9bfc281b: er bekommt weiter das Vorschaubild und legt wie bisher ein',async()=>{
+ const live=await import(LIVE_CLIENT.href+'?direct');
+ assert.equal(typeof live.hostedPreview,'function');assert.equal(live.serverPreview,undefined,'Fixture ist der Client vor 3.52');
+ // Ohne Vorschaubild und ohne Shopify-Bild könnte dieser Client nicht einlegen – deshalb lässt der Server es ihm (kein Kennzeichen).
+ assert.throws(()=>live.validateThemeCartPayload(serverOnlyPayload()),/Gestaltungsvorschau fehlt/);
+ const s=textOnlyShop(),client=live.createThemeCartClient({fetchImpl:s.fetchImpl,root:'/',claim:async()=>{s.log.claims++;}});
+ await client.submit(serverOnlyPayload({preview:true}));assert.deepEqual(s.log.adds,['png']);assert.equal(s.cart.items.length,1);
 });

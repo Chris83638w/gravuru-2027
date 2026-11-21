@@ -7,7 +7,7 @@ export function validateThemeCartPayload(p){
  if(p?.schema!=='gravuru-theme-cart/v1'||!/^[-a-z0-9]+\.myshopify\.com$/.test(p.shopDomain||'')||!/^\d{1,20}$/.test(p.variantId||'')||!/^\d{1,20}$/.test(p.productId||'')||!int(p.quantity)||p.quantity<1||p.quantity>99||!int(p.unitCents)||p.unitCents>100000000||p.totalCents!==p.unitCents*p.quantity||p.currency!=='EUR'||p.paymentConfirmed!==false||p.productionReady!==false||!configId(p.configuration?.id)||!Number.isSafeInteger(p.configuration.rev)||p.configuration.rev<1||!['create','update'].includes(p.mode))fail('Die gesicherte Warenkorbübergabe ist unvollständig.');
  if(!p.properties||Array.isArray(p.properties)||Object.keys(p.properties).length>80||Object.entries(p.properties).some(([k,v])=>!k||k.length>130||/[\x00-\x1f]/.test(k)||typeof v!=='string'||v.length>12000)||p.properties._gravuru_config!==p.configuration.id||p.properties._gravuru_rev!==String(p.configuration.rev)||!/^[a-f0-9]{64}$/.test(p.properties._gravuru_offer||'')||Object.hasOwn(p.properties,'_Entwurf'))fail('Die Gestaltungszuordnung ist unvollständig.');
  // Without inline PNG the server-made Shopify file is the cart preview (no upload through the customer's device).
- if(p.preview===undefined?!hostedPreview(p):p.preview?.type!=='image/png'||typeof p.preview.base64!=='string'||p.preview.base64.length>8*1024*1024||!/^iVBORw0KGgo[A-Za-z0-9+/=]+$/.test(p.preview.base64))fail('Die Gestaltungsvorschau fehlt.');
+ if(p.preview===undefined?!(hostedPreview(p)||serverPreview(p)):p.preview?.type!=='image/png'||typeof p.preview.base64!=='string'||p.preview.base64.length>8*1024*1024||!/^iVBORw0KGgo[A-Za-z0-9+/=]+$/.test(p.preview.base64))fail('Die Gestaltungsvorschau fehlt.');
  if(p.mode==='update'&&(!Number.isSafeInteger(p.previousRevision)||p.previousRevision<1||p.previousRevision>=p.configuration.rev))fail('Der bisherige Gestaltungsstand ist unklar.');
  return p;
 }
@@ -15,6 +15,11 @@ export function validateThemeCartPayload(p){
 const HOSTED_PREVIEW=/^https:\/\/cdn\.shopify\.com\/s\/files\/1\/\d{1,6}\/\d{1,6}\/\d{1,6}\/files\/gravuru-gestaltung-[a-f0-9]{64}\.png(?:\?v=\d{1,20})?$/;
 export function hostedPreview(p){const url=p?.properties?._gravuru_checkout_image;return typeof url==='string'&&HOSTED_PREVIEW.test(url)?url:null;}
 const hostedOnly=p=>p.preview===undefined?hostedPreview(p):null;
+// ENTSCHEIDUNGEN 3.52/3.53 (Chris 21.11.2026): Beim Einlegen geht nur Text an Shopify. Die Zeile nennt das Bild der Gestaltung
+// am eigenen Server (_gravuru_bild); es gibt dann weder ein Shopify-Bild noch eine Datei `_Entwurf`.
+const SERVER_PREVIEW=/^https:\/\/[a-z0-9.-]{1,253}(?::\d{1,5})?\/gestaltung\/[-A-Za-z0-9_]{1,100}\/offer_[a-f0-9-]{36}\/[a-f0-9]{64}\.png$/;
+export function serverPreview(p){const url=p?.properties?._gravuru_bild;return typeof url==='string'&&SERVER_PREVIEW.test(url)?url:null;}
+const serverOnly=p=>p.preview===undefined&&!hostedPreview(p)?serverPreview(p):null;
 export const CART_IMAGE_MAX_BYTES=1536*1024;
 export function cartImage(image){
  return typeof Blob!=='undefined'&&image instanceof Blob&&/^image\/(jpeg|png)$/.test(image.type)&&image.size>0&&image.size<=CART_IMAGE_MAX_BYTES?image:null;
@@ -41,7 +46,7 @@ export function verifyThemeCartLine(cart,p){
  cartData(cart);const lines=current(cart,p);
  if(lines.length!==1)fail('Die Gestaltung wurde nicht eindeutig im Warenkorb bestätigt. Bitte den Warenkorb prüfen.');
  const line=lines[0];
- if(String(line.variant_id??line.id)!==p.variantId||String(line.product_id)!==p.productId||line.quantity!==p.quantity||line.original_price!==p.unitCents||line.original_line_price!==p.totalCents||!int(line.final_line_price)||line.final_line_price>p.totalCents||Object.entries(p.properties).some(([k,v])=>!sameProperty(k,line.properties?.[k],v))||!previewUrl(line.properties?._Entwurf,p.shopDomain)||(hostedOnly(p)&&line.properties._Entwurf!==hostedOnly(p)))fail('Gestaltung, Vorschau, Ausführung, Menge oder Preis im Warenkorb stimmen nicht überein. Bitte den Warenkorb prüfen.');
+ if(String(line.variant_id??line.id)!==p.variantId||String(line.product_id)!==p.productId||line.quantity!==p.quantity||line.original_price!==p.unitCents||line.original_line_price!==p.totalCents||!int(line.final_line_price)||line.final_line_price>p.totalCents||Object.entries(p.properties).some(([k,v])=>!sameProperty(k,line.properties?.[k],v))||(serverOnly(p)?line.properties?._Entwurf!==undefined&&line.properties._Entwurf!=='':!previewUrl(line.properties?._Entwurf,p.shopDomain))||(hostedOnly(p)&&line.properties._Entwurf!==hostedOnly(p)))fail('Gestaltung, Vorschau, Ausführung, Menge oder Preis im Warenkorb stimmen nicht überein. Bitte den Warenkorb prüfen.');
  return line;
 }
 const previous=(cart,p)=>p.mode==='update'?own(cart,p).filter(l=>l.properties._gravuru_rev===String(p.previousRevision)):[];
@@ -81,6 +86,10 @@ export function createThemeCartClient({fetchImpl=globalThis.fetch,claim,root='/'
      // Text properties only: the preview is already a Shopify file, so nothing large leaves the customer's device.
      const id=Number(p.variantId);if(!Number.isSafeInteger(id))fail('Die gesicherte Warenkorbübergabe ist unvollständig.');
      request={method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({items:[{id,quantity:p.quantity,properties:{...p.properties,_Entwurf:hosted}}]})};
+    }else if(serverOnly(p)){
+     // Nur Text: Das Bild bleibt am eigenen Server, an Shopify geht keine Datei.
+     const id=Number(p.variantId);if(!Number.isSafeInteger(id))fail('Die gesicherte Warenkorbübergabe ist unvollständig.');
+     request={method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({items:[{id,quantity:p.quantity,properties:{...p.properties}}]})};
     }else{
      const raw=atob(p.preview.base64),bytes=Uint8Array.from(raw,c=>c.charCodeAt(0));
      if(bytes.length<8||bytes.slice(0,8).join(',')!=='137,80,78,71,13,10,26,10')fail('Die Gestaltungsvorschau ist ungültig.');

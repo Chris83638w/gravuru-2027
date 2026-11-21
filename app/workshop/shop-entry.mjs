@@ -76,7 +76,13 @@ function createWindowLimiter(perMinute,clock){
  return key=>{const minute=Math.floor(clock()/60000);if(windows.size>4096)windows.clear();const entry=windows.get(key);if(!entry||entry.minute!==minute){windows.set(key,{minute,count:1});return true;}entry.count++;return entry.count<=perMinute;};
 }
 
-export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=null,warmCheckoutAccess=null,proxyPath,pagePath='/konfigurator/shop/',clock=Date.now,ttlMs,maxAgeSeconds=300,limits={},modelSlimmer,publicPreviewDirectory=null,publicPreviewPrepare=null,modelResponseCache=null,reviewProductReference=true,logger=event=>console.warn(JSON.stringify(event))}){
+export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=null,shopifyCartImages=false,warmCheckoutAccess=null,proxyPath,pagePath='/konfigurator/shop/',clock=Date.now,ttlMs,maxAgeSeconds=300,limits={},modelSlimmer,publicPreviewDirectory=null,publicPreviewPrepare=null,modelResponseCache=null,reviewProductReference=true,logger=event=>console.warn(JSON.stringify(event))}){
+ // ENTSCHEIDUNGEN 3.52 und 3.53 (Chris 21.11.2026): Bilder liegen bei Shopify nur zu echten Bestellungen; beim Einlegen geht
+ // nur Text an Shopify. Ohne `shopifyCartImages` meldet der Klick deshalb kein Kassenbild bei Shopify an und wartet auf keines;
+ // die Warenkorbzeile nennt das Bild der Gestaltung am eigenen Server (`_gravuru_bild`). Die Shopify-Funktion setzt ohne
+ // `_gravuru_checkout_image` nur den Preis (ops/shopify/checkout-image/cart-image.mjs).
+ if(shopifyCartImages!==true)checkoutImage=null;
+ const ownCartImage=value=>typeof value==='string'&&value.startsWith(origin+'/gestaltung/')&&/\/offer_[a-f0-9-]{36}\/[a-f0-9]{64}\.png$/.test(value);
  let address;try{address=new URL(origin);}catch{}
  if(!address||address.origin!==origin||address.protocol!=='https:'||address.username||address.password||!/^[-a-z0-9]+\.myshopify\.com$/.test(shopDomain||'')||typeof secret!=='string'||secret.length<16||!Array.isArray(stores)||!stores.length||stores.length>8||
    typeof proxyPath!=='string'||!/^\/[A-Za-z0-9_-]+(?:\/[A-Za-z0-9_-]+)*$/.test(proxyPath)||typeof pagePath!=='string'||!/^\/[A-Za-z0-9_-]+(?:\/[A-Za-z0-9_-]+)*\/$/.test(pagePath)||pagePath.startsWith('/api/')||proxyPath.startsWith('/api/')||proxyPath+'/'===pagePath)
@@ -535,7 +541,8 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
     // The READY Shopify file becomes _Entwurf as text; no PNG round trip through the customer's device.
     // #252: only for clients that announce it. Tabs still running an older cached client keep the PNG path.
     if(req.headers['x-gravuru-cart-preview']==='hosted')delete prepared.payload.preview;
-   }
+   }else if(req.headers['x-gravuru-cart-image']==='server'&&ownCartImage(prepared.payload.properties._gravuru_bild))delete prepared.payload.preview;
+   // Ohne Kennzeichen (Tab mit älterem Client) oder ohne gesichertes Kundenbild bleibt der bisherige Weg mit Vorschaubild.
    return json(res,200,prepared.payload);
   }
   if(claiming)return json(res,200,phase.claimed);

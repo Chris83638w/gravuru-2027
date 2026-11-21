@@ -40,7 +40,9 @@ const euro=c=>(c/100).toFixed(2);
 // Mit Antwortspeicher: 135-mal auf dem Stand 44f9bdcf, 88-mal mit der gemerkten Art in active() allein, 72-mal, seit auch die
 // Freigabe-Prüfungen des Warenkorbwegs die gemerkte Art nehmen und der Entwurf das gehaltene Modell nutzt. Die Grenze liegt dazwischen.
 const documentReadsByMode={};
-for(const cache of [false,true])test('theme cart: signed entry, immutable design, edit, quantity 1 to 4 and signed order intake'+(cache?' (with model response cache)':''),async t=>{
+// ENTSCHEIDUNGEN 3.52/3.53 (Chris 21.11.2026): Standard ist „beim Einlegen kein Bild an Shopify“ (`images:false`).
+// Der frühere Weg mit Kassenbild bei Shopify bleibt als abschaltbare Einstellung (`shopifyCartImages`) geprüft.
+for(const {cache,images} of [{cache:false,images:true},{cache:true,images:true},{cache:true,images:false}])test('theme cart: signed entry, immutable design, edit, quantity 1 to 4 and signed order intake'+(cache?' (with model response cache)':'')+(images?'':' (kein Bild an Shopify)'),async t=>{
  const dir=fs.mkdtempSync(path.join(os.tmpdir(),'g27-shop-entry-flow-'));build({outputDirectory:dir});
  const seed=JSON.parse(fs.readFileSync(path.join(dir,'models.json')))[0];
  const quantityTiers=[{minQuantity:3,percentOff:5},{minQuantity:5,percentOff:10},{minQuantity:10,percentOff:15}];
@@ -88,7 +90,7 @@ for(const cache of [false,true])test('theme cart: signed entry, immutable design
  const store={storeId:'acryl',registry,workshop:countingWorkshop,apiPrefix:'/api/workshop/',nativeEditorPath:'/_merchant-editor.html',formEditorPath:'/_merchant-form-editor.html',cart:createBoundTestCart({workshop:w,registry,shopDomain,transportOptions:{fetchImpl}})};
  const registeredImage='https://cdn.shopify.com/s/files/1/0920/5550/3228/files/gravuru-gestaltung-'+'c'.repeat(64)+'.png';let imageCalls=0,imagePending=false;
  const timingEvents=[],sources=[];let warmAccess=0;
- let now=1_800_000_000_000;const entry=createShopEntry({origin,shopDomain,secret,stores:[store],proxyPath,clock:()=>now,logger:event=>timingEvents.push(event),modelSlimmer:null,...(cache?{modelResponseCache:true}:{}),warmCheckoutAccess:async()=>{warmAccess++;throw Error('test cold login');},checkoutImage:async (source,options)=>{sources.push({source,options});assert.ok(source.startsWith(origin+'/gestaltung/'));if(imagePending)throw Object.assign(Error('Bild wird vorbereitet.'),{status:502,code:'checkout_image_pending'});imageCalls++;return registeredImage;}});
+ let now=1_800_000_000_000;const entry=createShopEntry({origin,shopDomain,secret,stores:[store],proxyPath,clock:()=>now,logger:event=>timingEvents.push(event),modelSlimmer:null,...(cache?{modelResponseCache:true}:{}),...(images?{shopifyCartImages:true}:{}),warmCheckoutAccess:async()=>{warmAccess++;throw Error('test cold login');},checkoutImage:async (source,options)=>{sources.push({source,options});assert.ok(source.startsWith(origin+'/gestaltung/'));if(imagePending)throw Object.assign(Error('Bild wird vorbereitet.'),{status:502,code:'checkout_image_pending'});imageCalls++;return registeredImage;}});
  const webhook=createOrderWebhookHandler({intake:w.orderIntake,config:webhookConfig});
  const server=http.createServer((req,res)=>req.url===ORDER_WEBHOOK_PATH?webhook(req,res):entry.handle(req,res,new URL(req.url,origin)));server.listen(0,'127.0.0.1');await once(server,'listening');
  t.after(async()=>{server.closeAllConnections();await new Promise(r=>server.close(r));});
@@ -121,11 +123,11 @@ for(const cache of [false,true])test('theme cart: signed entry, immutable design
  for(const step of ['body_read','body_json','session_binding','model_build','review_validate','preview_pair','review_zip','draft_persist','response_json']){
   assert.equal(draftTiming.steps[step].calls,1,step);assert.ok(draftTiming.steps[step].durationMs>=0);assert.ok(created.headers['server-timing'].includes(step+';dur='));
  }
- assert.equal(warmAccess,1);
- assert.equal(sources.length,1);
- assert.match(new URL(sources[0].source).pathname,/\/proof_/);
- assert.deepEqual(sources[0].options,{justSaved:true});
- const firstSource=sources[0].source;
+ // Ohne `shopifyCartImages` meldet das Sichern nichts bei Shopify an: kein Zugang, kein Bild.
+ assert.equal(warmAccess,images?1:0);
+ assert.equal(sources.length,images?1:0);
+ if(images){assert.match(new URL(sources[0].source).pathname,/\/proof_/);assert.deepEqual(sources[0].options,{justSaved:true});}
+ const firstSource=sources[0]?.source;
  const draft=created.data;assert.match(draft.id,/^adraft_/);assert.match(draft.token,/^[a-f0-9]{64}$/);assert.equal(draft.revision,1);
  const manifest=w.customerDrafts.review(draft.snapshotId).manifest;assert.deepEqual(manifest.selection.options,chosen.options);assert.equal(manifest.selection.price.quantity,2);assert.equal(manifest.productionReady,false);
  // ENTSCHEIDUNGEN 3.47: Den Verweis auf den Produktstand bekommen nur native Produkte (Familien, Klingelschilder). Das
@@ -171,10 +173,10 @@ for(const cache of [false,true])test('theme cart: signed entry, immutable design
  assert.equal(prepared.data.mode,'theme');assert.equal(sent.length,0,'no separate Storefront cart is created');
  const transferToken=new URLSearchParams(new URL(prepared.data.handoffUrl).hash.slice(1)).get('handoff');assert.match(transferToken,/^[a-f0-9]{64}$/);
  // V2: Shopify-Checkout-Bild startet bereits mit der Übergabe (nicht erst mit /cart/data).
- assert.ok(imageCalls>=2);assert.equal(sources.at(-1).source,firstSource,'handoff must reuse the image of this revision');imageCalls=0;
+ if(images){assert.ok(imageCalls>=2);assert.equal(sources.at(-1).source,firstSource,'handoff must reuse the image of this revision');}else assert.equal(sources.length,0,'auch die Übergabe meldet kein Bild bei Shopify an');imageCalls=0;
  function signed(){const q=new URLSearchParams({shop:shopDomain,path_prefix:proxyPath,timestamp:String(Math.floor(now/1000)),logged_in_customer_id:''});q.set('signature',appProxySignature(q,secret));return q;}
  const proxyRequest=(part,method='GET',token=transferToken,extra={})=>request(proxyPath+part+'?'+signed(),method,undefined,{'X-Gravuru-Cart-Handoff':token,...(method==='POST'?{Origin:'https://'+shopDomain}:{}),...extra});
- const hosted={'X-Gravuru-Cart-Preview':'hosted'};// #252: der neue Client meldet, dass er die gehostete Vorschau verarbeitet
+ const hosted={'X-Gravuru-Cart-Preview':'hosted','X-Gravuru-Cart-Image':'server'};// der neue Client meldet beide Fähigkeiten (#252 gehostete Vorschau; 3.52 Bild am eigenen Server)
  const page=await proxyRequest('/cart');assert.equal(page.status,200);assert.match(page.headers['content-type'],/text\/html/);assert.ok(!page.body.includes(Buffer.from(draft.token)));assert.ok(!page.body.includes(Buffer.from(transferToken)));
  for(const file of ['/theme-cart-ui.mjs','/theme-cart-client.mjs']){const r=await proxyRequest(file);assert.equal(r.status,200);assert.match(r.headers['content-type'],/javascript/);}
  assert.equal((await request(proxyPath+'/cart/data')).status,401);
@@ -183,9 +185,15 @@ for(const cache of [false,true])test('theme cart: signed entry, immutable design
  assert.equal((await proxyRequest('/cart/claim','POST',transferToken,{Origin:'https://evil.example'})).status,403);
  const wrongCustomer=signed();wrongCustomer.set('logged_in_customer_id','42');wrongCustomer.delete('signature');wrongCustomer.set('signature',appProxySignature(wrongCustomer,secret));
  assert.equal((await request(proxyPath+'/cart/data?'+wrongCustomer,'GET',undefined,{'X-Gravuru-Cart-Handoff':transferToken})).status,403);
- imagePending=true;const pendingImage=await proxyRequest('/cart/data');assert.equal(pendingImage.status,502);assert.equal(pendingImage.data.error.code,'checkout_image_pending');assert.equal(imageCalls,0);
- const failedTiming=timingEvents.find(e=>e.traceId===pendingImage.headers['x-gravuru-timing-id']);
- assert.equal(failedTiming.status,502);assert.equal(failedTiming.steps.checkout_image_wait.failures,1);
+ if(images){
+  imagePending=true;const pendingImage=await proxyRequest('/cart/data');assert.equal(pendingImage.status,502);assert.equal(pendingImage.data.error.code,'checkout_image_pending');assert.equal(imageCalls,0);
+  const failedTiming=timingEvents.find(e=>e.traceId===pendingImage.headers['x-gravuru-timing-id']);
+  assert.equal(failedTiming.status,502);assert.equal(failedTiming.steps.checkout_image_wait.failures,1);
+ }else{
+  // Ein Shopify-Bild, das noch nicht bereit wäre, hält den Klick nicht mehr auf: Es wird gar nicht erst angefragt.
+  imagePending=true;const direct=await proxyRequest('/cart/data','GET',transferToken,hosted);assert.equal(direct.status,200,JSON.stringify(direct.data));
+  assert.equal(timingEvents.find(e=>e.traceId===direct.headers['x-gravuru-timing-id']).steps.checkout_image_wait,undefined);
+ }
  t.after(()=>{
   for(const route of ['acrylic-drafts','theme-cart','cart/data','cart/claim']){
    assert.ok(timingEvents.some(e=>e.route===route&&e.status>=200&&e.status<300),'missing successful '+route);
@@ -196,16 +204,18 @@ for(const cache of [false,true])test('theme cart: signed entry, immutable design
  });
  imagePending=false;const dataRead=await counted(()=>proxyRequest('/cart/data','GET',transferToken,hosted)),data=dataRead.result;assert.equal(data.status,200,JSON.stringify(data.data));const p=data.data;
  // Vor und nach dem Warten auf das Shopify-Bild je eine Lesephase mit Sitzungs- und Angebotsprüfung.
- assert.equal(dataRead.calls,4);assert.equal(dataRead.phases,2);
+ if(images){assert.equal(dataRead.calls,4);assert.equal(dataRead.phases,2);}else assert.equal(dataRead.phases,1,'ohne Warten auf Shopify nur eine Lesephase');
  assert.equal(p.variantId,product.variants[3].shopifyVariantId.split('/').at(-1));assert.equal(p.quantity,2);assert.equal(p.totalCents,chosen.priceCents*2);
  assert.equal(p.properties._gravuru_config,prepared.data.configuration.id);assert.equal(p.properties._gravuru_rev,'1');assert.ok(p.properties.Gravurtext);
- assert.equal(p.preview,undefined,'with a READY Shopify file no PNG travels to the customer device');assert.ok(JSON.stringify(p).length<64*1024,'handoff stays small');
+ assert.equal(p.preview,undefined,images?'with a READY Shopify file no PNG travels to the customer device':'das Bild bleibt am eigenen Server, kein PNG geht über das Gerät des Kunden an Shopify');assert.ok(JSON.stringify(p).length<64*1024,'handoff stays small');
  assert.ok(!JSON.stringify(p).includes(draft.token));assert.ok(!JSON.stringify(p).includes(token));assert.equal(new URL(p.properties._gravuru_bearbeiten).searchParams.get('line'),'theme');
  assert.equal(p.properties.Bearbeiten,undefined);
- assert.equal(sources.at(-1).source,firstSource);assert.match(p.properties._gravuru_bild,/\/offer_/);assert.equal(p.properties._gravuru_checkout_image,registeredImage);assert.equal(imageCalls,1);
+ assert.match(p.properties._gravuru_bild,/\/offer_[a-f0-9-]{36}\/[a-f0-9]{64}\.png$/);assert.ok(p.properties._gravuru_bild.startsWith(origin+'/gestaltung/'));
+ if(images){assert.equal(sources.at(-1).source,firstSource);assert.equal(p.properties._gravuru_checkout_image,registeredImage);assert.equal(imageCalls,1);}
+ else{assert.equal(p.properties._gravuru_checkout_image,undefined,'kein Kassenbild bei Shopify');assert.equal(sources.length,0);assert.equal(imageCalls,0);assert.equal(warmAccess,0);assert.ok(!JSON.stringify(p).includes('cdn.shopify.com'));}
  // #252 Versionswechsel: Tabs mit älterem, zwischengespeichertem Client fragen ohne Kennzeichen und erhalten weiter das PNG.
  const olderTab=await proxyRequest('/cart/data');assert.equal(olderTab.status,200);assert.equal(olderTab.data.preview.type,'image/png');assert.match(olderTab.data.preview.base64,/^iVBORw0KGgo/);
- assert.equal(olderTab.data.properties._gravuru_checkout_image,registeredImage);assert.deepEqual({...olderTab.data,preview:undefined},{...p,preview:undefined},'same handoff apart from the PNG');
+ assert.equal(olderTab.data.properties._gravuru_checkout_image,images?registeredImage:undefined);assert.deepEqual({...olderTab.data,preview:undefined},{...p,preview:undefined},'same handoff apart from the PNG');
  assert.equal((await proxyRequest('/cart/data','GET',transferToken,{'X-Gravuru-Cart-Preview':'other'})).data.preview.type,'image/png','only the exact capability drops the PNG');imageCalls=1;
  const editUrl=new URL(p.properties._gravuru_bearbeiten);
  assert.equal(editUrl.searchParams.get('ui'),'prio-r15','presentation survives the private handoff round trip');
@@ -265,10 +275,12 @@ for(const cache of [false,true])test('theme cart: signed entry, immutable design
  const shopFetch=async(url,o)=>{
   if(url==='/cart.js')return Response.json(structuredClone(themeCart));
   if(url==='/cart/add.js'){
-   // Hosted preview: plain JSON text properties, _Entwurf is the server-made Shopify file, no file upload.
+   // Plain JSON text properties, no file upload. Mit `shopifyCartImages` ist _Entwurf das Shopify-Bild; im Standard gibt es
+   // weder _Entwurf noch ein Shopify-Bild, die Zeile nennt nur das Bild am eigenen Server.
    adds++;assert.equal(typeof o.body,'string');assert.equal(o.headers['Content-Type'],'application/json');
    const body=JSON.parse(o.body);assert.equal(body.items.length,1);const item=body.items[0],props=item.properties;
-   assert.equal(props._Entwurf,registeredImage);assert.equal(props._Entwurf,props._gravuru_checkout_image);
+   if(images){assert.equal(props._Entwurf,registeredImage);assert.equal(props._Entwurf,props._gravuru_checkout_image);}
+   else{assert.ok(!Object.hasOwn(props,'_Entwurf'));assert.ok(!Object.hasOwn(props,'_gravuru_checkout_image'));assert.ok(props._gravuru_bild.startsWith(origin+'/gestaltung/'));assert.ok(!o.body.includes('cdn.shopify.com'));}
    assert.ok(o.body.length<64*1024,'cart write stays small');
    themeCart.items.push(priceThemeLine({key:'added-'+adds,variant_id:item.id,product_id:Number(p.productId),properties:props},item.quantity));
    return Response.json({items:themeCart.items.slice(-1)});

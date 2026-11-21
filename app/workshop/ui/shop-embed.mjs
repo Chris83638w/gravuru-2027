@@ -8,7 +8,9 @@ import * as themeCart from './theme-cart-client.mjs';
 // Namespace-Import statt benannter Importe: ein älteres theme-cart-client.mjs ohne neue Exporte bricht das Laden nicht ab.
 // Die kleine JSON-Übergabe (ohne PNG) wird nur angefordert, wenn der tatsächlich geladene Client sie verarbeiten kann.
 const {createThemeCartClient,cartImage}=themeCart,HOSTED_CART_PREVIEW=typeof themeCart.hostedPreview==='function';
-export function cartRequestHeaders(token,path){return {'X-Gravuru-Cart-Handoff':token,...(path==='data'&&HOSTED_CART_PREVIEW?{'X-Gravuru-Cart-Preview':'hosted'}:{})};}
+// ENTSCHEIDUNGEN 3.52/3.53: Der geladene Client kann ohne Bilddatei einlegen (Bild am eigenen Server).
+const SERVER_CART_IMAGE=typeof themeCart.serverPreview==='function';
+export function cartRequestHeaders(token,path){return {'X-Gravuru-Cart-Handoff':token,...(path==='data'&&HOSTED_CART_PREVIEW?{'X-Gravuru-Cart-Preview':'hosted'}:{}),...(path==='data'&&SERVER_CART_IMAGE?{'X-Gravuru-Cart-Image':'server'}:{})};}
 
 const EDITOR_ORIGIN='__EDITOR_ORIGIN__',PROXY='__PROXY_PATH__';
 const TOKEN=/^[a-f0-9]{64}$/;

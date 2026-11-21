@@ -84,7 +84,9 @@ def prepare_photo(data):
             image.putalpha(alpha)
         image.info.clear()
         out = io.BytesIO()
-        image.save(out, format='PNG')
+        # 265: PNG is lossless at every level. Level 3 writes the same pixels in about half the time of Pillow's
+        # default 6 at nearly the same size (measured 1600 px previews: 115 -> 67 ms and 265 -> 115 ms, +1.5 % bytes).
+        image.save(out, format='PNG', compress_level=3)
         return {'width': width, 'height': height, 'preview': base64.b64encode(out.getvalue()).decode()}
 
 

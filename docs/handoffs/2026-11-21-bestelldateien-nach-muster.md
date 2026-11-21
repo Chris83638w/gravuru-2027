@@ -112,3 +112,44 @@ Die Konturlinien sind in den Bildern verstärkt gezeichnet und so beschriftet; i
 4. **Druck-SVG:** SVG kennt keine Schmuckfarben; die Kontur steht dort in Rosa als normale Farbe.
 5. Mit Foto und kleinerer Platte (Funkklingel) ist das Bild auf ganze Bildpunkte um die Platte beschnitten; es kann bis zu einen Bildpunkt über den Seitenrand reichen.
 6. Führt eine Designquelle zufällig eine Kennung wie `gravur`, heißt die Ebene der Bestelldatei `gravur-2`; der lesbare Name bleibt.
+
+## Nachtrag 21.11.2026: Zierlinie der Vorlage und Strichmotive
+
+Zweig `dev/claude-zierlinie-20261121` (auf `dev/claude-nachmittag-20261121`), zwei getrennte Commits; der erste (Zierlinie) lässt sich ohne den zweiten (Strichmotive) übernehmen. Nichts aufgespielt.
+
+### 1. Zierlinie der Vorlage (Freigabe Chris, 19:47 Uhr; ENTSCHEIDUNGEN 3.65)
+
+**Befund.** In der Bestelldatei des Klingelschilds fehlte die Zierlinie der Vorlage „Zwei Zeilen“; die Musterdatei führt sie als schwarze Linie (29 → 131 mm, 0,5 mm). Der Nachbau aller 16 Vorlagen des Ring Wired Pro (16 × 28 cm, Rahmen oben und unten) zeigt: 14 Vorlagen tragen zusammen 16 Dekorationen (Linien, Rahmen, Kreis, Herz, Dach). Im alten Stand fehlten 11 davon ganz, 5 standen versetzt und abgeschnitten in der Datei – teils quer über Text (Bild 39). In der SVG stand je Dekoration nur ein eingebettetes Bild, kein Pfad. Derselbe Fehler steckte in der Gravur-PDF der „Ausgaben“. Ohne Dekoration: „Klar & modern“ und „Pur“.
+
+**Ursache.** Der Katalogimport legt jede Dekoration als eigene SVG-Quelle an, deren Ausschnitt (viewBox) an ihrer Stelle im Format beginnt (`scripts/import-doorbell-catalog.mjs` `decorationSvg`) – bei allen 1848 Dekorationsquellen der 42 Modelle. Die Gestaltung bettete die Quelle als SVG-Bild ein (`acrylic-artwork.mjs`, Fall „schwarze Vektor-Dekoration“). Der PDF-Schreiber (cairosvg 2.8.2) wendet den Ursprung des Ausschnitts eines eingebetteten SVG-Bildes nicht an und beschneidet auf das Bildfeld. Die bisherige Testvorlage hatte einen Ausschnitt ab 0 0 – deshalb fiel es nicht auf.
+
+**Korrektur.** `acrylic-artwork.mjs` `sourceVectorFragment`: Der geprüfte Inhalt der Quelle (nur Schwarz, keine Bilder, Schriften, Stile) kommt mit ihrem eigenen Ausschnitt als Vektor in die Gestaltung. Die Linie steht damit in der Ebene „03 Gravur“ der PDF und als Pfad in der SVG; die Gravur-PDF der „Ausgaben“ trägt sie ebenfalls. Eine Quelle ohne lesbaren Ausschnitt wird mit klarer Meldung abgelehnt statt still zu fehlen. Rezeptstand Gravur nativ v9 → v10.
+
+**Betroffen.** Alle Klingelschilder (zweischichtig, Gravur): 14 von 16 Vorlagen, 16 Dekorationen je Modell und Rahmen; im Katalog 82 verschiedene Dekorationsquellen. Andere Produktarten nutzen diesen Weg nicht: Dort werden importierte Designquellen in der Gravur als Rasterbild eingefärbt (eigenes Dokument, Ausschnitt wird richtig angewandt).
+
+**Belege.** Messung gegen die Musterdatei: Linie 29,00 → 131,00 mm auf 69,00 mm Höhe, 0,5 mm, runde Enden – Abweichung 0,001 mm. Die 13 Prüfpakete (native Gravur und Druck, Formprodukte, Funkklingel) gegen den Ausgangsstand: Alle PDF inhaltsgleich; verschieden sind nur die drei SVG der Funkklingel (eingebettetes Bild → Pfad) und die Angabe des Rezeptstands. Die Editor-Pakete sind Byte für Byte gleich (`editor-583629bc80164050`, `editor-d6521828989e096a` und die vier weiteren); die Kundenvorschau ist nicht berührt.
+
+### 2. Strichmotive (Freigabe Chris, 19:47 Uhr; ENTSCHEIDUNGEN 3.66)
+
+**Befund.** Der Zweig stand als Fläche in der Datei, in der Musterdatei ist er eine Linie von 0,723 mm.
+
+**Ursache.** Die 18 Grundmotive (`paw, dog, heart, rainbow, star, branch, wreath, mountain, sun, infinity, frame, line, circle, flower, moon, wings, tree, compass`) sind als reine Formen ohne Farbangabe abgelegt. Es sind Strichzeichnungen: Die Formprodukte zeichnen sie mit 2,2 Einheiten ohne Füllung (`form-additions.mjs`). Die Fertigungsausgabe der nativen Produkte setzte sie in eine Gruppe mit Füllfarbe – die Form erbte die Füllung. Alle anderen 746 Motive (703 Bibliotheksmotive, 43 Acryl-Originalmotive) tragen ihre Füllung selbst.
+
+**Korrektur.** `acrylic-artwork.mjs` `isLineMotif` / `lineMotifFragment`: Ein Motiv ohne eigene Farbangabe steht als Linie von 2,2 Einheiten mit runden Enden, ohne Füllung, in der Farbe des Elements (Gravur: Schwarz). Motive mit eigener Füllung bleiben unverändert – das Haus behält den Punkt an der Tür (in der Musterdatei fehlt er; nicht angeglichen). Gilt für Gravur und Druck der nativen Produkte; Rezeptstände Gravur nativ v10 → v11, Druck nativ v10 → v11.
+
+**Belege.** Zweig: Linie 0,723 mm, Rahmen 124,00 – 150,29 × 204,03 – 231,30 mm wie in der Musterdatei (Abweichung 0,001 mm), keine Fläche an seiner Stelle. Gegenüber dem alten Stand sind 22 von 24 Objekten der Ebene unverändert, darunter das Haus.
+
+**Wo das vorkommt.** Kundinnen und Kunden können Grundmotive in nativen Produkten nicht wählen: Die Motivauswahl blendet die Kategorie „Grundmotive“ aus (`profile-selection.mjs` `motifChoices`, mit Test), und der Klingelkatalog ordnet nur die 703 Bibliotheksmotive zu. Keine der Klingel-Vorlagen nutzt ein Grundmotiv (2520 Motivobjekte geprüft). Ein Grundmotiv gelangt nur über eine in der Werkstatt gebaute Vorlage oder einen älteren Entwurf in ein natives Produkt.
+
+### Offen
+
+1. **Vorschau zeichnet Grundmotive als Fläche.** Die Vorschau der nativen Produkte (`studio-svg.mjs` `universalMotif`, Werkstatt und Konfigurator) zeichnet ein Grundmotiv weiter gefüllt – also nicht so, wie es jetzt in der Fertigungsdatei steht. Die Korrektur dort ändert die Editor-Pakete und war nicht Teil dieses Auftrags. Empfehlung: mit dem zweiten Commit zusammen nachziehen; bis dahin weichen Vorschau und Datei nur dort ab, wo eine Vorlage ein Grundmotiv enthält.
+2. **Andere eingebettete SVG-Bilder.** Farbig gedruckte importierte Designquellen und Beispielfotos laufen weiter als eingebettetes Bild. Ob dort Quellen vorkommen, deren Ausschnitt nicht bei 0 0 beginnt, ist nicht geprüft; die Türschild-Importe verlangen einen Ausschnitt ab 0 0 (`katalog-convert.mjs`).
+3. **Bestehende Aufträge.** Ausgaben der Vorversion bleiben unter ihrem Schlüssel abrufbar; die korrigierte Datei entsteht beim Öffnen der Ausgaben mit dem neuen Rezeptstand.
+4. Nur das Modell der Musterdatei ist über alle 16 Vorlagen durchgerechnet (ein Rahmen, ein Format); die Ursache ist für alle Modelle dieselbe. Maschine und CorelDRAW nicht geprüft.
+
+### Prüfungen
+
+Gezielt 27 Testdateien rund um die Fertigungsausgabe: 175 von 175 bestanden. Neu: Zierlinie gegen die Musterdatei, Ablehnung einer unlesbaren Quelle, Katalogtest über alle 16 Vorlagen (nur mit `GRAVURU_DOORBELL_CATALOG`), Strichmotiv und gefülltes Motiv. Gegenproben: Gegen den Ausgangsstand schlagen die drei Zierlinien-Tests fehl; ohne die Strichregel schlägt der Strichmotiv-Test fehl.
+
+Bilder: `docs/handoffs/2026-11-20-prio-c-technik-claude/bilder/38-muster-1zu1-mit-zierlinie.png` (Muster gegen korrigierte Datei), `39-zierlinie-vorlagen-alt-neu.png` (acht Vorlagen vorher und jetzt). Beispieldateien außerhalb des Repos: `/tmp/muster-1zu1-b/`.

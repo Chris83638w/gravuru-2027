@@ -13,7 +13,9 @@ import {surfaceFileName} from '../configurator/variant-m/surfaces.mjs';
 // Druckdatei mit der Schnittkontur als Linie von 0,001 mm in der Roland-Schmuckfarbe `CutContour`
 // (`druck-1zu1-mit-kontur.pdf`) und die gesicherte Gestaltung mit Kontur (`druck-1zu1-mit-kontur.svg`). Die übrigen Dateien
 // bleiben Byte für Byte gleich; Ausgaben der Vorversion bleiben unter ihrem Schlüssel gültig und abrufbar.
-export const ACRYLIC_PRINT_RECIPE='gravuru-acrylic-print-proof/v10';
+// v11 (#265, ENTSCHEIDUNGEN 3.66): Grundmotive ohne Farbangabe stehen als Linie von 2,2 Einheiten ohne Füllung in der
+// Gestaltung (`acrylic-artwork.mjs` `isLineMotif`); gefüllte Motive bleiben unverändert. Ausgaben der Vorversion bleiben gültig.
+export const ACRYLIC_PRINT_RECIPE='gravuru-acrylic-print-proof/v11';
 export const acrylicPrintKey=settings=>digest(JSON.stringify({recipe:ACRYLIC_PRINT_RECIPE,settings:formPrintSettings(settings)}));
 // `context.productDocument`: Zugriff auf den Produktstand der Werkstatt für Pakete mit Verweis (review-product.mjs).
 export async function acrylicContourProof(archive,archiveHash,context={}){

@@ -36,8 +36,10 @@ import {digest} from './review-package.mjs';
 test('native photo colour output uses a new recipe cache key',()=>{
  // v10 (#265, ENTSCHEIDUNGEN 3.62): PDF und SVG der Bestellansicht nach der Musterdatei von Chris – nie gespiegelt, Konturen als
  // Linie von 0,001 mm in CutContour. Ältere Ausgaben behalten ihren Schlüssel.
- assert.equal(ACRYLIC_PRINT_RECIPE,'gravuru-acrylic-print-proof/v10');
- assert.equal(acrylicPrintKey({}),digest(JSON.stringify({recipe:'gravuru-acrylic-print-proof/v10',settings:formPrintSettings({})})));
+ // v11 (#265, ENTSCHEIDUNGEN 3.66): Grundmotive ohne Farbangabe stehen als Linie ohne Füllung in der Gestaltung.
+ assert.equal(ACRYLIC_PRINT_RECIPE,'gravuru-acrylic-print-proof/v11');
+ assert.equal(acrylicPrintKey({}),digest(JSON.stringify({recipe:'gravuru-acrylic-print-proof/v11',settings:formPrintSettings({})})));
+ assert.notEqual(acrylicPrintKey({}),digest(JSON.stringify({recipe:'gravuru-acrylic-print-proof/v10',settings:formPrintSettings({})})));
  assert.notEqual(acrylicPrintKey({}),digest(JSON.stringify({recipe:'gravuru-acrylic-print-proof/v9',settings:formPrintSettings({})})));
  assert.notEqual(acrylicPrintKey({}),digest(JSON.stringify({recipe:'gravuru-acrylic-print-proof/v8',settings:formPrintSettings({})})));
  assert.notEqual(acrylicPrintKey({}),digest(JSON.stringify({recipe:'gravuru-acrylic-print-proof/v7',settings:formPrintSettings({})})));

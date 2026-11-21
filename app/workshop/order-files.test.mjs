@@ -21,7 +21,7 @@ import {createWorkshop} from './http.mjs';
 import {makeProductDocument} from './product-model.mjs';
 import {familyProductConfig} from './product-families.mjs';
 import {prepareAcrylicReview} from './acrylic-review.mjs';
-import {acrylicArtwork} from './acrylic-artwork.mjs';
+import {acrylicArtwork,isLineMotif,lineMotifFragment} from './acrylic-artwork.mjs';
 import {decorationSvg,loadDoorbellCatalog,resourceCrosswalk,importDecorations,buildDoorbellConfig} from '../../scripts/import-doorbell-catalog.mjs';
 import {workshopResources} from './catalog.mjs';
 import {importEnvironment} from './design-assets.mjs';
@@ -236,7 +236,7 @@ test('Musterdatei von Chris (21.11.2026): eine Ebene „03 Gravur“ in Schwarz,
 });
 
 test('Rezeptstände: neuer Stand und eigener Schlüssel bei allen vier Ausgaben (3.62); `auto` nur ohne Profil und ohne Wahl, das Profil und eine ausdrückliche Wahl gelten unverändert',()=>{
- assert.equal(ACRYLIC_ENGRAVING_RECIPE,'gravuru-acrylic-engraving-proof/v10');
+ assert.equal(ACRYLIC_ENGRAVING_RECIPE,'gravuru-acrylic-engraving-proof/v11');
  assert.deepEqual(acrylicEngravingSettings(undefined,{mirror:true}),{mode:'auto',dpi:300,mirror:true});
  assert.deepEqual(acrylicEngravingSettings(null),{mode:'auto',dpi:300,mirror:false});
  for(const mode of ['raster','vector'])assert.deepEqual(acrylicEngravingSettings(undefined,{mode,mirror:true}),formEngravingSettings({mode,mirror:true}));
@@ -249,11 +249,11 @@ test('Rezeptstände: neuer Stand und eigener Schlüssel bei allen vier Ausgaben 
  const keys=['auto','raster','vector'].map(mode=>acrylicEngravingKey({mode,mirror:true}));assert.equal(new Set(keys).size,3);
  assert.equal(acrylicEngravingKey(acrylicEngravingSettings(undefined,{mirror:true})),keys[0]);
  const key=(recipe,settings)=>digest(JSON.stringify({recipe,settings}));
- assert.equal(keys[1],key('gravuru-acrylic-engraving-proof/v10',formEngravingSettings({mode:'raster',mirror:true})));
- for(const old of ['v6','v7','v8','v9'])assert.notEqual(keys[1],key('gravuru-acrylic-engraving-proof/'+old,formEngravingSettings({mode:'raster',mirror:true})));
+ assert.equal(keys[1],key('gravuru-acrylic-engraving-proof/v11',formEngravingSettings({mode:'raster',mirror:true})));
+ for(const old of ['v6','v7','v8','v9','v10'])assert.notEqual(keys[1],key('gravuru-acrylic-engraving-proof/'+old,formEngravingSettings({mode:'raster',mirror:true})));
  // ENTSCHEIDUNGEN 3.62: neuer Rezeptstand bei allen vier Ausgaben – auch den Formprodukten alter Art –, jeweils mit eigenem Schlüssel.
- assert.equal(ACRYLIC_PRINT_RECIPE,'gravuru-acrylic-print-proof/v10');assert.equal(FORM_ENGRAVING_RECIPE,'gravuru-form-engraving-proof/v3');assert.equal(FORM_PRINT_RECIPE,'gravuru-form-print-proof/v7');
- assert.equal(acrylicPrintKey({}),key('gravuru-acrylic-print-proof/v10',formPrintSettings({})));for(const old of ['v8','v9'])assert.notEqual(acrylicPrintKey({}),key('gravuru-acrylic-print-proof/'+old,formPrintSettings({})));
+ assert.equal(ACRYLIC_PRINT_RECIPE,'gravuru-acrylic-print-proof/v11');assert.equal(FORM_ENGRAVING_RECIPE,'gravuru-form-engraving-proof/v3');assert.equal(FORM_PRINT_RECIPE,'gravuru-form-print-proof/v7');
+ assert.equal(acrylicPrintKey({}),key('gravuru-acrylic-print-proof/v11',formPrintSettings({})));for(const old of ['v8','v9','v10'])assert.notEqual(acrylicPrintKey({}),key('gravuru-acrylic-print-proof/'+old,formPrintSettings({})));
  assert.equal(formEngravingKey({}),key('gravuru-form-engraving-proof/v3',formEngravingSettings({})));for(const old of ['v1','v2'])assert.notEqual(formEngravingKey({}),key('gravuru-form-engraving-proof/'+old,formEngravingSettings({})));
  assert.equal(formPrintKey({}),key('gravuru-form-print-proof/v7',formPrintSettings({})));for(const old of ['v5','v6'])assert.notEqual(formPrintKey({}),key('gravuru-form-print-proof/'+old,formPrintSettings({})));
 });
@@ -530,7 +530,7 @@ test('Druck, natives Produkt: zwei Dateien 1:1 für Roland und Mimaki – nie ge
  const made={};
  for(const settings of [{},{mirror:true},{profile:'mimaki'},{profile:'mimaki',mirror:true}]){
   const result=await createAcrylicPrintProof(bundle.package,bundle.manifest.packageSha256,settings),two=twoFiles(result),mimaki=settings.profile==='mimaki',mirror=settings.mirror===true,label=JSON.stringify(settings);made[label]=two;
-  assert.equal(result.metadata.schema,'gravuru-acrylic-print-proof/v10');assert.equal(result.metadata.settings.mirror,mirror);
+  assert.equal(result.metadata.schema,'gravuru-acrylic-print-proof/v11');assert.equal(result.metadata.settings.mirror,mirror);
   assert.deepEqual(Object.fromEntries(ORDER_FORMATS.map(f=>[f,two[f].name])),{pdf:'druck-1zu1-mit-kontur.pdf',svg:'druck-1zu1-mit-kontur.svg'});
   assert.ok(![...two.files.keys()].some(name=>/ohne-schnittlinie/.test(name)),'keine Druckdatei ohne Schnittlinie im Paket');
   // Die Druckdatei der „Ausgaben“ bleibt die bisherige Datei mit ihrem Dateinachweis (nach Profil gespiegelt, Schnittlinie 0,05 mm).
@@ -627,12 +627,44 @@ test('Zierlinie der Vorlage (3.65): Die Dekoration des Klingelkatalogs steht als
 });
 
 test('Zierlinie: Eine Dekoration, die nicht als geprüfter Vektor lesbar ist, wird abgelehnt statt still zu fehlen; Rezeptstand der Gravur ist neu',async()=>{
- assert.equal(ACRYLIC_ENGRAVING_RECIPE,'gravuru-acrylic-engraving-proof/v10');
  const key=(recipe,settings)=>digest(JSON.stringify({recipe,settings}));
  assert.notEqual(acrylicEngravingKey({mode:'vector',mirror:true}),key('gravuru-acrylic-engraving-proof/v9',formEngravingSettings({mode:'vector',mirror:true})),'eigener Schlüssel gegenüber dem Stand ohne Zierlinie');
  // Ohne Ausschnitt ist die Lage der Dekoration nicht bestimmt: Ablehnung mit klarer Meldung.
  const broken='<svg xmlns="http://www.w3.org/2000/svg" width="30mm" height="1mm"><path d="M.5 .5L29.5 .5" fill="none" stroke="#000000" stroke-width="1"/></svg>';
  await assert.rejects(doorbellOrder(({addSource,each})=>{const k=addSource(broken,30,1);each(objects=>Object.assign(objects.find(o=>o.id==='mark-0'),{motif:k}));}),/nicht als Vektor lesbar/);
+});
+
+test('Strichmotive (3.66): Ein Motiv ohne Füllung steht als Linie mit seiner Strichstärke in PDF und SVG – ohne hinzugefügte Füllung, der Zweig wie in der Musterdatei; ein gefülltes Motiv bleibt gefüllt, das Haus behält den Punkt an der Tür',async()=>{
+ // Regel an der Motivquelle: Die 18 Grundmotive sind reine Formen ohne Farbangabe (Strichzeichnungen); jedes andere Motiv der
+ // Bibliothek trägt seine Füllung selbst und bleibt, wie es ist.
+ const library=workshopResources().motifs,lineKeys=library.filter(m=>isLineMotif(m.svgFragment)).map(m=>m.key);
+ assert.deepEqual(lineKeys,['paw','dog','heart','rainbow','star','branch','wreath','mountain','sun','infinity','frame','line','circle','flower','moon','wings','tree','compass']);
+ for(const m of library.filter(m=>!lineKeys.includes(m.key)))assert.match(m.svgFragment,/\bfill="(?:currentColor|#000000)"/,m.key+' trägt seine Füllung selbst');
+ assert.equal(isLineMotif('<path d="M0 0H9" stroke="#000000"/>'),false,'eine eigene Strichangabe gilt');
+ // Dieselbe Regel im Druck: Linie in der Farbe des Elements, keine Füllung.
+ assert.equal(lineMotifFragment('<path d="M0 0H9"/>','#b56943'),'<g fill="none" stroke="#b56943" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M0 0H9"/></g>');assert.equal(isLineMotif('<path d="M0 0H9" style="fill:#000"/>'),false);
+ const pick=key=>{const m=library.find(x=>x.key===key);assert.ok(m,key);return {key:m.key,bounds:m.bounds,svgFragment:m.svgFragment};},branch=pick('branch'),house=pick('import-b56d5711a75f34c1fa8d9c30');
+ // Zweig und Haus an der Stelle und in der Größe der Musterdatei (Formatkoordinaten 160 × 280 mm); der Prüfstand sichert beide
+ // Motive aus der Bibliothek, wie bei einer Bestellung.
+ const {two,content,svg}=await doorbellOrder(()=>[
+  {id:'haus',type:'motif',motif:house.key,x:31.55555534,y:136.55555725,w:28,h:28,rotation:0,color:'#ffffff',customerEditable:true},
+  {id:'zweig',type:'motif',motif:'branch',x:137.43919787,y:227.66667175,w:26.43394917,h:28,rotation:0,color:'#ffffff',customerEditable:true}]);
+ // Zweig: genau eine Linie, Strichstärke 2,2 Einheiten im Maßstab des Motivs, keine Fläche an seiner Stelle.
+ const lines=content.filter(d=>d.type==='s'),[muster]=referenceLines().filter(d=>d.width/MM>.6),expected=2.2*26.43394917/branch.bounds[2];
+ assert.equal(lines.length,1,'genau eine Linie: der Zweig');assert.ok(muster,'die Musterdatei führt den Zweig als Linie');
+ const [ours]=lines;assert.deepEqual(ours.color,BLACK);assert.equal(ours.fill,null,'keine Füllung');
+ assert.ok(Math.abs(ours.width/MM-expected)<.001,'Strichstärke '+expected.toFixed(4)+' mm, ist '+ours.width/MM);assert.ok(Math.abs(expected-.723)<.001);
+ assert.ok(near(ours.rect,muster.rect),'gleiche Stelle wie in der Musterdatei: '+ours.rect+' / '+muster.rect);assert.ok(Math.abs(ours.width-muster.width)<.003,'gleiche Strichstärke wie in der Musterdatei: '+ours.width/MM+' / '+muster.width/MM);
+ assert.equal(content.filter(d=>d.type!=='s'&&near(d.rect,ours.rect)).length,0,'keine hinzugefügte Füllung an der Stelle des Zweigs');
+ // Haus: eine schwarze Fläche wie bisher; der Punkt an der Tür bleibt frei (weiß), die Tür daneben ist schwarz.
+ const fills=content.filter(d=>d.type==='f'&&near(d.rect,[17.56,114.37,45.56,138.75]));assert.equal(fills.length,1,'das Haus als eine Fläche');assert.deepEqual(fills[0].fill,BLACK);assert.equal(fills[0].color,null,'kein Strich am Haus');
+ const [dot,door]=look(two.pdf.bytes,[[26.64,134.71],[28.6,134.71]]).points;
+ assert.ok(dot.every(v=>v>200),'Punkt an der Tür bleibt frei: '+dot);assert.ok(door.every(v=>v<60),'Tür ist Fläche: '+door);
+ // SVG: derselbe Inhalt – der Zweig in einer Strichgruppe ohne Füllung, das Haus mit seiner eigenen Füllung und ohne Strichgruppe.
+ assert.equal(svg.split('stroke-width="2.2"').length-1,1);
+ assert.ok(svg.includes('<g fill="none" stroke="#000000" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 91 C28 58 51 30 87 8 '),'Zweig als Linie in der SVG');
+ const housePath=house.svgFragment.match(/<path d="([^"]{40})/)[1],at=svg.indexOf('<path d="'+housePath);assert.ok(at>0,'Haus mit seinem Pfad in der SVG');
+ assert.match(svg.slice(at,svg.indexOf('>',at)+1),/ fill="#000000" stroke="none"/,'Haus mit eigener Füllung, ohne Strich');
 });
 
 // Privater Klingelkatalog (wie scripts/import-doorbell-catalog.test.mjs nur mit GRAVURU_DOORBELL_CATALOG): das Modell der

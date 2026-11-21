@@ -971,3 +971,17 @@ Chris hat um 17:07 Uhr eine Musterdatei geliefert („so müssen die dateien aus
 Keine.
 
 Der [Design-Master](https://github.com/Chris83638w/gravuru-katalog./blob/main/designs/DESIGN-MASTER.md) gilt unverändert; an Designs wurde nichts geändert.
+
+## 21.11.2026, 21:10 Uhr – Nachbau der Musterdatei am echten Modell: drei Korrekturen (`ec3097de`)
+
+Der 1:1-Nachbau (Ring Wired Pro, 16 × 28 cm) hat zwei Fehler in der Gravur gezeigt, die auch live stecken: Zierelemente der Vorlagen fehlten oder standen versetzt (3.65), Strichmotive waren gefüllt (3.66). Dazu die Regel „Gravur immer schwarz“ für die SVG (3.67). Alle drei sind gebaut, zusammengeführt und im Gesamtlauf geprüft; nichts ist aufgespielt. Einzelheiten: `docs/handoffs/2026-11-21-bestelldateien-nach-muster.md`, Bilder 38 und 39.
+
+**Bei Astra beauftragt:** Teil A Server, Teil B App-Version und Schalter.
+
+**Weiter offen:** (1) Vorschau der 18 Strichmotive im Konfigurator (Editoränderung, Entscheidung von Chris); (2) die übrigen 41 Klingelmodelle sind nicht einzeln durchgerechnet; (3) Maschinentest; (4) Gedenktafeln später an den aktuellen Speicher binden; (5) kleines Warenkorbbild; (6) Löschregel für Entwürfe.
+
+### Offene Fragen an Chris
+
+Eine: Soll die Vorschau im Konfigurator die 18 Strichmotive ebenfalls als Linie zeigen?
+
+Der [Design-Master](https://github.com/Chris83638w/gravuru-katalog./blob/main/designs/DESIGN-MASTER.md) gilt unverändert; an Designs wurde nichts geändert.

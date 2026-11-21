@@ -12,6 +12,7 @@ import {createShopifyCheckoutImages} from './shopify-checkout-image.mjs';
 import {createDraftTokenProvider} from './shopify-draft-token.mjs';
 import {createDoorbellStatusWebhookHandler} from './doorbell-status-webhook.mjs';
 import {verifyPaidWebhook} from './order-intake.mjs';
+import {orderReviewIntakes} from './shopify-order-review-tag.mjs';
 
 // Authenticated routing only; persisted per-product release is enforced by the
 // actual acryl intake. No live body is handed to the legacy implementation.
@@ -32,12 +33,17 @@ export function createDoorbellLiveIntake(stores){
 // über den App-Proxy ein: {proxyPath, pagePath?, ttlMs?}. Ohne diesen Schlüssel bleibt alles beim Händlertest.
 export function createConfiguratorIntegration({settings,legacy,acryl,origin,shopifySessions,orderWebhook=null}){
  if(settings===null||settings===undefined)return null;
- if(settings.mode!=='merchant-test-only'||Object.keys(settings).some(k=>!['mode','legacyStoreId','acrylStoreId','shopEntry','doorbellLiveOrders','catalogLiveOrders'].includes(k))||!/^[-A-Za-z0-9_]{1,100}$/.test(settings.legacyStoreId||'')||!/^[-A-Za-z0-9_]{1,100}$/.test(settings.acrylStoreId||'')||settings.legacyStoreId===settings.acrylStoreId||!legacy||!acryl||legacy===acryl||legacy.repository===acryl.repository||legacy.customerDrafts===acryl.customerDrafts)throw Error('Eindeutige private Test-Stores fehlen.');
+ if(settings.mode!=='merchant-test-only'||Object.keys(settings).some(k=>!['mode','legacyStoreId','acrylStoreId','shopEntry','doorbellLiveOrders','catalogLiveOrders','orderReviewTags'].includes(k))||!/^[-A-Za-z0-9_]{1,100}$/.test(settings.legacyStoreId||'')||!/^[-A-Za-z0-9_]{1,100}$/.test(settings.acrylStoreId||'')||settings.legacyStoreId===settings.acrylStoreId||!legacy||!acryl||legacy===acryl||legacy.repository===acryl.repository||legacy.customerDrafts===acryl.customerDrafts)throw Error('Eindeutige private Test-Stores fehlen.');
  if(settings.catalogLiveOrders!==undefined&&typeof settings.catalogLiveOrders!=='boolean')throw Error('Die Katalog-Livefreigabe muss ausdrücklich ein- oder ausgeschaltet sein.');
  if(settings.catalogLiveOrders===true&&(!orderWebhook||typeof acryl.orderIntake?.approveCatalogLiveProducts!=='function'))throw Error('Katalog-Livefreigabe benötigt den signierten Eingang und geprüfte Produktfreigaben.');
  if(settings.doorbellLiveOrders!==undefined&&typeof settings.doorbellLiveOrders!=='boolean')throw Error('Die Funkklingel-Livefreigabe muss ausdrücklich ein- oder ausgeschaltet sein.');
  if(settings.doorbellLiveOrders===true&&!orderWebhook)throw Error('Funkklingel-Livefreigabe benötigt den eingerichteten signierten Bestelleingang.');
  if(settings.doorbellLiveOrders===true&&typeof acryl.orderIntake?.approveDoorbellLiveProducts!=='function')throw Error('Der bestehende Acryl-Speicher unterstützt keine geprüften Funkklingel-Livefreigaben.');
+ // #265 Stufe C, ENTSCHEIDUNGEN 3.57 (2): „Bitte prüfen“ als Tag an der Shopify-Bestellung – standardmäßig AUS. Nur die
+ // ausdrückliche Einstellung `orderReviewTags: true` schaltet das Schreiben ein; das Aufspielen des Servers allein schreibt
+ // nichts an Shopify. Voraussetzung am Shop ist die Berechtigung `write_orders` (neue App-Version, Freigabe durch Chris).
+ if(settings.orderReviewTags!==undefined&&typeof settings.orderReviewTags!=='boolean')throw Error('Der Prüfvermerk an der Shopify-Bestellung muss ausdrücklich ein- oder ausgeschaltet sein.');
+ if(settings.orderReviewTags===true&&!orderWebhook)throw Error('Der Prüfvermerk an der Shopify-Bestellung benötigt den eingerichteten signierten Bestelleingang.');
  const entry=settings.shopEntry===undefined?null:settings.shopEntry;
  if(entry!==null&&(!entry||typeof entry!=='object'||Array.isArray(entry)||Object.keys(entry).some(k=>!['proxyPath','pagePath','ttlMs','publicPreviewDirectory','publicPreviewPrepare','modelResponseCache','shopifyCartImages'].includes(k))||typeof entry.proxyPath!=='string'||entry.modelResponseCache!==undefined&&entry.modelResponseCache!==true))throw Error('Der Kundeneinstieg ist nicht eindeutig eingerichtet.');
  const shopDomain=shopifySessions.shopDomain;
@@ -56,10 +62,14 @@ export function createConfiguratorIntegration({settings,legacy,acryl,origin,shop
  // Existing test deliveries retain both stores. Actual paid events are routed
  // exclusively to the new store, whose persisted per-product release ledger is
  // checked again before admitting any line. Legacy never receives a live event.
- const testIntake=orderWebhook?createCrossStoreWebhookIntake({stores:stores.map(s=>({storeId:s.storeId,intake:s.workshop.orderIntake}))}):null;
+ // #265 Stufe C, ENTSCHEIDUNGEN 3.57 (2): Ohne die Einstellung bleibt je Speicher genau der bisherige Bestelleingang. Mit ihr
+ // meldet ein Aufsatz abgelehnte Positionen und fehlgeschlagene Ausgabeaufträge an shopify-order-review-tag.mjs; Eingang,
+ // Antwort an Shopify und Fertigung bleiben dieselben. Eigener Zugang, damit ein Fehler dort nie den Kundeneinstieg berührt.
+ const storeIntakes=orderReviewIntakes({enabled:settings.orderReviewTags===true,stores,client:()=>({shopDomain,getAccessToken:createDraftTokenProvider({shopDomain,clientId:shopifySessions.clientId,clientSecret:shopifySessions.secret})})});
+ const testIntake=orderWebhook?createCrossStoreWebhookIntake({stores:storeIntakes}):null;
  const liveEnabled=settings.doorbellLiveOrders===true||settings.catalogLiveOrders===true;
  const webhookConfig=orderWebhook&&liveEnabled?{...orderWebhook,mode:settings.catalogLiveOrders===true?'catalog-live-approved':'doorbell-live-approved'}:orderWebhook;
- const intake=liveEnabled?createDoorbellLiveIntake(stores.map(s=>({storeId:s.storeId,intake:s.workshop.orderIntake}))):testIntake;
+ const intake=liveEnabled?createDoorbellLiveIntake(storeIntakes):testIntake;
  const webhook=webhookConfig?createOrderWebhookHandler({config:webhookConfig,intake}):null;
  // Derselbe Store-Satz (Registry, Modell, bound-test-cart) wie das Gateway; eigene Routen, eigene Kundensitzung.
  // The existing session verifier uses `test-only` even for the public shop

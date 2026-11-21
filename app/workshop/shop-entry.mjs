@@ -7,6 +7,7 @@ import fs from 'node:fs';
 import {createModelSlimmer,surfaceSwapsFrom,DEFAULT_SURFACE_DIR} from './shop-model-slim.mjs';
 import {createHash,randomBytes} from 'node:crypto';
 import {prepareThemeCart} from './theme-cart.mjs';
+import {validateThemeCartPayload} from './ui/theme-cart-client.mjs';
 import {isDeepStrictEqual} from 'node:util';
 import {createAppProxyVerifier} from './shopify-app-proxy.mjs';
 import {createShopEntrySessions} from './shop-entry-session.mjs';
@@ -45,6 +46,8 @@ const GALLERY_OPTIONS=['size','color','mounting'];
 const optionKey=o=>JSON.stringify(Object.entries(o||{}).sort());
 const NOT_BOUND='Dieses Produkt ist noch nicht für den Konfigurator eingerichtet.';
 const ERROR_STATUSES=[400,401,403,404,405,409,413,415,422,423,429,502,503];
+// #265 „take“: feste Grenzen der Zeilenliste, die der Client mit claim meldet (theme-cart-client.mjs kennt dieselben).
+const TAKE_BYTES=16*1024,TAKE_LINES=200;
 const headersFor=(type,extra={})=>({'Content-Type':type,'Cache-Control':'private, no-store','X-Content-Type-Options':'nosniff','Referrer-Policy':'no-referrer','X-Robots-Tag':'noindex, nofollow, noarchive',...extra});
 const sendJson=(res,status,bytes)=>{cartTimingCount('response_bytes',bytes.length);res.writeHead(status,headersFor('application/json; charset=utf-8',{'Content-Length':bytes.length,...cartTimingHeaders(status)}));res.end(bytes);};
 const json=(res,status,value)=>sendJson(res,status,cartTimingStep('response_json',()=>Buffer.from(JSON.stringify(value))));
@@ -532,6 +535,12 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
   // Stufe 4: Sitzung, Freigabe und Vorbereitung in einer Lesephase (siehe cart()); beim Claim liegt zwischen
   // Vorbereitung und Claim kein Warten, er gehört deshalb zur selben Phase. Reihenfolge der Prüfungen unverändert.
   const claiming=url.pathname===themePath+'/claim'&&req.method==='POST';
+  // #265 Stufe A, Teil 4 („take“): Jeder Abruf über den App-Proxy kostet 0,3–0,5 s. Ein neuer Client holt deshalb Daten und
+  // Bestätigung in EINEM Abruf: claim mit dem Kennzeichen X-Gravuru-Cart-Take und den Gravuru-Zeilen seines Warenkorbs.
+  // Der Server entscheidet damit genau das, was bisher der Client zwischen data und claim entschied (Zeile liegt schon,
+  // alte Zeile fehlt). Ohne das Kennzeichen bleibt claim unverändert (ältere Clients). Der Body wird vor der Lesephase
+  // gelesen, weil in ihr nicht gewartet werden darf; zwischen Vorbereitung und Bestätigung liegt weiter kein Warten.
+  const taking=claiming&&req.headers['x-gravuru-cart-take']==='1',reported=taking?await body(req,TAKE_BYTES):null;
   const phase=withCustomerReadScope(()=>{
    const context=active({headers:{'x-gravuru-shop-session':transfer.sessionToken}});
    if((proxy.customerId??null)!==(context.session.customerId??null))fail(403,'theme_cart_customer','Bitte die Produktseite erneut öffnen.');
@@ -539,7 +548,27 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
    const prepared=cartTimingStep('cart_prepare',()=>prepareThemeCart(transfer.args,transfer.binding,transfer.input,{draftToken:transfer.draftToken}));
    if(!claiming)return {prepared};
    if(req.headers.origin!=='https://'+shopDomain)fail(403,'shop_entry_origin','Diese Anfrage ist nicht zulässig.');
-   return {prepared,claimed:cartTimingStep('cart_claim',()=>prepared.claim(token))};
+   if(!taking)return {prepared,claimed:cartTimingStep('cart_claim',()=>prepared.claim(token))};
+   const lines=reported.lines;
+   if(Object.keys(reported).some(k=>k!=='lines')||!Array.isArray(lines)||lines.length>TAKE_LINES||lines.some(l=>!l||typeof l!=='object'||Array.isArray(l)||Object.keys(l).some(k=>!['config','rev','offer'].includes(k))||
+     typeof l.config!=='string'||!CART_CONFIG_ID.test(l.config)||typeof l.rev!=='string'||!/^\d{1,16}$/.test(l.rev)||typeof l.offer!=='string'||!/^[a-f0-9]{64}$/.test(l.offer)))fail(422,'theme_cart_take','Die Warenkorbübergabe ist ungültig.');
+   // Alter Weg mit Kassenbild bei Shopify (shopifyCartImages): data wartet auf das Bild. Hier nichts bestätigen; der Client
+   // nimmt dann vollständig den bisherigen Weg (data, danach claim).
+   if(checkoutImage)return {prepared,claimed:{take:false}};
+   // Vorschaubild wie in der data-Route unten: nur für Clients mit Kennzeichen und nur mit Bild am eigenen Server entfernen.
+   const payload=prepared.payload,own=lines.filter(l=>l.config===payload.configuration.id);
+   if(req.headers['x-gravuru-cart-image']==='server'&&ownCartImage(payload.properties._gravuru_bild))delete payload.preview;
+   // Die Zeile dieses Angebots liegt schon im Warenkorb: Der Client prüft sie nur noch. Nicht bestätigen (wie bisher kein claim).
+   if(own.some(l=>l.offer===payload.properties._gravuru_offer))return {prepared,claimed:{payload,claimed:false,present:true}};
+   // Bearbeiten ohne genau eine bisherige Zeile: Der Client meldet den Fehler wie bisher vor dem claim. Nicht bestätigen.
+   if(payload.mode==='update'&&own.filter(l=>l.rev===String(payload.previousRevision)).length!==1)return {prepared,claimed:{payload,claimed:false}};
+   // Bisher prüfte der Client die Daten VOR dem claim, jetzt erst nach diesem Abruf. Darum hier dieselbe Prüfung mit derselben
+   // Funktion: Daten, die er ablehnen wird (z. B. Bearbeiten, dessen Angebot nicht neuer ist als die bisherige Zeile), werden
+   // nicht bestätigt. Er meldet dann wie bisher seinen Fehler, und das Angebot ist nicht verbraucht.
+   try{validateThemeCartPayload(payload);}catch{return {prepared,claimed:{payload,claimed:false}};}
+   // Die Doppel-Einlege-Sperre bleibt dieselbe: genau diese eine Bestätigung je Angebot (409 theme_cart_uncertain beim zweiten Mal).
+   cartTimingStep('cart_claim',()=>prepared.claim(token));
+   return {prepared,claimed:{payload,claimed:true}};
   });
   const prepared=phase.prepared;
   if(url.pathname===themePath+'/data'&&req.method==='GET'){

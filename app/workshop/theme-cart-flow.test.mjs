@@ -177,6 +177,8 @@ for(const {cache,images} of [{cache:false,images:true},{cache:true,images:true},
  function signed(){const q=new URLSearchParams({shop:shopDomain,path_prefix:proxyPath,timestamp:String(Math.floor(now/1000)),logged_in_customer_id:''});q.set('signature',appProxySignature(q,secret));return q;}
  const proxyRequest=(part,method='GET',token=transferToken,extra={})=>request(proxyPath+part+'?'+signed(),method,undefined,{'X-Gravuru-Cart-Handoff':token,...(method==='POST'?{Origin:'https://'+shopDomain}:{}),...extra});
  const hosted={'X-Gravuru-Cart-Preview':'hosted','X-Gravuru-Cart-Image':'server'};// der neue Client meldet beide Fähigkeiten (#252 gehostete Vorschau; 3.52 Bild am eigenen Server)
+ // #265 Stufe A, Teil 4 („take“): claim mit Kennzeichen, den Fähigkeiten des data-Abrufs und den Gravuru-Zeilen des Warenkorbs.
+ const takeRequest=(lines,token=transferToken,extra={},flags=hosted)=>request(proxyPath+'/cart/claim?'+signed(),'POST',lines===undefined?undefined:Array.isArray(lines)?{lines}:lines,{'X-Gravuru-Cart-Handoff':token,Origin:'https://'+shopDomain,'X-Gravuru-Cart-Take':'1',...flags,...extra});
  const page=await proxyRequest('/cart');assert.equal(page.status,200);assert.match(page.headers['content-type'],/text\/html/);assert.ok(!page.body.includes(Buffer.from(draft.token)));assert.ok(!page.body.includes(Buffer.from(transferToken)));
  for(const file of ['/theme-cart-ui.mjs','/theme-cart-client.mjs']){const r=await proxyRequest(file);assert.equal(r.status,200);assert.match(r.headers['content-type'],/javascript/);}
  assert.equal((await request(proxyPath+'/cart/data')).status,401);
@@ -257,6 +259,31 @@ for(const {cache,images} of [{cache:false,images:true},{cache:true,images:true},
  assert.equal((await request(customerImagePath.replace(/.$/,'x'))).status,404);
  assert.equal((await request(customerImagePath,'POST')).status,404);
  assert.equal((await request(customerImagePath,'GET',undefined,{Host:'evil.example'})).status,403);
+ // #265 „take“ vor dem ersten Einlegen: Nichts davon bestätigt die Übergabe (der Durchlauf unten legt danach normal ein).
+ const mine={config:p.configuration.id,rev:'1',offer:p.properties._gravuru_offer},elsewhere={config:'konfig_22222222-2222-4222-8222-222222222222',rev:'7',offer:'f'.repeat(64)};
+ assert.match(mine.offer,/^[a-f0-9]{64}$/);
+ // Ungültiger Body: streng geprüft, 422 (kein JSON 400, über 16 KB 413 – der vorhandene Body-Leser).
+ for(const bad of [{},{lines:null},{lines:'x'},{lines:{}},{lines:[mine],extra:1},{lines:[null]},{lines:[[]]},{lines:['x']},{lines:[{...mine,key:'9:other'}]},{lines:[{config:mine.config,rev:mine.rev}]},{lines:[{...mine,config:'konfig_x'}]},{lines:[{...mine,config:1}]},
+   {lines:[{...mine,rev:1}]},{lines:[{...mine,rev:''}]},{lines:[{...mine,rev:'1a'}]},{lines:[{...mine,rev:'1'.repeat(17)}]},{lines:[{...mine,offer:'F'.repeat(64)}]},{lines:[{...mine,offer:'f'.repeat(63)}]},{lines:[{...mine,offer:null}]},{lines:Array.from({length:201},()=>({}))}]){
+  const r=await takeRequest(bad);assert.equal(r.status,422,JSON.stringify(bad).slice(0,80));assert.equal(r.data.error.code,'theme_cart_take');
+ }
+ assert.equal((await takeRequest(undefined)).status,400);
+ assert.equal((await takeRequest(Array.from({length:120},()=>elsewhere))).status,413,'mehr als 16 KB');
+ assert.equal((await takeRequest([],'bad')).status,403);
+ assert.equal((await takeRequest([],transferToken,{Origin:'https://evil.example'})).status,403);
+ assert.equal((await takeRequest([],transferToken,{Origin:origin})).status,403,'nur der Shop selbst darf bestätigen');
+ assert.equal((await request(proxyPath+'/cart/claim?'+wrongCustomer,'POST',{lines:[]},{'X-Gravuru-Cart-Handoff':transferToken,Origin:'https://'+shopDomain,'X-Gravuru-Cart-Take':'1'})).status,403);
+ if(images){
+  // Alter Weg mit Kassenbild bei Shopify: nichts bestätigen, der Client nimmt den bisherigen Weg (data, dann claim).
+  for(const lines of [[],[mine],[elsewhere]])assert.deepEqual((await takeRequest(lines)).data,{take:false});
+  assert.equal((await takeRequest({lines:[{...mine,rev:1}]})).status,422,'der Body wird auch hier geprüft');
+ }else{
+  // Die gemeldete Zeile dieses Angebots liegt schon im Warenkorb: Daten ohne Bestätigung.
+  const present=await takeRequest([elsewhere,mine]);assert.equal(present.status,200,JSON.stringify(present.data));assert.deepEqual(present.data,{payload:p,claimed:false,present:true});
+  // Vorschaubild wie beim data-Abruf: ohne das Kennzeichen (älterer Stand) bleibt es in den Daten.
+  const withPreview=await takeRequest([mine],transferToken,{},{});assert.equal(withPreview.data.present,true);assert.equal(withPreview.data.payload.preview.type,'image/png');assert.deepEqual({...withPreview.data.payload,preview:undefined},{...p,preview:undefined});
+  assert.equal((await takeRequest([mine],transferToken,{},{'X-Gravuru-Cart-Image':'other'})).data.payload.preview.type,'image/png');
+ }
  const other={key:'9:other',variant_id:9,product_id:9,quantity:1,properties:{Name:'Unverändert'},original_price:500,original_line_price:500,final_line_price:500};
  const themeCart={currency:'EUR',items:[other]};let adds=0,removes=0;
  const shopifyFunctionLine=(item,quantity=item.quantity)=>{
@@ -301,13 +328,32 @@ for(const {cache,images} of [{cache:false,images:true},{cache:true,images:true},
   }
   assert.fail(url);
  };
- const claimReads=[];
- const bridge=token=>createThemeCartClient({fetchImpl:shopFetch,claim:async()=>{const claimed=await counted(()=>proxyRequest('/cart/claim','POST',token)),r=claimed.result;claimReads.push(claimed);assert.equal(r.status,200,JSON.stringify(r.data));}});
- const client=bridge(transferToken);await client.submit(p,{image:new Blob(['wrong later JPEG'],{type:'image/jpeg'})});await client.submit(p);
+ const claimReads=[],takes=[];let dataLoads=0;
+ // #265 Stufe A, Teil 4: Der Client kann beide Wege. `transfer` nimmt den neuen (ein Proxy-Abruf: claim mit Kennzeichen und
+ // Zeilenliste), `submit` den bisherigen (Daten liegen vor, eigener claim-Abruf).
+ const bridge=token=>createThemeCartClient({fetchImpl:shopFetch,claim:async()=>{const claimed=await counted(()=>proxyRequest('/cart/claim','POST',token)),r=claimed.result;claimReads.push(claimed);assert.equal(r.status,200,JSON.stringify(r.data));},
+  take:async lines=>{const taken=await counted(()=>takeRequest(lines,token)),r=taken.result;takes.push({lines:structuredClone(lines),data:r.data,calls:taken.calls,phases:taken.phases});assert.equal(r.status,200,JSON.stringify(r.data));return r.data;},
+  load:async()=>{dataLoads++;const r=await proxyRequest('/cart/data','GET',token,hosted);assert.equal(r.status,200,JSON.stringify(r.data));return r.data;}});
+ const client=bridge(transferToken);await client.transfer({image:new Blob(['wrong later JPEG'],{type:'image/jpeg'})});await client.transfer();
  assert.equal(adds,1);assert.equal(themeCart.items.length,2);assert.deepEqual(themeCart.items[0],other);
+ if(images){
+  // Mit Kassenbild bei Shopify antwortet der Server take:false; der Client nimmt vollständig den bisherigen Weg.
+  assert.deepEqual(takes.map(t=>t.data),[{take:false},{take:false}]);assert.equal(dataLoads,2);assert.equal(claimReads.length,1);
+ }else{
+  // Neuer Weg: genau EIN Proxy-Abruf für Daten und Bestätigung – kein data-Abruf, kein eigener claim-Abruf.
+  assert.equal(takes.length,1,'der zweite Klick fragt den Server nicht erneut');assert.deepEqual(takes[0].lines,[]);assert.deepEqual(takes[0].data,{payload:p,claimed:true});
+  assert.equal(dataLoads,0);assert.equal(claimReads.length,0);
+  // Sitzungsprüfung, Vorbereitung und Bestätigung liegen wie beim bisherigen claim in einer Lesephase.
+  assert.equal(takes[0].calls,3);assert.equal(takes[0].phases,1);
+  // Zweiter take nach der Bestätigung: Zeile gemeldet → nur Daten; Zeile nicht gemeldet → dauerhafte Sperre (409).
+  const present=await counted(()=>takeRequest([mine]));assert.deepEqual(present.result.data,{payload:p,claimed:false,present:true});assert.equal(present.calls,2,'ohne Bestätigung keine dritte Prüfung');assert.equal(present.phases,1);
+  // Auch dieselbe Konfiguration mit anderem Angebot oder dasselbe Angebot unter fremder Konfiguration gilt nicht als vorhanden.
+  for(const lines of [[],[elsewhere],[{...mine,offer:'0'.repeat(64)}],[{...mine,config:elsewhere.config}]]){const again=await takeRequest(lines);assert.equal(again.status,409,JSON.stringify(lines));assert.equal(again.data.error.code,'theme_cart_uncertain');assert.equal(again.data.payload,undefined);}
+  assert.equal(adds,1);
+ }
  assert.equal((await proxyRequest('/cart/claim','POST')).status,409,'persistent claim refuses a second upload');
  // Beim Claim liegen Sitzungsprüfung, Vorbereitung und Claim in einer Lesephase; alle drei Prüfungen laufen.
- assert.ok(claimReads.length>=1);for(const claimed of claimReads){assert.equal(claimed.calls,3);assert.equal(claimed.phases,1);}
+ assert.equal(claimReads.length,images?1:0);for(const claimed of claimReads){assert.equal(claimed.calls,3);assert.equal(claimed.phases,1);}
  const opened=await request('/api/shop-entry/cart-configurations/'+p.configuration.id+'/1',undefined,undefined,headers);
  assert.equal(opened.status,200);assert.equal(opened.data.draft.id,draft.id);assert.equal(opened.data.quantity,2);
  const photo=await request('/api/shop-entry/cart-configurations/'+p.configuration.id+'/1/photos/kundenfoto',undefined,undefined,headers);assert.deepEqual(photo.body,Buffer.from(png,'base64'));
@@ -323,7 +369,36 @@ for(const {cache,images} of [{cache:false,images:true},{cache:true,images:true},
  const editToken=new URLSearchParams(new URL(edit.data.handoffUrl).hash.slice(1)).get('handoff'),editData=await proxyRequest('/cart/data','GET',editToken,hosted);assert.equal(editData.status,200);
  assert.equal(editData.data.previousRevision,1);assert.equal(editData.data.configuration.rev,3);
  assert.equal(new URL(editData.data.properties._gravuru_bearbeiten).searchParams.get('ui'),'prio-r15','editing keeps the approved presentation for the next return');
- await bridge(editToken).submit(editData.data);assert.equal(adds,2);assert.equal(removes,1);assert.equal(themeCart.items.length,2);assert.deepEqual(themeCart.items[0],other);
+ if(images)await bridge(editToken).submit(editData.data);
+ else{
+  // #265 „take“ beim Bearbeiten: Ohne genau eine gemeldete bisherige Zeile (Revision 1 dieser Konfiguration) bestätigt der
+  // Server nicht; der Client meldet dann wie bisher den Fehler. Erst mit der echten Zeile aus dem Warenkorb wird bestätigt.
+  const edited=editData.data,previousLine={...mine};assert.equal(edited.mode,'update');assert.equal(edited.configuration.id,mine.config);
+  for(const lines of [[],[elsewhere],[{...previousLine,rev:'2'}],[{...previousLine,config:elsewhere.config}],[previousLine,previousLine]]){
+   const r=await takeRequest(lines,editToken);assert.equal(r.status,200,JSON.stringify(r.data));assert.deepEqual(r.data,{payload:edited,claimed:false},JSON.stringify(lines));
+  }
+  const empty=createThemeCartClient({fetchImpl:async url=>url==='/cart.js'?Response.json({currency:'EUR',items:[other]}):assert.fail(url),claim:async()=>assert.fail('kein claim'),take:lines=>takeRequest(lines,editToken).then(r=>r.data),load:async()=>assert.fail('kein data-Abruf')});
+  await assert.rejects(empty.transfer(),/fehlt oder wurde geändert/);
+  takes.length=0;await bridge(editToken).transfer();
+  assert.equal(takes.length,1);assert.deepEqual(takes[0].lines,[previousLine],'gemeldet wird die bisherige Zeile aus dem Warenkorb');assert.deepEqual(takes[0].data,{payload:edited,claimed:true});
+  assert.equal(dataLoads,0);assert.equal(claimReads.length,0);
+  assert.equal((await takeRequest([previousLine],editToken)).status,409,'nach der Bestätigung nicht noch einmal');
+  // Bisher prüfte der Client die Daten vor dem claim. Daten, die er ablehnt, bestätigt der Server deshalb auch mit „take“ nicht:
+  // ein noch nie eingelegtes Angebot (Revision 4), das als Bearbeitung einer Zeile mit eben dieser Revision 4 übergeben wird.
+  assert.equal((await request('/api/shop-entry/acrylic-drafts/'+draft.id,'POST',{input:{...input,quantity:3},expectedRevision:3},headers)).status,200);
+  const again={draftId:draft.id,expectedRevision:4,quantity:3,configId:p.configuration.id,cartLineId:'theme'};
+  assert.equal((await request('/api/shop-entry/theme-cart','POST',{...again,cartRevision:3},headers)).status,200);
+  const same=await request('/api/shop-entry/theme-cart','POST',{...again,cartRevision:4},headers);assert.equal(same.status,200,JSON.stringify(same.data));
+  const sameToken=new URLSearchParams(new URL(same.data.handoffUrl).hash.slice(1)).get('handoff'),fourth={config:mine.config,rev:'4',offer:'a'.repeat(64)};
+  const unclear=await takeRequest([fourth],sameToken);assert.equal(unclear.status,200,JSON.stringify(unclear.data));
+  assert.equal(unclear.data.claimed,false,'genau eine bisherige Zeile, aber der Client würde die Daten ablehnen');assert.equal(unclear.data.present,undefined);
+  assert.deepEqual([unclear.data.payload.mode,unclear.data.payload.configuration.rev,unclear.data.payload.previousRevision],['update',4,4]);
+  const refusing=createThemeCartClient({fetchImpl:async url=>url==='/cart.js'?Response.json({currency:'EUR',items:[other]}):assert.fail(url),claim:async()=>assert.fail('kein claim'),take:async()=>unclear.data,load:async()=>assert.fail('kein data-Abruf')});
+  await assert.rejects(refusing.transfer(),/bisherige Gestaltungsstand ist unklar/);
+  // Das Angebot ist dadurch nicht verbraucht: Die bisherige claim-Route bestätigt es noch genau einmal.
+  assert.deepEqual((await proxyRequest('/cart/claim','POST',sameToken)).data,{claimed:true});assert.equal((await proxyRequest('/cart/claim','POST',sameToken)).status,409);
+ }
+ assert.equal(adds,2);assert.equal(removes,1);assert.equal(themeCart.items.length,2);assert.deepEqual(themeCart.items[0],other);
  // Signed order intake still binds precisely to the immutable edited design.
  const item=themeCart.items[1],paid={id:123456,test:true,financial_status:'paid',currency:'EUR',customer:{id:42},line_items:[{id:9001,product_id:Number(p.productId),variant_id:item.variant_id,quantity:3,price:euro(item.original_price),properties:Object.entries(item.properties).map(([name,value])=>({name,value}))}]};
  const raw=Buffer.from(JSON.stringify(paid)),received=w.orderIntake.receive(raw,{'x-shopify-hmac-sha256':createHmac('sha256',secret).update(raw).digest('base64'),'x-shopify-shop-domain':shopDomain,'x-shopify-api-version':'2026-07','x-shopify-topic':'orders/paid','x-shopify-webhook-id':'evt-theme-cart-0001'},{shopDomain,secret,apiVersion:'2026-07'});

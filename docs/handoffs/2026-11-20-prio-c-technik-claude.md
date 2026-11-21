@@ -888,4 +888,18 @@ Kasse, Danke-Seite, Bestell-E-Mail, Kundenkonto. An Astra als Lesefrage: was Kas
 
 Keine.
 
+## 21.11.2026, 11:10 Uhr – ein Stand für vier Bausteine (`dev/claude-warenkorb5-20261121`)
+
+**Live:** `fd57ef0d` (Teil 2 und 3), gemessen: Acrylglas 4,2 s, Server-Zeiten des Klicks 3,1 s → 0,74 s (siehe `STATUS.md`).
+
+**Bei Astra beauftragt:** Vorab-Sichern (3.56), Teil 4 (ein Abruf über Shopify), Teil 5 (PNG-Stufe), Stufe B Lieferung 1 (Fertigungsdatei mit dem Bestelleingang). Zweige der Unteragenten: `dev/claude-warenkorb4a-20261121`, `dev/claude-warenkorb4b-20261121`, `dev/claude-vorab-sichern-20261121`, `dev/claude-bestellung1-20261121`.
+
+**Nach dem Aufspielen prüfen (eine Messung):** je Produkt zweiter Klick; im Abrufprotokoll ein `claim` mit Body und kein `data`; Sichern vor dem Klick; Bild im Warenkorb. Das Messskript wartet in der Übersicht zwei Sekunden (`UEBERBLICK_MS`).
+
+**Danach:** Lieferung 2 und 3 der Stufe B (fünf Fragen an Chris im Bauplan), Sicherungsplätze am Server (heute zwei für alle Kunden), kleines Warenkorbbild statt 1600 Pixel für die Vorschau im Warenkorb.
+
+### Offene Fragen an Chris
+
+Die fünf Fragen in `docs/handoffs/2026-11-21-stufe-b-bauplan.md`; sonst keine.
+
 Der [Design-Master](https://github.com/Chris83638w/gravuru-katalog./blob/main/designs/DESIGN-MASTER.md) gilt unverändert; an Designs wurde nichts geändert.

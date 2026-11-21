@@ -13,6 +13,7 @@ query CartValidationsGenerateRunInput {
       options: attribute(key: "_gravuru_options") { value }
       revision: attribute(key: "_gravuru_revision") { value }
       designFile: attribute(key: "Bearbeitbarer Entwurf") { value }
+      designPrivate: attribute(key: "_gravuru_entwurf") { value }
       merchandise { __typename ... on ProductVariant { id product { id title pricing: metafield(namespace: "$app", key: "personalization") { value } } } }
     }
   }

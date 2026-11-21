@@ -18,7 +18,12 @@ export function productionOrderLink(office,shopDomain,configuration){
  const link=merchantNavigation('/werkstatt/bestellungen/?'+new URLSearchParams({config:configuration.id,rev:String(configuration.rev)}),'https://'+shopDomain+'/',{newTab:true,apiKey:office.clientId,shop:shopDomain});
  return link.startsWith('https://'+shopDomain+'/admin/apps/'+office.clientId+'/werkstatt/bestellungen/?')?link:null;
 }
-export function prepareThemeCart({workshop,registry,shopDomain,proxyPath,customerImageUrl,checkoutImageSource,presentation},binding,input,{draftToken}={}){
+// `privateDesignReference` (Chris 21.11.2026: „Bearbeitbarer Entwurf“ für Kunden nicht mehr sichtbar): Der Entwurfsnachweis
+// steht dann unter `_gravuru_entwurf` statt unter dem sichtbaren Schlüssel. Nur wenn der Start es ausdrücklich einschaltet
+// (erst nachdem Preisfunktion und Kassenprüfung beide Schlüssel lesen) UND der Bestelleingang dieses Speichers den privaten
+// Schlüssel annimmt. Sonst bleibt alles beim sichtbaren Schlüssel.
+export const writesPrivateDesignReference=(workshop,enabled)=>enabled===true&&workshop?.orderIntake?.acceptsPrivateDesignReference===true;
+export function prepareThemeCart({workshop,registry,shopDomain,proxyPath,customerImageUrl,checkoutImageSource,presentation,privateDesignReference=false},binding,input,{draftToken}={}){
  const {cartRevision,...offerInput}=input;
  const prepared=cartTimingStep('bound_offer',()=>prepareBoundCartOffer({workshop,registry,shopDomain},binding,offerInput,{draftToken}));
  const {draft,manifest,offer,resolve}=prepared,ledger=workshop.customerDrafts.cartConfigurations;
@@ -33,7 +38,7 @@ export function prepareThemeCart({workshop,registry,shopDomain,proxyPath,custome
  if(!preview||preview.length>6*1024*1024||!preview.subarray(0,8).equals(Buffer.from([137,80,78,71,13,10,26,10])))fail(422,'theme_cart_preview','Die gesicherte Gestaltungsvorschau fehlt.');
  const assigned=cartTimingStep('cart_assign',()=>ledger.assign({draftId:draft.id,draftRevision:draft.revision,snapshotId:manifest.id,offerId:offer.id,productId:draft.productId}));
  const configuration={id:assigned.id,rev:assigned.rev};
- const properties=Object.fromEntries(cartLineInput({...offer,configuration}).attributes.map(a=>[a.key,a.value]));
+ const properties=Object.fromEntries(cartLineInput({...offer,configuration},{privateDesignReference:writesPrivateDesignReference(workshop,privateDesignReference)}).attributes.map(a=>[a.key,a.value]));
  properties.Design=String(design.name||design.id).slice(0,240);
  properties.Format=manifest.product.widthMm+' × '+manifest.product.heightMm+' mm';
  const text=customerTextLine(design.objects,template);

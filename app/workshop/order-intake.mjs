@@ -6,7 +6,7 @@ import {createProductionRelease} from './production-release.mjs';
 import {resolveProduct,PRODUCT_SCHEMA} from './product-model.mjs';
 import {createHash,createHmac,randomBytes,randomUUID,timingSafeEqual} from 'node:crypto';
 import {isNativeReviewSchema} from './native-review-schema.mjs';
-import {capturePersonalization,personalizationForSnapshot,personalizationAttributes,tierUnitCents} from './cart-personalization.mjs';
+import {capturePersonalization,personalizationForSnapshot,personalizationAttributesMatch,tierUnitCents} from './cart-personalization.mjs';
 import {tenantOption,ensureTenantColumns,TENANT_COLUMN} from './tenant.mjs';
 import {createShopProductBindingStore} from './shop-product-binding-store.mjs';
 import {hasFixedDoorbellCheckout} from './fixed-doorbell-checkout-products.mjs';
@@ -219,7 +219,10 @@ export function createOrderIntake({database:db,snapshot,clock=Date.now,autoRelea
  const statuses=createOrderStatus({database:db,clock,production:(line,shop)=>release.state(line.id,{shop}),tenantId:tenant});
  release=createProductionRelease({database:db,clock,line:lineOrRejected,shopStatus:line=>statuses.shopState(line),autoRelease,rejectedLines:()=>errorRows(),tenantId:tenant});
  const forSnapshot=snapshotId=>typeof snapshotId==='string'?db.prepare("SELECT document FROM form_order_lines WHERE json_extract(document,'$.snapshotId')=? AND tenant_id=? ORDER BY rowid").all(snapshotId,tenant).map(r=>JSON.parse(r.document)):[];
- return {tenantId:tenant,get,forSnapshot,catalogLiveApproval:catalogLive.approval,catalogLiveApprovals:catalogLive.approvals,approveCatalogLiveProducts:catalogLive.approve,catalogLiveOrderScope:input=>doorbellLiveOrderScope(input,'catalog-live-approved'),doorbellLiveApproval:input=>doorbellLiveApproval(input),doorbellGalleryApprovals,doorbellLiveOrderScope,approveDoorbellLiveProducts,production:release,errors:({onUnreadable}={})=>positionDocuments(errorRecords(),onUnreadable),customer:id=>{const line=get(id);return db.prepare('SELECT customer_id FROM form_order_customers WHERE shop=? AND order_id=? AND tenant_id=?').get(line.shopDomain,line.orderId,tenant)?.customer_id||null;},status:id=>statuses.forLine(get(id)),list,bindings:()=>db.prepare('SELECT b.*,s.options AS selection_options FROM form_shop_bindings b LEFT JOIN form_shop_binding_selections s ON s.binding_id=b.id AND s.tenant_id=b.tenant_id WHERE b.tenant_id=? ORDER BY b.rowid DESC').all(tenant).map(r=>safeBinding(r,r.selection_options===null?null:JSON.parse(r.selection_options))),
+ // `acceptsPrivateDesignReference`: Dieser Eingang nimmt den Entwurfsnachweis auch unter `_gravuru_entwurf` an (siehe
+ // validatePersonalization). Der Warenkorb schreibt den privaten Schlüssel nur für Speicher, deren Eingang das ausweist;
+ // die ältere Händler-Laufzeit weist es nicht aus und bekommt weiter den sichtbaren Schlüssel.
+ return {tenantId:tenant,acceptsPrivateDesignReference:true,get,forSnapshot,catalogLiveApproval:catalogLive.approval,catalogLiveApprovals:catalogLive.approvals,approveCatalogLiveProducts:catalogLive.approve,catalogLiveOrderScope:input=>doorbellLiveOrderScope(input,'catalog-live-approved'),doorbellLiveApproval:input=>doorbellLiveApproval(input),doorbellGalleryApprovals,doorbellLiveOrderScope,approveDoorbellLiveProducts,production:release,errors:({onUnreadable}={})=>positionDocuments(errorRecords(),onUnreadable),customer:id=>{const line=get(id);return db.prepare('SELECT customer_id FROM form_order_customers WHERE shop=? AND order_id=? AND tenant_id=?').get(line.shopDomain,line.orderId,tenant)?.customer_id||null;},status:id=>statuses.forLine(get(id)),list,bindings:()=>db.prepare('SELECT b.*,s.options AS selection_options FROM form_shop_bindings b LEFT JOIN form_shop_binding_selections s ON s.binding_id=b.id AND s.tenant_id=b.tenant_id WHERE b.tenant_id=? ORDER BY b.rowid DESC').all(tenant).map(r=>safeBinding(r,r.selection_options===null?null:JSON.parse(r.selection_options))),
   // #265: Dieselben Zuordnungen wie `bindings()`, in derselben Reihenfolge, aber nur die eines Produktstands in einem Shop.
   // Der Warenkorb las bisher bei jedem Klick sämtliche Zuordnungen samt Ausführungen (live rund 0,13 s).
   bindingsFor:({shopDomain,productId,productRevision}={})=>{
@@ -432,11 +435,10 @@ export function createOrderIntake({database:db,snapshot,clock=Date.now,autoRelea
      const identities=db.prepare('SELECT DISTINCT product_gid FROM shop_product_binding_revisions WHERE tenant_id=? AND shop=? AND binding_id=?').all(tenant,shop,b.id);
      if(identities.length&&(identities.length!==1||identities[0].product_gid!=='gid://shopify/Product/'+identifier(line.product_id)))fail(422,'Das Shopify-Produkt passt nicht zur festen Entwurfsbindung.');
     }
+    // Der Entwurfsnachweis steht an neuen Positionen unter dem privaten Schlüssel `_gravuru_entwurf`, an älteren unter dem
+    // sichtbaren „Bearbeitbarer Entwurf“ (Chris 21.11.2026). Beide Lesarten gelten; geprüft wird der Wert wie bisher.
     function validatePersonalization(value){
-     for(const expected of personalizationAttributes(value)){
-      const actual=properties.filter(p=>p?.name===expected.key);
-      if(actual.length!==1||actual[0].value!==expected.value)fail(422,'Bestellung hat die gesicherte Entwurfs- oder Aufpreiszuordnung verändert.');
-     }
+     if(!personalizationAttributesMatch(value,key=>properties.filter(p=>p?.name===key).map(p=>p.value)))fail(422,'Bestellung hat die gesicherte Entwurfs- oder Aufpreiszuordnung verändert.');
     }
     validatePersonalization(extra?.personalization);
     // K8 (Ü9.1): Die Position verweist auf genau die Konfigurations-Revision, die zu diesem Angebot gesichert wurde.

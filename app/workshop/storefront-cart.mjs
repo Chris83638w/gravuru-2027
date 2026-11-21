@@ -59,7 +59,8 @@ const addTarget = t => {
       !/^gid:\/\/shopify\/Cart\/[^\s"'<>]{1,1000}$/.test(t.cartId)) fail('Kein gültiger bestehender Warenkorb.');
   return {cartId:t.cartId};
 };
-function lineInput(offer) {
+// `privateDesignReference` setzt nur der Theme-Warenkorb (theme-cart.mjs), und nur mit Server-Schalter und passendem Bestelleingang.
+function lineInput(offer, {privateDesignReference = false} = {}) {
   if (offer?.scope !== 'test-checkout-only' || !/^[1-9][0-9]{0,19}$/.test(offer.variantId) ||
       !Number.isSafeInteger(offer.quantity) || offer.quantity < 1 || offer.quantity > 99 ||
       !Number.isSafeInteger(offer.unitCents) || offer.unitCents < 0 || offer.unitCents > 100000000 || !Number.isSafeInteger(offer.unitCents*offer.quantity) || offer.currency !== 'EUR' ||
@@ -67,7 +68,7 @@ function lineInput(offer) {
   return {
     merchandiseId:'gid://shopify/ProductVariant/'+offer.variantId,
     quantity:offer.quantity,
-    attributes:[{key:offer.property.name, value:offer.property.value}, ...personalizationAttributes(offer.personalization), ...configurationAttributes(offer.configuration), ...fieldAttributes(offer.fields)]
+    attributes:[{key:offer.property.name, value:offer.property.value}, ...personalizationAttributes(offer.personalization, {privateDesignReference}), ...configurationAttributes(offer.configuration), ...fieldAttributes(offer.fields)]
   };
 }
 // `replace` = bestehende Zeile (cartId/lineId) durch den neuen Stand ersetzen statt neu anlegen.

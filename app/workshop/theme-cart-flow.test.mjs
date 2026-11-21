@@ -22,6 +22,9 @@ import {shopCartRequest} from '../configurator/variant-m/shop-cart.mjs';
 import {createOrderWebhookHandler,ORDER_WEBHOOK_PATH} from './shopify-order-webhook.mjs';
 import {cartTransformRun} from '../../ops/shopify/einzelsperre-release/preis/src/master-release/cart_transform_run.mjs';
 import {cartValidationsGenerateRun} from '../../ops/shopify/einzelsperre-release/pruefung/src/cart_validation_run.mjs';
+// Chris 21.11.2026: Entwurfsnachweis unter dem privaten Schlüssel. Die Folgefassung beider Funktionen liest beide Schlüssel.
+import {cartTransformRun as cartTransformRunBothKeys} from '../../ops/shopify/entwurf-privat-release/preis/src/master-release/cart_transform_run.mjs';
+import {cartValidationsGenerateRun as cartValidationsBothKeys} from '../../ops/shopify/entwurf-privat-release/pruefung/src/cart_validation_run.mjs';
 import {customerReadMemo} from './customer-read-scope.mjs';
 import {crossStoreOrders} from './cross-store-orders.mjs';
 import {orderForConfiguration,orderKey} from './ui/order-store-context.mjs';
@@ -44,7 +47,10 @@ const euro=c=>(c/100).toFixed(2);
 const documentReadsByMode={};
 // ENTSCHEIDUNGEN 3.52/3.53 (Chris 21.11.2026): Standard ist „beim Einlegen kein Bild an Shopify“ (`images:false`).
 // Der frühere Weg mit Kassenbild bei Shopify bleibt als abschaltbare Einstellung (`shopifyCartImages`) geprüft.
-for(const {cache,images} of [{cache:false,images:true},{cache:true,images:true},{cache:true,images:false}])test('theme cart: signed entry, immutable design, edit, quantity 1 to 4 and signed order intake'+(cache?' (with model response cache)':'')+(images?'':' (kein Bild an Shopify)'),async t=>{
+// `hidden` (Chris 21.11.2026): derselbe Durchlauf mit eingeschaltetem privatem Entwurfsnachweis – die Zeile trägt
+// `_gravuru_entwurf` statt „Bearbeitbarer Entwurf“, die Folgefassung der Funktionen bepreist sie, der Bestelleingang nimmt sie an.
+for(const {cache,images,hidden=false} of [{cache:false,images:true},{cache:true,images:true},{cache:true,images:false},{cache:true,images:false,hidden:true}])test('theme cart: signed entry, immutable design, edit, quantity 1 to 4 and signed order intake'+(cache?' (with model response cache)':'')+(images?'':' (kein Bild an Shopify)')+(hidden?' (Entwurfsnachweis privat)':''),async t=>{
+ const priceFunction=hidden?cartTransformRunBothKeys:cartTransformRun,checkoutGuard=hidden?cartValidationsBothKeys:cartValidationsGenerateRun;
  const dir=fs.mkdtempSync(path.join(os.tmpdir(),'g27-shop-entry-flow-'));build({outputDirectory:dir});
  const seed=JSON.parse(fs.readFileSync(path.join(dir,'models.json')))[0];
  const quantityTiers=[{minQuantity:3,percentOff:5},{minQuantity:5,percentOff:10},{minQuantity:10,percentOff:15}];
@@ -92,7 +98,7 @@ for(const {cache,images} of [{cache:false,images:true},{cache:true,images:true},
  const store={storeId:'acryl',registry,workshop:countingWorkshop,apiPrefix:'/api/workshop/',nativeEditorPath:'/_merchant-editor.html',formEditorPath:'/_merchant-form-editor.html',cart:createBoundTestCart({workshop:w,registry,shopDomain,transportOptions:{fetchImpl}})};
  const registeredImage='https://cdn.shopify.com/s/files/1/0920/5550/3228/files/gravuru-gestaltung-'+'c'.repeat(64)+'.png';let imageCalls=0,imagePending=false;
  const timingEvents=[],sources=[];let warmAccess=0;
- let now=1_800_000_000_000;const entry=createShopEntry({origin,shopDomain,secret,stores:[store],proxyPath,clock:()=>now,logger:event=>timingEvents.push(event),modelSlimmer:null,...(cache?{modelResponseCache:true}:{}),...(images?{shopifyCartImages:true}:{}),warmCheckoutAccess:async()=>{warmAccess++;throw Error('test cold login');},checkoutImage:async (source,options)=>{sources.push({source,options});assert.ok(source.startsWith(origin+'/gestaltung/'));if(imagePending)throw Object.assign(Error('Bild wird vorbereitet.'),{status:502,code:'checkout_image_pending'});imageCalls++;return registeredImage;}});
+ let now=1_800_000_000_000;const entry=createShopEntry({origin,shopDomain,secret,stores:[store],proxyPath,clock:()=>now,logger:event=>timingEvents.push(event),modelSlimmer:null,...(cache?{modelResponseCache:true}:{}),...(images?{shopifyCartImages:true}:{}),...(hidden?{privateDesignReference:true}:{}),warmCheckoutAccess:async()=>{warmAccess++;throw Error('test cold login');},checkoutImage:async (source,options)=>{sources.push({source,options});assert.ok(source.startsWith(origin+'/gestaltung/'));if(imagePending)throw Object.assign(Error('Bild wird vorbereitet.'),{status:502,code:'checkout_image_pending'});imageCalls++;return registeredImage;}});
  const webhook=createOrderWebhookHandler({intake:w.orderIntake,config:webhookConfig});
  const server=http.createServer((req,res)=>req.url===ORDER_WEBHOOK_PATH?webhook(req,res):entry.handle(req,res,new URL(req.url,origin)));server.listen(0,'127.0.0.1');await once(server,'listening');
  t.after(async()=>{server.closeAllConnections();await new Promise(r=>server.close(r));});
@@ -295,15 +301,23 @@ for(const {cache,images} of [{cache:false,images:true},{cache:true,images:true},
  const themeCart={currency:'EUR',items:[other]};let adds=0,removes=0;
  const shopifyFunctionLine=(item,quantity=item.quantity)=>{
   const {properties}=item;
+  // Shopify liefert für einen Schlüssel, den die Zeile nicht trägt, `null`.
+  const attribute=key=>Object.hasOwn(properties,key)?{value:properties[key]}:null;
   return {id:item.key,quantity,merchandise:{__typename:'ProductVariant',id:'gid://shopify/ProductVariant/'+item.variant_id,
    product:{id:product.shopifyProductId,pricing:{jsonValue:pricing}}},
    configuration:{value:properties._gravuru_config},configRevision:{value:properties._gravuru_rev},offer:{value:properties._gravuru_offer},
    motifs:{value:properties._gravuru_motifs},uploads:{value:properties._gravuru_uploads},
-   revision:{value:properties._gravuru_revision},designFile:{value:properties['Bearbeitbarer Entwurf']}};
+   revision:{value:properties._gravuru_revision},designFile:attribute('Bearbeitbarer Entwurf'),designPrivate:attribute('_gravuru_entwurf')};
  };
  const priceThemeLine=(item,quantity)=>{
   const cartLine=shopifyFunctionLine(item,quantity);
-  const {operations}=cartTransformRun({presentmentCurrencyRate:'1',cart:{lines:[cartLine]}});
+  const {operations}=priceFunction({presentmentCurrencyRate:'1',cart:{lines:[cartLine]}});
+  // Reihenfolge der Veröffentlichung: Die heute aktive Fassung kennt den privaten Schlüssel nicht. Sie gäbe der neuen Zeile
+  // keinen Preis und sperrte sie an der Kasse – deshalb erst die Funktionen, dann der Schalter am Server.
+  if(hidden){
+   assert.deepEqual(cartTransformRun({presentmentCurrencyRate:'1',cart:{lines:[cartLine]}}).operations,[],'aktive Fassung: kein Preis für die Zeile mit privatem Schlüssel');
+   assert.equal(cartValidationsGenerateRun({buyerJourney:{step:'CHECKOUT_COMPLETION'},cart:{lines:[cartLine]}}).operations[0].validationAdd.errors.length,1,'aktive Fassung: an der Kasse gesperrt');
+  }
   const amount=operations[0].lineUpdate.price.adjustment.fixedPricePerUnit.amount;
   const unit=Math.round(Number(amount)*100);
   return {...item,quantity,original_price:unit,original_line_price:unit*quantity,final_line_price:unit*quantity};
@@ -318,6 +332,10 @@ for(const {cache,images} of [{cache:false,images:true},{cache:true,images:true},
    if(images){assert.equal(props._Entwurf,registeredImage);assert.equal(props._Entwurf,props._gravuru_checkout_image);}
    else{assert.ok(!Object.hasOwn(props,'_Entwurf'));assert.ok(!Object.hasOwn(props,'_gravuru_checkout_image'));assert.ok(props._gravuru_bild.startsWith(origin+'/gestaltung/'));assert.ok(!o.body.includes('cdn.shopify.com'));}
    assert.ok(o.body.length<64*1024,'cart write stays small');
+   // Genau ein Schlüssel trägt den Entwurfsnachweis: mit Schalter der private, sonst der bisherige sichtbare.
+   assert.match(props[hidden?'_gravuru_entwurf':'Bearbeitbarer Entwurf'],/^gravuru:proof_[a-zA-Z0-9_-]{1,100}:[a-f0-9]{64}$/);
+   assert.ok(!Object.hasOwn(props,hidden?'Bearbeitbarer Entwurf':'_gravuru_entwurf'));
+   if(hidden)assert.deepEqual(Object.keys(props).filter(key=>!key.startsWith('_')).map(key=>key.replace(/ \d+$/,'')).filter((key,i,all)=>all.indexOf(key)===i).sort(),['Design','Format','Gravurtext'],'sichtbar bleiben nur Design, Format und Gravurtext');
    themeCart.items.push(priceThemeLine({key:'added-'+adds,variant_id:item.id,product_id:Number(p.productId),properties:props},item.quantity));
    return Response.json({items:themeCart.items.slice(-1)});
   }
@@ -329,7 +347,7 @@ for(const {cache,images} of [{cache:false,images:true},{cache:true,images:true},
   }
   if(url==='/checkout'){
    const items=themeCart.items.slice(1);
-   const {operations}=cartValidationsGenerateRun({buyerJourney:{step:'CHECKOUT_COMPLETION'},cart:{lines:items.map(item=>shopifyFunctionLine(item))}});
+   const {operations}=checkoutGuard({buyerJourney:{step:'CHECKOUT_COMPLETION'},cart:{lines:items.map(item=>shopifyFunctionLine(item))}});
    assert.deepEqual(operations,[]);
    return Response.json({items:items.map(item=>priceThemeLine(item,item.quantity))});
   }

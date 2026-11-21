@@ -81,12 +81,17 @@ function createWindowLimiter(perMinute,clock){
  return key=>{const minute=Math.floor(clock()/60000);if(windows.size>4096)windows.clear();const entry=windows.get(key);if(!entry||entry.minute!==minute){windows.set(key,{minute,count:1});return true;}entry.count++;return entry.count<=perMinute;};
 }
 
-export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=null,shopifyCartImages=false,warmCheckoutAccess=null,proxyPath,pagePath='/konfigurator/shop/',clock=Date.now,ttlMs,maxAgeSeconds=300,limits={},modelSlimmer,publicPreviewDirectory=null,publicPreviewPrepare=null,modelResponseCache=null,reviewProductReference=true,logger=event=>console.warn(JSON.stringify(event))}){
+export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=null,shopifyCartImages=false,warmCheckoutAccess=null,proxyPath,pagePath='/konfigurator/shop/',clock=Date.now,ttlMs,maxAgeSeconds=300,limits={},modelSlimmer,publicPreviewDirectory=null,publicPreviewPrepare=null,modelResponseCache=null,privateDesignReference=false,reviewProductReference=true,logger=event=>console.warn(JSON.stringify(event))}){
  // ENTSCHEIDUNGEN 3.52 und 3.53 (Chris 21.11.2026): Bilder liegen bei Shopify nur zu echten Bestellungen; beim Einlegen geht
  // nur Text an Shopify. Ohne `shopifyCartImages` meldet der Klick deshalb kein Kassenbild bei Shopify an und wartet auf keines;
  // die Warenkorbzeile nennt das Bild der Gestaltung am eigenen Server (`_gravuru_bild`). Die Shopify-Funktion setzt ohne
  // `_gravuru_checkout_image` nur den Preis (ops/shopify/checkout-image/cart-image.mjs).
  if(shopifyCartImages!==true)checkoutImage=null;
+ // Chris 21.11.2026: „Bearbeitbarer Entwurf“ soll für Kunden nicht mehr sichtbar sein. Mit `privateDesignReference: true` steht
+ // der Entwurfsnachweis neuer Warenkorbzeilen unter `_gravuru_entwurf`. Standard AUS: Erst einschalten, wenn die App-Version
+ // aktiv ist, deren Preisfunktion und Kassenprüfung beide Schlüssel lesen – sonst bekäme die neue Zeile keinen Preis und wäre
+ // an der Kasse gesperrt. Je Speicher gilt es nur, wenn dessen Bestelleingang den privaten Schlüssel annimmt (theme-cart.mjs).
+ if(privateDesignReference!==false&&privateDesignReference!==true)fail(503,'shop_entry_config','Der Konfigurator-Einstieg ist nicht eingerichtet.');
  const ownCartImage=value=>typeof value==='string'&&value.startsWith(origin+'/gestaltung/')&&/\/offer_[a-f0-9-]{36}\/[a-f0-9]{64}\.png$/.test(value);
  let address;try{address=new URL(origin);}catch{}
  if(!address||address.origin!==origin||address.protocol!=='https:'||address.username||address.password||!/^[-a-z0-9]+\.myshopify\.com$/.test(shopDomain||'')||typeof secret!=='string'||secret.length<16||!Array.isArray(stores)||!stores.length||stores.length>8||
@@ -458,7 +463,7 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
     if(themeTransfers.size>=limit.maxContexts)fail(429,'shop_entry_busy','Bitte kurz warten und erneut versuchen.');
     // Nur Darstellungswahl für den Bearbeiten-Link; kein Teil des Preis-/Gestaltungsstands.
     const {presentation,...themeInput}=data;
-    const args={workshop:store.workshop,registry:cartRegistry(store),shopDomain,proxyPath,...(presentation?{presentation}:{}),...(hasSavedCartImage(store)?{customerImageUrl:id=>customerImages.url(store.storeId,id),checkoutImageSource:(id,hash)=>customerImages.snapshotUrl(store.storeId,id,hash)}:{})};
+    const args={workshop:store.workshop,registry:cartRegistry(store),shopDomain,proxyPath,...(privateDesignReference?{privateDesignReference:true}:{}),...(presentation?{presentation}:{}),...(hasSavedCartImage(store)?{customerImageUrl:id=>customerImages.url(store.storeId,id),checkoutImageSource:(id,hash)=>customerImages.snapshotUrl(store.storeId,id,hash)}:{})};
     const prepared=cartTimingStep('cart_prepare',()=>prepareThemeCart(args,binding,themeInput,{draftToken})),token=randomBytes(32).toString('hex');
     themeTransfers.set(token,{args,binding:structuredClone(binding),input:structuredClone(themeInput),draftToken,sessionToken:req.headers['x-gravuru-shop-session'],customerId:session.customerId,expiresAt:clock()+limit.contextTtlMs});
     // Shopify fileCreate + polling runs while the browser opens the cart handoff; /cart/data reuses the pending task.

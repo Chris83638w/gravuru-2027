@@ -816,4 +816,25 @@ Die Shopify-Funktion prüft nur die Form der Bildadresse (`cart-image.mjs`); ein
 
 Keine. Gelöscht wird nichts (die Testbilder bei Shopify bleiben).
 
+## Stufe A, Teil 1 (21.11.2026, 07:35 bis 08:00 Uhr) – gebaut (`5b9bf5f0`), bei Astra beauftragt
+
+**Was.** Beim Einlegen geht kein Bild mehr an Shopify (ENTSCHEIDUNGEN 3.52, 3.53).
+
+| Stelle | Änderung |
+| --- | --- |
+| `app/workshop/shop-entry.mjs` | Einstellung `shopifyCartImages` (Standard aus): ohne sie gibt es kein `checkoutImage`, also kein Anmelden beim Sichern, keines bei der Übergabe, kein Warten in `/cart/data`. Kündigt der Client `X-Gravuru-Cart-Image: server` an und trägt die Übergabe ein Bild des eigenen Servers, entfällt auch das Vorschaubild in der Übergabe. |
+| `app/workshop/ui/theme-cart-client.mjs` | `serverPreview(p)`: erkennt die Bildadresse des eigenen Servers in fester Form. Ohne Vorschaubild und ohne Shopify-Bild legt der Client nur Text ein; die Rücklese-Prüfung verlangt dann, dass die Zeile kein `_Entwurf` trägt. |
+| `app/workshop/ui/shop-embed.mjs`, `theme-cart-ui.mjs` | kündigen die Fähigkeit an, wenn der geladene Client sie hat; die Übergabeseite zeigt das Bild des eigenen Servers. |
+| `app/workshop/configurator-integration.mjs` | reicht `shopifyCartImages` aus der Einrichtung des Kundeneinstiegs durch (dort nicht gesetzt). |
+
+**Was der Kunde davon sieht.** An der Kasse steht das normale Produktbild. Im Warenkorb bleibt das Bild (Theme-Baustein liest `_gravuru_bild`). Die Schrittanzeige beim Einlegen ist unverändert.
+
+**Nach dem Aufspielen zu messen und zu prüfen:** Zeit vom Klick bis zum Warenkorb für Acrylglas und Edelstahl; die Zeile trägt weder `_Entwurf` noch `_gravuru_checkout_image`; Warenkorbseite und Seitenwarenkorb zeigen das Bild; „Bearbeiten“ öffnet die Gestaltung; Größe eines neuen Entwurfs am Server (Astra).
+
+**Nächste Teile von Stufe A:** die drei Abrufe nach dem Sichern zusammenlegen; den Produktstand nicht je Abruf lesen (`prepareBoundCartOffer`, zwei Dokumentlesungen je Aufruf); das Warenkorbbild aus dem Editor nicht mehr erzeugen, wenn es nicht übertragen wird.
+
+### Offene Fragen an Chris
+
+Keine.
+
 Der [Design-Master](https://github.com/Chris83638w/gravuru-katalog./blob/main/designs/DESIGN-MASTER.md) gilt unverändert; an Designs wurde nichts geändert.

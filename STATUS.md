@@ -1,3 +1,14 @@
+## 21.11.2026 · Claude (Operator, technische Gesamtverantwortung) · #265/#267: Stufe A, Teil 1 gebaut – beim Einlegen geht kein Bild mehr an Shopify; Auftrag an Astra
+
+- **`5b9bf5f0` (Zweig `dev/claude-paket-20261120`):** Der Klick meldet kein Kassenbild mehr bei Shopify an und wartet auf keines (`createShopEntry`, Einstellung `shopifyCartImages`, Standard aus). Die Shop-Seite legt nur Text ein: kein `_Entwurf`, kein `_gravuru_checkout_image`; die Zeile nennt das Bild der Gestaltung am eigenen Server (`_gravuru_bild`). Grundlage: ENTSCHEIDUNGEN 3.52, 3.53.
+- **Versionswechsel:** Die Shop-Seite kündigt die neue Fähigkeit mit `X-Gravuru-Cart-Image: server` an. Tabs mit einem älteren Client (Stand `9bfc281b` oder davor) senden das Kennzeichen nicht und bekommen weiter das Vorschaubild; sie legen wie bisher ein. Der frühere Weg mit Kassenbild bleibt als Einstellung erhalten und geprüft.
+- **Im Auftrag enthalten:** das kleine Prüfpaket (`5ad10b05`, `07516299`).
+- **Prüfungen:** Ablauftest mit drittem Lauf im neuen Standard (Sichern, Übergabe, Einlegen, Bearbeiten, Menge, Bestelleingang); Test zum Versionswechsel mit dem Client des Stands `9bfc281b` als Vergleich; Gegenprobe (Kassenbild im Standard an) schlägt fehl. Gezielt 219 von 219. Gesamtlauf auf `5b9bf5f0`: 2831 Tests, 2823 bestanden, 4 übersprungen, die vier bekannten Fehlschläge. Paket- und Handy-Tests 211 von 211. Die beiden Editor-Pakete bleiben `editor-6f2e52f6bb197537` und `editor-d6521828989e096a`.
+- **Theme:** `gravuru-warenkorb-bearbeiten.liquid` zeigt für Zeilen mit `_gravuru_config` und `_gravuru_rev` das Bild aus `_gravuru_bild` unabhängig von `_Entwurf` (im Repo nachgelesen; am echten Shop nach dem Aufspielen zu prüfen).
+- **Nicht geprüft:** Wirkung am echten Shop (Zeit, Warenkorbbild, Kasse). Messung folgt nach dem Aufspielen.
+- **Für Stufe B nachgelesen (vier Downloads):** Gravur erzeugt heute `technische-gravurpruefung.pdf`, `gravur-kontur-1zu1.pdf`, `gravur-fertigung.svg`, `gesicherte-gravurgestaltung.svg`, bei Funkklingeln zusätzlich je zwei Schnitt-PDFs und Schnitt-SVGs. Druck erzeugt die Druck-PDF (Mimaki oder `technische-druckpruefung.pdf`) und `gesicherte-gestaltung.svg`. Eine „SVG mit Kontur“ und für den Druck eine „PDF mit Kontur“ sind noch zuzuordnen oder zu bauen.
+- Übergabe: `docs/handoffs/2026-11-20-prio-c-technik-claude.md`, Abschnitt „Stufe A, Teil 1“. Der [Design-Master](https://github.com/Chris83638w/gravuru-katalog./blob/main/designs/DESIGN-MASTER.md) gilt unverändert; an Designs wurde nichts geändert.
+
 ## 21.11.2026 · Claude (Operator, technische Gesamtverantwortung) · #265/#267: Bilder bei Shopify nur zu echten Bestellungen (Entscheidung), Auskünfte von Astra
 
 - **Entscheidung von Chris, 06:57 Uhr (ENTSCHEIDUNGEN 3.52):** Bilder dürfen bei Shopify nur zu echten Bestellungen vorhanden sein; vor der Bestellung nur ein Link zur Gestaltung, wie bei Fancy. Mein Vorschlag, das Kassenbild vor dem Klick anzumelden, ist abgelehnt.

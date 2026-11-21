@@ -1,7 +1,7 @@
 ## 21.11.2026 · Claude (Operator, technische Gesamtverantwortung) · #265/#267: `d1939d21` live – Klick bis Warenkorb unter 3 s (Messung am echten Shop)
 
 - **Aufgespielt:** Astra, gemeldet 11:33 Uhr (#267, Kommentar 7060623862): Vorab-Sichern, ein Abruf über Shopify, schnellere Vorschau-PNGs, Bestelleingang Lieferung 1.
-- **Messung, 11:36 bis 11:44 Uhr, Wegwerf-Browser, Testgestaltung „Claudetest“, keine Kasse (vier weitere kleine Testentwürfe). Die Übersicht war jeweils gut zwei Sekunden offen, dann der Klick auf „Jetzt in den Warenkorb“.**
+- **Messung, 11:33 bis 11:36 Uhr, Wegwerf-Browser, Testgestaltung „Claudetest“, keine Kasse (vier weitere kleine Testentwürfe). Die Übersicht war jeweils gut zwei Sekunden offen, dann der Klick auf „Jetzt in den Warenkorb“.**
 
 | Produkt | Klick bis Warenkorb heute 08:48 Uhr | 10:15 Uhr (`fd57ef0d`) | jetzt |
 | --- | --- | --- | --- |

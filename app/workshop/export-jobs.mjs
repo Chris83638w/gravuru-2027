@@ -23,6 +23,11 @@ export function createExportJobStore({filename,database,clock=Date.now,tenantId}
  const snapshotJobs=db.prepare('SELECT * FROM form_export_jobs WHERE snapshot_id=? AND tenant_id=? ORDER BY created_at DESC,rowid DESC LIMIT 200');
  const snapshotCount=db.prepare('SELECT count(*) AS total FROM form_export_jobs WHERE snapshot_id=? AND tenant_id=?');
  const owned=(r,token)=>r.status==='running'&&r.lease_token===token;
+ // #265 Stufe C, ENTSCHEIDUNGEN 3.57 (2): Beobachter für fehlgeschlagene Aufträge (shopify-order-review-tag.mjs setzt damit
+ // „Bitte prüfen“ auch an die Shopify-Bestellung). Ohne Beobachter ändert sich nichts. Aufruf erst nach dem Commit; ein Fehler
+ // oder ein abgelehntes Promise eines Beobachters ändert weder den Auftrag noch den Arbeiter.
+ const failedListeners=new Set();
+ const notifyFailed=job=>{for(const listener of failedListeners){try{const pending=listener({...job});if(typeof pending?.then==='function')pending.then(null,()=>{});}catch{/* Auftrag und Arbeiter bleiben unverändert. */}}};
  return {get,checks,tenantId:tenant,forSnapshot(snapshotId){return {jobs:snapshotJobs.all(snapshotId,tenant).map(publicRow),total:snapshotCount.get(snapshotId,tenant).total};},list:()=>db.prepare('SELECT * FROM form_export_jobs WHERE tenant_id=? ORDER BY created_at DESC,rowid DESC LIMIT 200').all(tenant).map(publicRow),events:id=>{row(id);return db.prepare('SELECT status,at,message FROM form_export_events WHERE job_id=? AND tenant_id=? ORDER BY id').all(id,tenant);},
   enqueue({snapshotId,recipeKey,recipe,settings}){return tx(()=>{
    if(!db.prepare('SELECT 1 FROM form_review_snapshots WHERE id=? AND tenant_id=?').get(snapshotId,tenant))fail(404,'Prüfstand nicht gefunden.');
@@ -37,7 +42,8 @@ export function createExportJobStore({filename,database,clock=Date.now,tenantId}
   });},
   finish(id,token,result){return tx(()=>{const r=row(id);if(!owned(r,token))return false;
    db.prepare('INSERT OR IGNORE INTO form_print_proofs(snapshot_id,recipe_key,metadata,pdf,archive,tenant_id) VALUES(?,?,?,?,?,?)').run(r.snapshot_id,r.recipe_key,JSON.stringify(result.metadata),result.pdf,result.archive,tenant);db.prepare("UPDATE form_export_jobs SET status='completed',lease_token=NULL,lease_until=NULL,error=NULL,updated_at=? WHERE id=? AND tenant_id=?").run(clock(),id,tenant);event(id,'completed','Ausgabe unveränderlich gesichert.');return true;});},
-  fail(id,token,message){return tx(()=>{const r=row(id);if(!owned(r,token))return false;const error=String(message).slice(0,500);db.prepare("UPDATE form_export_jobs SET status='failed',lease_token=NULL,lease_until=NULL,error=?,updated_at=? WHERE id=? AND tenant_id=?").run(error,clock(),id,tenant);event(id,'failed',error);return true;});},
+  fail(id,token,message){let snapshotId=null;const done=tx(()=>{const r=row(id);if(!owned(r,token))return false;const error=String(message).slice(0,500);db.prepare("UPDATE form_export_jobs SET status='failed',lease_token=NULL,lease_until=NULL,error=?,updated_at=? WHERE id=? AND tenant_id=?").run(error,clock(),id,tenant);event(id,'failed',error);snapshotId=r.snapshot_id;return true;});if(done)notifyFailed({id,snapshotId});return done;},
+  onFailed(listener){if(typeof listener!=='function')fail(422,'Beobachter für fehlgeschlagene Ausgabeaufträge fehlt.');failedListeners.add(listener);return ()=>failedListeners.delete(listener);},
   retry(id){return tx(()=>{const r=row(id);if(r.status!=='failed')return get(id);db.prepare("UPDATE form_export_jobs SET status='queued',error=NULL,updated_at=? WHERE id=? AND tenant_id=?").run(clock(),id,tenant);event(id,'queued','Erneut angefordert; gesicherter Eingabestand unverändert.');return get(id);});},
   release(id,token){return tx(()=>{const r=row(id);if(!owned(r,token))return false;db.prepare("UPDATE form_export_jobs SET status='queued',lease_token=NULL,lease_until=NULL,updated_at=? WHERE id=? AND tenant_id=?").run(clock(),id,tenant);event(id,'queued','Verarbeitung beendet; Auftrag bleibt für den nächsten Start erhalten.');return true;});},close:()=>{if(!database)db.close();}};
 }

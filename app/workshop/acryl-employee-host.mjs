@@ -60,17 +60,22 @@ export function customerIntegrationFromEnv(env=process.env){
  // Antwortspeicher des Kundenmodells (Paket 1a): ausgeschaltet, solange die Variable fehlt oder leer ist; einziger Wert ist `enabled`.
  const modelCache=env.GRAVURU_CUSTOMER_MODEL_CACHE;
  if(modelCache!==undefined&&modelCache!==''&&modelCache!=='enabled')throw Object.assign(Error('GRAVURU_CUSTOMER_MODEL_CACHE kennt nur den Wert enabled.'),{code:'customer_model_cache_env'});
+ // #265 Stufe C, ENTSCHEIDUNGEN 3.57 (2): „Bitte prüfen“ als Tag an der Shopify-Bestellung – ausgeschaltet, solange die Variable
+ // fehlt oder leer ist; einziger Wert ist `enabled`. Erst setzen, wenn Chris die App-Version mit `write_orders` freigegeben hat.
+ const reviewTags=env.GRAVURU_ORDER_REVIEW_TAGS;
+ if(reviewTags!==undefined&&reviewTags!==''&&reviewTags!=='enabled')throw Object.assign(Error('GRAVURU_ORDER_REVIEW_TAGS kennt nur den Wert enabled.'),{code:'order_review_tags_env'});
  if(catalog!==undefined&&catalog!==''&&catalog!=='approved-issue139-20261102')throw Object.assign(Error('GRAVURU_CATALOG_LIVE_ORDERS kennt nur den Wert approved-issue139-20261102.'),{code:'catalog_live_orders_env'});
  if(live!==undefined&&live!==''&&live!=='approved-20261027')throw Object.assign(Error('GRAVURU_DOORBELL_LIVE_ORDERS kennt nur den Wert approved-20261027.'),{code:'doorbell_live_orders_env'});
  if(value===undefined||value===''){
   if(modelCache==='enabled')throw Object.assign(Error('Der Antwortspeicher benötigt den bestehenden Kundeneinstieg.'),{code:'customer_model_cache_env'});
+  if(reviewTags==='enabled')throw Object.assign(Error('Der Prüfvermerk an der Shopify-Bestellung benötigt die bestehende customerIntegration.'),{code:'order_review_tags_env'});
   if(Object.keys(previews).length)throw Object.assign(Error('Vorschauen benötigen den bestehenden Kundeneinstieg.'),{code:'public_preview_env'});
   if(catalog==='approved-issue139-20261102')throw Object.assign(Error('Live-Katalogprodukte benötigen die bestehende customerIntegration.'),{code:'catalog_live_orders_env'});
   if(live==='approved-20261027')throw Object.assign(Error('Live-Funkklingeln benötigen die bestehende customerIntegration.'),{code:'doorbell_live_orders_env'});
   return null;
  }
  if(value!=='merchant-test-only')throw Object.assign(Error('GRAVURU_CUSTOMER_INTEGRATION kennt nur den Wert merchant-test-only.'),{code:'customer_integration_env'});
- return {mode:'merchant-test-only',legacyStoreId:'legacy',acrylStoreId:'acryl',shopEntry:{proxyPath:'/apps/konfigurator',...previews,...(modelCache==='enabled'?{modelResponseCache:true}:{})},...(live==='approved-20261027'?{doorbellLiveOrders:true}:{}),...(catalog==='approved-issue139-20261102'?{catalogLiveOrders:true}:{})};
+ return {mode:'merchant-test-only',legacyStoreId:'legacy',acrylStoreId:'acryl',shopEntry:{proxyPath:'/apps/konfigurator',...previews,...(modelCache==='enabled'?{modelResponseCache:true}:{})},...(live==='approved-20261027'?{doorbellLiveOrders:true}:{}),...(catalog==='approved-issue139-20261102'?{catalogLiveOrders:true}:{}),...(reviewTags==='enabled'?{orderReviewTags:true}:{})};
 }
 export async function createAcrylEmployeeHost({legacyRelease,dataDirectory,env=process.env,customerIntegration=null}){
  const module=file=>import(pathToFileURL(path.join(legacyRelease,'ops/plesk',file)).href);

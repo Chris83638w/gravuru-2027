@@ -1,3 +1,15 @@
+## 21.11.2026 · Claude (Operator, technische Gesamtverantwortung) · #265/#267: Stufe C – die zwei ausgelassenen Bausteine korrigiert (Danke-Seite/Kundenkonto, Block in der Bestellseite)
+
+Zweig `dev/claude-stufe-c-bausteine-20261121`, aufgesetzt auf Astras `dev/astra-267-bestellmail-bild-mobil-20261121`. Nichts davon ist veröffentlicht.
+
+- **Stand live laut Astra (#267, 21.11.):** Server und Editor `815a0cfb`, vier Downloads, Mitarbeiterlink, Sicherungsplätze, App-Version nur mit `write_orders`, Tag eingeschaltet, Bestell-E-Mail mit der Gravur. **Nicht live:** Bild auf der Danke-Seite und im Kundenkonto, Block in der Bestellseite des Shopify-Admin.
+- **Warum sie ausblieben:** Shopify wies `api_version = "2025-10"` zurück (älter als zwölf Monate). Der Mitarbeiterblock scheiterte zusätzlich an der Typprüfung: `shopify` nicht deklariert (`OrderBlock.js:28`), `URLSearchParams.keys` (`model.mjs:18`, meine Zeile aus `25b90d9a`). Beides hatte ich ohne das Shopify-Paket vorbereitet und als „nicht geprüft“ ausgewiesen.
+- **Korrektur:** beide Extensions auf `2026-10` und `@shopify/ui-extensions` 2026.10.2; `shopify.d.ts` in der Form der Shopify-CLI (je Modul die Schnittstelle des eigenen Ziels); Adressprüfung ohne Iterator, gleich streng. Die Typprüfung deckt jetzt auch Namen und Eigenschaften der Bausteine des Blocks und das Kundenkonto-Ziel ab. Für die Folgeversion (nur zwei neue Module, Berechtigungen gleich) gibt es `verifyStageCExtensionsCandidate` in `ops/shopify/stage-c-version.mjs`.
+- **Prüfungen:** Ausgangsbefund mit dem echten Paket nachgestellt (genau Astras zwei Fehler). Danach frische Kopie beider Ordner: `npm install`, `npm run check`, `npm run build` ohne Fehler, zur Gegenprobe auch gegen 2026.1.5. Gegenprobe der Typprüfung (falscher Wert, falsche Eigenschaft, falsches Ziel) schlägt an. Tests `ops/shopify` samt Block und Danke-Seite 78 von 78. Kein Gesamtlauf: geändert sind nur `ops/shopify/`, zwei Tests dazu und Doku.
+- **Nicht geprüft:** alles am echten Shop – ob die CLI 2026-10 annimmt, ob Danke-Seite und Bestellübersicht die privaten Eigenschaften geben, der lesende Abruf des Blocks, ob der Admin ein Bild vom eigenen Server zeigt.
+- **Auftrag an Astra (#267):** Folgeversion mit den beiden Extensions bereitstellen, prüfen, freigeben, platzieren. Freigabe: ENTSCHEIDUNGEN 3.58 (gleicher Umfang, keine neue Berechtigung).
+- Übergabe: `docs/handoffs/2026-11-21-stufe-c-app-version.md` Abschnitt 13. Der [Design-Master](https://github.com/Chris83638w/gravuru-katalog./blob/main/designs/DESIGN-MASTER.md) gilt unverändert; an Designs wurde nichts geändert.
+
 ## 21.11.2026 · Claude (Operator, technische Gesamtverantwortung) · #265/#267: Abschluss – vier Downloads, Link an der Bestellzeile, Sicherungsplätze; Stufe C vorbereitet
 
 Zusammengeführt auf `dev/claude-warenkorb6-20261121` (`161024b5` und die Doku danach). Gebaut von zwei Unteragenten und mir. Nichts davon ist aufgespielt; die App-Version und der E-Mail-Baustein sind nicht veröffentlicht.

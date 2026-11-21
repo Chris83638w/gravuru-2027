@@ -52,7 +52,7 @@ test('the block only reads: one query for positions and their properties, no mut
 });
 test('extension source: admin order target, same API version as the thank-you extension, nothing delivered through Shopify',()=>{
  const base=new URL('../../ops/shopify/order-block/',import.meta.url),toml=fs.readFileSync(new URL('shopify.extension.toml',base),'utf8');
- assert.match(toml,/^api_version = "2025-10"$/m);assert.match(toml,/\[\[extensions\.targeting\]\]\ntarget = "admin\.order-details\.block\.render"\nmodule = "\.\/src\/OrderBlock\.js"/);
+ assert.match(toml,/^api_version = "2026-10"$/m);assert.match(toml,/\[\[extensions\.targeting\]\]\ntarget = "admin\.order-details\.block\.render"\nmodule = "\.\/src\/OrderBlock\.js"/);
  assert.equal(toml.match(/^api_version = .*$/m)[0],fs.readFileSync(new URL('../thank-you-preview/shopify.extension.toml',base),'utf8').match(/^api_version = .*$/m)[0]);
  // Keine erfundene Identität: weder UID noch Client- oder Shop-Kennung in den Quellen.
  for(const file of ['shopify.extension.toml','package.json','src/OrderBlock.js','src/model.mjs'])assert.doesNotMatch(fs.readFileSync(new URL(file,base),'utf8'),/\buid\b|client_id|myshopify\.com|[a-f0-9]{32}/i,file);

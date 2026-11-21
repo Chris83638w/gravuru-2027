@@ -1,11 +1,19 @@
 import {ORDER_BLOCK_QUERY,orderBlockModel,orderGid} from './model.mjs';
 // #265 Stufe C, ENTSCHEIDUNGEN 3.53 (6)/3.57 (1): Block in der Bestellseite des Shopify-Admin.
-// API 2025-10, admin.order-details.block.render. Quelle für die bestehende Shopify-App: hier weder Veröffentlichung noch
+// API 2026-10, admin.order-details.block.render. Quelle für die bestehende Shopify-App: hier weder Veröffentlichung noch
 // Schreibzugriff. Bild und beide Verweise zeigen auf den eigenen Server; über Shopify wird keine Datei ausgeliefert.
-// Am echten Shop zu bestätigen (ohne Netz nicht prüfbar): Zielname, `shopify.data.selected`, der lesende Abruf über
-// `shopify:admin/api/graphql.json`, die Bausteine s-stack/s-box/s-image/s-button/s-text samt ihrer Eigenschaften in dieser
-// API-Version und ob der Admin ein Bild vom eigenen Server anzeigt. Zeigt er es nicht, bleiben die beiden Verweise nutzbar.
-const element=(name,properties={},children=[])=>{const node=document.createElement(name);Object.assign(node,properties);node.append(...children);return node;};
+// Gegen die Typen des Shopify-Pakets geprüft (`npm run check`): Zielname, `shopify.data.selected`, die Bausteine
+// s-admin-block/s-stack/s-box/s-image/s-button/s-text und ihre Eigenschaften. Am echten Shop zu bestätigen bleibt: der
+// lesende Abruf über `shopify:admin/api/graphql.json` und ob der Admin ein Bild vom eigenen Server anzeigt. Zeigt er es
+// nicht, bleiben die beiden Verweise nutzbar.
+/**
+ * Baustein mit seinen Eigenschaften anlegen. Die Typen prüfen Name und Eigenschaften gegen das Shopify-Paket (`npm run check`).
+ * @template {keyof HTMLElementTagNameMap} K
+ * @param {K} name
+ * @param {Partial<HTMLElementTagNameMap[K]>} [properties]
+ * @param {(Node|string)[]} [children]
+ */
+const element=(name,properties={},children=[])=>{const node=/** @type {HTMLElement} */(document.createElement(name));Object.assign(node,properties);node.append(...children);return node;};
 const note=message=>element('s-text',{textContent:message});
 
 async function readOrder(id){

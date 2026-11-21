@@ -1,4 +1,9 @@
-// Nicht gegen das Paket geprüft (kein Netz beim Vorbereiten): Modulpfad des Ziels und Name der globalen Schnittstelle
-// vor der Installation mit `npm install && npm run check` bestätigen und bei Abweichung nur diese Datei anpassen.
-import type {Api} from '@shopify/ui-extensions/admin.order-details.block.render';
-declare module '@shopify/ui-extensions/admin' { interface ShopifyGlobal extends Api {} }
+// Form wie von der Shopify-CLI erzeugt: das Modul bekommt die Schnittstelle seines Ziels. Das Admin-Paket deklariert –
+// anders als das Kassen-Paket – kein globales `shopify`; ohne diese Datei kennt die Typprüfung den Namen nicht.
+// Gegen @shopify/ui-extensions 2026.10.2 geprüft (`npm install && npm run check`).
+import '@shopify/ui-extensions';
+//@ts-ignore
+declare module './src/OrderBlock.js' {
+  const shopify: import('@shopify/ui-extensions/admin.order-details.block.render').Api;
+  const globalThis: {shopify: typeof shopify};
+}

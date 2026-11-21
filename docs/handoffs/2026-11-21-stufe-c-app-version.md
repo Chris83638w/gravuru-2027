@@ -10,8 +10,8 @@ Der [Design-Master](https://github.com/Chris83638w/gravuru-katalog./blob/main/de
 
 | Teil | Inhalt | Quelle |
 | --- | --- | --- |
-| Extension `gravuru-thank-you-preview` (API 2025-10; laut README bisher nicht installiert – im Snapshot ablesen) | Ziel `purchase.thank-you.cart-line-item.render-after`: Bild der Gestaltung je Position auf der Danke-Seite, dazu „Bitte prüfe die Schreibweise.“ Ziel `customer-account.order-status.cart-line-item.render-after`: dasselbe Bild in der Bestellübersicht des Kundenkontos, ohne den Satz. | `ops/shopify/thank-you-preview/` |
-| Extension `gravuru-order-block` (neu, API 2025-10) | Ziel `admin.order-details.block.render`: je Position mit Gravuru-Eigenschaften das Bild, „Gestaltung ansehen“ und – nur mit `_gravuru_fertigung` – „Fertigungsdatei“. | `ops/shopify/order-block/` |
+| Extension `gravuru-thank-you-preview` (API 2026-10, siehe Abschnitt 13; laut README bisher nicht installiert – im Snapshot ablesen) | Ziel `purchase.thank-you.cart-line-item.render-after`: Bild der Gestaltung je Position auf der Danke-Seite, dazu „Bitte prüfe die Schreibweise.“ Ziel `customer-account.order-status.cart-line-item.render-after`: dasselbe Bild in der Bestellübersicht des Kundenkontos, ohne den Satz. | `ops/shopify/thank-you-preview/` |
+| Extension `gravuru-order-block` (neu, API 2026-10, siehe Abschnitt 13) | Ziel `admin.order-details.block.render`: je Position mit Gravuru-Eigenschaften das Bild, „Gestaltung ansehen“ und – nur mit `_gravuru_fertigung` – „Fertigungsdatei“. | `ops/shopify/order-block/` |
 | Berechtigung `write_orders` (zusätzlich) | Siehe Abschnitt 2. | `app/workshop/shopify-order-review-tag.mjs` |
 | Unverändert | Theme-Erweiterung, Preisfunktion `gravuru-personalization-price`, Checkout-Prüfung `gravuru-checkout-guard`, Webhooks, App-Proxy, App-Adresse, alle bisherigen Berechtigungen. | aktive Version |
 
@@ -88,10 +88,10 @@ Kein Rückweg ändert Bestellungen, Eigenschaften oder Daten der Werkstatt.
 
 ## 9. Am echten Shop zu bestätigen (hier ohne Netz nicht prüfbar)
 
-- Zielnamen der drei Ziele in API 2025-10 und dass die CLI ein Kassen- und ein Kundenkonto-Ziel in einer Extension annimmt (sonst eigene Extension, siehe `thank-you-preview/README.md`).
+- Dass die CLI ein Kassen- und ein Kundenkonto-Ziel in einer Extension annimmt (sonst eigene Extension, siehe `thank-you-preview/README.md`). Die Zielnamen der drei Ziele sind seit dem 21.11. gegen das Shopify-Paket geprüft (Abschnitt 13).
 - Dass Danke-Seite und Bestellübersicht der Erweiterung die privaten Eigenschaften (`_gravuru_bild`) geben.
-- Admin-Block: `shopify.data.selected`, der Abruf `shopify:admin/api/graphql.json`, die Bausteine (`s-admin-block`, `s-stack`, `s-box`, `s-image`, `s-button`, `s-text`) und ob der Admin ein Bild vom eigenen Server anzeigt.
-- Typen beider Extensions gegen `@shopify/ui-extensions` (`npm run check`); Form der neuen Module in der Versionsliste.
+- Admin-Block: der Abruf `shopify:admin/api/graphql.json` und ob der Admin ein Bild vom eigenen Server anzeigt. `shopify.data.selected` und die Bausteine samt Eigenschaften sind seit dem 21.11. gegen das Shopify-Paket geprüft (Abschnitt 13).
+- Form der neuen Module in der Versionsliste. Die Typen beider Extensions sind seit dem 21.11. geprüft (Abschnitt 13).
 - `_gravuru_fertigung` hat die Form der Bestellansicht im Shopify-Admin des Shops (`https://<shop>.myshopify.com/admin/apps/<App>/werkstatt/bestellungen/?config=…&rev=…`, gebildet in `app/workshop/theme-cart.mjs`); der Block zeigt „Fertigungsdatei“ nur für genau diese Form. Am echten Shop zu bestätigen: ob der Verweis aus dem Block heraus die eingebettete Werkstatt öffnet.
 - `tagsAdd` an einer Bestellung mit `write_orders` und API 2026-07; ob Shopify eine Zustimmung des Inhabers verlangt.
 - Was der Tarif des Shops für Erweiterungen auf Danke-Seite und Bestellstatus voraussetzt.
@@ -116,3 +116,39 @@ Kein Rückweg ändert Bestellungen, Eigenschaften oder Daten der Werkstatt.
 259 gezielte Tests, alle bestanden: `node --test ops/shopify/*.test.mjs` 53 von 53 (mit LiquidJS über `GRAVURU_LIQUIDJS_MODULE`; ohne sie werden zwei Render-Prüfungen übersprungen und `cart-edit-r15-theme.test.mjs` schlägt wie bisher fehl); `order-intake*`, `shopify-order-webhook`, `shop-entry-flow` 35 von 35; die neuen Tests zu Kundenkonto, Admin-Block und Tag 50 von 50; Umfeld der geänderten Dateien (Verteilung, Ausgabeaufträge, Host-Einstieg, Shop-Einstieg, Gateway, Status-Webhook) 121 von 121. Gegenprobe zum Tag: neun einzelne Rückbauten, jeder von den Tests erkannt, danach bytegleich wiederhergestellt. Beide Extensions mit esbuild 0.28.2 gebündelt.
 
 Nicht gelaufen: der Gesamtlauf aller Tests, alles am echten Shop, die Typprüfung gegen das Shopify-Paket und der App-Build (kein Netz, kein Paket lokal).
+
+## 13. Nachtrag 21.11.2026, 14:35 Uhr – die beiden ausgelassenen Bausteine (Folgeversion)
+
+Stand davor (Astra, #267): Die Version `gravuru-2027-stufe-c-20261121-scope` ist aktiv und enthält nur `write_orders`. Beide Extensions blieben aus. Zweig mit der Korrektur: `dev/claude-stufe-c-bausteine-20261121` (aufgesetzt auf `dev/astra-267-bestellmail-bild-mobil-20261121`, damit Astras Bestellmail-Stand enthalten ist).
+
+| Befund von Astra | Ursache | Änderung |
+| --- | --- | --- |
+| Shopify weist `api_version = "2025-10"` für beide Bildziele zurück; früheste angenommene Version 2026-01 | Die Version ist älter als zwölf Monate; laut Shopify verhindert die CLI dann die Veröffentlichung | Beide `shopify.extension.toml` auf `2026-10` (aktuelle stabile Version; 2026-01 liefe im Januar 2027 aus), `@shopify/ui-extensions` auf `2026.10.2` |
+| Mitarbeiterblock: `src/OrderBlock.js:28` – `shopify` nicht deklariert | Das Admin-Paket deklariert, anders als das Kassen-Paket, kein globales `shopify`; die bisherige `shopify.d.ts` erweiterte eine Schnittstelle, die es dort nicht gibt | `shopify.d.ts` in der Form, die die Shopify-CLI selbst erzeugt: das Modul bekommt die Schnittstelle seines Ziels |
+| Mitarbeiterblock: `src/model.mjs:18` – `URLSearchParams.keys` | Die Typprüfung läuft mit `lib: DOM` ohne Iteratoren | Zweite Lesart der Adresse ohne Iterator, gleich streng: genau `config`, dann `rev`, nichts weiter |
+
+Zusätzlich, damit die Typprüfung mehr trägt als bisher:
+
+- `element(...)` in `OrderBlock.js` ist typisiert. `npm run check` prüft jetzt Namen und Eigenschaften aller Bausteine des Blocks gegen das Shopify-Paket.
+- `thank-you-preview/shopify.d.ts` gibt jedem Modul sein eigenes Ziel. `OrderStatus.js` wird damit gegen das Kundenkonto-Ziel geprüft, nicht mehr gegen das der Danke-Seite. Dafür steht `preact` 10.29.1 als reine Typabhängigkeit in `package.json`; ins Bundle kommt es nicht.
+- `ops/shopify/stage-c-version.mjs`: neu `verifyStageCExtensionsCandidate(before, candidate)` für die Folgeversion (siehe unten). `verifyStageCCandidate` bleibt unverändert.
+
+### Geprüft
+
+- Ausgangsbefund nachgestellt: unveränderter Stand gegen `@shopify/ui-extensions` 2026.1.5 und 2026.10.2 – genau Astras zwei Fehler im Mitarbeiterblock, die Bild-Erweiterung ohne Fehler.
+- Nach der Korrektur, frische Kopie beider Ordner: `npm install`, `npm run check`, `npm run build` – ohne Fehler (2026.10.2, TypeScript 5.8.3, esbuild 0.28.2). Zur Gegenprobe auch gegen 2026.1.5 ohne Fehler.
+- Gegenprobe der Typprüfung: ein falscher Wert (`gap`) und eine falsche Eigenschaft im Block lassen `npm run check` scheitern; in `OrderStatus.js` wird ein Zugriff, den es nur im Kundenkonto-Ziel gibt, angenommen und in `ThankYou.js` abgelehnt.
+- Tests: `node --test ops/shopify/*.test.mjs app/workshop/shopify-order-block.test.mjs app/workshop/thank-you-preview.test.mjs` 78 von 78 (mit LiquidJS).
+- Quelle zur Versionsfrage: [Versionen der Shopify-API](https://shopify.dev/docs/api/usage/versioning), abgerufen am 21.11.2026.
+
+Nicht geprüft: alles am echten Shop. Ob Shopify 2026-10 für diese App annimmt, zeigt erst die CLI beim Bereitstellen.
+
+### Folgeversion – Schritte wie Abschnitt 3, mit diesen Unterschieden
+
+1. **Freigabe:** ENTSCHEIDUNGEN 3.58 deckt genau diesen Umfang (Bild auf der Danke-Seite und im Kundenkonto, Block in der Bestellseite). Es kommt keine Berechtigung und kein weiterer Baustein hinzu.
+2. **snapshot:** Grundlage ist die aktive Version mit `write_orders`. Sie ist der Rückweg.
+3. **projekt:** `shopify.app.toml` bleibt unverändert. Ergänzt werden nur die beiden Ordner. Je Ordner `npm install`, `npm run check`, `npm run build`.
+4. **pruefen:** `verifyStageCExtensionsCandidate(before, candidate)` – erlaubt sind genau die zwei neuen Module, sonst alles gleich, keine geänderte Berechtigung. `{sameFunctionBinaries:true}` wie bisher nur nach dem Vergleich der Wasm-Prüfsummen. Bleibt eine der beiden erneut aus, die andere allein: `{extensions:['gravuru-order-block']}` bzw. `{extensions:['gravuru-thank-you-preview']}` – und die ausgebliebene mit der genauen Meldung in #267 nennen.
+5. **Platzieren und Prüfen:** Abschnitt 4 und Abschnitt 7, Punkte 2 bis 4.
+
+Nimmt die CLI 2026-10 nicht an: die Meldung mit den angenommenen Versionen in #267 nennen. Mit 2026-01 sind beide Ordner ebenfalls geprüft; dafür in beiden `shopify.extension.toml` die Version und in beiden `package.json` `@shopify/ui-extensions` auf `2026.1.5` stellen und `npm run check` wiederholen.

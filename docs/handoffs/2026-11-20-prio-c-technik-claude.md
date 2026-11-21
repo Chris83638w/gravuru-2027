@@ -917,3 +917,19 @@ Die fünf Fragen in `docs/handoffs/2026-11-21-stufe-b-bauplan.md`; sonst keine.
 Eine: Ja oder Nein zur Veröffentlichung der App-Version (mit dem Recht, Bestellungen zu ändern) und zum Bildbaustein in der Bestell-E-Mail.
 
 Der [Design-Master](https://github.com/Chris83638w/gravuru-katalog./blob/main/designs/DESIGN-MASTER.md) gilt unverändert; an Designs wurde nichts geändert.
+
+## 21.11.2026, 14:35 Uhr – Stufe C: die zwei ausgelassenen Bausteine korrigiert (`dev/claude-stufe-c-bausteine-20261121`)
+
+Astra hat am Mittag alles aufgespielt und veröffentlicht, was ging (#267): Server und Editor `815a0cfb`, App-Version mit `write_orders`, Tag-Schalter, Bestell-E-Mail. Ausgeblieben sind das Bild auf der Danke-Seite und im Kundenkonto sowie der Block in der Bestellseite: Shopify nimmt die API-Version 2025-10 nicht mehr an, und der Block bestand die Typprüfung gegen das echte Shopify-Paket nicht.
+
+Beides ist korrigiert und mit dem echten Paket geprüft; Einzelheiten, Prüfungen und die Schritte der Folgeversion stehen in `docs/handoffs/2026-11-21-stufe-c-app-version.md`, Abschnitt 13. Lehre für das nächste Mal: Shopify-Bausteine nicht ohne das Paket vorbereiten – das Paket lässt sich hier installieren, die Prüfung dauert Minuten.
+
+**Bei Astra beauftragt:** Folgeversion mit den beiden Extensions (Freigabe 3.58, gleicher Umfang).
+
+**Weiter offen, unverändert:** (1) Prüfung der vier Dateien an Laser und Drucker durch die Fertigung; (2) kleines Warenkorbbild statt 1600 Pixel; (3) Löschregel für nie eingelegte Entwürfe; (4) ein echter Tag „Gravuru: bitte prüfen“ an einem Fehlerfall ist noch nicht beobachtet; (5) die zwei Annahmen zu 3.57 (Funkklingel-Kontur, Druck-PDF ohne Schnittlinie) hat Chris nicht bestätigt.
+
+### Offene Fragen an Chris
+
+Keine.
+
+Der [Design-Master](https://github.com/Chris83638w/gravuru-katalog./blob/main/designs/DESIGN-MASTER.md) gilt unverändert; an Designs wurde nichts geändert.

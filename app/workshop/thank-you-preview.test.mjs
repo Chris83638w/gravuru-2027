@@ -19,7 +19,7 @@ test('one extension carries both targets; each module exists and reads only the 
  const base=new URL('../../ops/shopify/thank-you-preview/',import.meta.url),toml=fs.readFileSync(new URL('shopify.extension.toml',base),'utf8');
  const targets=[...toml.matchAll(/\[\[extensions\.targeting\]\]\ntarget = "([^"]+)"\nmodule = "\.\/src\/([A-Za-z]+\.js)"/g)].map(m=>[m[1],m[2]]);
  assert.deepEqual(targets,[['purchase.thank-you.cart-line-item.render-after','ThankYou.js'],['customer-account.order-status.cart-line-item.render-after','OrderStatus.js']]);
- assert.match(toml,/^api_version = "2025-10"$/m);assert.equal(toml.match(/^\[\[extensions\]\]$/gm).length,1);
+ assert.match(toml,/^api_version = "2026-10"$/m);assert.equal(toml.match(/^\[\[extensions\]\]$/gm).length,1);
  for(const [,module] of targets){
   const source=fs.readFileSync(new URL('src/'+module,base),'utf8');
   assert.match(source,/from '\.\/model\.mjs'/);assert.match(source,/shopify\.target\.value/);assert.match(source,/shopify\.target\.subscribe/);

@@ -7,8 +7,9 @@
     "build": "esbuild src/ThankYou.js src/OrderStatus.js --bundle --format=esm --outdir=dist"
   },
   "devDependencies": {
-    "@shopify/ui-extensions": "2025.10.16",
+    "@shopify/ui-extensions": "2026.10.2",
     "esbuild": "0.28.2",
+    "preact": "10.29.1",
     "typescript": "5.8.3"
   }
 }

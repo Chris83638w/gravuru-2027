@@ -14,8 +14,9 @@ const text=(value,fallback)=>typeof value==='string'&&value.trim()?value.trim().
 
 export function productionLink(value){
  if(typeof value!=='string'||value.length>400||!PRODUCTION.test(value))return null;
- // Zweite, unabhängige Lesart derselben Adresse: keine Zugangsdaten, kein anderer Pfad, genau die zwei Angaben.
- try{const parsed=new URL(value);if(parsed.username||parsed.password||parsed.port||parsed.hash||[...parsed.searchParams.keys()].join(',')!=='config,rev'||!parsed.pathname.endsWith('/werkstatt/bestellungen/'))return null;}catch{return null;}
+ // Zweite, unabhängige Lesart derselben Adresse: keine Zugangsdaten, kein anderer Pfad, genau die zwei Angaben in dieser
+ // Reihenfolge (ohne Iterator über die Angaben: den kennt die Typprüfung mit `lib: DOM` nicht).
+ try{const parsed=new URL(value);if(parsed.username||parsed.password||parsed.port||parsed.hash||parsed.search!=='?config='+parsed.searchParams.get('config')+'&rev='+parsed.searchParams.get('rev')||!parsed.pathname.endsWith('/werkstatt/bestellungen/'))return null;}catch{return null;}
  return value;
 }
 

@@ -7,7 +7,7 @@
     "build": "esbuild src/OrderBlock.js --bundle --format=esm --outfile=dist/OrderBlock.js"
   },
   "devDependencies": {
-    "@shopify/ui-extensions": "2025.10.16",
+    "@shopify/ui-extensions": "2026.10.2",
     "esbuild": "0.28.2",
     "typescript": "5.8.3"
   }

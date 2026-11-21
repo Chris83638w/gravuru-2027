@@ -1,5 +1,5 @@
 import {thankYouPreview} from './model.mjs';
-// API 2025-10, purchase.thank-you.cart-line-item.render-after.
+// API 2026-10, purchase.thank-you.cart-line-item.render-after.
 // Source for the existing Shopify app: no deployment or network mutation here.
 export default function(){
  const render=line=>{

@@ -1,4 +1,4 @@
-import {orderKey,orderApi,orderPage,selectedOrder} from './order-store-context.mjs';
+import {orderKey,orderApi,orderPage,selectedOrder,orderRequest,orderFileButtons,orderFilesNote} from './order-store-context.mjs';
 import {createOrderFileGrantsUI} from './order-file-grants-ui.mjs';
 import {merchantRequest as fetch} from './merchant-request.mjs';
 import {outputLabel,outputDate} from './output-summary.mjs';
@@ -6,7 +6,7 @@ import {createOrderProductDraftUI} from './order-product-ui.mjs';
 import {createProductionReleaseUI} from './production-release-ui.mjs';
 const $=s=>document.querySelector(s),esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])),money=n=>new Intl.NumberFormat('de-DE',{style:'currency',currency:'EUR'}).format(n/100);
 const productDraftUI=createOrderProductDraftUI(),fileGrantsUI=createOrderFileGrantsUI(),productionUI=createProductionReleaseUI();
-let outputSerial=0;
+let outputSerial=0,fileBusy=false,fileView=null;
 let rows=[],statuses={},outputStates={},selected=new URLSearchParams(location.search).get('position');
 // #265, ENTSCHEIDUNGEN 3.48/3.51/3.53: Kennzeichen der Fertigungsdatei je Position. Der Server leitet es aus den Ausgabeaufträgen ab;
 // „Bitte prüfen“ steht immer mit Grund da. Positionen der älteren Laufzeit haben keines.
@@ -34,15 +34,16 @@ $('#orders').onclick=e=>{const id=e.target.closest('[data-order]')?.dataset.orde
 // `quiet`: stilles Nachladen, solange die Datei der gewählten Position noch erstellt wird (#265).
 async function loadOutputs(row,quiet=false){
  const serial=++outputSerial;
- if(!quiet){$('#order-output-list').replaceChildren();$('#order-output-status').textContent='Ausgaben werden geladen …';showOutputState(null);}
+ if(!quiet){$('#order-output-list').replaceChildren();$('#order-output-status').textContent='Ausgaben werden geladen …';showOutputState(null);showOrderFiles(null);}
  $('#order-output-link').href=orderPage(row,'ausgaben/?position='+encodeURIComponent(row.id));
  try{
   const response=await fetch(orderApi(row,'orders/'+row.id+'/outputs')),value=await response.json();
   if(!response.ok)throw Error(value.error?.message||'Ausgaben nicht erreichbar.');
   if(selected!==orderKey(row)||serial!==outputSerial)return;
   // #265: Das Öffnen der Ausgaben holt einen fehlenden Auftrag nach; das Kennzeichen der Antwort gilt daher auch für die Liste.
-  if(value.outputState){const changed=JSON.stringify(outputStates[orderKey(row)])!==JSON.stringify(value.outputState);outputStates[orderKey(row)]=value.outputState;if(changed)renderOrders();showOutputState(value.outputState);
-   if(value.outputState.state==='wird erstellt')setTimeout(()=>{if(selected===orderKey(row)&&serial===outputSerial)void loadOutputs(row,true);},2000);}
+  if(value.outputState){const changed=JSON.stringify(outputStates[orderKey(row)])!==JSON.stringify(value.outputState);outputStates[orderKey(row)]=value.outputState;if(changed)renderOrders();showOutputState(value.outputState);showOrderFiles(row,value.outputState,value.downloads);
+   // #265, ENTSCHEIDUNGEN 3.57: auch nachladen, solange die vier Dateien einer Ausgabe alter Art neu erstellt werden.
+   if(value.outputState.state==='wird erstellt'||value.downloads?.pending)setTimeout(()=>{if(selected===orderKey(row)&&serial===outputSerial)void loadOutputs(row,true);},2000);}
   $('#order-output-status').textContent=value.total?value.total+' Ausgabe'+(value.total===1?'':'n')+' gespeichert.':'Noch keine Ausgabe gespeichert. Über die gesicherte Gestaltung eine Druck- oder Gravurausgabe erstellen.';
   $('#order-output-list').innerHTML=value.jobs.slice(0,3).map(job=>'<a href="'+orderPage(row,'ausgaben/?'+new URLSearchParams({job:job.id,position:row.id}))+'">'+esc(outputLabel(job))+'<small>'+esc(outputDate(job.createdAt))+' · '+esc(job.id.slice(-8))+'</small></a>').join('');
  }catch(error){if(selected===orderKey(row)&&serial===outputSerial)$('#order-output-status').textContent=error.message;}
@@ -65,3 +66,26 @@ function showOutputState(state){
  const node=$('#order-output-state');if(!node)return;
  node.hidden=!state;node.textContent=outputNote(state);node.classList.toggle('order-error',state?.state==='bitte prüfen');
 }
+
+// #265, ENTSCHEIDUNGEN 3.57: PDF, PDF mit Kontur, SVG, SVG mit Kontur je Position – ohne Exportauftrag von Hand. Der Abruf läuft wie
+// jeder Ausgabe-Download über die angemeldete Sitzung mit CSRF (order-store-context.mjs `orderRequest`), nie über eine offene Adresse.
+function showOrderFiles(row,state,downloads,message){
+ const root=$('#order-files');if(!root)return;
+ fileView=row?{row,state,downloads}:null;root.hidden=!row;if(!row)return;
+ $('#order-file-rows').innerHTML=orderFileButtons(state,downloads).map(s=>'<p class="order-file-row">'+(s.label?'<strong>'+esc(s.label)+'</strong> ':'')+s.buttons.map(b=>'<button type="button" data-order-file="'+esc(b.format)+'" data-surface="'+esc(s.surface)+'"'+(b.enabled&&!fileBusy?'':' disabled')+'>'+esc(b.label)+'</button>').join(' ')+'</p>').join('');
+ $('#order-files-note').textContent=message??orderFilesNote(state,downloads);
+}
+$('#order-file-rows')?.addEventListener('click',async e=>{
+ const button=e.target.closest('[data-order-file]'),row=selectedOrder(rows,selected);if(!button||button.disabled||fileBusy||!row)return;
+ fileBusy=true;for(const b of document.querySelectorAll('[data-order-file]'))b.disabled=true;
+ const format=button.dataset.orderFile;let message;$('#order-files-note').textContent='Datei wird geladen …';
+ try{
+  const response=await orderRequest(row,'orders/'+row.id+'/download',{format,surface:button.dataset.surface},fetch);
+  if(!response.ok)throw Error((await response.json()).error?.message||'Download fehlgeschlagen.');
+  const link=URL.createObjectURL(await response.blob()),a=document.createElement('a'),name=response.headers.get('Content-Disposition')?.match(/filename="([^"\r\n]+)"/)?.[1];
+  a.href=link;a.download=name&&!/[\\/\x00-\x1f]/.test(name)?name:row.id+(format.startsWith('svg')?'.svg':'.pdf');a.click();setTimeout(()=>URL.revokeObjectURL(link),60000);
+  message='Datei heruntergeladen.';
+ }catch(error){message=error.message;}
+ // Knöpfe wieder freigeben; das Ergebnis des Abrufs bleibt als Hinweis stehen, bis sich der Stand der Position ändert.
+ finally{fileBusy=false;if(fileView?.row===row)showOrderFiles(row,fileView.state,fileView.downloads,message);}
+});

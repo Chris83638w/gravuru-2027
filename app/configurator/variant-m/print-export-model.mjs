@@ -120,9 +120,12 @@ class PDF{
  async stream(dict,bytes){const data=await deflate(bytes);return this.add(new Blob([`<< ${dict} /Filter /FlateDecode /Length ${data.length} >>\nstream\n`,data,'\nendstream']));}
  finish(root){const parts=[b('%PDF-1.7\n')],offsets=[0];let count=parts[0].length;this.objects.forEach((value,i)=>{const blob=value instanceof Blob?value:new Blob([value]);const head=b(`${i+1} 0 obj\n`),tail=b('\nendobj\n');offsets.push(count);parts.push(head,blob,tail);count+=head.length+blob.size+tail.length;});parts.push(b(`xref\n0 ${offsets.length}\n0000000000 65535 f \n${offsets.slice(1).map(v=>String(v).padStart(10,'0')+' 00000 n \n').join('')}trailer\n<< /Size ${offsets.length} /Root ${root} 0 R >>\nstartxref\n${count}\n%%EOF`));return new Blob(parts,{type:'application/pdf'});}
 }
-export async function printPDF({settings,pixels,kind='combined',paths=null,artwork=null}){
+// #265, ENTSCHEIDUNGEN 3.57: `cut` ist ein Schalter nur für die vier Downloads der Bestellansicht. Ohne Angabe bleibt jede Datei
+// Byte für Byte wie bisher (Schnittlinie 0,05 mm). 'none' lässt die Schnittlinie samt Sonderfarbe weg („PDF“ ohne Kontur),
+// 'hairline' zeichnet sie mit Breite 0 („PDF mit Kontur“; Breite 0 ist in PDF die Haarlinie des Ausgabegeräts).
+export async function printPDF({settings,pixels,kind='combined',paths=null,artwork=null,cut='line'}){
  const s=exportSettings(settings.geometry,settings),{width:w,height:h,rgb,alpha}=pixels;
- if(!Number.isInteger(w)||!Number.isInteger(h)||w<1||h<1||w*h>50000000||rgb.length!==w*h*3||alpha.length!==w*h||!['combined','color','color-cut','white','white-spot','white-spot-cut','cut'].includes(kind))throw Error('Ungültige Druckdaten.');
+ if(!Number.isInteger(w)||!Number.isInteger(h)||w<1||h<1||w*h>50000000||rgb.length!==w*h*3||alpha.length!==w*h||!['combined','color','color-cut','white','white-spot','white-spot-cut','cut'].includes(kind)||!['line','none','hairline'].includes(cut))throw Error('Ungültige Druckdaten.');
  if(paths){for(const key of ['cut','color','white',...(paths.artwork?['artwork']:[])])if(typeof paths[key]!=='string'||paths[key].length>1000000||!paths[key].trim()||paths[key].replace(/-?\d+(?:\.\d+)?|[mlch]|\s/g,''))throw Error('Ungültige freie PDF-Kontur.');if(!pixels.whiteAllowed||pixels.whiteAllowed.length!==w*h)throw Error('Freie Kontur benötigt ihre Weißmaske.');}
  if(artwork){
   const validPath=p=>typeof p==='string'&&p.length<=1000000&&p.trim()&&!p.replace(/-?\d+(?:\.\d+)?|[mlch]|\s/g,'');
@@ -180,9 +183,10 @@ export async function printPDF({settings,pixels,kind='combined',paths=null,artwo
   layer(kind==='white'||mimaki?'Weissersatz Vektor':'RDG_WHITE',(kind==='white'?'0 0 0 1 k':mimaki?'0 0 0 0 k':'/GSWhite gs /White cs 1 scn')+'\n'+white);
   if(kind==='combined'){const last=streams.pop();streams.unshift(last);} // Underprint before color; both use overprint, RIP validation remains required.
  }
- if(kind==='combined'||kind==='color-cut'||kind==='white-spot-cut'||kind==='cut')layer('CutContour',`${geo}\n/Cut CS 1 SCN 0.05 w\n${paths?.cut||contourPath(s.geometry)} S`);
+ const withCut=cut!=='none'&&['combined','color-cut','white-spot-cut','cut'].includes(kind);
+ if(withCut)layer('CutContour',`${geo}\n/Cut CS 1 SCN ${cut==='hairline'?'0':'0.05'} w\n${paths?.cut||contourPath(s.geometry)} S`);
  const content=await pdf.stream('',b(streams.join('\n'))),box=`[0 0 ${n(W*PT)} ${n(H*PT)}]`,trim=`[${n(bleed*PT)} ${n(bleed*PT)} ${n((W-bleed)*PT)} ${n((H-bleed)*PT)}]`;
- pdf.set(page,`<< /Type /Page /Parent ${pages} 0 R /MediaBox ${box} /BleedBox ${box} /TrimBox ${trim} /Resources << /XObject << ${image} >> /ColorSpace << ${((s.profile==='roland'&&kind==='combined'&&s.white!=='none')||['white-spot','white-spot-cut'].includes(kind))?`/White [/Separation /RDG_WHITE /DeviceCMYK ${fn} 0 R]`:''} ${['combined','color-cut','white-spot-cut','cut'].includes(kind)?`/Cut [/Separation /CutContour /DeviceCMYK ${cutFn} 0 R]`:''} >> /ExtGState << /GSWhite << /Type /ExtGState /OP true /op true /OPM 1 >> >> /Properties << ${props.join(' ')} >> >> /Contents ${content} 0 R >>`);
+ pdf.set(page,`<< /Type /Page /Parent ${pages} 0 R /MediaBox ${box} /BleedBox ${box} /TrimBox ${trim} /Resources << /XObject << ${image} >> /ColorSpace << ${((s.profile==='roland'&&kind==='combined'&&s.white!=='none')||['white-spot','white-spot-cut'].includes(kind))?`/White [/Separation /RDG_WHITE /DeviceCMYK ${fn} 0 R]`:''} ${withCut?`/Cut [/Separation /CutContour /DeviceCMYK ${cutFn} 0 R]`:''} >> /ExtGState << /GSWhite << /Type /ExtGState /OP true /op true /OPM 1 >> >> /Properties << ${props.join(' ')} >> >> /Contents ${content} 0 R >>`);
  pdf.set(pages,`<< /Type /Pages /Kids [${page} 0 R] /Count 1 >>`);pdf.set(catalog,`<< /Type /Catalog /Pages ${pages} 0 R /OCProperties << /OCGs [${refs.join(' ')}] /D << /Order [${refs.join(' ')}] /ON [${refs.join(' ')}] >> >> >>`);return pdf.finish(catalog);
 }
 const crcTable=Array.from({length:256},(_,v)=>{for(let k=0;k<8;k++)v=v&1?0xedb88320^(v>>>1):v>>>1;return v>>>0;});

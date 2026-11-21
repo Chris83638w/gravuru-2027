@@ -15,6 +15,15 @@ export function outputStateFromJobs(jobs,missing){
  if(failed)return {state:'bitte prüfen',reason:failed.error||'Die Ausgabe ist fehlgeschlagen.',jobId:failed.id};
  return {state:'bitte prüfen',reason:missing||'Für diese Position gibt es keinen Ausgabeauftrag.',jobId:null};
 }
+// #265, ENTSCHEIDUNGEN 3.57: Hinweis, solange die vier Downloads einer Position (PDF, PDF mit Kontur, SVG, SVG mit Kontur) nicht
+// vorliegen. `own` ist der Auftrag der Position mit dem heutigen Rezeptstand, `completed` zählt fertige Ausgaben des Prüfstands.
+// Eine fertige Ausgabe alter Art führt die Dateien nicht; der neue Auftrag entsteht beim Öffnen der Ausgaben von selbst.
+export function missingOrderFilesNote({own=null,completed=0}={}){
+ if(['queued','running'].includes(own?.status))return 'Die vier Dateien werden für diese Position '+(completed?'neu':'gerade')+' erstellt.';
+ if(own?.status==='failed')return 'Die vier Dateien ließen sich für diese Position nicht erstellen: '+(own.error||'Die Ausgabe ist fehlgeschlagen.');
+ if(own?.status==='completed')return 'Für dieses Produkt (Formprodukt alter Art) gibt es die vier Dateien nicht. PDF und ZIP stehen unter „Ausgaben“.';
+ return completed?'Die gespeicherte Ausgabe dieser Position enthält die vier Dateien nicht. Bitte die Ausgabe für diese Position neu erstellen.':null;
+}
 // Abgelehnte Position (z. B. Preisabweichung): nichts wird automatisch gefertigt; der Grund ist der des Bestelleingangs.
 export const rejectedOutputState=row=>({state:'bitte prüfen',reason:row.intakeError||'Die Position wurde nicht übernommen.',jobId:null});
 export function crossStoreOrders(stores,{shopDomain,enabled=false}={}){

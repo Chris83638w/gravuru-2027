@@ -1,0 +1,18 @@
+{% comment %}
+  #265 Stufe C, ENTSCHEIDUNGEN 3.53/3.57: Bedingung für den vorhandenen Eigenschaftenblock der Shopify-Bestellbestätigung.
+  Innerhalb der bestehenden Schleife über line.properties direkt vor der Ausgabe einer Eigenschaft einfügen und die
+  vorhandene Ausgabe mit if gv_show … endif umschließen. Keine zweite Schleife, keine Eigenschaft wird gelöscht.
+  Nicht für den Kunden bestimmt sind: private Eigenschaften (erster Buchstabe _, also auch _gravuru_bild,
+  _gravuru_fertigung, _gravuru_bearbeiten, _gravuru_offer, _gravuru_config, _gravuru_rev), die sichtbare Angabe
+  „Bearbeitbarer Entwurf“ (Verweis für die Preisfunktion, auch an heutigen Positionen) und der alte Schlüssel „Bearbeiten“.
+  Die Schleifenvariable heißt hier property; heißt sie in der Vorlage anders, nur diesen Namen anpassen.
+  Vorlage zum Prüfen, nicht automatisch installieren oder Benachrichtigungen senden.
+{% endcomment %}
+{%- liquid
+  assign gv_name = property.first
+  assign gv_first = gv_name | slice: 0
+  assign gv_show = true
+  if property.last == blank or gv_first == '_' or gv_name == 'Bearbeitbarer Entwurf' or gv_name == 'Bearbeiten'
+    assign gv_show = false
+  endif
+-%}

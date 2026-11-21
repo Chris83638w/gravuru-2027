@@ -14,7 +14,8 @@ const cartTake=typeof themeCart.themeCartLines==='function';
 async function request(path,method='GET',lines){
  const take=lines!==undefined,data=path==='data'||take;
  const r=await fetch(proxy+'/cart/'+path,{method,credentials:'same-origin',cache:'no-store',headers:{'X-Gravuru-Cart-Handoff':token,...(data&&hostedPreview?{'X-Gravuru-Cart-Preview':'hosted'}:{}),...(data&&serverCartImage?{'X-Gravuru-Cart-Image':'server'}:{}),...(take?{'X-Gravuru-Cart-Take':'1','Content-Type':'application/json'}:{})},...(take?{body:JSON.stringify({lines})}:{})});
- const reply=await r.json().catch(()=>({}));if(!r.ok)throw Error(reply.error?.message||'Die Warenkorbübergabe konnte nicht geladen werden.');return reply;
+ // Status und Kennung des Fehlers gehen mit: Der Client erkennt daran einen nicht angenommenen „take“-Abruf (takeNotAccepted).
+ const reply=await r.json().catch(()=>({}));if(!r.ok)throw Object.assign(Error(reply.error?.message||'Die Warenkorbübergabe konnte nicht geladen werden.'),{status:r.status,code:reply.error?.code});return reply;
 }
 // Shop prüfen und die Gestaltung zeigen, sobald die Warenkorbdaten vorliegen (vor dem Einlegen).
 function show(payload){

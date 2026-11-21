@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {createThemeCartClient,verifyThemeCartLine,validateThemeCartPayload,themeCartLines} from './ui/theme-cart-client.mjs';
+import {createThemeCartClient,verifyThemeCartLine,validateThemeCartPayload,themeCartLines,takeNotAccepted} from './ui/theme-cart-client.mjs';
 const png='iVBORw0KGgoAAAANSUhEUgAAACgAAAA8CAIAAACb22+3AAAAOklEQVR4nO3NIQEAMAgAsPOEaDT9M9ABg9kKLLL6Xfgnq1gsFovFYrFYLBaLxWKxWCwWi8VisVgsXhqq4AGG9djEFQAAAABJRU5ErkJggg==';
 function payload(rev=1){const id='konfig_11111111-1111-4111-8111-111111111111';return {schema:'gravuru-theme-cart/v1',shopDomain:'test.myshopify.com',variantId:'11',productId:'1',quantity:2,unitCents:1999,totalCents:3998,currency:'EUR',configuration:{id,rev},mode:rev===1?'create':'update',previousRevision:rev===1?null:rev-1,properties:{_gravuru_offer:String(rev).repeat(64),_gravuru_config:id,_gravuru_rev:String(rev),Design:'Leuchtturm',Gravurtext:'Familie Müller',Format:'120 × 80 mm'},preview:{type:'image/png',base64:png},paymentConfirmed:false,productionReady:false};}
 const line=p=>({key:p.variantId+':key'+p.configuration.rev,variant_id:Number(p.variantId),product_id:Number(p.productId),quantity:p.quantity,original_price:p.unitCents,original_line_price:p.totalCents,final_line_price:p.totalCents,properties:{...p.properties,_Entwurf:'https://cdn.shopify.com/s/files/1/uploads/design.png'}});
@@ -252,6 +252,22 @@ test('#265 take:false (server with checkout image at Shopify): the complete prev
  await client.transfer();assert.equal(f.log.claims,1);assert.equal(adds(f),1);
  // Bearbeiten ohne alte Zeile: wie bisher Fehler vor dem claim.
  const edit=payload(2),e=takeFixture(edit,{server:'images'});await assert.rejects(e.client().transfer(),/fehlt oder wurde geändert/);assert.equal(e.log.claims,0);assert.equal(e.claimed(),false);
+});
+test('#265 take: a call the server does not accept at all (body lost on the way) takes the previous way; other errors stay errors',async()=>{
+ // Der Server liest und prüft den Body vor der Bestätigung: 400, 413, 415 und 422 theme_cart_take bestätigen nichts.
+ for(const reason of [{status:400},{status:413},{status:415},{status:422,code:'theme_cart_take'}]){
+  const p=textPayload(),f=takeFixture(p,{answer:()=>{throw Object.assign(Error('nicht angenommen'),reason);}}),client=f.client();
+  await client.transfer();
+  assert.deepEqual(f.log.calls,['/de/cart.js','take','data','/de/cart.js','claim','/de/cart/add.js','/de/cart.js'],JSON.stringify(reason));
+  assert.equal(f.log.claims,1);assert.equal(adds(f),1);assert.equal(f.cart.items.length,2);
+ }
+ // Alles andere bleibt ein Fehler ohne Einlegen: bereits begonnene Übertragung (409), abgelaufene Übergabe (403), fremde 422, Netzfehler.
+ for(const reason of [{status:409,code:'theme_cart_uncertain'},{status:403,code:'theme_cart_expired'},{status:422,code:'shop_entry_cart_fields'},{status:503},{}]){
+  const p=textPayload(),f=takeFixture(p,{answer:()=>{throw Object.assign(Error('Fehler des Servers'),reason);}});
+  await assert.rejects(f.client().transfer(),/Fehler des Servers/);
+  assert.equal(f.log.data,0);assert.equal(f.log.claims,0);assert.equal(adds(f),0);
+ }
+ assert.equal(takeNotAccepted(null),false);assert.equal(takeNotAccepted({status:422}),false);
 });
 test('#265 take: an older server only confirms – data is fetched afterwards, exactly one cart write, never a second',async()=>{
  const p=textPayload(),f=takeFixture(p,{server:'old'}),client=f.client();await client.transfer();

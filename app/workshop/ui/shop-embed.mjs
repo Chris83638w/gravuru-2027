@@ -299,7 +299,8 @@ export function install({root=window.Shopify?.routes?.root||'/'}={}){
  async function request(token,path,method='GET',lines){
   const take=lines!==undefined;
   const r=await fetch(PROXY+'/cart/'+path,{method,credentials:'same-origin',cache:'no-store',headers:cartRequestHeaders(token,take?'take':path),...(take?{body:JSON.stringify({lines})}:{})});
-  const data=await r.json().catch(()=>({}));if(!r.ok)throw Error(data.error?.message||'Die Warenkorbübergabe konnte nicht geladen werden.');return data;
+  // Status und Kennung des Fehlers gehen mit: Der Client erkennt daran einen nicht angenommenen „take“-Abruf (takeNotAccepted).
+  const data=await r.json().catch(()=>({}));if(!r.ok)throw Object.assign(Error(data.error?.message||'Die Warenkorbübergabe konnte nicht geladen werden.'),{status:r.status,code:data.error?.code});return data;
  }
  async function handoff(token,source,image){
   if(busy)return;busy=true;say('4 von 4 · Deine Gestaltung wird in den Warenkorb gelegt …',{busy:true});

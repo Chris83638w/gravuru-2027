@@ -71,6 +71,7 @@ export function themeCartLines(cart){
 const UNCONFIRMED='Die Übertragung ist noch nicht bestätigt. Bitte den Warenkorb prüfen; es wird keine zweite Position angelegt.';
 // claim: bisheriger eigener Bestätigungsabruf. take(lines)/load(): „take“-Abruf und data-Abruf des neuen Wegs (#265);
 // onPayload(daten): Prüfung/Anzeige der aufrufenden Seite, sobald die Warenkorbdaten vorliegen (vor dem Einlegen).
+export const takeNotAccepted=error=>[400,413,415].includes(error?.status)||(error?.status===422&&error?.code==='theme_cart_take');
 export function createThemeCartClient({fetchImpl=globalThis.fetch,claim,take,load,onPayload=()=>{},root='/',onProgress=()=>{}}={}){
  if(typeof claim!=='function'||!/^\/(?!\/)[A-Za-z0-9/_-]*\/$|^\/$/.test(root))fail('Die Shop-Verbindung ist ungültig.');
  // kept: Warenkorbdaten, deren Übergabe der Server genau diesem Client bestätigt hat (#265); danach fragt er nicht erneut.
@@ -156,7 +157,11 @@ export function createThemeCartClient({fetchImpl=globalThis.fetch,claim,take,loa
     onProgress('Vorhandenen Warenkorb prüfen …');const before=await read();
     let p=kept;
     if(!p){
-     const lines=themeCartLines(before),reply=lines?await take(lines):null;
+     const lines=themeCartLines(before);let reply=null;
+     // #265: Der JSON-Body ist auf dieser Strecke über den Shopify-App-Proxy neu. Lehnt der Server schon den Abruf selbst ab
+     // (Body oder Content-Type kamen nicht an: 400, 413, 415; Zeilenliste ungültig: 422 theme_cart_take), hat er nichts
+     // bestätigt – er liest und prüft den Body vor der Bestätigung. Dann vollständig der bisherige Weg statt eines Fehlers.
+     if(lines)try{reply=await take(lines);}catch(error){if(!takeNotAccepted(error))throw error;reply={take:false};}
      // take:false (Server mit Kassenbild bei Shopify, nichts bestätigt) oder nicht meldbarer Warenkorb: vollständig der bisherige Weg.
      if(!lines||reply?.take===false){const input=await load();onPayload(input);return await classic(input,image);}
      // Bestätigt, aber ohne Daten: älterer Server, der das Kennzeichen nicht kennt (nur beim Zurückrollen). Daten nachholen.

@@ -14,7 +14,7 @@ import {compareProductRevisions} from './product-revision-compare.mjs';
 import {profileChangeImpact,saveReviewedProfile,assignmentChangeImpact,saveReviewedAssignment} from './profile-impact.mjs';
 import {outputSpecification} from './output-specification.mjs';
 import {printPreview} from './print-preview.mjs';
-import {outputDownload,outputFormats,orderDownload,orderFileSets,ORDER_FORMATS} from './print-delivery.mjs';
+import {outputDownload,outputFormats,orderDownload,orderFileSets,ORDER_FORMATS,ORDER_FORMAT_REQUIRED} from './print-delivery.mjs';
 import {ACRYLIC_ENGRAVING_RECIPE,acrylicEngravingKey,acrylicEngravingSettings,createAcrylicEngravingProof} from './acrylic-engraving-proof.mjs';
 import {ACRYLIC_PRINT_RECIPE,acrylicPrintKey,createAcrylicPrintProof,acrylicContourProof} from './acrylic-print-proof.mjs';
 import {prepareAcrylicReview} from './acrylic-review.mjs';
@@ -256,10 +256,11 @@ function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConvert
     try{orderOutputRequest(line);}catch(error){return outputStateFromJobs([],Number.isInteger(error.status)&&error.status<500?error.message:'Die Fertigungsdatei lässt sich derzeit nicht vorbereiten.');}
     return outputStateFromJobs([],'Für diese Position gibt es noch keinen Ausgabeauftrag. Er wird beim Öffnen der Ausgaben angelegt.');
   }
-  // #265, ENTSCHEIDUNGEN 3.57: Die vier Downloads einer Position (PDF, PDF mit Kontur, SVG, SVG mit Kontur) stammen aus dem Auftrag
+  // #265, ENTSCHEIDUNGEN 3.61: Die zwei Downloads einer Position (PDF und SVG, beide immer mit Kontur) stammen aus dem Auftrag
   // der Position (Schlüssel wie `ensureOrderOutput`); ist der nicht fertig, aus der neuesten fertigen Ausgabe des Prüfstands, die
-  // die vier Dateien führt. Ausgaben alter Art führen sie nicht: Der Auftrag mit dem neuen Rezeptstand entsteht beim Öffnen der
-  // Ausgaben von selbst, bis dahin nennt `note` den Stand („wird neu erstellt“) statt eines Fehlers.
+  // die Dateien führt (auch eine Ausgabe des Stands 3.57: aus ihr kommt nur die Fassung mit Kontur). Ausgaben ohne Dateinachweis
+  // führen sie nicht: Der Auftrag mit dem neuen Rezeptstand entsteht beim Öffnen der Ausgaben von selbst – für native Produkte und
+  // Formprodukte alter Art –, bis dahin nennt `note` den Stand („wird neu erstellt“) statt eines Fehlers.
   function orderDownloadSource(line,jobs=exportJobs.forSnapshot(line.snapshotId).jobs){
     let own=null;try{const key=orderOutputRequest(line).recipeKey;own=jobs.find(job=>job.recipeKey===key)||null;}catch{/* Grund steht im Kennzeichen. */}
     const completed=[own,...jobs.filter(job=>job!==own)].filter(job=>job?.status==='completed');
@@ -684,14 +685,14 @@ function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConvert
         const outputs=exportJobs.forSnapshot(line.snapshotId);
         return json(res,200,{positionId:line.id,orderId:line.orderId,snapshotId:line.snapshotId,product:line.product,quantity:line.quantity,status:orderIntake.status(line.id),...outputs,outputState:orderOutputState(line,outputs.jobs),downloads:orderDownloads(line,outputs.jobs),scope:'local-operator'});
       }
-      // #265, ENTSCHEIDUNGEN 3.57: Download einer der vier Dateien der Position. Anmeldung und CSRF wie bei jedem Ausgabe-Download
+      // #265, ENTSCHEIDUNGEN 3.61: Download einer der zwei Dateien der Position. Anmeldung und CSRF wie bei jedem Ausgabe-Download
       // (Prüfung oben, vor allen Werkstatt-Routen); ausgeliefert wird nur, wenn die Prüfsumme der Bytes zum Dateinachweis des
       // Auftrags passt (print-delivery.mjs `orderDownload`, wie bei der Weißdatei).
       const orderDownloadMatch=pathname.match(/^\/api\/workshop\/orders\/(orderline_[a-f0-9-]+)\/download$/);
       if(orderDownloadMatch){
         if(method!=='POST')fail(405,'method_not_allowed','Dateien einer Position per POST abrufen.');
         const line=orderIntake.get(orderDownloadMatch[1]),data=await body(req,1024);
-        if(Object.keys(data).some(k=>!['format','surface'].includes(k))||!ORDER_FORMATS.includes(data.format)||!['front','back'].includes(data.surface??'front'))fail(422,'invalid_format','Bitte PDF, PDF mit Kontur, SVG oder SVG mit Kontur auswählen.');
+        if(Object.keys(data).some(k=>!['format','surface'].includes(k))||!ORDER_FORMATS.includes(data.format)||!['front','back'].includes(data.surface??'front'))fail(422,'invalid_format',ORDER_FORMAT_REQUIRED);
         const source=orderDownloadSource(line);
         if(!source.job)fail(409,'order_file_missing',orderDownloads(line).note||'Für diese Position gibt es noch keine fertige Ausgabe.');
         const result=customerDrafts.printProof(source.job.snapshotId,source.job.recipeKey);if(!result)fail(409,'export_missing','Die gespeicherte Ausgabedatei fehlt.');

@@ -1,3 +1,20 @@
+## 21.11.2026 · Claude (Operator, technische Gesamtverantwortung) · #265/#267: `d1939d21` live – Klick bis Warenkorb unter 3 s (Messung am echten Shop)
+
+- **Aufgespielt:** Astra, gemeldet 11:33 Uhr (#267, Kommentar 7060623862): Vorab-Sichern, ein Abruf über Shopify, schnellere Vorschau-PNGs, Bestelleingang Lieferung 1.
+- **Messung, 11:36 bis 11:44 Uhr, Wegwerf-Browser, Testgestaltung „Claudetest“, keine Kasse (vier weitere kleine Testentwürfe). Die Übersicht war jeweils gut zwei Sekunden offen, dann der Klick auf „Jetzt in den Warenkorb“.**
+
+| Produkt | Klick bis Warenkorb heute 08:48 Uhr | 10:15 Uhr (`fd57ef0d`) | jetzt |
+| --- | --- | --- | --- |
+| Acrylglas-Familienschild, PC | 6,6 s | 4,2 s | **2,8 s** (erster Klick nach dem Neustart 5,2 s) |
+| Edelstahl-Türschild, Handyansicht | 4,6 s | 5,3 s | **2,0 s** und **3,1 s** (zwei Läufe) |
+
+- **Was nach dem Klick noch läuft (Acrylglas):** Warenkorb vorbereiten 0,22 s (Server 0,07 s), ein Abruf über Shopify für Daten und Bestätigung 0,34 s (Server 0,07 s), Shopify-Einlegen 0,53 s, danach Warenkorb lesen und die Warenkorbseite von Shopify (0,3 bis 1,5 s; daher die Spanne bei Edelstahl).
+- **Nachweise:** Das Sichern lief vor dem Klick (Edelstahl, zweiter Lauf: 0,6 s nach dem Öffnen der Übersicht gestartet, 1,3 s Dauer); nach dem Klick kein Sicherungsabruf. Kein Abruf `cart/data` mehr, `cart/claim` antwortet mit HTTP 200 und liefert die Daten mit – der JSON-Body kommt über den App-Proxy an. Vorschaupaar Edelstahl 0,67 bis 0,74 s → 0,39 bis 0,49 s. Bild auf Warenkorbseite und im Seitenwarenkorb vom eigenen Server geladen; die Bearbeiten-Adresse öffnet die gesicherte Gestaltung.
+- **Einordnung:** Klickt ein Kunde schneller als das Vorab-Sichern fertig ist (rund 1,5 s nach dem Öffnen der Übersicht, beim ersten Klick nach einem Neustart länger), wartet der Klick auf dessen Ende. Je ein bis zwei Läufe; die Antwortzeit der Shopify-Warenkorbseite schwankt je Lauf um rund 1 s.
+- **Nicht geprüft:** Bestelleingang Lieferung 1 am echten Shop (keine bezahlte Testbestellung), Kasse, Danke-Seite.
+- **In Arbeit:** Stufe B Lieferung 2 und 3 (Unteragent, ENTSCHEIDUNGEN 3.57); Sicherungsplätze mit kurzer Reihe (`a84cdab0`, gebaut, nicht aufgespielt).
+- Übergabe: `docs/handoffs/2026-11-20-prio-c-technik-claude.md`. Der [Design-Master](https://github.com/Chris83638w/gravuru-katalog./blob/main/designs/DESIGN-MASTER.md) gilt unverändert; an Designs wurde nichts geändert.
+
 ## 21.11.2026 · Claude (Operator, technische Gesamtverantwortung) · #265/#267: Teil 4, Teil 5, Vorab-Sichern und Bestelleingang (Lieferung 1) gebaut – ein Stand, ein Auftrag an Astra
 
 Gebaut von drei Unteragenten und mir in getrennten Arbeitskopien, zusammengeführt auf `dev/claude-warenkorb5-20261121` (`2d663a95`). Nichts davon ist aufgespielt.

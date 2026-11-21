@@ -902,4 +902,18 @@ Keine.
 
 Die fünf Fragen in `docs/handoffs/2026-11-21-stufe-b-bauplan.md`; sonst keine.
 
+## 21.11.2026, 12:45 Uhr – Abschluss des Tages (`dev/claude-warenkorb6-20261121`)
+
+**Live:** `d1939d21` – Klick bis Warenkorb Acrylglas 2,8 s, Edelstahl 2,0 und 3,1 s (11:33 bis 11:36 Uhr); Fertigungsdatei entsteht mit der Zahlung (von Astra im privaten Zahlungstest bestätigt: PDF nach 5,7 s).
+
+**Bei Astra beauftragt (Server und Editor):** vier Downloads, `_gravuru_fertigung`, Sicherungsplätze, Tag-Schreiber (aus). Rückweg `d1939d21`.
+
+**Wartet auf das Ja von Chris:** App-Version mit Kundenkonto-Bild, Block in der Bestellseite und `write_orders`; E-Mail-Baustein. Unterlage: `docs/handoffs/2026-11-21-stufe-c-app-version.md`. Erst danach den Tag mit `GRAVURU_ORDER_REVIEW_TAGS=enabled` einschalten.
+
+**Weiter offen, in dieser Reihenfolge:** (1) Prüfung der vier Dateien an Laser und Drucker durch die Fertigung (Haarlinie, Konturfarbe); (2) kleines Warenkorbbild statt 1600 Pixel; (3) Löschregel für nie eingelegte Entwürfe – Chris will vor jedem Löschen gefragt werden; (4) „Bearbeitbarer Entwurf“ an Kasse und in der E-Mail (Lesefrage an Astra offen).
+
+### Offene Fragen an Chris
+
+Eine: Ja oder Nein zur Veröffentlichung der App-Version (mit dem Recht, Bestellungen zu ändern) und zum Bildbaustein in der Bestell-E-Mail.
+
 Der [Design-Master](https://github.com/Chris83638w/gravuru-katalog./blob/main/designs/DESIGN-MASTER.md) gilt unverändert; an Designs wurde nichts geändert.

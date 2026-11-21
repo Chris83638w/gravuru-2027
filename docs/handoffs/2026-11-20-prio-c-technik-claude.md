@@ -953,3 +953,21 @@ Der [Design-Master](https://github.com/Chris83638w/gravuru-katalog./blob/main/de
 Eine: Darf Astra die App-Version mit der geänderten Preisfunktion und Kassenprüfung veröffentlichen und danach den Schalter setzen?
 
 Der [Design-Master](https://github.com/Chris83638w/gravuru-katalog./blob/main/designs/DESIGN-MASTER.md) gilt unverändert; an Designs wurde nichts geändert.
+
+## 21.11.2026, 19:30 Uhr – Bestelldateien nach der Musterdatei von Chris; App-Version zu 3.59 freigegeben
+
+Chris hat um 17:07 Uhr eine Musterdatei geliefert („so müssen die dateien aussehen“) und bis 19:16 Uhr die Farben erklärt (ENTSCHEIDUNGEN 3.62). Der Stand von 16:35 Uhr oben ist beim Aufbau der Dateien damit überholt; aufgespielt war er nie (Astra hatte ich um 17:10 Uhr gebeten anzuhalten).
+
+**Jetzt gebaut (`f7f8ca87`, nicht aufgespielt):** Gravurdateien wie das Muster – Ebene „03 Gravur“ schwarz, Außenkontur blau, Löcher bei Acrylglas rot, sonst blau, Linien 0,001 mm, nicht gespiegelt, bei der Funkklingel die Seite der Acrylauflage. Druckdateien ungespiegelt, Kontur nur in `CutContour`. Einzelheiten, Annahmen und Grenzen: `docs/handoffs/2026-11-21-bestelldateien-nach-muster.md`. Bilder 35 bis 37 in `bilder/`.
+
+**Freigegeben (3.63):** App-Version mit geänderter Preisfunktion und Kassenprüfung, danach der Schalter.
+
+**Bei Astra beauftragt:** Teil A Server, Teil B App-Version und Schalter.
+
+**Weiter offen:** (1) Maschinentest durch die Fertigung, zuerst die Beispieldatei in CorelDRAW öffnen; (2) Gedenktafeln kommen später – dann an den aktuellen Speicher binden; (3) kleines Warenkorbbild statt 1600 Pixel; (4) Löschregel für nie eingelegte Entwürfe; (5) ein echter Tag „Gravuru: bitte prüfen“ ist noch nicht beobachtet; (6) die Seite „Ausgaben“ führt weiter ihre älteren getrennten Dateien, nach Profil gespiegelt – nicht entschieden.
+
+### Offene Fragen an Chris
+
+Keine.
+
+Der [Design-Master](https://github.com/Chris83638w/gravuru-katalog./blob/main/designs/DESIGN-MASTER.md) gilt unverändert; an Designs wurde nichts geändert.

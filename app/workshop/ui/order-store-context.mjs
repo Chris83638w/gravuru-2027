@@ -21,18 +21,19 @@ export async function orderRequest(row,path,data,request=merchantRequest){
  return request(prefix+path,options);
 }
 
-// #265, ENTSCHEIDUNGEN 3.57: vier Downloads je Position (bei gestalteter Rückseite je Fläche). Ein Knopf ist nur aktiv, wenn das
-// Kennzeichen „fertig“ lautet und die Ausgabe diese Datei führt; sonst sagt der Hinweis, woran es liegt (z. B. Ausgabe alter Art:
-// „für diese Position neu erstellen“), statt beim Klick einen Fehler zu zeigen.
-export const ORDER_FILE_LABELS=Object.freeze({pdf:'PDF','pdf-contour':'PDF mit Kontur',svg:'SVG','svg-contour':'SVG mit Kontur'});
+// #265, ENTSCHEIDUNGEN 3.61: zwei Downloads je Position (bei gestalteter Rückseite je Fläche) – PDF und SVG, beide immer mit
+// Kontur; Dateien ohne Kontur gibt es hier nicht mehr. Ein Knopf ist nur aktiv, wenn das Kennzeichen „fertig“ lautet und die
+// Ausgabe diese Datei führt; sonst sagt der Hinweis, woran es liegt (z. B. Ausgabe alter Art: „für diese Position neu
+// erstellen“), statt beim Klick einen Fehler zu zeigen.
+export const ORDER_FILE_LABELS=Object.freeze({pdf:'PDF',svg:'SVG'});
 export function orderFileButtons(outputState,downloads){
  const ready=outputState?.state==='fertig',surfaces=downloads?.surfaces?.length?downloads.surfaces:[{id:'front',formats:[]}];
  return surfaces.map(s=>({surface:s.id,label:surfaces.length>1?(s.id==='back'?'Rückseite':'Vorderseite'):'',buttons:Object.entries(ORDER_FILE_LABELS).map(([format,label])=>({format,label,enabled:ready&&s.formats.includes(format)}))}));
 }
 export function orderFilesNote(outputState,downloads){
  if(downloads?.note)return downloads.note;
- if(outputState?.state!=='fertig')return 'Die vier Downloads sind aktiv, sobald die Fertigungsdatei fertig ist.';
- return orderFileButtons(outputState,downloads).some(s=>s.buttons.some(b=>!b.enabled))?'Nicht jede der vier Dateien liegt vor. Bitte die Ausgabe für diese Position neu erstellen.':'';
+ if(outputState?.state!=='fertig')return 'PDF und SVG sind aktiv, sobald die Fertigungsdatei fertig ist.';
+ return orderFileButtons(outputState,downloads).some(s=>s.buttons.some(b=>!b.enabled))?'PDF oder SVG liegt für diese Position nicht vor. Bitte die Ausgabe für diese Position neu erstellen.':'';
 }
 
 // #265, ENTSCHEIDUNGEN 3.53 (6) und 3.57: Der Link „Fertigungsdatei“ an der Shopify-Zeile nennt die Gestaltung (Konfigurations-

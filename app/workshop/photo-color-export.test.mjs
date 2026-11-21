@@ -34,8 +34,10 @@ test('already applied pixels, acrylic print and engraving production are never t
 import {ACRYLIC_PRINT_RECIPE,acrylicPrintKey} from './acrylic-print-proof.mjs';
 import {digest} from './review-package.mjs';
 test('native photo colour output uses a new recipe cache key',()=>{
- // v8 (#265, ENTSCHEIDUNGEN 3.57): Das Paket führt zusätzlich die vier Downloads der Bestellansicht; ältere Ausgaben behalten ihren Schlüssel.
- assert.equal(ACRYLIC_PRINT_RECIPE,'gravuru-acrylic-print-proof/v8');
+ // v9 (#265, ENTSCHEIDUNGEN 3.61): Die Bestellansicht führt nur noch PDF und SVG, beide mit Kontur; die Druckdatei ohne
+ // Schnittlinie (v8) entsteht nicht mehr. Ältere Ausgaben behalten ihren Schlüssel.
+ assert.equal(ACRYLIC_PRINT_RECIPE,'gravuru-acrylic-print-proof/v9');
+ assert.notEqual(acrylicPrintKey({}),digest(JSON.stringify({recipe:'gravuru-acrylic-print-proof/v8',settings:formPrintSettings({})})));
  assert.notEqual(acrylicPrintKey({}),digest(JSON.stringify({recipe:'gravuru-acrylic-print-proof/v7',settings:formPrintSettings({})})));
  assert.notEqual(acrylicPrintKey({}),digest(JSON.stringify({recipe:'gravuru-acrylic-print-proof/v6',settings:formPrintSettings({})})));
  assert.notEqual(acrylicPrintKey({}),digest(JSON.stringify({recipe:'gravuru-acrylic-print-proof/v5',settings:formPrintSettings({})})));

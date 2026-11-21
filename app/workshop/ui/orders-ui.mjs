@@ -47,7 +47,7 @@ async function loadOutputs(row,quiet=false){
   if(selected!==orderKey(row)||serial!==outputSerial)return;
   // #265: Das Öffnen der Ausgaben holt einen fehlenden Auftrag nach; das Kennzeichen der Antwort gilt daher auch für die Liste.
   if(value.outputState){const changed=JSON.stringify(outputStates[orderKey(row)])!==JSON.stringify(value.outputState);outputStates[orderKey(row)]=value.outputState;if(changed)renderOrders();showOutputState(value.outputState);showOrderFiles(row,value.outputState,value.downloads);
-   // #265, ENTSCHEIDUNGEN 3.57: auch nachladen, solange die vier Dateien einer Ausgabe alter Art neu erstellt werden.
+   // #265, ENTSCHEIDUNGEN 3.61: auch nachladen, solange PDF und SVG einer Ausgabe alter Art neu erstellt werden.
    if(value.outputState.state==='wird erstellt'||value.downloads?.pending)setTimeout(()=>{if(selected===orderKey(row)&&serial===outputSerial)void loadOutputs(row,true);},2000);}
   $('#order-output-status').textContent=value.total?value.total+' Ausgabe'+(value.total===1?'':'n')+' gespeichert.':'Noch keine Ausgabe gespeichert. Über die gesicherte Gestaltung eine Druck- oder Gravurausgabe erstellen.';
   $('#order-output-list').innerHTML=value.jobs.slice(0,3).map(job=>'<a href="'+orderPage(row,'ausgaben/?'+new URLSearchParams({job:job.id,position:row.id}))+'">'+esc(outputLabel(job))+'<small>'+esc(outputDate(job.createdAt))+' · '+esc(job.id.slice(-8))+'</small></a>').join('');
@@ -72,7 +72,7 @@ function showOutputState(state){
  node.hidden=!state;node.textContent=outputNote(state);node.classList.toggle('order-error',state?.state==='bitte prüfen');
 }
 
-// #265, ENTSCHEIDUNGEN 3.57: PDF, PDF mit Kontur, SVG, SVG mit Kontur je Position – ohne Exportauftrag von Hand. Der Abruf läuft wie
+// #265, ENTSCHEIDUNGEN 3.61: PDF und SVG je Position, beide immer mit Kontur – ohne Exportauftrag von Hand. Der Abruf läuft wie
 // jeder Ausgabe-Download über die angemeldete Sitzung mit CSRF (order-store-context.mjs `orderRequest`), nie über eine offene Adresse.
 function showOrderFiles(row,state,downloads,message){
  const root=$('#order-files');if(!root)return;
@@ -88,7 +88,7 @@ $('#order-file-rows')?.addEventListener('click',async e=>{
   const response=await orderRequest(row,'orders/'+row.id+'/download',{format,surface:button.dataset.surface},fetch);
   if(!response.ok)throw Error((await response.json()).error?.message||'Download fehlgeschlagen.');
   const link=URL.createObjectURL(await response.blob()),a=document.createElement('a'),name=response.headers.get('Content-Disposition')?.match(/filename="([^"\r\n]+)"/)?.[1];
-  a.href=link;a.download=name&&!/[\\/\x00-\x1f]/.test(name)?name:row.id+(format.startsWith('svg')?'.svg':'.pdf');a.click();setTimeout(()=>URL.revokeObjectURL(link),60000);
+  a.href=link;a.download=name&&!/[\\/\x00-\x1f]/.test(name)?name:row.id+(format==='svg'?'.svg':'.pdf');a.click();setTimeout(()=>URL.revokeObjectURL(link),60000);
   message='Datei heruntergeladen.';
  }catch(error){message=error.message;}
  // Knöpfe wieder freigeben; das Ergebnis des Abrufs bleibt als Hinweis stehen, bis sich der Stand der Position ändert.

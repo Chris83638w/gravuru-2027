@@ -4,13 +4,14 @@ import {orderBlockLine,orderBlockModel,productionLink,orderGid,ORDER_BLOCK_QUERY
 // #265 Stufe C, ENTSCHEIDUNGEN 3.53 (6)/3.57 (1): Modell des Blocks in der Bestellseite des Shopify-Admin.
 const host='https://app-2027.gravuru-designwerkstatt.de';
 const src=host+'/gestaltung/acryl/offer_11111111-1111-4111-8111-111111111111/'+'a'.repeat(64)+'.png';
-const production=host+'/werkstatt/bestellungen/?position=orderline_11111111-1111-4111-8111-111111111111';
+// Form wie app/workshop/theme-cart.mjs productionOrderLink (Bestellansicht im Shopify-Admin des Shops).
+const admin='https://gravuru-synthetic.myshopify.com/admin/apps/synthetic-client/werkstatt/bestellungen/',production=admin+'?config=konfig_11111111-1111-4111-8111-111111111111&rev=2';
 const line=(properties,extra={})=>({id:'gid://shopify/LineItem/1',title:'Türschild',quantity:2,customAttributes:Object.entries(properties).map(([key,value])=>({key,value})),...extra});
 const full={_gravuru_config:'konfig_test',_gravuru_rev:'1',_gravuru_offer:'b'.repeat(64),_gravuru_bild:src,_gravuru_fertigung:production,Gravurtext:'Familie Test'};
 
-test('a Gravuru position shows its image and both buttons, each pointing at the own server only',()=>{
+test('a Gravuru position shows its image and both buttons: the image at the own server, the production file at the workshop inside the shop admin',()=>{
  assert.deepEqual(orderBlockLine(line(full)),{title:'Türschild',quantity:2,image:{src,alt:'Gestaltung: Türschild'},actions:[{label:'Gestaltung ansehen',href:src},{label:'Fertigungsdatei',href:production}]});
- for(const action of orderBlockLine(line(full)).actions)assert.ok(action.href.startsWith(host+'/'));
+ const [view,file]=orderBlockLine(line(full)).actions;assert.ok(view.href.startsWith(host+'/gestaltung/'));assert.ok(file.href.startsWith(admin+'?config='));
 });
 test('without _gravuru_fertigung the production button is not shown; the image and its button stay',()=>{
  const {_gravuru_fertigung,...rest}=full,view=orderBlockLine(line(rest));
@@ -34,8 +35,8 @@ test('a position with a trusted production address but no trusted image keeps on
  assert.deepEqual(orderBlockLine(line({_gravuru_config:'konfig_test',_gravuru_bild:src+'?x',_gravuru_fertigung:production})),{title:'Türschild',quantity:2,image:null,actions:[{label:'Fertigungsdatei',href:production}]});
 });
 test('production link: only the login-protected workshop on the own server',()=>{
- for(const ok of [production,host+'/werkstatt/',host+'/werkstatt/bestellungen/',host+'/werkstatt/acryl/bestellungen/orderline_11111111-1111-4111-8111-111111111111',host+'/werkstatt/bestellungen/#position=1'])assert.equal(productionLink(ok),ok,ok);
- for(const bad of [undefined,null,7,'',host,host+'/',host+'/werkstatt',host+'/gestaltung/x.png',host+'/api/workshop/orders',host+'/werkstatt/../api/workshop/orders',host+'/werkstatt/./x',host+'/werkstatt//evil.example',host+'/werkstatt/%2e%2e/api',host+'/werkstatt/a b',host+'/werkstatt/x?next=https://evil.example/',host+'/werkstatt/x?a=<script>',host+'/werkstatt/x\\y',host.replace('https:','http:')+'/werkstatt/',host+'.evil.example/werkstatt/','https://user:pw@app-2027.gravuru-designwerkstatt.de/werkstatt/','https://evil.example/werkstatt/','javascript:alert(1)',' '+production,production+'\n',host+'/werkstatt/'+'a'.repeat(1300)])assert.equal(productionLink(bad),null,String(bad));
+ for(const ok of [production,admin+'?config=konfig_22222222-2222-4222-8222-222222222222&rev=17'])assert.equal(productionLink(ok),ok,ok);
+ for(const bad of [undefined,null,7,'',host,host+'/werkstatt/bestellungen/?config=konfig_11111111-1111-4111-8111-111111111111&rev=2',admin,admin+'?config=konfig_11111111-1111-4111-8111-111111111111',production+'&next=https://evil.example/',production+'#x',production.replace('rev=2','rev=0'),production.replace('https:','http:'),production.replace('.myshopify.com','.myshopify.com.evil.example'),production.replace('/admin/apps/synthetic-client/','/admin/apps/a/../'),production.replace('/werkstatt/bestellungen/','/werkstatt/ausgaben/'),production.replace('https://','https://user:pw@'),production.replace('konfig_','proof_'),'https://evil.example/admin/apps/synthetic-client/werkstatt/bestellungen/?config=konfig_11111111-1111-4111-8111-111111111111&rev=2',production+' '])assert.equal(productionLink(bad),null,String(bad));
 });
 test('the order model keeps only Gravuru positions, in order, and tolerates unreadable data',()=>{
  const other=line({Farbe:'rot'},{id:'gid://shopify/LineItem/2',title:'Zubehör',quantity:1}),second=line({_gravuru_config:'konfig_zwei',_gravuru_bild:src.replace('a'.repeat(64),'c'.repeat(64))},{id:'gid://shopify/LineItem/3',title:'  ',quantity:0});

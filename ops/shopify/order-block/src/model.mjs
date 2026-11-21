@@ -2,25 +2,20 @@
 // Gravuru-Eigenschaften das Bild der Gestaltung und die Verweise „Gestaltung ansehen“ und „Fertigungsdatei“.
 // Bei Shopify liegt keine Datei (3.52/3.53): Bild und Verweise zeigen auf den eigenen Server. Gelesen werden nur die
 // Eigenschaften der Position; nichts wird gespeichert, kein fremder Host angenommen.
-const HOST='https://app-2027.gravuru-designwerkstatt.de';
 // Dieselbe Adressprüfung wie auf der Danke-Seite (thank-you-preview/src/model.mjs); Gleichheit prüft
 // app/workshop/shopify-order-block.test.mjs. Nur das unveränderliche PNG der bestellten Gestaltung.
 const IMAGE=/^https:\/\/app-2027\.gravuru-designwerkstatt\.de\/gestaltung\/[-A-Za-z0-9_]{1,100}\/offer_[a-f0-9-]{36}\/[a-f0-9]{64}\.png$/;
-// `_gravuru_fertigung` (3.57 Punkt 1: Fertigungsdatei nur nach Anmeldung) entsteht parallel; ihre genaue Form steht noch nicht
-// fest. Angenommen wird deshalb nur eine Adresse der anmeldepflichtigen Werkstatt am eigenen Server (`/werkstatt/…`),
-// ohne Zugangsdaten, ohne Sprung in ein anderes Verzeichnis. Liegt die endgültige Form vor: hier und im Test enger fassen.
-const PRODUCTION=/^\/werkstatt\/[-A-Za-z0-9_.~/]{0,300}$/;
-const PRODUCTION_REST=/^[-A-Za-z0-9_.~=&%:,+]{0,600}$/;
+// `_gravuru_fertigung` (3.57 Punkt 1: Fertigungsdatei nur nach Anmeldung): genau die Adresse, die der Server beim Einlegen bildet
+// (app/workshop/theme-cart.mjs `productionOrderLink`): die Bestellansicht der Werkstatt im Shopify-Admin des Shops, mit
+// Konfigurations-Kennung und Revision. Sie führt nur auf die anmeldepflichtige Seite, nie auf eine Datei. Jede andere Adresse
+// wird nicht gezeigt.
+const PRODUCTION=/^https:\/\/[a-z0-9][a-z0-9-]{0,60}\.myshopify\.com\/admin\/apps\/[A-Za-z0-9_-]{1,100}\/werkstatt\/bestellungen\/\?config=konfig_[a-f0-9-]{36}&rev=[1-9][0-9]{0,8}$/;
 const text=(value,fallback)=>typeof value==='string'&&value.trim()?value.trim().slice(0,255):fallback;
 
 export function productionLink(value){
- if(typeof value!=='string'||value.length>1200||!value.startsWith(HOST+'/werkstatt/'))return null;
- const rest=value.slice(HOST.length),hash=rest.indexOf('#'),head=hash<0?rest:rest.slice(0,hash),query=head.indexOf('?');
- const path=query<0?head:head.slice(0,query);
- if(!PRODUCTION.test(path)||path.includes('//')||path.split('/').some(part=>part==='.'||part==='..'))return null;
- if(!PRODUCTION_REST.test(query<0?'':head.slice(query+1))||!PRODUCTION_REST.test(hash<0?'':rest.slice(hash+1)))return null;
- // Zweite, unabhängige Lesart derselben Adresse: gleicher Host, gleicher Pfad, keine Zugangsdaten.
- try{const parsed=new URL(value);if(parsed.origin!==HOST||parsed.username||parsed.password||parsed.pathname!==path)return null;}catch{return null;}
+ if(typeof value!=='string'||value.length>400||!PRODUCTION.test(value))return null;
+ // Zweite, unabhängige Lesart derselben Adresse: keine Zugangsdaten, kein anderer Pfad, genau die zwei Angaben.
+ try{const parsed=new URL(value);if(parsed.username||parsed.password||parsed.port||parsed.hash||[...parsed.searchParams.keys()].join(',')!=='config,rev'||!parsed.pathname.endsWith('/werkstatt/bestellungen/'))return null;}catch{return null;}
  return value;
 }
 

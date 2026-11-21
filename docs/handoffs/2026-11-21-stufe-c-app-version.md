@@ -92,7 +92,7 @@ Kein Rückweg ändert Bestellungen, Eigenschaften oder Daten der Werkstatt.
 - Dass Danke-Seite und Bestellübersicht der Erweiterung die privaten Eigenschaften (`_gravuru_bild`) geben.
 - Admin-Block: `shopify.data.selected`, der Abruf `shopify:admin/api/graphql.json`, die Bausteine (`s-admin-block`, `s-stack`, `s-box`, `s-image`, `s-button`, `s-text`) und ob der Admin ein Bild vom eigenen Server anzeigt.
 - Typen beider Extensions gegen `@shopify/ui-extensions` (`npm run check`); Form der neuen Module in der Versionsliste.
-- Endgültige Form von `_gravuru_fertigung` (entsteht parallel); der Block nimmt bis dahin jede Adresse unter `/werkstatt/` am eigenen Server an.
+- `_gravuru_fertigung` hat die Form der Bestellansicht im Shopify-Admin des Shops (`https://<shop>.myshopify.com/admin/apps/<App>/werkstatt/bestellungen/?config=…&rev=…`, gebildet in `app/workshop/theme-cart.mjs`); der Block zeigt „Fertigungsdatei“ nur für genau diese Form. Am echten Shop zu bestätigen: ob der Verweis aus dem Block heraus die eingebettete Werkstatt öffnet.
 - `tagsAdd` an einer Bestellung mit `write_orders` und API 2026-07; ob Shopify eine Zustimmung des Inhabers verlangt.
 - Was der Tarif des Shops für Erweiterungen auf Danke-Seite und Bestellstatus voraussetzt.
 

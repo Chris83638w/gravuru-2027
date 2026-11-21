@@ -8,7 +8,7 @@ Ziel `admin.order-details.block.render`, API-Version 2025-10 (wie `thank-you-pre
 
 - das Bild der Gestaltung aus `_gravuru_bild` – nur mit `_gravuru_config` und nur die feste Adresse `https://app-2027.gravuru-designwerkstatt.de/gestaltung/…/offer_<uuid>/<64 hex>.png` (dieselbe Prüfung wie auf der Danke-Seite);
 - „Gestaltung ansehen“: öffnet genau dieses Bild groß;
-- „Fertigungsdatei“: öffnet `_gravuru_fertigung`, die anmeldepflichtige Bestellansicht der Werkstatt. Ohne diese Eigenschaft oder mit einer Adresse außerhalb von `https://app-2027.gravuru-designwerkstatt.de/werkstatt/…` gibt es den Knopf nicht.
+- „Fertigungsdatei“: öffnet `_gravuru_fertigung`, die anmeldepflichtige Bestellansicht der Werkstatt im Shopify-Admin des Shops (`https://<shop>.myshopify.com/admin/apps/<App>/werkstatt/bestellungen/?config=…&rev=…`, gebildet in `app/workshop/theme-cart.mjs`). Ohne diese Eigenschaft oder mit jeder anderen Adresse gibt es den Knopf nicht. Eine Datei liefert erst der Download der angemeldeten Werkstatt aus.
 
 Positionen ohne vertrauenswürdige Eigenschaften zeigen nichts; enthält die Bestellung keine, steht ein kurzer Hinweis im Block. Über Shopify wird keine Datei ausgeliefert, nichts wird gespeichert, kein fremder Host angenommen. Gelesen wird die Bestellung mit einer einzigen lesenden Admin-Abfrage (`ORDER_BLOCK_QUERY`, Positionen mit ihren Eigenschaften); dafür genügt die vorhandene Berechtigung `read_orders`. Der Block schreibt nichts.
 
@@ -18,7 +18,7 @@ Positionen ohne vertrauenswürdige Eigenschaften zeigen nichts; enthält die Bes
 2. Der lesende Abruf über `fetch('shopify:admin/api/graphql.json')` mit den Rechten der App.
 3. Die Bausteine `s-admin-block`, `s-stack`, `s-box`, `s-image`, `s-button`, `s-text` und ihre Eigenschaften (`direction`, `gap`, `maxInlineSize`, `href`, `target`).
 4. Ob der Shopify-Admin ein Bild vom eigenen Server anzeigt. Wenn nicht, bleiben beide Knöpfe nutzbar; dann das Bild weglassen statt eine Datei zu Shopify zu legen (ENTSCHEIDUNGEN 3.52/3.53).
-5. Die endgültige Form von `_gravuru_fertigung` (entsteht parallel): `productionLink` in `src/model.mjs` nimmt bis dahin jede Adresse der Werkstatt am eigenen Server an.
+5. Ob der Verweis „Fertigungsdatei“ aus dem Block heraus die eingebettete Werkstatt öffnet (Form der Adresse siehe oben).
 6. Typen: `shopify.d.ts` ist nicht gegen `@shopify/ui-extensions` geprüft (`npm install && npm run check`).
 7. Der Block erscheint erst, wenn er auf der Bestellseite angeheftet ist. Wo der Admin App-Blöcke der Bestellseite hinzufügt, dort ablesen.
 

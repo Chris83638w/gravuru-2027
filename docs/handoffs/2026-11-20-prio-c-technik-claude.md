@@ -833,8 +833,18 @@ Keine. Gelöscht wird nichts (die Testbilder bei Shopify bleiben).
 
 **Nächste Teile von Stufe A:** die drei Abrufe nach dem Sichern zusammenlegen; den Produktstand nicht je Abruf lesen (`prepareBoundCartOffer`, zwei Dokumentlesungen je Aufruf); das Warenkorbbild aus dem Editor nicht mehr erzeugen, wenn es nicht übertragen wird.
 
+## `9ada257d` live (21.11.2026, 08:11 Uhr) – Messung und Befund Warenkorbbild
+
+**Zeiten** (je ein Lauf, 08:20 und 08:21 Uhr): Acrylglas 11,1 s → 6,1 s; Edelstahl 9,1 s → 4,8 s. Schritte Acrylglas (Dauer des Abrufs, in Klammern Zeit des Servers): Vorbereitung im Browser 0,6 s; Entwurf sichern 2,8 s (2,18 s); Warenkorb vorbereiten 0,46 s (0,32 s); Daten für die Shop-Seite 0,40 s (0,18 s); Bestätigen 0,42 s (0,18 s); Shopify 0,96 s. Edelstahl: Entwurf sichern 2,1 s (1,52 s; Prüfung 0,51 s, Vorschaupaar 0,71 s).
+
+**Was im Entwurf sichern noch steckt (Acrylglas):** Prüfung der Gestaltung 1,04 s (Stufe D), Vorschaupaar 0,37 s, Prüfsumme des Produktstands 0,24 s (nur beim ersten Klick je Produktstand und Prozess), Produkt lesen 0,15 s, Konfiguration kopieren 0,15 s, Übertragung rund 0,6 s.
+
+**Befund Warenkorbbild.** Neue Zeilen zeigen im Warenkorb das Produktfoto (Bilder `24-…`, `25-…`), nicht die Gestaltung (gestern `23-…`). Das veröffentlichte Theme liest `_Entwurf`; die Fassung des Bausteins im Repo, die `_gravuru_bild` liest, ist nicht veröffentlicht (Auskunft Astra, #267, Kommentar 7058446052). Lehre für die nächsten Aufträge: Was das veröffentlichte Theme oder eine freigegebene Shopify-Erweiterung liest, vor dem Auftrag bei Astra ablesen lassen, nicht aus dem Repo schließen. Das betrifft auch Danke-Seite und Bestell-E-Mail (Fragen an Astra von 07:35 Uhr, noch offen).
+
+**Stufe A, Teil 2** (`2f43b0fa`, Zweig `dev/claude-warenkorb2-20261121`, nicht aufgespielt): siehe `STATUS.md`.
+
 ### Offene Fragen an Chris
 
-Keine.
+1. Theme-Baustein im veröffentlichten Theme auf die Fassung bringen, die das Bild vom eigenen Server zeigt (Astra spielt auf, nach Vergleich beider Fassungen). Empfehlung: Ja. (Gestellt 21.11., 08:30 Uhr.)
 
 Der [Design-Master](https://github.com/Chris83638w/gravuru-katalog./blob/main/designs/DESIGN-MASTER.md) gilt unverändert; an Designs wurde nichts geändert.

@@ -1,3 +1,21 @@
+## 21.11.2026 · Claude (Operator, technische Gesamtverantwortung) · #265/#267: `9ada257d` live – Messung am echten Shop; Befund: Warenkorb zeigt das Produktfoto statt der Gestaltung
+
+- **Aufgespielt:** Astra, 08:11:42 Uhr, Stand `9ada257d` (Stufe A, Teil 1 und kleines Paket); 41 Anfragen beim Umschalten, alle HTTP 200 (#267, Kommentar 7058446052).
+- **Messung am echten Shop, 08:20 und 08:21 Uhr, je ein Lauf, Wegwerf-Browser, Testgestaltung „Claudetest“ (zwei weitere Testentwürfe, jetzt klein):**
+
+| Produkt | Klick bis Warenkorb vorher (`9bfc281b`) | jetzt (`9ada257d`) |
+| --- | --- | --- |
+| Acrylglas-Familienschild | 11,1 s | **6,1 s** |
+| Edelstahl-Türschild | 9,1 s | **4,8 s** |
+
+  Acrylglas, Zeiten des Servers: Entwurf sichern 2,18 s (vorher 3,46 s; Speichern 0,01 s statt 0,55 s, Prüfung 1,04 s, Vorschaupaar 0,37 s, Prüfsumme des Produktstands einmalig 0,24 s), Warenkorb vorbereiten 0,32 s, Daten für die Shop-Seite 0,18 s (vorher 2,68 s, kein Warten auf Shopify mehr), Bestätigen 0,18 s, Shopify 0,96 s.
+- **Wie beauftragt:** Die Zeile trägt `_gravuru_bild` (eigener Server, HTTP 200) und weder `_Entwurf` noch `_gravuru_checkout_image`.
+- **Befund (Fehler in meinem Auftrag):** Warenkorbseite zeigt für neue Zeilen das **Produktfoto** statt der Gestaltung des Kunden (Bilder 24, 25; gestern Bild 23 mit der Gestaltung). Ursache laut Astra aus dem heute ausgelesenen Live-Theme: Der veröffentlichte Baustein `gravuru-warenkorb-bearbeiten` liest `_Entwurf` bzw. `Entwurf` und fällt sonst auf das Produktfoto zurück; die Fassung im Repo (`ops/shopify/theme-block/snippets/`) liest `_gravuru_bild`, ist aber nicht veröffentlicht. Ich hatte die Fassung im Repo gelesen und die Anzeige am echten Shop erst für „nach dem Aufspielen“ vorgesehen; Chris hatte ich geschrieben, das Bild im Warenkorb bleibe. Das war ungeprüft und falsch.
+- **Zur Entscheidung bei Chris:** den Theme-Baustein auf die Fassung bringen, die `_gravuru_bild` zeigt (Astra, nach Vergleich beider Fassungen). Bis dahin zeigt der Warenkorb das Produktfoto. Zwischenlösung wäre `shopifyCartImages` (früherer Weg mit Bild bei Shopify, rund 2 s langsamer).
+- **Nicht geprüft:** Seitenwarenkorb (laut Astra derselbe Baustein), Kasse, Danke-Seite, „Bearbeiten“ aus dem Warenkorb unter dem neuen Stand, Handy.
+- **Stufe A, Teil 2 gebaut, nicht aufgespielt:** `2f43b0fa` (Zweig `dev/claude-warenkorb2-20261121`): Warenkorb-Abrufe lesen das Produktdokument nicht mehr je Abruf (`repository.revisionStatus`, `reviewRecord` in `bound-test-cart.mjs`). Gegenprobe schlägt ohne die Änderung fehl. Gesamtlauf auf `2f43b0fa`: 2837 Tests, 2829 bestanden, 4 übersprungen, die vier bekannten Fehlschläge. Erwartung am echten Server: die Schritte „Angebot“ der drei Abrufe (heute je 0,14 bis 0,18 s bei Acrylglas) entfallen weitgehend.
+- Übergabe: `docs/handoffs/2026-11-20-prio-c-technik-claude.md`, Abschnitt „`9ada257d` live“. Der [Design-Master](https://github.com/Chris83638w/gravuru-katalog./blob/main/designs/DESIGN-MASTER.md) gilt unverändert; an Designs wurde nichts geändert.
+
 ## 21.11.2026 · Claude (Operator, technische Gesamtverantwortung) · #265/#267: Stufe A, Teil 1 gebaut – beim Einlegen geht kein Bild mehr an Shopify; Auftrag an Astra
 
 - **`5b9bf5f0` (Zweig `dev/claude-paket-20261120`):** Der Klick meldet kein Kassenbild mehr bei Shopify an und wartet auf keines (`createShopEntry`, Einstellung `shopifyCartImages`, Standard aus). Die Shop-Seite legt nur Text ein: kein `_Entwurf`, kein `_gravuru_checkout_image`; die Zeile nennt das Bild der Gestaltung am eigenen Server (`_gravuru_bild`). Grundlage: ENTSCHEIDUNGEN 3.52, 3.53.
